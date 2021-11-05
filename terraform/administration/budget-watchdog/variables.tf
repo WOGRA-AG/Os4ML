@@ -1,0 +1,28 @@
+variable "project" {
+  description = "GCP project to create the resources in"
+}
+
+variable "project_name" {
+  default = "Short name for project"
+}
+
+variable "region" {
+  description = "Default region for google provider"
+}
+
+variable "zone" {
+  description = "Default zone for google provider"
+}
+
+variable "env_label" {
+  description = "Environment label: test, dev, prod"
+}
+
+variable "billing_account" {
+  description = "Billing Account for Project"
+}
+
+variable "budget" {
+  description = "Budget for project"
+  default     = "100"
+}

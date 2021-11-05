@@ -1,0 +1,115 @@
+stages:
+  - prepare
+  - validate
+  - build
+  - deploy
+
+.tf-gke:
+  image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-production
+  cache:
+    key: gke-production
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - cd ${TF_ROOT}
+
+gke-init:
+  stage: prepare
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform init
+
+gke-validate:
+  stage: validate
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform validate
+
+gke-plan:
+  stage: plan
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: GKE
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+gke-apply:
+  stage: deploy
+  extends:
+    - .tf-gke
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - gke-plan
+  when: manual
+  only:
+    - main
+
+
+.tf-watchdog:
+  image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/administration/budget-watchdog
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-watchdog
+  cache:
+    key: gke-watchdog
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - cd ${TF_ROOT}
+    - zip code/index.zip ./code/*
+
+gke-watchdog-init:
+  stage: prepare
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform init
+
+gke-watchdog-validate:
+  stage: validate
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform validate
+
+gke-watchdog-plan:
+  stage: plan
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: GKE
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+gke-watchdog-apply:
+  stage: deploy
+  extends:
+    - .tf-watchdog
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - gke-plan
+  when: manual
+  only:
+    - main

@@ -6,13 +6,6 @@ provider "google" {
   zone        = var.cluster_zone
 }
 
-#provider "google-beta" {
-# credentials = file("gcp-terraform-cred.json")
-#  project = var.project
-#  region  = var.region
-#  zone    = var.zone
-#}
-
 provider "random" {
 }
 

@@ -9,10 +9,10 @@ resource "random_id" "db_name_suffix" {
 # It is recommended to not set this field (or set it to true) until you're ready to destroy the instance and its databases.
 # A Cloud SQL instance to used for the metadata of pipelines.
 resource "google_sql_database_instance" "metadata_db_instance" {
-  project          = var.project
-  name             = "${var.cluster_name}-${random_id.db_name_suffix.hex}"
-  database_version = "MYSQL_8_0"
-  region           = var.cluster_region
+  project             = var.project
+  name                = "${var.cluster_name}-${random_id.db_name_suffix.hex}"
+  database_version    = "MYSQL_8_0"
+  region              = var.cluster_region
   deletion_protection = false
 
   lifecycle {
