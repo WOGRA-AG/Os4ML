@@ -3,7 +3,8 @@ resource "google_cloudfunctions_function" "function" {
   description           = "budget watchdog function"
   runtime               = "python39"
   service_account_email = google_service_account.budget-watchdog.email
-  region = "europe-west3"
+  region                = "europe-west3"
+  project               = var.project
 
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.bucket.name

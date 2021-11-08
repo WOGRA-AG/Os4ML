@@ -5,13 +5,11 @@ module "project-services" {
   project_id = var.project
 
   activate_apis = [
-    "compute.googleapis.com",
-    "container.googleapis.com",
     "iam.googleapis.com",
     "servicemanagement.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "ml.googleapis.com",
-    "meshconfig.googleapis.com",
+    "billingbudgets.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "pubsub.googleapis.com",
   ]
 
   disable_services_on_destroy = var.disable_googleapi_services_on_destroy

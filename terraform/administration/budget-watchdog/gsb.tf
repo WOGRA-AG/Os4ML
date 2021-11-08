@@ -1,5 +1,6 @@
 resource "google_storage_bucket" "bucket" {
   name     = "budget-watchdog-bucket"
+  project  = var.project
   location = "EU"
 }
 

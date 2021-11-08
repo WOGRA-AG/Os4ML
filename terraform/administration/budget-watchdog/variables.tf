@@ -26,3 +26,7 @@ variable "budget" {
   description = "Budget for project"
   default     = "100"
 }
+
+variable "disable_googleapi_services_on_destroy" {
+  description = "Disable Apis on destroy"
+}

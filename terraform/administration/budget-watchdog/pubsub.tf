@@ -1,5 +1,7 @@
 resource "google_pubsub_topic" "budget_topic" {
-  name = "budgetTop"
+  provider = google-beta
+  name     = "budget-topic"
+  project  = var.project
 
   labels = {
     app = "${var.project_name}-budget-topic"
@@ -7,8 +9,10 @@ resource "google_pubsub_topic" "budget_topic" {
 }
 
 resource "google_pubsub_subscription" "budget_subscription" {
-  name  = "budgetSub"
-  topic = google_pubsub_topic.budget_topic.name
+  provider = google-beta
+  name     = "budgetSub"
+  topic    = google_pubsub_topic.budget_topic.name
+  project  = var.project
 
   ack_deadline_seconds = 20
 
@@ -23,4 +27,8 @@ resource "google_pubsub_subscription" "budget_subscription" {
       x-goog-version = "v1"
     }
   }
+
+  depends_on = [
+    google_pubsub_topic.budget_topic
+  ]
 }
