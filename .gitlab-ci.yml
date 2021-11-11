@@ -63,30 +63,30 @@ gke-apply:
   image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/administration/budget-watchdog
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-watchdog
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog
   cache:
-    key: gke-watchdog
+    key: gcp-budget-watchdog
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
-    - cd ${TF_ROOT}
-    - zip code/index.zip ./code/*
+    - cd ${TF_ROOT}/code
+    - zip -r -D index.zip *
 
-gke-watchdog-init:
+gcp-watchdog-init:
   stage: prepare
   extends:
     - .tf-watchdog
   script:
     - gitlab-terraform init
 
-gke-watchdog-validate:
+gcp-watchdog-validate:
   stage: validate
   extends:
     - .tf-watchdog
   script:
     - gitlab-terraform validate
 
-gke-watchdog-plan:
+gcp-watchdog-plan:
   stage: plan
   extends:
     - .tf-watchdog
@@ -94,13 +94,13 @@ gke-watchdog-plan:
     - gitlab-terraform plan
     - gitlab-terraform plan-json
   artifacts:
-    name: GKE
+    name: GCP-watchdog
     paths:
       - ${TF_ROOT}/plan.cache
     reports:
       terraform: ${TF_ROOT}/plan.json
 
-gke-watchdog-apply:
+gcp-watchdog-apply:
   stage: deploy
   extends:
     - .tf-watchdog
@@ -109,7 +109,7 @@ gke-watchdog-apply:
   script:
     - gitlab-terraform apply
   needs:
-    - gke-plan
+    - gcp-plan
   when: manual
   only:
     - main

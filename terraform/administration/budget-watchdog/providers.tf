@@ -18,21 +18,21 @@ data "google_service_account_access_token" "sa" {
   GA Provider configuration
  *****************************************/
 provider "google" {
-  access_token                = data.google_service_account_access_token.sa.access_token
-  project                     = var.project
-  region                      = var.region
-  zone                        = var.zone
-  user_project_override       = true
-  billing_project             = var.project
+  access_token          = data.google_service_account_access_token.sa.access_token
+  project               = var.project
+  region                = var.region
+  zone                  = var.zone
+  user_project_override = true
+  billing_project       = var.project
 }
 /******************************************
   Beta Provider configuration
  *****************************************/
 provider "google-beta" {
-  access_token                = data.google_service_account_access_token.sa.access_token
-  project                     = var.project
-  region                      = var.region
-  zone                        = var.zone
-  user_project_override       = true
-  billing_project             = var.project
+  access_token          = data.google_service_account_access_token.sa.access_token
+  project               = var.project
+  region                = var.region
+  zone                  = var.zone
+  user_project_override = true
+  billing_project       = var.project
 }
