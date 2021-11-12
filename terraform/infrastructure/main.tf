@@ -1,7 +1,3 @@
-# Allows other resources to refer to things like the authorization token for
-# the configured Google account
-data "google_client_config" "default" {}
-
 # The GKE cluster. The node pool is managed as a separate resource below.
 resource "google_container_cluster" "kubeflow_cluster" {
   depends_on = [
@@ -95,7 +91,6 @@ resource "google_container_node_pool" "main_pool" {
 
   management {
     auto_repair  = var.auto_repair
-    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {
@@ -141,7 +136,6 @@ resource "google_container_node_pool" "gpu_pool" {
 
   management {
     auto_repair  = var.auto_repair
-    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {
@@ -192,7 +186,6 @@ resource "google_container_node_pool" "highmem_pool" {
 
   management {
     auto_repair  = var.auto_repair
-    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {

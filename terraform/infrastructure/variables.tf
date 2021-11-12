@@ -6,6 +6,10 @@ variable "env_label" {
   description = "Environment label: test, dev, prod"
 }
 
+variable "terraform_account" {
+  description = "Terraform Serviceaccount"
+}
+
 variable "cluster_name" {
   description = "Name of the GKE cluster, will also be used as a part of the name for related resources like Cloud SQL instance and persistent disk."
 }
