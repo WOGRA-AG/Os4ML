@@ -72,6 +72,7 @@ gke-apply:
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
+    - apk --no-cache add zip
     - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}/code
     - zip -r -D index.zip *
