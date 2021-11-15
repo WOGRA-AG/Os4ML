@@ -120,7 +120,7 @@ gcp-watchdog-apply:
   script:
     - gitlab-terraform apply
   needs:
-    - gcp-watchdog-:plan
+    - gcp-watchdog-plan
   when: manual
   only:
     - main
