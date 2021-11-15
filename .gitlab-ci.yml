@@ -35,7 +35,7 @@ gke-validate:
     - gitlab-terraform validate
 
 gke-plan:
-  stage: plan
+  stage: build
   extends:
     - .tf-gke
   script:
@@ -98,7 +98,7 @@ gcp-watchdog-validate:
     - gitlab-terraform validate
 
 gcp-watchdog-plan:
-  stage: plan
+  stage: build
   extends:
     - .tf-watchdog
   script:
