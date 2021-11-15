@@ -10,6 +10,7 @@ stages:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
     TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-$CI_COMMIT_REF_NAME
     GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+    TF_VAR_env_label: $CI_COMMIT_REF_SLUG
   cache:
     key: gke-$CI_COMMIT_REF_NAME
     paths:

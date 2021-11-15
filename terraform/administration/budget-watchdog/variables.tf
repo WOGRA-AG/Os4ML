@@ -14,10 +14,6 @@ variable "zone" {
   description = "Default zone for google provider"
 }
 
-variable "env_label" {
-  description = "Environment label: test, dev, prod"
-}
-
 variable "terraform_account" {
   description = "Terraform account with necessary iam Policies to impersonate"
 }
