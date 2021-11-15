@@ -16,6 +16,7 @@ stages:
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
+    - apk add --no-cache --update kubectl curl python which bash
     - curl -sSL https://sdk.cloud.google.com | sh
     - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}
@@ -76,7 +77,7 @@ gke-apply:
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
-    - apk add --no-cache kubectl
+    - apk add --no-cache --update kubectl curl python which bash
     - curl -sSL https://sdk.cloud.google.com | sh
     - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}/code
