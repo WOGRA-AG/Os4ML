@@ -59,10 +59,12 @@ variable "initial_node_count" {
 
 variable "main_node_pool_min_nodes" {
   description = "Value to set for min node count for cluster autoscaler for the main node pool."
+  default     = "1"
 }
 
 variable "main_node_pool_max_nodes" {
   description = "Value to set for max node count for cluster autoscaler for the main node pool."
+  default     = "2"
 }
 
 variable "max_pods_per_node" {
@@ -79,7 +81,7 @@ variable "auto_upgrade" {
 }
 
 variable "main_node_pool_machine_type" {
-  default = "f1-micro"
+  default = "n1-standard-1"
 }
 
 variable "gpu_node_pool_machine_type" {
@@ -157,12 +159,6 @@ variable "gcloud_upgrade" {
   type        = bool
   description = "Whether to upgrade gcloud at runtime"
   default     = false
-}
-
-variable "impersonate_service_account" {
-  type        = string
-  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
-  default     = ""
 }
 
 variable "skip_provisioners" {

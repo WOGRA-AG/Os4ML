@@ -8,12 +8,16 @@ stages:
   image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-production
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-$CI_COMMIT_REF_NAME
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+    CLOUDSDK_INSTALL_DIR: /usr/local/gcloud/
   cache:
-    key: gke-production
+    key: gke-$CI_COMMIT_REF_NAME
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
+    - curl -sSL https://sdk.cloud.google.com | bash
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}
 
 gke-init:
@@ -63,14 +67,21 @@ gke-apply:
   image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/administration/budget-watchdog
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog-$CI_COMMIT_REF_NAME
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+    CLOUDSDK_INSTALL_DIR: /usr/local/gcloud/
+    PATH: $PATH:/usr/local/gcloud/google-cloud-sdk/bin
   cache:
-    key: gcp-budget-watchdog
+    key: gcp-budget-watchdog-$CI_COMMIT_REF_NAME
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
+    - apk add --no-cache kubectl
+    - curl -sSL https://sdk.cloud.google.com | bash
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}/code
     - zip -r -D index.zip *
+    - cd ${TF_ROOT}
 
 gcp-watchdog-init:
   stage: prepare

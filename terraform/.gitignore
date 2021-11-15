@@ -2,6 +2,7 @@
 ### Terraform template
 # Local .terraform directories
 **/.terraform/*
+**/.init-env.sh
 
 # .tfstate files
 *.tfstate

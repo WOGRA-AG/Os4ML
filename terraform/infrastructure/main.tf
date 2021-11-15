@@ -90,7 +90,8 @@ resource "google_container_node_pool" "main_pool" {
   initial_node_count = var.initial_node_count
 
   management {
-    auto_repair  = var.auto_repair
+    auto_repair = var.auto_repair
+    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {
@@ -135,7 +136,8 @@ resource "google_container_node_pool" "gpu_pool" {
   initial_node_count = "0"
 
   management {
-    auto_repair  = var.auto_repair
+    auto_repair = var.auto_repair
+    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {
@@ -149,7 +151,7 @@ resource "google_container_node_pool" "gpu_pool" {
     machine_type = var.gpu_node_pool_machine_type
 
     guest_accelerator {
-      type  = "nvidia-tesla-k80"
+      type  = "nvidia-tesla-t4"
       count = 1
     }
 
@@ -185,7 +187,8 @@ resource "google_container_node_pool" "highmem_pool" {
   initial_node_count = "0"
 
   management {
-    auto_repair  = var.auto_repair
+    auto_repair = var.auto_repair
+    auto_upgrade = var.auto_upgrade
   }
 
   autoscaling {

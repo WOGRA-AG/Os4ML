@@ -18,6 +18,10 @@ variable "env_label" {
   description = "Environment label: test, dev, prod"
 }
 
+variable "terraform_account" {
+  description = "Terraform account with necessary iam Policies to impersonate"
+}
+
 variable "billing_account" {
   description = "Billing Account for Project"
 }
