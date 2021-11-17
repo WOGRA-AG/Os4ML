@@ -4,7 +4,8 @@ resource "google_container_cluster" "kubeflow_cluster" {
     google_service_account.kubeflow_admin,
     google_service_account.kubeflow_user,
     google_service_account.kubeflow_vm,
-    google_compute_network.vpc
+    google_compute_network.vpc,
+    google_compute_subnetwork.subnet,
   ]
 
   provider = google
@@ -91,7 +92,7 @@ resource "google_container_node_pool" "main_pool" {
   initial_node_count = var.initial_node_count
 
   management {
-    auto_repair = var.auto_repair
+    auto_repair  = var.auto_repair
     auto_upgrade = var.auto_upgrade
   }
 
@@ -123,6 +124,8 @@ resource "google_container_node_pool" "main_pool" {
     update = var.timeout
     delete = var.timeout
   }
+
+  depends_on = [google_container_cluster.kubeflow_cluster]
 }
 
 resource "google_container_node_pool" "gpu_pool" {
@@ -137,7 +140,7 @@ resource "google_container_node_pool" "gpu_pool" {
   initial_node_count = "0"
 
   management {
-    auto_repair = var.auto_repair
+    auto_repair  = var.auto_repair
     auto_upgrade = var.auto_upgrade
   }
 
@@ -174,6 +177,8 @@ resource "google_container_node_pool" "gpu_pool" {
     update = var.timeout
     delete = var.timeout
   }
+
+  depends_on = [google_container_cluster.kubeflow_cluster]
 }
 
 resource "google_container_node_pool" "highmem_pool" {
@@ -188,7 +193,7 @@ resource "google_container_node_pool" "highmem_pool" {
   initial_node_count = "0"
 
   management {
-    auto_repair = var.auto_repair
+    auto_repair  = var.auto_repair
     auto_upgrade = var.auto_upgrade
   }
 
@@ -220,6 +225,8 @@ resource "google_container_node_pool" "highmem_pool" {
     update = var.timeout
     delete = var.timeout
   }
+
+  depends_on = [google_container_cluster.kubeflow_cluster]
 }
 
 # A persistent disk to use as the artifact store.

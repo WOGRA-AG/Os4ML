@@ -2,6 +2,10 @@ resource "kubernetes_namespace" "kubeflow" {
   metadata {
     name = "kubeflow"
   }
+  depends_on = [
+    google_container_cluster.kubeflow_cluster,
+    google_container_node_pool.main_pool,
+  ]
 }
 
 resource "kubernetes_namespace" "istio-system" {
@@ -13,6 +17,11 @@ resource "kubernetes_namespace" "istio-system" {
       "istio-injection" = "disabled"
     }
   }
+
+  depends_on = [
+    google_container_cluster.kubeflow_cluster,
+    google_container_node_pool.main_pool,
+  ]
 }
 
 # Create a Kubernetes secret for the cloudsql-proxy's credentials

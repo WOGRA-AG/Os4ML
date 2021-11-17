@@ -17,7 +17,7 @@ module "gcloud_delete_default_kube_dns_configmap" {
 
   module_depends_on = [
     google_container_cluster.kubeflow_cluster.master_version,
-    google_container_node_pool.main_pool.name
+    google_container_node_pool.main_pool.version,
   ]
 }
 
