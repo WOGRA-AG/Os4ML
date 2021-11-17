@@ -4,6 +4,7 @@ resource "google_container_cluster" "kubeflow_cluster" {
     google_service_account.kubeflow_admin,
     google_service_account.kubeflow_user,
     google_service_account.kubeflow_vm,
+    google_compute_network.vpc
   ]
 
   provider = google

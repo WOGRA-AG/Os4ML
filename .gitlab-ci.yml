@@ -8,11 +8,11 @@ stages:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke-$CI_COMMIT_REF_NAME
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke
     GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
     TF_VAR_env_label: $CI_COMMIT_REF_SLUG
   cache:
-    key: gke-$CI_COMMIT_REF_NAME
+    key: gke
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
@@ -31,6 +31,7 @@ gke-validate:
   extends:
     - .tf-gke
   script:
+    - gitlab-terraform fmt -check
     - gitlab-terraform validate
 
 gke-plan:
@@ -66,10 +67,10 @@ gke-apply:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
   variables:
     TF_ROOT: ${CI_PROJECT_DIR}/terraform/administration/budget-watchdog
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog-$CI_COMMIT_REF_NAME
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog
     GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
   cache:
-    key: gcp-budget-watchdog-$CI_COMMIT_REF_NAME
+    key: gcp-budget-watchdog
     paths:
       - ${TF_ROOT}/.terraform
   before_script:
@@ -91,6 +92,7 @@ gcp-watchdog-validate:
   extends:
     - .tf-watchdog
   script:
+    - gitlab-terraform fmt -check
     - gitlab-terraform validate
 
 gcp-watchdog-plan:

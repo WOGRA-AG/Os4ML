@@ -1,10 +1,10 @@
 #!/usr/bin/bash
-./.init-env.sh
+source .init-env.sh
 
 terraform init \
-    -backend-config="address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke-local" \
-    -backend-config="lock_address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke-local/lock" \
-    -backend-config="unlock_address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke-local/lock" \
+    -backend-config="address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke" \
+    -backend-config="lock_address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke/lock" \
+    -backend-config="unlock_address=https://gitlab.wogra.com/api/v4/projects/160/terraform/state/gke/lock" \
     -backend-config="username=${GITLAB_USER_NAME}" \
     -backend-config="password=${GITLAB_ACCESS_TOKEN}" \
     -backend-config="lock_method=POST" \
