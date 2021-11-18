@@ -1,0 +1,124 @@
+stages:
+  - prepare
+  - validate
+  - build
+  - deploy
+
+.tf-gke:
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+    TF_VAR_env_label: $CI_COMMIT_REF_SLUG
+  cache:
+    key: gke
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
+    - cd ${TF_ROOT}
+
+gke-init:
+  stage: prepare
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform init
+
+gke-validate:
+  stage: validate
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform fmt -check
+    - gitlab-terraform validate
+
+gke-plan:
+  stage: build
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: GKE
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+gke-apply:
+  stage: deploy
+  extends:
+    - .tf-gke
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - gke-plan
+  when: manual
+  only:
+    - main
+
+
+.tf-watchdog:
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/administration/budget-watchdog
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gcp-budget-watchdog
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+  cache:
+    key: gcp-budget-watchdog
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - apk --no-cache add zip
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
+    - cd ${TF_ROOT}/code
+    - zip -r -D index.zip *
+    - cd ${TF_ROOT}
+
+gcp-watchdog-init:
+  stage: prepare
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform init
+
+gcp-watchdog-validate:
+  stage: validate
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform fmt -check
+    - gitlab-terraform validate
+
+gcp-watchdog-plan:
+  stage: build
+  extends:
+    - .tf-watchdog
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: GCP-watchdog
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+gcp-watchdog-apply:
+  stage: deploy
+  extends:
+    - .tf-watchdog
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - gcp-watchdog-plan
+  when: manual
+  only:
+    - main
