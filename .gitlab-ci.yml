@@ -197,8 +197,6 @@ kubeflow-plan:
       - ${TF_ROOT}/plan.cache
     reports:
       terraform: ${TF_ROOT}/plan.json
-  needs:
-    - gke-apply
 
 kubeflow-apply:
   stage: deploy
