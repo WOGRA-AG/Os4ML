@@ -18,8 +18,8 @@ terraform {
     }
   }
 
-  backend "http" {}
-
   required_version = "~> 1.0.10"
+
+  backend "http" {}
 }
 
