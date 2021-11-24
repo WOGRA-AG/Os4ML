@@ -167,7 +167,7 @@ gke-destroy:
     - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}
     - gcloud auth activate-service-account --key-file=${TF_ROOT}/serviceaccount.json
-    - gcloud container clusters get-credentials $TF_VAR_cluster_name --impersonate-service-account=$TF_VAR_terraform_account
+    - gcloud container clusters get-credentials $TF_VAR_cluster_name --impersonate-service-account=$TF_VAR_terraform_account --zone=$TF_VAR_cluster_zone --region=$TF_VAR_cluster_region
 
 kubeflow-init:
   stage: prepare
