@@ -1,9 +1,14 @@
 stages:
-  - prepare
-  - validate
-  - build
-  - deploy
-  - destroy
+  - prepare:gcp
+  - validate:gcp
+  - build:gcp
+  - deploy:gcp
+  - destroy:gcp
+  - prepare:kubeflow
+  - validate:kubeflow
+  - build:kubeflow
+  - deploy:kubeflow
+  - destroy:kubeflow
 
 #Deploy Budget Watchdog for Google Cloud Project with terraform
 .tf-watchdog:
@@ -24,14 +29,14 @@ stages:
     - cd ${TF_ROOT}
 
 gcp-watchdog-init:
-  stage: prepare
+  stage: prepare:gcp
   extends:
     - .tf-watchdog
   script:
     - gitlab-terraform init
 
 gcp-watchdog-validate:
-  stage: validate
+  stage: validate:gcp
   extends:
     - .tf-watchdog
   script:
@@ -39,7 +44,7 @@ gcp-watchdog-validate:
     - gitlab-terraform validate
 
 gcp-watchdog-plan:
-  stage: build
+  stage: build:gcp
   extends:
     - .tf-watchdog
   script:
@@ -53,7 +58,7 @@ gcp-watchdog-plan:
       terraform: ${TF_ROOT}/plan.json
 
 gcp-watchdog-apply:
-  stage: deploy
+  stage: deploy:gcp
   extends:
     - .tf-watchdog
   environment:
@@ -67,7 +72,7 @@ gcp-watchdog-apply:
     - main
 
 gcp-watchdog-destroy:
-  stage: destroy
+  stage: destroy:gcp
   extends:
     - .tf-watchdog
   environment:
@@ -95,14 +100,14 @@ gcp-watchdog-destroy:
     - cd ${TF_ROOT}
 
 gke-init:
-  stage: prepare
+  stage: prepare:gcp
   extends:
     - .tf-gke
   script:
     - gitlab-terraform init
 
 gke-validate:
-  stage: validate
+  stage: validate:gcp
   extends:
     - .tf-gke
   script:
@@ -110,7 +115,7 @@ gke-validate:
     - gitlab-terraform validate
 
 gke-plan:
-  stage: build
+  stage: build:gcp
   extends:
     - .tf-gke
   script:
@@ -124,7 +129,7 @@ gke-plan:
       terraform: ${TF_ROOT}/plan.json
 
 gke-apply:
-  stage: deploy
+  stage: deploy:gcp
   extends:
     - .tf-gke
   environment:
@@ -141,7 +146,7 @@ gke-apply:
     - main
 
 gke-destroy:
-  stage: destroy
+  stage: destroy:gcp
   extends:
     - .tf-gke
   environment:
@@ -167,17 +172,17 @@ gke-destroy:
     - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
     - cd ${TF_ROOT}
     - gcloud auth activate-service-account --key-file=${TF_ROOT}/serviceaccount.json
-    - gcloud container clusters get-credentials $TF_VAR_cluster_name --impersonate-service-account=$TF_VAR_terraform_account --zone=$TF_VAR_cluster_zone
+    - gcloud container clusters get-credentials $TF_VAR_cluster_name --impersonate-service-account=$TF_VAR_terraform_account --zone=$TF_VAR_cluster_zone --project=$TF_VAR_project
 
 kubeflow-init:
-  stage: prepare
+  stage: prepare:kubeflow
   extends:
     - .tf-kubeflow
   script:
     - gitlab-terraform init
 
 kubeflow-validate:
-  stage: validate
+  stage: validate:kubeflow
   extends:
     - .tf-kubeflow
   script:
@@ -185,7 +190,7 @@ kubeflow-validate:
     - gitlab-terraform validate
 
 kubeflow-plan:
-  stage: build
+  stage: build:kubeflow
   extends:
     - .tf-kubeflow
   script:
@@ -199,7 +204,7 @@ kubeflow-plan:
       terraform: ${TF_ROOT}/plan.json
 
 kubeflow-apply:
-  stage: deploy
+  stage: deploy:kubeflow
   extends:
     - .tf-kubeflow
   environment:
@@ -216,7 +221,7 @@ kubeflow-apply:
     - main
 
 kubeflow-destroy:
-  stage: destroy
+  stage: destroy:kubeflow
   extends:
     - .tf-kubeflow
   environment:
