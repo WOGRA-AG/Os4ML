@@ -155,18 +155,18 @@ gke-destroy:
 # Deploy Kubeflow on GKE Cluster using terraform
 .tf-kubeflow:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
-    variables:
-      TF_ROOT: ${CI_PROJECT_DIR}/terraform/kubeflow
-      TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/kubeflow
-      GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
-    cache:
-      key: kubeflow
-      paths:
-        - ${TF_ROOT}/.terraform
-    before_script:
-      - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
-      - cd ${TF_ROOT}
-      - gcloud container clusters get-credentials $TF_VAR_cluster_name
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/kubeflow
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/kubeflow
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+  cache:
+    key: kubeflow
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
+    - cd ${TF_ROOT}
+    - gcloud container clusters get-credentials $TF_VAR_cluster_name
 
 kubeflow-init:
   stage: prepare
