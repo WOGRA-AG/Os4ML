@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: os4ml-service
+  namespace: os4ml
+spec:
+  selector:
+    app: os4ml
+    tier: frontend
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

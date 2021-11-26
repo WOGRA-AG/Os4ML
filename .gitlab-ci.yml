@@ -157,6 +157,79 @@ gke-destroy:
   only:
     - main
 
+# Build frontend Image and push to registry
+.build-frontend:
+  stage: build:kubeflow
+  needs: [ ]
+  image: $CI_REGISTRY/developer/images/node-java:node-16-jre-11
+  before_script:
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome*.deb;
+    - export CHROME_BIN=/usr/bin/google-chrome
+  script:
+    - cd $DIR
+    - npm install --cache .npm_cache
+    - npm run lint
+    - npm run test:ci
+    - npm run build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success
+
+.build-frontend-image:
+  stage: build:kubeflow
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --reproducible
+      --context $DIR
+      --dockerfile Dockerfile
+      --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success
+
+build-os4ml-frontend:
+  extends:
+    - .build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'os4ml-frontend'
+  artifacts:
+    paths:
+      - services/frontend/dist/os4ml
+  cache:
+    key: os4ml-frontend
+    paths:
+      - services/frontend/node_modules
+      - services/frontend/.npm_cache
+
+build-os4ml-frontend-image:
+  extends:
+    - .build-frontend-image
+  needs:
+    - build-os4ml-frontend
+  dependencies:
+    - build-os4ml-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'os4ml-frontend'
+
 # Deploy Kubeflow on GKE Cluster using terraform
 .tf-kubeflow:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
@@ -193,6 +266,8 @@ kubeflow-validate:
 
 kubeflow-plan:
   stage: build:kubeflow
+  needs:
+    - build-os4ml-frontend
   extends:
     - .tf-kubeflow
   script:

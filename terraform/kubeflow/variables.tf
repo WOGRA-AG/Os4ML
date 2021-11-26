@@ -55,7 +55,7 @@ variable "multi_user" {
 variable "istio_ingress" {
   description = "Patch istio ingress-gateway from NodePort to LoadBalancer"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "kf_version" {

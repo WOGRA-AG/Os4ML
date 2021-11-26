@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: os4ml
+  namespace: os4ml
+spec:
+  selector:
+    matchLabels:
+      app: os4ml
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: os4ml
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: os4ml
+          image: "gitlab-registry.wogra.com/developer/images/os4ml:latest"
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/nginx","-s","quit"]
