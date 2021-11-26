@@ -266,8 +266,6 @@ kubeflow-validate:
 
 kubeflow-plan:
   stage: build:kubeflow
-  needs:
-    - build-os4ml-frontend
   extends:
     - .tf-kubeflow
   script:
@@ -290,6 +288,7 @@ kubeflow-apply:
     - gitlab-terraform apply
   needs:
     - kubeflow-plan
+    - build-os4ml-frontend
   retry:
     max: 2
     when: always
