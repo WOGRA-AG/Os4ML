@@ -1,4 +1,5 @@
 data "google_client_config" "default" {}
+
 /******************************************
   GA Provider configuration
  *****************************************/
@@ -22,18 +23,9 @@ provider "google-beta" {
   billing_project             = var.project
 }
 
-provider "random" {
-}
+provider "random" {}
 
-provider "null" {
-}
-
-provider "kubernetes" {
-  # use the cluster managed by this module
-  host                   = "https://${local.cluster_endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
-}
+provider "null" {}
 
 locals {
   cluster_endpoint            = google_container_cluster.kubeflow_cluster.endpoint

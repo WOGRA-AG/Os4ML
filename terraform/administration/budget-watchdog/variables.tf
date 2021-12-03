@@ -23,7 +23,7 @@ variable "billing_account" {
 }
 
 variable "budget" {
-  description = "Budget for project"
+  description = "Budget for project in Euro"
   default     = "100"
 }
 

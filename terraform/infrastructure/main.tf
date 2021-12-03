@@ -106,9 +106,9 @@ resource "google_container_node_pool" "main_pool" {
   node_config {
     machine_type = var.main_node_pool_machine_type
 
-    min_cpu_platform = "Intel Broadwell"
-
     service_account = google_service_account.kubeflow_vm.email
+
+    preemptible = var.main_node_pool_is_preemptible
 
     // These scopes are needed for the GKE nodes' service account to have pull rights to GCR.
     // Default is "https://www.googleapis.com/auth/logging.write" and "https://www.googleapis.com/auth/monitoring".
@@ -159,9 +159,9 @@ resource "google_container_node_pool" "gpu_pool" {
       count = 1
     }
 
-    min_cpu_platform = "Intel Broadwell"
-
     service_account = google_service_account.kubeflow_vm.email
+
+    preemptible = var.gpu_node_pool_is_preemptible
 
     // These scopes are needed for the GKE nodes' service account to have pull rights to GCR.
     // Default is "https://www.googleapis.com/auth/logging.write" and "https://www.googleapis.com/auth/monitoring".
@@ -207,9 +207,9 @@ resource "google_container_node_pool" "highmem_pool" {
   node_config {
     machine_type = var.highmem_node_pool_machine_type
 
-    min_cpu_platform = "Intel Broadwell"
-
     service_account = google_service_account.kubeflow_vm.email
+
+    preemptible = var.highmem_node_pool_is_preemptible
 
     // These scopes are needed for the GKE nodes' service account to have pull rights to GCR.
     // Default is "https://www.googleapis.com/auth/logging.write" and "https://www.googleapis.com/auth/monitoring".

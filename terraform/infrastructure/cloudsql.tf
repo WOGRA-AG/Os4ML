@@ -41,15 +41,6 @@ resource "google_sql_database_instance" "metadata_db_instance" {
   }
 }
 
-# Terraform deletes the default root user with no password that Cloud SQL
-# creates, so we create a custom user with (strong!) password and restricted host
-#resource "google_sql_user" "root_user" {
-#  name     = "root"
-#  instance = google_sql_database_instance.metadata_db_instance.name
-#  password = ""
-#  host     = "%"
-#}
-
 resource "google_sql_user" "read_only_user" {
   name     = "read_only"
   instance = google_sql_database_instance.metadata_db_instance.name

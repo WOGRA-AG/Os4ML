@@ -1,68 +1,16 @@
 stages:
-  - prepare
-  - validate
-  - build
-  - deploy
+  - prepare:gcp
+  - validate:gcp
+  - build:gcp
+  - deploy:gcp
+  - destroy:gcp
+  - prepare:kubeflow
+  - validate:kubeflow
+  - build:kubeflow
+  - deploy:kubeflow
+  - destroy:kubeflow
 
-.tf-gke:
-  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
-  variables:
-    TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
-    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke
-    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
-    TF_VAR_env_label: $CI_COMMIT_REF_SLUG
-  cache:
-    key: gke
-    paths:
-      - ${TF_ROOT}/.terraform
-  before_script:
-    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
-    - cd ${TF_ROOT}
-
-gke-init:
-  stage: prepare
-  extends:
-    - .tf-gke
-  script:
-    - gitlab-terraform init
-
-gke-validate:
-  stage: validate
-  extends:
-    - .tf-gke
-  script:
-    - gitlab-terraform fmt -check
-    - gitlab-terraform validate
-
-gke-plan:
-  stage: build
-  extends:
-    - .tf-gke
-  script:
-    - gitlab-terraform plan
-    - gitlab-terraform plan-json
-  artifacts:
-    name: GKE
-    paths:
-      - ${TF_ROOT}/plan.cache
-    reports:
-      terraform: ${TF_ROOT}/plan.json
-
-gke-apply:
-  stage: deploy
-  extends:
-    - .tf-gke
-  environment:
-    name: production
-  script:
-    - gitlab-terraform apply
-  needs:
-    - gke-plan
-  when: manual
-  only:
-    - main
-
-
+#Deploy Budget Watchdog for Google Cloud Project with terraform
 .tf-watchdog:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
   variables:
@@ -81,14 +29,14 @@ gke-apply:
     - cd ${TF_ROOT}
 
 gcp-watchdog-init:
-  stage: prepare
+  stage: prepare:gcp
   extends:
     - .tf-watchdog
   script:
     - gitlab-terraform init
 
 gcp-watchdog-validate:
-  stage: validate
+  stage: validate:gcp
   extends:
     - .tf-watchdog
   script:
@@ -96,7 +44,7 @@ gcp-watchdog-validate:
     - gitlab-terraform validate
 
 gcp-watchdog-plan:
-  stage: build
+  stage: build:gcp
   extends:
     - .tf-watchdog
   script:
@@ -110,7 +58,7 @@ gcp-watchdog-plan:
       terraform: ${TF_ROOT}/plan.json
 
 gcp-watchdog-apply:
-  stage: deploy
+  stage: deploy:gcp
   extends:
     - .tf-watchdog
   environment:
@@ -119,6 +67,169 @@ gcp-watchdog-apply:
     - gitlab-terraform apply
   needs:
     - gcp-watchdog-plan
+  when: manual
+  only:
+    - main
+
+gcp-watchdog-destroy:
+  stage: destroy:gcp
+  extends:
+    - .tf-watchdog
+  environment:
+    name: production
+  script:
+    - gitlab-terraform destroy
+  when: manual
+  only:
+    - main
+
+# Deploy Google Kubernetes Engine (GKE) Cluster with terraform
+.tf-gke:
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/infrastructure
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gke
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+    TF_VAR_env_label: $CI_COMMIT_REF_SLUG
+  cache:
+    key: gke
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
+    - cd ${TF_ROOT}
+
+gke-init:
+  stage: prepare:gcp
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform init
+
+gke-validate:
+  stage: validate:gcp
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform fmt -check
+    - gitlab-terraform validate
+
+gke-plan:
+  stage: build:gcp
+  extends:
+    - .tf-gke
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: GKE
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+gke-apply:
+  stage: deploy:gcp
+  extends:
+    - .tf-gke
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - gke-plan
+  retry:
+    max: 2
+    when: always
+  when: manual
+  only:
+    - main
+
+gke-destroy:
+  stage: destroy:gcp
+  extends:
+    - .tf-gke
+  environment:
+    name: production
+  script:
+    - gitlab-terraform destroy
+  when: manual
+  only:
+    - main
+
+# Deploy Kubeflow on GKE Cluster using terraform
+.tf-kubeflow:
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud-364-0-0
+  variables:
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform/kubeflow
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/kubeflow
+    GOOGLE_APPLICATION_CREDENTIALS: ${TF_ROOT}/serviceaccount.json
+  cache:
+    key: kubeflow
+    paths:
+      - ${TF_ROOT}/.terraform
+  before_script:
+    - echo $GCP_CREDENTIALS | base64 -d > ${TF_ROOT}/serviceaccount.json
+    - cd ${TF_ROOT}
+    - gcloud config set auth/impersonate_service_account $TF_VAR_terraform_account
+    - gcloud auth activate-service-account --key-file=${TF_ROOT}/serviceaccount.json --impersonate-service-account=$TF_VAR_terraform_account
+    - gcloud container clusters get-credentials $TF_VAR_cluster_name --impersonate-service-account=$TF_VAR_terraform_account
+      --zone=$TF_VAR_cluster_zone --project=$TF_VAR_project
+
+kubeflow-init:
+  stage: prepare:kubeflow
+  extends:
+    - .tf-kubeflow
+  script:
+    - gitlab-terraform init
+
+kubeflow-validate:
+  stage: validate:kubeflow
+  extends:
+    - .tf-kubeflow
+  script:
+    - gitlab-terraform fmt -check
+    - gitlab-terraform validate
+
+kubeflow-plan:
+  stage: build:kubeflow
+  extends:
+    - .tf-kubeflow
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: Kubeflow
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+kubeflow-apply:
+  stage: deploy:kubeflow
+  extends:
+    - .tf-kubeflow
+  environment:
+    name: production
+  script:
+    - gitlab-terraform apply
+  needs:
+    - kubeflow-plan
+  retry:
+    max: 2
+    when: always
+  when: manual
+  only:
+    - main
+
+kubeflow-destroy:
+  stage: destroy:kubeflow
+  extends:
+    - .tf-kubeflow
+  environment:
+    name: production
+  script:
+    - gitlab-terraform destroy
   when: manual
   only:
     - main

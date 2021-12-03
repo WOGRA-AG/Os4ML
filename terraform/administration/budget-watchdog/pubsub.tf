@@ -21,7 +21,7 @@ resource "google_pubsub_subscription" "budget_subscription" {
   }
 
   push_config {
-    push_endpoint = "https://${var.project}.appspot.com/_ah/push-handlers/pubsub/projects/sincere-song-328914/topics/${google_pubsub_topic.budget_topic.name}?pubsub_trigger=true"
+    push_endpoint = "https://${var.project}.appspot.com/_ah/push-handlers/pubsub/projects/${var.project}/topics/${google_pubsub_topic.budget_topic.name}?pubsub_trigger=true"
 
     attributes = {
       x-goog-version = "v1"
