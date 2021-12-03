@@ -8,10 +8,6 @@ terraform {
       source  = "hashicorp/google-beta"
       version = ">= 3.90.1"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = ">= 2.6.1"
-    }
     null = {
       source  = "hashicorp/null"
       version = ">= 3.1.0"

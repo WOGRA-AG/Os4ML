@@ -9,7 +9,8 @@ resource "google_billing_budget" "budget" {
   display_name    = "Watchdog Billing Budget"
 
   budget_filter {
-    projects = ["projects/${data.google_project.project.number}"]
+    projects               = ["projects/${data.google_project.project.number}"]
+    credit_types_treatment = "EXCLUDE_ALL_CREDITS"
   }
 
   amount {

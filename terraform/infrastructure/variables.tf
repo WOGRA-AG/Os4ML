@@ -64,7 +64,7 @@ variable "main_node_pool_min_nodes" {
 
 variable "main_node_pool_max_nodes" {
   description = "Value to set for max node count for cluster autoscaler for the main node pool."
-  default     = "2"
+  default     = "10"
 }
 
 variable "max_pods_per_node" {
@@ -77,11 +77,11 @@ variable "auto_repair" {
 }
 
 variable "auto_upgrade" {
-  default = "false"
+  default = "true"
 }
 
 variable "main_node_pool_machine_type" {
-  default = "n1-standard-1"
+  default = "e2-standard-2"
 }
 
 variable "gpu_node_pool_machine_type" {
@@ -89,7 +89,7 @@ variable "gpu_node_pool_machine_type" {
 }
 
 variable "highmem_node_pool_machine_type" {
-  default = "n2-highmem-16"
+  default = "e2-highmem-16"
 }
 
 variable "highmem_node_pool_min_node_count" {
@@ -97,7 +97,7 @@ variable "highmem_node_pool_min_node_count" {
 }
 
 variable "highmem_node_pool_max_node_count" {
-  default = "1"
+  default = "5"
 }
 
 variable "gpu_node_pool_min_node_count" {
@@ -118,12 +118,15 @@ variable "timeout" {
 }
 
 variable "main_node_pool_name" {
+  default = "main-pool"
 }
 
 variable "gpu_node_pool_name" {
+  default = "gpu-pool"
 }
 
 variable "highmem_node_pool_name" {
+  default = "highmem-pool"
 }
 
 variable "upstream_nameservers" {
@@ -171,4 +174,22 @@ variable "disable_googleapi_services_on_destroy" {
   type        = bool
   description = "Disable all for the project neccessary google-cloud api's on terraform destroy"
   default     = false
+}
+
+variable "main_node_pool_is_preemptible" {
+  type        = bool
+  default     = true
+  description = "Make main node pool nodes preemptible"
+}
+
+variable "gpu_node_pool_is_preemptible" {
+  type        = bool
+  default     = true
+  description = "Make gpu node pool nodes preemptible"
+}
+
+variable "highmem_node_pool_is_preemptible" {
+  type        = bool
+  default     = true
+  description = "Make highmem node pool nodes preemptible"
 }
