@@ -163,6 +163,7 @@ gke-destroy:
   needs: [ ]
   image: $CI_REGISTRY/developer/images/node-java:node-16-jre-11
   before_script:
+    - apt-get update -y && apt-get upgrade -y
     - curl https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
     - apt install -y ./google-chrome*.deb;
     - export CHROME_BIN=/usr/bin/google-chrome
