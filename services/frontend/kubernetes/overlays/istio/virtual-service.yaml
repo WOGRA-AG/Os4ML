@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: os4ml-os4ml
+spec:
+  gateways:
+    - kubeflow-gateway
+  hosts:
+    - '*'
+  http:
+    - headers:
+        request:
+          add:
+            x-forwarded-prefix: /os4ml
+      match:
+        - uri:
+            prefix: /os4ml/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: os4ml-service.$(OS4ML_NAMESPACE).svc.$(OS4ML_CLUSTER_DOMAIN)
+            port:
+              number: 80
