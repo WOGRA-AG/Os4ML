@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: os4ml
-          image: "https://gitlab-registry.wogra.com/developer/images/os4ml:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml:latest"
           ports:
             - containerPort: 5001
           env:
@@ -36,3 +36,5 @@ spec:
               exec:
                 command: ["/usr/sbin/nginx","-s","quit"]
       serviceAccountName: service-account
+      imagePullSecrets:
+        - name: registry-credentials

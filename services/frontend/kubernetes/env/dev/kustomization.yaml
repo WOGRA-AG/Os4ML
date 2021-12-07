@@ -3,8 +3,3 @@ kind: Kustomization
 
 resources:
   - ../../overlays/istio
-
-images:
-  - name: "gitlab-registry.wogra.com/developer/images/os4ml:latest"
-    newName: "gitlab-registry.wogra.com/developer/images/os4ml"
-    newTag: latest
