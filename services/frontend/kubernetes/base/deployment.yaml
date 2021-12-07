@@ -21,9 +21,9 @@ spec:
     spec:
       containers:
         - name: os4ml
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/os4ml-frontend:latest"
           ports:
-            - containerPort: 5001
+            - containerPort: 80
           env:
             - name: APP_PREFIX
               value: ${OS4ML_PREFIX}
