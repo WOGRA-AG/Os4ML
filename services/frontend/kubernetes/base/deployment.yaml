@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: ui
   namespace: os4ml
 spec:
   replicas: 1
@@ -9,7 +9,6 @@ spec:
     matchLabels:
       app: os4ml
       tier: frontend
-      track: stable
   template:
     metadata:
       annotations:
@@ -17,10 +16,9 @@ spec:
       labels:
         app: os4ml
         tier: frontend
-        track: stable
     spec:
       containers:
-        - name: os4ml
+        - name: frontend
           image: "gitlab-registry.wogra.com/developer/wogra/os4ml/os4ml-frontend:latest"
           ports:
             - containerPort: 80
