@@ -2,7 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - service-account.yaml
-  - namespace.yaml
   - cluster-role-binding.yaml
   - cluster-role.yaml
   - registry-credentials.yml
@@ -12,7 +11,7 @@ namePrefix: os4ml-
 namespace: os4ml
 commonLabels:
   app: os4ml
-  kustomize.component: os4ml
+  kustomize.component: ui
 configMapGenerator:
   - envs:
       - params.env
@@ -31,7 +30,7 @@ vars:
     objref:
       apiVersion: v1
       kind: Service
-      name: service
+      name: ui
   - fieldref:
       fieldpath: data.OS4ML_USERID_HEADER
     name: OS4ML_USERID_HEADER

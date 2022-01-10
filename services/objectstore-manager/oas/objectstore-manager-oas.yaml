@@ -1,0 +1,203 @@
+openapi: 3.0.1
+info:
+  title: Os4ml Objectstore Manager Api
+  description: Os4ml Objectstore Manager
+  version: "version not set"
+paths:
+  "/apis/v1beta1/objectstore":
+    get:
+      summary: "get all buckets"
+      operationId: getAllBuckets
+      tags:
+        - objectstore
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bucket'
+
+  "/apis/v1beta1/objectstore/{BucketName}":
+    post:
+      summary: "create new bucket"
+      operationId: postNewBucket
+      tags:
+        - objectstore
+        - bucket
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+        400:
+          $ref: '#/components/responses/RequestBodyInvalid'
+    delete:
+      summary: "delete bucket"
+      operationId: deleteBucket
+      tags:
+        - objectstore
+        - bucket
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{BucketName}/object":
+    get:
+      summary: "get all Objects in bucket"
+      operationId: getAllObjects
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}":
+    get:
+      summary: 'get specific Object from Bucket'
+      operationId: getObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        307:
+          description: Redirect
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: 'delete specific Object from Bucket'
+      operationId: deleteObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/presignedurl":
+    get:
+      summary: 'get presigned put Url'
+      operationId: getPresignedUrl
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Url'
+        404:
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Url:
+      type: string
+    ObjectName:
+      type: string
+    BucketName:
+      type: string
+    Bucket:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/BucketName'
+      required:
+        - name
+    Item:
+      type: object
+      properties:
+        bucket_name:
+          $ref: "#/components/schemas/BucketName"
+        object_name:
+          $ref: "#/components/schemas/ObjectName"
+      required:
+        - bucket_name
+        - object_name
+    Error:
+      type: object
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+
+  parameters:
+    BucketName:
+      name: BucketName
+      in: path
+      description: Name of Bucket
+      required: true
+      schema:
+        $ref: '#/components/schemas/BucketName'
+    ObjectName:
+      name: ObjectName
+      in: path
+      description: Name of Object
+      required: true
+      schema:
+        $ref: '#/components/schemas/ObjectName'
+
+  responses:
+    Created:
+      description: New resource created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BucketName"
+    Deleted:
+      description: The specified resource was deleted
+    Updated:
+      description: The specified resource was updated
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyMismatch:
+      description: The provided request body has the wrong format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyInvalid:
+      description: The content of the request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

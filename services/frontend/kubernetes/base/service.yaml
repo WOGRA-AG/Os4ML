@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: service
+  name: ui
   labels:
-    run: os4ml
+    app: os4ml
   namespace: os4ml
 spec:
   selector:

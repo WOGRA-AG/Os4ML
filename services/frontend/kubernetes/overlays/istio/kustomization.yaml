@@ -6,6 +6,6 @@ resources:
 namespace: os4ml
 commonLabels:
   app: os4ml
-  kustomize.component: os4ml
+  kustomize.component: os4ml-ui
 configurations:
   - params.yaml

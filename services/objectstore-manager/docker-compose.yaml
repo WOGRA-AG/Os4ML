@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+  interpreter:
+    build:
+      context: .
+      target: interpreter
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/objectstore-manager
