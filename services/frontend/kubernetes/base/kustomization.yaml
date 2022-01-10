@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - service-account.yaml
+  - namespace.yaml
+  - cluster-role-binding.yaml
+  - cluster-role.yaml
+  - registry-credentials.yml
+  - service.yaml
+  - deployment.yaml
+namePrefix: os4ml-
+namespace: os4ml
+commonLabels:
+  app: os4ml
+  kustomize.component: os4ml
+configMapGenerator:
+  - envs:
+      - params.env
+    name: parameters
+vars:
+  - name: OS4ML_CLUSTER_DOMAIN
+    fieldref:
+      fieldpath: data.OS4ML_CLUSTER_DOMAIN
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: parameters
+  - fieldref:
+      fieldpath: metadata.namespace
+    name: OS4ML_NAMESPACE
+    objref:
+      apiVersion: v1
+      kind: Service
+      name: service
+  - fieldref:
+      fieldpath: data.OS4ML_USERID_HEADER
+    name: OS4ML_USERID_HEADER
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: parameters
+  - fieldref:
+      fieldpath: data.OS4ML_USERID_PREFIX
+    name: OS4ML_USERID_PREFIX
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: parameters
+  - fieldref:
+      fieldpath: data.OS4ML_PREFIX
+    name: OS4ML_PREFIX
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: parameters

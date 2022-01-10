@@ -46,6 +46,12 @@ variable "deploy_serving" {
   default     = false
 }
 
+variable "deploy_os4ml" {
+  description = "Deploy OS4ML Web App"
+  type        = bool
+  default     = true
+}
+
 variable "multi_user" {
   description = "Deploy Kubeflow Pipelines as multi-user Component"
   type        = bool

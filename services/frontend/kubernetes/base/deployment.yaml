@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: os4ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: os4ml
+      tier: frontend
+      track: stable
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: os4ml
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: os4ml
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/os4ml-frontend:latest"
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_PREFIX
+              value: ${OS4ML_PREFIX}
+            - name: USERID_HEADER
+              value: $(OS4ML_USERID_HEADER)
+            - name: USERID_PREFIX
+              value: $(OS4ML_USERID_PREFIX)
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/nginx","-s","quit"]
+      serviceAccountName: service-account
+      imagePullSecrets:
+        - name: registry-credentials
