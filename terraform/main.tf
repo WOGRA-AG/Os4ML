@@ -1,7 +1,6 @@
 terraform {
   backend "kubernetes" {
     secret_suffix = "state"
-    config_path   = var.kubernetes_config_path
   }
 }
 
