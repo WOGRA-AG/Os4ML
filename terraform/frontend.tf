@@ -1,5 +1,5 @@
 data "kustomization_build" "frontend_build" {
-  path = "../../../services/frontend/kubernetes/overlays/istio"
+  path = "../services/frontend/kubernetes/overlays/istio"
 }
 
 resource "kustomization_resource" "frontend" {
