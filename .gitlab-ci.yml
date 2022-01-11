@@ -27,7 +27,7 @@ terraform-init:
   extends:
     - .terraform
   script:
-    - gitlab-terraform init -backend-config="config_path=TF_VAR_kubernetes_config_path"
+    - gitlab-terraform init
 
 terraform-validate:
   stage: test
