@@ -1,3 +1,2 @@
-**/.idea
-gcp-terraform-cred.json
-*.iml
+.idea
+.env
