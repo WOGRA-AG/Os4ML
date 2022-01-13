@@ -6,8 +6,8 @@ terraform {
 }
 
 module "kubeflow" {
-  source  = "gitlab.wogra.com/infrastructure/kubeflow/local"
-  version = "0.0.6"
+  source  = "WOGRA-AG/kubeflow/kustomization"
+  version = "0.1.0"
 
   kubernetes_config_path = var.kubernetes_config_path
 }
