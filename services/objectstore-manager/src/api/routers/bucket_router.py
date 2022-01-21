@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Path
 
-from models import Bucket, Message
-from services import MinioServiceInterface
+from src.models import Bucket, Message
+from src.services import MinioServiceInterface
 
 router = APIRouter(prefix="/apis/v1beta1")
 

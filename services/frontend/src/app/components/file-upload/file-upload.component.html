@@ -1,4 +1,4 @@
 <div>
-  <input id="file-upload" type="file" name="file-upload" (change)="uploadFile($event)">
-  <label for="file-upload">{{"Update File" | translate}}</label>
+  <input #fileUpload hidden type="file" (change)="uploadFile($event)">
+  <button mat-raised-button color="primary" (click)="fileUpload.click()">{{"Upload File" | translate}}</button>
 </div>

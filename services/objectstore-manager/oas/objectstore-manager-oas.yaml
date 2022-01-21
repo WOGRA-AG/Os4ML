@@ -1,8 +1,10 @@
 openapi: 3.0.1
+servers:
+  - http://localhost/
 info:
   title: Os4ml Objectstore Manager Api
   description: Os4ml Objectstore Manager
-  version: "version not set"
+  version: 0.0.1
 paths:
   "/apis/v1beta1/objectstore":
     get:
@@ -101,6 +103,26 @@ paths:
           $ref: '#/components/responses/Deleted'
         404:
           $ref: '#/components/responses/NotFound'
+    put:
+      summary: 'put Object to Bucket'
+      operationId: putObjectByName
+      tags:
+        - objectstore
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Created
+        404:
+          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/presignedurl":
     get:
@@ -125,7 +147,9 @@ paths:
 components:
   schemas:
     Url:
-      type: string
+      properties:
+        url:
+          type: string
     ObjectName:
       type: string
     BucketName:
@@ -138,7 +162,6 @@ components:
       required:
         - name
     Item:
-      type: object
       properties:
         bucket_name:
           $ref: "#/components/schemas/BucketName"
@@ -148,7 +171,6 @@ components:
         - bucket_name
         - object_name
     Error:
-      type: object
       required:
         - path
         - error

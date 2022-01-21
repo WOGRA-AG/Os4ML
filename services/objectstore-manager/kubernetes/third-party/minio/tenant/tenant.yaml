@@ -1,0 +1,84 @@
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: storage
+  namespace: minio-tenant
+  labels:
+    app: minio
+spec:
+  s3:
+    bucketDNS: false
+  users:
+    - name: os4ml-storage-user
+  buckets:
+    - name: "os4ml"
+      objectLock: true
+  podManagementPolicy: Parallel
+  configuration:
+    name: os4ml-storage-configuration
+  # Deprecated (configuration should be used) but doesn't seem to work without, at the moment
+  credsSecret:
+    name: os4ml-storage-creds-secret
+  serviceMetadata:
+    minioServiceLabels: { }
+    minioServiceAnnotations: { }
+    consoleServiceLabels: { }
+    consoleServiceAnnotations: { }
+  image: minio/minio:RELEASE.2022-01-08T03-11-54Z
+  imagePullSecret: { }
+  mountPath: /export
+  subPath: ""
+  pools:
+    - servers: 1
+      volumesPerServer: 4
+      nodeSelector: {}
+      tolerations: []
+      affinity:
+        nodeAffinity: { }
+        podAffinity: { }
+        podAntiAffinity: { }
+      volumeClaimTemplate:
+        apiVersion: v1
+        kind: persistentvolumeclaims
+        metadata: { }
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 125Mi
+          storageClassName: local-path
+        status: { }
+      ## Configure security context
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+  requestAutoCert: false
+  exposeServices:
+    console: false
+    minio: false
+  prometheus:
+    diskCapacityGB: 5
+    resources: { }
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      fsGroup: 1000
+  log:
+    audit:
+      diskCapacityGB: 5
+    db:
+      resources: { }
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 500Mi
+        status: { }
+    resources: { }

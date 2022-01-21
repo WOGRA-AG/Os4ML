@@ -1,8 +1,9 @@
 import pytest
-from api.routers.objectstore_router import get_all_buckets
-from models import Bucket
+
+from src.api.routers.objectstore_router import get_all_buckets
+from src.models import Bucket
+from src.services.minio_service import MinioServiceInterface
 from tests.mocks.minio_mock import MinioMock
-from services.minio_service import MinioServiceInterface
 
 minio_mock_client = MinioMock()
 minio_service_mock = MinioServiceInterface(client=minio_mock_client)

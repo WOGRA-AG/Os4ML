@@ -5,4 +5,4 @@ metadata:
   namespace: os4ml
 data:
   bucketName: 'os4ml'
-  url: 'minio-service.kubeflow.svc.cluster.local:9000'
+  url: 'minio.os4ml-minio-tenant.svc.cluster.local'

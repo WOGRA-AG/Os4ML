@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {UploadComponent} from "./pages/upload/upload.component";
-import {AppComponent} from "./app.component";
+import {ReportPageComponent} from "./pages/report-page/report-page.component";
 import {MainPageComponent} from "./pages/main-page/main-page.component";
 
 const routes: Routes = [
@@ -14,6 +14,11 @@ const routes: Routes = [
   {
     path: 'upload',
     component: UploadComponent,
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'report',
+    component: ReportPageComponent,
     runGuardsAndResolvers: 'always',
   }
 ];

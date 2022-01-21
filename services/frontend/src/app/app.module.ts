@@ -9,9 +9,13 @@ import {FileUploadComponent} from './components/file-upload/file-upload.componen
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
-import {ApiModule, Configuration} from "@api/*";
+import {ApiModule, Configuration} from "../../build/openapi/objectstore";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
-import { MainPageComponent } from './pages/main-page/main-page.component';
+import {MainPageComponent} from './pages/main-page/main-page.component';
+import {MatButtonModule} from "@angular/material/button";
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {ReportPageComponent} from './pages/report-page/report-page.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json')
@@ -23,6 +27,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     UploadComponent,
     FileUploadComponent,
     MainPageComponent,
+    ToolbarComponent,
+    ReportPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,10 +45,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     ApiModule.forRoot(() => {
       return new Configuration(
         {
-          basePath: '/api'
+          basePath: ''
         }
       );
     }),
+    MatButtonModule,
+    MatToolbarModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

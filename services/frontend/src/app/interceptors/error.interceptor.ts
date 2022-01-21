@@ -7,14 +7,12 @@ import {
 } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {Router} from "@angular/router";
-import {TranslateService} from "@ngx-translate/core";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(
-    private router: Router,
-    private translate: TranslateService
+    private router: Router
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

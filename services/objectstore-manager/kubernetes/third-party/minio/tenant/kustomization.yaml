@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namePrefix: os4ml-
+namespace: os4ml-minio-tenant
+resources:
+  - namespace.yaml
+  - tenant-config.yaml
+  - storage-creds-secret.yaml
+  - storage-user.yaml
+  - tenant.yaml

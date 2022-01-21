@@ -1,6 +1,6 @@
 {
-  "/os4ml/*": {
-    "target": "http://localhost:8080",
+  "/apis/**/objectstore/**": {
+    "target": "http://os4ml-objectstore-manager.os4ml.svc.cluster.local:8000",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
