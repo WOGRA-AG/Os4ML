@@ -1,5 +1,5 @@
 data "kustomization_build" "frontend_build" {
-  path = "../services/frontend/kubernetes/overlays/istio"
+  path = "../manifests/apps/frontend/overlays/istio"
 }
 
 resource "kustomization_resource" "frontend" {
@@ -7,6 +7,7 @@ resource "kustomization_resource" "frontend" {
   manifest = data.kustomization_build.frontend_build.manifests[each.value]
 
   depends_on = [
-    module.kubeflow
+    module.kubeflow,
+    kustomization_resource.os4ml_base_build
   ]
 }
