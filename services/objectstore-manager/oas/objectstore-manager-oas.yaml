@@ -1,6 +1,4 @@
 openapi: 3.0.1
-servers:
-  - http://localhost/
 info:
   title: Os4ml Objectstore Manager Api
   description: Os4ml Objectstore Manager
