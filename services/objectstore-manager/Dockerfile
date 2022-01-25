@@ -15,28 +15,19 @@ ENV PYTHONUNBUFFERED=1 \
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
 
-FROM python-base as interpreter
 
-RUN pip --no-cache-dir install poetry
+FROM python-base as builder-base
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        build-essential curl \
+    && apt-get autoclean
+
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry update
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --no-interaction --no-ansi
-
-FROM python-base as builder-base
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        build-essential \
-    && apt-get autoclean
-
-RUN pip --no-cache-dir install poetry
-
-WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
-
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --no-dev --no-interaction --no-ansi
 
