@@ -1,13 +1,13 @@
 data "kustomization_build" "minio_operator_build" {
-  path = "../services/objectstore-manager/kubernetes/third-party/minio"
+  path = "../manifests/apps/objectstore-manager/third-party/minio"
 }
 
 data "kustomization_build" "minio_tenant_build" {
-  path = "../services/objectstore-manager/kubernetes/third-party/minio/tenant"
+  path = "../manifests/apps/objectstore-manager/third-party/minio/tenant"
 }
 
 data "kustomization_build" "objectstore_manager_build" {
-  path = "../services/objectstore-manager/kubernetes/overlays/istio"
+  path = "../manifests/apps/objectstore-manager/overlays/istio"
 }
 
 resource "kustomization_resource" "minio_operator" {
@@ -34,6 +34,7 @@ resource "kustomization_resource" "objectstore_manager" {
   manifest = data.kustomization_build.objectstore_manager_build.manifests[each.value]
 
   depends_on = [
-    module.kubeflow
+    module.kubeflow,
+    kustomization_resource.os4ml_base_build
   ]
 }

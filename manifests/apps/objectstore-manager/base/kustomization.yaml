@@ -3,11 +3,6 @@ kind: Kustomization
 namePrefix: os4ml-
 namespace: os4ml
 resources:
-  - namespace.yaml
-  - service-account.yaml
-  - registry-credentials.yml
-  - cluster-role.yaml
-  - cluster-role-binding.yaml
   - os4ml-install-config.yaml
   - os4ml-minio-secret.yaml
   - service.yaml
