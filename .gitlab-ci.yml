@@ -184,7 +184,7 @@ os-manager-validate-oas:
 
 os-manager-validate-backend:
   stage: test
-  needs: []
+  needs: [ os-manager-validate-oas ]
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
