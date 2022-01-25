@@ -4,7 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {UploadComponent} from './pages/upload/upload.component';
+import {UploadPageComponent} from './pages/upload-page/upload-page.component';
 import {FileUploadComponent} from './components/file-upload/file-upload.component';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -15,6 +15,7 @@ import {MainPageComponent} from './pages/main-page/main-page.component';
 import {MatButtonModule} from "@angular/material/button";
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ReportPageComponent} from './pages/report-page/report-page.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
@@ -24,7 +25,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
 @NgModule({
   declarations: [
     AppComponent,
-    UploadComponent,
+    UploadPageComponent,
     FileUploadComponent,
     MainPageComponent,
     ToolbarComponent,
@@ -51,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     }),
     MatButtonModule,
     MatToolbarModule,
+    MatSnackBarModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

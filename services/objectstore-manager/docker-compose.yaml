@@ -3,8 +3,8 @@ services:
   interpreter:
     build:
       context: .
-      target: interpreter
+      target: development
     ports:
       - "8000:8000"
     volumes:
-      - .:/objectstore-manager
+      - .:/app

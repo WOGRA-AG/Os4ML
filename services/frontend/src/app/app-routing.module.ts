@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {UploadComponent} from "./pages/upload/upload.component";
+import {UploadPageComponent} from "./pages/upload-page/upload-page.component";
 import {ReportPageComponent} from "./pages/report-page/report-page.component";
 import {MainPageComponent} from "./pages/main-page/main-page.component";
 
@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'upload',
-    component: UploadComponent,
+    component: UploadPageComponent,
     runGuardsAndResolvers: 'always',
   },
   {

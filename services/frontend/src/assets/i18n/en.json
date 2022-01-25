@@ -1,0 +1,20 @@
+{
+  "report": {
+    "title": "Report",
+    "upload": {
+      "completed": "Upload completed",
+      "failed": "Upload failed"
+    }
+  },
+  "upload": {
+    "button": {
+      "upload_file": "Upload file"
+    }
+  },
+  "toolbar": {
+    "title": "Os4ML"
+  },
+  "error": {
+    "confirm": "Confirm"
+  }
+}
