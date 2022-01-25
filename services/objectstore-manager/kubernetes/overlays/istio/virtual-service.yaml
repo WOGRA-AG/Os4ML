@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: os4ml-objectstore-manager
+spec:
+  gateways:
+    - kubeflow/kubeflow-gateway
+  hosts:
+    - '*'
+  http:
+    - name: "os4ml-objectstore-manager-route"
+      match:
+        - uri:
+            regex: \/apis\/.*\/objectstore.*
+      route:
+        - destination:
+            host: os4ml-objectstore-manager.os4ml.svc.cluster.local
+            port:
+              number: 8000

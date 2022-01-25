@@ -5,6 +5,9 @@ stages:
   - deploy
   - clean
 
+variables:
+  SWAGGER_CLI_VERSION: 4.0.4
+
 .terraform:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud364-terraform1.1
   variables:
@@ -81,6 +84,23 @@ terraform-destroy:
     - main
 
 
+.validate-oas:
+  stage: prepare
+  needs: []
+  image: node:14
+  script:
+    - npm install -g swagger-cli@SWAGGER_CLI_VERSION
+    - swagger-cli validate @OAS_FILE
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $OAS_FILE
+      when: on_success
+
+
 # Build frontend Image and push to registry
 .build-frontend:
   stage: build
@@ -154,3 +174,86 @@ build-os4ml-frontend-image:
   variables:
     DIR: 'services/frontend'
     IMG_NAME: 'os4ml-frontend'
+
+# Build Objectstore-manager image
+os-manager-validate-oas:
+  extends:
+    - .validate-oas
+  variables:
+    OAS_FILE: 'services/objectstore-manager/oas/objectstore-manager-oas.yaml'
+
+os-manager-validate-backend:
+  stage: test
+  needs: []
+  image: docker:19.03.13-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd $DIR
+    - docker build
+      --target builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker build
+      --target lint
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker build
+      --target test
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  variables:
+    DOCKER_DRIVER: overlay2
+    DIR: 'services/objectstore-manager'
+    IMG_NAME: 'os4ml-objectstore-manager'
+    DOCKER_BUILDKIT: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success
+
+os-manager-build:
+  stage: build
+  needs: [ os-manager-validate-backend ]
+  image: docker:19.03.13-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd $DIR
+    - docker build
+      --target builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker build
+      --target production
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+  variables:
+    DOCKER_DRIVER: overlay2
+    DIR: 'services/objectstore-manager'
+    IMG_NAME: 'os4ml-objectstore-manager'
+    DOCKER_BUILDKIT: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success

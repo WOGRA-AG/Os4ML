@@ -1,12 +1,13 @@
+from io import BytesIO
 from typing import List
 
 from fastapi import HTTPException
 from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
-from minio.datatypes import Object
+from minio.datatypes import Object as MinioObject
 
-from models import Bucket, Item, Url
 from src import MINIO_KEY, MINIO_SECRET, MINIO_SECURE, MINIO_URL
+from src.models import Bucket, Item, Url
 
 from .storage_service_interface import StorageServiceInterface
 
@@ -48,7 +49,7 @@ class MinioServiceInterface(StorageServiceInterface):
     def list_objects(self, bucket_name: str) -> List[Item]:
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
-        objects: List[Object] = self.client.list_objects(bucket_name)
+        objects: List[MinioObject] = self.client.list_objects(bucket_name)
         return [
             Item(bucket_name=minio_object.bucket_name, object_name=minio_object.object_name) for minio_object in objects
         ]
@@ -67,3 +68,8 @@ class MinioServiceInterface(StorageServiceInterface):
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
         self.client.remove_object(bucket_name, object_name)
+
+    def put_object(self, bucket_name: str, object_name: str, data: BytesIO, size: int, content_type: str) -> None:
+        if not self.client.bucket_exists(bucket_name):
+            raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
+        self.client.put_object(bucket_name, object_name, data, size, content_type)

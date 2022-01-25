@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from api.routers import bucket_router, object_router, objectstore_router
+from src.api.routers import bucket_router, object_router, objectstore_router
 
 VERSION: str = "1.0"
 
@@ -12,4 +12,4 @@ app.include_router(object_router)
 app.include_router(objectstore_router)
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="debug")

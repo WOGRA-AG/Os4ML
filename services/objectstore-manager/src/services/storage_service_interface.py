@@ -1,6 +1,7 @@
+from io import BytesIO
 from typing import List
 
-from models import Bucket, Item, Url
+from src.models import Bucket, Item, Url
 
 
 class StorageServiceInterface:
@@ -23,4 +24,7 @@ class StorageServiceInterface:
         raise NotImplementedError()
 
     def delete_object(self, bucket_name: str, object_name: str) -> None:
+        raise NotImplementedError()
+
+    def put_object(self, bucket_name: str, object_name: str, data: BytesIO, size: int, content_type: str) -> None:
         raise NotImplementedError()

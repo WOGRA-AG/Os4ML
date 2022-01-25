@@ -1,10 +1,12 @@
+from io import BytesIO
 from typing import List
 
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import RedirectResponse
+from starlette.requests import Request
 
-from models import Item, Message, Url
-from services import MinioServiceInterface
+from src.models import Item, Message, Url
+from src.services import MinioServiceInterface
 
 router = APIRouter(prefix="/apis/v1beta1")
 
@@ -59,6 +61,26 @@ async def get_object_by_name(
     minio_service: MinioServiceInterface = Depends(MinioServiceInterface),
 ) -> str:
     return minio_service.get_presigned_get_url(bucket_name, object_name)
+
+
+@router.put(
+    "/objectstore/{bucket_name}/object/{object_name}",
+    responses={
+        201: {"description": "Created"},
+        404: {"model": Message, "description": "The specified resource was not found"},
+    },
+    tags=["objectstore", "object"],
+    summary="get specific Object from Bucket",
+)
+async def put_object_by_name(
+    request: Request,
+    bucket_name: str = Path(..., description="Name of Bucket"),
+    object_name: str = Path(..., description="Name of Object"),
+    minio_service: MinioServiceInterface = Depends(MinioServiceInterface),
+) -> None:
+    file_content: bytes = await request.body()
+    file: BytesIO = BytesIO(file_content)
+    return minio_service.put_object(bucket_name, object_name, file, len(file_content), "application/octet-stream")
 
 
 @router.get(

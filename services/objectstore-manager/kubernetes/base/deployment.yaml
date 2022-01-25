@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: objectstore-manager
   name: objectstore-manager
   namespace: os4ml
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: objectstore-manager
+      app: os4ml
+      name: objectstore-manager
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
       labels:
-        app: objectstore-manager
+        app: os4ml
+        name: objectstore-manager
     spec:
       containers:
         - name: objectstore-manager
