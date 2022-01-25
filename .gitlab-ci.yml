@@ -90,7 +90,7 @@ terraform-destroy:
   image: node:14
   script:
     - npm install -g swagger-cli@$SWAGGER_CLI_VERSION
-    - swagger-cli validate @OAS_FILE
+    - swagger-cli validate $OAS_FILE
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "main"'
