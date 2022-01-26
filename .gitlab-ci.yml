@@ -89,8 +89,8 @@ terraform-destroy:
   needs: []
   image: node:14
   script:
-    - npm install -g swagger-cli@SWAGGER_CLI_VERSION
-    - swagger-cli validate @OAS_FILE
+    - npm install -g swagger-cli@$SWAGGER_CLI_VERSION
+    - swagger-cli validate $OAS_FILE
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -184,7 +184,7 @@ os-manager-validate-oas:
 
 os-manager-validate-backend:
   stage: test
-  needs: []
+  needs: [ ]
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
