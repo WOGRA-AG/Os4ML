@@ -118,8 +118,8 @@ terraform-destroy:
     - npm run test:ci
     - npm run build
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_TAG'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
       changes:
@@ -141,8 +141,8 @@ terraform-destroy:
       --dockerfile Dockerfile
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_TAG'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
       changes:
