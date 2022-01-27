@@ -3,7 +3,7 @@ data "kustomization_build" "minio_operator_build" {
 }
 
 data "kustomization_build" "minio_tenant_build" {
-  path = "../manifests/apps/objectstore-manager/third-party/minio/tenant"
+  path = var.cluster_provisioner == "gke" ? "../manifests/apps/objectstore-manager/third-party/minio/env/gcloud" : "../manifests/apps/objectstore-manager/third-party/minio/tenant"
 }
 
 data "kustomization_build" "objectstore_manager_build" {

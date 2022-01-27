@@ -1,0 +1,6 @@
+- op: replace
+  path: "/spec/pools/0/volumeClaimTemplate/spec/storageClassName"
+  value: standard-rwo
+- op: replace
+  path: "/spec/log/db/volumeClaimTemplate/spec/storageClassName"
+  value: standard-rwo
