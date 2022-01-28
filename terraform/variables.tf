@@ -5,7 +5,7 @@ variable "deploy_frontend" {
 }
 
 variable "kubernetes_config_path" {
-  description = "Path of Kubernites configuration file"
+  description = "Path of Kubernetes configuration file"
   default     = "~/.kube/config"
 }
 
