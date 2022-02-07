@@ -26,8 +26,3 @@ variable "cluster_provisioner" {
   type        = string
   default     = "k3d"
 }
-
-variable "nvidia_driver_installer_version" {
-  description = "Commit hash of the installer for the nvidia driver daemon set in the repo https://github.com/GoogleCloudPlatform/container-engine-accelerators"
-  default     = "2e6077e7e782345031092b5d368fb861c96ba600"
-}
