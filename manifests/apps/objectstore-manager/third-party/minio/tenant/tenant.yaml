@@ -5,6 +5,8 @@ metadata:
   namespace: minio-tenant
   labels:
     app: minio
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 spec:
   s3:
     bucketDNS: false
