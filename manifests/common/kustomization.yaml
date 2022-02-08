@@ -5,5 +5,6 @@ resources:
   - namespace.yaml
   - registry-credentials.yml
   - service-account.yaml
+  - admin-profile.yaml
   - cluster-role.yaml
   - cluster-role-binding.yaml

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobmanager
+  namespace: os4ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: os4ml
+      name: jobmanager
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: os4ml
+        name: jobmanager
+    spec:
+      containers:
+        - name: jobmanager
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/jobmanager:latest"
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: MLPIPELINE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: os4ml-jobmanager-config
+                  key: pipelineUrl
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubeflow/pipelines
+              name: volume-kf-pipeline-token
+              readOnly: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 500Mi
+      serviceAccountName: service-account
+      imagePullSecrets:
+        - name: registry-credentials
+      volumes:
+        - name: volume-kf-pipeline-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  expirationSeconds: 7200
+                  audience: pipelines.kubeflow.org

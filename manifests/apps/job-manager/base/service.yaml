@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobmanager
+  namespace: os4ml
+  labels:
+    app: jobmanager
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: http
+      name: api
+  selector:
+    app: jobmanager

@@ -27,14 +27,14 @@ spec:
             - name: OBJECTSTORECONFIG_URL
               valueFrom:
                 configMapKeyRef:
-                  name: os4ml-install-config
+                  name: os4ml-objectstore-config
                   key: url
             - name: OBJECTSTORECONFIG_SECURE
               value: "false"
             - name: OBJECTSTORECONFIG_BUCKETNAME
               valueFrom:
                 configMapKeyRef:
-                  name: os4ml-install-config
+                  name: os4ml-objectstore-config
                   key: bucketName
             - name: OBJECTSTORECONFIG_ACCESSKEY
               valueFrom:

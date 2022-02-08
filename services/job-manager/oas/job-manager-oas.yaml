@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: Job Manager
+  description: Job Manager
+  version: 1.0.0
+servers:
+  - url: 'http://job-manager.os4ml.svc.cluster.local:8000'
+paths:
+  "/apis/v1beta1/jobmanager/experiment":
+    get:
+      summary: 'Get all Experiments'
+      operationId: getAllExperiments
+      tags:
+        - jobmanager
+        - experiment
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experiment'
+    post:
+      summary: 'Create new Experiment'
+      operationId: postExperiment
+      tags:
+        - jobmanager
+        - experiment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline":
+    get:
+      summary: 'Get all pipelines'
+      operationId: getAllPipelines
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+      tags:
+        - jobmanager
+        - pipeline
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+    post:
+      summary: 'Create Pipeline'
+      operationId: postPipeline
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+      tags:
+        - jobmanager
+        - pipeline
+      requestBody:
+        content:
+          text/yaml:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/run":
+    get:
+      summary: 'Get all pipeline runs'
+      operationId: getAllRuns
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+        - $ref: '#/components/parameters/PipelineId'
+      tags:
+        - jobmanager
+        - run
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Run'
+    post:
+      summary: 'Create Run'
+      operationId: postRun
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+        - $ref: '#/components/parameters/PipelineId'
+      tags:
+        - jobmanager
+        - run
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Run'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/artifacts":
+    get:
+      summary: 'Get all pipeline artifacts'
+      operationId: getAllArtifacts
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+        - $ref: '#/components/parameters/PipelineId'
+      tags:
+        - jobmanager
+        - artifact
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artifact'
+components:
+  schemas:
+    ExperimentId:
+      type: integer
+    PipelineId:
+      type: integer
+    RunId:
+      type: integer
+    ArtifactId:
+      type: integer
+    Experiment:
+      description: Experiment Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/ExperimentId'
+        name:
+          type: string
+        description:
+          type: string
+    Pipeline:
+      description: Pipeline Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/PipelineId'
+        name:
+          type: string
+        description:
+          type: string
+    Run:
+      description: Run Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/RunId'
+        name:
+          type: string
+        description:
+          type: string
+    Artifact:
+      description: Artifact Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/ArtifactId'
+        name:
+          type: string
+        description:
+          type: string
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+
+  parameters:
+    ExperimentId:
+      name: ExperimentId
+      in: path
+      description: Id of Experiment
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExperimentId'
+    PipelineId:
+      name: PipelineId
+      in: path
+      description: Id of Pipeline
+      required: true
+      schema:
+        $ref: '#/components/schemas/PipelineId'
+
+  responses:
+    Created:
+      description: New resource created
+    Deleted:
+      description: The specified resource was deleted
+    Updated:
+      description: The specified resource was updated
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyMismatch:
+      description: The provided request body has the wrong format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyInvalid:
+      description: The content of the request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
