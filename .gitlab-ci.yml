@@ -156,31 +156,31 @@ terraform-destroy:
         - $DIR/**/*
       when: on_success
 
-build-os4ml-frontend:
+build-frontend:
   extends:
     - .build-frontend
   variables:
     DIR: 'services/frontend'
-    IMG_NAME: 'os4ml-frontend'
+    IMG_NAME: 'frontend'
   artifacts:
     paths:
       - services/frontend/dist/os4ml
   cache:
-    key: os4ml-frontend
+    key: frontend
     paths:
       - services/frontend/node_modules
       - services/frontend/.npm_cache
 
-build-os4ml-frontend-image:
+build-frontend-image:
   extends:
     - .build-frontend-image
   needs:
-    - build-os4ml-frontend
+    - build-frontend
   dependencies:
-    - build-os4ml-frontend
+    - build-frontend
   variables:
     DIR: 'services/frontend'
-    IMG_NAME: 'os4ml-frontend'
+    IMG_NAME: 'frontend'
 
 # Build Objectstore-manager image
 os-manager-validate-oas:
@@ -219,7 +219,7 @@ os-manager-validate-backend:
   variables:
     DOCKER_DRIVER: overlay2
     DIR: 'services/objectstore-manager'
-    IMG_NAME: 'os4ml-objectstore-manager'
+    IMG_NAME: 'objectstore-manager'
     DOCKER_BUILDKIT: 1
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
@@ -251,10 +251,11 @@ os-manager-build:
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
       "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   variables:
     DOCKER_DRIVER: overlay2
     DIR: 'services/objectstore-manager'
-    IMG_NAME: 'os4ml-objectstore-manager'
+    IMG_NAME: 'objectstore-manager'
     DOCKER_BUILDKIT: 1
     LABEL: $CI_COMMIT_REF_NAME
   rules:
