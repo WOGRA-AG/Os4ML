@@ -10,8 +10,8 @@
     "ng": "ng",
     "start": "ng serve",
     "prebuild": "npm run generate:api",
-    "build": "ng build --base-href /os4ml/",
-    "watch": "ng build --base-href /os4ml/ --watch --configuration development",
+    "build": "ng build --base-href .",
+    "watch": "ng build --base-href . --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint"
