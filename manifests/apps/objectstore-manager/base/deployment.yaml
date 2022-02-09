@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: objectstore-manager
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/os4ml-objectstore-manager:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:latest"
           ports:
             - containerPort: 8000
               name: http
