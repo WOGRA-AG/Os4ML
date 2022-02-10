@@ -27,8 +27,10 @@ spec:
             - name: MLPIPELINE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: os4ml-jobmanager-config
+                  name: jobmanager-config
                   key: pipelineUrl
+            - name: KF_PIPELINES_SA_TOKEN_PATH
+              value: /var/run/secrets/kubeflow/pipelines/token
           volumeMounts:
             - mountPath: /var/run/secrets/kubeflow/pipelines
               name: volume-kf-pipeline-token
@@ -37,7 +39,7 @@ spec:
             requests:
               cpu: 250m
               memory: 500Mi
-      serviceAccountName: service-account
+      serviceAccountName: default-editor
       imagePullSecrets:
         - name: registry-credentials
       volumes:

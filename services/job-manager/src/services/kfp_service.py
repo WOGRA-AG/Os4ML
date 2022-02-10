@@ -1,19 +1,18 @@
-import kfp
 from kfp import Client
+from kfp_server_api import ApiListExperimentsResponse
+
 from src import ML_PIPELINE_URL
 
 
 class KfpService:
-    def __init__(self, host: str = ML_PIPELINE_URL, namespace: str = 'kubeflow', client=None):
+    def __init__(self, host: str = ML_PIPELINE_URL, client=None):
         if client is None:
-            client = self.init_client(host, namespace)
+            client = self.init_client()
         self.client = client
 
-    def init_client(self, host: str, namespace: str) -> Client:
-        print("jup")
-        return Client(host=host, namespace=namespace)
+    def init_client(self) -> Client:
+        return Client()
 
     def get_all_experiments(self):
-        experiments = self.client.list_experiments(namespace='kubeflow-user-example-com')
-        print(type(experiments))
+        experiments: ApiListExperimentsResponse = self.client.list_experiments(namespace='os4ml')
         print(experiments)
