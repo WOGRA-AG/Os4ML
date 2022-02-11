@@ -293,7 +293,7 @@ job-manager-build-oas:
     - npm install @openapitools/openapi-generator-cli
     - openapi-generator-cli version
   script:
-    - openapi-generator-cli generate
+    - openapi-generator generate
       -i $DIR/oas/job-manager-oas.yaml
       -g python-fastapi
       -o $DIR/build
