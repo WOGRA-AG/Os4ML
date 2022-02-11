@@ -294,9 +294,9 @@ job-manager-build-oas:
     - openapi-generator-cli version
   script:
     - openapi-generator-cli generate
-      -i $DIR/oas/job-manager-oas.yaml
+      -i ./oas/job-manager-oas.yaml
       -g python-fastapi
-      -o $DIR/build
+      -o ./build
   variables:
     DIR: 'services/job-manager'
 
