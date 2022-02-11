@@ -6,7 +6,8 @@ from kfp_server_api import (
     ApiListPipelinesResponse,
     ApiListRunsResponse,
     ApiPipeline,
-    ApiRun, ApiRunDetail,
+    ApiRun,
+    ApiRunDetail,
 )
 
 
