@@ -276,3 +276,108 @@ os-manager-build:
       changes:
         - $DIR/**/*
       when: on_success
+
+# Build Jobmanager image
+job-manager-validate-oas:
+  extends:
+    - .validate-oas
+  variables:
+    OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
+
+job-manager-build-oas:
+  stage: prepare
+  needs: [job-manager-validate-oas]
+  image: openapitools/openapi-generator-cli:v5.4.0
+  script:
+    - generate
+      -i services/job-manager/oas/job-manager-oas.yaml
+      -g python-fastapi
+      -o services/job-manager/build
+
+job-manager-validate-backend:
+  stage: test
+  needs: [job-manager-build-oas]
+  image: docker:19.03.13-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd $DIR
+    - docker build
+      --target builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+    - docker build
+      --target lint
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker build
+      --target test
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  variables:
+    DOCKER_DRIVER: overlay2
+    DIR: 'services/job-manager'
+    IMG_NAME: 'job-manager'
+    DOCKER_BUILDKIT: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success
+
+job-manager-build:
+  stage: build
+  needs: [ job-manager-validate-backend ]
+  image: docker:19.03.13-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd $DIR
+    - docker build
+      --target builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+    - docker build
+      --target production
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+  variables:
+    DOCKER_DRIVER: overlay2
+    DIR: 'services/job-manager'
+    IMG_NAME: 'job-manager'
+    DOCKER_BUILDKIT: 1
+    LABEL: $CI_COMMIT_REF_NAME
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
+      variables:
+        LABEL: "latest"
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      variables:
+        LABEL: "latest"
+    - if: '$CI_COMMIT_TAG'
+      variables:
+        LABEL: $CI_COMMIT_TAG
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success

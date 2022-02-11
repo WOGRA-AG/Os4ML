@@ -36,12 +36,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/Created'
-  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline":
+  "/apis/v1beta1/jobmanager/pipeline":
     get:
       summary: 'Get all pipelines'
       operationId: getAllPipelines
-      parameters:
-        - $ref: '#/components/parameters/ExperimentId'
       tags:
         - jobmanager
         - pipeline
@@ -57,27 +55,21 @@ paths:
     post:
       summary: 'Create Pipeline'
       operationId: postPipeline
-      parameters:
-        - $ref: '#/components/parameters/ExperimentId'
       tags:
         - jobmanager
         - pipeline
       requestBody:
         content:
-          text/yaml:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: '#/components/schemas/CreatePipeline'
       responses:
         201:
           $ref: '#/components/responses/Created'
-  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/run":
+  "/apis/v1beta1/jobmanager/run":
     get:
       summary: 'Get all pipeline runs'
       operationId: getAllRuns
-      parameters:
-        - $ref: '#/components/parameters/ExperimentId'
-        - $ref: '#/components/parameters/PipelineId'
       tags:
         - jobmanager
         - run
@@ -90,6 +82,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Run'
+  "/apis/v1beta1/jobmanager/run/{RunId}":
+    get:
+      summary: 'Get single pipeline run'
+      operationId: getRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      tags:
+        - jobmanager
+        - run
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Run'
+  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/run":
     post:
       summary: 'Create Run'
       operationId: postRun
@@ -103,39 +112,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Run'
+              $ref: '#/components/schemas/CreateRun'
       responses:
         201:
-          $ref: '#/components/responses/Created'
-  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/artifacts":
-    get:
-      summary: 'Get all pipeline artifacts'
-      operationId: getAllArtifacts
-      parameters:
-        - $ref: '#/components/parameters/ExperimentId'
-        - $ref: '#/components/parameters/PipelineId'
-      tags:
-        - jobmanager
-        - artifact
-      responses:
-        200:
-          description: "Success"
+          description: "Resource created"
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Artifact'
+                $ref: '#/components/schemas/RunId'
 components:
   schemas:
     ExperimentId:
-      type: integer
+      type: string
     PipelineId:
-      type: integer
+      type: string
     RunId:
-      type: integer
+      type: string
     ArtifactId:
-      type: integer
+      type: string
     Experiment:
       description: Experiment Object
       type: object
@@ -153,12 +147,33 @@ components:
       type: object
       required:
         - name
+        - description
       properties:
         id:
           $ref: '#/components/schemas/PipelineId'
         name:
           type: string
         description:
+          type: string
+    CreatePipeline:
+      description: Create Pipeline Object
+      allOf:
+        - $ref: '#/components/schemas/Pipeline'
+        - type: object
+          required:
+            - configUrl
+          properties:
+            configUrl:
+              type: string
+    Metrics:
+      description: Run Metrics
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: number
+        format:
           type: string
     Run:
       description: Run Object
@@ -172,18 +187,24 @@ components:
           type: string
         description:
           type: string
-    Artifact:
-      description: Artifact Object
+        status:
+          type: string
+        error:
+          type: string
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metrics'
+    CreateRun:
+      description: Create Run Object
       type: object
-      required:
-        - name
       properties:
-        id:
-          $ref: '#/components/schemas/ArtifactId'
         name:
           type: string
         description:
           type: string
+        params:
+          type: object
     Error:
       required:
         - path
@@ -207,6 +228,13 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/PipelineId'
+    RunId:
+      name: RunId
+      in: path
+      description: Id of Run
+      required: true
+      schema:
+        $ref: '#/components/schemas/RunId'
 
   responses:
     Created:

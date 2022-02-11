@@ -4,4 +4,5 @@ metadata:
   name: jobmanager-config
   namespace: os4ml
 data:
-  pipelineUrl: 'http://ml-pipeline-ui.kubeflow:80'
+  pipelineUrl: ''
+  pipelineNS: ''
