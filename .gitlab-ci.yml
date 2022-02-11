@@ -299,10 +299,14 @@ job-manager-build-oas:
       -o ./build
   variables:
     DIR: 'services/job-manager'
+  artifacts:
+    untracked: true
 
 job-manager-validate-backend:
   stage: test
   needs: [job-manager-build-oas]
+  dependencies:
+    - job-manager-build-oas
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -347,6 +351,8 @@ job-manager-validate-backend:
 job-manager-build:
   stage: build
   needs: [ job-manager-validate-backend ]
+  dependencies:
+    - job-manager-build-oas
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
