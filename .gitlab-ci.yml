@@ -350,7 +350,9 @@ job-manager-validate-backend:
 
 job-manager-build:
   stage: build
-  needs: [ job-manager-validate-backend ]
+  needs:
+    - job-manager.build-oas
+    - job-manager-validate-backend
   dependencies:
     - job-manager-build-oas
   image: docker:19.03.13-dind
