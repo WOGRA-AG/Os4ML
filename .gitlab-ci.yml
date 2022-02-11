@@ -287,12 +287,18 @@ job-manager-validate-oas:
 job-manager-build-oas:
   stage: prepare
   needs: [job-manager-validate-oas]
-  image: openapitools/openapi-generator-cli:v5.4.0
+  image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
+  before_script:
+    - cd $DIR
+    - npm install @openapitools/openapi-generator-cli
+    - openapi-generator-cli version
   script:
-    - generate
-      -i services/job-manager/oas/job-manager-oas.yaml
+    - openapi-generator-cli generate
+      -i $DIR/oas/job-manager-oas.yaml
       -g python-fastapi
-      -o services/job-manager/build
+      -o $DIR/build
+  variables:
+    DIR: 'services/job-manager'
 
 job-manager-validate-backend:
   stage: test
