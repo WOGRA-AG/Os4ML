@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import APIRouter, Body, Depends, Path
 
-from src.models import Run, CreateRun
+from src.models import CreateRun, Run
 from src.services.kfp_service import KfpService
 
 router = APIRouter(prefix="/apis/v1beta1")
