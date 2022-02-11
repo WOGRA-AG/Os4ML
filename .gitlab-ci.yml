@@ -285,8 +285,8 @@ job-manager-validate-oas:
     OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
 
 job-manager-build-oas:
-  stage: prepare
-  needs: [job-manager-validate-oas]
+  stage: test
+  needs: []
   image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
   before_script:
     - cd $DIR
