@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VERSION=1.1.4
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
-ENV PYTHONPATH="$PROJECT_DIR/src:$PROJECT_DIR/build:$PROJECT_DIR/build/src:$PYTHONPATH"
+ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/build:$PROJECT_DIR/build/src:$PYTHONPATH"
 
 
 FROM python-base as builder-base
@@ -63,8 +63,8 @@ CMD ["tail", "-f", "/dev/null"]
 
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
-#RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-#RUN coverage report -m --fail-under 90
+RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
+RUN coverage report -m --fail-under 90
 
 
 FROM python-base as production

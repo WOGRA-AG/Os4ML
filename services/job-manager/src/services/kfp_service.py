@@ -69,7 +69,7 @@ class KfpService:
         return run.id
 
     def get_run(self, run_id: str) -> Run:
-        run: ApiRun = self.client.runs.get_run(run_id).run
+        run: ApiRun = self.client.get_run(run_id).run
         return Run(
             id=run.id,
             name=run.name,
