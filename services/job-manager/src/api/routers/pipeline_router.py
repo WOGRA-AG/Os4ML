@@ -26,5 +26,5 @@ async def get_all_pipelines(kfp_service: KfpService = Depends(KfpService),) -> L
 )
 async def post_pipeline(
     pipeline: CreatePipeline = Body(..., description=""), kfp_service: KfpService = Depends(KfpService),
-) -> None:
-    kfp_service.create_pipeline(pipeline)
+) -> str:
+    return kfp_service.create_pipeline(pipeline)

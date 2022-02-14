@@ -4,5 +4,11 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/apis/**/jobmanager/**": {
+    "target": "http://os4ml-jobmanager.os4ml.svc.cluster.local:8000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }

@@ -16,5 +16,17 @@
   },
   "error": {
     "confirm": "Confirm"
+  },
+  "page": {
+    "report": {
+      "success": "Upload completed",
+      "fail": "Upload failed"
+    },
+    "upload-data": {
+      "upload": "Please upload your dataset"
+    },
+    "solver": {
+      "upload": "Please choose your pipeline configuration"
+    }
   }
 }

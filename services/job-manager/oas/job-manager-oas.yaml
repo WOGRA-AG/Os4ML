@@ -4,7 +4,7 @@ info:
   description: Job Manager
   version: 1.0.0
 servers:
-  - url: 'http://job-manager.os4ml.svc.cluster.local:8000'
+  - url: 'http://os4ml-jobmanager.os4ml.svc.cluster.local:8000'
 paths:
   "/apis/v1beta1/jobmanager/experiment":
     get:
@@ -35,7 +35,11 @@ paths:
               $ref: '#/components/schemas/Experiment'
       responses:
         201:
-          $ref: '#/components/responses/Created'
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentId'
   "/apis/v1beta1/jobmanager/pipeline":
     get:
       summary: 'Get all pipelines'
@@ -65,7 +69,11 @@ paths:
               $ref: '#/components/schemas/CreatePipeline'
       responses:
         201:
-          $ref: '#/components/responses/Created'
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineId'
   "/apis/v1beta1/jobmanager/run":
     get:
       summary: 'Get all pipeline runs'
@@ -161,9 +169,9 @@ components:
         - $ref: '#/components/schemas/Pipeline'
         - type: object
           required:
-            - configUrl
+            - config_url
           properties:
-            configUrl:
+            config_url:
               type: string
     Metrics:
       description: Run Metrics

@@ -13,10 +13,16 @@
   "error": {
     "confirm": "OK"
   },
-  "report-page": {
-    "upload": {
-      "completed": "Upload completed",
-      "failed": "Upload failed"
+  "page": {
+    "report": {
+      "success": "Upload completed",
+      "fail": "Upload failed"
+    },
+    "upload-data": {
+      "upload": "Bitte wähle ein Datenset"
+    },
+    "solver": {
+      "upload": "Bitte wähle deinen Solver"
     }
   }
 }

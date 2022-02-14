@@ -26,8 +26,8 @@ class KfpService:
             else []
         )
 
-    def create_experiment(self, experiment: Experiment) -> None:
-        self.client.create_experiment(experiment.name, experiment.description, namespace=self.usernamespace)
+    def create_experiment(self, experiment: Experiment) -> str:
+        return self.client.create_experiment(experiment.name, experiment.description, namespace=self.usernamespace).id
 
     def get_all_pipelines(self) -> List[Pipeline]:
         pipelines: ApiListPipelinesResponse = self.client.list_pipelines()
@@ -37,12 +37,12 @@ class KfpService:
             else []
         )
 
-    def create_pipeline(self, pipeline: CreatePipeline) -> None:
+    def create_pipeline(self, pipeline: CreatePipeline) -> str:
         tmp_path: str = f"/tmp/pipeline_{pipeline.name}.yaml"
         urlretrieve(pipeline.config_url, tmp_path)
-        self.client.upload_pipeline(
+        return self.client.upload_pipeline(
             pipeline_package_path=tmp_path, pipeline_name=pipeline.name, description=pipeline.description
-        )
+        ).id
 
     def get_all_runs(self) -> List[Run]:
         runs: ApiListRunsResponse = self.client.list_runs(namespace=self.usernamespace)

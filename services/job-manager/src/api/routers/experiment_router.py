@@ -26,5 +26,5 @@ async def get_all_experiments(kfp_service: KfpService = Depends(KfpService),) ->
 )
 async def post_experiment(
     experiment: Experiment = Body(..., description=""), kfp_service: KfpService = Depends(KfpService),
-) -> None:
-    kfp_service.create_experiment(experiment)
+) -> str:
+    return kfp_service.create_experiment(experiment)
