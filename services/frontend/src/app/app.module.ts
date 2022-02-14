@@ -17,6 +17,9 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ReportPageComponent} from './pages/report-page/report-page.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MaterialModule} from "./material/material.module";
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json')
@@ -30,30 +33,33 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     MainPageComponent,
     ToolbarComponent,
     ReportPageComponent,
+    NavbarComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NoopAnimationsModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    ApiModule.forRoot(() => {
-      return new Configuration(
-        {
-          basePath: ''
-        }
-      );
-    }),
-    MatButtonModule,
-    MatToolbarModule,
-    MatSnackBarModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NoopAnimationsModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        ApiModule.forRoot(() => {
+            return new Configuration(
+                {
+                    basePath: ''
+                }
+            );
+        }),
+        MatButtonModule,
+        MatToolbarModule,
+        MatSnackBarModule,
+        MatSidenavModule,
+        MaterialModule,
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
