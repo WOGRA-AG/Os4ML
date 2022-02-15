@@ -1,11 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: cluster-role-binding
+  name: kubeflow-edit-os4ml
+  namespace: kubeflow-user-example-com
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-role
+  name: kubeflow-edit
 subjects:
   - kind: ServiceAccount
-    name: service-account
+    name: default-editor
+    namespace: os4ml
