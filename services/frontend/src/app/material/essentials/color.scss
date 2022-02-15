@@ -115,9 +115,9 @@ $os4ml-theme: mat.define-light-theme((
 
 $primary-color: mat.get-color-from-palette($os4ml-primary, 500);
 $primary-variant: mat.get-color-from-palette($os4ml-primary, 700);
-$accent-color: mat.get-color-from-palette($os4ml-accent, 200);
+$accent-color: mat.get-color-from-palette($os4ml-accent, 500);
 $warn-color: mat.get-color-from-palette($os4ml-warn, default);
-$background: #FFFFFF;
+$background: #f4f9fd;
 $surface: #FFFFFF;
 $error: #B00020;
 $on-primary: #FFFFFF;
@@ -131,7 +131,7 @@ $on-error: #FFFFFF;
 }
 
 .bg-primary {
-  background-color: $primary-color;
+  background-color: $background;
 }
 
 .bg-warn {
@@ -140,4 +140,8 @@ $on-error: #FFFFFF;
 
 .bg-accent {
   background-color: $accent-color;
+}
+
+.border-color {
+  border-color: rgb(0,0,0, .12);
 }
