@@ -9,3 +9,10 @@ commonLabels:
   kustomize.component: os4ml-ui
 configurations:
   - params.yaml
+patches:
+  - target:
+      kind: VirtualService
+      namespace: kubeflow
+      name: centraldashboard
+      labelSelector: app=centraldashboard
+    path: centraldashboard-patch.yaml
