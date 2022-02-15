@@ -6,26 +6,46 @@
 
 $custom-typography: mat.define-typography-config(
   $font-family: 'Roboto, monospace',
-  $headline-1: mat.define-typography-level(96px, inherit, light),
-  $headline-2: mat.define-typography-level(60px, inherit, light),
-  $headline-3: mat.define-typography-level(48px, inherit, regular),
-  $headline-4: mat.define-typography-level(34px, inherit, regular),
-  $headline-5: mat.define-typography-level(24px, inherit, regular),
-  $headline-6: mat.define-typography-level(20px, inherit, medium),
-  $subtitle-1: mat.define-typography-level(16px, inherit, regular),
-  $subtitle-2: mat.define-typography-level(14px, inherit, medium),
-  $body-1: mat.define-typography-level(16px, inherit, regular),
-  $body-2: mat.define-typography-level(14px, inherit, regular),
-  $button: mat.define-typography-level(14px, inherit, medium),
-  $caption: mat.define-typography-level(12px, inherit, regular),
-  $overline: mat.define-typography-level(10px, inherit, regular)
+  $display-1: mat.define-typography-level(60px, 60px, 700),
+  $display-2: mat.define-typography-level(44px, 44px, 700),
+  $display-3: mat.define-typography-level(33px, 33px, 700),
+  $display-4: mat.define-typography-level(30px, 30px, 700),
+  $headline: mat.define-typography-level(60px, 60px, 700),
+  $title: mat.define-typography-level(44px, 72px, 700),
+  $subheading-2: mat.define-typography-level(33px, 33px, 700),
+  $subheading-1: mat.define-typography-level(16px, 28px, 400),
+  $body-1: mat.define-typography-level(16px, 24px, 400),
+  $body-2: mat.define-typography-level(14px, 20px, 400),
+  $caption: mat.define-typography-level(12px, 14px, 400),
+  $button: mat.define-typography-level(14px, 16px, 500)
 );
 
 @include mat.all-component-typographies($custom-typography);
 
 @mixin additional-typography-settings {
-  .mat-overline {
-    $overline;
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
   }
-  text-transform: uppercase;
+
+  h5 {
+    font-size: 24px;
+    line-height: 40px;
+    font-family: "Roboto", serif;
+    font-weight: 700;
+  }
+
+  .mat-h6, h6 {
+    font-size: 20px;
+    line-height: 24px;
+    font-family: "Roboto", serif;
+    font-weight: 700;
+  }
+
+  .mat-overline {
+    font-size: 10px;
+    line-height: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
 }
