@@ -12,7 +12,7 @@ spec:
     - name: "frontend-route"
       match:
         - uri:
-            prefix: /
+            prefix: /os4ml/
       rewrite:
         uri: /
       route:

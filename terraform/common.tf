@@ -1,5 +1,5 @@
 data "kustomization_build" "os4ml_base_build" {
-  path = "../manifests/common"
+  path = "../manifests/common/base"
 }
 
 resource "kustomization_resource" "os4ml_base_build" {
