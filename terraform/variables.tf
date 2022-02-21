@@ -21,6 +21,12 @@ variable "deploy_objectstore_manager" {
   default     = true
 }
 
+variable "deploy_jobmanager" {
+  description = "Deploy the Jobmanager"
+  type        = bool
+  default     = true
+}
+
 variable "cluster_provisioner" {
   description = "Deployment environment. One of: [k3d, gke]"
   type        = string

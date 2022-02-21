@@ -3,7 +3,7 @@ kind: Kustomization
 namePrefix: os4ml-
 namespace: os4ml
 resources:
-  - os4ml-install-config.yaml
+  - objectstore-config.yaml
   - os4ml-minio-secret.yaml
   - service.yaml
   - deployment.yaml
