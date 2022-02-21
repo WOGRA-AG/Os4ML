@@ -2,13 +2,14 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: os4ml-ui
+  namespace: os4ml
 spec:
   gateways:
     - kubeflow/kubeflow-gateway
   hosts:
     - '*'
   http:
-    - name: "os4ml-frontend-route"
+    - name: "frontend-route"
       match:
         - uri:
             prefix: /os4ml/

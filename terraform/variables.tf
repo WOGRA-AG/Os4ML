@@ -37,3 +37,8 @@ variable "nvidia-driver-installer-version" {
   description = "Commit hash of the installer for the nvidia driver daemon set in the repo https://github.com/GoogleCloudPlatform/container-engine-accelerators"
   default     = "2e6077e7e782345031092b5d368fb861c96ba600"
 }
+
+variable "external_ip" {
+  description = "External IP for the ingress-gateway"
+  default     = "127.0.0.1"
+}
