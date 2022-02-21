@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: install-config
+  name: objectstore-config
   namespace: os4ml
 data:
   bucketName: 'os4ml'
