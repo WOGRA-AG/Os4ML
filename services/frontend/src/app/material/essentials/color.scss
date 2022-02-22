@@ -114,6 +114,7 @@ $os4ml-theme: mat.define-light-theme((
 @include mat.all-component-themes($os4ml-theme);
 
 $primary-color: mat.get-color-from-palette($os4ml-primary, 500);
+$primary-color-100: mat.get-color-from-palette($os4ml-primary, 100);
 $primary-variant: mat.get-color-from-palette($os4ml-primary, 700);
 $accent-color: mat.get-color-from-palette($os4ml-accent, 500);
 $warn-color: mat.get-color-from-palette($os4ml-warn, default);
