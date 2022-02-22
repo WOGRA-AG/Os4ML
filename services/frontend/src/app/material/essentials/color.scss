@@ -21,8 +21,8 @@ $md-os4ml-colors-primary: (
     200 : #000000,
     300 : #000000,
     400 : #000000,
-    500 : #000000,
-    600 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
     700 : #ffffff,
     800 : #ffffff,
     900 : #ffffff,
@@ -54,11 +54,11 @@ $md-os4ml-colors-accent: (
     200 : #000000,
     300 : #000000,
     400 : #000000,
-    500 : #000000,
-    600 : #000000,
-    700 : #000000,
-    800 : #000000,
-    900 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
     A100 : #000000,
     A200 : #000000,
     A400 : #000000,
@@ -125,6 +125,12 @@ $on-secondary: #000000;
 $on-background: #000000;
 $on-surface: #000000;
 $on-error: #FFFFFF;
+$on-primary-high: rgba($on-primary, 1);
+$on-primary-medium: rgba($on-primary, .74);
+$on-primary-disabled: rgba($on-primary, .38);
+$on-surface-high: rgba($on-surface, .87);
+$on-surface-medium: rgba($on-surface, .60);
+$on-surface-disabled: rgba($on-surface, .38);
 
 .primary {
   color: $primary-color;

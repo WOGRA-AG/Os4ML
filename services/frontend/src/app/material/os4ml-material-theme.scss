@@ -1,9 +1,19 @@
 @use '@angular/material' as mat;
+@use './essentials/typography' as typography;
 @import '@angular/material/theming';
-@include mat.core();
 @import './essentials/color.scss';
-@import './essentials/typography.scss';
+@import './components/sidenav.scss';
+@import './components/toolbar.scss';
+@import './components/navlist.scss';
+@import './components/button.scss';
+
+@include mat.core();
+@include mat.core(typography.$custom-typography);
 
 .os4ml-theme {
-
+  @include typography.additional-typography-settings;
+  @include sidenav;
+  @include toolbar;
+  @include navlist;
+  @include button;
 }

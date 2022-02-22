@@ -1,0 +1,9 @@
+@mixin toolbar {
+  .mat-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-height: 5%;
+    background: transparent;
+  }
+}

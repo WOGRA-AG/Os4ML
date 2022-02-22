@@ -1,19 +1,18 @@
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ObjectstoreService} from "../../../../build/openapi/objectstore";
-import {concatMap, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {concatMap, of} from "rxjs";
 
 @Component({
-  selector: 'app-upload-page',
-  templateUrl: './upload-page.component.html',
-  styleUrls: ['./upload-page.component.scss']
+  selector: 'app-support-page',
+  templateUrl: './support-page.component.html',
+  styleUrls: ['./support-page.component.scss']
 })
-export class UploadPageComponent {
+export class SupportPageComponent {
   bucketName: string = "os4ml";
 
-  constructor(private objectStoreService: ObjectstoreService, private http: HttpClient, private router: Router) {
-  }
+  constructor(private objectStoreService: ObjectstoreService, private http: HttpClient, private router: Router) {}
 
   updateFile(file: File) {
     this.objectStoreService.getAllBuckets()

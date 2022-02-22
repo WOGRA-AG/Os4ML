@@ -1,0 +1,18 @@
+@mixin sidenav {
+  .mat-sidenav-container {
+    background: $background;
+    height: 100%;
+  }
+
+  .mat-sidenav {
+    max-width: 200px;
+    border-radius: 24px;
+    background: $surface;
+    padding: 40px 10px 40px 10px;
+    margin: 10px 0 10px 10px;
+  }
+
+  .mat-sidenav-content {
+    margin: 10px 10px 10px 0;
+  }
+}
