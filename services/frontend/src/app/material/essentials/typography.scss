@@ -1,0 +1,154 @@
+@use '@angular/material' as mat;
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic&subset=latin,latin-ext,cyrillic,cyrillic-ext,greek-ext,greek,vietnamese);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext,cyrillic-ext,cyrillic,greek-ext,greek,vietnamese);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,latin-ext,greek-ext,greek,vietnamese,cyrillic,cyrillic-ext);
+
+$custom-typography: mat.define-typography-config(
+  $font-family: 'Roboto, monospace',
+  $display-1: mat.define-typography-level(60px, 60px, 700),
+  $display-2: mat.define-typography-level(44px, 44px, 700),
+  $display-3: mat.define-typography-level(33px, 33px, 700),
+  $display-4: mat.define-typography-level(30px, 30px, 700),
+  $headline: mat.define-typography-level(60px, 60px, 700),
+  $title: mat.define-typography-level(44px, 72px, 700),
+  $subheading-2: mat.define-typography-level(33px, 33px, 700),
+  $subheading-1: mat.define-typography-level(16px, 28px, 400),
+  $body-1: mat.define-typography-level(16px, 24px, 400),
+  $body-2: mat.define-typography-level(14px, 20px, 400),
+  $caption: mat.define-typography-level(12px, 14px, 400),
+  $button: mat.define-typography-level(14px, 16px, 500)
+);
+
+@include mat.all-component-typographies($custom-typography);
+
+@mixin additional-typography-settings {
+  .mat-h1, h1 {
+    font-weight: 300;
+    font-style: normal;
+    line-height: 112px;
+    letter-spacing: -1.5px;
+    font-size: 96px;
+  }
+
+  .mat-h2, h2 {
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 72px;
+    letter-spacing: -0.5px;
+    text-align: left;
+
+  }
+
+  .mat-h3, h3 {
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 56px;
+    letter-spacing: 0;
+    text-align: left;
+
+  }
+
+  .mat-h4, h4 {
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+    letter-spacing: 0;
+    text-align: left;
+  }
+
+  .mat-h5, h5 {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.18px;
+    text-align: left;
+  }
+
+  .mat-h6, h6 {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    text-align: left;
+  }
+
+  .mat-subheading-1 {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    text-align: left;
+
+  }
+
+  .mat-subheading-2 {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    text-align: left;
+  }
+
+  .mat-body-1 {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    text-align: left;
+  }
+
+  .mat-body-2 {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    text-align: left;
+  }
+
+  .mat-button {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 1.25px;
+    text-align: left;
+
+  }
+
+  .mat-caption {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    text-align: left;
+  }
+
+  .mat-overline {
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 1.5px;
+    text-align: left;
+  }
+
+  .mat-list-item {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 19px;
+    letter-spacing: 0;
+    text-align: left;
+  }
+}

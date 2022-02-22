@@ -1,0 +1,34 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav mode="side" position="start" opened>
+    <div class="sidenav-container">
+      <div>
+        <img class="logo" src="assets/logos/wogra-logo.svg" alt="Wogra Logo">
+        <mat-nav-list class="nav-list">
+          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/dashboard']">
+            <mat-icon matListIcon>apps</mat-icon><span class="nav-caption">Dashboard</span>
+          </mat-list-item>
+          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/upload']">
+            <mat-icon matListIcon>folder_open</mat-icon><span class="nav-caption">Databags</span>
+          </mat-list-item>
+          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/settings']">
+            <mat-icon matListIcon>settings</mat-icon><span class="nav-caption">Settings</span>
+          </mat-list-item>
+          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/user']">
+            <mat-icon matListIcon>perm_identity</mat-icon><span class="nav-caption">User</span>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+      <div>
+        <div class="support-item">
+          <app-support></app-support>
+        </div>
+        <mat-nav-list>
+          <mat-list-item>
+            <mat-icon matListIcon>keyboard_tab</mat-icon><span class="nav-caption">Logout</span>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content><ng-content></ng-content></mat-sidenav-content>
+</mat-sidenav-container>
