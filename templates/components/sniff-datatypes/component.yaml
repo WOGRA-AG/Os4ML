@@ -1,8 +1,9 @@
 name: Sniff datatypes
 inputs:
 - {name: csv_file, type: Dataset}
+- {name: max_categories, type: Integer, default: '10', optional: true}
 outputs:
-- {name: json_file, type: Dataset}
+- {name: Output, type: Dataset}
 implementation:
   container:
     image: amancevice/pandas:1.4.1-slim
@@ -29,12 +30,11 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
+      def sniff_datatypes(csv_file: Input[Dataset],
+                          max_categories: int = 10) -> Dataset:
           import pandas as pd
           import json
           from enum import Enum
-
-          max_num_categories = 10
 
           class ColumnDataType(str, Enum):
               NUMERICAL = 'numerical'
@@ -53,13 +53,13 @@ implementation:
               )
               *columns, last_column = columns_and_types
               feature_columns = (
-                  create_list_entry(column, type_, ColumnUsage.FEATURE)
+                  create_entry(column, type_, ColumnUsage.FEATURE)
                   for column, type_ in columns
               )
-              label_column = create_list_entry(*last_column, ColumnUsage.LABEL)
+              label_column = create_entry(*last_column, ColumnUsage.LABEL)
               return [*feature_columns, label_column]
 
-          def create_list_entry(name, type_, usage):
+          def create_entry(name, type_, usage):
               return {
                   'name': name,
                   'type': type_,
@@ -73,7 +73,7 @@ implementation:
                   column_type = ColumnDataType.NUMERICAL
               if 'date' in datatype:
                   column_type = ColumnDataType.DATE
-              if series.nunique() <= max_num_categories:
+              if series.nunique() <= max_categories:
                   column_type = ColumnDataType.CATEGORY
               return column_type
 
@@ -81,10 +81,7 @@ implementation:
               df = pd.read_csv(input_file)
 
           column_info = sniff_column_datatypes(df)
-          column_info_json = json.dumps(column_info)
-
-          with open(json_file, 'w') as output_file:
-              output_file.write(column_info_json)
+          return json.dumps(column_info)
 
     args:
     - --executor_input

@@ -1,14 +1,11 @@
-from kfp.v2.dsl import component, Dataset, Input, Output
+from kfp.v2.dsl import component, Dataset, Input
 
 
-@component(base_image='amancevice/pandas:1.4.1-slim',
-           output_component_file='component.yaml')
-def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
+def sniff_datatypes(csv_file: Input[Dataset],
+                    max_categories: int = 10) -> Dataset:
     import pandas as pd
     import json
     from enum import Enum
-
-    max_num_categories = 10
 
     class ColumnDataType(str, Enum):
         NUMERICAL = 'numerical'
@@ -27,13 +24,13 @@ def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
         )
         *columns, last_column = columns_and_types
         feature_columns = (
-            create_list_entry(column, type_, ColumnUsage.FEATURE)
+            create_entry(column, type_, ColumnUsage.FEATURE)
             for column, type_ in columns
         )
-        label_column = create_list_entry(*last_column, ColumnUsage.LABEL)
+        label_column = create_entry(*last_column, ColumnUsage.LABEL)
         return [*feature_columns, label_column]
 
-    def create_list_entry(name, type_, usage):
+    def create_entry(name, type_, usage):
         return {
             'name': name,
             'type': type_,
@@ -47,7 +44,7 @@ def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
             column_type = ColumnDataType.NUMERICAL
         if 'date' in datatype:
             column_type = ColumnDataType.DATE
-        if series.nunique() <= max_num_categories:
+        if series.nunique() <= max_categories:
             column_type = ColumnDataType.CATEGORY
         return column_type
 
@@ -55,7 +52,9 @@ def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
         df = pd.read_csv(input_file)
 
     column_info = sniff_column_datatypes(df)
-    column_info_json = json.dumps(column_info)
+    return json.dumps(column_info)
 
-    with open(json_file, 'w') as output_file:
-        output_file.write(column_info_json)
+
+if __name__ == '__main__':
+    component(sniff_datatypes, base_image='amancevice/pandas:1.4.1-slim',
+              output_component_file='component.yaml')
