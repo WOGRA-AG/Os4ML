@@ -1,0 +1,93 @@
+name: Sniff datatypes
+inputs:
+- {name: csv_file, type: Dataset}
+outputs:
+- {name: json_file, type: Dataset}
+implementation:
+  container:
+    image: amancevice/pandas:1.4.1-slim
+    command:
+    - sh
+    - -c
+    - |2
+
+      if ! [ -x "$(command -v pip)" ]; then
+          python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+      fi
+
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+    - sh
+    - -ec
+    - |
+      program_path=$(mktemp -d)
+      printf "%s" "$0" > "$program_path/ephemeral_component.py"
+      python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+    - |2+
+
+      import kfp
+      from kfp.v2 import dsl
+      from kfp.v2.dsl import *
+      from typing import *
+
+      def sniff_datatypes(csv_file: Input[Dataset], json_file: Output[Dataset]):
+          import pandas as pd
+          import json
+          from enum import Enum
+
+          max_num_categories = 10
+
+          class ColumnDataType(str, Enum):
+              NUMERICAL = 'numerical'
+              DATE = 'date'
+              CATEGORY = 'category'
+              TEXT = 'text'
+
+          class ColumnUsage(str, Enum):
+              LABEL = 'label'
+              FEATURE = 'feature'
+
+          def sniff_column_datatypes(df: pd.DataFrame):
+              columns_and_types = (
+                  (name, sniff_series(column))
+                  for name, column in df.iteritems()
+              )
+              *columns, last_column = columns_and_types
+              feature_columns = (
+                  create_list_entry(column, type_, ColumnUsage.FEATURE)
+                  for column, type_ in columns
+              )
+              label_column = create_list_entry(*last_column, ColumnUsage.LABEL)
+              return [*feature_columns, label_column]
+
+          def create_list_entry(name, type_, usage):
+              return {
+                  'name': name,
+                  'type': type_,
+                  'usage': usage,
+              }
+
+          def sniff_series(series: pd.Series) -> ColumnDataType:
+              column_type = ColumnDataType.TEXT
+              datatype = str(series.dtype)
+              if 'int' in datatype or 'float' in datatype:
+                  column_type = ColumnDataType.NUMERICAL
+              if 'date' in datatype:
+                  column_type = ColumnDataType.DATE
+              if series.nunique() <= max_num_categories:
+                  column_type = ColumnDataType.CATEGORY
+              return column_type
+
+          with open(csv_file.path, 'r') as input_file:
+              df = pd.read_csv(input_file)
+
+          column_info = sniff_column_datatypes(df)
+          column_info_json = json.dumps(column_info)
+
+          with open(json_file, 'w') as output_file:
+              output_file.write(column_info_json)
+
+    args:
+    - --executor_input
+    - {executorInput: null}
+    - --function_to_execute
+    - sniff_datatypes
