@@ -42,3 +42,23 @@ variable "external_ip" {
   description = "External IP for the ingress-gateway"
   default     = "127.0.0.1"
 }
+
+variable "user_email" {
+  description = "Dex static password user email for login"
+  type        = string
+}
+
+variable "user_hash" {
+  description = "Dex static password bcrypt hash of user password"
+  type        = string
+}
+
+variable "user_name" {
+  description = "Dex static password user name"
+  type        = string
+}
+
+variable "user_id" {
+  description = "Dex static password user id"
+  type        = string
+}
