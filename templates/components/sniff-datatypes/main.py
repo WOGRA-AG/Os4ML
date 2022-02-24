@@ -6,6 +6,7 @@ def sniff_datatypes(csv_file: Input[Dataset],
     import pandas as pd
     import json
     from enum import Enum
+    from dataclasses import dataclass
 
     class ColumnDataType(str, Enum):
         NUMERICAL = 'numerical'
@@ -17,27 +18,28 @@ def sniff_datatypes(csv_file: Input[Dataset],
         LABEL = 'label'
         FEATURE = 'feature'
 
+    @dataclass
+    class Column:
+        name: str
+        type: str
+        usage: str
+        num_entries: int
+
     def sniff_column_datatypes(df: pd.DataFrame):
         columns_and_types = (
-            (name, sniff_series(column))
+            (name, *sniff_series(column))
             for name, column in df.iteritems()
         )
         *columns, last_column = columns_and_types
         feature_columns = (
-            create_entry(column, type_, ColumnUsage.FEATURE)
-            for column, type_ in columns
+            Column(column, type_, ColumnUsage.FEATURE, num_entries)
+            for column, type_, num_entries in columns
         )
-        label_column = create_entry(*last_column, ColumnUsage.LABEL)
+        label_column = Column(last_column[0], last_column[1],
+                              ColumnUsage.LABEL, last_column[2])
         return [*feature_columns, label_column]
 
-    def create_entry(name, type_, usage):
-        return {
-            'name': name,
-            'type': type_,
-            'usage': usage,
-        }
-
-    def sniff_series(series: pd.Series) -> ColumnDataType:
+    def sniff_series(series: pd.Series) -> tuple[ColumnDataType, int]:
         column_type = ColumnDataType.TEXT
         datatype = str(series.dtype)
         if 'int' in datatype or 'float' in datatype:
@@ -46,13 +48,14 @@ def sniff_datatypes(csv_file: Input[Dataset],
             column_type = ColumnDataType.DATE
         if series.nunique() <= max_categories:
             column_type = ColumnDataType.CATEGORY
-        return column_type
+        return column_type, series.size
 
     with open(csv_file.path, 'r') as input_file:
         df = pd.read_csv(input_file)
 
     column_info = sniff_column_datatypes(df)
-    return json.dumps(column_info)
+    column_info_dicts = [column.__dict__ for column in column_info]
+    return json.dumps(column_info_dicts)
 
 
 if __name__ == '__main__':

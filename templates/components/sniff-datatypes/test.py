@@ -14,38 +14,45 @@ from main import sniff_datatypes
     ({
          'city': ['Augsburg'],
      },
-     '[{"name": "city", "type": "category", "usage": "label"}]'),
+     '[{"name": "city", "type": "category", "usage": "label", "num_entries": '
+     '1}]'),
     ({
          'city': ['Augsburg', 'Berlin', 'Munich'],
      },
-     '[{"name": "city", "type": "text", "usage": "label"}]'),
+     '[{"name": "city", "type": "text", "usage": "label", "num_entries": 3}]'),
     ({
          'age': [22, 33.5, 55],
      },
-     '[{"name": "age", "type": "numerical", "usage": "label"}]'),
+     '[{"name": "age", "type": "numerical", "usage": "label", "num_entries": '
+     '3}]'),
     ({
          'age': [22, 33.5],
      },
-     '[{"name": "age", "type": "category", "usage": "label"}]'),
+     '[{"name": "age", "type": "category", "usage": "label", "num_entries": '
+     '2}]'),
     ({
          'student': [0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
      },
-     '[{"name": "student", "type": "category", "usage": "label"}]'),
+     '[{"name": "student", "type": "category", "usage": "label", '
+     '"num_entries": 11}]'),
     ({
          'char': ['a', 'b', 'a', 'a', 'b', 'a', 'b'],
      },
-     '[{"name": "char", "type": "category", "usage": "label"}]'),
+     '[{"name": "char", "type": "category", "usage": "label", "num_entries": '
+     '7}]'),
     ({
          'dates': [datetime.today(), datetime.today() - timedelta(days=1),
                    datetime.today() - timedelta(days=2)],
      },
-     '[{"name": "dates", "type": "date", "usage": "label"}]'),
+     '[{"name": "dates", "type": "date", "usage": "label", "num_entries": '
+     '3}]'),
     ({
          'city': ['Augsburg', 'Berlin', 'Munich'],
          'age': [200, 400, 600]
      },
-     '[{"name": "city", "type": "text", "usage": "feature"},' +
-     ' {"name": "age", "type": "numerical", "usage": "label"}]'),
+     '[{"name": "city", "type": "text", "usage": "feature", "num_entries": '
+     '3}, {"name": "age", "type": "numerical", "usage": "label", '
+     '"num_entries": 3}]'),
 ])
 def test_sniff_datatypes(test_data, expected_json, mocker):
     open_mock = mocker.patch('builtins.open')
@@ -77,9 +84,10 @@ def test_sniff_datatypes_with_file(mocker):
     Stuttgart,22,1
     Mainz,77,0
     """)
-    expected = '[{"name": "city", "type": "text", "usage": "feature"}, ' \
-               '{"name": "age", "type": "numerical", "usage": "feature"}, ' \
-               '{"name": "bool", "type": "category", "usage": "label"}]'
+    expected = '[{"name": "city", "type": "text", "usage": "feature", ' \
+               '"num_entries": 5}, {"name": "age", "type": "numerical", ' \
+               '"usage": "feature", "num_entries": 5}, {"name": "bool", ' \
+               '"type": "category", "usage": "label", "num_entries": 5}]'
 
     with make_tmp_file(test_csv) as csv_file:
         path_mock = mocker.MagicMock()
