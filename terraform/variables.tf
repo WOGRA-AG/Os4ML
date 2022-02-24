@@ -46,19 +46,23 @@ variable "external_ip" {
 variable "user_email" {
   description = "Dex static password user email for login"
   type        = string
+  default     = "user@example.com"
 }
 
 variable "user_hash" {
   description = "Dex static password bcrypt hash of user password"
   type        = string
+  default     = "$2y$12$4K/VkmDd1q1Orb3xAt82zu8gk7Ad6ReFR4LCP9UeYE90NLiN9Df72"
 }
 
 variable "user_name" {
   description = "Dex static password user name"
   type        = string
+  default     = "user"
 }
 
 variable "user_id" {
   description = "Dex static password user id"
   type        = string
+  default     = "15841185641784"
 }
