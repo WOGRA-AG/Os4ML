@@ -106,9 +106,10 @@ ENV PATH=/root/.pyenv/versions/3.7.9/bin:$PATH
 # Some TF tools expect a "python" binary
 RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
-# Install requirements using an exported from poetry lock
+# Install ludwig using poetry lock files
 FROM pyenv as ludwig
-COPY requirements.txt ./
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements.txt
+COPY *.toml *.lock ./
+RUN --mount=type=cache,target=/root/.cache \
+    poetry config virtualenvs.create false && poetry install
 
 CMD ["python3"]
