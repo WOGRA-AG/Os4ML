@@ -101,7 +101,7 @@ ENV HOME /root
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN echo 'eval "$(pyenv init -)"' >> /root/.bashrc
-RUN pyenv install 3.7.9 && pyenv global 3.7.9
+RUN pyenv install 3.7.9 && pyenv global 3.7.9 && pip install poetry==1.1.6
 ENV PATH=/root/.pyenv/versions/3.7.9/bin:$PATH
 # Some TF tools expect a "python" binary
 RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
