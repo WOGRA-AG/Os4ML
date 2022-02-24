@@ -1,23 +1,4 @@
-# Copyright 2019 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ============================================================================
-#
-# THIS IS A GENERATED DOCKERFILE.
-#
-# This file was assembled from multiple pieces, whose use is documented
-# throughout. Please refer to the TensorFlow dockerfiles documentation
-# for more information.
+# The lines for the base is inspired by https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/dockerfiles/dockerfiles/gpu.Dockerfile
 
 ARG UBUNTU_VERSION=20.04
 
@@ -89,9 +70,8 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
 
-RUN python3 -m pip --no-cache-dir install --upgrade \
-    "pip<20.3" \
-    setuptools
+RUN --mount=type=cache,target=/root/.cache \
+    python3 -m pip --no-cache-dir install --upgrade  "pip<20.3"  setuptools
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
@@ -113,17 +93,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         && apt-get purge -y --auto-remove \
         && rm -rf /var/lib/apt/lists/*
+
+# Fix python version according to version fixed by poetry
+FROM base as pyenv
 RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ENV HOME /root
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN echo 'eval "$(pyenv init -)"' >> /root/.bashrc
-RUN pyenv install 3.7.9 && pyenv global 3.7.9 && pip install poetry==1.1.6
+RUN pyenv install 3.7.9 && pyenv global 3.7.9
 ENV PATH=/root/.pyenv/versions/3.7.9/bin:$PATH
 # Some TF tools expect a "python" binary
 RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
-COPY *.toml *.lock ./
-RUN poetry config virtualenvs.create false && poetry install
+# Install requirements using an exported from poetry lock
+FROM pyenv as ludwig
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements.txt
 
 CMD ["python3"]
