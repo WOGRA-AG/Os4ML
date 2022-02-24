@@ -2,7 +2,8 @@ from kfp.v2.dsl import component, Dataset, Input
 
 
 def sniff_datatypes(csv_file: Input[Dataset],
-                    max_categories: int = 10) -> Dataset:
+                    max_categories: int = 10,
+                    dataset_type: str = 'local_file') -> Dataset:
     import pandas as pd
     import json
     from enum import Enum
@@ -25,7 +26,7 @@ def sniff_datatypes(csv_file: Input[Dataset],
         usage: str
         num_entries: int
 
-    def sniff_column_datatypes(df: pd.DataFrame):
+    def sniff_column_datatypes(df: pd.DataFrame) -> list[Column]:
         columns_and_types = (
             (name, *sniff_series(column))
             for name, column in df.iteritems()
@@ -50,12 +51,27 @@ def sniff_datatypes(csv_file: Input[Dataset],
             column_type = ColumnDataType.CATEGORY
         return column_type, series.size
 
+    def get_num_rows(columns: list[Column]) -> int:
+        if not columns:
+            return 0
+        first, *rest = columns
+        rows = first.num_entries
+        assert (column.num_entries == rows for column in columns)
+        return rows
+
     with open(csv_file.path, 'r') as input_file:
         df = pd.read_csv(input_file)
 
     column_info = sniff_column_datatypes(df)
+    num_rows = get_num_rows(column_info)
+    num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
-    return json.dumps(column_info_dicts)
+    return json.dumps({
+        'dataset_type': dataset_type,
+        'number_rows': num_rows,
+        'number_columns': num_cols,
+        'columns': column_info_dicts
+    })
 
 
 if __name__ == '__main__':
