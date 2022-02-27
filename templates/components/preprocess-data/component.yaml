@@ -31,7 +31,9 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Dataset), ('y', Dataset)]):
+      def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data",
+                                                                   [('x', Dataset),
+                                                                    ('y', Dataset)]):
           import pandas as pd
           import re
           import numpy as np
@@ -44,7 +46,8 @@ implementation:
           df = df.drop(["PassengerId"], axis=1)
           deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 8}
           df["Cabin"] = df["Cabin"].fillna("U0")
-          df["Deck"] = df["Cabin"].map(lambda x: re.compile("([a-zA-Z]+)").search(x).group())
+          df["Deck"] = df["Cabin"].map(
+              lambda x: re.compile("([a-zA-Z]+)").search(x).group())
           df["Deck"] = df["Deck"].map(deck).fillna(0).astype(int)
           df = df.drop(["Cabin"], axis=1)
 
@@ -67,8 +70,9 @@ implementation:
           # extract titles
           df['Title'] = df.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
           # replace titles with a more common title or as Rare
-          df['Title'] = df['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
-                                             'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
+          df['Title'] = df['Title'].replace(
+              ['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
+               'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
           df['Title'] = df['Title'].replace('Mlle', 'Miss')
           df['Title'] = df['Title'].replace('Ms', 'Miss')
           df['Title'] = df['Title'].replace('Mme', 'Mrs')
