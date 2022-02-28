@@ -13,6 +13,7 @@ def ludwig_solver(dataset_file: Input[Dataset],
     import pandas as pd
     import json
     from sklearn.model_selection import train_test_split
+    from sklearn.metrics import confusion_matrix
     import logging
     from ludwig.api import LudwigModel
     from dataclasses import dataclass
@@ -93,19 +94,21 @@ def ludwig_solver(dataset_file: Input[Dataset],
     with open(dataset_file.path, 'r') as input_file:
         dataset = pd.read_csv(input_file)
 
-    dataset = dataset.sample(frac=1.)
-    df_test = dataset[:200]
-    df_train, df_validate = train_test_split(dataset, test_size=0.1,
+    df_tmp, df_test = train_test_split(dataset, test_size=0.1, random_state=42)
+    df_train, df_validate = train_test_split(df_tmp, test_size=0.1,
                                              random_state=42)
     label = model_definition['output_features'][0]['name']
-    categories_raw = dataset[label].unique()
-    categories = [str(category) for category in categories_raw]
+    categories = dataset[label].unique().astype(str)
 
     model.train(df_train, df_validate, df_test)
-    stats, *_ = model.evaluate(df_test, collect_overall_stats=True)
+    stats, pred, _ = model.evaluate(dataset, collect_predictions=True)
 
     accuracy = float(stats[label]['accuracy'])
-    conf_matrix = stats[label]['confusion_matrix']
+
+    prediction_key = next(iter(pred))
+    y_pred = pred[prediction_key]
+    y_true = dataset[label].astype(str)
+    conf_matrix = confusion_matrix(y_true, y_pred, labels=categories).tolist()
 
     metrics.log_metric('accuracy', accuracy)
     cls_metrics.log_confusion_matrix(categories, conf_matrix)
