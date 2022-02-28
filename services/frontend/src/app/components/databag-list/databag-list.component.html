@@ -1,0 +1,17 @@
+<mat-expansion-panel expanded>
+  <mat-expansion-panel-header class="mat-button">
+    <mat-panel-title>
+      <span>{{"page.databag.list.title" | translate}}</span>
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-nav-list class="bag-list">
+    <mat-list-item *ngFor="let databag of databags">
+      <div class="nav-item-extended">
+        <span class="mat-overline on-surface-disabled">1234 entries</span>
+        <span class="mat-subheading-2">{{databag.name}}</span>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-expansion-panel>

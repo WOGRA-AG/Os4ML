@@ -1,6 +1,11 @@
-<div>
-  <input #fileUpload hidden type="file" (change)="uploadFile($event)">
-  <button mat-raised-button color="primary" (click)="fileUpload.click()">
-    <mat-icon>add</mat-icon>
-    {{"upload.button.upload_file" | translate}}</button>
+<input type="file" class="file-input" (change)="uploadFile($event)" #fileUpload>
+<div class="upload-file bg-primary border-color mat-body-1 on-surface-medium" appDragAndDrop
+     (filesDropped)="uploadDroppedFile($event)" (click)="fileUpload.click()">
+  click to browse or <br>drag and drop your file
+</div>
+
+<div class="progress">
+  <mat-progress-bar *ngIf="uploadProgress > 0" class="progress-bar" mode="determinate" [value]="uploadProgress">
+  </mat-progress-bar>
+  <mat-icon *ngIf="uploadProgress > 0" class="cancel-upload" (click)="cancelUpload.emit()">delete_forever</mat-icon>
 </div>

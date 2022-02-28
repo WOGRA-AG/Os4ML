@@ -1,4 +1,4 @@
 <div class="page-wrapper">
   <h5>{{"page.upload-data.upload" | translate}}</h5>
-  <app-file-upload (updateFile)="updateFile($event)"></app-file-upload>
+  <app-file-upload (fileChange)="updateFile($event)"></app-file-upload>
 </div>

@@ -1,0 +1,38 @@
+<div class="dialog-container">
+  <div class="headline">
+    <h5 mat-dialog-title>{{"dialog.define_databag.title" | translate}}</h5>
+    <button mat-icon-button mat-dialog-close class="close-button" tabindex="-1">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <form class="input-form">
+      <mat-form-field appearance="outline">
+        <mat-label>{{"dialog.define_databag.label" | translate}}</mat-label>
+        <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+               name="DatabagNameInput" [formControl]="name">
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+      <mat-divider class="divider"></mat-divider>
+      <span class="mat-body-1 on-surface-medium">Databag Fields</span>
+      <div class="columns">
+        <mat-form-field *ngFor="let column of columns" appearance="outline">
+          <mat-label>{{column.name}}</mat-label>
+          <mat-select [(ngModel)]="column.type" name="col_{{column.name}}">
+            <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{type}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-icon-button class="back-button" [disableRipple]="true" (click)="back()">
+      <mat-icon>arrow_back_ios</mat-icon>
+      {{"dialog.define_databag.back_button" | translate}}
+    </button>
+    <div class="button-spacer"></div>
+    <button mat-raised-button color="primary" class="main-button" (click)="createBag()">
+      {{"dialog.define_databag.main_button" | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

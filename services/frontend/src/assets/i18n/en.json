@@ -15,7 +15,23 @@
     "title": "Os4ML"
   },
   "error": {
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "no_dataset": "No Dataset specified"
+  },
+  "dialog": {
+    "add_databag": {
+      "title": "Add Databag",
+      "label": "Url",
+      "main_button": "Next Step",
+      "placeholder": "Databag Url"
+    },
+    "define_databag": {
+      "title": "Add Databag",
+      "label": "Databag Name",
+      "main_button": "Next Step",
+      "placeholder": "Databag Name",
+      "back_button": "Back"
+    }
   },
   "page": {
     "report": {
@@ -27,6 +43,17 @@
     },
     "solver": {
       "upload": "Please choose your pipeline configuration"
+    },
+    "databag": {
+      "title": "Databags",
+      "list": {
+        "title": "Current Bags"
+      },
+      "empty": {
+        "title": "Get started with Machine Learning",
+        "subtitle": "Databags allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
+        "main_button": "Create Databag"
+      }
     }
   }
 }

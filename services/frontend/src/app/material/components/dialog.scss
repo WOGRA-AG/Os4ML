@@ -1,0 +1,27 @@
+@mixin dialog {
+  .cdk-overlay-dark-backdrop {
+    background: $overlay;
+  }
+
+  .mat-dialog-container {
+    border-radius: 24px;
+    padding-left: 50px;
+  }
+
+  .mat-dialog-actions {
+    margin: 0;
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: auto;
+    padding-right: 50px;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+}

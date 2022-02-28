@@ -8,4 +8,16 @@
       margin-right: 5px;
     }
   }
+  .mat-mini-fab {
+    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .mat-icon-button {
+    border-radius: 14px;
+    height: 45px;
+    color: $on-surface-high;
+    background: $background;
+  }
 }

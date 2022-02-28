@@ -6,6 +6,8 @@
 @import './components/toolbar.scss';
 @import './components/navlist.scss';
 @import './components/button.scss';
+@import './components/expansion-module.scss';
+@import './components/dialog.scss';
 
 @include mat.core();
 @include mat.core(typography.$custom-typography);
@@ -16,4 +18,6 @@
   @include toolbar;
   @include navlist;
   @include button;
+  @include expansionModule;
+  @include dialog;
 }

@@ -14,16 +14,21 @@ import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import {MainPageComponent} from './pages/main-page/main-page.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {ReportPageComponent} from './pages/report-page/report-page.component';
-import { UploadSolverPageComponent } from './pages/upload-solver-page/upload-solver-page.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
+import {UploadSolverPageComponent} from './pages/upload-solver-page/upload-solver-page.component';
+import {SidenavComponent} from './components/sidenav/sidenav.component';
 import {MaterialModule} from "./material/material.module";
-import {MatListModule} from "@angular/material/list";
-import {MatIconModule} from "@angular/material/icon";
-import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
-import { UserPageComponent } from './pages/user-page/user-page.component';
-import { PageNotFoundPageComponent } from './pages/page-not-found-page/page-not-found-page.component';
-import { SupportComponent } from './components/support/support.component';
-import { SupportPageComponent } from './pages/support-page/support-page.component';
+import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
+import {UserPageComponent} from './pages/user-page/user-page.component';
+import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
+import {SupportComponent} from './components/support/support.component';
+import {SupportPageComponent} from './pages/support-page/support-page.component';
+import {DatabagListComponent} from './components/databag-list/databag-list.component';
+import {DatabagPlaceholderComponent} from './components/databag-placeholder/databag-placeholder.component';
+import {DialogAddDatabagComponent} from './components/dialog-add-databag/dialog-add-databag.component';
+import {DialogDefineDatabagComponent} from './components/dialog-define-databag/dialog-define-databag.component';
+import {DragAndDropDirective} from './directives/drag-and-drop.directive';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json')
@@ -44,6 +49,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     PageNotFoundPageComponent,
     SupportComponent,
     SupportPageComponent,
+    DatabagListComponent,
+    DatabagPlaceholderComponent,
+    DialogAddDatabagComponent,
+    DialogDefineDatabagComponent,
+    DragAndDropDirective,
+    DialogDynamicComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,8 +76,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
       );
     }),
     MaterialModule,
-    MatListModule,
-    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

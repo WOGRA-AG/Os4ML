@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {ObjectstoreService} from "../../../../build/openapi/objectstore";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";

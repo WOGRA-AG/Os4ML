@@ -1,0 +1,51 @@
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-container {
+  min-width: 584px;
+  min-height: 635px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-button {
+  align-self: end;
+}
+
+.divider-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.line {
+  flex: 1
+}
+
+.text {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.upload-container {
+  min-width: 270px;
+  max-width: 270px;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dnd-container {
+  margin-top: 20px;
+}
