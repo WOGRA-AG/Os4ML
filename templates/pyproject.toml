@@ -2,7 +2,7 @@
 name = "os4ml components"
 version = "0.1.0"
 description = ""
-authors = ["Dennis Rall <dennis.rall@wogra.com>"]
+authors = ["WOGRA AG <info@wogra.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
