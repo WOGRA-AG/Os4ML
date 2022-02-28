@@ -4,7 +4,7 @@ metadata:
   generateName: download-and-ludwig-solver-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-28T14:07:25.266027'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-28T14:16:51.950444'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
@@ -282,13 +282,13 @@ spec:
             categories = dataset[label].unique().astype(str)
 
             model.train(df_train, df_validate, df_test)
-            stats, pred, _ = model.evaluate(dataset, collect_predictions=True)
+            stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
 
             accuracy = float(stats[label]['accuracy'])
 
             prediction_key = next(iter(pred))
             y_pred = pred[prediction_key]
-            y_true = dataset[label].astype(str)
+            y_true = df_test[label].astype(str)
             conf_matrix = confusion_matrix(y_true, y_pred, labels=categories).tolist()
 
             metrics.log_metric('accuracy', accuracy)
@@ -356,7 +356,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "d44f71a7195c4b10c93ba7ae34f62d7981518b15cb84b34584f344d1bea973cc",
+        pipelines.kubeflow.org/component_ref: '{"digest": "5b8c677c52adbca2d713a433d1bb72abdbf80f74898f8b05d8e879f1c0915535",
           "url": "../../components/ludwig_solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
           "10", "epochs": "{{inputs.parameters.epochs}}"}'

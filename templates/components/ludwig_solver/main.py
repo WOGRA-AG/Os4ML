@@ -101,13 +101,13 @@ def ludwig_solver(dataset_file: Input[Dataset],
     categories = dataset[label].unique().astype(str)
 
     model.train(df_train, df_validate, df_test)
-    stats, pred, _ = model.evaluate(dataset, collect_predictions=True)
+    stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
 
     accuracy = float(stats[label]['accuracy'])
 
     prediction_key = next(iter(pred))
     y_pred = pred[prediction_key]
-    y_true = dataset[label].astype(str)
+    y_true = df_test[label].astype(str)
     conf_matrix = confusion_matrix(y_true, y_pred, labels=categories).tolist()
 
     metrics.log_metric('accuracy', accuracy)
