@@ -1,0 +1,551 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: download-and-ludwig-solver-
+  annotations:
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-28T10:39:47.167372'
+    pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
+      "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
+      "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
+      "max_categories", "optional": true, "type": "Integer"}, {"default": "50", "name":
+      "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
+      {"default": "pipeline/download-and-ludwig-solver", "name": "pipeline-name"}],
+      "name": "download-and-ludwig-solver"}'
+    pipelines.kubeflow.org/v2_pipeline: "true"
+  labels:
+    pipelines.kubeflow.org/v2_pipeline: "true"
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+spec:
+  entrypoint: download-and-ludwig-solver
+  templates:
+  - name: download-and-ludwig-solver
+    inputs:
+      parameters:
+      - {name: bucket}
+      - {name: epochs}
+      - {name: file_name}
+      - {name: max_categories}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+    dag:
+      tasks:
+      - name: download-from-objectstore
+        template: download-from-objectstore
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: ludwig-solver
+        template: ludwig-solver
+        dependencies: [download-from-objectstore, sniff-datatypes]
+        arguments:
+          parameters:
+          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          artifacts:
+          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
+          - {name: sniff-datatypes-Output, from: '{{tasks.sniff-datatypes.outputs.artifacts.sniff-datatypes-Output}}'}
+      - name: sniff-datatypes
+        template: sniff-datatypes
+        dependencies: [download-from-objectstore]
+        arguments:
+          parameters:
+          - {name: max_categories, value: '{{inputs.parameters.max_categories}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          artifacts:
+          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
+  - name: download-from-objectstore
+    container:
+      args:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.11' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+            import pandas as pd
+            data_uri: str = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            return pd.read_excel(data_uri, sheet_name='train').to_csv(index=False)
+
+      - --executor_input
+      - '{{$}}'
+      - --function_to_execute
+      - download_from_objectstore
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, download-from-objectstore,
+        --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
+        --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
+        --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
+        'file_name={{inputs.parameters.file_name}}', --]
+      env:
+      - name: KFP_POD_NAME
+        valueFrom:
+          fieldRef: {fieldPath: metadata.name}
+      - name: KFP_POD_UID
+        valueFrom:
+          fieldRef: {fieldPath: metadata.uid}
+      - name: KFP_NAMESPACE
+        valueFrom:
+          fieldRef: {fieldPath: metadata.namespace}
+      - name: WORKFLOW_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
+      - name: KFP_RUN_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
+      - name: ENABLE_CACHING
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'python:3.9.10-slim'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
+          "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
+          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+      envFrom:
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
+      image: python:3.9.10-slim
+      volumeMounts:
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
+    inputs:
+      parameters:
+      - {name: bucket}
+      - {name: file_name}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+    outputs:
+      artifacts:
+      - {name: download-from-objectstore-Output, path: /tmp/outputs/Output/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "5b8d2e861c46f6e325d8928be48c6044c2dcdef346076a2d050ca19002337012",
+          "url": "../../components/download-dataset-from-objectstore/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
+          "file_name": "{{inputs.parameters.file_name}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
+    volumes:
+    - {name: kfp-launcher}
+  - name: ludwig-solver
+    container:
+      args:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def ludwig_solver(dataset_file: Input[Dataset],
+                          settings_file: Input[Dataset],
+                          cls_metrics: Output[ClassificationMetrics],
+                          metrics: Output[Metrics],
+                          batch_size: int = 8,
+                          epochs: int = 50,
+                          early_stop: int = 10):
+            from enum import Enum
+            import pandas as pd
+            import json
+            from sklearn.model_selection import train_test_split
+            import logging
+            from ludwig.api import LudwigModel
+            from dataclasses import dataclass
+            from typing import List
+
+            class ColumnDataType(str, Enum):
+                NUMERICAL = 'numerical'
+                DATE = 'date'
+                CATEGORY = 'category'
+                TEXT = 'text'
+
+            class ColumnUsage(str, Enum):
+                LABEL = 'label'
+                FEATURE = 'feature'
+
+            @dataclass
+            class Column:
+                name: str
+                type: str
+                usage: str
+                num_entries: int
+
+            def build_model_definition(columns: List[Column]):
+                definition = {
+                    "input_features": [],
+                    "output_features": [],
+                    "training": {
+                        "batch_size": batch_size,
+                        "epochs": epochs,
+                        "early_stop": early_stop,
+                    }
+                }
+                feature_descriptions = (
+                    create_feature_description(column)
+                    for column in columns
+                    if column.usage == ColumnUsage.FEATURE
+                )
+                label_descriptions = (
+                    create_label_description(column)
+                    for column in columns
+                    if column.usage == ColumnUsage.LABEL
+                )
+                definition['input_features'].extend(feature_descriptions)
+                definition['output_features'].extend(label_descriptions)
+                return definition
+
+            def create_feature_description(feature: Column) -> dict:
+                feature_desc = {
+                    'name': feature.name,
+                    'type': feature.type,
+                }
+                if feature.type == ColumnDataType.NUMERICAL:
+                    feature_desc['preprocessing'] = {
+                        'fill_value': 0
+                    }
+                return feature_desc
+
+            def create_label_description(label: Column) -> dict:
+                label_type = ColumnDataType.NUMERICAL \
+                    if label.type == ColumnDataType.NUMERICAL \
+                    else ColumnDataType.CATEGORY
+                return {
+                    'name': label.name,
+                    'type': label_type,
+                }
+
+            with open(settings_file.path) as file:
+                settings = json.load(file)
+
+            columns = [
+                Column(**column_dict)
+                for column_dict in settings['columns']
+            ]
+
+            model_definition = build_model_definition(columns)
+            model = LudwigModel(model_definition, logging_level=logging.INFO)
+
+            with open(dataset_file.path, 'r') as input_file:
+                dataset = pd.read_csv(input_file)
+
+            dataset = dataset.sample(frac=1.)
+            df_test = dataset[:200]
+            df_train, df_validate = train_test_split(dataset, test_size=0.1,
+                                                     random_state=42)
+            label = model_definition['output_features'][0]['name']
+            categories_raw = dataset[label].unique()
+            categories = [str(category) for category in categories_raw]
+
+            model.train(df_train, df_validate, df_test)
+            stats, *_ = model.evaluate(df_test, collect_overall_stats=True)
+
+            accuracy = float(stats[label]['accuracy'])
+            conf_matrix = stats[label]['confusion_matrix']
+
+            metrics.log_metric('accuracy', accuracy)
+            cls_metrics.log_confusion_matrix(categories, conf_matrix)
+
+      - --executor_input
+      - '{{$}}'
+      - --function_to_execute
+      - ludwig_solver
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, ludwig-solver, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, batch_size=8, early_stop=10, 'epochs={{inputs.parameters.epochs}}',
+        --]
+      env:
+      - name: KFP_POD_NAME
+        valueFrom:
+          fieldRef: {fieldPath: metadata.name}
+      - name: KFP_POD_UID
+        valueFrom:
+          fieldRef: {fieldPath: metadata.uid}
+      - name: KFP_NAMESPACE
+        valueFrom:
+          fieldRef: {fieldPath: metadata.namespace}
+      - name: WORKFLOW_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
+      - name: KFP_RUN_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
+      - name: ENABLE_CACHING
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
+          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}}, "inputArtifacts":
+          {"dataset_file": {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle":
+          "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "settings_file":
+          {"metadataPath": "/tmp/inputs/settings_file/data", "schemaTitle": "system.Dataset",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {"cls_metrics": {"schemaTitle": "system.ClassificationMetrics",
+          "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/cls_metrics/data"},
+          "metrics": {"schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/metrics/data"}}}'}
+      envFrom:
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig
+      volumeMounts:
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
+    inputs:
+      parameters:
+      - {name: epochs}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      artifacts:
+      - {name: download-from-objectstore-Output, path: /tmp/inputs/dataset_file/data}
+      - {name: sniff-datatypes-Output, path: /tmp/inputs/settings_file/data}
+    outputs:
+      artifacts:
+      - {name: ludwig-solver-cls_metrics, path: /tmp/outputs/cls_metrics/data}
+      - {name: ludwig-solver-metrics, path: /tmp/outputs/metrics/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "2730f02e5641cb2e54c67194e58d42a2eb4465205d00424e1915d457db0b5cf1",
+          "url": "../../components/ludwig_solver/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
+          "10", "epochs": "{{inputs.parameters.epochs}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
+    volumes:
+    - {name: kfp-launcher}
+  - name: sniff-datatypes
+    container:
+      args:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def sniff_datatypes(csv_file: Input[Dataset],
+                            max_categories: int = 10,
+                            dataset_type: str = 'local_file') -> Dataset:
+            import pandas as pd
+            import json
+            from enum import Enum
+            from dataclasses import dataclass
+
+            class ColumnDataType(str, Enum):
+                NUMERICAL = 'numerical'
+                DATE = 'date'
+                CATEGORY = 'category'
+                TEXT = 'text'
+
+            class ColumnUsage(str, Enum):
+                LABEL = 'label'
+                FEATURE = 'feature'
+
+            @dataclass
+            class Column:
+                name: str
+                type: str
+                usage: str
+                num_entries: int
+
+            def sniff_column_datatypes(df: pd.DataFrame) -> list[Column]:
+                columns_and_types = (
+                    (name, *sniff_series(column))
+                    for name, column in df.iteritems()
+                )
+                *columns, last_column = columns_and_types
+                feature_columns = (
+                    Column(column, type_, ColumnUsage.FEATURE, num_entries)
+                    for column, type_, num_entries in columns
+                )
+                label_column = Column(last_column[0], last_column[1],
+                                      ColumnUsage.LABEL, last_column[2])
+                return [*feature_columns, label_column]
+
+            def sniff_series(series: pd.Series) -> tuple[ColumnDataType, int]:
+                column_type = ColumnDataType.TEXT
+                datatype = str(series.dtype)
+                if 'int' in datatype or 'float' in datatype:
+                    column_type = ColumnDataType.NUMERICAL
+                if 'date' in datatype:
+                    column_type = ColumnDataType.DATE
+                if series.nunique() <= max_categories:
+                    column_type = ColumnDataType.CATEGORY
+                return column_type, series.size
+
+            def get_num_rows(columns: list[Column]) -> int:
+                if not columns:
+                    return 0
+                first, *rest = columns
+                rows = first.num_entries
+                assert (column.num_entries == rows for column in columns)
+                return rows
+
+            with open(csv_file.path, 'r') as input_file:
+                df = pd.read_csv(input_file)
+
+            column_info = sniff_column_datatypes(df)
+            num_rows = get_num_rows(column_info)
+            num_cols = len(column_info)
+            column_info_dicts = [column.__dict__ for column in column_info]
+            return json.dumps({
+                'dataset_type': dataset_type,
+                'number_rows': num_rows,
+                'number_columns': num_cols,
+                'columns': column_info_dicts
+            })
+
+      - --executor_input
+      - '{{$}}'
+      - --function_to_execute
+      - sniff_datatypes
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, sniff-datatypes, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, dataset_type=local_file, 'max_categories={{inputs.parameters.max_categories}}',
+        --]
+      env:
+      - name: KFP_POD_NAME
+        valueFrom:
+          fieldRef: {fieldPath: metadata.name}
+      - name: KFP_POD_UID
+        valueFrom:
+          fieldRef: {fieldPath: metadata.uid}
+      - name: KFP_NAMESPACE
+        valueFrom:
+          fieldRef: {fieldPath: metadata.namespace}
+      - name: WORKFLOW_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
+      - name: KFP_RUN_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
+      - name: ENABLE_CACHING
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'amancevice/pandas:1.4.1-slim'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"dataset_type": {"type":
+          "STRING"}, "max_categories": {"type": "INT"}}, "inputArtifacts": {"csv_file":
+          {"metadataPath": "/tmp/inputs/csv_file/data", "schemaTitle": "system.Dataset",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+      envFrom:
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
+      image: amancevice/pandas:1.4.1-slim
+      volumeMounts:
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
+    inputs:
+      parameters:
+      - {name: max_categories}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      artifacts:
+      - {name: download-from-objectstore-Output, path: /tmp/inputs/csv_file/data}
+    outputs:
+      artifacts:
+      - {name: sniff-datatypes-Output, path: /tmp/outputs/Output/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "dd8dbca39e485ca728b475ece3d4aee0a8c707a65c0ae29236bd323012d95be2",
+          "url": "../../components/sniffle-dataset/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"dataset_type": "local_file",
+          "max_categories": "{{inputs.parameters.max_categories}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
+    volumes:
+    - {name: kfp-launcher}
+  arguments:
+    parameters:
+    - {name: bucket, value: os4ml}
+    - {name: file_name, value: titanic.xlsx}
+    - {name: max_categories, value: '10'}
+    - {name: epochs, value: '50'}
+    - {name: pipeline-root, value: ''}
+    - {name: pipeline-name, value: pipeline/download-and-ludwig-solver}
+  serviceAccountName: pipeline-runner
+  imagePullSecrets:
+    - name: registry-credentials
