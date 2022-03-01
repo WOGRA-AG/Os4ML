@@ -26,7 +26,7 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()">
+    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()" [disabled]="!uuid">
       {{"dialog.add_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>
