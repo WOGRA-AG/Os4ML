@@ -1,4 +1,3 @@
-from .bucket import Bucket
-from .item import Item
-from .message import Message
-from .url import Url
+from openapi_server.models.bucket import Bucket
+from openapi_server.models.item import Item
+from openapi_server.models.url import Url

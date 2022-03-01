@@ -15,11 +15,11 @@ from src.api.routers.object_router import (
     put_object_by_name,
 )
 from src.models import Item, Url
-from src.services.minio_service import MinioServiceInterface
+from src.services.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 minio_mock_client = MinioMock()
-minio_service_mock = MinioServiceInterface(client=minio_mock_client)
+minio_service_mock = MinioService(client=minio_mock_client)
 
 
 async def create_body() -> Message:

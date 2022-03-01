@@ -28,7 +28,7 @@
     "define_databag": {
       "title": "Add Databag",
       "label": "Databag Name",
-      "main_button": "Next Step",
+      "main_button": "Create Bag",
       "placeholder": "Databag Name",
       "back_button": "Back"
     }

@@ -6,24 +6,26 @@ from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 
-from src import MINIO_KEY, MINIO_SECRET, MINIO_SECURE, MINIO_URL
+from src import MINIO_KEY, MINIO_SECRET, MINIO_SECURE, MINIO_URL, CONFIG_FILE_NAME
 from src.models import Bucket, Item, Url
 
 from .storage_service_interface import StorageServiceInterface
 
 
-class MinioServiceInterface(StorageServiceInterface):
+class MinioService(StorageServiceInterface):
     def __init__(
         self,
         minio_url: str = MINIO_URL,
         minio_key: str = MINIO_KEY,
         minio_secret: str = MINIO_SECRET,
         minio_secure: bool = MINIO_SECURE,
+        config_file_name: str = CONFIG_FILE_NAME,
         client=None,
     ):
         if client is None:
             client = self.init_client(minio_url, minio_key, minio_secret, minio_secure)
         self.client = client
+        self.config_file_name = config_file_name
 
     def init_client(self, minio_url: str, minio_key: str, minio_secret: str, minio_secure: bool) -> Minio:
         return Minio(endpoint=minio_url, access_key=minio_key, secret_key=minio_secret, secure=minio_secure)
@@ -73,3 +75,11 @@ class MinioServiceInterface(StorageServiceInterface):
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
         self.client.put_object(bucket_name, object_name, data, size, content_type)
+
+    def get_databags(self) -> List[Bucket]:
+        buckets: List[Bucket] = self.get_buckets()
+        return [bucket for bucket in buckets if self.bucket_is_databag(bucket)]
+
+    def bucket_is_databag(self, bucket: Bucket) -> bool:
+        minio_objects: List[MinioObject] = self.client.list_objects(bucket.name)
+        return len(list(filter(lambda d: d.object_name == self.config_file_name, minio_objects))) > 0

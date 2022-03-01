@@ -3,11 +3,11 @@ from fastapi import HTTPException
 
 from src.api.routers.bucket_router import delete_bucket, post_new_bucket
 from src.models import Bucket
-from src.services.minio_service import MinioServiceInterface
+from src.services.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 minio_mock_client = MinioMock()
-minio_service_mock = MinioServiceInterface(client=minio_mock_client)
+minio_service_mock = MinioService(client=minio_mock_client)
 
 
 @pytest.mark.asyncio

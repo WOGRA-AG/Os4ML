@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Path
 
-from src.models import Bucket, Message
-from src.services import MinioServiceInterface
+from src.models import Bucket
+from src.services import MinioService
 
 router = APIRouter(prefix="/apis/v1beta1")
 
@@ -10,14 +10,14 @@ router = APIRouter(prefix="/apis/v1beta1")
     "/objectstore/{bucket_name}",
     responses={
         204: {"description": "The specified resource was deleted"},
-        404: {"model": Message, "description": "The specified resource was not found"},
+        404: {"model": str, "description": "The specified resource was not found"},
     },
     tags=["objectstore", "bucket"],
     summary="delete bucket",
 )
 async def delete_bucket(
     bucket_name: str = Path(..., description="Name of Bucket"),
-    minio_service: MinioServiceInterface = Depends(MinioServiceInterface),
+    minio_service: MinioService = Depends(MinioService),
 ) -> None:
     minio_service.delete_bucket(bucket_name=bucket_name)
 
@@ -34,6 +34,6 @@ async def delete_bucket(
 )
 async def post_new_bucket(
     bucket_name: str = Path(..., description="Name of Bucket"),
-    minio_service: MinioServiceInterface = Depends(MinioServiceInterface),
+    minio_service: MinioService = Depends(MinioService),
 ) -> Bucket:
     return minio_service.create_bucket(bucket_name)
