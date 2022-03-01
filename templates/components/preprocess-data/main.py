@@ -1,20 +1,11 @@
-from os import remove
 from typing import NamedTuple
 
-from kfp.compiler import Compiler
-from kfp.dsl import PipelineExecutionMode
-from kfp.v2.dsl import component, Dataset, pipeline, Input
+from kfp.v2.dsl import component, Dataset, Input
 
 
-@component()
-def dummy_component() -> Dataset:
-    return ""
-
-
-@component(base_image="python:3.9.10-slim",
-           output_component_file="component.yaml",
-           packages_to_install=["pandas>=1.4.0"])
-def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Dataset), ('y', Dataset)]):
+def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data",
+                                                             [('x', Dataset),
+                                                              ('y', Dataset)]):
     import pandas as pd
     import re
     import numpy as np
@@ -27,7 +18,8 @@ def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Data
     df = df.drop(["PassengerId"], axis=1)
     deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 8}
     df["Cabin"] = df["Cabin"].fillna("U0")
-    df["Deck"] = df["Cabin"].map(lambda x: re.compile("([a-zA-Z]+)").search(x).group())
+    df["Deck"] = df["Cabin"].map(
+        lambda x: re.compile("([a-zA-Z]+)").search(x).group())
     df["Deck"] = df["Deck"].map(deck).fillna(0).astype(int)
     df = df.drop(["Cabin"], axis=1)
 
@@ -50,8 +42,9 @@ def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Data
     # extract titles
     df['Title'] = df.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
     # replace titles with a more common title or as Rare
-    df['Title'] = df['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
-                                       'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
+    df['Title'] = df['Title'].replace(
+        ['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
+         'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
     df['Title'] = df['Title'].replace('Mlle', 'Miss')
     df['Title'] = df['Title'].replace('Ms', 'Miss')
     df['Title'] = df['Title'].replace('Mme', 'Mrs')
@@ -104,13 +97,7 @@ def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Data
     return output(df_x.to_csv(index=False), df_y.to_csv(index=False))
 
 
-@pipeline(name="preprocess-pipeline")
-def pipeline():
-    dummy_task = dummy_component()
-    preprocess_task = preprocess_data(dummy_task.output)
-
-
 if __name__ == "__main__":
-    file_name = "pipeline.yaml"
-    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(pipeline_func=pipeline, package_path=file_name)
-    remove(file_name)
+    component(preprocess_data, base_image="python:3.9.10-slim",
+              output_component_file="component.yaml",
+              packages_to_install=["pandas>=1.4.0"])

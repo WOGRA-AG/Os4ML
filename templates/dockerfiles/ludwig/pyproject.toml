@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "jupyter-gpu"
+version = "0.1.0"
+description = ""
+authors = ["thomasf <tf@wogra.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8.9"
+ipykernel =  "~5.1.1"
+nbformat = "~4.4.0"
+jupyter-http-over-ws = "^0.0.8"
+jupyter = "^1.0.0"
+matplotlib = "^3.4.1"
+ludwig = {version = "^0.3.3", extras = ["text"]}
+pandas = "^1.1.0"
+boto3 = "^1.17.61"
+scikit-learn = "^0.24.2"
+seaborn = "^0.11.1"
+dask = {version = "^2021.4.1", extras = ["complete"]}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
