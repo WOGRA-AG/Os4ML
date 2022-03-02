@@ -30,7 +30,8 @@
       "label": "Databag Name",
       "main_button": "Create Bag",
       "placeholder": "Databag Name",
-      "back_button": "Back"
+      "back_button": "Back",
+      "columns": "Databag Fields"
     }
   },
   "page": {
