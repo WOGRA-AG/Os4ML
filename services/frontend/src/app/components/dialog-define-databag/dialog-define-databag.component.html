@@ -1,7 +1,7 @@
 <div class="dialog-container">
   <div class="headline">
     <h5 mat-dialog-title>{{"dialog.define_databag.title" | translate}}</h5>
-    <button mat-icon-button mat-dialog-close class="close-button" tabindex="-1">
+    <button mat-icon-button (click)="close()" class="close-button" tabindex="-1">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -16,9 +16,9 @@
       <mat-divider class="divider"></mat-divider>
       <span class="mat-body-1 on-surface-medium">Databag Fields</span>
       <div class="columns">
-        <mat-form-field *ngFor="let column of columns" appearance="outline">
+        <mat-form-field *ngFor="let column of databag.columns" appearance="outline">
           <mat-label>{{column.name}}</mat-label>
-          <mat-select [(ngModel)]="column.type" name="col_{{column.name}}">
+          <mat-select [(ngModel)]="column.type" name="col_{{column.name}}" required>
             <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{type}}</mat-option>
           </mat-select>
         </mat-form-field>

@@ -1,16 +1,24 @@
+import json
 from datetime import datetime, timedelta
 from typing import List
 
 from minio import Minio
 from minio.datatypes import Bucket, Object
+from urllib3 import HTTPResponse
+
+from src.models import Databag
 
 
-class MinioMock:
+class MinioMock(Minio):
     def __init__(self, endpoint: str = "", access_key: str = "", secret_key: str = "", secure: bool = False):
         pass
 
     def list_buckets(self) -> List[Bucket]:
-        return [Bucket(name="test", creation_date=datetime.utcnow())]
+        return [
+            Bucket(name="test", creation_date=datetime.utcnow()),
+            Bucket(name="os4ml", creation_date=datetime.utcnow()),
+            Bucket(name="os6ml", creation_date=datetime.utcnow()),
+        ]
 
     def make_bucket(self, bucket_name: str, location=None, object_lock=False) -> None:
         if "_" in bucket_name:
@@ -18,7 +26,7 @@ class MinioMock:
         return
 
     def bucket_exists(self, bucket_name) -> bool:
-        return bucket_name == "os4ml"
+        return bucket_name == "os4ml" or bucket_name == "os6ml"
 
     def remove_bucket(self, bucket_name) -> None:
         return
@@ -34,7 +42,16 @@ class MinioMock:
         use_api_v1=False,
         use_url_encoding_type=True,
     ) -> List[Object]:
-        return [Object(bucket_name="os4ml", object_name="object")]
+        objects_list_os4ml = [
+            Object(bucket_name="os4ml", object_name="object.csv"),
+            Object(bucket_name="os4ml", object_name="databag_config.json"),
+        ]
+        objects_list_os6ml = [Object(bucket_name="os6ml", object_name="test.txt")]
+        if bucket_name == "os4ml":
+            return objects_list_os4ml
+        if bucket_name == "os6ml":
+            return objects_list_os6ml
+        return []
 
     def get_presigned_url(
         self,
@@ -69,3 +86,33 @@ class MinioMock:
         legal_hold=False,
     ) -> None:
         return
+
+    def fput_object(
+        self,
+        bucket_name,
+        object_name,
+        file_path,
+        content_type="application/octet-stream",
+        metadata=None,
+        sse=None,
+        progress=None,
+        part_size=0,
+        num_parallel_uploads=3,
+        tags=None,
+        retention=None,
+        legal_hold=False,
+    ) -> None:
+        return
+
+    def get_object(
+        self,
+        bucket_name,
+        object_name,
+        offset=0,
+        length=0,
+        request_headers=None,
+        ssec=None,
+        version_id=None,
+        extra_query_params=None,
+    ) -> HTTPResponse:
+        return HTTPResponse(json.dumps(Databag(bucket_name=bucket_name, databag_name=bucket_name, columns=[]).dict()))

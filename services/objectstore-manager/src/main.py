@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.routers import bucket_router, object_router, objectstore_router, databag_router
+from src.api.routers import bucket_router, databag_router, object_router, objectstore_router
 
 VERSION: str = "1.0"
 

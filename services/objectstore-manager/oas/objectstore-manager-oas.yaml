@@ -37,7 +37,40 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Bucket'
+                  $ref: '#/components/schemas/Databag'
+
+  "/apis/v1beta1/objectstore/databag/{BucketName}":
+    get:
+      summary: "get databag by bucket name"
+      operationId: getDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Databag'
+    put:
+      summary: "update databag"
+      operationId: putDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Databag'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
 
   "/apis/v1beta1/objectstore/{BucketName}":
     post:
@@ -64,8 +97,6 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/Deleted'
-        404:
-          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/objectstore/{BucketName}/object":
     get:
@@ -138,6 +169,10 @@ paths:
       responses:
         201:
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
         404:
           $ref: '#/components/responses/NotFound'
 
@@ -187,6 +222,34 @@ components:
       required:
         - bucket_name
         - object_name
+    Column:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        usage:
+          type: string
+        num_entries:
+          type: integer
+    Databag:
+      properties:
+        dataset_type:
+          type: string
+        file_name:
+          type: string
+        databag_name:
+          type: string
+        bucket_name:
+          $ref: "#/components/schemas/BucketName"
+        number_rows:
+          type: integer
+        number_columns:
+          type: integer
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/Column"
     Error:
       required:
         - path

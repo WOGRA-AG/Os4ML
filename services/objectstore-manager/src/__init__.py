@@ -16,7 +16,7 @@ MINIO_SECURE: bool = False if os.getenv("OBJECTSTORECONFIG_SECURE") is None else
 MINIO_BUCKET: str = "os4ml" if os.getenv("OBJECTSTORECONFIG_BUCKETNAME") is None else os.getenv(
     "OBJECTSTORECONFIG_BUCKETNAME"
 )
-CONFIG_FILE_NAME: str = "databag_config.json" if os.getenv(
+CONFIG_FILE_NAME: str = "databag_config.json" if os.getenv("DATABAG_CONFIG_FILE_NAME") is None else os.getenv(
     "DATABAG_CONFIG_FILE_NAME"
-) is None else os.getenv("DATABAG_CONFIG_FILE_NAME")
+)
 EXPIRY: timedelta = timedelta(hours=2)

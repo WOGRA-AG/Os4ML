@@ -1,7 +1,7 @@
 from io import BytesIO
 from typing import List
 
-from src.models import Bucket, Item, Url
+from src.models import Bucket, Databag, Item, Url
 
 
 class StorageServiceInterface:
@@ -27,4 +27,16 @@ class StorageServiceInterface:
         raise NotImplementedError()
 
     def put_object(self, bucket_name: str, object_name: str, data: BytesIO, size: int, content_type: str) -> None:
+        raise NotImplementedError()
+
+    def get_databags(self) -> List[Databag]:
+        raise NotImplementedError()
+
+    def bucket_is_databag(self, bucket_name: str) -> bool:
+        raise NotImplementedError()
+
+    def get_databag_by_bucket_name(self, bucket_name: str) -> Databag:
+        raise NotImplementedError()
+
+    def put_databag_by_bucket_name(self, bucket_name: str, databag: Databag):
         raise NotImplementedError()

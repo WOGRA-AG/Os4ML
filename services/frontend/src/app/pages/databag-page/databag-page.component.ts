@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Bucket} from '../../../../build/openapi/objectstore';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Databag} from '../../../../build/openapi/objectstore';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogAddDatabagComponent} from '../../components/dialog-add-databag/dialog-add-databag.component';
 import {DialogDynamicComponent} from "../../components/dialog-dynamic/dialog-dynamic.component";
@@ -11,15 +11,20 @@ import {DialogDynamicComponent} from "../../components/dialog-dynamic/dialog-dyn
   styleUrls: ['./databag-page.component.scss']
 })
 export class DatabagPageComponent {
-  databags: Array<Bucket> = [];
+  databags: Array<Databag> = [];
 
-  constructor(private activatedRoute: ActivatedRoute, public dialog: MatDialog) {
-    this.databags = this.activatedRoute.snapshot.data['databags'];
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) {
+    this.activatedRoute.data.subscribe(data => {
+      this.databags = data['databags'];
+    });
   }
 
   openAddDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: DialogAddDatabagComponent}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
   }
 }

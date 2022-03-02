@@ -22,8 +22,7 @@ router = APIRouter(prefix="/apis/v1beta1")
     response_model=List[Item],
 )
 async def get_all_objects(
-    bucket_name: str = Path(..., description="Name of Bucket"),
-    minio_service: MinioService = Depends(MinioService),
+    bucket_name: str = Path(..., description="Name of Bucket"), minio_service: MinioService = Depends(MinioService),
 ) -> List[Item]:
     return minio_service.list_objects(bucket_name)
 
@@ -66,7 +65,7 @@ async def get_object_by_name(
 @router.put(
     "/objectstore/{bucket_name}/object/{object_name}",
     responses={
-        201: {"description": "Created"},
+        201: {"model": Item, "description": "Created"},
         404: {"model": str, "description": "The specified resource was not found"},
     },
     tags=["objectstore", "object"],
@@ -77,7 +76,7 @@ async def put_object_by_name(
     bucket_name: str = Path(..., description="Name of Bucket"),
     object_name: str = Path(..., description="Name of Object"),
     minio_service: MinioService = Depends(MinioService),
-) -> None:
+) -> Item:
     file_content: bytes = await request.body()
     file: BytesIO = BytesIO(file_content)
     return minio_service.put_object(bucket_name, object_name, file, len(file_content), "application/octet-stream")

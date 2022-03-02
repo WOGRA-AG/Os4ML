@@ -8,16 +8,12 @@ router = APIRouter(prefix="/apis/v1beta1")
 
 @router.delete(
     "/objectstore/{bucket_name}",
-    responses={
-        204: {"description": "The specified resource was deleted"},
-        404: {"model": str, "description": "The specified resource was not found"},
-    },
+    responses={204: {"description": "The specified resource was deleted"},},
     tags=["objectstore", "bucket"],
     summary="delete bucket",
 )
 async def delete_bucket(
-    bucket_name: str = Path(..., description="Name of Bucket"),
-    minio_service: MinioService = Depends(MinioService),
+    bucket_name: str = Path(..., description="Name of Bucket"), minio_service: MinioService = Depends(MinioService),
 ) -> None:
     minio_service.delete_bucket(bucket_name=bucket_name)
 
@@ -33,7 +29,6 @@ async def delete_bucket(
     response_model=Bucket,
 )
 async def post_new_bucket(
-    bucket_name: str = Path(..., description="Name of Bucket"),
-    minio_service: MinioService = Depends(MinioService),
+    bucket_name: str = Path(..., description="Name of Bucket"), minio_service: MinioService = Depends(MinioService),
 ) -> Bucket:
     return minio_service.create_bucket(bucket_name)

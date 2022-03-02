@@ -29,7 +29,5 @@ async def test_delete_bucket():
 
 
 @pytest.mark.asyncio
-async def test_delete_bucket_with_exception():
-    with pytest.raises(HTTPException) as excinfo:
-        await delete_bucket(bucket_name="os5ml", minio_service=minio_service_mock)
-    assert "status_code=404" in str(excinfo)
+async def test_delete_bucket_with_non_existant():
+    await delete_bucket(bucket_name="os5ml", minio_service=minio_service_mock)
