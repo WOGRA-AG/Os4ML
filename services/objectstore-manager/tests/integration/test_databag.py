@@ -14,9 +14,7 @@ minio_service_mock = MinioService(client=minio_mock_client)
 
 @pytest.mark.asyncio
 async def test_get_databag_by_bucket_name():
-    databag: Databag = Databag(
-        **(await get_databag_by_bucket_name(bucket_name="os4ml", minio_service=minio_service_mock))
-    )
+    databag: Databag = await get_databag_by_bucket_name(bucket_name="os4ml", minio_service=minio_service_mock)
     assert type(databag) == Databag
 
 
@@ -36,9 +34,7 @@ async def test_get_databag_by_bucket_name_with_exception():
 
 @pytest.mark.asyncio
 async def test_get_all_databags():
-    databags: List[Databag] = [
-        Databag(**databag) for databag in await get_all_databags(minio_service=minio_service_mock)
-    ]
+    databags: List[Databag] = await get_all_databags(minio_service=minio_service_mock)
     assert type(databags) == list
     assert len(databags) > 0
 

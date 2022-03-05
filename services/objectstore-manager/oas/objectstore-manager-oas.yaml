@@ -176,10 +176,29 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/url":
+    get:
+      summary: "get Object Url"
+      operationId: getObjectUrl
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Url'
+
   "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/presignedurl":
     get:
       summary: 'get presigned put Url'
-      operationId: getPresignedUrl
+      operationId: getPresignedPutUrl
       tags:
         - objectstore
         - bucket
@@ -196,6 +215,74 @@ paths:
                 $ref: '#/components/schemas/Url'
         404:
           $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/template/component":
+    get:
+      summary: 'get all component templates'
+      operationId: getAllComponentTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline":
+    get:
+      summary: 'get all pipeline templates'
+      operationId: getAllPipelineTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineTemplate'
+  "/apis/v1beta1/objectstore/template/component/{ComponentName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getComponentTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/ComponentName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline/{PipelineName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineTemplate'
+
 components:
   schemas:
     Url:
@@ -205,6 +292,10 @@ components:
     ObjectName:
       type: string
     BucketName:
+      type: string
+    ComponentName:
+      type: string
+    PipelineName:
       type: string
     Bucket:
       type: object
@@ -250,6 +341,18 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Column"
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipeline_step:
+          type: string
+        file_url:
+          type: string
     Error:
       required:
         - path
@@ -273,6 +376,20 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ObjectName'
+    ComponentName:
+      name: ComponentName
+      in: path
+      description: Name of Component Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/ComponentName'
+    PipelineName:
+      name: PipelineName
+      in: path
+      description: Name of Pipeline Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/PipelineName'
 
   responses:
     Created:

@@ -28,7 +28,7 @@ async def get_all_objects(
 
 
 @router.delete(
-    "/objectstore/{bucket_name}/object/{object_name}",
+    "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         204: {"description": "The specified resource was deleted"},
         404: {"model": str, "description": "The specified resource was not found"},
@@ -45,7 +45,7 @@ async def delete_object_by_name(
 
 
 @router.get(
-    "/objectstore/{bucket_name}/object/{object_name}",
+    "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         307: {"model": str, "description": "OK"},
         404: {"model": str, "description": "The specified resource was not found"},
@@ -63,7 +63,7 @@ async def get_object_by_name(
 
 
 @router.put(
-    "/objectstore/{bucket_name}/object/{object_name}",
+    "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         201: {"model": Item, "description": "Created"},
         404: {"model": str, "description": "The specified resource was not found"},
@@ -83,7 +83,7 @@ async def put_object_by_name(
 
 
 @router.get(
-    "/objectstore/{bucket_name}/object/{object_name}/presignedurl",
+    "/objectstore/{bucket_name}/object/{object_name:path}/presignedurl",
     responses={
         200: {"model": Url, "description": "OK"},
         404: {"model": str, "description": "The specified resource was not found"},
@@ -98,3 +98,17 @@ async def get_presigned_put_url(
     minio_service: MinioService = Depends(MinioService),
 ) -> Url:
     return minio_service.get_presigned_put_url(bucket_name, object_name)
+
+
+@router.get(
+    "/apis/v1beta1/objectstore/{bucket_name}/object/{object_name:path}/url",
+    responses={200: {"model": Url, "description": "OK"},},
+    tags=["objectstore", "bucket", "object"],
+    summary="get Object Url",
+)
+async def get_object_url(
+    bucket_name: str = Path(..., description="Name of Bucket"),
+    object_name: str = Path(..., description="Name of Object"),
+    minio_service: MinioService = Depends(MinioService),
+) -> Url:
+    return Url(url=minio_service.get_presigned_get_url(bucket_name, object_name))

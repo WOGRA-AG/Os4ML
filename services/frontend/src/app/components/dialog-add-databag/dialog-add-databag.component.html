@@ -5,6 +5,7 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
+
   <mat-dialog-content>
     <form class="input-form">
       <mat-form-field appearance="outline">
@@ -19,16 +20,16 @@
           <mat-divider class="line"></mat-divider>
         </div>
         <div class="dnd-container">
-          <app-file-upload class="upload-file" (fileChange)="uploadFile($event)">
-          </app-file-upload>
-          <span *ngIf="file.size > 0" class="selected-file mat-caption accent">{{file.name}}</span>
+          <app-file-upload class="upload-file" [(file)]="file"></app-file-upload>
+          <span *ngIf="file.name !== ''" class="selected-file mat-caption accent">{{file.name}}</span>
         </div>
       </div>
     </form>
   </mat-dialog-content>
+
   <mat-dialog-actions align="end">
     <mat-spinner color="accent" *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
-    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()" [disabled]="file.size === 0">
+    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()" [disabled]="file.name === ''">
       {{"dialog.add_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>

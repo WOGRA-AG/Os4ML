@@ -16,7 +16,8 @@
   },
   "error": {
     "confirm": "Confirm",
-    "no_dataset": "No Dataset specified"
+    "no_dataset": "No Dataset specified",
+    "run_failed": "Pipeline Run Failed"
   },
   "dialog": {
     "add_databag": {

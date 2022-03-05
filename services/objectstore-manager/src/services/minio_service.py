@@ -8,8 +8,17 @@ from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 from urllib3 import HTTPResponse
 
-from src import CONFIG_FILE_NAME, MINIO_KEY, MINIO_SECRET, MINIO_SECURE, MINIO_URL
-from src.models import Bucket, Databag, Item, Url
+from src import (
+    COMPONENT_FILE_NAME,
+    DATABAG_CONFIG_FILE_NAME,
+    MINIO_KEY,
+    MINIO_SECRET,
+    MINIO_SECURE,
+    MINIO_URL,
+    PIPELINE_FILE_NAME,
+    TEMPLATE_METADATA_FILE_NAME,
+)
+from src.models import Bucket, Databag, Item, PipelineTemplate, Url
 
 from .storage_service_interface import StorageServiceInterface
 
@@ -21,13 +30,19 @@ class MinioService(StorageServiceInterface):
         minio_key: str = MINIO_KEY,
         minio_secret: str = MINIO_SECRET,
         minio_secure: bool = MINIO_SECURE,
-        config_file_name: str = CONFIG_FILE_NAME,
+        config_file_name: str = DATABAG_CONFIG_FILE_NAME,
+        metadata_file_name: str = TEMPLATE_METADATA_FILE_NAME,
+        component_file_name: str = COMPONENT_FILE_NAME,
+        pipeline_file_name: str = PIPELINE_FILE_NAME,
         client=None,
     ):
         if client is None:
             client = self.init_client(minio_url, minio_key, minio_secret, minio_secure)
         self.client = client
         self.config_file_name = config_file_name
+        self.metadata_file_name = metadata_file_name
+        self.component_file_name = component_file_name
+        self.pipeline_file_name = pipeline_file_name
 
     def init_client(self, minio_url: str, minio_key: str, minio_secret: str, minio_secure: bool) -> Minio:
         return Minio(endpoint=minio_url, access_key=minio_key, secret_key=minio_secret, secure=minio_secure)
@@ -64,7 +79,7 @@ class MinioService(StorageServiceInterface):
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
-        return self.client.get_presigned_url("GET", bucket_name, object_name)
+        return self.client.presigned_get_object(bucket_name, object_name)
 
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> Url:
         if not self.client.bucket_exists(bucket_name):
@@ -89,7 +104,7 @@ class MinioService(StorageServiceInterface):
         for db in databag_buckets:
             try:
                 response: HTTPResponse = self.client.get_object(db.name, self.config_file_name)
-                databag: Databag = json.loads(response.data)
+                databag: Databag = Databag(**json.loads(response.data))
                 databags.append(databag)
             finally:
                 response.close()
@@ -98,7 +113,7 @@ class MinioService(StorageServiceInterface):
 
     def bucket_is_databag(self, bucket_name: str) -> bool:
         minio_objects: List[MinioObject] = self.client.list_objects(bucket_name)
-        return len(list(filter(lambda d: d.object_name == self.config_file_name, minio_objects))) > 0
+        return self.object_list_has_file(minio_objects, self.config_file_name)
 
     def get_databag_by_bucket_name(self, bucket_name: str) -> Databag:
         if not self.client.bucket_exists(bucket_name):
@@ -107,7 +122,7 @@ class MinioService(StorageServiceInterface):
             raise HTTPException(status_code=400, detail=f"Bucket with name {bucket_name} is not a databag")
         try:
             response: HTTPResponse = self.client.get_object(bucket_name, self.config_file_name)
-            return json.loads(response.data)
+            return Databag(**json.loads(response.data))
         finally:
             response.close()
             response.release_conn()
@@ -118,3 +133,54 @@ class MinioService(StorageServiceInterface):
         with open(f"/tmp/{self.config_file_name}", "w") as file:
             json.dump(databag.dict(), file)
         self.client.fput_object(bucket_name, self.config_file_name, file.name)
+
+    def get_all_pipeline_templates(self, temp_type: str) -> List[PipelineTemplate]:
+        templates: List[PipelineTemplate] = []
+        bucket_name: str = "templates"
+        template_dirs = [
+            path for path in self.get_directories(bucket_name, temp_type) if self.is_template_dir(f"{temp_type}/{path}")
+        ]
+        for template_dir in template_dirs:
+            path: str = f"{temp_type}/{template_dir}"
+            try:
+                response: HTTPResponse = self.client.get_object(bucket_name, f"{path}/{self.metadata_file_name}")
+                template: PipelineTemplate = PipelineTemplate(**json.loads(response.data))
+                template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{self.component_file_name}")
+                template.type = (
+                    "Component" if temp_type == "components" else "Pipeline" if temp_type == "pipelines" else ""
+                )
+                templates.append(template)
+            finally:
+                response.close()
+                response.release_conn()
+        return templates
+
+    def get_directories(self, bucket_name: str, prefix: str = "") -> List[str]:
+        minio_objects: List[MinioObject] = self.client.list_objects(bucket_name, prefix=prefix, recursive=True)
+        directory_list: List[str] = [minio_object.object_name.split("/") for minio_object in minio_objects]
+        directories: List[str] = []
+        for path in directory_list:
+            if len(path) < 2:
+                continue
+            path = path[1:-1] if prefix else path[:-1]
+            current_path = ""
+            for path_component in path:
+                current_path = f"{current_path}/{path_component}" if current_path else path_component
+                directories.append(current_path)
+        return list(set(directories))
+
+    def is_template_dir(self, path: str):
+        minio_objects: List[MinioObject] = list(self.client.list_objects("templates", prefix=f"/{path}/"))
+        return self.object_list_has_file(minio_objects, f"{path}/{self.metadata_file_name}") and (
+            self.object_list_has_file(minio_objects, f"{path}/{self.pipeline_file_name}")
+            or self.object_list_has_file(minio_objects, f"{path}/{self.component_file_name}")
+        )
+
+    def object_list_has_file(self, minio_objects: List[MinioObject], file_name: str) -> bool:
+        return len(list(filter(lambda d: d.object_name == file_name, minio_objects))) > 0
+
+    def get_pipeline_template_by_name(self, temp_type: str, template_name: str):
+        comp_list = list(filter(lambda x: x.name == template_name, self.get_all_pipeline_templates(temp_type)))
+        if len(comp_list) == 0:
+            raise HTTPException(status_code=404, detail=f"Template with name {template_name} not found")
+        return comp_list.pop()

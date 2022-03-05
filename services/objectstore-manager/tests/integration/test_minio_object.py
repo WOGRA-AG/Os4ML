@@ -11,6 +11,7 @@ from src.api.routers.object_router import (
     delete_object_by_name,
     get_all_objects,
     get_object_by_name,
+    get_object_url,
     get_presigned_put_url,
     put_object_by_name,
 )
@@ -92,3 +93,16 @@ async def test_put_object_by_name():
     await put_object_by_name(
         request=request, bucket_name="os4ml", object_name="object", minio_service=minio_service_mock
     )
+
+
+@pytest.mark.asyncio
+async def test_get_object_url():
+    url: Url = await get_object_url(bucket_name="os4ml", object_name="object", minio_service=minio_service_mock)
+    assert type(url) == Url
+
+
+@pytest.mark.asyncio
+async def test_get_object_url_with_exception():
+    with pytest.raises(HTTPException) as excinfo:
+        await get_object_url(bucket_name="os5ml", object_name="object", minio_service=minio_service_mock)
+    assert "status_code=404" in str(excinfo)

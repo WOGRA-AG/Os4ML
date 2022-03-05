@@ -294,13 +294,21 @@ job-manager-build-oas:
     - openapi-generator-cli version
   script:
     - openapi-generator-cli generate
-      -i ./oas/job-manager-oas.yaml
+      -i ./job-manager/oas/job-manager-oas.yaml
       -g python-fastapi
-      -o ./build
+      -o ./job-manager/build
+      --global-property models,supportingFiles
+
+    - openapi-generator-cli generate
+      -i ./objectstore-manager/oas/objectstore-manager-oas.yaml
+      -g python
+      -o ./job-manager/build/clients/objectstore
   variables:
-    DIR: 'services/job-manager'
+    DIR: 'services'
   artifacts:
-    untracked: true
+    name: jobmanager-oas-build
+    paths:
+      - ./job-manager/build
 
 job-manager-validate-backend:
   stage: test
