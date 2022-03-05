@@ -199,7 +199,7 @@ os-manager-build-oas:
     - openapi-generator-cli version
   script:
     - openapi-generator-cli generate
-      -i ./oas/job-manager-oas.yaml
+      -i ./oas/objectstore-manager-oas.yaml
       -g python-fastapi
       -o ./build
       --global-property models,supportingFiles
