@@ -189,9 +189,29 @@ os-manager-validate-oas:
   variables:
     OAS_FILE: 'services/objectstore-manager/oas/objectstore-manager-oas.yaml'
 
+os-manager-build-oas:
+  stage: test
+  needs: []
+  image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
+  before_script:
+    - cd $DIR
+    - npm install @openapitools/openapi-generator-cli -g
+    - openapi-generator-cli version
+  script:
+    - openapi-generator-cli generate
+      -i ./oas/job-manager-oas.yaml
+      -g python-fastapi
+      -o ./build
+      --global-property models,supportingFiles
+
+  variables:
+    DIR: 'services/objectstore-manager'
+  artifacts:
+    untracked: true
+
 os-manager-validate-backend:
   stage: test
-  needs: [ ]
+  needs: [os-manager-build-oas]
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -306,9 +326,7 @@ job-manager-build-oas:
   variables:
     DIR: 'services'
   artifacts:
-    name: jobmanager-oas-build
-    paths:
-      - ./job-manager/build
+    untracked: true
 
 job-manager-validate-backend:
   stage: test
