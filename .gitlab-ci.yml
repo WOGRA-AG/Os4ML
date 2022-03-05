@@ -255,7 +255,9 @@ os-manager-validate-backend:
 
 os-manager-build:
   stage: build
-  needs: [ os-manager-validate-backend ]
+  needs:
+    - os-manager-validate-backend
+    - os-manager-build-oas
   image: docker:19.03.13-dind
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
