@@ -1,0 +1,13 @@
+@mixin list {
+  .mat-list {
+    .mat-list-item {
+      padding: 25px 0 25px 0;
+      border-radius: 24px;
+
+      .mat-list-item-content {
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  }
+}

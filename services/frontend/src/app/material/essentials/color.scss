@@ -164,6 +164,14 @@ $overlay: rgba($primary-color-900, .16);
   color: $on-surface-medium;
 }
 
+.on-surface-high {
+  color: $on-surface-high;
+}
+
 .accent {
   color: $accent-color;
+}
+
+.bg-surface {
+  background-color: $surface;
 }

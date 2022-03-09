@@ -8,6 +8,7 @@
 @import './components/button.scss';
 @import './components/expansion-module.scss';
 @import './components/dialog.scss';
+@import './components/list.scss';
 
 @include mat.core();
 @include mat.core(typography.$custom-typography);
@@ -20,4 +21,5 @@
   @include button;
   @include expansionModule;
   @include dialog;
+  @include list;
 }

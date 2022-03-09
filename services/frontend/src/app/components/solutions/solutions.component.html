@@ -1,0 +1,31 @@
+<div class="solutions-taskbar">
+  <div class="headline">
+    <h6>Solutions</h6>
+  </div>
+  <div class="button-bar">
+    <button class="bg-surface button-bar-button button-info" mat-icon-button color="primary">
+      <mat-icon>lightbulb_outline</mat-icon>
+    </button>
+    <button class="bg-surface button-bar-button button-list" mat-icon-button>
+      <mat-icon>list</mat-icon>
+    </button>
+    <button class="bg-surface button-bar-button button-settings" mat-icon-button>
+      <mat-icon>settings_outline</mat-icon>
+    </button>
+  </div>
+  <div class="spacer-item">
+    <h6>Solutions</h6>
+  </div>
+</div>
+
+<div *ngIf="solutions.length > 0; then solutionsTemplate else placeholder"></div>
+
+<ng-template #solutionsTemplate>
+  <div class="solutions-list-container">
+    <app-solutions-list [solutions]="solutions"></app-solutions-list>
+  </div>
+</ng-template>
+
+<ng-template #placeholder>
+  <app-solutions-placeholder (mainButton)="openSolutionsDialog()"></app-solutions-placeholder>
+</ng-template>

@@ -1,0 +1,13 @@
+.dialog-container {
+  min-width: 400px;
+  min-height: 635px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

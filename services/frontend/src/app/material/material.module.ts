@@ -14,6 +14,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSelectModule} from "@angular/material/select";
 import {MatOptionModule} from "@angular/material/core";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatButtonModule,
@@ -30,7 +31,8 @@ export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatSelectModule,
   MatOptionModule,
   MatProgressSpinnerModule,
-]
+  MatSlideToggleModule,
+];
 
 @NgModule({
   declarations: [],

@@ -12,10 +12,12 @@ import {DialogDynamicComponent} from "../../components/dialog-dynamic/dialog-dyn
 })
 export class DatabagPageComponent {
   databags: Array<Databag> = [];
+  solutions: Array<any> = [];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) {
     this.activatedRoute.data.subscribe(data => {
       this.databags = data['databags'];
+      this.solutions = data['solutions'];
     });
   }
 

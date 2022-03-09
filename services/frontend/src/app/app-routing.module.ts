@@ -9,6 +9,7 @@ import {UserPageComponent} from "./pages/user-page/user-page.component";
 import {PageNotFoundPageComponent} from "./pages/page-not-found-page/page-not-found-page.component";
 import {SupportPageComponent} from "./pages/support-page/support-page.component";
 import {DatabagResolver} from "./resolver/databag.resolver";
+import {SolutionResolver} from './resolver/solution.resolver';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     component: DatabagPageComponent,
     runGuardsAndResolvers: 'always',
     resolve: {
-      databags: DatabagResolver
+      databags: DatabagResolver,
+      solutions: SolutionResolver
     }
   },
   {

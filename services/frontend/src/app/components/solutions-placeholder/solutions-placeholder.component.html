@@ -1,0 +1,11 @@
+<div class="placeholder-container">
+  <div class="placeholder">
+    <img class="placeholder-image" src="assets/illustrations/no_solution.svg" alt="Databag Illustration">
+    <h5>{{"page.solution.empty.title" | translate}}</h5>
+    <span class="mat-subheading-1">{{"page.solution.empty.subtitle" | translate}}</span>
+    <button mat-raised-button class="main-button" color="primary" (click)="mainButton.emit($event)">
+      <mat-icon>add</mat-icon>
+      {{"page.solution.empty.main_button" | translate}}
+    </button>
+  </div>
+</div>
