@@ -103,16 +103,6 @@ $os4ml-primary: mat.define-palette($md-os4ml-colors-primary);
 $os4ml-warn: mat.define-palette($md-os4ml-colors-warn);
 $os4ml-accent: mat.define-palette($md-os4ml-colors-accent);
 
-$os4ml-theme: mat.define-light-theme((
-  color: (
-    primary: $os4ml-primary,
-    accent: $os4ml-accent,
-    warn: $os4ml-warn,
-  )
-));
-
-@include mat.all-component-themes($os4ml-theme);
-
 $primary-color: mat.get-color-from-palette($os4ml-primary, 500);
 $primary-color-100: mat.get-color-from-palette($os4ml-primary, 100);
 $primary-color-900: mat.get-color-from-palette($os4ml-primary, 900);
@@ -152,6 +142,10 @@ $overlay: rgba($primary-color-900, .16);
   background-color: $accent-color;
 }
 
+.bg-surface {
+  background-color: $surface;
+}
+
 .border-color {
   border-color: rgb(0, 0, 0, .12);
 }
@@ -163,3 +157,8 @@ $overlay: rgba($primary-color-900, .16);
 .on-surface-medium {
   color: $on-surface-medium;
 }
+
+.on-surface-high {
+  color: $on-surface-high;
+}
+

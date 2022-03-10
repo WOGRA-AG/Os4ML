@@ -1,4 +1,29 @@
-@mixin navlist {
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  $primary-palette: map.get($theme, 'primary');
+  $primary-color: mat.get-color-from-palette($primary-palette, 500);
+  $primary-color-100: mat.get-color-from-palette($primary-palette, 100);
+  $on-surface: mat.get-color-from-palette($primary-palette, '50-contrast');
+
+  .mat-list-item {
+    color: rgba($on-surface, .60);
+    &:hover {
+      span {
+        color: $primary-color;
+      }
+
+      background: rgba($primary-color, .1);
+    }
+  }
+
+  .mat-list-item.active {
+    background: $primary-color-100;
+  }
+}
+
+@mixin layout() {
   .mat-nav-list {
     padding: 0;
     margin: 0;
@@ -6,18 +31,12 @@
   }
 
   .mat-list-item {
-    color: $on-surface-medium;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-radius: 10px;
     overflow: hidden;
-    &:hover {
-      span {
-        color: $primary-color;
-      }
-      background: rgba($primary-color, .1);
-    }
+
     .mat-icon {
       flex: none;
       order: 0;
@@ -28,11 +47,12 @@
     }
   }
 
-  .mat-list-item.active{
-    background: $primary-color-100;
-  }
-
   .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
     height: 44px;
   }
+}
+
+@mixin theme($theme) {
+  @include color($theme);
+  @include layout();
 }
