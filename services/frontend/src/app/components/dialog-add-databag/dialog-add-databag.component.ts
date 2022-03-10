@@ -4,8 +4,8 @@ import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {DialogDefineDatabagComponent} from '../dialog-define-databag/dialog-define-databag.component';
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {TranslateService} from "@ngx-translate/core";
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dialog-add-databag',
@@ -14,10 +14,10 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class DialogAddDatabagComponent {
   file: File = new File([], '');
-  uploadProgress: number = 0;
-  uuid: string = '';
+  uploadProgress = 0;
+  uuid = '';
 
-  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private _snackbar: MatSnackBar,
+  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService) {
   }
 
@@ -29,7 +29,7 @@ export class DialogAddDatabagComponent {
     if (!this.uuid) {
       this.translate.get('error.no_dataset').subscribe((res: string) => {
         this.translate.get('error.confirm').subscribe((conf: string) => {
-          this._snackbar.open(res, conf, {duration: 3000});
+          this.matSnackBar.open(res, conf, {duration: 3000});
         });
       });
       return;

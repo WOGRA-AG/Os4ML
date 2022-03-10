@@ -6,24 +6,22 @@
     </button>
   </div>
   <mat-dialog-content>
-    <form class="input-form">
-      <mat-form-field appearance="outline">
-        <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
-        <input matInput type="url" placeholder="{{'dialog.add_databag.placeholder' | translate}}">
-        <mat-icon matSuffix>link</mat-icon>
-      </mat-form-field>
-      <div class="upload-container">
-        <div class="divider-container">
-          <mat-divider class="line"></mat-divider>
-          <span class="on-surface-disabled text">or</span>
-          <mat-divider class="line"></mat-divider>
-        </div>
-        <div class="dnd-container">
-          <app-file-upload class="upload-file" (fileChange)="uploadFile($event)" [uploadProgress]="uploadProgress">
-          </app-file-upload>
-        </div>
+    <mat-form-field appearance="outline">
+      <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
+      <input matInput type="url" placeholder="{{'dialog.add_databag.placeholder' | translate}}">
+      <mat-icon matSuffix>link</mat-icon>
+    </mat-form-field>
+    <div class="upload-container">
+      <div class="divider-container">
+        <mat-divider class="line"></mat-divider>
+        <span class="on-surface-disabled text">or</span>
+        <mat-divider class="line"></mat-divider>
       </div>
-    </form>
+      <div class="dnd-container">
+        <app-file-upload class="upload-file" (fileChange)="uploadFile($event)" [uploadProgress]="uploadProgress">
+        </app-file-upload>
+      </div>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()">

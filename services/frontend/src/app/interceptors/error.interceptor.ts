@@ -6,16 +6,16 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
-import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {TranslateService} from "@ngx-translate/core";
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private _snackbar: MatSnackBar,
+    private matSnackBar: MatSnackBar,
     private translate: TranslateService,
   ) {}
 
@@ -27,8 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.router.navigate(['/']);
       } else if (err.status >= 400 && err.status <= 499) {
         this.translate.get('error.confirm').subscribe((res: string) => {
-          this._snackbar.open(errorMsg, res, {duration: 3000});
-        })
+          this.matSnackBar.open(errorMsg, res, {duration: 3000});
+        });
       }
       return throwError(() => errorMsg);
     }));

@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from "../dialog-dynamic/dialog-dynamic.component";
-import {DialogAddDatabagComponent} from "../dialog-add-databag/dialog-add-databag.component";
-import {FormControl, Validators} from "@angular/forms";
-import {MlTypes} from "../../models/ml-types";
+import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
+import {DialogAddDatabagComponent} from '../dialog-add-databag/dialog-add-databag.component';
+import {FormControl, Validators} from '@angular/forms';
+import {MlTypes} from '../../models/ml-types';
+import {Column} from 'build/openapi/objectstore/model/column';
 
 @Component({
   selector: 'app-dialog-define-databag',
@@ -12,11 +13,11 @@ import {MlTypes} from "../../models/ml-types";
 })
 export class DialogDefineDatabagComponent {
   mlTypesArray = Object.keys(MlTypes);
-  uuid: string = '';
+  uuid = '';
   name = new FormControl('',
     [Validators.required, Validators.maxLength(20), Validators.minLength(3)]
   );
-  columns: Array<any> = new Array<any>();
+  columns: Array<Column> = new Array<Column>();
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>) {
     this.uuid = dialogRef.componentInstance.data.uuid;

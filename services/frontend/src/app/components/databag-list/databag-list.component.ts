@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Bucket} from "../../../../build/openapi/objectstore";
+import {Bucket} from '../../../../build/openapi/objectstore';
 
 @Component({
   selector: 'app-databag-list',
@@ -8,14 +8,8 @@ import {Bucket} from "../../../../build/openapi/objectstore";
 })
 export class DatabagListComponent {
 
-  @Input()
-  databags: Array<Bucket> = [];
-  @Input()
-  selectedDatabag: Bucket = {name: ""};
-  @Output()
-  selectedDatabagChange: EventEmitter<Bucket> = new EventEmitter<Bucket>();
-
-  constructor() {
-  }
+  @Input() databags: Bucket[] = [];
+  @Input() selectedDatabag: Bucket = {name: ''};
+  @Output() selectedDatabagChange: EventEmitter<Bucket> = new EventEmitter<Bucket>();
 
 }
