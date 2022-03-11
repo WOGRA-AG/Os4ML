@@ -1,9 +1,19 @@
-@mixin toolbar {
+@mixin color() {
+  .mat-toolbar {
+    background: transparent;
+  }
+}
+
+@mixin layout() {
   .mat-toolbar {
     display: flex;
     flex-direction: row;
     justify-content: center;
     max-height: 5%;
-    background: transparent;
   }
+}
+
+@mixin theme($theme) {
+  @include color();
+  @include layout();
 }

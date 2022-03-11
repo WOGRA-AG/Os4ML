@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ObjectstoreService} from "../../../../build/openapi/objectstore";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {concatMap, of} from "rxjs";
+import { Component } from '@angular/core';
+import {ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {concatMap, of} from 'rxjs';
 
 @Component({
   selector: 'app-support-page',
@@ -10,7 +10,7 @@ import {concatMap, of} from "rxjs";
   styleUrls: ['./support-page.component.scss']
 })
 export class SupportPageComponent {
-  bucketName: string = "os4ml";
+  bucketName = 'os4ml';
 
   constructor(private objectStoreService: ObjectstoreService, private http: HttpClient, private router: Router) {}
 
@@ -24,7 +24,7 @@ export class SupportPageComponent {
             }
             if (!bucket) {
               return this.objectStoreService.postNewBucket(this.bucketName)
-                .pipe(bucket => bucket)
+                .pipe(newBucket => newBucket);
             } else {
               return of(bucket);
             }

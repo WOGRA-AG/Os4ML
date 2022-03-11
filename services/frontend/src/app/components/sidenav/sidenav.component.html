@@ -1,5 +1,5 @@
-<mat-sidenav-container autosize>
-  <mat-sidenav mode="side" position="start" opened>
+<mat-sidenav-container class="bg-primary" autosize>
+  <mat-sidenav class="bg-surface" mode="side" position="start" opened>
     <div class="sidenav-container">
       <div>
         <img class="logo" src="assets/logos/wogra-logo.svg" alt="Wogra Logo">
@@ -7,7 +7,7 @@
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/dashboard']">
             <mat-icon matListIcon>apps</mat-icon><span class="nav-caption">Dashboard</span>
           </mat-list-item>
-          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/upload']">
+          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/databag']">
             <mat-icon matListIcon>folder_open</mat-icon><span class="nav-caption">Databags</span>
           </mat-list-item>
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/settings']">

@@ -1,0 +1,50 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme, $overlay, $background) {
+  $primary-palette: map.get($theme, 'primary');
+  $primary-color: mat.get-color-from-palette($primary-palette, 500);
+  $on-surface: mat.get-color-from-palette($primary-palette, '50-contrast');
+  $on-surface-high: rgba($on-surface, .87);
+
+  .cdk-overlay-dark-backdrop {
+    background: $overlay;
+  }
+
+  .mat-dialog-container {
+    .mat-icon-button {
+      color: $on-surface-high;
+      background: $background;
+    }
+  }
+}
+
+@mixin layout() {
+
+  .mat-dialog-container {
+    border-radius: 24px;
+    padding-left: 50px;
+  }
+
+  .mat-dialog-actions {
+    margin: 0;
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: auto;
+    padding-right: 50px;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+@mixin theme($theme, $overlay, $background) {
+  @include color($theme, $overlay, $background);
+  @include layout();
+}

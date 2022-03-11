@@ -1,3 +1,19 @@
 <div class="page-wrapper">
-  databag-page works
+  <div *ngIf="databags.length > 0; then databagTemplate else placeholder"></div>
 </div>
+
+<ng-template #databagTemplate>
+  <div class="headline">
+    <h4>{{"page.databag.title" | translate}}</h4>
+  </div>
+  <div class="databag-list-container">
+    <app-databag-list [databags]="databags"></app-databag-list>
+  </div>
+  <button mat-mini-fab class="fab-button" color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon></button>
+</ng-template>
+
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-databag-placeholder (mainButton)="openAddDialog()"></app-databag-placeholder>
+  </div>
+</ng-template>

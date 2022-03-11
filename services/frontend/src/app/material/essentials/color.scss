@@ -103,18 +103,9 @@ $os4ml-primary: mat.define-palette($md-os4ml-colors-primary);
 $os4ml-warn: mat.define-palette($md-os4ml-colors-warn);
 $os4ml-accent: mat.define-palette($md-os4ml-colors-accent);
 
-$os4ml-theme: mat.define-light-theme((
-  color: (
-    primary: $os4ml-primary,
-    accent: $os4ml-accent,
-    warn: $os4ml-warn,
-  )
-));
-
-@include mat.all-component-themes($os4ml-theme);
-
 $primary-color: mat.get-color-from-palette($os4ml-primary, 500);
 $primary-color-100: mat.get-color-from-palette($os4ml-primary, 100);
+$primary-color-900: mat.get-color-from-palette($os4ml-primary, 900);
 $primary-variant: mat.get-color-from-palette($os4ml-primary, 700);
 $accent-color: mat.get-color-from-palette($os4ml-accent, 500);
 $warn-color: mat.get-color-from-palette($os4ml-warn, default);
@@ -132,6 +123,8 @@ $on-primary-disabled: rgba($on-primary, .38);
 $on-surface-high: rgba($on-surface, .87);
 $on-surface-medium: rgba($on-surface, .60);
 $on-surface-disabled: rgba($on-surface, .38);
+$border-color: rgba($on-surface, .12);
+$overlay: rgba($primary-color-900, .16);
 
 .primary {
   color: $primary-color;
@@ -149,6 +142,23 @@ $on-surface-disabled: rgba($on-surface, .38);
   background-color: $accent-color;
 }
 
-.border-color {
-  border-color: rgb(0,0,0, .12);
+.bg-surface {
+  background-color: $surface;
 }
+
+.border-color {
+  border-color: rgb(0, 0, 0, .12);
+}
+
+.on-surface-disabled {
+  color: $on-surface-disabled;
+}
+
+.on-surface-medium {
+  color: $on-surface-medium;
+}
+
+.on-surface-high {
+  color: $on-surface-high;
+}
+

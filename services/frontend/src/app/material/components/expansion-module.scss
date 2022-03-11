@@ -1,0 +1,60 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme, $border-color) {
+  $primary-palette: map.get($theme, 'primary');
+  $primary-color: mat.get-color-from-palette($primary-palette, 500);
+
+  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled="true"]) {
+    background-color: rgba($primary-color, .1);
+  }
+
+  .mat-expansion-panel-header.mat-expanded {
+    border-radius: 0;
+    border-color: $border-color;
+  }
+}
+
+@mixin layout() {
+  .mat-expansion-panel {
+    border-radius: 24px;
+  }
+
+  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-content {
+    padding-bottom: 0;
+  }
+
+  .mat-expansion-panel-header {
+    height: 48px;
+    padding: 0 16px 0 16px;
+  }
+
+  .mat-expansion-panel-header.mat-expanded {
+    border-radius: 0;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .mat-expansion-panel-header-title {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .mat-expansion-panel-header-description {
+    display: none;
+  }
+
+  .mat-expansion-panel-content {
+    padding: 0 16px 16px 16px;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0;
+  }
+}
+
+@mixin theme($theme, $border-color) {
+  @include color($theme, $border-color);
+  @include layout();
+}
