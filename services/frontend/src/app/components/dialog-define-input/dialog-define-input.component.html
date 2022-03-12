@@ -7,19 +7,23 @@
   </div>
 
   <mat-dialog-content>
-    <div class="description">
+    <div>
       <span>{{"dialog.define_input.description" | translate}}</span>
     </div>
-    <div>
-      <mat-list>
-        <mat-list-item>
-          <div class="item-title"></div>
-          <div class="item-subtitle"></div>
-          <div class="item-spacer"></div>
-          <mat-slide-toggle color="primary"></mat-slide-toggle>
-        </mat-list-item>
-      </mat-list>
-    </div>
+    <mat-list>
+      <mat-list-item *ngFor="let column of columns">
+        <div class="list-item-description">
+          <h6 class="on-surface-high">
+            {{column.name}}
+          </h6>
+          <div class="mat-subheading-2 on-surface-medium">
+            {{column.type}} Field
+          </div>
+        </div>
+        <div class="item-spacer"></div>
+        <mat-slide-toggle color="primary"></mat-slide-toggle>
+      </mat-list-item>
+    </mat-list>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

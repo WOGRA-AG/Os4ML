@@ -7,5 +7,5 @@ import {Component, Input} from '@angular/core';
 })
 export class SolutionsListComponent {
   @Input() solutions: Array<any> = [];
-  severity: string = "medium";
+  severity = 'medium';
 }
