@@ -179,7 +179,7 @@ class MinioService(StorageServiceInterface):
     def object_list_has_file(self, minio_objects: List[MinioObject], file_name: str) -> bool:
         return len(list(filter(lambda d: d.object_name == file_name, minio_objects))) > 0
 
-    def get_pipeline_template_by_name(self, temp_type: str, template_name: str):
+    def get_pipeline_template_by_name(self, temp_type: str, template_name: str) -> PipelineTemplate:
         comp_list = list(filter(lambda x: x.name == template_name, self.get_all_pipeline_templates(temp_type)))
         if len(comp_list) == 0:
             raise HTTPException(status_code=404, detail=f"Template with name {template_name} not found")

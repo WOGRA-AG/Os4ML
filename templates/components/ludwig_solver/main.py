@@ -20,10 +20,10 @@ def ludwig_solver(dataset_file: Input[Dataset],
     from typing import List
 
     class ColumnDataType(str, Enum):
-        NUMERICAL = 'Numerical'
-        DATE = 'Date'
-        CATEGORY = 'Category'
-        TEXT = 'Text'
+        NUMERICAL = 'numerical'
+        DATE = 'date'
+        CATEGORY = 'category'
+        TEXT = 'text'
 
     class ColumnUsage(str, Enum):
         LABEL = 'label'

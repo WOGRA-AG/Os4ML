@@ -45,7 +45,7 @@ async def get_component_template_by_name(
     "/objectstore/template/pipeline/{pipeline_name}",
     responses={200: {"model": PipelineTemplate, "description": "OK"},},
     tags=["objectstore", "template"],
-    summary="get component template by name",
+    summary="get pipeline template by name",
 )
 async def get_pipeline_template_by_name(
     pipeline_name: str = Path(..., description="Name of Pipeline Template"),

@@ -12,7 +12,7 @@ import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore
 })
 export class DialogDefineDatabagComponent {
   mlTypesArray = Object.keys(MlTypes);
-  uuid: string = '';
+  uuid = '';
   databag: Databag = {};
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService) {

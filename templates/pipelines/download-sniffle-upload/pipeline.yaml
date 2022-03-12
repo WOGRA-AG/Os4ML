@@ -4,7 +4,7 @@ metadata:
   generateName: download-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-01T22:26:34.793718'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-11T00:45:19.739981'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "download_bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx",
       "name": "download_file_name", "optional": true, "type": "String"}, {"default":
@@ -198,10 +198,10 @@ spec:
             from dataclasses import dataclass
 
             class ColumnDataType(str, Enum):
-                NUMERICAL = 'Numerical'
-                DATE = 'Date'
-                CATEGORY = 'Category'
-                TEXT = 'Text'
+                NUMERICAL = 'numerical'
+                DATE = 'date'
+                CATEGORY = 'category'
+                TEXT = 'text'
 
             class ColumnUsage(str, Enum):
                 LABEL = 'label'
@@ -255,12 +255,12 @@ spec:
             num_cols = len(column_info)
             column_info_dicts = [column.__dict__ for column in column_info]
             return json.dumps({
-                'dataset_type': dataset_type,
-                'file_name': file_name,
-                'databag_name': file_name,
-                'bucket_name': bucket_name,
-                'number_rows': num_rows,
-                'number_columns': num_cols,
+                'datasetType': dataset_type,
+                'fileName': file_name,
+                'databagName': file_name,
+                'bucketName': bucket_name,
+                'numberRows': num_rows,
+                'numberColumns': num_cols,
                 'columns': column_info_dicts
             })
 
@@ -324,7 +324,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "b313fe49e8d88ba207cbe1467628642ead5cc1ef5ee014b8e32ba39aef12d630",
+        pipelines.kubeflow.org/component_ref: '{"digest": "fade873ee868218663e6f5f7534e4a41a99c949e49b02b26871c6cf3c54a48f4",
           "url": "../../components/sniffle-dataset/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.upload_bucket}}",
           "dataset_type": "local_file", "file_name": "{{inputs.parameters.download_file_name}}",

@@ -176,7 +176,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/url":
+  "/apis/v1beta1/objectstore/{BucketName}/presignedgeturl/{ObjectName}":
     get:
       summary: "get Object Url"
       operationId: getObjectUrl
@@ -195,7 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Url'
 
-  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/presignedurl":
+  "/apis/v1beta1/objectstore/{BucketName}/presignedputurl/{ObjectName}":
     get:
       summary: 'get presigned put Url'
       operationId: getPresignedPutUrl
@@ -212,7 +212,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Url'
+                type: string
         404:
           $ref: '#/components/responses/NotFound'
 
@@ -306,13 +306,13 @@ components:
         - name
     Item:
       properties:
-        bucket_name:
+        bucketName:
           $ref: "#/components/schemas/BucketName"
-        object_name:
+        objectName:
           $ref: "#/components/schemas/ObjectName"
       required:
-        - bucket_name
-        - object_name
+        - bucketName
+        - objectName
     Column:
       properties:
         name:
@@ -321,21 +321,21 @@ components:
           type: string
         usage:
           type: string
-        num_entries:
+        numEntries:
           type: integer
     Databag:
       properties:
-        dataset_type:
+        datasetType:
           type: string
-        file_name:
+        fileName:
           type: string
-        databag_name:
+        databagName:
           type: string
-        bucket_name:
+        bucketName:
           $ref: "#/components/schemas/BucketName"
-        number_rows:
+        numberRows:
           type: integer
-        number_columns:
+        numberColumns:
           type: integer
         columns:
           type: array
@@ -349,9 +349,9 @@ components:
           type: string
         description:
           type: string
-        pipeline_step:
+        pipelineStep:
           type: string
-        file_url:
+        fileUrl:
           type: string
     Error:
       required:

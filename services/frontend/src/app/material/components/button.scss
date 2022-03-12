@@ -1,4 +1,4 @@
-@mixin button {
+@mixin layout() {
   .mat-raised-button {
     border-radius: 14px;
     height: 48px;
@@ -17,7 +17,9 @@
   .mat-icon-button {
     border-radius: 14px;
     height: 45px;
-    color: $on-surface-high;
-    background: $background;
   }
+}
+
+@mixin theme($theme) {
+  @include layout()
 }

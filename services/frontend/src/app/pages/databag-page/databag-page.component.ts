@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Databag} from '../../../../build/openapi/objectstore';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogAddDatabagComponent} from '../../components/dialog-add-databag/dialog-add-databag.component';
-import {DialogDynamicComponent} from "../../components/dialog-dynamic/dialog-dynamic.component";
+import {DialogDynamicComponent} from '../../components/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databag-page',
@@ -11,7 +11,7 @@ import {DialogDynamicComponent} from "../../components/dialog-dynamic/dialog-dyn
   styleUrls: ['./databag-page.component.scss']
 })
 export class DatabagPageComponent {
-  databags: Array<Databag> = [];
+  databags: Databag[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) {
     this.activatedRoute.data.subscribe(data => {
@@ -23,7 +23,7 @@ export class DatabagPageComponent {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: DialogAddDatabagComponent}
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
   }

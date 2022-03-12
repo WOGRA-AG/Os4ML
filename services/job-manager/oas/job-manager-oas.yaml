@@ -194,7 +194,7 @@ components:
           required:
             - config_url
           properties:
-            config_url:
+            configUrl:
               type: string
     Metrics:
       description: Run Metrics

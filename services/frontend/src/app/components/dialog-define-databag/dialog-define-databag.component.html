@@ -1,7 +1,7 @@
 <div class="dialog-container">
-  <div class="headline">
+  <div class="headline mat-dialog-header">
     <h5 mat-dialog-title>{{"dialog.define_databag.title" | translate}}</h5>
-    <button mat-icon-button (click)="close()" class="close-button" tabindex="-1">
+    <button mat-icon-button (click)="close()" tabindex="-1">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -11,7 +11,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{"dialog.define_databag.label" | translate}}</mat-label>
         <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
-               name="databag_name" [(ngModel)]="databag.databag_name" #databag_name="ngModel"
+               name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
                [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
         <mat-icon matSuffix>link</mat-icon>
       </mat-form-field>

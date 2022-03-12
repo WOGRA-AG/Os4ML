@@ -12,10 +12,10 @@ def sniff_datatypes(csv_file: Input[Dataset],
     from dataclasses import dataclass
 
     class ColumnDataType(str, Enum):
-        NUMERICAL = 'Numerical'
-        DATE = 'Date'
-        CATEGORY = 'Category'
-        TEXT = 'Text'
+        NUMERICAL = 'numerical'
+        DATE = 'date'
+        CATEGORY = 'category'
+        TEXT = 'text'
 
     class ColumnUsage(str, Enum):
         LABEL = 'label'
@@ -69,12 +69,12 @@ def sniff_datatypes(csv_file: Input[Dataset],
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
     return json.dumps({
-        'dataset_type': dataset_type,
-        'file_name': file_name,
-        'databag_name': file_name,
-        'bucket_name': bucket_name,
-        'number_rows': num_rows,
-        'number_columns': num_cols,
+        'datasetType': dataset_type,
+        'fileName': file_name,
+        'databagName': file_name,
+        'bucketName': bucket_name,
+        'numberRows': num_rows,
+        'numberColumns': num_cols,
         'columns': column_info_dicts
     })
 

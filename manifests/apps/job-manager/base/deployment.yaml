@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: jobmanager
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/jobmanager:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/jobmanager:local-test"
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
               name: http

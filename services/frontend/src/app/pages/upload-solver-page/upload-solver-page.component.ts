@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {JobmanagerService} from '../../../../build/openapi/jobmanager';
-import {Item} from '../../../../build/openapi/objectstore';
+import {CreatePipeline, JobmanagerService} from '../../../../build/openapi/jobmanager';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {firstValueFrom} from 'rxjs';
@@ -13,7 +12,7 @@ import {ObjectstoreService} from '../../../../build/openapi/objectstore';
   styleUrls: ['./upload-solver-page.component.scss']
 })
 export class UploadSolverPageComponent {
-  bucketName: string = 'os4ml';
+  bucketName = 'os4ml';
 
   constructor(private jobmanagerService: JobmanagerService, private objectstoreService: ObjectstoreService,
               private http: HttpClient, private router: Router) {
@@ -22,21 +21,20 @@ export class UploadSolverPageComponent {
   async updateFile(file: File) {
     const uuid: string = uuidv4();
     const createExperiment = {name: `experiment_${uuid}`, description: `desc_${uuid}`};
-    const objectstore_url: string = 'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1';
     const run = {
       name: `run_${uuid}`,
       description: `desc_${uuid}`,
-      params: {bucket: 'os4ml', file_name: 'titanic.xlsx'}
+      params: {bucket: this.bucketName, file_name: 'titanic.xlsx'} // eslint-disable-line @typescript-eslint/naming-convention
     };
     try {
-      const item: Item = await firstValueFrom(this.objectstoreService.putObjectByName(this.bucketName, file.name, file));
-      const file_url: string = `${objectstore_url}/objectstore/${item.bucket_name}/object/${item.object_name}`;
+      await firstValueFrom(this.objectstoreService.putObjectByName(this.bucketName, file.name, file));
+      const fileUrl = await firstValueFrom(this.objectstoreService.getObjectUrl(this.bucketName, file.name));
 
-      const pipe = {name: `pipeline_${uuid}`, description: `desc_${uuid}`, config_url: `${file_url}`};
+      const pipe: CreatePipeline = {name: `pipeline_${uuid}`, description: `desc_${uuid}`, configUrl: `${fileUrl}`};
 
-      const exp_id: string = await firstValueFrom(this.jobmanagerService.postExperiment(createExperiment));
-      const pipe_id: string = await firstValueFrom(this.jobmanagerService.postPipeline(pipe));
-      const run_id: string = await firstValueFrom(this.jobmanagerService.postRun(exp_id, pipe_id, run));
+      const expId: string = await firstValueFrom(this.jobmanagerService.postExperiment(createExperiment));
+      const pipeId: string = await firstValueFrom(this.jobmanagerService.postPipeline(pipe));
+      await firstValueFrom(this.jobmanagerService.postRun(expId, pipeId, run));
 
       await this.router.navigate(['report']);
     } catch (e) {
