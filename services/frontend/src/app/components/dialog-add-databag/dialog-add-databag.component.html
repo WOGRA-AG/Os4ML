@@ -1,30 +1,28 @@
 <div class="dialog-container">
-  <div class="headline">
+  <div class="headline mat-dialog-header">
     <h5 mat-dialog-title>{{"dialog.add_databag.title" | translate}}</h5>
-    <button mat-icon-button (click)="close()" class="close-button bg-primary on-surface-high" tabindex="-1">
+    <button mat-icon-button (click)="close()" tabindex="-1">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
   <mat-dialog-content>
-    <form class="input-form">
-      <mat-form-field appearance="outline">
-        <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
-        <input matInput type="url" placeholder="{{'dialog.add_databag.placeholder' | translate}}">
-        <mat-icon matSuffix>link</mat-icon>
-      </mat-form-field>
-      <div class="upload-container">
-        <div class="divider-container">
-          <mat-divider class="line"></mat-divider>
-          <span class="on-surface-disabled text">or</span>
-          <mat-divider class="line"></mat-divider>
-        </div>
-        <div class="dnd-container">
-          <app-file-upload class="upload-file" [(file)]="file"></app-file-upload>
-          <span *ngIf="file.name !== ''" class="selected-file mat-caption accent">{{file.name}}</span>
-        </div>
+    <mat-form-field appearance="outline">
+      <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
+      <input matInput type="url" placeholder="{{'dialog.add_databag.placeholder' | translate}}">
+      <mat-icon matSuffix>link</mat-icon>
+    </mat-form-field>
+    <div class="upload-container">
+      <div class="divider-container">
+        <mat-divider class="line"></mat-divider>
+        <span class="on-surface-disabled text">or</span>
+        <mat-divider class="line"></mat-divider>
       </div>
-    </form>
+      <div class="dnd-container">
+        <app-file-upload class="upload-file" [(file)]="file"></app-file-upload>
+        <span *ngIf="file.name !== ''" class="selected-file mat-caption accent">{{file.name}}</span>
+      </div>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

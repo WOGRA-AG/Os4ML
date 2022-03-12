@@ -36,9 +36,7 @@ import { DialogDefineInputComponent } from './components/dialog-define-input/dia
 import { DialogDefineOutputComponent } from './components/dialog-define-output/dialog-define-output.component';
 import { DialogDefineSolverComponent } from './components/dialog-define-solver/dialog-define-solver.component';
 
-export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json')
-}
+export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
   declarations: [
@@ -76,17 +74,15 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
     }),
-    ApiModule.forRoot(() => {
-      return new Configuration(
+    ApiModule.forRoot(() => new Configuration(
         {
           basePath: ''
         }
-      );
-    }),
+      )),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

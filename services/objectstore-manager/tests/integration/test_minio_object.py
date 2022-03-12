@@ -97,8 +97,8 @@ async def test_put_object_by_name():
 
 @pytest.mark.asyncio
 async def test_get_object_url():
-    url: Url = await get_object_url(bucket_name="os4ml", object_name="object", minio_service=minio_service_mock)
-    assert type(url) == Url
+    url: str = await get_object_url(bucket_name="os4ml", object_name="object", minio_service=minio_service_mock)
+    assert type(url) == str
 
 
 @pytest.mark.asyncio

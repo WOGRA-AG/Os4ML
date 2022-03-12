@@ -16,11 +16,11 @@ import {firstValueFrom, Observable} from 'rxjs';
 })
 export class DialogAddDatabagComponent {
   file: File = new File([], '');
-  running: boolean = false;
+  running = false;
   uuid: string = uuidv4();
-  intervalID: number = 0;
+  intervalID = 0;
 
-  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private _snackbar: MatSnackBar,
+  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService) {
     this.dialogRef.backdropClick().subscribe(() => {
@@ -32,14 +32,13 @@ export class DialogAddDatabagComponent {
     if (!this.file.name) {
       this.translate.get('error.no_dataset').subscribe((res: string) => {
         this.translate.get('error.confirm').subscribe((conf: string) => {
-          this._snackbar.open(res, conf, {duration: 3000});
+          this.matSnackBar.open(res, conf, {duration: 3000});
         });
       });
     }
     const runParams = {
-      download_bucket: `${this.uuid}`,
-      download_file_name: `${this.file.name}`,
-      upload_bucket: `${this.uuid}`
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+      download_bucket: `${this.uuid}`, download_file_name: `${this.file.name}`, upload_bucket: `${this.uuid}`
     };
 
     this.running = true;
@@ -47,13 +46,13 @@ export class DialogAddDatabagComponent {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
       await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       const runId: string = await firstValueFrom(
-        this.jobmanagerService.postTemplate("download-sniffle-upload", runParams)
+        this.jobmanagerService.postTemplate('download-sniffle-upload', runParams)
       );
       await this.retrievePipelineStatus(runId);
       this.dialogRef.componentInstance.data.uuid = this.uuid;
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
-      this._snackbar.open(err, '', {duration: 3000});
+      this.matSnackBar.open(err, '', {duration: 3000});
     } finally {
       this.running = false;
     }
@@ -69,7 +68,7 @@ export class DialogAddDatabagComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.objectstoreService.deleteBucket(this.uuid)
+    return this.objectstoreService.deleteBucket(this.uuid);
   }
 
   retrievePipelineStatus(runId: string): Promise<string> {

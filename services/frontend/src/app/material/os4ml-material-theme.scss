@@ -1,25 +1,33 @@
 @use '@angular/material' as mat;
 @use './essentials/typography' as typography;
-@import '@angular/material/theming';
-@import './essentials/color.scss';
-@import './components/sidenav.scss';
-@import './components/toolbar.scss';
-@import './components/navlist.scss';
-@import './components/button.scss';
-@import './components/expansion-module.scss';
-@import './components/dialog.scss';
+@use './essentials/color.scss' as colors;
+@use './components/sidenav.scss' as sidenav;
+@use './components/toolbar.scss' as toolbar;
+@use './components/navlist.scss' as navlist;
+@use './components/button.scss' as button;
+@use './components/expansion-module.scss' as expansionModule;
+@use './components/dialog.scss' as dialog;
 @import './components/list.scss';
+
+$os4ml-theme: mat.define-light-theme((
+  color: (
+    primary: colors.$os4ml-primary,
+    accent: colors.$os4ml-accent,
+    warn: colors.$os4ml-warn,
+  )
+));
 
 @include mat.core();
 @include mat.core(typography.$custom-typography);
+@include mat.all-component-themes($os4ml-theme);
 
 .os4ml-theme {
   @include typography.additional-typography-settings;
-  @include sidenav;
-  @include toolbar;
-  @include navlist;
-  @include button;
-  @include expansionModule;
-  @include dialog;
+  @include sidenav.theme($os4ml-theme);
+  @include toolbar.theme($os4ml-theme);
+  @include navlist.theme($os4ml-theme);
+  @include button.theme($os4ml-theme);
+  @include expansionModule.theme($os4ml-theme, colors.$border-color);
+  @include dialog.theme($os4ml-theme, colors.$overlay, colors.$background);
   @include list;
 }

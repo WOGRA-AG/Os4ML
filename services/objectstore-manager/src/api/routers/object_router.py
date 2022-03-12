@@ -83,7 +83,7 @@ async def put_object_by_name(
 
 
 @router.get(
-    "/objectstore/{bucket_name}/object/{object_name:path}/presignedurl",
+    "/objectstore/{bucket_name}/presignedputurl/{object_name:path}",
     responses={
         200: {"model": Url, "description": "OK"},
         404: {"model": str, "description": "The specified resource was not found"},
@@ -101,8 +101,8 @@ async def get_presigned_put_url(
 
 
 @router.get(
-    "/apis/v1beta1/objectstore/{bucket_name}/object/{object_name:path}/url",
-    responses={200: {"model": Url, "description": "OK"},},
+    "/objectstore/{bucket_name}/presignedgeturl/{object_name:path}",
+    responses={200: {"model": str, "description": "OK"},},
     tags=["objectstore", "bucket", "object"],
     summary="get Object Url",
 )
@@ -110,5 +110,5 @@ async def get_object_url(
     bucket_name: str = Path(..., description="Name of Bucket"),
     object_name: str = Path(..., description="Name of Object"),
     minio_service: MinioService = Depends(MinioService),
-) -> Url:
-    return Url(url=minio_service.get_presigned_get_url(bucket_name, object_name))
+) -> str:
+    return minio_service.get_presigned_get_url(bucket_name, object_name)
