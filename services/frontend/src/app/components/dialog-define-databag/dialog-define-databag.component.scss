@@ -6,8 +6,7 @@
 }
 
 .dialog-container {
-  min-width: 584px;
-  min-height: 635px;
+  max-height: 726px;
   display: flex;
   flex-direction: column;
 }

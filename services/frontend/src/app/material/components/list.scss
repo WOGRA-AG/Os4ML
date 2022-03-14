@@ -1,7 +1,17 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
 @mixin color($theme, $background) {
+  $primary-palette: map.get($theme, 'primary');
+  $primary-color: mat.get-color-from-palette($primary-palette, 500);
+
   .mat-list {
     .mat-list-item {
-      background-color: $background;
+      border-color: $background;
+
+      &.active {
+        border-color: $primary-color;
+      }
     }
   }
 }
@@ -11,10 +21,13 @@
     width: 100%;
     overflow: auto;
     .mat-list-item {
-      padding: 25px 0 25px 0;
+      width: auto;
+      height: 82px;
       margin-top: 8px;
       margin-bottom: 8px;
-      border-radius: 24px;
+      border-radius: 14px;
+      border-width: 2px;
+      border-style: solid;
 
       .mat-list-item-content {
         justify-content: space-between;

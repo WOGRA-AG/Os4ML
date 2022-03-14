@@ -1,14 +1,14 @@
-.dialog-container {
-  max-height: 726px;
-  display: flex;
-  flex-direction: column;
-}
-
-.headline {
+.item-container {
   display: flex;
   flex-direction: row;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: default;
 }
 
 .list-item-description {
@@ -20,6 +20,3 @@
   padding: 0 20px 30px 15px;
 }
 
-.solution-item {
-  width: 100%;
-}

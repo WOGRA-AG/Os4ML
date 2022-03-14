@@ -1,28 +1,28 @@
 <mat-list>
-  <mat-list-item class="bg-surface" *ngFor="let solution of solutions">
+  <mat-list-item class="bg-surface solution-list-item" *ngFor="let solution of solutions">
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Solution</span>
-      <span class="mat-body-2">{{solution.name}}</span>
+      <span class="mat-body-2 on-surface-high">{{solution?.name}}</span>
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Accuracy</span>
-      <span class="mat-body-2">{{solution.accuracy}}%</span>
+      <span class="mat-body-2 on-surface-high">{{solution?.metrics?.accuracy}}%</span>
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Runtime</span>
-      <span class="mat-body-2">{{solution.runtime}}</span>
+      <span class="mat-body-2 on-surface-high">{{solution?.metrics?.runtime}}</span>
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Precision</span>
       <div class="precision" [ngClass]="severity">
         <mat-icon matListIcon>arrow_upward</mat-icon>
-        <span class="mat-body-2">
-          {{solution.precision}}
+        <span class="mat-body-2 on-surface-high">
+          {{solution?.metrics?.precision}}
         </span>
       </div>
     </div>
     <div class="status bg-accent mat-button">
-      {{solution.status}}
+      {{solution?.status}}
     </div>
   </mat-list-item>
 </mat-list>

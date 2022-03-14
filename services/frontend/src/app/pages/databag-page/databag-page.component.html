@@ -7,9 +7,9 @@
     <h4>{{"page.databag.title" | translate}}</h4>
   </div>
   <div class="content-container">
-    <app-databag-list [databags]="databags"></app-databag-list>
-    <div class="solutions-template">
-      <app-solutions [(solutions)]="solutions"></app-solutions>
+    <app-databag-list [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-databag-list>
+    <div *ngIf="selectedDatabag?.databagName" class="solutions-template">
+      <app-solutions [(solutions)]="solutions" [columns]="selectedDatabag?.columns"></app-solutions>
     </div>
   </div>
   <button mat-mini-fab class="fab-button" color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon></button>

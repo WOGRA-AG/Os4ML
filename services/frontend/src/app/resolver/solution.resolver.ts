@@ -5,22 +5,13 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import {Observable, of} from 'rxjs';
+import {Solution} from '../../../build/openapi/objectstore';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SolutionResolver implements Resolve<any> {
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+export class SolutionResolver implements Resolve<Solution[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Solution[]> {
     return of([]);
-    // return of([{
-    //   "name": "Solution1",
-    //   "accuracy": 98,
-    //   "runtime": "1h 24m",
-    //   "precision": "Medium",
-    //   "status": "Done",
-    //   "input": [],
-    //   "output": [],
-    //   "solver": []
-    // }]);
   }
 }

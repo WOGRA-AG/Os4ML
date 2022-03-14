@@ -18,4 +18,4 @@ def titanic_rf_pipeline(bucket: str = "os4ml", file_name: str = "titanic.xlsx"):
 
 
 if __name__ == "__main__":
-    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(titanic_rf_pipeline, "pipeline.yaml")
+    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(titanic_rf_pipeline, "component.yaml")

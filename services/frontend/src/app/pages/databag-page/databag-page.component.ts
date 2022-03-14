@@ -13,6 +13,7 @@ import {DialogDynamicComponent} from '../../components/dialog-dynamic/dialog-dyn
 export class DatabagPageComponent {
   databags: Databag[] = [];
   solutions: Array<any> = [];
+  selectedDatabag: Databag = {};
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) {
     this.activatedRoute.data.subscribe(data => {

@@ -35,6 +35,7 @@ import { SolutionsListComponent } from './components/solutions-list/solutions-li
 import { DialogDefineInputComponent } from './components/dialog-define-input/dialog-define-input.component';
 import { DialogDefineOutputComponent } from './components/dialog-define-output/dialog-define-output.component';
 import { DialogDefineSolverComponent } from './components/dialog-define-solver/dialog-define-solver.component';
+import { SolutionListItemComponent } from './components/solution-list-item/solution-list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -65,6 +66,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogDefineInputComponent,
     DialogDefineOutputComponent,
     DialogDefineSolverComponent,
+    SolutionListItemComponent,
   ],
   imports: [
     BrowserModule,

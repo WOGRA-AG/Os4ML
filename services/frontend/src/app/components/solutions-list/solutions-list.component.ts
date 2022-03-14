@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {Solution} from '../../../../build/openapi/objectstore';
 
 @Component({
   selector: 'app-solutions-list',
@@ -6,6 +7,6 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./solutions-list.component.scss']
 })
 export class SolutionsListComponent {
-  @Input() solutions: Array<any> = [];
+  @Input() solutions: Solution[] = [];
   severity = 'medium';
 }
