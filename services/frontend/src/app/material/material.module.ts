@@ -13,6 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatButtonModule,
@@ -28,6 +29,7 @@ export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatProgressBarModule,
   MatSelectModule,
   MatOptionModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({

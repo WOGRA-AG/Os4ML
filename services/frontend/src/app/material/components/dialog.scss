@@ -12,9 +12,12 @@
   }
 
   .mat-dialog-container {
-    .mat-icon-button {
-      color: $on-surface-high;
-      background: $background;
+    .mat-dialog-header {
+
+      .mat-icon-button {
+        background: $background;
+        color: $on-surface-high;
+      }
     }
   }
 }
@@ -37,6 +40,7 @@
     align-items: center;
     flex: auto;
     padding-right: 50px;
+    overflow: auto;
 
     .mat-form-field {
       width: 100%;

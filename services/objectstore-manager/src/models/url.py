@@ -1,5 +1,7 @@
-from pydantic import BaseModel
+from typing import Optional
+
+from fastapi_utils.api_model import APIModel
 
 
-class Url(BaseModel):
-    url: str
+class Url(APIModel):
+    url: Optional[str] = None

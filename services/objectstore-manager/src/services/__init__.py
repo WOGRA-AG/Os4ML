@@ -1,2 +1,2 @@
-from .minio_service import MinioServiceInterface
+from .minio_service import MinioService
 from .storage_service_interface import StorageServiceInterface

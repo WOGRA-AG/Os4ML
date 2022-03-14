@@ -3,7 +3,9 @@ from kfp.v2.dsl import component, Dataset, Input
 
 def sniff_datatypes(csv_file: Input[Dataset],
                     max_categories: int = 10,
-                    dataset_type: str = 'local_file') -> Dataset:
+                    dataset_type: str = 'local_file',
+                    file_name: str = '',
+                    bucket_name: str = '') -> Dataset:
     import pandas as pd
     import json
     from enum import Enum
@@ -67,9 +69,12 @@ def sniff_datatypes(csv_file: Input[Dataset],
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
     return json.dumps({
-        'dataset_type': dataset_type,
-        'number_rows': num_rows,
-        'number_columns': num_cols,
+        'datasetType': dataset_type,
+        'fileName': file_name,
+        'databagName': file_name,
+        'bucketName': bucket_name,
+        'numberRows': num_rows,
+        'numberColumns': num_cols,
         'columns': column_info_dicts
     })
 

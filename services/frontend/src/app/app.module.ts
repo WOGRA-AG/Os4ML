@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DatabagPageComponent} from './pages/databag-page/databag-page.component';
 import {FileUploadComponent} from './components/file-upload/file-upload.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -57,7 +57,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

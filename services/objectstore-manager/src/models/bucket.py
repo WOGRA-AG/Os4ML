@@ -1,5 +1,5 @@
-from pydantic import BaseModel
+from fastapi_utils.api_model import APIModel
 
 
-class Bucket(BaseModel):
+class Bucket(APIModel):
     name: str

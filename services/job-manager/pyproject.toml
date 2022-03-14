@@ -9,6 +9,7 @@ python = "^3.9"
 fastapi = {extras = ["all"], version = "^0.73.0"}
 kfp = "^1.8.11"
 gunicorn = "^20.1.0"
+fastapi-utils = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
@@ -17,6 +18,7 @@ isort = { version = "^5.6.4", extras = ["pyproject"] }
 requests = "^2.25.0"
 black = "19.10b0"
 pytest-asyncio = "^0.14.0"
+pytest-mock = "^3.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

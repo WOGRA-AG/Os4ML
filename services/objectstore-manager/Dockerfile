@@ -14,6 +14,7 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VERSION=1.1.4
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
+ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/build:$PROJECT_DIR/build/src:$PYTHONPATH"
 
 
 FROM python-base as builder-base
@@ -78,6 +79,8 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 COPY /src $PROJECT_DIR/src
+COPY /build $PROJECT_DIR/build
+
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@

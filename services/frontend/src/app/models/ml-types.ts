@@ -8,4 +8,5 @@ export enum MlTypes {
   sequence = 'SEQUENCE',
   timeseries = 'TIMESERIES',
   image = 'IMAGE',
+  date = 'DATE',
 }

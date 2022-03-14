@@ -11,15 +11,16 @@ from src.api.routers.object_router import (
     delete_object_by_name,
     get_all_objects,
     get_object_by_name,
+    get_object_url,
     get_presigned_put_url,
     put_object_by_name,
 )
 from src.models import Item, Url
-from src.services.minio_service import MinioServiceInterface
+from src.services.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 minio_mock_client = MinioMock()
-minio_service_mock = MinioServiceInterface(client=minio_mock_client)
+minio_service_mock = MinioService(client=minio_mock_client)
 
 
 async def create_body() -> Message:
@@ -92,3 +93,16 @@ async def test_put_object_by_name():
     await put_object_by_name(
         request=request, bucket_name="os4ml", object_name="object", minio_service=minio_service_mock
     )
+
+
+@pytest.mark.asyncio
+async def test_get_object_url():
+    url: str = await get_object_url(bucket_name="os4ml", object_name="object", minio_service=minio_service_mock)
+    assert type(url) == str
+
+
+@pytest.mark.asyncio
+async def test_get_object_url_with_exception():
+    with pytest.raises(HTTPException) as excinfo:
+        await get_object_url(bucket_name="os5ml", object_name="object", minio_service=minio_service_mock)
+    assert "status_code=404" in str(excinfo)

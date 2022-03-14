@@ -3,11 +3,11 @@ from fastapi import HTTPException
 
 from src.api.routers.bucket_router import delete_bucket, post_new_bucket
 from src.models import Bucket
-from src.services.minio_service import MinioServiceInterface
+from src.services.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 minio_mock_client = MinioMock()
-minio_service_mock = MinioServiceInterface(client=minio_mock_client)
+minio_service_mock = MinioService(client=minio_mock_client)
 
 
 @pytest.mark.asyncio
@@ -29,7 +29,5 @@ async def test_delete_bucket():
 
 
 @pytest.mark.asyncio
-async def test_delete_bucket_with_exception():
-    with pytest.raises(HTTPException) as excinfo:
-        await delete_bucket(bucket_name="os5ml", minio_service=minio_service_mock)
-    assert "status_code=404" in str(excinfo)
+async def test_delete_bucket_with_non_existant():
+    await delete_bucket(bucket_name="os5ml", minio_service=minio_service_mock)

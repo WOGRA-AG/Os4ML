@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from fastapi_utils.api_model import APIModel
 
 
-class Item(BaseModel):
+class Item(APIModel):
     bucket_name: str
     object_name: str

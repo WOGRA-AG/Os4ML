@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 
 from src.models import Bucket
-from src.services import MinioServiceInterface
+from src.services import MinioService
 
 router = APIRouter(prefix="/apis/v1beta1")
 
@@ -15,5 +15,5 @@ router = APIRouter(prefix="/apis/v1beta1")
     summary="get all buckets",
     response_model=List[Bucket],
 )
-async def get_all_buckets(minio_service: MinioServiceInterface = Depends(MinioServiceInterface)) -> List[Bucket]:
+async def get_all_buckets(minio_service: MinioService = Depends(MinioService)) -> List[Bucket]:
     return minio_service.get_buckets()

@@ -22,6 +22,56 @@ paths:
                 items:
                   $ref: '#/components/schemas/Bucket'
 
+  "/apis/v1beta1/objectstore/databag":
+    get:
+      summary: "get all databags"
+      operationId: getAllDatabags
+      tags:
+        - objectstore
+        - databag
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Databag'
+
+  "/apis/v1beta1/objectstore/databag/{BucketName}":
+    get:
+      summary: "get databag by bucket name"
+      operationId: getDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Databag'
+    put:
+      summary: "update databag"
+      operationId: putDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Databag'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+
   "/apis/v1beta1/objectstore/{BucketName}":
     post:
       summary: "create new bucket"
@@ -47,8 +97,6 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/Deleted'
-        404:
-          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/objectstore/{BucketName}/object":
     get:
@@ -121,13 +169,17 @@ paths:
       responses:
         201:
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}/presignedurl":
+  "/apis/v1beta1/objectstore/{BucketName}/presignedgeturl/{ObjectName}":
     get:
-      summary: 'get presigned put Url'
-      operationId: getPresignedUrl
+      summary: "get Object Url"
+      operationId: getObjectUrl
       tags:
         - objectstore
         - bucket
@@ -142,8 +194,95 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Url'
+
+  "/apis/v1beta1/objectstore/{BucketName}/presignedputurl/{ObjectName}":
+    get:
+      summary: 'get presigned put Url'
+      operationId: getPresignedPutUrl
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
         404:
           $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/template/component":
+    get:
+      summary: 'get all component templates'
+      operationId: getAllComponentTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline":
+    get:
+      summary: 'get all pipeline templates'
+      operationId: getAllPipelineTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineTemplate'
+  "/apis/v1beta1/objectstore/template/component/{ComponentName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getComponentTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/ComponentName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline/{PipelineName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineTemplate'
+
 components:
   schemas:
     Url:
@@ -154,6 +293,10 @@ components:
       type: string
     BucketName:
       type: string
+    ComponentName:
+      type: string
+    PipelineName:
+      type: string
     Bucket:
       type: object
       properties:
@@ -163,13 +306,53 @@ components:
         - name
     Item:
       properties:
-        bucket_name:
+        bucketName:
           $ref: "#/components/schemas/BucketName"
-        object_name:
+        objectName:
           $ref: "#/components/schemas/ObjectName"
       required:
-        - bucket_name
-        - object_name
+        - bucketName
+        - objectName
+    Column:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        usage:
+          type: string
+        numEntries:
+          type: integer
+    Databag:
+      properties:
+        datasetType:
+          type: string
+        fileName:
+          type: string
+        databagName:
+          type: string
+        bucketName:
+          $ref: "#/components/schemas/BucketName"
+        numberRows:
+          type: integer
+        numberColumns:
+          type: integer
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/Column"
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string
     Error:
       required:
         - path
@@ -193,6 +376,20 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ObjectName'
+    ComponentName:
+      name: ComponentName
+      in: path
+      description: Name of Component Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/ComponentName'
+    PipelineName:
+      name: PipelineName
+      in: path
+      description: Name of Pipeline Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/PipelineName'
 
   responses:
     Created:

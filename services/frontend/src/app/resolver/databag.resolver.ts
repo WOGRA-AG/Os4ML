@@ -5,16 +5,16 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {Bucket, ObjectstoreService} from '../../../build/openapi/objectstore';
+import {Databag, ObjectstoreService} from '../../../build/openapi/objectstore';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatabagResolver implements Resolve<Bucket[]> {
+export class DatabagResolver implements Resolve<Databag[]> {
   constructor(private objectStoreService: ObjectstoreService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Bucket[]> {
-    return this.objectStoreService.getAllBuckets();
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Databag[]> {
+    return this.objectStoreService.getAllDatabags();
   }
 }

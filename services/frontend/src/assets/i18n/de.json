@@ -12,7 +12,8 @@
   },
   "error": {
     "confirm": "OK",
-    "no_dataset": "No Dataset specified"
+    "no_dataset": "No Dataset specified",
+    "run_failed": "Pipeline Run Failed"
   },
   "dialog": {
     "add_databag": {
@@ -24,9 +25,10 @@
     "define_databag": {
       "title": "Add Databag",
       "label": "Databag Name",
-      "main_button": "Next Step",
+      "main_button": "Create Bag",
       "placeholder": "Databag Name",
-      "back_button": "Back"
+      "back_button": "Back",
+      "columns": "Databag Fields"
     }
   },
   "page": {
