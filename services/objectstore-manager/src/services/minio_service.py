@@ -1,14 +1,14 @@
 import json
+from contextlib import contextmanager
 from io import BytesIO
-from typing import List, Generator
+from pathlib import PurePath
+from typing import Generator, List
 
 from fastapi import HTTPException
 from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 from urllib3 import HTTPResponse
-from contextlib import contextmanager
-from pathlib import PurePath
 
 from src import (
     COMPONENT_FILE_NAME,
@@ -27,16 +27,16 @@ from .storage_service_interface import StorageServiceInterface
 
 class MinioService(StorageServiceInterface):
     def __init__(
-            self,
-            minio_url: str = MINIO_URL,
-            minio_key: str = MINIO_KEY,
-            minio_secret: str = MINIO_SECRET,
-            minio_secure: bool = MINIO_SECURE,
-            config_file_name: str = DATABAG_CONFIG_FILE_NAME,
-            metadata_file_name: str = TEMPLATE_METADATA_FILE_NAME,
-            component_file_name: str = COMPONENT_FILE_NAME,
-            pipeline_file_name: str = PIPELINE_FILE_NAME,
-            client=None,
+        self,
+        minio_url: str = MINIO_URL,
+        minio_key: str = MINIO_KEY,
+        minio_secret: str = MINIO_SECRET,
+        minio_secure: bool = MINIO_SECURE,
+        config_file_name: str = DATABAG_CONFIG_FILE_NAME,
+        metadata_file_name: str = TEMPLATE_METADATA_FILE_NAME,
+        component_file_name: str = COMPONENT_FILE_NAME,
+        pipeline_file_name: str = PIPELINE_FILE_NAME,
+        client=None,
     ):
         if client is None:
             client = self.init_client(minio_url, minio_key, minio_secret, minio_secure)
@@ -170,8 +170,8 @@ class MinioService(StorageServiceInterface):
     def is_template_dir(self, path: str):
         minio_objects: List[MinioObject] = list(self.client.list_objects("templates", prefix=f"/{path}/"))
         return self.object_list_has_file(minio_objects, f"{path}/{self.metadata_file_name}") and (
-                self.object_list_has_file(minio_objects, f"{path}/{self.pipeline_file_name}")
-                or self.object_list_has_file(minio_objects, f"{path}/{self.component_file_name}")
+            self.object_list_has_file(minio_objects, f"{path}/{self.pipeline_file_name}")
+            or self.object_list_has_file(minio_objects, f"{path}/{self.component_file_name}")
         )
 
     def object_list_has_file(self, minio_objects: List[MinioObject], file_name: str) -> bool:
