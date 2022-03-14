@@ -1,6 +1,8 @@
 import json
+from contextlib import contextmanager
 from io import BytesIO
-from typing import List
+from pathlib import PurePath
+from typing import Generator, List
 
 from fastapi import HTTPException
 from minio import Minio
@@ -97,18 +99,23 @@ class MinioService(StorageServiceInterface):
         self.client.put_object(bucket_name, object_name, data, size, content_type)
         return Item(bucket_name=bucket_name, object_name=object_name)
 
+    @contextmanager
+    def get_minio_object(self, bucket_name, file_name):
+        response: HTTPResponse = self.client.get_object(bucket_name, file_name)
+        try:
+            yield response
+        finally:
+            response.close()
+            response.release_conn()
+
     def get_databags(self) -> List[Databag]:
         buckets: List[Bucket] = self.get_buckets()
         databag_buckets: List[Bucket] = [bucket for bucket in buckets if self.bucket_is_databag(bucket.name)]
         databags: List[Databag] = []
         for db in databag_buckets:
-            try:
-                response: HTTPResponse = self.client.get_object(db.name, self.config_file_name)
+            with self.get_minio_object(db.name, self.config_file_name) as response:
                 databag: Databag = Databag(**json.loads(response.data))
                 databags.append(databag)
-            finally:
-                response.close()
-                response.release_conn()
         return databags
 
     def bucket_is_databag(self, bucket_name: str) -> bool:
@@ -120,12 +127,8 @@ class MinioService(StorageServiceInterface):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
         if not self.bucket_is_databag(bucket_name):
             raise HTTPException(status_code=400, detail=f"Bucket with name {bucket_name} is not a databag")
-        try:
-            response: HTTPResponse = self.client.get_object(bucket_name, self.config_file_name)
+        with self.get_minio_object(bucket_name, self.config_file_name) as response:
             return Databag(**json.loads(response.data))
-        finally:
-            response.close()
-            response.release_conn()
 
     def put_databag_by_bucket_name(self, bucket_name: str, databag: Databag):
         if not self.client.bucket_exists(bucket_name):
@@ -142,26 +145,21 @@ class MinioService(StorageServiceInterface):
         ]
         for template_dir in template_dirs:
             path: str = f"{temp_type}/{template_dir}"
-            try:
-                response: HTTPResponse = self.client.get_object(bucket_name, f"{path}/{self.metadata_file_name}")
+            with self.get_minio_object(bucket_name, f"{path}/{self.metadata_file_name}") as response:
                 template: PipelineTemplate = PipelineTemplate(**json.loads(response.data))
                 template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{self.component_file_name}")
                 template.type = (
                     "Component" if temp_type == "components" else "Pipeline" if temp_type == "pipelines" else ""
                 )
                 templates.append(template)
-            finally:
-                response.close()
-                response.release_conn()
         return templates
 
     def get_directories(self, bucket_name: str, prefix: str = "") -> List[str]:
-        minio_objects: List[MinioObject] = self.client.list_objects(bucket_name, prefix=prefix, recursive=True)
-        directory_list: List[str] = [minio_object.object_name.split("/") for minio_object in minio_objects]
+        minio_objects: Generator[MinioObject] = self.client.list_objects(bucket_name, prefix=prefix, recursive=True)
+        directory_gen: Generator[str] = (minio_object.object_name.split("/") for minio_object in minio_objects)
+        directory_gen = (i for i in directory_gen if len(i) > 1)
         directories: List[str] = []
-        for path in directory_list:
-            if len(path) < 2:
-                continue
+        for path in directory_gen:
             path = path[1:-1] if prefix else path[:-1]
             current_path = ""
             for path_component in path:
@@ -177,10 +175,11 @@ class MinioService(StorageServiceInterface):
         )
 
     def object_list_has_file(self, minio_objects: List[MinioObject], file_name: str) -> bool:
-        return len(list(filter(lambda d: d.object_name == file_name, minio_objects))) > 0
+        file_list = [i for i in minio_objects if i.object_name == file_name]
+        return len(file_list) > 0
 
     def get_pipeline_template_by_name(self, temp_type: str, template_name: str) -> PipelineTemplate:
-        comp_list = list(filter(lambda x: x.name == template_name, self.get_all_pipeline_templates(temp_type)))
+        comp_list = [i for i in self.get_all_pipeline_templates(temp_type) if i.name == template_name]
         if len(comp_list) == 0:
             raise HTTPException(status_code=404, detail=f"Template with name {template_name} not found")
         return comp_list.pop()
