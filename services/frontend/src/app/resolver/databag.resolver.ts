@@ -10,11 +10,11 @@ import {Databag, ObjectstoreService} from '../../../build/openapi/objectstore';
 @Injectable({
   providedIn: 'root'
 })
-export class DatabagResolver implements Resolve<Array<Databag>> {
+export class DatabagResolver implements Resolve<Databag[]> {
   constructor(private objectStoreService: ObjectstoreService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Array<Databag>> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Databag[]> {
     return this.objectStoreService.getAllDatabags();
   }
 }

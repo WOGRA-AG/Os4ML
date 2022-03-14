@@ -8,6 +8,7 @@ import {DialogDefineDatabagComponent} from '../dialog-define-databag/dialog-defi
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {firstValueFrom, Observable} from 'rxjs';
+import {PipelineStatus} from '../../models/pipeline-status';
 
 @Component({
   selector: 'app-dialog-add-databag',
@@ -35,6 +36,7 @@ export class DialogAddDatabagComponent {
           this.matSnackBar.open(res, conf, {duration: 3000});
         });
       });
+      return;
     }
     const runParams = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -75,13 +77,13 @@ export class DialogAddDatabagComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
-          if (run.status === 'Failed') {
+          if (run.status === PipelineStatus.failed) {
             clearInterval(this.intervalID);
             this.translate.get('error.run_failed').subscribe((res: string) => {
               reject(run.error || res);
             });
           }
-          if (run.status === 'Succeeded') {
+          if (run.status === PipelineStatus.succeeded) {
             clearInterval(this.intervalID);
             resolve(run.status);
           }

@@ -20,14 +20,14 @@
       </div>
       <div class="dnd-container">
         <app-file-upload class="upload-file" [(file)]="file"></app-file-upload>
-        <span *ngIf="file.name !== ''" class="selected-file mat-caption accent">{{file.name}}</span>
+        <span *ngIf="file.name" class="selected-file mat-caption accent">{{file.name}}</span>
       </div>
     </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <mat-spinner color="accent" *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
-    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()" [disabled]="file.name === ''">
+    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()" [disabled]="!file.name">
       {{"dialog.add_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>
