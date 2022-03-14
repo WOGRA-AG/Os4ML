@@ -11,7 +11,9 @@ mock_service = TemplateService(kfp_client=mock_client)
 
 @pytest.mark.asyncio
 async def test_post_template(mocker):
-    mocker.patch("openapi_client.api.objectstore_api.ObjectstoreApi.get_pipeline_template_by_name",
-                 return_value=PipelineTemplate(name="test-pipeline", file_url="https://wogra.com"))
+    mocker.patch(
+        "openapi_client.api.objectstore_api.ObjectstoreApi.get_pipeline_template_by_name",
+        return_value=PipelineTemplate(name="test-pipeline", file_url="https://wogra.com"),
+    )
     run_id: str = await post_template("test-pipeline", {}, mock_service)
     assert type(run_id) == str
