@@ -16,4 +16,4 @@ async def post_template(
     body: dict = Body(None, description=""),
     template_service: TemplateService = Depends(TemplateService),
 ) -> str:
-    return await template_service.run_pipeline_template(pipeline_template_name, body)
+    return template_service.run_pipeline_template(pipeline_template_name, body)
