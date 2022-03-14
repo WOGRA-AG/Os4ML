@@ -23,6 +23,9 @@ export class SolutionsComponent {
       data: {component: DialogDefineInputComponent, columns: this.columns}
     });
     dialogRef.afterClosed().subscribe(result => {
+      if((result as Solution).name) {
+        return result;
+      }
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
   }

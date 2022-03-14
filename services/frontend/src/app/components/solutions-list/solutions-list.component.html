@@ -14,9 +14,9 @@
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Precision</span>
-      <div class="precision" [ngClass]="severity">
+      <div class="precision" [ngClass]="precision(solution?.metrics?.precision)">
         <mat-icon matListIcon>arrow_upward</mat-icon>
-        <span class="mat-body-2 on-surface-high">
+        <span class="mat-body-2">
           {{solution?.metrics?.precision}}
         </span>
       </div>
