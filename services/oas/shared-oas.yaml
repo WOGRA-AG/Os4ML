@@ -18,8 +18,10 @@ components:
           type: string
         solver:
           type: string
-        databag:
+        databagName:
           type: string
+        bucketName:
+          $ref: "#/components/schemas/BucketName"
         inputFields:
           type: array
           items:
