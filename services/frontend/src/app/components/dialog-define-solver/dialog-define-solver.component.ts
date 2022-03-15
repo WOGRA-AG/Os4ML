@@ -25,6 +25,7 @@ export class DialogDefineSolverComponent {
   };
 
   onSubmit(): void {
+    // Create Solution
     this.dialogRef.close(this.solution);
   }
 

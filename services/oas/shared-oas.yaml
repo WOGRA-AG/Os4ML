@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: Shared OAS
+  description: Shared OAS
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+    RunId:
+      type: string
+    BucketName:
+      type: string
+    Solution:
+      properties:
+        name:
+          type: string
+        solver:
+          type: string
+        databag:
+          type: string
+        inputFields:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            type: string
+        runId:
+          $ref: '#/components/schemas/RunId'
+        metrics:
+          type: object
+          properties:
+            accuracy:
+              type: number
+            runtime:
+              type: string
+            precision:
+              type: string
+    Column:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        usage:
+          type: string
+        numEntries:
+          type: integer
+    Databag:
+      properties:
+        datasetType:
+          type: string
+        fileName:
+          type: string
+        databagName:
+          type: string
+        bucketName:
+          $ref: "#/components/schemas/BucketName"
+        numberRows:
+          type: integer
+        numberColumns:
+          type: integer
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/Column"
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string

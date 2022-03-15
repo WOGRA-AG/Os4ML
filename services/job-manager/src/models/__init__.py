@@ -5,3 +5,4 @@ from .metrics import Metrics
 from .pipeline import Pipeline
 from .pipeline_template import PipelineTemplate
 from .run import Run
+from .run_params import RunParams

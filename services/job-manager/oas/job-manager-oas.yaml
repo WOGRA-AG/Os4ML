@@ -127,7 +127,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RunId'
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
 
   "/apis/v1beta1/jobmanager/template/{pipeline_template_name}":
     post:
@@ -142,22 +142,39 @@ paths:
         content:
           application/json:
             schema:
-              type: object
+              $ref: '#/components/schemas/RunParams'
       responses:
         201:
           description: "Resource created"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RunId'
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
 
+  "/apis/v1beta1/jobmanager/solution":
+    post:
+      summary: "Upload and deploy a Solution"
+      operationId: postSolution
+      tags:
+        - jobmanager
+        - solution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Solution'
+      responses:
+        201:
+          description: "Solution created"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
 components:
   schemas:
     ExperimentId:
       type: string
     PipelineId:
-      type: string
-    RunId:
       type: string
     ArtifactId:
       type: string
@@ -213,7 +230,7 @@ components:
         - name
       properties:
         id:
-          $ref: '#/components/schemas/RunId'
+          $ref: './shared-oas.yaml#/components/schemas/RunId'
         name:
           type: string
         description:
@@ -235,7 +252,15 @@ components:
         description:
           type: string
         params:
-          type: object
+          $ref: '#/components/schemas/RunParams'
+    RunParams:
+      description: Default Parameters to start Run
+      type: object
+      properties:
+        bucket:
+          type: string
+        fileName:
+          type: string
     Error:
       required:
         - path
@@ -265,7 +290,7 @@ components:
       description: Id of Run
       required: true
       schema:
-        $ref: '#/components/schemas/RunId'
+        $ref: './shared-oas.yaml#/components/schemas/RunId'
     PipelineTemplateName:
       name: PipelineTemplateName
       in: path

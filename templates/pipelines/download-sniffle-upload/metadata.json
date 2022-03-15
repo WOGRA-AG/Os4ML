@@ -1,0 +1,6 @@
+{
+  "name": "download-sniffle-upload",
+  "description": "Download file from bucket and analyze",
+  "type": "pipeline",
+  "pipeline_step": "prepare"
+}
