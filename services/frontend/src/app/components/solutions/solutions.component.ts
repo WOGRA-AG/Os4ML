@@ -13,7 +13,7 @@ import {Column, Solution} from '../../../../build/openapi/objectstore';
 export class SolutionsComponent {
   @Input() solutions: Solution[] = [];
   @Input() columns: Column[] | undefined = [];
-  @Output() solutionsChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() solutionsChange: EventEmitter<Solution[]> = new EventEmitter<Solution[]>();
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
   }
@@ -24,7 +24,8 @@ export class SolutionsComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if((result as Solution).name) {
-        return result;
+        this.solutions.push(result);
+        this.solutionsChange.emit(this.solutions);
       }
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
