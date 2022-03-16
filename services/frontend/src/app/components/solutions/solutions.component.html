@@ -24,6 +24,12 @@
   <div class="solutions-list-container">
     <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
   </div>
+  <div class="solutions-add-button">
+    <button mat-raised-button color="accent" (click)="openCreateSolutionDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add Solution</span>
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #placeholder>
