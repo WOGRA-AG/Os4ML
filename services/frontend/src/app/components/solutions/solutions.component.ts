@@ -24,12 +24,10 @@ export class SolutionsComponent {
       data: {component: DialogDefineInputComponent, databag: this.databag}
     });
     dialogRef.afterClosed().subscribe(result => {
-      if ((result as Solution).name) {
+      if (result && (result as Solution).name) {
         this.solutions.push(result);
         this.solutionsChange.emit(this.solutions);
-        this.router.navigate(['.'], {relativeTo: this.activatedRoute});
       }
-      this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
   }
 
