@@ -65,7 +65,7 @@ class MinioService(StorageServiceInterface):
     def delete_bucket(self, bucket_name: str) -> None:
         if not self.client.bucket_exists(bucket_name):
             return
-        object_list: List[MinioObject] = self.client.list_objects(bucket_name)
+        object_list: List[MinioObject] = self.client.list_objects(bucket_name, recursive=True)
         for o in object_list:
             self.client.remove_object(bucket_name, o.object_name)
         self.client.remove_bucket(bucket_name)
@@ -99,23 +99,21 @@ class MinioService(StorageServiceInterface):
         self.client.put_object(bucket_name, object_name, data, size, content_type)
         return Item(bucket_name=bucket_name, object_name=object_name)
 
-    @contextmanager
-    def get_minio_object(self, bucket_name, file_name):
-        response: HTTPResponse = self.client.get_object(bucket_name, file_name)
-        try:
-            yield response
-        finally:
-            response.close()
-            response.release_conn()
+    def get_dict_from_bucket(self, bucket_name, json_file_name) -> dict:
+        with self._get_minio_object_context(bucket_name, json_file_name) as response:
+            return json.loads(response.data)
+
+    def get_object_from_bucket(self, bucket_name, file_name):
+        with self._get_minio_object_context(bucket_name, file_name) as response:
+            return response.data
 
     def get_databags(self) -> List[Databag]:
         buckets: List[Bucket] = self.get_buckets()
         databag_buckets: List[Bucket] = [bucket for bucket in buckets if self.bucket_is_databag(bucket.name)]
         databags: List[Databag] = []
         for db in databag_buckets:
-            with self.get_minio_object(db.name, self.config_file_name) as response:
-                databag: Databag = Databag(**json.loads(response.data))
-                databags.append(databag)
+            databag: Databag = Databag(**self.get_dict_from_bucket(db.name, self.config_file_name))
+            databags.append(databag)
         return databags
 
     def bucket_is_databag(self, bucket_name: str) -> bool:
@@ -127,8 +125,7 @@ class MinioService(StorageServiceInterface):
             raise HTTPException(status_code=404, detail=f"Bucket with name {bucket_name} not found")
         if not self.bucket_is_databag(bucket_name):
             raise HTTPException(status_code=400, detail=f"Bucket with name {bucket_name} is not a databag")
-        with self.get_minio_object(bucket_name, self.config_file_name) as response:
-            return Databag(**json.loads(response.data))
+        return Databag(**self.get_dict_from_bucket(bucket_name, self.config_file_name))
 
     def put_databag_by_bucket_name(self, bucket_name: str, databag: Databag):
         if not self.client.bucket_exists(bucket_name):
@@ -145,13 +142,12 @@ class MinioService(StorageServiceInterface):
         ]
         for template_dir in template_dirs:
             path: str = f"{temp_type}/{template_dir}"
-            with self.get_minio_object(bucket_name, f"{path}/{self.metadata_file_name}") as response:
-                template: PipelineTemplate = PipelineTemplate(**json.loads(response.data))
-                template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{self.component_file_name}")
-                template.type = (
-                    "Component" if temp_type == "components" else "Pipeline" if temp_type == "pipelines" else ""
-                )
-                templates.append(template)
+            template: PipelineTemplate = PipelineTemplate(
+                **self.get_dict_from_bucket(bucket_name, f"{path}/{self.metadata_file_name}")
+            )
+            template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{self.component_file_name}")
+            template.type = "Component" if temp_type == "components" else "Pipeline" if temp_type == "pipelines" else ""
+            templates.append(template)
         return templates
 
     def get_directories(self, bucket_name: str, prefix: str = "") -> List[str]:
@@ -183,3 +179,12 @@ class MinioService(StorageServiceInterface):
         if len(comp_list) == 0:
             raise HTTPException(status_code=404, detail=f"Template with name {template_name} not found")
         return comp_list.pop()
+
+    @contextmanager
+    def _get_minio_object_context(self, bucket_name, file_name):
+        response: HTTPResponse = self.client.get_object(bucket_name, file_name)
+        try:
+            yield response
+        finally:
+            response.close()
+            response.release_conn()

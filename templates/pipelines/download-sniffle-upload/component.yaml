@@ -4,11 +4,11 @@ metadata:
   generateName: download-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-15T00:11:08.798692'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-16T11:07:05.574102'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
-      "max_categories", "optional": true, "type": "Integer"}, {"default": "databag_config.json",
+      "max_categories", "optional": true, "type": "Integer"}, {"default": "databag.json",
       "name": "upload_file_name", "optional": true, "type": "String"}, {"default":
       "", "name": "pipeline-root"}, {"default": "pipeline/download-sniffle-upload",
       "name": "pipeline-name"}], "name": "download-sniffle-upload"}'
@@ -448,7 +448,7 @@ spec:
     - {name: bucket, value: os4ml}
     - {name: file_name, value: titanic.xlsx}
     - {name: max_categories, value: '10'}
-    - {name: upload_file_name, value: databag_config.json}
+    - {name: upload_file_name, value: databag.json}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/download-sniffle-upload}
   serviceAccountName: pipeline-runner

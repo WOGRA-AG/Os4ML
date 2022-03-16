@@ -19,7 +19,7 @@ def download_sniffle_upload(
         bucket: str = "os4ml",
         file_name: str = "titanic.xlsx",
         max_categories: int = 10,
-        upload_file_name: str = "databag_config.json"):
+        upload_file_name: str = "databag.json"):
     download_task = download_dataset_from_objectstore_op(bucket,
                                                          file_name)
     sniff_task = sniffle_dataset_op(download_task.output,

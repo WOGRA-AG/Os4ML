@@ -6,8 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.routers.experiment_router import router as experiment_router
 from api.routers.pipeline_router import router as pipeline_router
 from api.routers.run_router import router as run_router
-from api.routers.template_router import router as template_router
 from api.routers.solution_router import router as solution_router
+from api.routers.template_router import router as template_router
+
 app = FastAPI(title="Job Manager", description="Job Manager", version="1.0.0")
 
 app.add_middleware(

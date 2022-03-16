@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<div *ngIf="solutions.length > 0; then solutionsTemplate else placeholder"></div>
+<div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else placeholder"></div>
 
 <ng-template #solutionsTemplate>
   <div class="solutions-list-container">
-    <app-solutions-list [solutions]="solutions"></app-solutions-list>
+    <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
   </div>
 </ng-template>
 

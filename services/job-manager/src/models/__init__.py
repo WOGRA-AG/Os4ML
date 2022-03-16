@@ -6,5 +6,5 @@ from .pipeline import Pipeline
 from .pipeline_template import PipelineTemplate
 from .run import Run
 from .run_params import RunParams
-from .solution_metrics import SolutionMetrics
 from .solution import Solution
+from .solution_metrics import SolutionMetrics

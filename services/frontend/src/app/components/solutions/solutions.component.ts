@@ -24,10 +24,17 @@ export class SolutionsComponent {
       data: {component: DialogDefineInputComponent, databag: this.databag}
     });
     dialogRef.afterClosed().subscribe(result => {
-      if((result as Solution).name) {
+      if ((result as Solution).name) {
+        this.router.navigate(['.'], {relativeTo: this.activatedRoute});
         return result;
       }
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
+  }
+
+  getSolutionsInDatabag() {
+    return this.solutions.filter(solution =>
+      (solution.databagName === this.databag?.databagName && solution.bucketName === this.databag?.bucketName)
+    );
   }
 }

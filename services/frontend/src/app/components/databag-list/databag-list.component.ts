@@ -16,4 +16,8 @@ export class DatabagListComponent {
     this.selectedDatabag = databag;
     this.selectedDatabagChange.emit(this.selectedDatabag);
   }
+
+  isSameDatabag(selectedDatabag: Databag, databag: Databag) {
+    return Object.is(selectedDatabag, databag);
+  }
 }
