@@ -16,8 +16,11 @@ MINIO_SECURE: bool = False if os.getenv("OBJECTSTORECONFIG_SECURE") is None else
 MINIO_BUCKET: str = "os4ml" if os.getenv("OBJECTSTORECONFIG_BUCKETNAME") is None else os.getenv(
     "OBJECTSTORECONFIG_BUCKETNAME"
 )
-DATABAG_CONFIG_FILE_NAME: str = "databag_config.json" if os.getenv("DATABAG_CONFIG_FILE_NAME") is None else os.getenv(
+DATABAG_CONFIG_FILE_NAME: str = "databag.json" if os.getenv("DATABAG_CONFIG_FILE_NAME") is None else os.getenv(
     "DATABAG_CONFIG_FILE_NAME"
+)
+SOLUTION_CONFIG_FILE_NAME: str = "solution.json" if os.getenv("SOLUTION_CONFIG_FILE_NAME") is None else os.getenv(
+    "SOLUTION_CONFIG_FILE_NAME"
 )
 TEMPLATE_METADATA_FILE_NAME: str = "metadata.json" if os.getenv("TEMPLATE_METADATA_FILE_NAME") is None else os.getenv(
     "TEMPLATE_METADATA_FILE_NAME"

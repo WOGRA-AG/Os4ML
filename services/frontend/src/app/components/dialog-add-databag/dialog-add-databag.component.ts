@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ObjectstoreService} from '../../../../build/openapi/objectstore';
-import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
+import {JobmanagerService} from '../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';

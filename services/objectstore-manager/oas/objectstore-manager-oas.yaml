@@ -249,6 +249,7 @@ paths:
                 type: array
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
   "/apis/v1beta1/objectstore/template/component/{ComponentName}":
     get:
       summary: 'get component template by name'
@@ -282,6 +283,22 @@ paths:
             application/json:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+  "/apis/v1beta1/objectstore/solution":
+    get:
+      summary: 'get all solutions'
+      operationId: getAllSolutions
+      tags:
+        - objectstore
+        - solution
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solution'
 
 components:
   schemas:

@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Column, Solution} from '../../../../build/openapi/objectstore';
+import {Databag} from '../../../../build/openapi/objectstore';
+import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-dialog-dynamic',
@@ -13,7 +14,7 @@ export class DialogDynamicComponent {
     component: any;
     uuid: string;
     solution: Solution;
-    columns: Column[];
+    databag: Databag;
   }) {
   }
 

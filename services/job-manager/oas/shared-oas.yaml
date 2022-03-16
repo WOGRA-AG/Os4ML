@@ -32,6 +32,8 @@ components:
             type: string
         runId:
           $ref: '#/components/schemas/RunId'
+        status:
+          type: string
         metrics:
           type: object
           properties:

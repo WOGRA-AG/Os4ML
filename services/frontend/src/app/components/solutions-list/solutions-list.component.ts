@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {Solution} from '../../../../build/openapi/objectstore';
 import {PipelinePrecision} from '../../models/pipeline-precision';
+import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-solutions-list',

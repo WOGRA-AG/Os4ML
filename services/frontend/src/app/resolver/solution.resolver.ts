@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import {Observable, of} from 'rxjs';
-import {Solution} from '../../../build/openapi/objectstore';
+import {Solution} from '../../../build/openapi/jobmanager';
 
 @Injectable({
   providedIn: 'root'
