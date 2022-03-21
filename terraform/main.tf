@@ -7,7 +7,7 @@ terraform {
 
 module "kubeflow" {
   source  = "WOGRA-AG/kubeflow/kustomization"
-  version = "0.2.1"
+  version = "0.2.2"
 
   deploy_istio                = true
   deploy_pipelines            = true
