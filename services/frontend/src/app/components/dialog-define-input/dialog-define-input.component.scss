@@ -1,0 +1,25 @@
+.dialog-container {
+  max-height: 726px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-item-description {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  padding: 0 20px 30px 15px;
+}
+
+.solution-item {
+  width: 100%;
+}

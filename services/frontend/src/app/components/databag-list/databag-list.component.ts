@@ -9,7 +9,11 @@ import {Databag} from '../../../../build/openapi/objectstore';
 export class DatabagListComponent {
 
   @Input() databags: Databag[] = [];
-  @Input() selectedDatabag: Databag = {databagName: ''};
+  @Input() selectedDatabag: Databag = {};
   @Output() selectedDatabagChange: EventEmitter<Databag> = new EventEmitter<Databag>();
 
+  changeSelectedDatabag(databag: Databag) {
+    this.selectedDatabag = databag;
+    this.selectedDatabagChange.emit(this.selectedDatabag);
+  }
 }

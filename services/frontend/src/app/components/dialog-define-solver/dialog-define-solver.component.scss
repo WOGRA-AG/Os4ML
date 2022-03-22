@@ -1,0 +1,38 @@
+.dialog-container {
+  height: 726px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-button {
+  align-self: center;
+  background: none;
+}
+.button-spacer {
+  flex: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  overflow: auto;
+}
+
+.divider {
+  width: 100%;
+  padding-bottom: 20px;
+}

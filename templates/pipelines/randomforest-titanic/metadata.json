@@ -1,0 +1,6 @@
+{
+  "name": "randomforest-titanic",
+  "description": "Randomforest solver for Titanic.xlsx dataset",
+  "type": "pipeline",
+  "pipeline_step": "solver"
+}

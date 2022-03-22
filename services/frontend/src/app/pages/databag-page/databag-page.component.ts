@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Databag} from '../../../../build/openapi/objectstore';
+import {Databag, Solution} from '../../../../build/openapi/objectstore';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogAddDatabagComponent} from '../../components/dialog-add-databag/dialog-add-databag.component';
 import {DialogDynamicComponent} from '../../components/dialog-dynamic/dialog-dynamic.component';
@@ -12,10 +12,13 @@ import {DialogDynamicComponent} from '../../components/dialog-dynamic/dialog-dyn
 })
 export class DatabagPageComponent {
   databags: Databag[] = [];
+  solutions: Solution[] = [];
+  selectedDatabag: Databag = {};
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) {
     this.activatedRoute.data.subscribe(data => {
       this.databags = data['databags'];
+      this.solutions = data['solutions'];
     });
   }
 

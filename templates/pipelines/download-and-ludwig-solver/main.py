@@ -27,4 +27,4 @@ def download_and_sniffle_pipeline(bucket: str = "os4ml",
 
 if __name__ == "__main__":
     Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
-        download_and_sniffle_pipeline, "pipeline.yaml")
+        download_and_sniffle_pipeline, "component.yaml")

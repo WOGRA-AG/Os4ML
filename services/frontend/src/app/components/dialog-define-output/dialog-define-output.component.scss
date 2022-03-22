@@ -1,0 +1,28 @@
+.dialog-container {
+  max-height: 726px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.solution-item {
+  width: 100%;
+}
+
+.description {
+  padding: 0 20px 30px 15px;
+}
+
+.back-button {
+  align-self: center;
+  background: none;
+}
+.button-spacer {
+  flex: auto;
+}

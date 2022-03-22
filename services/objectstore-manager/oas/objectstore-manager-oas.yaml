@@ -353,6 +353,32 @@ components:
           type: string
         fileUrl:
           type: string
+    Solution:
+      properties:
+        name:
+          type: string
+        solver:
+          type: string
+        inputFields:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        metrics:
+          type: object
+          properties:
+            accuracy:
+              type: number
+            runtime:
+              type: string
+            precision:
+              type: string
+
     Error:
       required:
         - path

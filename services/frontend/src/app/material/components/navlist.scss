@@ -20,6 +20,7 @@
 
   .mat-list-item.active {
     background: $primary-color-100;
+    color: $primary-color;
   }
 }
 
@@ -28,27 +29,31 @@
     padding: 0;
     margin: 0;
     width: 100%;
-  }
 
-  .mat-list-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 10px;
-    overflow: hidden;
+    .mat-list-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-radius: 10px;
+      overflow: hidden;
 
-    .mat-icon {
-      flex: none;
-      order: 0;
-      flex-grow: 0;
-      margin-right: 17px;
-      width: 24px;
-      height: 24px;
+      .mat-list-item-content {
+        width: 100%;
+      }
+
+      .mat-icon {
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin-right: 17px;
+        width: 24px;
+        height: 24px;
+      }
     }
-  }
 
-  .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
-    height: 44px;
+    .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
+      height: 44px;
+    }
   }
 }
 

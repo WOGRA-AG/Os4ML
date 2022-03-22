@@ -1,3 +1,16 @@
+.page-wrapper {
+  flex-direction: column;
+}
+
+.databags-template {
+  flex-direction: column;
+}
+
+.solutions-template {
+  margin-left: 15px;
+  flex: auto;
+}
+
 .placeholder-container {
   display: flex;
   min-height: 366px;
@@ -18,7 +31,10 @@
   width: 100%;
 }
 
-.databag-list-container {
+.content-container {
   min-width: 265px;
+  width: 100%;
   flex: auto;
+  display: flex;
+  flex-direction: row;
 }

@@ -33,6 +33,26 @@
       "placeholder": "Databag Name",
       "back_button": "Back",
       "columns": "Databag Fields"
+    },
+    "define_input": {
+      "title": "Define Input",
+      "description": "mark fields from your data bag, which the AI may use as input for its training",
+      "main_button": "Next Step",
+      "field": "Field"
+    },
+    "define_output": {
+      "title": "Define Output",
+      "description": "mark fields from your data bag, which you want the AI to predict",
+      "main_button": "Next Step",
+      "back_button": "Back",
+      "field": "Field"
+    },
+    "define_solver": {
+      "title": "Define Solver",
+      "label": "Solution Name",
+      "subtitle_solver": "Solver Algorythm",
+      "main_button": "Create Solution",
+      "back_button": "Back"
     }
   },
   "page": {
@@ -55,6 +75,14 @@
         "title": "Get started with Machine Learning",
         "subtitle": "Databags allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
         "main_button": "Create Databag"
+      },
+      "solution": {
+        "title": "Solutions",
+        "empty": {
+          "title": "Analyze your Data with Machine Learning",
+          "subtitle": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
+          "main_button": "Create Solution"
+        }
       }
     }
   }

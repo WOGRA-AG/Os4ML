@@ -7,6 +7,7 @@
 @use './components/button.scss' as button;
 @use './components/expansion-module.scss' as expansionModule;
 @use './components/dialog.scss' as dialog;
+@use './components/list.scss' as list;
 
 $os4ml-theme: mat.define-light-theme((
   color: (
@@ -28,4 +29,5 @@ $os4ml-theme: mat.define-light-theme((
   @include button.theme($os4ml-theme);
   @include expansionModule.theme($os4ml-theme, colors.$border-color);
   @include dialog.theme($os4ml-theme, colors.$overlay, colors.$background);
+  @include list.theme($os4ml-theme, colors.$background);
 }

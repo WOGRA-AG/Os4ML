@@ -27,6 +27,8 @@
   .mat-dialog-container {
     border-radius: 24px;
     padding-left: 50px;
+    max-width: 584px;
+    overflow: hidden;
   }
 
   .mat-dialog-actions {
@@ -36,11 +38,12 @@
   .mat-dialog-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex: auto;
     padding-right: 50px;
     overflow: auto;
+    padding-top: 40px;
 
     .mat-form-field {
       width: 100%;

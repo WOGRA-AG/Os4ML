@@ -29,6 +29,13 @@ import {DialogDefineDatabagComponent} from './components/dialog-define-databag/d
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
+import { SolutionsComponent } from './components/solutions/solutions.component';
+import { SolutionsPlaceholderComponent } from './components/solutions-placeholder/solutions-placeholder.component';
+import { SolutionsListComponent } from './components/solutions-list/solutions-list.component';
+import { DialogDefineInputComponent } from './components/dialog-define-input/dialog-define-input.component';
+import { DialogDefineOutputComponent } from './components/dialog-define-output/dialog-define-output.component';
+import { DialogDefineSolverComponent } from './components/dialog-define-solver/dialog-define-solver.component';
+import { SolutionListItemComponent } from './components/solution-list-item/solution-list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -53,6 +60,13 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogDefineDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
+    SolutionsComponent,
+    SolutionsPlaceholderComponent,
+    SolutionsListComponent,
+    DialogDefineInputComponent,
+    DialogDefineOutputComponent,
+    DialogDefineSolverComponent,
+    SolutionListItemComponent,
   ],
   imports: [
     BrowserModule,

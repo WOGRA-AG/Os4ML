@@ -1,13 +1,16 @@
 <div class="page-wrapper">
-  <div *ngIf="databags.length > 0; then databagTemplate else placeholder"></div>
+  <div class="databags-template" *ngIf="databags.length > 0; then databagTemplate else placeholder"></div>
 </div>
 
 <ng-template #databagTemplate>
   <div class="headline">
     <h4>{{"page.databag.title" | translate}}</h4>
   </div>
-  <div class="databag-list-container">
-    <app-databag-list [databags]="databags"></app-databag-list>
+  <div class="content-container">
+    <app-databag-list [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-databag-list>
+    <div *ngIf="selectedDatabag?.databagName" class="solutions-template">
+      <app-solutions [(solutions)]="solutions" [columns]="selectedDatabag?.columns"></app-solutions>
+    </div>
   </div>
   <button mat-mini-fab class="fab-button" color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon></button>
 </ng-template>
