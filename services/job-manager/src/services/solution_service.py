@@ -1,5 +1,5 @@
 import json
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from openapi_client.api.objectstore_api import ObjectstoreApi
 from openapi_client.model.databag import Databag
@@ -16,12 +16,19 @@ class SolutionService:
         self.objectstore = ObjectstoreApi()
 
     def create_solution(self, solution: Solution) -> str:
-        file_name: str = f"solution_{uuid4()}/{SOLUTION_CONFIG_FILE_NAME}"
+        uuid: UUID = uuid4()
+        solution.name = f"{uuid}_{solution.name}"
+        file_name: str = f"{solution.name}/{SOLUTION_CONFIG_FILE_NAME}"
         databag: Databag = self.objectstore.get_databag_by_bucket_name(solution.bucket_name)
         run_params: RunParams = RunParams(bucket=databag.bucket_name, file_name=databag.file_name)
+        self._persist_solution(solution, file_name)
+        run_id: str = self.template_service.run_pipeline_template(solution.solver, run_params)
+        solution.run_id = run_id
+        self._persist_solution(solution, file_name)
+        return run_id
+
+    def _persist_solution(self, solution: Solution, file_name: str):
         with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "w") as file:
             json.dump(solution.dict(), file)
         with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "r") as file:
             self.objectstore.put_object_by_name(bucket_name=solution.bucket_name, object_name=f"{file_name}", body=file)
-        run_id: str = self.template_service.run_pipeline_template(solution.solver, run_params)
-        return run_id
