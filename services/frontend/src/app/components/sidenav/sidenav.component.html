@@ -5,16 +5,20 @@
         <img class="logo" src="assets/logos/wogra-logo.svg" alt="Wogra Logo">
         <mat-nav-list class="nav-list">
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/dashboard']">
-            <mat-icon matListIcon>apps</mat-icon><span class="nav-caption">Dashboard</span>
+            <mat-icon matListIcon>apps</mat-icon>
+            <span class="nav-caption">Dashboard</span>
           </mat-list-item>
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/databag']">
-            <mat-icon matListIcon>folder_open</mat-icon><span class="nav-caption">Databags</span>
+            <mat-icon matListIcon>folder_open</mat-icon>
+            <span class="nav-caption">Databags</span>
           </mat-list-item>
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/settings']">
-            <mat-icon matListIcon>settings</mat-icon><span class="nav-caption">Settings</span>
+            <mat-icon matListIcon>settings</mat-icon>
+            <span class="nav-caption">Settings</span>
           </mat-list-item>
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/user']">
-            <mat-icon matListIcon>perm_identity</mat-icon><span class="nav-caption">User</span>
+            <mat-icon matListIcon>perm_identity</mat-icon>
+            <span class="nav-caption">User</span>
           </mat-list-item>
         </mat-nav-list>
       </div>
@@ -23,12 +27,17 @@
           <app-support></app-support>
         </div>
         <mat-nav-list>
-          <mat-list-item>
-            <mat-icon matListIcon>keyboard_tab</mat-icon><span class="nav-caption">Logout</span>
-          </mat-list-item>
+          <a target="_top" href="/logout">
+            <mat-list-item>
+              <mat-icon matListIcon>keyboard_tab</mat-icon>
+              <span class="nav-caption">Logout</span>
+            </mat-list-item>
+          </a>
         </mat-nav-list>
       </div>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content><ng-content></ng-content></mat-sidenav-content>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
 </mat-sidenav-container>
