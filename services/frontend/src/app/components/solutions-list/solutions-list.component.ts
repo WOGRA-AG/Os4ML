@@ -13,13 +13,13 @@ export class SolutionsListComponent {
   precision(precision: string | undefined): string {
     switch (precision) {
       case PipelinePrecision.high:
-        return 'accent';
+        return 'primary';
       case PipelinePrecision.medium:
-        return 'medium';
+        return 'accent';
       case PipelinePrecision.low:
         return 'warn';
       default:
-        return 'medium';
+        return 'accent';
     }
   }
 }
