@@ -1,5 +1,5 @@
 data "kustomization_build" "jobmanager_build" {
-  path = "../manifests/apps/job-manager/base"
+  path = "../manifests/apps/job-manager/overlays/istio"
 }
 
 resource "kustomization_resource" "jobmanager" {
