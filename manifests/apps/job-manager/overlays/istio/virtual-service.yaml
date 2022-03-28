@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: os4ml-jobmanager
+  namespace: os4ml
+spec:
+  gateways:
+    - kubeflow/kubeflow-gateway
+  hosts:
+    - '*'
+  http:
+    - name: "os4ml-jobmanager-route"
+      match:
+        - uri:
+            regex: \/apis\/.*\/jobmanager.*
+      route:
+        - destination:
+            host: os4ml-jobmanager.os4ml.svc.cluster.local
+            port:
+              number: 8000

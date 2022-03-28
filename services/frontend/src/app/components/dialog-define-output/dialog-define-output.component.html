@@ -11,7 +11,7 @@
       <span>{{"dialog.define_output.description" | translate}}</span>
     </div>
     <mat-list>
-      <mat-list-item class="bg-primary" *ngFor="let column of columns">
+      <mat-list-item class="bg-primary" *ngFor="let column of databag.columns">
         <app-solution-list-item
           class="solution-item"
           [column]="column"

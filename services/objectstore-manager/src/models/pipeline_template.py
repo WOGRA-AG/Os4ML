@@ -1,9 +1,9 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from fastapi_utils.api_model import APIModel
 
 
-class PipelineTemplate(BaseModel):
+class PipelineTemplate(APIModel):
     name: Optional[str] = None
     type: Optional[str] = None
     description: Optional[str] = None

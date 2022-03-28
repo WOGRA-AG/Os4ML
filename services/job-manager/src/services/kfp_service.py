@@ -64,7 +64,7 @@ class KfpService:
 
     def create_run(self, experiment_id: str, pipeline_id: str, run: CreateRun) -> str:
         run: ApiRun = self.client.run_pipeline(
-            experiment_id=experiment_id, job_name=run.name, pipeline_id=pipeline_id, params=run.params
+            experiment_id=experiment_id, job_name=run.name, pipeline_id=pipeline_id, params=run.params.dict()
         )
         return run.id
 

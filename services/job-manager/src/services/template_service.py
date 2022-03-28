@@ -2,6 +2,7 @@ import uuid
 
 from openapi_client.api.objectstore_api import ObjectstoreApi
 
+from models import RunParams
 from src.models import CreatePipeline, CreateRun, Experiment, PipelineTemplate
 from src.services.kfp_service import KfpService
 
@@ -11,7 +12,7 @@ class TemplateService:
         self.kfp_service = KfpService(client=kfp_client)
         self.objectstore = ObjectstoreApi()
 
-    def run_pipeline_template(self, pipeline_name: str, params: dict) -> str:
+    def run_pipeline_template(self, pipeline_name: str, params: RunParams) -> str:
         name: str = f"{uuid.uuid4()}_{pipeline_name}"
         pipe_template: PipelineTemplate = self.objectstore.get_pipeline_template_by_name(pipeline_name=pipeline_name)
         experiment: Experiment = Experiment(name=name, description=name)

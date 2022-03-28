@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body, Depends, Path
 
+from models import RunParams
 from src.services.template_service import TemplateService
 
 router = APIRouter(prefix="/apis/v1beta1")
@@ -13,7 +14,7 @@ router = APIRouter(prefix="/apis/v1beta1")
 )
 async def post_template(
     pipeline_template_name: str = Path(..., description="Name of the PipelineTemplate to run"),
-    body: dict = Body(None, description=""),
+    run_params: RunParams = Body(..., description="Parameters to run the pipeline with"),
     template_service: TemplateService = Depends(TemplateService),
 ) -> str:
-    return template_service.run_pipeline_template(pipeline_template_name, body)
+    return template_service.run_pipeline_template(pipeline_template_name, run_params)

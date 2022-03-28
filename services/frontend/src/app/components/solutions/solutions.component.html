@@ -18,11 +18,17 @@
   </div>
 </div>
 
-<div *ngIf="solutions.length > 0; then solutionsTemplate else placeholder"></div>
+<div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else placeholder"></div>
 
 <ng-template #solutionsTemplate>
   <div class="solutions-list-container">
-    <app-solutions-list [solutions]="solutions"></app-solutions-list>
+    <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
+  </div>
+  <div class="solutions-add-button">
+    <button mat-raised-button color="accent" (click)="openCreateSolutionDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add Solution</span>
+    </button>
   </div>
 </ng-template>
 

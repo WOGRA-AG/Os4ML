@@ -7,9 +7,10 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <mat-nav-list class="bag-list">
-    <mat-list-item [ngClass]="selectedDatabag.databagName === databag.databagName? 'active': ''"
-                   *ngFor="let databag of databags"
-                   (click)="changeSelectedDatabag(databag)">
+    <mat-list-item
+      [ngClass]="isSameDatabag(selectedDatabag, databag)? 'active': ''"
+      *ngFor="let databag of databags"
+      (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">
         <span class="mat-overline on-surface-disabled">{{databag.numberRows}} entries</span>
         <span class="mat-subheading-2">{{databag.databagName}}</span>

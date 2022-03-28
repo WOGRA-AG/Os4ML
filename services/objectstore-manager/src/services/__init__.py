@@ -1,2 +1,3 @@
 from .minio_service import MinioService
+from .solution_service import SolutionService
 from .storage_service_interface import StorageServiceInterface

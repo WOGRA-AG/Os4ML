@@ -4,14 +4,13 @@ metadata:
   generateName: download-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-11T00:45:19.739981'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-16T11:07:05.574102'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
-      "download_bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx",
-      "name": "download_file_name", "optional": true, "type": "String"}, {"default":
-      "10", "name": "max_categories", "optional": true, "type": "Integer"}, {"default":
-      "os4ml", "name": "upload_bucket", "optional": true, "type": "String"}, {"default":
-      "databag_config.json", "name": "upload_file_name", "optional": true, "type":
-      "String"}, {"default": "", "name": "pipeline-root"}, {"default": "pipeline/download-sniffle-upload",
+      "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
+      "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
+      "max_categories", "optional": true, "type": "Integer"}, {"default": "databag.json",
+      "name": "upload_file_name", "optional": true, "type": "String"}, {"default":
+      "", "name": "pipeline-root"}, {"default": "pipeline/download-sniffle-upload",
       "name": "pipeline-name"}], "name": "download-sniffle-upload"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
@@ -60,8 +59,8 @@ spec:
         --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
         --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
         --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.download_bucket}}',
-        'file_name={{inputs.parameters.download_file_name}}', --]
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
+        'file_name={{inputs.parameters.file_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -93,8 +92,8 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: download_bucket}
-      - {name: download_file_name}
+      - {name: bucket}
+      - {name: file_name}
       - {name: pipeline-name}
       - {name: pipeline-root}
     outputs:
@@ -105,8 +104,8 @@ spec:
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "5b8d2e861c46f6e325d8928be48c6044c2dcdef346076a2d050ca19002337012",
           "url": "../../components/download-dataset-from-objectstore/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.download_bucket}}",
-          "file_name": "{{inputs.parameters.download_file_name}}"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
+          "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -122,12 +121,11 @@ spec:
   - name: download-sniffle-upload
     inputs:
       parameters:
-      - {name: download_bucket}
-      - {name: download_file_name}
+      - {name: bucket}
+      - {name: file_name}
       - {name: max_categories}
       - {name: pipeline-name}
       - {name: pipeline-root}
-      - {name: upload_bucket}
       - {name: upload_file_name}
     dag:
       tasks:
@@ -135,8 +133,8 @@ spec:
         template: download-from-objectstore
         arguments:
           parameters:
-          - {name: download_bucket, value: '{{inputs.parameters.download_bucket}}'}
-          - {name: download_file_name, value: '{{inputs.parameters.download_file_name}}'}
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
       - name: sniff-datatypes
@@ -144,11 +142,11 @@ spec:
         dependencies: [download-from-objectstore]
         arguments:
           parameters:
-          - {name: download_file_name, value: '{{inputs.parameters.download_file_name}}'}
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
           - {name: max_categories, value: '{{inputs.parameters.max_categories}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-          - {name: upload_bucket, value: '{{inputs.parameters.upload_bucket}}'}
           artifacts:
           - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
       - name: upload-file-to-objectstore
@@ -156,9 +154,9 @@ spec:
         dependencies: [sniff-datatypes]
         arguments:
           parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-          - {name: upload_bucket, value: '{{inputs.parameters.upload_bucket}}'}
           - {name: upload_file_name, value: '{{inputs.parameters.upload_file_name}}'}
           artifacts:
           - {name: sniff-datatypes-Output, from: '{{tasks.sniff-datatypes.outputs.artifacts.sniff-datatypes-Output}}'}
@@ -274,9 +272,9 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'bucket_name={{inputs.parameters.upload_bucket}}',
-        dataset_type=local_file, 'file_name={{inputs.parameters.download_file_name}}',
-        'max_categories={{inputs.parameters.max_categories}}', --]
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket_name={{inputs.parameters.bucket}}',
+        dataset_type=local_file, 'file_name={{inputs.parameters.file_name}}', 'max_categories={{inputs.parameters.max_categories}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -311,11 +309,11 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: download_file_name}
+      - {name: bucket}
+      - {name: file_name}
       - {name: max_categories}
       - {name: pipeline-name}
       - {name: pipeline-root}
-      - {name: upload_bucket}
       artifacts:
       - {name: download-from-objectstore-Output, path: /tmp/inputs/csv_file/data}
     outputs:
@@ -326,8 +324,8 @@ spec:
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "fade873ee868218663e6f5f7534e4a41a99c949e49b02b26871c6cf3c54a48f4",
           "url": "../../components/sniffle-dataset/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.upload_bucket}}",
-          "dataset_type": "local_file", "file_name": "{{inputs.parameters.download_file_name}}",
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.bucket}}",
+          "dataset_type": "local_file", "file_name": "{{inputs.parameters.file_name}}",
           "max_categories": "{{inputs.parameters.max_categories}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
@@ -386,7 +384,7 @@ spec:
         --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
         --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
         --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.upload_bucket}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
         'file_name={{inputs.parameters.upload_file_name}}', --]
       env:
       - name: KFP_POD_NAME
@@ -420,9 +418,9 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
+      - {name: bucket}
       - {name: pipeline-name}
       - {name: pipeline-root}
-      - {name: upload_bucket}
       - {name: upload_file_name}
       artifacts:
       - {name: sniff-datatypes-Output, path: /tmp/inputs/file/data}
@@ -431,7 +429,7 @@ spec:
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "6551f1e1499490a963ed50698fcc4e9cf48d7d6f370861d97579355c288133d7",
           "url": "../../components/upload_file_to_objectstore/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.upload_bucket}}",
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.upload_file_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
@@ -447,11 +445,10 @@ spec:
     - {name: kfp-launcher}
   arguments:
     parameters:
-    - {name: download_bucket, value: os4ml}
-    - {name: download_file_name, value: titanic.xlsx}
+    - {name: bucket, value: os4ml}
+    - {name: file_name, value: titanic.xlsx}
     - {name: max_categories, value: '10'}
-    - {name: upload_bucket, value: os4ml}
-    - {name: upload_file_name, value: databag_config.json}
+    - {name: upload_file_name, value: databag.json}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/download-sniffle-upload}
   serviceAccountName: pipeline-runner

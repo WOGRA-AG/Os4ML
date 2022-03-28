@@ -6,6 +6,7 @@ from minio import Minio
 from minio.datatypes import Bucket, Object
 from urllib3 import HTTPResponse
 
+from src import DATABAG_CONFIG_FILE_NAME
 from src.models import Databag, PipelineTemplate
 
 
@@ -45,7 +46,7 @@ class MinioMock(Minio):
     ) -> List[Object]:
         objects_list_os4ml = [
             Object(bucket_name="os4ml", object_name="object.csv"),
-            Object(bucket_name="os4ml", object_name="databag_config.json"),
+            Object(bucket_name="os4ml", object_name=DATABAG_CONFIG_FILE_NAME),
         ]
         objects_list_os6ml = [Object(bucket_name="os6ml", object_name="test.txt")]
         if bucket_name == "os4ml":

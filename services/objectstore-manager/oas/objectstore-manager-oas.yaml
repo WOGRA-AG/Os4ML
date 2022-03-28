@@ -37,7 +37,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Databag'
+                  $ref: './shared-oas.yaml#/components/schemas/Databag'
 
   "/apis/v1beta1/objectstore/databag/{BucketName}":
     get:
@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Databag'
+                $ref: './shared-oas.yaml#/components/schemas/Databag'
     put:
       summary: "update databag"
       operationId: putDatabagByBucketName
@@ -67,7 +67,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Databag'
+              $ref: './shared-oas.yaml#/components/schemas/Databag'
       responses:
         201:
           $ref: '#/components/responses/Created'
@@ -231,7 +231,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PipelineTemplate'
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
 
   "/apis/v1beta1/objectstore/template/pipeline":
     get:
@@ -248,7 +248,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PipelineTemplate'
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
   "/apis/v1beta1/objectstore/template/component/{ComponentName}":
     get:
       summary: 'get component template by name'
@@ -264,7 +265,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineTemplate'
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
 
   "/apis/v1beta1/objectstore/template/pipeline/{PipelineName}":
     get:
@@ -281,7 +282,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineTemplate'
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+  "/apis/v1beta1/objectstore/solution":
+    get:
+      summary: 'get all solutions'
+      operationId: getAllSolutions
+      tags:
+        - objectstore
+        - solution
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solution'
 
 components:
   schemas:
@@ -291,8 +308,6 @@ components:
           type: string
     ObjectName:
       type: string
-    BucketName:
-      type: string
     ComponentName:
       type: string
     PipelineName:
@@ -301,84 +316,18 @@ components:
       type: object
       properties:
         name:
-          $ref: '#/components/schemas/BucketName'
+          $ref: './shared-oas.yaml#/components/schemas/BucketName'
       required:
         - name
     Item:
       properties:
         bucketName:
-          $ref: "#/components/schemas/BucketName"
+          $ref: "./shared-oas.yaml#/components/schemas/BucketName"
         objectName:
           $ref: "#/components/schemas/ObjectName"
       required:
         - bucketName
         - objectName
-    Column:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        usage:
-          type: string
-        numEntries:
-          type: integer
-    Databag:
-      properties:
-        datasetType:
-          type: string
-        fileName:
-          type: string
-        databagName:
-          type: string
-        bucketName:
-          $ref: "#/components/schemas/BucketName"
-        numberRows:
-          type: integer
-        numberColumns:
-          type: integer
-        columns:
-          type: array
-          items:
-            $ref: "#/components/schemas/Column"
-    PipelineTemplate:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-        fileUrl:
-          type: string
-    Solution:
-      properties:
-        name:
-          type: string
-        solver:
-          type: string
-        inputFields:
-          type: array
-          items:
-            type: string
-        outputFields:
-          type: array
-          items:
-            type: string
-        status:
-          type: string
-        metrics:
-          type: object
-          properties:
-            accuracy:
-              type: number
-            runtime:
-              type: string
-            precision:
-              type: string
-
     Error:
       required:
         - path
@@ -394,7 +343,7 @@ components:
       description: Name of Bucket
       required: true
       schema:
-        $ref: '#/components/schemas/BucketName'
+        $ref: './shared-oas.yaml#/components/schemas/BucketName'
     ObjectName:
       name: ObjectName
       in: path
@@ -423,7 +372,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BucketName"
+            $ref: "./shared-oas.yaml#/components/schemas/BucketName"
     Deleted:
       description: The specified resource was deleted
     Updated:

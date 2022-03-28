@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {Column, Solution} from '../../../../build/openapi/objectstore';
+import {Databag} from '../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {DialogDefineInputComponent} from '../dialog-define-input/dialog-define-input.component';
 import {DialogDefineSolverComponent} from '../dialog-define-solver/dialog-define-solver.component';
+import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-dialog-define-output',
@@ -11,11 +12,11 @@ import {DialogDefineSolverComponent} from '../dialog-define-solver/dialog-define
   styleUrls: ['./dialog-define-output.component.scss']
 })
 export class DialogDefineOutputComponent {
-  columns: Column[] = [];
+  databag: Databag = {};
   solution: Solution;
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>) {
-    this.columns = dialogRef.componentInstance.data.columns;
+    this.databag = dialogRef.componentInstance.data.databag;
     this.solution = dialogRef.componentInstance.data.solution;
   }
 

@@ -38,17 +38,15 @@ export class DialogAddDatabagComponent {
       });
       return;
     }
-    const runParams = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-      download_bucket: `${this.uuid}`, download_file_name: `${this.file.name}`, upload_bucket: `${this.uuid}`
-    };
 
     this.running = true;
     try {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
       await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       const runId: string = await firstValueFrom(
-        this.jobmanagerService.postTemplate('download-sniffle-upload', runParams)
+        this.jobmanagerService.postTemplate('download-sniffle-upload', {
+          bucket: `${this.uuid}`, fileName: `${this.file.name}`
+        })
       );
       await this.retrievePipelineStatus(runId);
       this.dialogRef.componentInstance.data.uuid = this.uuid;
