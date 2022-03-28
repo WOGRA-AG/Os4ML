@@ -9,7 +9,6 @@ import {FileUploadComponent} from './components/file-upload/file-upload.componen
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
-import {ApiModule, Configuration} from '../../build/openapi/objectstore';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {MainPageComponent} from './pages/main-page/main-page.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
@@ -29,13 +28,16 @@ import {DialogDefineDatabagComponent} from './components/dialog-define-databag/d
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
-import { SolutionsComponent } from './components/solutions/solutions.component';
-import { SolutionsPlaceholderComponent } from './components/solutions-placeholder/solutions-placeholder.component';
-import { SolutionsListComponent } from './components/solutions-list/solutions-list.component';
-import { DialogDefineInputComponent } from './components/dialog-define-input/dialog-define-input.component';
-import { DialogDefineOutputComponent } from './components/dialog-define-output/dialog-define-output.component';
-import { DialogDefineSolverComponent } from './components/dialog-define-solver/dialog-define-solver.component';
-import { SolutionListItemComponent } from './components/solution-list-item/solution-list-item.component';
+import {SolutionsComponent} from './components/solutions/solutions.component';
+import {SolutionsPlaceholderComponent} from './components/solutions-placeholder/solutions-placeholder.component';
+import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
+import {DialogDefineInputComponent} from './components/dialog-define-input/dialog-define-input.component';
+import {DialogDefineOutputComponent} from './components/dialog-define-output/dialog-define-output.component';
+import {DialogDefineSolverComponent} from './components/dialog-define-solver/dialog-define-solver.component';
+import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
+import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
+import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
+
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -80,11 +82,16 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
         deps: [HttpClient]
       }
     }),
-    ApiModule.forRoot(() => new Configuration(
-        {
-          basePath: ''
-        }
-      )),
+    ObjectstoreApi.forRoot(() => new ObjectstoreApiConfig(
+      {
+        basePath: ''
+      }
+    )),
+    JobmanagerApi.forRoot(() => new JobmanagerApiConfig(
+      {
+        basePath: ''
+      }
+    )),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

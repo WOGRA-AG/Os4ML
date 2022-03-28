@@ -4,7 +4,7 @@ info:
   description: Job Manager
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8000'
+  - url: 'http://os4ml-jobmanager.os4ml.svc.cluster.local:8000'
 paths:
   "/apis/v1beta1/jobmanager/experiment":
     get:
