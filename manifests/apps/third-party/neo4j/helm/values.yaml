@@ -1,0 +1,15 @@
+neo4j:
+  password: "Neo4j1234"
+  edition: "community"
+  acceptLicenseAgreement: "yes"
+  resources:
+    cpu: "500m"
+    memory: "2Gi"
+
+volumes:
+  data:
+    mode: "defaultStorageClass"
+
+config:
+  dbms.default_database: "neo4j"
+  dbms.config.strict_validation: "true"

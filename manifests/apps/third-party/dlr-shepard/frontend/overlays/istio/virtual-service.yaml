@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: shepard-frontend
+  namespace: shepard
+spec:
+  gateways:
+    - kubeflow/kubeflow-gateway
+  hosts:
+    - '*'
+  http:
+    - name: "shepard-frontend-route"
+      match:
+        - uri:
+            prefix: /shepard/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: frontend.shepard.svc.cluster.local
+            port:
+              number: 80

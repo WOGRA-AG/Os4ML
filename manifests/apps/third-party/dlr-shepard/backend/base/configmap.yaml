@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shepard-backend
+  namespace: shepard
+data:
+  catalinaOpts: "-Xms2048m -Xmx2048m"
+  oidcPublic: "dex"
+  oidcAuthority: "dex.auth.svc.cluster.local:5556"
+  influxHost: "influxdb.shepard.svc.cluster.local:8086"
+  influxUsername: "admin"
+  influxPassword: "influx1234"
+  neo4jHost: "neo4j.shepard.svc.cluster.local:7687"
+  neo4jUsername: "neo4j"
+  neo4jPassword: "Neo4j1234"
+  mongoHost: "mongodb.shepard.svc.cluster.local:27017"
+  mongoUsername: "mongodb-user"
+  mongoPassword: "Mongodb1234"

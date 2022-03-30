@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: shepard
+  labels:
+    app: shepard
+    name: shepard-service
+    tier: frontend
+spec:
+  selector:
+    app: shepard
+    name: shepard-frontend
+    tier: frontend
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  type: ClusterIP
