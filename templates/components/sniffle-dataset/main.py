@@ -1,15 +1,15 @@
 from kfp.v2.dsl import component, Dataset, Input
 
 
-def sniff_datatypes(dataset: Input[Dataset],
+def sniff_datatypes(dataframe: Input[Dataset],
                     dataset_type: str = 'local_file',
                     max_categories: int = 10,
                     file_name: str = '',
                     bucket_name: str = '') -> Dataset:
     """
     Guesses the datatypes of the columns in the dataframe.
-    For local_file databags the type is derived from the values in the dataframe.
-    For zip_file databags the type is derived from the suffix of the file names in the dataframe.
+    For local_file databags the type is inferred by the values in the dataframe.
+    For zip_file databags the type is inferred by the suffix of the file_names in the dataframe.
     """
     import pandas as pd
     import json
@@ -80,8 +80,8 @@ def sniff_datatypes(dataset: Input[Dataset],
         assert (column.num_entries == rows for column in columns)
         return rows
 
-    with open(dataset.path, 'r') as dataset_file:
-        df = pd.read_csv(dataset_file)
+    with open(dataframe.path, 'r') as dataframe_file:
+        df = pd.read_csv(dataframe_file)
 
     if dataset_type == 'local_file':
         column_info = sniff_column_datatypes(df)

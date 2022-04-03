@@ -5,18 +5,12 @@ from kfp.v2.dsl import component, Dataset
 
 def create_dataframe(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
                                                                 [('databag_type', str),
-                                                                 ('databag_file', str),
                                                                  ('dataframe', Dataset),
                                                                  ]):
     """
     Creates a dataframe from the file in the object store.
-    :param bucket: bucket of the file
-    :param file_name: name of the file
-    :return: returns databag_type, databag_file, dataframe
-    For local_file databags the databag_file is None.
-    For zip_file databags the databag_file is the location of the zip_file.
-    The zip_file should only contain directories. The names of them are the labels
-    and the files in them are the features.
+    If the file is a zip file it should only contain directories in the top level.
+    The names of them are used as labels and the files in them are used as features.
     """
     import pandas as pd
     import pathlib
@@ -24,7 +18,6 @@ def create_dataframe(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
     import enum
     import requests
     import tempfile
-    import io
     from typing import BinaryIO
     from collections.abc import Generator
 
@@ -51,27 +44,23 @@ def create_dataframe(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
     match file_path.suffix:
         case '.csv':
             df = pd.read_csv(data_uri)
-            databag_type, databag_file = DatabagTypes.local_file, ''
+            databag_type = DatabagTypes.local_file
         case '.xls' | '.xlsx' | '.xlsm' | '.xlsb' | '.odf' | '.ods':
             df = pd.read_excel(data_uri, sheet_name=0)
-            databag_type, databag_file = DatabagTypes.local_file, ''
+            databag_type = DatabagTypes.local_file
         case '.zip':
             with tempfile.NamedTemporaryFile() as tmp_file:
                 download_file(data_uri, tmp_file)
                 df = pd.DataFrame(iter_dirs_of_zip_with_labels(tmp_file), columns=['file', 'label'])
-            databag_type, databag_file = DatabagTypes.zip_file, data_uri
+            databag_type = DatabagTypes.zip_file
         case _:
             raise NotImplementedError()
 
     databag_info = NamedTuple('DatabagInfo',
                               [('databag_type', str),
-                               ('databag_file', str),
                                ('dataframe', Dataset),
                                ])
-    # TODO save result to bucket? -> solver has to redo this step
-    with io.BytesIO() as output_dataframe:
-        df.to_pickle(output_dataframe)
-        return databag_info(databag_type, databag_file, output_dataframe.getvalue())
+    return databag_info(databag_type.value, df.to_csv(index=False))
 
 
 if __name__ == "__main__":

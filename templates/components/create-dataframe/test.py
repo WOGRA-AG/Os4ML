@@ -21,24 +21,22 @@ def mock_df():
 def test_create_dataframe_with_csv(mocker: MockerFixture, mock_df):
     mocker.patch.object(pd, 'read_csv', return_value=mock_df)
 
-    db_type, db_file, df = create_dataframe('', 'mock.csv')
+    db_type, df = create_dataframe('', 'mock.csv')
 
     assert db_type == local_file_type
-    assert db_file == ''
-    with io.BytesIO(df) as pickled_df:
-        restored_df = pd.read_pickle(pickled_df)
+    with io.StringIO(df) as csv:
+        restored_df = pd.read_csv(csv)
     assert restored_df.equals(mock_df)
 
 
 def test_create_dataframe_with_excel(mocker: MockerFixture, mock_df):
     mocker.patch.object(pd, 'read_excel', return_value=mock_df)
 
-    db_type, db_file, df = create_dataframe('', 'mock.xlsx')
+    db_type, df = create_dataframe('', 'mock.xlsx')
 
     assert db_type == local_file_type
-    assert db_file == ''
-    with io.BytesIO(df) as pickled_df:
-        restored_df = pd.read_pickle(pickled_df)
+    with io.StringIO(df) as csv:
+        restored_df = pd.read_csv(csv)
     assert restored_df.equals(mock_df)
 
 
@@ -53,14 +51,12 @@ def test_create_dataframe_with_zip(mocker: MockerFixture):
         zipfile_name = 'mock.zip'
         bucket = 'bucket'
 
-        db_type, db_file, df = create_dataframe(bucket, zipfile_name)
+        db_type, df = create_dataframe(bucket, zipfile_name)
 
     assert db_type == zip_file_type
-    assert db_file.endswith(zipfile_name)
-    assert bucket in db_file
     expected_df = pd.DataFrame({
         'file': ['test/tree/1.png', 'test/tree/0.png', 'test/building/3.png', 'test/building/2.png'],
         'label': ['tree', 'tree', 'building', 'building']})
-    with io.BytesIO(df) as pickled_df:
-        restored_df = pd.read_pickle(pickled_df)
+    with io.StringIO(df) as csv:
+        restored_df = pd.read_csv(csv)
     assert restored_df.equals(expected_df)
