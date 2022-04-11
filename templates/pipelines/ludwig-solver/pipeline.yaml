@@ -560,3 +560,5 @@ spec:
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/create-dataframe-pipeline}
   serviceAccountName: pipeline-runner
+  imagePullSecrets:
+    - name: registry-credentials

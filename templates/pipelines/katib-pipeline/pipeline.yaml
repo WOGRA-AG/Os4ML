@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T10:17:39.914229'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T14:58:31.528264'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "", "name": "pipeline-root"},
       {"default": "pipeline/katib-solver-pipeline", "name": "pipeline-name"}], "name":
       "katib-solver-pipeline"}'
@@ -60,7 +60,7 @@ spec:
             from kubeflow.katib import V1beta1TrialTemplate
             from kubeflow.katib import V1beta1TrialParameterSpec
 
-            namespace = "kubeflow-user-example-com"
+            namespace = "os4ml"
             experiment_name = "enas-example"
 
             metadata = V1ObjectMeta(
@@ -170,7 +170,7 @@ spec:
                             V1beta1ParameterSpec(
                                 name="pool_size",
                                 parameter_type="int",
-                                feasible_space=V1beta1FeasibleSpace(list=["2", "3"]),
+                                feasible_space=V1beta1FeasibleSpace(min="2", max="3", step="1"),
                             )
                         ]
                     ),
@@ -191,13 +191,15 @@ spec:
                             "containers": [
                                 {
                                     "name": "training-container",
-                                    "image": "docker.io/kubeflowkatib/enas-cnn-cifar10-gpu:latest",
+                                    "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
+                                             "enas-trial:165-genimgsol-katib-solution-fuer-bilder",
                                     "command": [
                                         'python3 ',
                                         '-u ',
                                         'RunTrial.py '
                                         '--architecture="${trialParameters.neuralNetworkArchitecture}" '
-                                        '--nn_config="${trialParameters.neuralNetworkConfig}"',
+                                        '--nn_config="${trialParameters.neuralNetworkConfig}" ',
+                                        '--image_url="test_image_file.zip"'
                                     ],
                                     # TODO: enable gpu
                                     # Training container requires 1 GPU.
@@ -206,6 +208,11 @@ spec:
                                     #         "nvidia.com/gpu": 1
                                     #     }
                                     # }
+                                },
+                            ],
+                            "imagePullSecrets": [
+                                {
+                                    "name": "registry-credentials"
                                 }
                             ],
                             "restartPolicy": "Never"
@@ -305,7 +312,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "d2775d3a984fa6922341c578c5730e50265b4a6a81de9d3932f0ad79333f3e4c",
+        pipelines.kubeflow.org/component_ref: '{"digest": "064a04333ee90d8e9892d4897d918d9505917e802b145b2910aa7b9898c5bbe2",
           "url": "../../components/katib-solver/component.yaml"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11

@@ -45,7 +45,7 @@ implementation:
           from kubeflow.katib import V1beta1TrialTemplate
           from kubeflow.katib import V1beta1TrialParameterSpec
 
-          namespace = "kubeflow-user-example-com"
+          namespace = "os4ml"
           experiment_name = "enas-example"
 
           metadata = V1ObjectMeta(
@@ -155,7 +155,7 @@ implementation:
                           V1beta1ParameterSpec(
                               name="pool_size",
                               parameter_type="int",
-                              feasible_space=V1beta1FeasibleSpace(list=["2", "3"]),
+                              feasible_space=V1beta1FeasibleSpace(min="2", max="3", step="1"),
                           )
                       ]
                   ),
@@ -176,13 +176,15 @@ implementation:
                           "containers": [
                               {
                                   "name": "training-container",
-                                  "image": "docker.io/kubeflowkatib/enas-cnn-cifar10-gpu:latest",
+                                  "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
+                                           "enas-trial:165-genimgsol-katib-solution-fuer-bilder",
                                   "command": [
                                       'python3 ',
                                       '-u ',
                                       'RunTrial.py '
                                       '--architecture="${trialParameters.neuralNetworkArchitecture}" '
-                                      '--nn_config="${trialParameters.neuralNetworkConfig}"',
+                                      '--nn_config="${trialParameters.neuralNetworkConfig}" ',
+                                      '--image_url="test_image_file.zip"'
                                   ],
                                   # TODO: enable gpu
                                   # Training container requires 1 GPU.
@@ -191,6 +193,11 @@ implementation:
                                   #         "nvidia.com/gpu": 1
                                   #     }
                                   # }
+                              },
+                          ],
+                          "imagePullSecrets": [
+                              {
+                                  "name": "registry-credentials"
                               }
                           ],
                           "restartPolicy": "Never"

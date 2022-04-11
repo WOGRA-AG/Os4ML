@@ -488,7 +488,7 @@ enas-trial-build:
     DIR: 'templates/dockerfiles/enas-trial'
     IMG_NAME: 'enas-trial'
     DOCKER_BUILDKIT: 1
-    LABEL: $CI_COMMIT_REF_NAME
+    LABEL: $CI_COMMIT_SHA
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
       variables:

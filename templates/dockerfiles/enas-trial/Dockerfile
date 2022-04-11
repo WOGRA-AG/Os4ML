@@ -7,7 +7,8 @@ WORKDIR  ${TARGET_DIR}
 
 ENV PYTHONPATH ${TARGET_DIR}
 
-RUN chgrp -R 0 ${TARGET_DIR} \
-  && chmod -R g+rwX ${TARGET_DIR}
+RUN chgrp -R 0 ${TARGET_DIR} && chmod -R g+rwX ${TARGET_DIR}
+
+RUN pip install scipy
 
 ENTRYPOINT ["python3", "-u", "RunTrial.py"]
