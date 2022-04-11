@@ -1,13 +1,14 @@
 import json
 from uuid import UUID, uuid4
 
-from openapi_client.api.objectstore_api import ObjectstoreApi
-from openapi_client.model.databag import Databag
+from build.openapi_client.api.objectstore_api import ObjectstoreApi
+from build.openapi_client.model.databag import Databag
 
-from models import RunParams, Solution
-from src import SOLUTION_CONFIG_FILE_NAME
+from build.openapi_server.models.solution import Solution
+from build.openapi_server.models.run_params import RunParams
 
-from .template_service import TemplateService
+from services import SOLUTION_CONFIG_FILE_NAME
+from services.template_service import TemplateService
 
 
 class SolutionService:

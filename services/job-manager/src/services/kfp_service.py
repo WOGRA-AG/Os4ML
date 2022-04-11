@@ -4,8 +4,13 @@ from urllib.request import urlretrieve
 from kfp import Client
 from kfp_server_api import ApiListExperimentsResponse, ApiListPipelinesResponse, ApiListRunsResponse, ApiRun
 
-from src import ML_PIPELINE_NS, ML_PIPELINE_URL
-from src.models import CreatePipeline, CreateRun, Experiment, Pipeline, Run
+from build.openapi_server.models.create_pipeline import CreatePipeline
+from build.openapi_server.models.create_run import CreateRun
+from build.openapi_server.models.experiment import Experiment
+from build.openapi_server.models.pipeline import Pipeline
+from build.openapi_server.models.run import Run
+
+from services import ML_PIPELINE_NS, ML_PIPELINE_URL
 
 
 class KfpService:

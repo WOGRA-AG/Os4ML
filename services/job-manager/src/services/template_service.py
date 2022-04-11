@@ -1,10 +1,14 @@
 import uuid
 
-from openapi_client.api.objectstore_api import ObjectstoreApi
+from build.openapi_client.api.objectstore_api import ObjectstoreApi
+from build.openapi_client.model.pipeline_template import PipelineTemplate
 
-from models import RunParams
-from src.models import CreatePipeline, CreateRun, Experiment, PipelineTemplate
-from src.services.kfp_service import KfpService
+from build.openapi_server.models.run_params import RunParams
+from build.openapi_server.models.create_pipeline import CreatePipeline
+from build.openapi_server.models.create_run import CreateRun
+from build.openapi_server.models.experiment import Experiment
+
+from services.kfp_service import KfpService
 
 
 class TemplateService:

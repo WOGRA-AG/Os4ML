@@ -36,3 +36,4 @@ venv
 #src
 **/checkpoint
 build
+.openapi-generator/

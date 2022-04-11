@@ -1,0 +1,397 @@
+openapi: 3.0.1
+info:
+  title: Os4ml Objectstore Manager Api
+  description: Os4ml Objectstore Manager
+  version: 0.0.1
+servers:
+  - url: 'http://os4ml-objectstore-manager.os4ml.svc.cluster.local:8000'
+paths:
+  "/apis/v1beta1/objectstore":
+    get:
+      summary: "get all buckets"
+      operationId: getAllBuckets
+      tags:
+        - objectstore
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bucket'
+
+  "/apis/v1beta1/objectstore/databag":
+    get:
+      summary: "get all databags"
+      operationId: getAllDatabags
+      tags:
+        - objectstore
+        - databag
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Databag'
+
+  "/apis/v1beta1/objectstore/databag/{BucketName}":
+    get:
+      summary: "get databag by bucket name"
+      operationId: getDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Databag'
+    put:
+      summary: "update databag"
+      operationId: putDatabagByBucketName
+      tags:
+        - objectstore
+        - databag
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Databag'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+
+  "/apis/v1beta1/objectstore/{BucketName}":
+    post:
+      summary: "create new bucket"
+      operationId: postNewBucket
+      tags:
+        - objectstore
+        - bucket
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+        400:
+          $ref: '#/components/responses/RequestBodyInvalid'
+    delete:
+      summary: "delete bucket"
+      operationId: deleteBucket
+      tags:
+        - objectstore
+        - bucket
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
+  "/apis/v1beta1/objectstore/{BucketName}/object":
+    get:
+      summary: "get all Objects in bucket"
+      operationId: getAllObjects
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{BucketName}/object/{ObjectName}":
+    get:
+      summary: 'get specific Object from Bucket'
+      operationId: getObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        307:
+          description: Redirect
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: 'delete specific Object from Bucket'
+      operationId: deleteObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: 'put Object to Bucket'
+      operationId: putObjectByName
+      tags:
+        - objectstore
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{BucketName}/presignedgeturl/{ObjectName}":
+    get:
+      summary: "get Object Url"
+      operationId: getObjectUrl
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Url'
+
+  "/apis/v1beta1/objectstore/{BucketName}/presignedputurl/{ObjectName}":
+    get:
+      summary: 'get presigned put Url'
+      operationId: getPresignedPutUrl
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/template/component":
+    get:
+      summary: 'get all component templates'
+      operationId: getAllComponentTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline":
+    get:
+      summary: 'get all pipeline templates'
+      operationId: getAllPipelineTemplates
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/component/{ComponentName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getComponentTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/ComponentName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/objectstore/template/pipeline/{PipelineName}":
+    get:
+      summary: 'get component template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineName'
+      tags:
+        - objectstore
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+  "/apis/v1beta1/objectstore/solution":
+    get:
+      summary: 'get all solutions'
+      operationId: getAllSolutions
+      tags:
+        - objectstore
+        - solution
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solution'
+
+components:
+  schemas:
+    Url:
+      properties:
+        url:
+          type: string
+    ObjectName:
+      type: string
+    ComponentName:
+      type: string
+    PipelineName:
+      type: string
+    Bucket:
+      type: object
+      properties:
+        name:
+          $ref: './shared-oas.yaml#/components/schemas/BucketName'
+      required:
+        - name
+    Item:
+      properties:
+        bucketName:
+          $ref: "./shared-oas.yaml#/components/schemas/BucketName"
+        objectName:
+          $ref: "#/components/schemas/ObjectName"
+      required:
+        - bucketName
+        - objectName
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+
+  parameters:
+    BucketName:
+      name: BucketName
+      in: path
+      description: Name of Bucket
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/BucketName'
+    ObjectName:
+      name: ObjectName
+      in: path
+      description: Name of Object
+      required: true
+      schema:
+        $ref: '#/components/schemas/ObjectName'
+    ComponentName:
+      name: ComponentName
+      in: path
+      description: Name of Component Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/ComponentName'
+    PipelineName:
+      name: PipelineName
+      in: path
+      description: Name of Pipeline Template
+      required: true
+      schema:
+        $ref: '#/components/schemas/PipelineName'
+
+  responses:
+    Created:
+      description: New resource created
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/BucketName"
+    Deleted:
+      description: The specified resource was deleted
+    Updated:
+      description: The specified resource was updated
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyMismatch:
+      description: The provided request body has the wrong format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyInvalid:
+      description: The content of the request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
