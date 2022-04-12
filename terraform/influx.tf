@@ -3,7 +3,7 @@ resource "helm_release" "influxdb" {
 
   repository = "https://helm.influxdata.com"
   chart      = "influxdb"
-  version    = "4.0.5"
+  version    = "4.4.12"
 
   namespace = "shepard"
 
