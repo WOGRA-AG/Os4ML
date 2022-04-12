@@ -7,7 +7,6 @@ from services.kfp_service import KfpService
 
 
 class RunApiRouter:
-
     @staticmethod
     async def get_all_runs() -> List[Run]:
         return KfpService().get_all_runs()
