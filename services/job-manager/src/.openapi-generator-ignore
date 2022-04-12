@@ -35,4 +35,5 @@ git_push.sh
 .gitignore
 .openapi-generator/
 test/
+tests/
 docs/
