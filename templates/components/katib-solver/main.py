@@ -2,12 +2,10 @@ from kfp.v2.dsl import component, Input, Dataset, Metrics, \
     ClassificationMetrics, Output
 
 
-# TODO: add input parameters
-# def katib_solver(dataset_file: Input[Dataset],
-#                  databag_info: Input[Dataset],
-#                  cls_metrics: Output[ClassificationMetrics],
-#                  metrics: Output[Metrics]):
-def katib_solver():
+def katib_solver(dataset_file: Input[Dataset],
+                 databag_info: Input[Dataset],
+                 cls_metrics: Output[ClassificationMetrics],
+                 metrics: Output[Metrics]):
     from kubeflow.katib import KatibClient
     from kubernetes.client import V1ObjectMeta
     from kubeflow.katib import V1beta1Experiment
@@ -26,6 +24,14 @@ def katib_solver():
     from kubeflow.katib import V1beta1ParameterSpec
     from kubeflow.katib import V1beta1TrialTemplate
     from kubeflow.katib import V1beta1TrialParameterSpec
+
+    import json
+
+    with open(databag_info.path) as file:
+        settings = json.load(file)
+
+    databag_info_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
+                       f'{settings["bucketName"]}/object/{settings["fileName"]}'
 
     namespace = "os4ml"
     experiment_name = "enas-example"
@@ -72,7 +78,7 @@ def katib_solver():
                     V1beta1ParameterSpec(
                         name="num_filter",
                         parameter_type="categorical",
-                        feasible_space=V1beta1FeasibleSpace(list=["32", "48",  "64", "96", "128"]),
+                        feasible_space=V1beta1FeasibleSpace(list=["32", "48", "64", "96", "128"]),
                     ),
                     V1beta1ParameterSpec(
                         name="stride",
@@ -166,7 +172,7 @@ def katib_solver():
                                 'RunTrial.py '
                                 '--architecture="${trialParameters.neuralNetworkArchitecture}" '
                                 '--nn_config="${trialParameters.neuralNetworkConfig}" ',
-                                '--image_url="test_image_file.zip"'
+                                '--databag_info_url=' + databag_info_url
                             ],
                             # TODO: enable gpu
                             # Training container requires 1 GPU.
@@ -236,8 +242,6 @@ def katib_solver():
 
 
 if __name__ == "__main__":
-    # TODO: remove local test call
-    # katib_solver()
     component(katib_solver, base_image="python:3.10.2-slim",
               output_component_file="component.yaml",
               packages_to_install=["kubeflow-katib>=0.13.0"])
