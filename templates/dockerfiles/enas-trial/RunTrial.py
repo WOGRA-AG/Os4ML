@@ -1,6 +1,6 @@
 import argparse
 import enum
-import json
+import pathlib
 import zipfile
 from typing import BinaryIO
 
@@ -9,6 +9,7 @@ import requests
 from keras.preprocessing.image import ImageDataGenerator
 from tensorflow import keras
 from tensorflow.python.keras.utils.multi_gpu_utils import multi_gpu_model
+from PIL import Image
 
 from ModelConstructor import ModelConstructor
 
@@ -85,10 +86,13 @@ if __name__ == "__main__":
             download_file(url, file)
 
 
-    databag_filename = 'databag.json'
-    with open(databag_filename, 'wb') as file:
-        download_file(databag_info_url, file)
-        settings = json.load(file)
+    def path_to_absolute(rel_path: str):
+        rel = pathlib.Path(rel_path)
+        return str(rel.resolve())
+
+
+    response = requests.get(databag_info_url)
+    settings = response.json()
 
     if settings['datasetType'] == DatabagTypes.zip_file:
         zip_file = 'dataset.zip'
@@ -99,19 +103,16 @@ if __name__ == "__main__":
     else:
         raise NotImplementedError()
 
-    with open(zip_file, 'r') as input_file:
-        dataset = pd.read_csv(input_file)
+    dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{settings["bucketName"]}/' \
+                  f'object/dataset'
+    dataset = pd.read_csv(dataset_url)
+    dataset['label'] = dataset['label'].astype(str)
+    dataset['file'] = dataset['file'].map(path_to_absolute)
 
-    # TODO infer real image size
-    image_size = (32, 32)
-    train_len = settings['numberRows']
+    test_img = dataset.sample(1)['file'].iloc[0]
+    image_size = Image.open(test_img).size
 
-    augmentation = ImageDataGenerator(
-        width_shift_range=0.1,
-        height_shift_range=0.1,
-        horizontal_flip=True,
-        validation_split=0.2,
-    )
+    augmentation = ImageDataGenerator(validation_split=0.2)
 
     train_data_flow = augmentation.flow_from_dataframe(
         dataset,
@@ -139,12 +140,11 @@ if __name__ == "__main__":
 
     print(">>> Data Loaded. Training starts.")
     for e in range(num_epochs):
-        print("\nTotal Epoch {}/{}".format(e + 1, num_epochs))
+        print(f"\nTotal Epoch {e + 1}/{num_epochs}")
         history = test_model.fit(train_data_flow,
-                                 steps_per_epoch=int(train_len / batch_size) + 1,
                                  epochs=1, verbose=1,
                                  validation_data=val_data_flow)
-        print("Training-Accuracy={}".format(history.history['accuracy'][-1]))
-        print("Training-Loss={}".format(history.history['loss'][-1]))
-        print("Validation-Accuracy={}".format(history.history['val_accuracy'][-1]))
-        print("Validation-Loss={}".format(history.history['val_loss'][-1]))
+        print(f"Training-Accuracy={history.history['accuracy'][-1]}")
+        print(f"Training-Loss={history.history['loss'][-1]}")
+        print(f"Validation-Accuracy={history.history['val_accuracy'][-1]}")
+        print(f"Validation-Loss={history.history['val_loss'][-1]}")

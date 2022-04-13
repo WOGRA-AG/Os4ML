@@ -1,24 +1,24 @@
-import os
-from pathlib import Path
-from typing import Union
-
 from kfp.compiler import Compiler
-from kfp.components import load_component_from_file as _load_component_from_file
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 
+from templates.pipelines.util import load_component
 
-def load_component_from_file(path: Union[str, os.PathLike]):
-    return _load_component_from_file(str(path))
-
-
-comp_path = Path('../../components')
-katib_solver_op = load_component_from_file(comp_path / 'katib-solver' / 'component.yaml')
+init_databab_op = load_component('init-databag')
+upload_op = load_component('upload-to-objectstore')
+download_op = load_component('download-from-objectstore')
+katib_solver_op = load_component('katib-solver')
 
 
 @pipeline(name="katib-solver-pipeline")
-def katib_solver_pipeline():
-    katib_solver_op()
+def katib_solver_pipeline(bucket: str, file_name: str):
+    df_info = init_databab_op(bucket, file_name)
+    upload_op(df_info.outputs['dataset'], bucket, 'dataset')
+    databag_info = download_op(bucket, 'databag.json')
+    katib_solver_op(
+        dataset_file=df_info.outputs['dataset'],
+        databag_info=databag_info.output
+    )
 
 
 if __name__ == "__main__":

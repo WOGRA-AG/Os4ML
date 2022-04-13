@@ -10,12 +10,7 @@ def katib_solver(dataset_file: Input[Dataset],
     from kubernetes.client import V1ObjectMeta
     from kubeflow.katib import V1beta1Experiment
     from kubeflow.katib import V1beta1AlgorithmSpec
-    from kubeflow.katib import V1beta1AlgorithmSetting
     from kubeflow.katib import V1beta1ObjectiveSpec
-    from kubeflow.katib import V1beta1MetricsCollectorSpec
-    from kubeflow.katib import V1beta1CollectorSpec
-    from kubeflow.katib import V1beta1SourceSpec
-    from kubeflow.katib import V1beta1FilterSpec
     from kubeflow.katib import V1beta1FeasibleSpace
     from kubeflow.katib import V1beta1ExperimentSpec
     from kubeflow.katib import V1beta1NasConfig
@@ -31,7 +26,7 @@ def katib_solver(dataset_file: Input[Dataset],
         settings = json.load(file)
 
     databag_info_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                       f'{settings["bucketName"]}/object/{settings["fileName"]}'
+                       f'{settings["bucketName"]}/object/databag.json'
 
     namespace = "os4ml"
     experiment_name = "enas-example"
@@ -51,21 +46,12 @@ def katib_solver(dataset_file: Input[Dataset],
         objective_metric_name="Validation-Accuracy",
     )
 
-    # TODO: need this or is default?
-    metrics_collector_spec = V1beta1MetricsCollectorSpec(
-        collector=V1beta1CollectorSpec(
-            kind="StdOut"
-        ),
-    )
-
     nas_config = V1beta1NasConfig(
         graph_config=V1beta1GraphConfig(
             num_layers=8,
-            input_sizes=[32, 32, 3],
+            input_sizes=[28, 28, 3],
             output_sizes=[10],
         ),
-        # TODO: decrease search space
-        # uses only 6 operations, 3x3/5x5 convolution, 3x3/5x5 separable_convolution and 3x3 max_pooling/avg_pooling
         operations=[
             V1beta1Operation(
                 operation_type="convolution",
@@ -165,7 +151,7 @@ def katib_solver(dataset_file: Input[Dataset],
                         {
                             "name": "training-container",
                             "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
-                                     "enas-trial:165-genimgsol-katib-solution-fuer-bilder",
+                                     "enas-trial:8c66edce",
                             "command": [
                                 'python3 ',
                                 '-u ',
@@ -174,13 +160,12 @@ def katib_solver(dataset_file: Input[Dataset],
                                 '--nn_config="${trialParameters.neuralNetworkConfig}" ',
                                 '--databag_info_url=' + databag_info_url
                             ],
-                            # TODO: enable gpu
                             # Training container requires 1 GPU.
-                            # "resources": {
-                            #     "limits": {
-                            #         "nvidia.com/gpu": 1
-                            #     }
-                            # }
+                            "resources": {
+                                "limits": {
+                                    "nvidia.com/gpu": 1
+                                }
+                            }
                         },
                     ],
                     "imagePullSecrets": [
@@ -222,13 +207,11 @@ def katib_solver(dataset_file: Input[Dataset],
         kind="Experiment",
         metadata=metadata,
         spec=V1beta1ExperimentSpec(
-            # TODO: increase parallel_trial_count to 3
-            parallel_trial_count=1,
+            parallel_trial_count=3,
             max_trial_count=12,
             max_failed_trial_count=1,
             objective=objective_spec,
             algorithm=algorithm_spec,
-            metrics_collector_spec=metrics_collector_spec,
             nas_config=nas_config,
             trial_template=trial_template,
         )
