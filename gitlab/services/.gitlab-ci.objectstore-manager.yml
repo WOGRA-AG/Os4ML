@@ -1,4 +1,5 @@
 include:
+  - local: 'gitlab/shared/.gitlab-ci.prepare-validate-oas.yml'
   - local: 'gitlab/shared/.gitlab-ci.build-development.yml'
   - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
 
@@ -36,10 +37,8 @@ os-manager-validate-backend:
   needs:
     - job-manager-build-oas
   variables:
-    DOCKER_DRIVER: overlay2
     DIR: 'services/objectstore-manager'
     IMG_NAME: 'objectstore-manager'
-    DOCKER_BUILDKIT: 1
 
 os-manager-build:
   extends:
@@ -48,8 +47,5 @@ os-manager-build:
     - os-manager-validate-backend
     - os-manager-build-oas
   variables:
-    DOCKER_DRIVER: overlay2
     DIR: 'services/objectstore-manager'
     IMG_NAME: 'objectstore-manager'
-    DOCKER_BUILDKIT: 1
-    LABEL: $CI_COMMIT_REF_NAME
