@@ -40,23 +40,15 @@ job-manager-validate-backend:
     - job-manager-build-oas
   needs:
     - job-manager-build-oas
-  variables:
-    DOCKER_DRIVER: overlay2
     DIR: 'services/job-manager'
     IMG_NAME: 'job-manager'
-    DOCKER_BUILDKIT: 1
 
 job-manager-build:
   extends:
     .build-production
-  dependencies:
-    - job-manager-build-oas
   needs:
     - job-manager-build-oas
     - job-manager-validate-backend
   variables:
-    DOCKER_DRIVER: overlay2
     DIR: 'services/job-manager'
     IMG_NAME: 'job-manager'
-    DOCKER_BUILDKIT: 1
-    LABEL: $CI_COMMIT_REF_NAME
