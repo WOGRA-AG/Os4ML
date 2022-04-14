@@ -30,7 +30,7 @@ os-manager-build-oas:
 
 os-manager-validate-backend:
   extends:
-    .build-development
+    - .build-development
   dependencies:
     - job-manager-build-oas
   needs:
@@ -43,7 +43,7 @@ os-manager-validate-backend:
 
 os-manager-build:
   extends:
-    .build-production
+    - .build-production
   needs:
     - os-manager-validate-backend
     - os-manager-build-oas
