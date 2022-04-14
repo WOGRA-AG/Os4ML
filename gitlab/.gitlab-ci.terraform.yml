@@ -70,6 +70,5 @@ terraform-destroy:
     - gitlab-terraform --version
     - echo -e "credentials \"$CI_SERVER_HOST\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
     - cd ${TF_ROOT}
-    # TODO: CAPITALIZE ENV Variables
     - gcloud auth activate-service-account $GCP_service_account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
     - gcloud container clusters get-credentials $GCP_cluster_name --zone=$GCP_zone --project=$GCP_project
