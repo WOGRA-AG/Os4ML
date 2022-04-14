@@ -44,8 +44,8 @@ os-manager-build:
   extends:
     - .build-production
   needs:
-    - os-manager-validate-backend
     - os-manager-build-oas
+    - os-manager-validate-backend
   variables:
     DIR: 'services/objectstore-manager'
     IMG_NAME: 'objectstore-manager'

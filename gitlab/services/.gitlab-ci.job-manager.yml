@@ -49,8 +49,8 @@ job-manager-build:
   extends:
     - .build-production
   needs:
-    - job-manager-validate-backend
     - job-manager-build-oas
+    - job-manager-validate-backend
   variables:
     DIR: 'services/job-manager'
     IMG_NAME: 'job-manager'
