@@ -1,0 +1,36 @@
+.build-development:
+  stage: test
+  image: docker:19.03.13-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd $DIR
+    - docker build
+      --target builder-base
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:builder-base
+    - docker build
+      --target lint
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker build
+      --target test
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      "."
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+      changes:
+        - $DIR/**/*
+      when: on_success
