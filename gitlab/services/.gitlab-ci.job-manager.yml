@@ -36,6 +36,10 @@ job-manager-build-oas:
 job-manager-validate-backend:
   extends:
     .build-development
+  dependencies:
+    - job-manager-build-oas
+  needs:
+    - job-manager-build-oas
   variables:
     DOCKER_DRIVER: overlay2
     DIR: 'services/job-manager'

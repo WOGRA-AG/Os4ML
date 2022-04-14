@@ -31,7 +31,10 @@ os-manager-build-oas:
 os-manager-validate-backend:
   extends:
     .build-development
-  needs: [os-manager-build-oas]
+  dependencies:
+    - job-manager-build-oas
+  needs:
+    - job-manager-build-oas
   variables:
     DOCKER_DRIVER: overlay2
     DIR: 'services/objectstore-manager'
