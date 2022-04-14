@@ -1,5 +1,5 @@
 include:
-  - local: 'gitlab/.gitlab-ci-terraform.yml'
+  - local: 'gitlab/.gitlab-ci.terraform.yml'
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
@@ -13,7 +13,6 @@ stages:
 
 variables:
   SWAGGER_CLI_VERSION: 4.0.4
-
 
 .validate-oas:
   stage: prepare

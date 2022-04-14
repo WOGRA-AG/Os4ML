@@ -53,8 +53,8 @@ terraform-destroy:
   script:
     - gitlab-terraform destroy
   when: manual
-  only:
-    - main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 .terraform:
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud364-terraform1.1
