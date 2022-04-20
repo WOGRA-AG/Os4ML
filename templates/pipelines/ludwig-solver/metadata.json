@@ -1,5 +1,5 @@
 {
-  "name": "download-and-ludwig-solver",
+  "name": "ludwig-solver",
   "description": "Solver with Ludwig AutoML",
   "type": "pipeline",
   "pipeline_step": "solver"

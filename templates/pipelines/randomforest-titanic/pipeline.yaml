@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-07T11:01:34.809987'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-06T11:48:26.647263'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "pipeline-root"},
@@ -17,7 +17,7 @@ metadata:
 spec:
   entrypoint: titanic-randomforest-pipeline
   templates:
-  - name: download-from-objectstore
+  - name: init-databag
     container:
       args:
       - sh
@@ -42,21 +42,75 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+        def init_databag(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
+                                                                    [('databag_type', str),
+                                                                     ('dataset', Dataset),
+                                                                     ]):
+            """
+            Inits the databag by specifying its type and creating the dataset.
+            If the file is a zip file it should only contain directories in the top level.
+            The names of them are used as labels and the files they contain are used as features.
+            """
             import pandas as pd
-            data_uri: str = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-            return pd.read_excel(data_uri, sheet_name='train').to_csv(index=False)
+            import pathlib
+            import zipfile
+            import enum
+            import requests
+            import tempfile
+            from typing import BinaryIO
+            from collections.abc import Generator
+
+            class DatabagTypes(str, enum.Enum):
+                local_file = 'local_file'
+                zip_file = 'zip_file'
+
+            def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
+                response = requests.get(url, stream=True)
+                for chunk in response.iter_content(chunk_size=chunk_size):
+                    output_file.write(chunk)
+
+            def iter_dirs_of_zip_with_labels(zip_file: BinaryIO) -> Generator[tuple[str, str], None, None]:
+                with zipfile.ZipFile(zip_file) as root:
+                    unpacked_root_dir = next(zipfile.Path(root).iterdir())
+                    for label_dir in unpacked_root_dir.iterdir():
+                        label = label_dir.name
+                        for file in label_dir.iterdir():
+                            file_name = file.filename.resolve().relative_to(unpacked_root_dir.parent.filename.resolve())
+                            yield str(file_name), label
+
+            data_uri = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            file_path = pathlib.Path(file_name)
+            match file_path.suffix:
+                case '.csv':
+                    df = pd.read_csv(data_uri)
+                    databag_type = DatabagTypes.local_file
+                case '.xls' | '.xlsx' | '.xlsm' | '.xlsb' | '.odf' | '.ods':
+                    df = pd.read_excel(data_uri, sheet_name=0)
+                    databag_type = DatabagTypes.local_file
+                case '.zip':
+                    with tempfile.NamedTemporaryFile() as tmp_file:
+                        download_file(data_uri, tmp_file)
+                        df = pd.DataFrame(iter_dirs_of_zip_with_labels(tmp_file), columns=['file', 'label'])
+                    databag_type = DatabagTypes.zip_file
+                case _:
+                    raise NotImplementedError()
+
+            databag_info = NamedTuple('DatabagInfo',
+                                      [('databag_type', str),
+                                       ('dataset', Dataset),
+                                       ])
+            return databag_info(databag_type.value, df.to_csv(index=False))
 
       - --executor_input
       - '{{$}}'
       - --function_to_execute
-      - download_from_objectstore
+      - init_databag
       command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
         --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
-        --container_image, $(KFP_V2_IMAGE), --task_name, download-from-objectstore,
-        --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
-        --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
-        --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --container_image, $(KFP_V2_IMAGE), --task_name, init-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
         'file_name={{inputs.parameters.file_name}}', --]
       env:
@@ -78,14 +132,15 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.9.10-slim'}
+      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
           "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          {"databag_type": {"type": "STRING", "path": "/tmp/outputs/databag_type/data"}},
+          "outputArtifacts": {"dataset": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.9.10-slim
+      image: python:3.10.2-slim
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -96,12 +151,13 @@ spec:
       - {name: pipeline-root}
     outputs:
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/outputs/Output/data}
+      - {name: init-databag-databag_type, path: /tmp/outputs/databag_type/data}
+      - {name: init-databag-dataset, path: /tmp/outputs/dataset/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "5b8d2e861c46f6e325d8928be48c6044c2dcdef346076a2d050ca19002337012",
-          "url": "../../components//download-dataset-from-objectstore/component.yaml"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "212b45e37594b2c539544c750458286994c9f8752c60e3839157c5928a530c69",
+          "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
@@ -141,7 +197,9 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data", [('x', Dataset), ('y', Dataset)]):
+        def preprocess_data(dataframe: Input[Dataset]) -> NamedTuple("Data",
+                                                                     [('x', Dataset),
+                                                                      ('y', Dataset)]):
             import pandas as pd
             import re
             import numpy as np
@@ -154,7 +212,8 @@ spec:
             df = df.drop(["PassengerId"], axis=1)
             deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 8}
             df["Cabin"] = df["Cabin"].fillna("U0")
-            df["Deck"] = df["Cabin"].map(lambda x: re.compile("([a-zA-Z]+)").search(x).group())
+            df["Deck"] = df["Cabin"].map(
+                lambda x: re.compile("([a-zA-Z]+)").search(x).group())
             df["Deck"] = df["Deck"].map(deck).fillna(0).astype(int)
             df = df.drop(["Cabin"], axis=1)
 
@@ -177,8 +236,9 @@ spec:
             # extract titles
             df['Title'] = df.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
             # replace titles with a more common title or as Rare
-            df['Title'] = df['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
-                                               'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
+            df['Title'] = df['Title'].replace(
+                ['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
+                 'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
             df['Title'] = df['Title'].replace('Mlle', 'Miss')
             df['Title'] = df['Title'].replace('Ms', 'Miss')
             df['Title'] = df['Title'].replace('Mme', 'Mrs')
@@ -278,7 +338,7 @@ spec:
       - {name: pipeline-name}
       - {name: pipeline-root}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/inputs/dataframe/data}
+      - {name: init-databag-dataset, path: /tmp/inputs/dataframe/data}
     outputs:
       artifacts:
       - {name: preprocess-data-x, path: /tmp/outputs/x/data}
@@ -286,8 +346,8 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "6734ad409c0f8e63661ca02669cebd9c9da4706bcf8d76890083004edc7831d9",
-          "url": "../../components//preprocess-data/component.yaml"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "24c4814498ab4805779867d20206c01f58be1be5895b9a27a7728340b7007f83",
+          "url": "../../components/preprocess-data/component.yaml"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -309,8 +369,8 @@ spec:
       - {name: pipeline-root}
     dag:
       tasks:
-      - name: download-from-objectstore
-        template: download-from-objectstore
+      - name: init-databag
+        template: init-databag
         arguments:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
@@ -319,13 +379,13 @@ spec:
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
       - name: preprocess-data
         template: preprocess-data
-        dependencies: [download-from-objectstore]
+        dependencies: [init-databag]
         arguments:
           parameters:
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           artifacts:
-          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
       - name: train-random-forest
         template: train-random-forest
         dependencies: [preprocess-data]
@@ -361,7 +421,9 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def train_random_forest(data_x: Input[Dataset], data_y: Input[Dataset], class_metrics: Output[ClassificationMetrics],
+        def train_random_forest(data_x: Input[Dataset],
+                                data_y: Input[Dataset],
+                                class_metrics: Output[ClassificationMetrics],
                                 metrics: Output[Metrics]) -> float:
             import pandas as pd
             from sklearn.ensemble import RandomForestClassifier
@@ -373,7 +435,9 @@ spec:
                 df_x = pd.read_csv(f)
             with open(data_y.path, 'r') as f:
                 df_y = pd.read_csv(f)
-            x_train, x_test, y_train, y_test = train_test_split(df_x, df_y, test_size=0.33, random_state=random_state)
+            x_train, x_test, y_train, y_test = train_test_split(df_x, df_y,
+                                                                test_size=0.33,
+                                                                random_state=random_state)
             clf = RandomForestClassifier(n_estimators=100, random_state=random_state)
             clf.fit(x_train, y_train)
             score = clf.score(x_test, y_test) * 100
@@ -444,8 +508,8 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "4166416e8501c99fd0726a6313a23974a7a15d7e010e69f6a8ede2b92dd00e67",
-          "url": "../../components//train-random-forest/component.yaml"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "bae1e2c9d5f6b435cea32865dbbdebe61b1f3b47583f7c7e15f97fffdd7a5112",
+          "url": "../../components/train-random-forest/component.yaml"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp

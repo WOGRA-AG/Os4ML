@@ -1,25 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: download-sniffle-upload-
+  generateName: init-databag-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-16T11:07:05.574102'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-06T11:47:59.672331'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
       "max_categories", "optional": true, "type": "Integer"}, {"default": "databag.json",
       "name": "upload_file_name", "optional": true, "type": "String"}, {"default":
-      "", "name": "pipeline-root"}, {"default": "pipeline/download-sniffle-upload",
-      "name": "pipeline-name"}], "name": "download-sniffle-upload"}'
+      "", "name": "pipeline-root"}, {"default": "pipeline/init-databag-sniffle-upload",
+      "name": "pipeline-name"}], "name": "init-databag-sniffle-upload"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
 spec:
-  entrypoint: download-sniffle-upload
+  entrypoint: init-databag-sniffle-upload
   templates:
-  - name: download-from-objectstore
+  - name: init-databag
     container:
       args:
       - sh
@@ -44,21 +44,75 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+        def init_databag(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
+                                                                    [('databag_type', str),
+                                                                     ('dataset', Dataset),
+                                                                     ]):
+            """
+            Inits the databag by specifying its type and creating the dataset.
+            If the file is a zip file it should only contain directories in the top level.
+            The names of them are used as labels and the files they contain are used as features.
+            """
             import pandas as pd
-            data_uri: str = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-            return pd.read_excel(data_uri, sheet_name='train').to_csv(index=False)
+            import pathlib
+            import zipfile
+            import enum
+            import requests
+            import tempfile
+            from typing import BinaryIO
+            from collections.abc import Generator
+
+            class DatabagTypes(str, enum.Enum):
+                local_file = 'local_file'
+                zip_file = 'zip_file'
+
+            def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
+                response = requests.get(url, stream=True)
+                for chunk in response.iter_content(chunk_size=chunk_size):
+                    output_file.write(chunk)
+
+            def iter_dirs_of_zip_with_labels(zip_file: BinaryIO) -> Generator[tuple[str, str], None, None]:
+                with zipfile.ZipFile(zip_file) as root:
+                    unpacked_root_dir = next(zipfile.Path(root).iterdir())
+                    for label_dir in unpacked_root_dir.iterdir():
+                        label = label_dir.name
+                        for file in label_dir.iterdir():
+                            file_name = file.filename.resolve().relative_to(unpacked_root_dir.parent.filename.resolve())
+                            yield str(file_name), label
+
+            data_uri = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            file_path = pathlib.Path(file_name)
+            match file_path.suffix:
+                case '.csv':
+                    df = pd.read_csv(data_uri)
+                    databag_type = DatabagTypes.local_file
+                case '.xls' | '.xlsx' | '.xlsm' | '.xlsb' | '.odf' | '.ods':
+                    df = pd.read_excel(data_uri, sheet_name=0)
+                    databag_type = DatabagTypes.local_file
+                case '.zip':
+                    with tempfile.NamedTemporaryFile() as tmp_file:
+                        download_file(data_uri, tmp_file)
+                        df = pd.DataFrame(iter_dirs_of_zip_with_labels(tmp_file), columns=['file', 'label'])
+                    databag_type = DatabagTypes.zip_file
+                case _:
+                    raise NotImplementedError()
+
+            databag_info = NamedTuple('DatabagInfo',
+                                      [('databag_type', str),
+                                       ('dataset', Dataset),
+                                       ])
+            return databag_info(databag_type.value, df.to_csv(index=False))
 
       - --executor_input
       - '{{$}}'
       - --function_to_execute
-      - download_from_objectstore
+      - init_databag
       command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
         --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
-        --container_image, $(KFP_V2_IMAGE), --task_name, download-from-objectstore,
-        --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
-        --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
-        --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --container_image, $(KFP_V2_IMAGE), --task_name, init-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
         'file_name={{inputs.parameters.file_name}}', --]
       env:
@@ -80,14 +134,15 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.9.10-slim'}
+      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
           "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          {"databag_type": {"type": "STRING", "path": "/tmp/outputs/databag_type/data"}},
+          "outputArtifacts": {"dataset": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.9.10-slim
+      image: python:3.10.2-slim
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -97,13 +152,17 @@ spec:
       - {name: pipeline-name}
       - {name: pipeline-root}
     outputs:
+      parameters:
+      - name: init-databag-databag_type
+        valueFrom: {path: /tmp/outputs/databag_type/data}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/outputs/Output/data}
+      - {name: init-databag-databag_type, path: /tmp/outputs/databag_type/data}
+      - {name: init-databag-dataset, path: /tmp/outputs/dataset/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "5b8d2e861c46f6e325d8928be48c6044c2dcdef346076a2d050ca19002337012",
-          "url": "../../components/download-dataset-from-objectstore/component.yaml"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "212b45e37594b2c539544c750458286994c9f8752c60e3839157c5928a530c69",
+          "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
@@ -118,7 +177,7 @@ spec:
       mirrorVolumeMounts: true
     volumes:
     - {name: kfp-launcher}
-  - name: download-sniffle-upload
+  - name: init-databag-sniffle-upload
     inputs:
       parameters:
       - {name: bucket}
@@ -129,8 +188,8 @@ spec:
       - {name: upload_file_name}
     dag:
       tasks:
-      - name: download-from-objectstore
-        template: download-from-objectstore
+      - name: init-databag
+        template: init-databag
         arguments:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
@@ -139,16 +198,17 @@ spec:
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
       - name: sniff-datatypes
         template: sniff-datatypes
-        dependencies: [download-from-objectstore]
+        dependencies: [init-databag]
         arguments:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
           - {name: file_name, value: '{{inputs.parameters.file_name}}'}
+          - {name: init-databag-databag_type, value: '{{tasks.init-databag.outputs.parameters.init-databag-databag_type}}'}
           - {name: max_categories, value: '{{inputs.parameters.max_categories}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           artifacts:
-          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
       - name: upload-file-to-objectstore
         template: upload-file-to-objectstore
         dependencies: [sniff-datatypes]
@@ -185,27 +245,34 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def sniff_datatypes(csv_file: Input[Dataset],
-                            max_categories: int = 10,
+        def sniff_datatypes(dataset: Input[Dataset],
                             dataset_type: str = 'local_file',
+                            max_categories: int = 10,
                             file_name: str = '',
                             bucket_name: str = '') -> Dataset:
+            """
+            Guesses the datatypes of the columns in the dataframe.
+            For local_file databags the type is derived from the values in the dataframe.
+            For zip_file databags the type is derived from the suffix of the file names in the dataframe.
+            """
             import pandas as pd
             import json
-            from enum import Enum
-            from dataclasses import dataclass
+            import pathlib
+            import enum
+            import dataclasses
 
-            class ColumnDataType(str, Enum):
+            class ColumnDataType(str, enum.Enum):
                 NUMERICAL = 'numerical'
                 DATE = 'date'
                 CATEGORY = 'category'
                 TEXT = 'text'
+                IMAGE = 'image'
 
-            class ColumnUsage(str, Enum):
+            class ColumnUsage(str, enum.Enum):
                 LABEL = 'label'
                 FEATURE = 'feature'
 
-            @dataclass
+            @dataclasses.dataclass
             class Column:
                 name: str
                 type: str
@@ -237,6 +304,18 @@ spec:
                     column_type = ColumnDataType.CATEGORY
                 return column_type, series.size
 
+            def sniff_zip_types(df: pd.DataFrame) -> list[Column]:
+                example_file = df['file'][0]
+                num_files = len(df['file'])
+                suffix = pathlib.Path(example_file).suffix.lower()
+                if suffix in ('.jpg', '.jpeg', '.png', '.tiff'):
+                    file_column = Column('file', ColumnDataType.IMAGE, ColumnUsage.FEATURE, num_files)
+                else:
+                    raise NotImplementedError()
+                num_labels = len(df['label'])
+                label_column = Column('label', ColumnDataType.CATEGORY, ColumnUsage.LABEL, num_labels)
+                return [file_column, label_column]
+
             def get_num_rows(columns: list[Column]) -> int:
                 if not columns:
                     return 0
@@ -245,10 +324,16 @@ spec:
                 assert (column.num_entries == rows for column in columns)
                 return rows
 
-            with open(csv_file.path, 'r') as input_file:
-                df = pd.read_csv(input_file)
+            with open(dataset.path, 'r') as dataset_file:
+                df = pd.read_csv(dataset_file)
 
-            column_info = sniff_column_datatypes(df)
+            if dataset_type == 'local_file':
+                column_info = sniff_column_datatypes(df)
+            elif dataset_type == 'zip_file':
+                column_info = sniff_zip_types(df)
+            else:
+                raise NotImplementedError()
+
             num_rows = get_num_rows(column_info)
             num_cols = len(column_info)
             column_info_dicts = [column.__dict__ for column in column_info]
@@ -259,7 +344,7 @@ spec:
                 'bucketName': bucket_name,
                 'numberRows': num_rows,
                 'numberColumns': num_cols,
-                'columns': column_info_dicts
+                'columns': column_info_dicts,
             })
 
       - --executor_input
@@ -273,8 +358,8 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket_name={{inputs.parameters.bucket}}',
-        dataset_type=local_file, 'file_name={{inputs.parameters.file_name}}', 'max_categories={{inputs.parameters.max_categories}}',
-        --]
+        'dataset_type={{inputs.parameters.init-databag-databag_type}}', 'file_name={{inputs.parameters.file_name}}',
+        'max_categories={{inputs.parameters.max_categories}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -297,8 +382,8 @@ spec:
       - {name: KFP_V2_IMAGE, value: 'amancevice/pandas:1.4.1-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket_name": {"type":
           "STRING"}, "dataset_type": {"type": "STRING"}, "file_name": {"type": "STRING"},
-          "max_categories": {"type": "INT"}}, "inputArtifacts": {"csv_file": {"metadataPath":
-          "/tmp/inputs/csv_file/data", "schemaTitle": "system.Dataset", "instanceSchema":
+          "max_categories": {"type": "INT"}}, "inputArtifacts": {"dataset": {"metadataPath":
+          "/tmp/inputs/dataset/data", "schemaTitle": "system.Dataset", "instanceSchema":
           "", "schemaVersion": "0.0.1"}}, "outputParameters": {}, "outputArtifacts":
           {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
           "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
@@ -311,22 +396,23 @@ spec:
       parameters:
       - {name: bucket}
       - {name: file_name}
+      - {name: init-databag-databag_type}
       - {name: max_categories}
       - {name: pipeline-name}
       - {name: pipeline-root}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/inputs/csv_file/data}
+      - {name: init-databag-dataset, path: /tmp/inputs/dataset/data}
     outputs:
       artifacts:
       - {name: sniff-datatypes-Output, path: /tmp/outputs/Output/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "fade873ee868218663e6f5f7534e4a41a99c949e49b02b26871c6cf3c54a48f4",
+        pipelines.kubeflow.org/component_ref: '{"digest": "20177d38c266f40efeb4418c9616c54d7f0e49ba3afe51fa90008fddd80b9bea",
           "url": "../../components/sniffle-dataset/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.bucket}}",
-          "dataset_type": "local_file", "file_name": "{{inputs.parameters.file_name}}",
-          "max_categories": "{{inputs.parameters.max_categories}}"}'
+          "dataset_type": "{{inputs.parameters.init-databag-databag_type}}", "file_name":
+          "{{inputs.parameters.file_name}}", "max_categories": "{{inputs.parameters.max_categories}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -428,7 +514,7 @@ spec:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "6551f1e1499490a963ed50698fcc4e9cf48d7d6f370861d97579355c288133d7",
-          "url": "../../components/upload_file_to_objectstore/component.yaml"}'
+          "url": "../../components/upload-to-objectstore/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.upload_file_name}}"}'
       labels:
@@ -450,5 +536,5 @@ spec:
     - {name: max_categories, value: '10'}
     - {name: upload_file_name, value: databag.json}
     - {name: pipeline-root, value: ''}
-    - {name: pipeline-name, value: pipeline/download-sniffle-upload}
+    - {name: pipeline-name, value: pipeline/init-databag-sniffle-upload}
   serviceAccountName: pipeline-runner
