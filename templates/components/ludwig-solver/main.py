@@ -3,33 +3,41 @@ from kfp.v2.dsl import component, Input, Dataset, Metrics, \
 
 
 def ludwig_solver(dataset_file: Input[Dataset],
-                  settings_file: Input[Dataset],
+                  databag_info: Input[Dataset],
                   cls_metrics: Output[ClassificationMetrics],
                   metrics: Output[Metrics],
                   batch_size: int = 8,
                   epochs: int = 50,
                   early_stop: int = 10):
-    from enum import Enum
-    import pandas as pd
-    import json
+    from ludwig.api import LudwigModel
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import confusion_matrix
+    from typing import List, BinaryIO
+    import dataclasses
+    import pandas as pd
+    import enum
+    import json
     import logging
-    from ludwig.api import LudwigModel
-    from dataclasses import dataclass
-    from typing import List
+    import requests
+    import zipfile
+    import pathlib
 
-    class ColumnDataType(str, Enum):
+    class ColumnDataType(str, enum.Enum):
         NUMERICAL = 'numerical'
         DATE = 'date'
         CATEGORY = 'category'
         TEXT = 'text'
+        IMAGE = 'image'
 
-    class ColumnUsage(str, Enum):
+    class ColumnUsage(str, enum.Enum):
         LABEL = 'label'
         FEATURE = 'feature'
 
-    @dataclass
+    class DatabagTypes(str, enum.Enum):
+        local_file = 'local_file'
+        zip_file = 'zip_file'
+
+    @dataclasses.dataclass
     class Column:
         name: str
         type: str
@@ -80,7 +88,23 @@ def ludwig_solver(dataset_file: Input[Dataset],
             'type': label_type,
         }
 
-    with open(settings_file.path) as file:
+    def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
+        response = requests.get(url, stream=True)
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            output_file.write(chunk)
+
+    def path_to_absolute(rel_path: str):
+        rel = pathlib.Path(rel_path)
+        return str(rel.resolve())
+
+    def download_zip(output):
+        bucket = settings['bucketName']
+        file_name = settings['fileName']
+        url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+        with open(output, 'wb') as file:
+            download_file(url, file)
+
+    with open(databag_info.path) as file:
         settings = json.load(file)
 
     columns = [
@@ -93,6 +117,13 @@ def ludwig_solver(dataset_file: Input[Dataset],
 
     with open(dataset_file.path, 'r') as input_file:
         dataset = pd.read_csv(input_file)
+
+    if settings['datasetType'] == DatabagTypes.zip_file:
+        zip_file = 'dataset.zip'
+        download_zip(zip_file)
+        with zipfile.ZipFile(zip_file) as ds_zip:
+            ds_zip.extractall()
+        dataset['file'] = dataset['file'].map(path_to_absolute)
 
     df_tmp, df_test = train_test_split(dataset, test_size=0.1, random_state=42)
     df_train, df_validate = train_test_split(df_tmp, test_size=0.1,
@@ -116,6 +147,7 @@ def ludwig_solver(dataset_file: Input[Dataset],
 
 if __name__ == '__main__':
     component(ludwig_solver,
-              base_image='gitlab-registry.wogra.com'
-                         '/developer/wogra/os4ml/template-ludwig',
+              base_image='gitlab-registry.wogra.com/developer/wogra/os4ml/'
+                         'template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen',
+              # TODO remove branch tag
               output_component_file='component.yaml')
