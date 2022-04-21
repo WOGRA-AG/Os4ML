@@ -3,6 +3,7 @@ include:
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
+  - local: 'gitlab/.gitlab-ci.enas-trial.yml'
 
 stages:
   - prepare
@@ -13,3 +14,5 @@ stages:
 
 variables:
   SWAGGER_CLI_VERSION: 4.0.4
+
+
