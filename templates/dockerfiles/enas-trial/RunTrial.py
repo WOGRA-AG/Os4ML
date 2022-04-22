@@ -25,8 +25,12 @@ if __name__ == "__main__":
                         help='number of GPU that used for training')
     parser.add_argument('--batch_size', type=int, default=64, metavar='N',
                         help='sizes of the batches on which are trained')
-    parser.add_argument('--databag_info_url', type=str, metavar='N',
-                        help='url for the databag info file')
+    parser.add_argument('--databag_file', type=str, metavar='N',
+                        help='url for the databag file')
+    parser.add_argument('--dataset_file', type=str, metavar='N',
+                        help='url for the dataset file')
+    parser.add_argument('--zip_file', type=str, metavar='N',
+                        help='url for the zip file')
     args = parser.parse_args()
 
     arch = args.architecture.replace("\'", "\"")
@@ -49,9 +53,17 @@ if __name__ == "__main__":
     print(">>> batch_size received by trial:")
     print(batch_size)
 
-    databag_info_url = args.databag_info_url
-    print(">>> image databag_info_url received by trial:")
-    print(databag_info_url)
+    databag_file = args.databag_file
+    print(">>> databag_file received by trial:")
+    print(databag_file)
+
+    dataset_file = args.dataset_file
+    print(">>> databag_file received by trial:")
+    print(dataset_file)
+
+    zip_file = args.zip_file
+    print(">>> zip file received by trial:")
+    print(zip_file)
 
     print("\n>>> Constructing Model...")
     constructor = ModelConstructor(arch, nn_config)
@@ -72,18 +84,16 @@ if __name__ == "__main__":
         zip_file = 'zip_file'
 
 
-    def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
-        response = requests.get(url, stream=True)
-        for chunk in response.iter_content(chunk_size=chunk_size):
-            output_file.write(chunk)
+    def camel_to_snake(camel: str):
+        """Converts a camelCase str to a snake_case str."""
+        return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
 
 
-    def download_zip(output):
-        bucket = settings['bucketName']
-        file_name = settings['fileName']
-        url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-        with open(output, 'wb') as file:
-            download_file(url, file)
+    def download_zip(output, chunk_size=128):
+        resp = requests.get(zip_file, stream=True)
+        with open(output, 'wb') as output_file:
+            for chunk in resp.iter_content(chunk_size=chunk_size):
+                output_file.write(chunk)
 
 
     def path_to_absolute(rel_path: str):
@@ -91,21 +101,23 @@ if __name__ == "__main__":
         return str(rel.resolve())
 
 
-    response = requests.get(databag_info_url)
-    settings = response.json()
+    response = requests.get(databag_file)
+    databag_camel_case = response.json()
+    databag = {
+        camel_to_snake(key): value
+        for key, value in databag_camel_case.items()
+    }
 
-    if settings['datasetType'] == DatabagTypes.zip_file:
-        zip_file = 'dataset.zip'
-        download_zip(zip_file)
-        with zipfile.ZipFile(zip_file) as ds_zip:
+    if databag['dataset_type'] == DatabagTypes.zip_file:
+        zip_name = 'dataset.zip'
+        download_zip(zip_name)
+        with zipfile.ZipFile(zip_name) as ds_zip:
             ds_zip.extractall()
             root_dir = next(zipfile.Path(ds_zip).iterdir()).name
     else:
         raise NotImplementedError()
 
-    dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{settings["bucketName"]}/' \
-                  f'object/dataset'
-    dataset = pd.read_csv(dataset_url)
+    dataset = pd.read_csv(dataset_file)
     dataset['label'] = dataset['label'].astype(str)
     dataset['file'] = dataset['file'].map(path_to_absolute)
 

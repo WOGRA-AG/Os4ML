@@ -1,7 +1,10 @@
 name: Katib solver
 inputs:
-- {name: dataset_file, type: Dataset}
-- {name: databag_info, type: Dataset}
+- {name: databag_file, type: Dataset}
+- {name: dataset_file_name, type: String}
+- {name: parallel_trial_count, type: Integer, default: '3', optional: true}
+- {name: max_trial_count, type: Integer, default: '12', optional: true}
+- {name: max_failed_trial_count, type: Integer, default: '1', optional: true}
 outputs:
 - {name: cls_metrics, type: ClassificationMetrics}
 - {name: metrics, type: Metrics}
@@ -31,10 +34,14 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def katib_solver(dataset_file: Input[Dataset],
-                       databag_info: Input[Dataset],
+      def katib_solver(databag_file: Input[Dataset],
+                       dataset_file_name: str,
                        cls_metrics: Output[ClassificationMetrics],
-                       metrics: Output[Metrics]):
+                       metrics: Output[Metrics],
+                       parallel_trial_count: int = 3,
+                       max_trial_count: int = 12,
+                       max_failed_trial_count: int = 1,
+                       ):
           from kubeflow.katib import KatibClient
           from kubernetes.client import V1ObjectMeta
           from kubeflow.katib import V1beta1Experiment
@@ -51,14 +58,20 @@ implementation:
 
           import json
 
-          with open(databag_info.path) as file:
-              settings = json.load(file)
+          with open(databag_file.path) as file:
+              databag = json.load(file)
 
-          databag_info_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                             f'{settings["bucketName"]}/object/databag.json'
+          databag_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
+                        f'databag/{databag["bucket_name"]}'
+
+          dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
+                        f'{databag["bucket_name"]}/object/{dataset_file_name}'
+
+          zip_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
+                    f'{databag["bucket_name"]}/object/{databag["file_name"]}'
 
           namespace = "os4ml"
-          experiment_name = "enas-example"
+          experiment_name = f'katib-solver-{databag["bucket_name"]}'
 
           metadata = V1ObjectMeta(
               name=experiment_name,
@@ -180,14 +193,16 @@ implementation:
                               {
                                   "name": "training-container",
                                   "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
-                                           "enas-trial:8c66edce",
+                                           "enas-trial:509ba445",
                                   "command": [
                                       'python3 ',
                                       '-u ',
                                       'RunTrial.py '
                                       '--architecture="${trialParameters.neuralNetworkArchitecture}" '
                                       '--nn_config="${trialParameters.neuralNetworkConfig}" ',
-                                      '--databag_info_url=' + databag_info_url
+                                      f'--databag_file={databag_url}',
+                                      f'--dataset_file={dataset_url}',
+                                      f'--zip_file={zip_url}'
                                   ],
                                   # Training container requires 1 GPU.
                                   "resources": {
@@ -236,9 +251,9 @@ implementation:
               kind="Experiment",
               metadata=metadata,
               spec=V1beta1ExperimentSpec(
-                  parallel_trial_count=3,
-                  max_trial_count=12,
-                  max_failed_trial_count=1,
+                  parallel_trial_count=parallel_trial_count,
+                  max_trial_count=max_trial_count,
+                  max_failed_trial_count=max_failed_trial_count,
                   objective=objective_spec,
                   algorithm=algorithm_spec,
                   nas_config=nas_config,

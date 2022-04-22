@@ -1,59 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: create-dataframe-pipeline-
+  generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-06T11:48:12.164146'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T17:03:10.146136'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "50", "name":
       "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
-      {"default": "pipeline/create-dataframe-pipeline", "name": "pipeline-name"}],
-      "name": "create-dataframe-pipeline"}'
+      {"default": "pipeline/ludwig-solver", "name": "pipeline-name"}], "name": "ludwig-solver"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
 spec:
-  entrypoint: create-dataframe-pipeline
+  entrypoint: ludwig-solver-2
   templates:
-  - name: create-dataframe-pipeline
-    inputs:
-      parameters:
-      - {name: bucket}
-      - {name: epochs}
-      - {name: file_name}
-      - {name: pipeline-name}
-      - {name: pipeline-root}
-    dag:
-      tasks:
-      - name: download-from-objectstore
-        template: download-from-objectstore
-        arguments:
-          parameters:
-          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-      - name: init-databag
-        template: init-databag
-        arguments:
-          parameters:
-          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
-          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-      - name: ludwig-solver
-        template: ludwig-solver
-        dependencies: [download-from-objectstore, init-databag]
-        arguments:
-          parameters:
-          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-          artifacts:
-          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
-          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
-  - name: download-from-objectstore
+  - name: get-databag
     container:
       args:
       - sh
@@ -78,24 +41,34 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+        def get_databag(bucket: str) -> Dataset:
+            import json
+
+            def camel_to_snake(camel: str):
+                """Converts a camelCase str to a snake_case str."""
+                return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
+
             import requests
-            url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}'
             response = requests.get(url)
-            return response.text
+            databag = response.json()
+            return json.dumps({
+                camel_to_snake(key): value
+                for key, value in databag.items()
+            })
 
       - --executor_input
       - '{{$}}'
       - --function_to_execute
-      - download_from_objectstore
+      - get_databag
       command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
         --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
-        --container_image, $(KFP_V2_IMAGE), --task_name, download-from-objectstore,
-        --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
-        --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
-        --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --container_image, $(KFP_V2_IMAGE), --task_name, get-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        file_name=databag.json, --]
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -117,9 +90,9 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
+          {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: python:3.10.2-slim
@@ -132,14 +105,13 @@ spec:
       - {name: pipeline-root}
     outputs:
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/outputs/Output/data}
+      - {name: get-databag-Output, path: /tmp/outputs/Output/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "ac21737c2269e1c247a4a53d329d77ac138c254f2efdd7fa81aba89d1e0cffbd",
-          "url": "../../components/download-from-objectstore/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "databag.json"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "b87fc21744ddbf14ba76b20c0a4f5ae232a9bdd750d36f783dc928bb5d9a94c6",
+          "url": "../../components/get-databag/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -333,7 +305,7 @@ spec:
         from typing import *
 
         def ludwig_solver(dataset_file: Input[Dataset],
-                          databag_info: Input[Dataset],
+                          databag_file: Input[Dataset],
                           cls_metrics: Output[ClassificationMetrics],
                           metrics: Output[Metrics],
                           batch_size: int = 8,
@@ -428,18 +400,18 @@ spec:
                 return str(rel.resolve())
 
             def download_zip(output):
-                bucket = settings['bucketName']
-                file_name = settings['fileName']
+                bucket = databag['bucket_name']
+                file_name = databag['file_name']
                 url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-                with open(output, 'wb') as file:
-                    download_file(url, file)
+                with open(output, 'wb') as output_file:
+                    download_file(url, output_file)
 
-            with open(databag_info.path) as file:
-                settings = json.load(file)
+            with open(databag_file.path) as file:
+                databag = json.load(file)
 
             columns = [
                 Column(**column_dict)
-                for column_dict in settings['columns']
+                for column_dict in databag['columns']
             ]
 
             model_definition = build_model_definition(columns)
@@ -448,7 +420,7 @@ spec:
             with open(dataset_file.path, 'r') as input_file:
                 dataset = pd.read_csv(input_file)
 
-            if settings['datasetType'] == DatabagTypes.zip_file:
+            if databag['dataset_type'] == DatabagTypes.zip_file:
                 zip_file = 'dataset.zip'
                 download_zip(zip_file)
                 with zipfile.ZipFile(zip_file) as ds_zip:
@@ -508,7 +480,7 @@ spec:
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
           "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}}, "inputArtifacts":
-          {"databag_info": {"metadataPath": "/tmp/inputs/databag_info/data", "schemaTitle":
+          {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data", "schemaTitle":
           "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "dataset_file":
           {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle": "system.Dataset",
           "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
@@ -527,7 +499,7 @@ spec:
       - {name: pipeline-name}
       - {name: pipeline-root}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/inputs/databag_info/data}
+      - {name: get-databag-Output, path: /tmp/inputs/databag_file/data}
       - {name: init-databag-dataset, path: /tmp/inputs/dataset_file/data}
     outputs:
       artifacts:
@@ -536,7 +508,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "0f7250c5c5f3f271a68ec578bc4329df1e141c80366afca37c6710dd29c9bc87",
+        pipelines.kubeflow.org/component_ref: '{"digest": "627da38320ec309815361dcccf6d230c2405c31b3bea839124d5d9a6ab2949ad",
           "url": "../../components/ludwig-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
           "10", "epochs": "{{inputs.parameters.epochs}}"}'
@@ -552,13 +524,47 @@ spec:
       mirrorVolumeMounts: true
     volumes:
     - {name: kfp-launcher}
+  - name: ludwig-solver-2
+    inputs:
+      parameters:
+      - {name: bucket}
+      - {name: epochs}
+      - {name: file_name}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+    dag:
+      tasks:
+      - name: get-databag
+        template: get-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: init-databag
+        template: init-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: ludwig-solver
+        template: ludwig-solver
+        dependencies: [get-databag, init-databag]
+        arguments:
+          parameters:
+          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          artifacts:
+          - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
   arguments:
     parameters:
     - {name: bucket}
     - {name: file_name}
     - {name: epochs, value: '50'}
     - {name: pipeline-root, value: ''}
-    - {name: pipeline-name, value: pipeline/create-dataframe-pipeline}
+    - {name: pipeline-name, value: pipeline/ludwig-solver}
   serviceAccountName: pipeline-runner
-  imagePullSecrets:
-    - name: registry-credentials

@@ -1,7 +1,6 @@
-name: Download from objectstore
+name: Get databag
 inputs:
 - {name: bucket, type: String}
-- {name: file_name, type: String}
 outputs:
 - {name: Output, type: Dataset}
 implementation:
@@ -30,14 +29,24 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+      def get_databag(bucket: str) -> Dataset:
+          import json
+
+          def camel_to_snake(camel: str):
+              """Converts a camelCase str to a snake_case str."""
+              return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
+
           import requests
-          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}'
           response = requests.get(url)
-          return response.text
+          databag = response.json()
+          return json.dumps({
+              camel_to_snake(key): value
+              for key, value in databag.items()
+          })
 
     args:
     - --executor_input
     - {executorInput: null}
     - --function_to_execute
-    - download_from_objectstore
+    - get_databag
