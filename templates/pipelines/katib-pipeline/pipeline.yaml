@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T16:25:31.635776'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T16:51:58.927375'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "dataset", "name":
       "dataset_file_name", "optional": true, "type": "String"}, {"default": "", "name":
@@ -17,7 +17,7 @@ metadata:
 spec:
   entrypoint: katib-solver-pipeline
   templates:
-  - name: download-from-objectstore
+  - name: get-databag
     container:
       args:
       - sh
@@ -42,24 +42,34 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def download_from_objectstore(bucket: str, file_name: str) -> Dataset:
+        def get_databag(bucket: str) -> Dataset:
+            import json
+
+            def camel_to_snake(camel: str):
+                """Converts a camelCase str to a snake_case str."""
+                return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
+
             import requests
-            url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}'
             response = requests.get(url)
-            return response.text
+            databag = response.json()
+            return json.dumps({
+                camel_to_snake(key): value
+                for key, value in databag.items()
+            })
 
       - --executor_input
       - '{{$}}'
       - --function_to_execute
-      - download_from_objectstore
+      - get_databag
       command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
         --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
-        --container_image, $(KFP_V2_IMAGE), --task_name, download-from-objectstore,
-        --pipeline_name, '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID),
-        --run_resource, workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE),
-        --pod_name, $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --container_image, $(KFP_V2_IMAGE), --task_name, get-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        file_name=databag.json, --]
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -81,9 +91,9 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
+          {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: python:3.10.2-slim
@@ -96,14 +106,13 @@ spec:
       - {name: pipeline-root}
     outputs:
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/outputs/Output/data}
+      - {name: get-databag-Output, path: /tmp/outputs/Output/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "ac21737c2269e1c247a4a53d329d77ac138c254f2efdd7fa81aba89d1e0cffbd",
-          "url": "../../components/download-from-objectstore/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "databag.json"}'
+        pipelines.kubeflow.org/component_ref: '{"digest": "b87fc21744ddbf14ba76b20c0a4f5ae232a9bdd750d36f783dc928bb5d9a94c6",
+          "url": "../../components/get-databag/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -581,7 +590,7 @@ spec:
       - {name: pipeline-name}
       - {name: pipeline-root}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/inputs/databag_file/data}
+      - {name: get-databag-Output, path: /tmp/inputs/databag_file/data}
     outputs:
       artifacts:
       - {name: katib-solver-cls_metrics, path: /tmp/outputs/cls_metrics/data}
@@ -616,8 +625,8 @@ spec:
       - {name: pipeline-root}
     dag:
       tasks:
-      - name: download-from-objectstore
-        template: download-from-objectstore
+      - name: get-databag
+        template: get-databag
         arguments:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
@@ -633,14 +642,14 @@ spec:
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
       - name: katib-solver
         template: katib-solver
-        dependencies: [download-from-objectstore]
+        dependencies: [get-databag]
         arguments:
           parameters:
           - {name: dataset_file_name, value: '{{inputs.parameters.dataset_file_name}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           artifacts:
-          - {name: download-from-objectstore-Output, from: '{{tasks.download-from-objectstore.outputs.artifacts.download-from-objectstore-Output}}'}
+          - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
       - name: upload-file-to-objectstore
         template: upload-file-to-objectstore
         dependencies: [init-databag]

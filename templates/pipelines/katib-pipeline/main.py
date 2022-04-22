@@ -6,7 +6,7 @@ from templates.pipelines.util import load_component
 
 init_databab_op = load_component('init-databag')
 upload_op = load_component('upload-to-objectstore')
-download_op = load_component('download-from-objectstore')
+get_databag_op = load_component('get-databag')
 katib_solver_op = load_component('katib-solver')
 
 
@@ -14,7 +14,7 @@ katib_solver_op = load_component('katib-solver')
 def katib_solver_pipeline(bucket: str, file_name: str, dataset_file_name: str = 'dataset'):
     df_info = init_databab_op(bucket, file_name)
     upload_op(df_info.outputs['dataset'], bucket, dataset_file_name)
-    databag = download_op(bucket, 'databag.json')
+    databag = get_databag_op(bucket)
     katib_solver_op(
         databag_file=databag.output,
         dataset_file_name=dataset_file_name,
