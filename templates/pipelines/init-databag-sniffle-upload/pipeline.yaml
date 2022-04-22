@@ -4,7 +4,7 @@ metadata:
   generateName: init-databag-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-06T11:47:59.672331'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T10:51:56.080467'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
@@ -457,8 +457,7 @@ spec:
             url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1' \
                   f'/objectstore/{bucket}/object/{file_name}'
             with open(file.path, 'rb') as payload:
-                response = requests.put(url, data=payload)
-            assert response.status_code == 200
+                requests.put(url, data=payload)
 
       - --executor_input
       - '{{$}}'
@@ -513,7 +512,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "6551f1e1499490a963ed50698fcc4e9cf48d7d6f370861d97579355c288133d7",
+        pipelines.kubeflow.org/component_ref: '{"digest": "6c3cab35dc7025fc6985c5453f99f8e7a211aaeae498f781c1bd7ba6c7faa491",
           "url": "../../components/upload-to-objectstore/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.upload_file_name}}"}'

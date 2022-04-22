@@ -8,8 +8,7 @@ def upload_file_to_objectstore(file: Input[Dataset],
     url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1' \
           f'/objectstore/{bucket}/object/{file_name}'
     with open(file.path, 'rb') as payload:
-        response = requests.put(url, data=payload)
-    assert response.status_code == 200
+        requests.put(url, data=payload)
 
 
 if __name__ == '__main__':
