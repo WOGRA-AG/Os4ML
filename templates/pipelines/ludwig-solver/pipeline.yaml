@@ -1,58 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: create-dataframe-pipeline-
+  generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T16:52:06.252012'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T17:03:10.146136'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "50", "name":
       "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
-      {"default": "pipeline/create-dataframe-pipeline", "name": "pipeline-name"}],
-      "name": "create-dataframe-pipeline"}'
+      {"default": "pipeline/ludwig-solver", "name": "pipeline-name"}], "name": "ludwig-solver"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
 spec:
-  entrypoint: create-dataframe-pipeline
+  entrypoint: ludwig-solver-2
   templates:
-  - name: create-dataframe-pipeline
-    inputs:
-      parameters:
-      - {name: bucket}
-      - {name: epochs}
-      - {name: file_name}
-      - {name: pipeline-name}
-      - {name: pipeline-root}
-    dag:
-      tasks:
-      - name: get-databag
-        template: get-databag
-        arguments:
-          parameters:
-          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-      - name: init-databag
-        template: init-databag
-        arguments:
-          parameters:
-          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
-          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-      - name: ludwig-solver
-        template: ludwig-solver
-        dependencies: [get-databag, init-databag]
-        arguments:
-          parameters:
-          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
-          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
-          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
-          artifacts:
-          - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
-          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
   - name: get-databag
     container:
       args:
@@ -561,13 +524,47 @@ spec:
       mirrorVolumeMounts: true
     volumes:
     - {name: kfp-launcher}
+  - name: ludwig-solver-2
+    inputs:
+      parameters:
+      - {name: bucket}
+      - {name: epochs}
+      - {name: file_name}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+    dag:
+      tasks:
+      - name: get-databag
+        template: get-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: init-databag
+        template: init-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: ludwig-solver
+        template: ludwig-solver
+        dependencies: [get-databag, init-databag]
+        arguments:
+          parameters:
+          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          artifacts:
+          - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
   arguments:
     parameters:
     - {name: bucket}
     - {name: file_name}
     - {name: epochs, value: '50'}
     - {name: pipeline-root, value: ''}
-    - {name: pipeline-name, value: pipeline/create-dataframe-pipeline}
+    - {name: pipeline-name, value: pipeline/ludwig-solver}
   serviceAccountName: pipeline-runner
-  imagePullSecrets:
-    - name: registry-credentials

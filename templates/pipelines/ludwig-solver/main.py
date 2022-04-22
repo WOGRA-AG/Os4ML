@@ -9,10 +9,10 @@ get_databag_op = load_component('get-databag')
 ludwig_solver_op = load_component('ludwig-solver')
 
 
-@pipeline(name="create-dataframe-pipeline")
-def create_dataframe_pipeline(bucket: str,
-                              file_name: str,
-                              epochs: int = 50):
+@pipeline(name="ludwig-solver")
+def ludwig_solver(bucket: str,
+                           file_name: str,
+                           epochs: int = 50):
     df_info = init_databag_op(bucket, file_name)
     databag_file = get_databag_op(bucket)
     ludwig_solver_op(
@@ -24,4 +24,4 @@ def create_dataframe_pipeline(bucket: str,
 
 if __name__ == "__main__":
     Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
-        create_dataframe_pipeline, "pipeline.yaml")
+        ludwig_solver, "pipeline.yaml")

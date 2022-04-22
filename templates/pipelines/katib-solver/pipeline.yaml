@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: katib-solver-pipeline-
+  generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T16:51:58.927375'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T17:02:55.362351'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "dataset", "name":
       "dataset_file_name", "optional": true, "type": "String"}, {"default": "", "name":
-      "pipeline-root"}, {"default": "pipeline/katib-solver-pipeline", "name": "pipeline-name"}],
-      "name": "katib-solver-pipeline"}'
+      "pipeline-root"}, {"default": "pipeline/katib-solver", "name": "pipeline-name"}],
+      "name": "katib-solver"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
 spec:
-  entrypoint: katib-solver-pipeline
+  entrypoint: katib-solver-2
   templates:
   - name: get-databag
     container:
@@ -615,7 +615,7 @@ spec:
       mirrorVolumeMounts: true
     volumes:
     - {name: kfp-launcher}
-  - name: katib-solver-pipeline
+  - name: katib-solver-2
     inputs:
       parameters:
       - {name: bucket}
@@ -770,5 +770,5 @@ spec:
     - {name: file_name}
     - {name: dataset_file_name, value: dataset}
     - {name: pipeline-root, value: ''}
-    - {name: pipeline-name, value: pipeline/katib-solver-pipeline}
+    - {name: pipeline-name, value: pipeline/katib-solver}
   serviceAccountName: pipeline-runner
