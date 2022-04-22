@@ -4,7 +4,7 @@ metadata:
   generateName: init-databag-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T11:11:24.870527'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T11:22:28.495158'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "10", "name":
@@ -436,12 +436,12 @@ spec:
             num_cols = len(column_info)
             column_info_dicts = [column.__dict__ for column in column_info]
             return json.dumps({
-                'datasetType': dataset_type,
-                'fileName': file_name,
-                'databagName': file_name,
-                'bucketName': bucket_name,
-                'numberRows': num_rows,
-                'numberColumns': num_cols,
+                'dataset_type': dataset_type,
+                'file_name': file_name,
+                'databag_name': file_name,
+                'bucket_name': bucket_name,
+                'number_rows': num_rows,
+                'number_columns': num_cols,
                 'columns': column_info_dicts,
             })
 
@@ -506,7 +506,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "20177d38c266f40efeb4418c9616c54d7f0e49ba3afe51fa90008fddd80b9bea",
+        pipelines.kubeflow.org/component_ref: '{"digest": "f06b9ea2776313458bd45bc358ba90897dab4f19c7aa4bc7fe82bc4021dbaea6",
           "url": "../../components/sniffle-dataset/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.bucket}}",
           "dataset_type": "{{inputs.parameters.init-databag-databag_type}}", "file_name":

@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T10:52:07.223759'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T14:39:25.313804'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "pipeline-root"}, {"default": "pipeline/katib-solver-pipeline", "name": "pipeline-name"}],
@@ -296,7 +296,7 @@ spec:
         from typing import *
 
         def katib_solver(dataset_file: Input[Dataset],
-                         databag_info: Input[Dataset],
+                         databag_file: Input[Dataset],
                          cls_metrics: Output[ClassificationMetrics],
                          metrics: Output[Metrics]):
             from kubeflow.katib import KatibClient
@@ -315,11 +315,11 @@ spec:
 
             import json
 
-            with open(databag_info.path) as file:
-                settings = json.load(file)
+            with open(databag_file.path) as file:
+                databag = json.load(file)
 
             databag_info_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                               f'{settings["bucketName"]}/object/databag.json'
+                               f'{databag["bucket_name"]}/object/databag.json'
 
             namespace = "os4ml"
             experiment_name = "enas-example"
@@ -500,8 +500,8 @@ spec:
                 kind="Experiment",
                 metadata=metadata,
                 spec=V1beta1ExperimentSpec(
-                    parallel_trial_count=3,
-                    max_trial_count=12,
+                    parallel_trial_count=1,
+                    max_trial_count=10,
                     max_failed_trial_count=1,
                     objective=objective_spec,
                     algorithm=algorithm_spec,
@@ -548,7 +548,7 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {}, "inputArtifacts":
-          {"databag_info": {"metadataPath": "/tmp/inputs/databag_info/data", "schemaTitle":
+          {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data", "schemaTitle":
           "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "dataset_file":
           {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle": "system.Dataset",
           "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
@@ -566,7 +566,7 @@ spec:
       - {name: pipeline-name}
       - {name: pipeline-root}
       artifacts:
-      - {name: download-from-objectstore-Output, path: /tmp/inputs/databag_info/data}
+      - {name: download-from-objectstore-Output, path: /tmp/inputs/databag_file/data}
       - {name: init-databag-dataset, path: /tmp/inputs/dataset_file/data}
     outputs:
       artifacts:
@@ -575,7 +575,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "2cdb670d85039e41c48c91925f13b93d26f589bdf4a9e92e0eb62b4f423c421f",
+        pipelines.kubeflow.org/component_ref: '{"digest": "46a8ae0a895df4e3859f7b0ad6943e839a0db18aa55e58610bda01e8d0231cd9",
           "url": "../../components/katib-solver/component.yaml"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.11

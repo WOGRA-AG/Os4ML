@@ -94,12 +94,12 @@ def sniff_datatypes(dataset: Input[Dataset],
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
     return json.dumps({
-        'datasetType': dataset_type,
-        'fileName': file_name,
-        'databagName': file_name,
-        'bucketName': bucket_name,
-        'numberRows': num_rows,
-        'numberColumns': num_cols,
+        'dataset_type': dataset_type,
+        'file_name': file_name,
+        'databag_name': file_name,
+        'bucket_name': bucket_name,
+        'number_rows': num_rows,
+        'number_columns': num_cols,
         'columns': column_info_dicts,
     })
 

@@ -14,10 +14,10 @@ def create_dataframe_pipeline(bucket: str,
                               file_name: str,
                               epochs: int = 50):
     df_info = init_databag_op(bucket, file_name)
-    databag_info = download_op(bucket, 'databag.json')
+    databag_file = download_op(bucket, 'databag.json')
     ludwig_solver_op(
         dataset_file=df_info.outputs['dataset'],
-        databag_info=databag_info.output,
+        databag_file=databag_file.output,
         epochs=epochs,
     )
 

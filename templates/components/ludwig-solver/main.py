@@ -3,7 +3,7 @@ from kfp.v2.dsl import component, Input, Dataset, Metrics, \
 
 
 def ludwig_solver(dataset_file: Input[Dataset],
-                  databag_info: Input[Dataset],
+                  databag_file: Input[Dataset],
                   cls_metrics: Output[ClassificationMetrics],
                   metrics: Output[Metrics],
                   batch_size: int = 8,
@@ -98,18 +98,18 @@ def ludwig_solver(dataset_file: Input[Dataset],
         return str(rel.resolve())
 
     def download_zip(output):
-        bucket = settings['bucketName']
-        file_name = settings['fileName']
+        bucket = databag['bucket_name']
+        file_name = databag['file_name']
         url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-        with open(output, 'wb') as file:
-            download_file(url, file)
+        with open(output, 'wb') as output_file:
+            download_file(url, output_file)
 
-    with open(databag_info.path) as file:
-        settings = json.load(file)
+    with open(databag_file.path) as file:
+        databag = json.load(file)
 
     columns = [
         Column(**column_dict)
-        for column_dict in settings['columns']
+        for column_dict in databag['columns']
     ]
 
     model_definition = build_model_definition(columns)
@@ -118,7 +118,7 @@ def ludwig_solver(dataset_file: Input[Dataset],
     with open(dataset_file.path, 'r') as input_file:
         dataset = pd.read_csv(input_file)
 
-    if settings['datasetType'] == DatabagTypes.zip_file:
+    if databag['dataset_type'] == DatabagTypes.zip_file:
         zip_file = 'dataset.zip'
         download_zip(zip_file)
         with zipfile.ZipFile(zip_file) as ds_zip:

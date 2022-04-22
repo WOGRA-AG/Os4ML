@@ -17,7 +17,7 @@ def katib_solver_pipeline(bucket: str, file_name: str):
     databag_info = download_op(bucket, 'databag.json')
     katib_solver_op(
         dataset_file=df_info.outputs['dataset'],
-        databag_info=databag_info.output
+        databag_file=databag_info.output
     )
 
 

@@ -79,8 +79,8 @@ if __name__ == "__main__":
 
 
     def download_zip(output):
-        bucket = settings['bucketName']
-        file_name = settings['fileName']
+        bucket = databag['bucket_name']
+        file_name = databag['file_name']
         url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
         with open(output, 'wb') as file:
             download_file(url, file)
@@ -92,9 +92,9 @@ if __name__ == "__main__":
 
 
     response = requests.get(databag_info_url)
-    settings = response.json()
+    databag = response.json()
 
-    if settings['datasetType'] == DatabagTypes.zip_file:
+    if databag['dataset_type'] == DatabagTypes.zip_file:
         zip_file = 'dataset.zip'
         download_zip(zip_file)
         with zipfile.ZipFile(zip_file) as ds_zip:
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     else:
         raise NotImplementedError()
 
-    dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{settings["bucketName"]}/' \
+    dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{databag["bucket_name"]}/' \
                   f'object/dataset'
     dataset = pd.read_csv(dataset_url)
     dataset['label'] = dataset['label'].astype(str)
