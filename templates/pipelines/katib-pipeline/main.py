@@ -11,13 +11,15 @@ katib_solver_op = load_component('katib-solver')
 
 
 @pipeline(name="katib-solver-pipeline")
-def katib_solver_pipeline(bucket: str, file_name: str):
+def katib_solver_pipeline(bucket: str, file_name: str, dataset_file_name: str = 'dataset'):
     df_info = init_databab_op(bucket, file_name)
-    upload_op(df_info.outputs['dataset'], bucket, 'dataset')
-    databag_info = download_op(bucket, 'databag.json')
+    upload_op(df_info.outputs['dataset'], bucket, dataset_file_name)
+    databag = download_op(bucket, 'databag.json')
     katib_solver_op(
-        dataset_file=df_info.outputs['dataset'],
-        databag_file=databag_info.output
+        databag_file=databag.output,
+        dataset_file_name=dataset_file_name,
+        parallel_trial_count=1,
+        max_trial_count=5,
     )
 
 
