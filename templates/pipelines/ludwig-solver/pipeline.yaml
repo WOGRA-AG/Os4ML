@@ -4,7 +4,7 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T17:03:10.146136'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-25T12:26:48.939544'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "50", "name":
       "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
@@ -568,3 +568,5 @@ spec:
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/ludwig-solver}
   serviceAccountName: pipeline-runner
+  imagePullSecrets:
+  - {name: registry-credentials}

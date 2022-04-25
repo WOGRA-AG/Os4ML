@@ -1,6 +1,7 @@
 from kfp.compiler import Compiler
-from kfp.dsl import PipelineExecutionMode
+from kfp.dsl import PipelineExecutionMode, PipelineConf
 from kfp.v2.dsl import pipeline
+from kubernetes.client.models import V1LocalObjectReference
 
 from templates.pipelines.util import load_component
 
@@ -11,8 +12,8 @@ ludwig_solver_op = load_component('ludwig-solver')
 
 @pipeline(name="ludwig-solver")
 def ludwig_solver(bucket: str,
-                           file_name: str,
-                           epochs: int = 50):
+                  file_name: str,
+                  epochs: int = 50):
     df_info = init_databag_op(bucket, file_name)
     databag_file = get_databag_op(bucket)
     ludwig_solver_op(
@@ -23,5 +24,7 @@ def ludwig_solver(bucket: str,
 
 
 if __name__ == "__main__":
+    credentials = V1LocalObjectReference("registry-credentials")
+    conf = PipelineConf().set_image_pull_secrets([credentials])
     Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
-        ludwig_solver, "pipeline.yaml")
+        ludwig_solver, "pipeline.yaml", pipeline_conf=conf)
