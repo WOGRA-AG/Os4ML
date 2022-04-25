@@ -1,0 +1,56 @@
+include:
+  - local: 'gitlab/shared/.gitlab-ci.prepare-validate-oas.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-development.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
+
+# Build Jobmanager image
+job-manager-validate-oas:
+  extends:
+    - .validate-oas
+  variables:
+    OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
+
+job-manager-build-oas:
+  stage: test
+  needs: []
+  image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
+  before_script:
+    - cd $DIR
+    - npm install @openapitools/openapi-generator-cli -g
+    - openapi-generator-cli version
+  script:
+    - openapi-generator-cli generate
+      -i ./job-manager/oas/job-manager-oas.yaml
+      -g python-fastapi
+      -o ./job-manager/build
+      --global-property models,supportingFiles
+
+    - openapi-generator-cli generate
+      -i ./objectstore-manager/oas/objectstore-manager-oas.yaml
+      -g python
+      -o ./job-manager/build/clients/objectstore
+  variables:
+    DIR: 'services'
+  artifacts:
+    untracked: true
+
+job-manager-validate-backend:
+  extends:
+    - .build-development
+  dependencies:
+    - job-manager-build-oas
+  needs:
+    - job-manager-build-oas
+  variables:
+    DIR: 'services/job-manager'
+    IMG_NAME: 'job-manager'
+
+job-manager-build:
+  extends:
+    - .build-production
+  needs:
+    - job-manager-build-oas
+    - job-manager-validate-backend
+  variables:
+    DIR: 'services/job-manager'
+    IMG_NAME: 'job-manager'

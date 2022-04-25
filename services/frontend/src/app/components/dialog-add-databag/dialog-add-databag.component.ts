@@ -44,7 +44,7 @@ export class DialogAddDatabagComponent {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
       await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       const runId: string = await firstValueFrom(
-        this.jobmanagerService.postTemplate('download-sniffle-upload', {
+        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', {
           bucket: `${this.uuid}`, fileName: `${this.file.name}`
         })
       );

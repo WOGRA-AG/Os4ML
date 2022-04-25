@@ -145,7 +145,8 @@ class MinioService(StorageServiceInterface):
             template: PipelineTemplate = PipelineTemplate(
                 **self.get_dict_from_bucket(bucket_name, f"{path}/{self.metadata_file_name}")
             )
-            template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{self.component_file_name}")
+            component_file_name = self.component_file_name if temp_type == "components" else self.pipeline_file_name
+            template.file_url = self.get_presigned_get_url(bucket_name, f"{path}/{component_file_name}")
             template.type = "Component" if temp_type == "components" else "Pipeline" if temp_type == "pipelines" else ""
             templates.append(template)
         return templates

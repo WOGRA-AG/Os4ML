@@ -1,27 +1,34 @@
 from kfp.v2.dsl import component, Dataset, Input
 
 
-def sniff_datatypes(csv_file: Input[Dataset],
-                    max_categories: int = 10,
+def sniff_datatypes(dataset: Input[Dataset],
                     dataset_type: str = 'local_file',
+                    max_categories: int = 10,
                     file_name: str = '',
                     bucket_name: str = '') -> Dataset:
+    """
+    Guesses the datatypes of the columns in the dataframe.
+    For local_file databags the type is derived from the values in the dataframe.
+    For zip_file databags the type is derived from the suffix of the file names in the dataframe.
+    """
     import pandas as pd
     import json
-    from enum import Enum
-    from dataclasses import dataclass
+    import pathlib
+    import enum
+    import dataclasses
 
-    class ColumnDataType(str, Enum):
+    class ColumnDataType(str, enum.Enum):
         NUMERICAL = 'numerical'
         DATE = 'date'
         CATEGORY = 'category'
         TEXT = 'text'
+        IMAGE = 'image'
 
-    class ColumnUsage(str, Enum):
+    class ColumnUsage(str, enum.Enum):
         LABEL = 'label'
         FEATURE = 'feature'
 
-    @dataclass
+    @dataclasses.dataclass
     class Column:
         name: str
         type: str
@@ -53,6 +60,18 @@ def sniff_datatypes(csv_file: Input[Dataset],
             column_type = ColumnDataType.CATEGORY
         return column_type, series.size
 
+    def sniff_zip_types(df: pd.DataFrame) -> list[Column]:
+        example_file = df['file'][0]
+        num_files = len(df['file'])
+        suffix = pathlib.Path(example_file).suffix.lower()
+        if suffix in ('.jpg', '.jpeg', '.png', '.tiff'):
+            file_column = Column('file', ColumnDataType.IMAGE, ColumnUsage.FEATURE, num_files)
+        else:
+            raise NotImplementedError()
+        num_labels = len(df['label'])
+        label_column = Column('label', ColumnDataType.CATEGORY, ColumnUsage.LABEL, num_labels)
+        return [file_column, label_column]
+
     def get_num_rows(columns: list[Column]) -> int:
         if not columns:
             return 0
@@ -61,21 +80,27 @@ def sniff_datatypes(csv_file: Input[Dataset],
         assert (column.num_entries == rows for column in columns)
         return rows
 
-    with open(csv_file.path, 'r') as input_file:
-        df = pd.read_csv(input_file)
+    with open(dataset.path, 'r') as dataset_file:
+        df = pd.read_csv(dataset_file)
 
-    column_info = sniff_column_datatypes(df)
+    if dataset_type == 'local_file':
+        column_info = sniff_column_datatypes(df)
+    elif dataset_type == 'zip_file':
+        column_info = sniff_zip_types(df)
+    else:
+        raise NotImplementedError()
+
     num_rows = get_num_rows(column_info)
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
     return json.dumps({
-        'datasetType': dataset_type,
-        'fileName': file_name,
-        'databagName': file_name,
-        'bucketName': bucket_name,
-        'numberRows': num_rows,
-        'numberColumns': num_cols,
-        'columns': column_info_dicts
+        'dataset_type': dataset_type,
+        'file_name': file_name,
+        'databag_name': file_name,
+        'bucket_name': bucket_name,
+        'number_rows': num_rows,
+        'number_columns': num_cols,
+        'columns': column_info_dicts,
     })
 
 
