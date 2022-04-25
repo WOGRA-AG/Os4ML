@@ -28,7 +28,6 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry update
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --no-dev --no-interaction --no-ansi
 
