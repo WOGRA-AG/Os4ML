@@ -14,7 +14,9 @@ router = APIRouter(prefix="/apis/v1beta1")
     tags=["jobmanager", "pipeline"],
     summary="Get all pipelines",
 )
-async def get_all_pipelines(kfp_service: KfpService = Depends(KfpService),) -> List[Pipeline]:
+async def get_all_pipelines(
+    kfp_service: KfpService = Depends(KfpService),
+) -> List[Pipeline]:
     return kfp_service.get_all_pipelines()
 
 
@@ -25,6 +27,7 @@ async def get_all_pipelines(kfp_service: KfpService = Depends(KfpService),) -> L
     summary="Create Pipeline",
 )
 async def post_pipeline(
-    pipeline: CreatePipeline = Body(..., description=""), kfp_service: KfpService = Depends(KfpService),
+    pipeline: CreatePipeline = Body(..., description=""),
+    kfp_service: KfpService = Depends(KfpService),
 ) -> str:
     return kfp_service.create_pipeline(pipeline)

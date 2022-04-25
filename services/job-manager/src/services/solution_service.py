@@ -19,10 +19,16 @@ class SolutionService:
         uuid: UUID = uuid4()
         solution.name = f"{uuid}_{solution.name}"
         file_name: str = f"{solution.name}/{SOLUTION_CONFIG_FILE_NAME}"
-        databag: Databag = self.objectstore.get_databag_by_bucket_name(solution.bucket_name)
-        run_params: RunParams = RunParams(bucket=databag.bucket_name, file_name=databag.file_name)
+        databag: Databag = self.objectstore.get_databag_by_bucket_name(
+            solution.bucket_name
+        )
+        run_params: RunParams = RunParams(
+            bucket=databag.bucket_name, file_name=databag.file_name
+        )
         self._persist_solution(solution, file_name)
-        run_id: str = self.template_service.run_pipeline_template(solution.solver, run_params)
+        run_id: str = self.template_service.run_pipeline_template(
+            solution.solver, run_params
+        )
         solution.run_id = run_id
         self._persist_solution(solution, file_name)
         return run_id
@@ -31,4 +37,8 @@ class SolutionService:
         with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "w") as file:
             json.dump(solution.dict(), file)
         with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "r") as file:
-            self.objectstore.put_object_by_name(bucket_name=solution.bucket_name, object_name=f"{file_name}", body=file)
+            self.objectstore.put_object_by_name(
+                bucket_name=solution.bucket_name,
+                object_name=f"{file_name}",
+                body=file,
+            )

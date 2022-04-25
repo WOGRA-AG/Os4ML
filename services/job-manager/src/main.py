@@ -12,7 +12,11 @@ from api.routers.template_router import router as template_router
 app = FastAPI(title="Job Manager", description="Job Manager", version="1.0.0")
 
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(experiment_router)

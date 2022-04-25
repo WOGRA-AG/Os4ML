@@ -14,7 +14,9 @@ router = APIRouter(prefix="/apis/v1beta1")
     tags=["jobmanager", "experiment"],
     summary="Get all Experiments",
 )
-async def get_all_experiments(kfp_service: KfpService = Depends(KfpService),) -> List[Experiment]:
+async def get_all_experiments(
+    kfp_service: KfpService = Depends(KfpService),
+) -> List[Experiment]:
     return kfp_service.get_all_experiments()
 
 
@@ -25,6 +27,7 @@ async def get_all_experiments(kfp_service: KfpService = Depends(KfpService),) ->
     summary="Create new Experiment",
 )
 async def post_experiment(
-    experiment: Experiment = Body(..., description=""), kfp_service: KfpService = Depends(KfpService),
+    experiment: Experiment = Body(..., description=""),
+    kfp_service: KfpService = Depends(KfpService),
 ) -> str:
     return kfp_service.create_experiment(experiment)

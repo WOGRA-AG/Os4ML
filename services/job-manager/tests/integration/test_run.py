@@ -21,8 +21,15 @@ async def test_get_all_runs():
 @pytest.mark.asyncio
 async def test_post_run():
     params = {"a": "a", "b": "b"}
-    create_run: CreateRun = CreateRun(name="abc", description="def", params=params)
-    await post_run(experiment_id="", pipeline_id="", run=create_run, kfp_service=mock_service)
+    create_run: CreateRun = CreateRun(
+        name="abc", description="def", params=params
+    )
+    await post_run(
+        experiment_id="",
+        pipeline_id="",
+        run=create_run,
+        kfp_service=mock_service,
+    )
 
 
 @pytest.mark.asyncio
