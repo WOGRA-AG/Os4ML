@@ -3,10 +3,8 @@ from uuid import UUID, uuid4
 
 from build.openapi_client.api.objectstore_api import ObjectstoreApi
 from build.openapi_client.model.databag import Databag
-
-from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.run_params import RunParams
-
+from build.openapi_server.models.solution import Solution
 from services import SOLUTION_CONFIG_FILE_NAME
 from services.template_service import TemplateService
 

@@ -1,8 +1,7 @@
 from typing import List
 
-from build.openapi_server.models.pipeline import Pipeline
 from build.openapi_server.models.create_pipeline import CreatePipeline
-
+from build.openapi_server.models.pipeline import Pipeline
 from services.kfp_service import KfpService
 
 

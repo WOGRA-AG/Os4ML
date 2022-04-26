@@ -1,5 +1,4 @@
 from build.openapi_server.models.solution import Solution
-
 from services.solution_service import SolutionService
 
 

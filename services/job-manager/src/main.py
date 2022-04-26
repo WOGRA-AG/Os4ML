@@ -1,6 +1,7 @@
 # coding: utf-8
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+
 from build.openapi_server.main import app
 
 app.add_middleware(
