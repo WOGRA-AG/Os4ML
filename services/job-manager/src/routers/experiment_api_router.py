@@ -6,6 +6,7 @@ from services.kfp_service import KfpService
 
 
 class ExperimentApiRouter:
+
     @staticmethod
     def get_all_experiments() -> List[Experiment]:
         return KfpService().get_all_experiments()

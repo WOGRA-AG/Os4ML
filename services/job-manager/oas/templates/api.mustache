@@ -46,7 +46,7 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{>endpoint_argument_definition}},
+    {{paramName}}{{^required}}=None{{/required}}{{^-last}}, {{/-last}}
     {{/allParams}}
     {{#hasAuthMethods}}
     {{#authMethods}}
@@ -55,8 +55,12 @@ async def {{operationId}}(
     ),
     {{/authMethods}}
     {{/hasAuthMethods}}
-) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:  # noqa: E501
-    return await {{classname}}Router().{{operationId}}()
+) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    return {{classname}}Router().{{operationId}}(
+    {{#allParams}}
+        {{paramName}}{{^required}}={{paramName}}{{/required}},
+    {{/allParams}}
+    )
 {{^-last}}
 
 
