@@ -7,7 +7,6 @@ from services.kfp_service import KfpService
 
 
 class PipelineApiRouter:
-
     @staticmethod
     def get_all_pipelines() -> List[Pipeline]:
         return KfpService().get_all_pipelines()

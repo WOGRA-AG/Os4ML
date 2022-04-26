@@ -14,7 +14,6 @@ from template_service import TemplateService
 
 
 class JobmanagerApiRouter:
-
     @staticmethod
     def get_all_experiments() -> List[Experiment]:
         return KfpService().get_all_experiments()
