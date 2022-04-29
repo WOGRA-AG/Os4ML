@@ -8,6 +8,7 @@ inputs:
 outputs:
 - {name: cls_metrics, type: ClassificationMetrics}
 - {name: metrics, type: Metrics}
+- {name: Output, type: Artifact}
 implementation:
   container:
     image: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen
@@ -20,7 +21,7 @@ implementation:
           python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
       fi
 
-      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
     - sh
     - -ec
     - |
@@ -40,7 +41,7 @@ implementation:
                         metrics: Output[Metrics],
                         batch_size: int = 8,
                         epochs: int = 50,
-                        early_stop: int = 10):
+                        early_stop: int = 10) -> Artifact:
           from ludwig.api import LudwigModel
           from sklearn.model_selection import train_test_split
           from sklearn.metrics import confusion_matrix
@@ -175,6 +176,8 @@ implementation:
 
           metrics.log_metric('accuracy', accuracy)
           cls_metrics.log_confusion_matrix(categories, conf_matrix)
+
+          return metrics
 
     args:
     - --executor_input
