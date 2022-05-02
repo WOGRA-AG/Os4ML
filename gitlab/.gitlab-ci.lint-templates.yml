@@ -10,7 +10,6 @@ lint-templates:
     - cd $DIR
     - docker build
       --target lint
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       --build-arg BUILDKIT_INLINE_CACHE=1
       "."
