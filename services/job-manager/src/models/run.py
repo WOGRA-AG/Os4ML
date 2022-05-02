@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from fastapi_utils.api_model import APIModel
-from openapi_server.models.metrics import Metrics
+from .metrics import Metrics
 
 
 class Run(APIModel):

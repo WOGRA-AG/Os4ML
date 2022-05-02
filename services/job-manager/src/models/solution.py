@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from fastapi_utils.api_model import APIModel
-from openapi_server.models.solution_metrics import SolutionMetrics
+from .solution_metrics import SolutionMetrics
 
 
 class Solution(APIModel):
