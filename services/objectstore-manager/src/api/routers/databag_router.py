@@ -10,11 +10,15 @@ router = APIRouter(prefix="/apis/v1beta1")
 
 @router.get(
     "/objectstore/databag",
-    responses={200: {"model": List[Databag], "description": "Successful response"}},
+    responses={
+        200: {"model": List[Databag], "description": "Successful response"}
+    },
     tags=["objectstore", "databag"],
     summary="get all databags",
 )
-async def get_all_databags(minio_service: MinioService = Depends(MinioService)) -> List[Databag]:
+async def get_all_databags(
+    minio_service: MinioService = Depends(MinioService),
+) -> List[Databag]:
     return minio_service.get_databags()
 
 
@@ -25,7 +29,8 @@ async def get_all_databags(minio_service: MinioService = Depends(MinioService)) 
     summary="get databag by bucket name",
 )
 async def get_databag_by_bucket_name(
-    bucket_name: str = Path(..., description="Name of Bucket"), minio_service: MinioService = Depends(MinioService)
+    bucket_name: str = Path(..., description="Name of Bucket"),
+    minio_service: MinioService = Depends(MinioService),
 ) -> Databag:
     return minio_service.get_databag_by_bucket_name(bucket_name)
 

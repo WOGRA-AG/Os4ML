@@ -12,14 +12,18 @@ minio_service_mock = MinioService(client=minio_mock_client)
 
 @pytest.mark.asyncio
 async def test_post_new_bucket():
-    new_bucket: Bucket = await post_new_bucket(bucket_name="os4ml", minio_service=minio_service_mock)
+    new_bucket: Bucket = await post_new_bucket(
+        bucket_name="os4ml", minio_service=minio_service_mock
+    )
     assert type(new_bucket) == Bucket
 
 
 @pytest.mark.asyncio
 async def test_post_new_bucket_with_exception():
     with pytest.raises(HTTPException) as excinfo:
-        await post_new_bucket(bucket_name="os4ml_test", minio_service=minio_service_mock)
+        await post_new_bucket(
+            bucket_name="os4ml_test", minio_service=minio_service_mock
+        )
     assert "status_code=400" in str(excinfo)
 
 

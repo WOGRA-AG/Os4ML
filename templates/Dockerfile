@@ -1,5 +1,5 @@
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM python:3.9.10-slim as python-base
+FROM python:3.10.4-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -11,10 +11,10 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
     PROJECT_DIR="/app" \
-    POETRY_VERSION=1.1.4
+    POETRY_VERSION=1.1.13
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
-ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/build/clients/objectstore:$PROJECT_DIR/build/src:$PYTHONPATH"
+ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/build:$PROJECT_DIR/build/src:$PYTHONPATH"
 
 
 FROM python-base as builder-base
@@ -55,32 +55,6 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 
 
 FROM development AS lint
-RUN black --config ./pyproject.toml --check src tests
-RUN isort --settings-path ./pyproject.toml --check-only src tests
+RUN black --config ./pyproject.toml --check .
+RUN isort --settings-path ./pyproject.toml --check-only .
 CMD ["tail", "-f", "/dev/null"]
-
-
-# 'test' stage runs our unit tests with pytest and coverage.
-FROM development AS test
-RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 90
-
-
-FROM python-base as production
-ENV FASTAPI_ENV=production
-
-COPY --from=builder-base $VENV_PATH $VENV_PATH
-COPY gunicorn_conf.py $PROJECT_DIR/
-
-WORKDIR $PROJECT_DIR
-
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
-COPY /src $PROJECT_DIR/src
-COPY /build $PROJECT_DIR/build
-
-
-EXPOSE 8000
-ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config ./gunicorn_conf.py", "--chdir src", "main:app"]

@@ -14,7 +14,9 @@ router = APIRouter(prefix="/apis/v1beta1")
     tags=["objectstore", "template"],
     summary="get all component templates",
 )
-async def get_all_component_templates(minio_service: MinioService = Depends(MinioService)) -> List[PipelineTemplate]:
+async def get_all_component_templates(
+    minio_service: MinioService = Depends(MinioService),
+) -> List[PipelineTemplate]:
     return minio_service.get_all_pipeline_templates("components")
 
 
@@ -24,7 +26,9 @@ async def get_all_component_templates(minio_service: MinioService = Depends(Mini
     tags=["objectstore", "template"],
     summary="get all pipeline templates",
 )
-async def get_all_pipeline_templates(minio_service: MinioService = Depends(MinioService)) -> List[PipelineTemplate]:
+async def get_all_pipeline_templates(
+    minio_service: MinioService = Depends(MinioService),
+) -> List[PipelineTemplate]:
     return minio_service.get_all_pipeline_templates("pipelines")
 
 
@@ -38,7 +42,9 @@ async def get_component_template_by_name(
     component_name: str = Path(..., description="Name of Component Template"),
     minio_service: MinioService = Depends(MinioService),
 ) -> PipelineTemplate:
-    return minio_service.get_pipeline_template_by_name("components", component_name)
+    return minio_service.get_pipeline_template_by_name(
+        "components", component_name
+    )
 
 
 @router.get(
@@ -51,4 +57,6 @@ async def get_pipeline_template_by_name(
     pipeline_name: str = Path(..., description="Name of Pipeline Template"),
     minio_service: MinioService = Depends(MinioService),
 ) -> PipelineTemplate:
-    return minio_service.get_pipeline_template_by_name("pipelines", pipeline_name)
+    return minio_service.get_pipeline_template_by_name(
+        "pipelines", pipeline_name
+    )

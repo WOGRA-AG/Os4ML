@@ -1,7 +1,16 @@
 import numpy as np
 from keras import backend as K
-from keras.layers import Conv2D, ZeroPadding2D, concatenate, MaxPooling2D, \
-    AveragePooling2D, Activation, BatchNormalization, SeparableConv2D, DepthwiseConv2D
+from keras.layers import (
+    Activation,
+    AveragePooling2D,
+    BatchNormalization,
+    Conv2D,
+    DepthwiseConv2D,
+    MaxPooling2D,
+    SeparableConv2D,
+    ZeroPadding2D,
+    concatenate,
+)
 
 
 def concat(inputs):
@@ -22,10 +31,16 @@ def concat(inputs):
             diff = max_dim - total_dim[i][1]
             half_diff = int(diff / 2)
             if diff % 2 == 0:
-                padded_input[i] = ZeroPadding2D(padding=(half_diff, half_diff))(inputs[i])
+                padded_input[i] = ZeroPadding2D(
+                    padding=(half_diff, half_diff)
+                )(inputs[i])
             else:
-                padded_input[i] = ZeroPadding2D(padding=((half_diff, half_diff + 1),
-                                                         (half_diff, half_diff + 1)))(inputs[i])
+                padded_input[i] = ZeroPadding2D(
+                    padding=(
+                        (half_diff, half_diff + 1),
+                        (half_diff, half_diff + 1),
+                    )
+                )(inputs[i])
         else:
             padded_input[i] = inputs[i]
 
@@ -43,13 +58,14 @@ def conv(x, config):
         if k in config:
             parameters[k] = int(config[k])
 
-    activated = Activation('relu')(x)
+    activated = Activation("relu")(x)
 
     conved = Conv2D(
-        filters=parameters['num_filter'],
-        kernel_size=parameters['filter_size'],
-        strides=parameters['stride'],
-        padding='same')(activated)
+        filters=parameters["num_filter"],
+        kernel_size=parameters["filter_size"],
+        strides=parameters["stride"],
+        padding="same",
+    )(activated)
 
     result = BatchNormalization()(conved)
 
@@ -68,14 +84,15 @@ def sp_conv(x, config):
         if k in config:
             parameters[k] = int(config[k])
 
-    activated = Activation('relu')(x)
+    activated = Activation("relu")(x)
 
     conved = SeparableConv2D(
-        filters=parameters['num_filter'],
-        kernel_size=parameters['filter_size'],
-        strides=parameters['stride'],
-        depth_multiplier=parameters['depth_multiplier'],
-        padding='same')(activated)
+        filters=parameters["num_filter"],
+        kernel_size=parameters["filter_size"],
+        strides=parameters["stride"],
+        depth_multiplier=parameters["depth_multiplier"],
+        padding="same",
+    )(activated)
 
     result = BatchNormalization()(conved)
 
@@ -92,13 +109,14 @@ def dw_conv(x, config):
         if k in config:
             parameters[k] = int(config[k])
 
-    activated = Activation('relu')(x)
+    activated = Activation("relu")(x)
 
     conved = DepthwiseConv2D(
-        kernel_size=parameters['filter_size'],
-        strides=parameters['stride'],
-        depth_multiplier=parameters['depth_multiplier'],
-        padding='same')(activated)
+        kernel_size=parameters["filter_size"],
+        strides=parameters["stride"],
+        depth_multiplier=parameters["depth_multiplier"],
+        padding="same",
+    )(activated)
 
     result = BatchNormalization()(conved)
 
@@ -111,34 +129,36 @@ def reduction(x, config):
     # such situation is very likely to appear though
     dim = K.int_shape(x)
     if dim[1] == 1 or dim[2] == 1:
-        print("WARNING: One or more dimensions of the input of the reduction layer is 1. It cannot be further reduced. "
-              "A identity layer will be used instead.")
+        print(
+            "WARNING: One or more dimensions of the input of the reduction layer is 1. It cannot be further reduced. "
+            "A identity layer will be used instead."
+        )
         return x
 
     parameters = {
-        'reduction_type': "max_pooling",
-        'pool_size': 2,
-        'stride': None,
+        "reduction_type": "max_pooling",
+        "pool_size": 2,
+        "stride": None,
     }
 
-    if 'reduction_type' in config:
-        parameters['reduction_type'] = config['reduction_type']
-    if 'pool_size' in config:
-        parameters['pool_size'] = int(config['pool_size'])
-    if 'stride' in config:
-        parameters['stride'] = int(config['stride'])
+    if "reduction_type" in config:
+        parameters["reduction_type"] = config["reduction_type"]
+    if "pool_size" in config:
+        parameters["pool_size"] = int(config["pool_size"])
+    if "stride" in config:
+        parameters["stride"] = int(config["stride"])
 
-    if parameters['reduction_type'] == 'max_pooling':
+    if parameters["reduction_type"] == "max_pooling":
         result = MaxPooling2D(
-            pool_size=parameters['pool_size'],
-            strides=parameters['stride']
+            pool_size=parameters["pool_size"], strides=parameters["stride"]
         )(x)
-    elif parameters['reduction_type'] == 'avg_pooling':
+    elif parameters["reduction_type"] == "avg_pooling":
         result = AveragePooling2D(
-            pool_size=parameters['pool_size'],
-            strides=parameters['stride']
+            pool_size=parameters["pool_size"], strides=parameters["stride"]
         )(x)
     else:
-        raise ValueError(f'Unknown reduction type in config: {parameters["reduction_type"]}')
+        raise ValueError(
+            f'Unknown reduction type in config: {parameters["reduction_type"]}'
+        )
 
     return result
