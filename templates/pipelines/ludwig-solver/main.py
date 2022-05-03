@@ -3,7 +3,7 @@ from kfp.dsl import PipelineConf, PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 from kubernetes.client.models import V1LocalObjectReference
 
-from templates.pipelines.util import load_component
+from pipelines.util import load_component
 
 init_databag_op = load_component("init-databag")
 get_databag_op = load_component("get-databag")

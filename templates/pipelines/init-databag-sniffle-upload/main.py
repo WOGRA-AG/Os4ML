@@ -2,7 +2,7 @@ from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 
-from templates.pipelines.util import load_component
+from pipelines.util import load_component
 
 init_databag_op = load_component("init-databag")
 sniffle_op = load_component("sniffle-dataset")
