@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from fastapi_utils.api_model import APIModel
+
 from .solution_metrics import SolutionMetrics
 
 
