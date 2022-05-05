@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: jobmanager
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/jobmanager:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:187-solver-standardmetriken-zu-pipelines-und-solutions-hinzufugen"
           ports:
             - containerPort: 8000
               name: http
