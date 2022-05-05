@@ -1,0 +1,45 @@
+name: Upload file to objectstore
+inputs:
+- {name: file, type: Dataset}
+- {name: bucket, type: String}
+- {name: file_name, type: String}
+implementation:
+  container:
+    image: python:3.10.2-slim
+    command:
+    - sh
+    - -c
+    - |2
+
+      if ! [ -x "$(command -v pip)" ]; then
+          python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+      fi
+
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+    - sh
+    - -ec
+    - |
+      program_path=$(mktemp -d)
+      printf "%s" "$0" > "$program_path/ephemeral_component.py"
+      python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+    - |2+
+
+      import kfp
+      from kfp.v2 import dsl
+      from kfp.v2.dsl import *
+      from typing import *
+
+      def upload_file_to_objectstore(file: Input[Dataset],
+                                     bucket: str,
+                                     file_name: str):
+          import requests
+          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1' \
+                f'/objectstore/{bucket}/object/{file_name}'
+          with open(file.path, 'rb') as payload:
+              requests.put(url, data=payload)
+
+    args:
+    - --executor_input
+    - {executorInput: null}
+    - --function_to_execute
+    - upload_file_to_objectstore

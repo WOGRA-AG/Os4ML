@@ -15,7 +15,9 @@ router = APIRouter(prefix="/apis/v1beta1")
     tags=["jobmanager", "run"],
     summary="Get all pipeline runs",
 )
-async def get_all_runs(kfp_service: KfpService = Depends(KfpService),) -> List[Run]:
+async def get_all_runs(
+    kfp_service: KfpService = Depends(KfpService),
+) -> List[Run]:
     return kfp_service.get_all_runs()
 
 
@@ -26,7 +28,8 @@ async def get_all_runs(kfp_service: KfpService = Depends(KfpService),) -> List[R
     summary="Get single pipeline run",
 )
 async def get_run(
-    run_id: str = Path(None, description="Id of Run"), kfp_service: KfpService = Depends(KfpService)
+    run_id: str = Path(None, description="Id of Run"),
+    kfp_service: KfpService = Depends(KfpService),
 ) -> Run:
     return kfp_service.get_run(run_id)
 

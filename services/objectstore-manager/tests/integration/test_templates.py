@@ -19,7 +19,9 @@ minio_service_mock = MinioService(client=minio_mock_client)
 
 @pytest.mark.asyncio
 async def test_get_all_pipeline_templates():
-    templates: List[PipelineTemplate] = await get_all_pipeline_templates(minio_service_mock)
+    templates: List[PipelineTemplate] = await get_all_pipeline_templates(
+        minio_service_mock
+    )
     assert type(templates) == list
     assert len(templates) > 0
     assert type(templates.pop()) == PipelineTemplate
@@ -27,7 +29,9 @@ async def test_get_all_pipeline_templates():
 
 @pytest.mark.asyncio
 async def test_get_all_pipeline_templates():
-    templates: List[PipelineTemplate] = await get_all_component_templates(minio_service_mock)
+    templates: List[PipelineTemplate] = await get_all_component_templates(
+        minio_service_mock
+    )
     assert type(templates) == list
     assert len(templates) > 0
     assert type(templates.pop()) == PipelineTemplate
@@ -44,7 +48,9 @@ async def test_get_pipeline_by_name():
 @pytest.mark.asyncio
 async def test_get_pipeline_by_name_with_exception():
     with pytest.raises(HTTPException) as excinfo:
-        await get_pipeline_template_by_name(pipeline_name="pipeline_err", minio_service=minio_service_mock)
+        await get_pipeline_template_by_name(
+            pipeline_name="pipeline_err", minio_service=minio_service_mock
+        )
     assert "status_code=404" in str(excinfo)
 
 
@@ -59,5 +65,7 @@ async def test_get_component_by_name():
 @pytest.mark.asyncio
 async def test_get_component_by_name_with_exception():
     with pytest.raises(HTTPException) as excinfo:
-        await get_component_template_by_name(component_name="component_err", minio_service=minio_service_mock)
+        await get_component_template_by_name(
+            component_name="component_err", minio_service=minio_service_mock
+        )
     assert "status_code=404" in str(excinfo)

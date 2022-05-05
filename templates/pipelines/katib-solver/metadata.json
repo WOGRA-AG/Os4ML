@@ -1,0 +1,6 @@
+{
+  "name": "katib-solver",
+  "description": "Neural Architecture Search with katib and ENAS",
+  "type": "pipeline",
+  "pipeline_step": "solver"
+}

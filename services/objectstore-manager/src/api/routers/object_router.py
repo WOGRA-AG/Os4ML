@@ -15,14 +15,18 @@ router = APIRouter(prefix="/apis/v1beta1")
     "/objectstore/{bucket_name}/object",
     responses={
         200: {"model": List[Item], "description": "OK"},
-        404: {"model": str, "description": "The specified resource was not found"},
+        404: {
+            "model": str,
+            "description": "The specified resource was not found",
+        },
     },
     tags=["objectstore", "object"],
     summary="get all Objects in bucket",
     response_model=List[Item],
 )
 async def get_all_objects(
-    bucket_name: str = Path(..., description="Name of Bucket"), minio_service: MinioService = Depends(MinioService),
+    bucket_name: str = Path(..., description="Name of Bucket"),
+    minio_service: MinioService = Depends(MinioService),
 ) -> List[Item]:
     return minio_service.list_objects(bucket_name)
 
@@ -31,7 +35,10 @@ async def get_all_objects(
     "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         204: {"description": "The specified resource was deleted"},
-        404: {"model": str, "description": "The specified resource was not found"},
+        404: {
+            "model": str,
+            "description": "The specified resource was not found",
+        },
     },
     tags=["objectstore", "object"],
     summary="delete specific Object from Bucket",
@@ -48,7 +55,10 @@ async def delete_object_by_name(
     "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         307: {"model": str, "description": "OK"},
-        404: {"model": str, "description": "The specified resource was not found"},
+        404: {
+            "model": str,
+            "description": "The specified resource was not found",
+        },
     },
     tags=["objectstore", "object"],
     summary="get specific Object from Bucket",
@@ -66,7 +76,10 @@ async def get_object_by_name(
     "/objectstore/{bucket_name}/object/{object_name:path}",
     responses={
         201: {"model": Item, "description": "Created"},
-        404: {"model": str, "description": "The specified resource was not found"},
+        404: {
+            "model": str,
+            "description": "The specified resource was not found",
+        },
     },
     tags=["objectstore", "object"],
     summary="get specific Object from Bucket",
@@ -79,14 +92,23 @@ async def put_object_by_name(
 ) -> Item:
     file_content: bytes = await request.body()
     file: BytesIO = BytesIO(file_content)
-    return minio_service.put_object(bucket_name, object_name, file, len(file_content), "application/octet-stream")
+    return minio_service.put_object(
+        bucket_name,
+        object_name,
+        file,
+        len(file_content),
+        "application/octet-stream",
+    )
 
 
 @router.get(
     "/objectstore/{bucket_name}/presignedputurl/{object_name:path}",
     responses={
         200: {"model": Url, "description": "OK"},
-        404: {"model": str, "description": "The specified resource was not found"},
+        404: {
+            "model": str,
+            "description": "The specified resource was not found",
+        },
     },
     tags=["objectstore", "object"],
     summary="upload Object to Bucket",

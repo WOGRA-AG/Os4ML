@@ -1,0 +1,51 @@
+include:
+  - local: 'gitlab/shared/.gitlab-ci.prepare-validate-oas.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-development.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
+
+# Build Objectstore-manager image
+os-manager-validate-oas:
+  extends:
+    - .validate-oas
+  variables:
+    OAS_FILE: 'services/objectstore-manager/oas/objectstore-manager-oas.yaml'
+
+os-manager-build-oas:
+  stage: test
+  needs: []
+  image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
+  before_script:
+    - cd $DIR
+    - npm install @openapitools/openapi-generator-cli -g
+    - openapi-generator-cli version
+  script:
+    - openapi-generator-cli generate
+      -i ./oas/objectstore-manager-oas.yaml
+      -g python-fastapi
+      -o ./build
+      --global-property models,supportingFiles
+  variables:
+    DIR: 'services/objectstore-manager'
+  artifacts:
+    untracked: true
+
+os-manager-validate-backend:
+  extends:
+    - .build-development
+  dependencies:
+    - os-manager-build-oas
+  needs:
+    - os-manager-build-oas
+  variables:
+    DIR: 'services/objectstore-manager'
+    IMG_NAME: 'objectstore-manager'
+
+os-manager-build:
+  extends:
+    - .build-production
+  needs:
+    - os-manager-build-oas
+    - os-manager-validate-backend
+  variables:
+    DIR: 'services/objectstore-manager'
+    IMG_NAME: 'objectstore-manager'
