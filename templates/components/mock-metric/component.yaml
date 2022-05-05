@@ -13,7 +13,7 @@ implementation:
           python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
       fi
 
-      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
     - sh
     - -ec
     - |
@@ -28,9 +28,9 @@ implementation:
       from typing import *
 
       def mock_metric(
-              metrics: Output[Metrics],
+          metrics: Output[Metrics],
       ):
-          metrics.log_metric('accuracy', 0.9999999999)
+          metrics.log_metric("accuracy", 0.9999999999)
           print(metrics.path)
           print(metrics.uri)
 

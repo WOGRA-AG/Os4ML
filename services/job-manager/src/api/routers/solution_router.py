@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, Depends, Path
 
-from models import Solution
-from services.solution_service import SolutionService
+from src.models import Solution
+from src.services.solution_service import SolutionService
 
 router = APIRouter(prefix="/apis/v1beta1")
 

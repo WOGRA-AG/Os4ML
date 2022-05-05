@@ -3,15 +3,15 @@ kind: Workflow
 metadata:
   generateName: mock-metric-2-
   annotations:
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-05T10:26:59.287654'
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T14:27:48.444513'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "", "name": "solution_name",
       "optional": true, "type": "String"}, {"default": "", "name": "pipeline-root"},
       {"default": "pipeline/mock-metric", "name": "pipeline-name"}], "name": "mock-metric"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
 spec:
   entrypoint: mock-metric-2
   templates:
@@ -26,7 +26,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -40,24 +40,19 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_metrics(metrics: Input[Metrics], solution_name: str = ''):
+        def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
             import requests
-            print(f'{metrics.metadata=}')
-            if 'accuracy' in metrics.metadata:
-                accuracy = metrics.metadata['accuracy']
-                print(f'{accuracy=}')
 
+            if "accuracy" in metrics.metadata:
+                accuracy = metrics.metadata["accuracy"]
                 url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-                response = requests.get(url)
-                print(f'{response.status_code=}')
 
-                solution = response.json()
-                print(f'{solution=}')
+                solution = requests.get(url).json()
+                if "metrics" not in solution or solution["metrics"] is None:
+                    solution["metrics"] = dict()
+                solution["metrics"]["accuracy"] = accuracy
 
-                solution['metrics']['accuracy'] = accuracy
-
-                solution = requests.put(url, data=solution)
-                print(f'{solution=}')
+                requests.put(url, json=solution)
 
       - --executor_input
       - '{{$}}'
@@ -110,11 +105,11 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "83d36af2e0c440d8f3daf700ccc8914d19a1c26906f50a8cda94e352fead3302",
+        pipelines.kubeflow.org/component_ref: '{"digest": "dcaa7862f5d2ade1484b2359bb9a45caad40e6fe53c0ff55597fd0debefc9a96",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -136,7 +131,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -151,9 +146,9 @@ spec:
         from typing import *
 
         def mock_metric(
-                metrics: Output[Metrics],
+            metrics: Output[Metrics],
         ):
-            metrics.log_metric('accuracy', 0.9999999999)
+            metrics.log_metric("accuracy", 0.9999999999)
             print(metrics.path)
             print(metrics.uri)
 
@@ -207,10 +202,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "0d16a3466d023bb348a3436bfbf621c89e354b74ec9cd7169e77a1cbc96ed0c8",
+        pipelines.kubeflow.org/component_ref: '{"digest": "7c8b06119a95267bb6727d588fab01ef0a10f2f53cd34433cb79f53e8f83c5a7",
           "url": "../../components/mock-metric/component.yaml"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"

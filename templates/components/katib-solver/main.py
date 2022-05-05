@@ -18,6 +18,7 @@ def katib_solver(
     max_failed_trial_count: int = 1,
 ):
     import json
+    import time
 
     from kubeflow.katib import (
         KatibClient,
@@ -250,6 +251,19 @@ def katib_solver(
 
     # Create your Experiment.
     kclient.create_experiment(experiment, namespace=namespace)
+
+    time.sleep(60)
+    while not kclient.is_experiment_succeeded(
+        name=experiment_name, namespace=namespace
+    ):
+        time.sleep(60)
+
+    exp = kclient.get_experiment(name=experiment_name, namespace=namespace)
+    acc = exp["status"]["currentOptimalTrial"]["observation"]["metrics"][0][
+        "max"
+    ]
+
+    metrics.log_metric("accuracy", acc)
 
 
 if __name__ == "__main__":

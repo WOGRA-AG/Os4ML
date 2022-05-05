@@ -3,12 +3,13 @@ from typing import List
 from datetime import datetime
 from uuid import UUID, uuid4
 
+import requests
 from fastapi import HTTPException
 from openapi_client.api.objectstore_api import ObjectstoreApi
 from openapi_client.model.databag import Databag
 
-from models import RunParams, Solution
 from src import SOLUTION_CONFIG_FILE_NAME
+from src.models import RunParams, Solution
 
 from .template_service import TemplateService
 
@@ -32,11 +33,12 @@ class SolutionService:
         return solutions_with_name.pop()
 
     def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
-        all_solutions = self.objectstore.get_all_solutions()
+        url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/solution"
+        all_solutions = requests.get(url).json()
         return [
             solution
             for solution in all_solutions
-            if solution.name == solution_name
+            if solution["name"] == solution_name
         ]
 
     def create_solution(self, solution: Solution) -> str:
@@ -62,20 +64,8 @@ class SolutionService:
     def update_solution(
         self, solution_name: str, solution: Solution
     ) -> Solution:
-        if not solution.name == solution_name:
-            self.delete_solution(solution_name)
         self._persist_solution(solution)
         return solution
-
-    def delete_solution(self, solution_name: str) -> None:
-        solutions_with_name = self._get_solutions_with_name(solution_name)
-        if not solutions_with_name:
-            return
-        solution = solutions_with_name.pop()
-        file_name = _solution_file_name(solution.name)
-        self.objectstore.delete_object_by_name(
-            bucket_name=solution.bucket_name, object_name=file_name
-        )
 
     def _persist_solution(self, solution: Solution):
         file_name = _solution_file_name(solution.name)

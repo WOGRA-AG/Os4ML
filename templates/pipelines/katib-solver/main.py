@@ -13,7 +13,10 @@ get_metrics_op = load_component("get-metrics")
 
 @pipeline(name="katib-solver")
 def katib_solver(
-    bucket: str, file_name: str, solution_name: str = '', dataset_file_name: str = "dataset"
+    bucket: str,
+    file_name: str,
+    solution_name: str = "",
+    dataset_file_name: str = "dataset",
 ):
     df_info = init_databab_op(bucket, file_name)
     upload_op(df_info.outputs["dataset"], bucket, dataset_file_name)
@@ -24,8 +27,7 @@ def katib_solver(
         parallel_trial_count=1,
         max_trial_count=5,
     )
-    get_metrics_op(katib_output.outputs['metrics'], solution_name)
-
+    get_metrics_op(katib_output.outputs["metrics"], solution_name)
 
 
 if __name__ == "__main__":

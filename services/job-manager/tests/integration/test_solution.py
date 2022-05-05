@@ -1,5 +1,6 @@
 import pytest
 from fastapi import HTTPException
+import requests
 from pytest_mock import MockerFixture
 
 from src.api.routers.solution_router import (
@@ -17,28 +18,29 @@ solution_service = SolutionService(kfp_client=kfp_mock)
 
 @pytest.mark.asyncio
 async def test_get_solution(mocker: MockerFixture):
-    solutions = [Solution(name="solution_1"), Solution(name="other2")]
+    solutions = [{"name": "solution_1"}, {"name": "other2"}]
+    get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        solution_service.objectstore,
-        "get_all_solutions",
-        return_value=solutions,
+        requests,
+        "get",
+        return_value=get_mock,
     )
 
     solution: Solution = await get_solution(
         solution_name="solution_1", solution_service=solution_service
     )
 
-    assert type(solution) == Solution
-    assert solution.name == "solution_1"
+    assert solution["name"] == "solution_1"
 
 
 @pytest.mark.asyncio
 async def test_get_solution_not_found(mocker: MockerFixture):
-    solutions = [Solution(name="other1"), Solution(name="other2")]
+    solutions = [{"name": "other1"}, {"name": "other2"}]
+    get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        solution_service.objectstore,
-        "get_all_solutions",
-        return_value=solutions,
+        requests,
+        "get",
+        return_value=get_mock,
     )
 
     with pytest.raises(HTTPException) as e:
@@ -65,33 +67,6 @@ async def test_update_solution(mocker: MockerFixture):
 
     assert solution == returned_solution
     put_object_mock.assert_called_once()
-
-
-@pytest.mark.asyncio
-async def test_update_solution_with_other_name(mocker: MockerFixture):
-    solution = Solution(name="solution")
-    updated_solution = Solution(name="updated_name")
-    mocker.patch.object(
-        solution_service.objectstore,
-        "get_all_solutions",
-        return_value=[solution],
-    )
-    delete_object_mock = mocker.patch.object(
-        solution_service.objectstore, "delete_object_by_name"
-    )
-    put_object_mock = mocker.patch.object(
-        solution_service.objectstore, "put_object_by_name"
-    )
-
-    returned_solution: Solution = await put_solution(
-        solution_name="solution",
-        solution=updated_solution,
-        solution_service=solution_service,
-    )
-
-    assert updated_solution == returned_solution
-    put_object_mock.assert_called_once()
-    delete_object_mock.assert_called_once()
 
 
 @pytest.mark.asyncio

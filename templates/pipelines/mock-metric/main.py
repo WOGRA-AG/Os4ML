@@ -9,7 +9,7 @@ mock_metric_op = load_component("mock-metric")
 
 
 @pipeline(name="mock-metric")
-def mock_metric(solution_name: str = ''):
+def mock_metric(solution_name: str = ""):
     metrics = mock_metric_op()
     get_metrics_op(metrics.outputs["metrics"], solution_name)
 

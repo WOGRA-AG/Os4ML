@@ -3,8 +3,8 @@ kind: Workflow
 metadata:
   generateName: ludwig-solver-2-
   annotations:
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-05T08:12:56.278623'
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T14:31:25.269401'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
@@ -13,7 +13,7 @@ metadata:
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
 spec:
   entrypoint: ludwig-solver-2
   templates:
@@ -114,7 +114,7 @@ spec:
           "url": "../../components/get-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -136,7 +136,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -150,20 +150,19 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_metrics(metrics: Input[Metrics], solution_name: str = ''):
+        def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
             import requests
-            print(metrics.metadata)
-            if 'accuracy' in metrics.metadata:
-                accuracy = metrics.metadata['accuracy']
 
-                url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
+            if "accuracy" in metrics.metadata:
+                accuracy = metrics.metadata["accuracy"]
+                url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
+
                 solution = requests.get(url).json()
+                if "metrics" not in solution or solution["metrics"] is None:
+                    solution["metrics"] = dict()
+                solution["metrics"]["accuracy"] = accuracy
 
-                print(solution)
-                solution['metrics']['accuracy'] = accuracy
-
-                solution = requests.put(url, data=solution)
-                print(solution)
+                requests.put(url, json=solution)
 
       - --executor_input
       - '{{$}}'
@@ -216,11 +215,11 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "280e1f063add233f9b604405598709ea2c25e8fd10a85748fcb45749b5df1635",
+        pipelines.kubeflow.org/component_ref: '{"digest": "dcaa7862f5d2ade1484b2359bb9a45caad40e6fe53c0ff55597fd0debefc9a96",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -375,7 +374,7 @@ spec:
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -625,7 +624,7 @@ spec:
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
           "10", "epochs": "{{inputs.parameters.epochs}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"

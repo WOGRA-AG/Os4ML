@@ -1,24 +1,19 @@
 from kfp.v2.dsl import Artifact, Input, Metrics, component
 
 
-def get_metrics(metrics: Input[Metrics], solution_name: str = ''):
+def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
     import requests
-    print(f'{metrics.metadata=}')
-    if 'accuracy' in metrics.metadata:
-        accuracy = metrics.metadata['accuracy']
-        print(f'{accuracy=}')
 
+    if "accuracy" in metrics.metadata:
+        accuracy = metrics.metadata["accuracy"]
         url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-        response = requests.get(url)
-        print(f'{response.status_code=}')
 
-        solution = response.json()
-        print(f'{solution=}')
+        solution = requests.get(url).json()
+        if "metrics" not in solution or solution["metrics"] is None:
+            solution["metrics"] = dict()
+        solution["metrics"]["accuracy"] = accuracy
 
-        solution['metrics']['accuracy'] = accuracy
-
-        solution = requests.put(url, data=solution)
-        print(f'{solution=}')
+        requests.put(url, json=solution)
 
 
 if __name__ == "__main__":

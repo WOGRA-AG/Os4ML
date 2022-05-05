@@ -12,7 +12,9 @@ get_metrics_op = load_component("get-metrics")
 
 
 @pipeline(name="ludwig-solver")
-def ludwig_solver(bucket: str, file_name: str, solution_name: str = '', epochs: int = 50):
+def ludwig_solver(
+    bucket: str, file_name: str, solution_name: str = "", epochs: int = 50
+):
     df_info = init_databag_op(bucket, file_name)
     databag_file = get_databag_op(bucket)
     ludwig_output = ludwig_solver_op(
@@ -20,7 +22,7 @@ def ludwig_solver(bucket: str, file_name: str, solution_name: str = '', epochs: 
         databag_file=databag_file.output,
         epochs=epochs,
     )
-    get_metrics_op(ludwig_output.outputs['metrics'], solution_name)
+    get_metrics_op(ludwig_output.outputs["metrics"], solution_name)
 
 
 if __name__ == "__main__":
