@@ -1,6 +1,6 @@
 import pytest
-from fastapi import HTTPException
 import requests
+from fastapi import HTTPException
 from pytest_mock import MockerFixture
 
 from src.api.routers.solution_router import (
@@ -21,9 +21,7 @@ async def test_get_solution(mocker: MockerFixture):
     solutions = [{"name": "solution_1"}, {"name": "other2"}]
     get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests,
-        "get",
-        return_value=get_mock,
+        requests, "get", return_value=get_mock,
     )
 
     solution: Solution = await get_solution(
@@ -38,9 +36,7 @@ async def test_get_solution_not_found(mocker: MockerFixture):
     solutions = [{"name": "other1"}, {"name": "other2"}]
     get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests,
-        "get",
-        return_value=get_mock,
+        requests, "get", return_value=get_mock,
     )
 
     with pytest.raises(HTTPException) as e:

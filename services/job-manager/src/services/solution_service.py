@@ -51,7 +51,9 @@ class SolutionService:
             solution.bucket_name
         )
         run_params: RunParams = RunParams(
-            bucket=databag.bucket_name, file_name=databag.file_name
+            bucket=databag.bucket_name,
+            file_name=databag.file_name,
+            solution_name=solution.name,
         )
         self._persist_solution(solution)
         run_id: str = self.template_service.run_pipeline_template(
