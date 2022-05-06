@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T15:13:13.034193'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T16:43:33.081022'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
@@ -412,15 +412,16 @@ spec:
         from typing import *
 
         def katib_solver(
-            databag_file: Input[Dataset],
-            dataset_file_name: str,
-            cls_metrics: Output[ClassificationMetrics],
-            metrics: Output[Metrics],
-            parallel_trial_count: int = 3,
-            max_trial_count: int = 12,
-            max_failed_trial_count: int = 1,
+                databag_file: Input[Dataset],
+                dataset_file_name: str,
+                cls_metrics: Output[ClassificationMetrics],
+                metrics: Output[Metrics],
+                parallel_trial_count: int = 3,
+                max_trial_count: int = 12,
+                max_failed_trial_count: int = 1,
         ):
             import json
+            import time
 
             from kubeflow.katib import (
                 KatibClient,
@@ -588,7 +589,7 @@ spec:
                                 {
                                     "name": "training-container",
                                     "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
-                                    "enas-trial:509ba445",
+                                             "enas-trial:509ba445",
                                     "command": [
                                         "python3 ",
                                         "-u ",
@@ -619,13 +620,13 @@ spec:
                     V1beta1TrialParameterSpec(
                         name="neuralNetworkArchitecture",
                         description="NN architecture contains operations ID on each NN layer and skip connections between "
-                        "layers",
+                                    "layers",
                         reference="architecture",
                     ),
                     V1beta1TrialParameterSpec(
                         name="neuralNetworkConfig",
                         description="Configuration contains NN number of layers, input and output sizes, description what each "
-                        "operation ID means",
+                                    "operation ID means",
                         reference="nn_config",
                     ),
                 ],
@@ -654,6 +655,15 @@ spec:
             # Create your Experiment.
             kclient.create_experiment(experiment, namespace=namespace)
 
+            time.sleep(60)
+            while not kclient.is_experiment_succeeded(name=experiment_name, namespace=namespace):
+                time.sleep(60)
+
+            exp = kclient.get_experiment(name=experiment_name, namespace=namespace)
+            acc = exp["status"]["currentOptimalTrial"]["observation"]["metrics"][0]["max"]
+
+            metrics.log_metric("accuracy", acc)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
@@ -665,7 +675,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'dataset_file_name={{inputs.parameters.dataset_file_name}}',
-        max_failed_trial_count=1, max_trial_count=5, parallel_trial_count=1, --]
+        max_failed_trial_count=1, max_trial_count=1, parallel_trial_count=1, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -714,10 +724,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "11292fa2e4783911472b8baab74f475025d11c146ba47e4271fb63d5f4206e34",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e886a809fe055645be3aff954995be2d67f3db89d83efe6b114973fe81724f9e",
           "url": "../../components/katib-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"dataset_file_name": "{{inputs.parameters.dataset_file_name}}",
-          "max_failed_trial_count": "1", "max_trial_count": "5", "parallel_trial_count":
+          "max_failed_trial_count": "1", "max_trial_count": "1", "parallel_trial_count":
           "1"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
