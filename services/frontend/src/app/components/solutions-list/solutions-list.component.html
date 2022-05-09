@@ -6,23 +6,13 @@
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Accuracy</span>
-      <span class="mat-body-2 on-surface-high" *ngIf="solution?.metrics?.accuracy">
-        {{solution?.metrics?.accuracy}}
-        %
+      <span class="mat-body-2 on-surface-high">
+        {{solution?.metrics?.accuracy? solution?.metrics?.accuracy! * 100 : 0}}%
       </span>
     </div>
     <div class="list-item-column">
       <span class="mat-caption on-surface-medium">Runtime</span>
-      <span class="mat-body-2 on-surface-high">{{solution?.metrics?.runtime}}</span>
-    </div>
-    <div class="list-item-column">
-      <span class="mat-caption on-surface-medium">Precision</span>
-      <div class="precision" *ngIf="solution?.metrics?.precision" [ngClass]="precision(solution?.metrics?.precision)">
-        <mat-icon matListIcon>arrow_upward</mat-icon>
-        <span class="mat-body-2">
-          {{solution?.metrics?.precision}}
-        </span>
-      </div>
+      <span class="mat-body-2 on-surface-high">{{getRuntime(solution?.creationTime, solution?.completionTime)}}</span>
     </div>
     <div class="status bg-accent mat-button">
       {{solution?.status}}

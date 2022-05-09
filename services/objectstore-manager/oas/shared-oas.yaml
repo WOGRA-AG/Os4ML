@@ -34,15 +34,17 @@ components:
             type: string
         runId:
           $ref: '#/components/schemas/RunId'
+        creationTime:
+          type: string
+          format: date-time
+        completionTime:
+          type: string
+          format: date-time
         metrics:
           type: object
           properties:
             accuracy:
               type: number
-            runtime:
-              type: string
-            precision:
-              type: string
     Column:
       properties:
         name:
@@ -71,6 +73,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Column"
+        creationTimestamp:
+          type: string
+          format: date-time
     PipelineTemplate:
       properties:
         name:
