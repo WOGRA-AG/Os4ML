@@ -36,10 +36,8 @@ components:
           $ref: '#/components/schemas/RunId'
         creationTime:
           type: string
-          format: date-time
         completionTime:
           type: string
-          format: date-time
         metrics:
           type: object
           properties:
@@ -73,9 +71,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Column"
-        creationTimestamp:
+        creationTime:
           type: string
-          format: date-time
     PipelineTemplate:
       properties:
         name:
