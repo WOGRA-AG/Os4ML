@@ -155,8 +155,6 @@ def ludwig_solver(
 if __name__ == "__main__":
     component(
         ludwig_solver,
-        base_image="gitlab-registry.wogra.com/developer/wogra/os4ml/"
-        "template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen",
-        # TODO remove branch tag
+        base_image="gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig",
         output_component_file="component.yaml",
     )
