@@ -9,13 +9,13 @@ from kfp.v2.dsl import (
 
 
 def katib_solver(
-        databag_file: Input[Dataset],
-        dataset_file_name: str,
-        cls_metrics: Output[ClassificationMetrics],
-        metrics: Output[Metrics],
-        parallel_trial_count: int = 3,
-        max_trial_count: int = 12,
-        max_failed_trial_count: int = 1,
+    databag_file: Input[Dataset],
+    dataset_file_name: str,
+    cls_metrics: Output[ClassificationMetrics],
+    metrics: Output[Metrics],
+    parallel_trial_count: int = 3,
+    max_trial_count: int = 12,
+    max_failed_trial_count: int = 1,
 ):
     import json
     import time
@@ -186,7 +186,7 @@ def katib_solver(
                         {
                             "name": "training-container",
                             "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
-                                     "enas-trial:509ba445",
+                            "enas-trial:509ba445",
                             "command": [
                                 "python3 ",
                                 "-u ",
@@ -217,13 +217,13 @@ def katib_solver(
             V1beta1TrialParameterSpec(
                 name="neuralNetworkArchitecture",
                 description="NN architecture contains operations ID on each NN layer and skip connections between "
-                            "layers",
+                "layers",
                 reference="architecture",
             ),
             V1beta1TrialParameterSpec(
                 name="neuralNetworkConfig",
                 description="Configuration contains NN number of layers, input and output sizes, description what each "
-                            "operation ID means",
+                "operation ID means",
                 reference="nn_config",
             ),
         ],
@@ -259,7 +259,7 @@ def katib_solver(
         time.sleep(60)
 
     while not kclient.is_experiment_succeeded(
-            name=experiment_name, namespace=namespace
+        name=experiment_name, namespace=namespace
     ):
         time.sleep(60)
 

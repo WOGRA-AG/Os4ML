@@ -2,8 +2,9 @@ from kfp.v2.dsl import Input, Metrics, component
 
 
 def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
-    import requests
     from datetime import datetime
+
+    import requests
 
     if "accuracy" in metrics.metadata:
         accuracy = metrics.metadata["accuracy"]
@@ -13,7 +14,9 @@ def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
         if "metrics" not in solution or solution["metrics"] is None:
             solution["metrics"] = dict()
         solution["metrics"]["accuracy"] = accuracy
-        solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        solution["completionTime"] = datetime.utcnow().strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
 
         requests.put(url, json=solution)
 
