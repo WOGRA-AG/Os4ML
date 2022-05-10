@@ -28,7 +28,7 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry update
+RUN poetry update # TODO: discussion
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --no-dev --no-interaction --no-ansi
 
@@ -49,6 +49,9 @@ RUN --mount=type=cache,target=/root/.cache \
 
 WORKDIR $PROJECT_DIR
 COPY . .
+COPY openapi.sh ./openapi.sh
+RUN chmod +x ./openapi.sh
+RUN ./openapi.sh
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
@@ -56,16 +59,13 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 
 
 FROM development AS lint
-RUN black --config ./pyproject.toml --check src tests
-RUN isort --settings-path ./pyproject.toml --check-only src tests
+RUN black --config ./pyproject.toml src tests --exclude src/build --check
+RUN isort --settings-path ./pyproject.toml src tests --skip-gitignore --check-only
 CMD ["tail", "-f", "/dev/null"]
 
 
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
-COPY openapi.sh ./openapi.sh
-RUN chmod +x ./openapi.sh
-RUN ./openapi.sh
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
 RUN coverage report -m --fail-under 90
 

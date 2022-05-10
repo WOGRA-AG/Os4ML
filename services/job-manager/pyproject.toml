@@ -17,7 +17,7 @@ pytest = "^6.1.2"
 coverage = { version = "^5.3", extras = ["toml"] }
 isort = { version = "^5.6.4", extras = ["pyproject"] }
 requests = "^2.25.0"
-black = "19.10b0"
+black = "^22.3.0"
 pytest-asyncio = "^0.14.0"
 pytest-mock = "^3.7.0"
 
