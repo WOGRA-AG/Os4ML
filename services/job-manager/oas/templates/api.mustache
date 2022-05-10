@@ -22,7 +22,7 @@ from {{modelPackage}}.extra_models import TokenModel
 {{/imports}}
 {{#securityImports.0}}from {{packageName}}.security_api import {{#securityImports}}get_token_{{.}}{{^-last}}, {{/-last}}{{/securityImports}}{{/securityImports.0}}
 
-from routers.{{classFilename}}_router import {{classname}}Router
+from api.{{classFilename}}_service import {{classname}}Service
 
 router = APIRouter(prefix="")
 
@@ -46,8 +46,9 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{paramName}}{{^required}}=None{{/required}}{{^-last}}, {{/-last}}
+    {{paramName}}{{^required}}=None{{/required}}{{^-last}}{{/-last}},
     {{/allParams}}
+    _service: {{classname}}Service = Depends({{classname}}Service),
     {{#hasAuthMethods}}
     {{#authMethods}}
     token_{{name}}: TokenModel = Security(
@@ -56,10 +57,10 @@ async def {{operationId}}(
     {{/authMethods}}
     {{/hasAuthMethods}}
 ) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
-    return {{classname}}Router().{{operationId}}(
-    {{#allParams}}
+    return _service.{{operationId}}(
+        {{#allParams}}
         {{paramName}}{{^required}}={{paramName}}{{/required}},
-    {{/allParams}}
+        {{/allParams}}
     )
 {{^-last}}
 

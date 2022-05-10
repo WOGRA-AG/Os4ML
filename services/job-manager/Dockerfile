@@ -81,6 +81,9 @@ RUN chmod +x /docker-entrypoint.sh
 COPY /src $PROJECT_DIR/src
 COPY /build $PROJECT_DIR/build
 
+COPY openapi.sh openapi.sh
+RUN chmod +x openapi.sh
+RUN openapi.sh
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
