@@ -1,7 +1,7 @@
 from typing import List
 
 import pytest
-from kfp_service import KfpService
+from services.kfp_service import KfpService
 from mocks.kfp_mock_client import KfpMockClient
 
 from api.pipeline_api_service import PipelineApiService
