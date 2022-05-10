@@ -64,9 +64,7 @@ class SolutionService:
         self._persist_solution(solution)
         return run_id
 
-    def put_solution(
-        self, solution_name: str, solution: Solution
-    ) -> Solution:
+    def put_solution(self, solution_name: str, solution: Solution) -> Solution:
         self._persist_solution(solution)
         return solution
 
