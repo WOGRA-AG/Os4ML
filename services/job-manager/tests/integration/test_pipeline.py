@@ -1,12 +1,12 @@
 from typing import List
 
 import pytest
-from services.kfp_service import KfpService
 from mocks.kfp_mock_client import KfpMockClient
 
 from api.pipeline_api_service import PipelineApiService
 from build.openapi_server.apis.pipeline_api import get_all_pipelines, post_pipeline
 from build.openapi_server.models.create_pipeline import CreatePipeline, Pipeline
+from services.kfp_service import KfpService
 
 mock_kfp_client = KfpMockClient()
 mock_kfp_service = KfpService(client=mock_kfp_client)
