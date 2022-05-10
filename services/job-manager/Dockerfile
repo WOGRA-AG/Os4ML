@@ -63,7 +63,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
-COPY openapi.sh openapi.sh
+COPY /openapi.sh openapi.sh
 RUN chmod +x openapi.sh
 RUN openapi.sh
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
