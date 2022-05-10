@@ -15,7 +15,5 @@ class RunApiService:
     def get_run(self, run_id: str) -> Run:
         return self.kfp_service.get_run(run_id)
 
-    def post_run(self, experiment_id: str, pipeline_id: str,
-                 create_run: CreateRun) -> str:
-        return self.kfp_service.create_run(experiment_id, pipeline_id,
-                                           create_run)
+    def post_run(self, experiment_id: str, pipeline_id: str, create_run: CreateRun) -> str:
+        return self.kfp_service.create_run(experiment_id, pipeline_id, create_run)
