@@ -27,12 +27,6 @@ variable "deploy_jobmanager" {
   default     = true
 }
 
-variable "deploy_shepard" {
-  description = "Deploy DLR Shepard"
-  type        = bool
-  default     = false
-}
-
 variable "cluster_provisioner" {
   description = "Deployment environment. One of: [k3d, gke]"
   type        = string
