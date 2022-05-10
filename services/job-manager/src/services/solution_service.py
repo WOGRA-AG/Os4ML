@@ -33,6 +33,7 @@ class SolutionService:
         return solutions_with_name.pop()
 
     def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
+        # TODO replace get_all_solution call
         url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/solution"
         all_solutions = requests.get(url).json()
         return [
@@ -63,7 +64,7 @@ class SolutionService:
         self._persist_solution(solution)
         return run_id
 
-    def update_solution(
+    def put_solution(
         self, solution_name: str, solution: Solution
     ) -> Solution:
         self._persist_solution(solution)

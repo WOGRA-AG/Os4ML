@@ -32,7 +32,7 @@ async def put_solution(
     solution: Solution = Body(..., description="Solution with updates"),
     solution_service: SolutionService = Depends(SolutionService),
 ) -> Solution:
-    return solution_service.update_solution(solution_name, solution)
+    return solution_service.put_solution(solution_name, solution)
 
 
 @router.post(

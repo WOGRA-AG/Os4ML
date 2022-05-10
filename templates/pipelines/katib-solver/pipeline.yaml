@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T16:43:33.081022'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-10T23:05:42.539166'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
@@ -153,6 +153,7 @@ spec:
 
         def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
             import requests
+            from datetime import datetime
 
             if "accuracy" in metrics.metadata:
                 accuracy = metrics.metadata["accuracy"]
@@ -162,6 +163,7 @@ spec:
                 if "metrics" not in solution or solution["metrics"] is None:
                     solution["metrics"] = dict()
                 solution["metrics"]["accuracy"] = accuracy
+                solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
                 requests.put(url, json=solution)
 
@@ -216,7 +218,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "dcaa7862f5d2ade1484b2359bb9a45caad40e6fe53c0ff55597fd0debefc9a96",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e5612aa4629dc6d0806fb0e86f32fc26f43d8cb125780d6a37917bda6b73f47d",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
@@ -675,7 +677,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'dataset_file_name={{inputs.parameters.dataset_file_name}}',
-        max_failed_trial_count=1, max_trial_count=1, parallel_trial_count=1, --]
+        max_failed_trial_count=1, max_trial_count=5, parallel_trial_count=1, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -727,7 +729,7 @@ spec:
         pipelines.kubeflow.org/component_ref: '{"digest": "e886a809fe055645be3aff954995be2d67f3db89d83efe6b114973fe81724f9e",
           "url": "../../components/katib-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"dataset_file_name": "{{inputs.parameters.dataset_file_name}}",
-          "max_failed_trial_count": "1", "max_trial_count": "1", "parallel_trial_count":
+          "max_failed_trial_count": "1", "max_trial_count": "5", "parallel_trial_count":
           "1"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12

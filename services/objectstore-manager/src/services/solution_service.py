@@ -23,20 +23,12 @@ class SolutionService:
         return solution_list
 
     def get_solutions_from_bucket(self, bucket: Bucket) -> List[Solution]:
-        def create_solution(json_dict):
-            metrics = json_dict.pop("metrics", None)
-            solution = Solution(**json_dict)
-            if metrics is not None:
-                solution_metrics = SolutionMetrics(**metrics)
-                solution.metrics = solution_metrics
-            return solution
-
         minio_objects: List[Object] = self.minio_service.client.list_objects(
             bucket_name=bucket.name, recursive=True
         )
         solution_list: List[Solution] = [
-            create_solution(
-                self.minio_service.get_dict_from_bucket(
+            Solution(
+                **self.minio_service.get_dict_from_bucket(
                     i.bucket_name, i.object_name
                 )
             )

@@ -4,7 +4,7 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-06T14:31:25.269401'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-10T23:04:31.412564'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
@@ -152,6 +152,7 @@ spec:
 
         def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
             import requests
+            from datetime import datetime
 
             if "accuracy" in metrics.metadata:
                 accuracy = metrics.metadata["accuracy"]
@@ -161,6 +162,7 @@ spec:
                 if "metrics" not in solution or solution["metrics"] is None:
                     solution["metrics"] = dict()
                 solution["metrics"]["accuracy"] = accuracy
+                solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
                 requests.put(url, json=solution)
 
@@ -215,7 +217,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "dcaa7862f5d2ade1484b2359bb9a45caad40e6fe53c0ff55597fd0debefc9a96",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e5612aa4629dc6d0806fb0e86f32fc26f43d8cb125780d6a37917bda6b73f47d",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
@@ -410,40 +412,43 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def ludwig_solver(dataset_file: Input[Dataset],
-                          databag_file: Input[Dataset],
-                          cls_metrics: Output[ClassificationMetrics],
-                          metrics: Output[Metrics],
-                          batch_size: int = 8,
-                          epochs: int = 50,
-                          early_stop: int = 10) -> Artifact:
-            from ludwig.api import LudwigModel
-            from sklearn.model_selection import train_test_split
-            from sklearn.metrics import confusion_matrix
-            from typing import List, BinaryIO
+        def ludwig_solver(
+            dataset_file: Input[Dataset],
+            databag_file: Input[Dataset],
+            cls_metrics: Output[ClassificationMetrics],
+            metrics: Output[Metrics],
+            batch_size: int = 8,
+            epochs: int = 50,
+            early_stop: int = 10,
+        ):
             import dataclasses
-            import pandas as pd
             import enum
             import json
             import logging
-            import requests
-            import zipfile
             import pathlib
+            import zipfile
+            from typing import BinaryIO, List
+
+            import pandas as pd
+            import requests
+            from ludwig.api import LudwigModel
+            from sklearn.metrics import confusion_matrix
+            from sklearn.model_selection import train_test_split
 
             class ColumnDataType(str, enum.Enum):
-                NUMERICAL = 'numerical'
-                DATE = 'date'
-                CATEGORY = 'category'
-                TEXT = 'text'
-                IMAGE = 'image'
+                NUMERICAL = "numerical"
+                DATE = "date"
+                CATEGORY = "category"
+                TEXT = "text"
+                IMAGE = "image"
 
             class ColumnUsage(str, enum.Enum):
-                LABEL = 'label'
-                FEATURE = 'feature'
+                LABEL = "label"
+                FEATURE = "feature"
 
             class DatabagTypes(str, enum.Enum):
-                local_file = 'local_file'
-                zip_file = 'zip_file'
+                local_file = "local_file"
+                zip_file = "zip_file"
 
             @dataclasses.dataclass
             class Column:
@@ -460,7 +465,7 @@ spec:
                         "batch_size": batch_size,
                         "epochs": epochs,
                         "early_stop": early_stop,
-                    }
+                    },
                 }
                 feature_descriptions = (
                     create_feature_description(column)
@@ -472,28 +477,28 @@ spec:
                     for column in columns
                     if column.usage == ColumnUsage.LABEL
                 )
-                definition['input_features'].extend(feature_descriptions)
-                definition['output_features'].extend(label_descriptions)
+                definition["input_features"].extend(feature_descriptions)
+                definition["output_features"].extend(label_descriptions)
                 return definition
 
             def create_feature_description(feature: Column) -> dict:
                 feature_desc = {
-                    'name': feature.name,
-                    'type': feature.type,
+                    "name": feature.name,
+                    "type": feature.type,
                 }
                 if feature.type == ColumnDataType.NUMERICAL:
-                    feature_desc['preprocessing'] = {
-                        'fill_value': 0
-                    }
+                    feature_desc["preprocessing"] = {"fill_value": 0}
                 return feature_desc
 
             def create_label_description(label: Column) -> dict:
-                label_type = ColumnDataType.NUMERICAL \
-                    if label.type == ColumnDataType.NUMERICAL \
+                label_type = (
+                    ColumnDataType.NUMERICAL
+                    if label.type == ColumnDataType.NUMERICAL
                     else ColumnDataType.CATEGORY
+                )
                 return {
-                    'name': label.name,
-                    'type': label_type,
+                    "name": label.name,
+                    "type": label_type,
                 }
 
             def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
@@ -506,53 +511,49 @@ spec:
                 return str(rel.resolve())
 
             def download_zip(output):
-                bucket = databag['bucket_name']
-                file_name = databag['file_name']
-                url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
-                with open(output, 'wb') as output_file:
+                bucket = databag["bucket_name"]
+                file_name = databag["file_name"]
+                url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+                with open(output, "wb") as output_file:
                     download_file(url, output_file)
 
             with open(databag_file.path) as file:
                 databag = json.load(file)
 
-            columns = [
-                Column(**column_dict)
-                for column_dict in databag['columns']
-            ]
+            columns = [Column(**column_dict) for column_dict in databag["columns"]]
 
             model_definition = build_model_definition(columns)
             model = LudwigModel(model_definition, logging_level=logging.INFO)
 
-            with open(dataset_file.path, 'r') as input_file:
+            with open(dataset_file.path, "r") as input_file:
                 dataset = pd.read_csv(input_file)
 
-            if databag['dataset_type'] == DatabagTypes.zip_file:
-                zip_file = 'dataset.zip'
+            if databag["dataset_type"] == DatabagTypes.zip_file:
+                zip_file = "dataset.zip"
                 download_zip(zip_file)
                 with zipfile.ZipFile(zip_file) as ds_zip:
                     ds_zip.extractall()
-                dataset['file'] = dataset['file'].map(path_to_absolute)
+                dataset["file"] = dataset["file"].map(path_to_absolute)
 
             df_tmp, df_test = train_test_split(dataset, test_size=0.1, random_state=42)
-            df_train, df_validate = train_test_split(df_tmp, test_size=0.1,
-                                                     random_state=42)
-            label = model_definition['output_features'][0]['name']
+            df_train, df_validate = train_test_split(
+                df_tmp, test_size=0.1, random_state=42
+            )
+            label = model_definition["output_features"][0]["name"]
             categories = dataset[label].unique().astype(str)
 
             model.train(df_train, df_validate, df_test)
             stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
 
-            accuracy = float(stats[label]['accuracy'])
+            accuracy = float(stats[label]["accuracy"])
 
             prediction_key = next(iter(pred))
             y_pred = pred[prediction_key]
             y_true = df_test[label].astype(str)
             conf_matrix = confusion_matrix(y_true, y_pred, labels=categories).tolist()
 
-            metrics.log_metric('accuracy', accuracy)
+            metrics.log_metric("accuracy", accuracy)
             cls_metrics.log_confusion_matrix(categories, conf_matrix)
-
-            return metrics
 
       - --executor_input
       - '{{$}}'
@@ -585,22 +586,20 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen'}
+      - {name: KFP_V2_IMAGE, value: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
           "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}}, "inputArtifacts":
           {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data", "schemaTitle":
           "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "dataset_file":
           {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle": "system.Dataset",
           "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
-          "outputArtifacts": {"Output": {"schemaTitle": "system.Artifact", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"},
-          "cls_metrics": {"schemaTitle": "system.ClassificationMetrics", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/cls_metrics/data"},
+          "outputArtifacts": {"cls_metrics": {"schemaTitle": "system.ClassificationMetrics",
+          "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/cls_metrics/data"},
           "metrics": {"schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
           "0.0.1", "metadataPath": "/tmp/outputs/metrics/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig:164-genimgsol-databag-aus-bildern-erzeugen
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -613,13 +612,12 @@ spec:
       - {name: init-databag-dataset, path: /tmp/inputs/dataset_file/data}
     outputs:
       artifacts:
-      - {name: ludwig-solver-Output, path: /tmp/outputs/Output/data}
       - {name: ludwig-solver-cls_metrics, path: /tmp/outputs/cls_metrics/data}
       - {name: ludwig-solver-metrics, path: /tmp/outputs/metrics/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "67a5797961fc8dfc9f07c970f62dd423a5feac29461ea61a51929a133798dbb2",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2a62e8181132660d92022e9cba998d8f8f0ed36dba09372bd6e4931fc2f7c2bf",
           "url": "../../components/ludwig-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
           "10", "epochs": "{{inputs.parameters.epochs}}"}'
