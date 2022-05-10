@@ -3,7 +3,7 @@ from typing import List
 
 from minio.datatypes import Object
 
-from models import Bucket, Solution
+from models import Bucket, Solution, SolutionMetrics
 from services import MinioService
 from src import SOLUTION_CONFIG_FILE_NAME
 

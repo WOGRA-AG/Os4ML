@@ -13,6 +13,7 @@ create_databag_op = load_component("create-databag")
 def init_databag_sniffle_upload(
     bucket: str = "os4ml",
     file_name: str = "titanic.xlsx",
+    solution_name: str = "",
     max_categories: int = 10,
 ):
     df_info = init_databag_op(bucket, file_name)

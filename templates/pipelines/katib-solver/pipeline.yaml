@@ -3,17 +3,18 @@ kind: Workflow
 metadata:
   generateName: katib-solver-2-
   annotations:
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-22T17:02:55.362351'
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-11T00:25:39.111066'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
-      "String"}, {"name": "file_name", "type": "String"}, {"default": "dataset", "name":
-      "dataset_file_name", "optional": true, "type": "String"}, {"default": "", "name":
-      "pipeline-root"}, {"default": "pipeline/katib-solver", "name": "pipeline-name"}],
+      "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
+      "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
+      "name": "dataset_file_name", "optional": true, "type": "String"}, {"default":
+      "", "name": "pipeline-root"}, {"default": "pipeline/katib-solver", "name": "pipeline-name"}],
       "name": "katib-solver"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
 spec:
   entrypoint: katib-solver-2
   templates:
@@ -114,7 +115,114 @@ spec:
           "url": "../../components/get-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
+    volumes:
+    - {name: kfp-launcher}
+  - name: get-metrics
+    container:
+      args:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
+            import requests
+            from datetime import datetime
+
+            if "accuracy" in metrics.metadata:
+                accuracy = metrics.metadata["accuracy"]
+                url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
+
+                solution = requests.get(url).json()
+                if "metrics" not in solution or solution["metrics"] is None:
+                    solution["metrics"] = dict()
+                solution["metrics"]["accuracy"] = accuracy
+                solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+
+                requests.put(url, json=solution)
+
+      - --executor_input
+      - '{{$}}'
+      - --function_to_execute
+      - get_metrics
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, get-metrics, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        --]
+      env:
+      - name: KFP_POD_NAME
+        valueFrom:
+          fieldRef: {fieldPath: metadata.name}
+      - name: KFP_POD_UID
+        valueFrom:
+          fieldRef: {fieldPath: metadata.uid}
+      - name: KFP_NAMESPACE
+        valueFrom:
+          fieldRef: {fieldPath: metadata.namespace}
+      - name: WORKFLOW_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
+      - name: KFP_RUN_ID
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
+      - name: ENABLE_CACHING
+        valueFrom:
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"metrics": {"metadataPath": "/tmp/inputs/metrics/data",
+          "schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
+          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
+      envFrom:
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
+      image: python:3.10.2-slim
+      volumeMounts:
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
+    inputs:
+      parameters:
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+      artifacts:
+      - {name: katib-solver-metrics, path: /tmp/inputs/metrics/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "e5612aa4629dc6d0806fb0e86f32fc26f43d8cb125780d6a37917bda6b73f47d",
+          "url": "../../components/get-metrics/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -269,7 +377,7 @@ spec:
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -291,7 +399,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kubeflow-katib>=0.13.0' 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kubeflow-katib>=0.13.0' 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -305,49 +413,56 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def katib_solver(databag_file: Input[Dataset],
-                         dataset_file_name: str,
-                         cls_metrics: Output[ClassificationMetrics],
-                         metrics: Output[Metrics],
-                         parallel_trial_count: int = 3,
-                         max_trial_count: int = 12,
-                         max_failed_trial_count: int = 1,
-                         ):
-            from kubeflow.katib import KatibClient
-            from kubernetes.client import V1ObjectMeta
-            from kubeflow.katib import V1beta1Experiment
-            from kubeflow.katib import V1beta1AlgorithmSpec
-            from kubeflow.katib import V1beta1ObjectiveSpec
-            from kubeflow.katib import V1beta1FeasibleSpace
-            from kubeflow.katib import V1beta1ExperimentSpec
-            from kubeflow.katib import V1beta1NasConfig
-            from kubeflow.katib import V1beta1GraphConfig
-            from kubeflow.katib import V1beta1Operation
-            from kubeflow.katib import V1beta1ParameterSpec
-            from kubeflow.katib import V1beta1TrialTemplate
-            from kubeflow.katib import V1beta1TrialParameterSpec
-
+        def katib_solver(
+                databag_file: Input[Dataset],
+                dataset_file_name: str,
+                cls_metrics: Output[ClassificationMetrics],
+                metrics: Output[Metrics],
+                parallel_trial_count: int = 3,
+                max_trial_count: int = 12,
+                max_failed_trial_count: int = 1,
+        ):
             import json
+            import time
+
+            from kubeflow.katib import (
+                KatibClient,
+                V1beta1AlgorithmSpec,
+                V1beta1Experiment,
+                V1beta1ExperimentSpec,
+                V1beta1FeasibleSpace,
+                V1beta1GraphConfig,
+                V1beta1NasConfig,
+                V1beta1ObjectiveSpec,
+                V1beta1Operation,
+                V1beta1ParameterSpec,
+                V1beta1TrialParameterSpec,
+                V1beta1TrialTemplate,
+            )
+            from kubernetes.client import V1ObjectMeta
 
             with open(databag_file.path) as file:
                 databag = json.load(file)
 
-            databag_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                          f'databag/{databag["bucket_name"]}'
+            databag_url = (
+                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f'databag/{databag["bucket_name"]}'
+            )
 
-            dataset_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                          f'{databag["bucket_name"]}/object/{dataset_file_name}'
+            dataset_url = (
+                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f'{databag["bucket_name"]}/object/{dataset_file_name}'
+            )
 
-            zip_url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/' \
-                      f'{databag["bucket_name"]}/object/{databag["file_name"]}'
+            zip_url = (
+                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f'{databag["bucket_name"]}/object/{databag["file_name"]}'
+            )
 
             namespace = "os4ml"
             experiment_name = f'katib-solver-{databag["bucket_name"]}'
 
-            metadata = V1ObjectMeta(
-                name=experiment_name,
-                namespace=namespace
-            )
+            metadata = V1ObjectMeta(name=experiment_name, namespace=namespace)
 
             algorithm_spec = V1beta1AlgorithmSpec(
                 algorithm_name="enas",
@@ -372,19 +487,23 @@ spec:
                             V1beta1ParameterSpec(
                                 name="filter_size",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["3", "5", "7"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["3", "5", "7"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="num_filter",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["32", "48", "64", "96", "128"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["32", "48", "64", "96", "128"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="stride",
                                 parameter_type="categorical",
                                 feasible_space=V1beta1FeasibleSpace(list=["1", "2"]),
                             ),
-                        ]
+                        ],
                     ),
                     V1beta1Operation(
                         operation_type="separable_convolution",
@@ -392,12 +511,16 @@ spec:
                             V1beta1ParameterSpec(
                                 name="filter_size",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["3", "5", "7"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["3", "5", "7"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="num_filter",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["32", "48", "64", "96", "128"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["32", "48", "64", "96", "128"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="stride",
@@ -409,7 +532,7 @@ spec:
                                 parameter_type="categorical",
                                 feasible_space=V1beta1FeasibleSpace(list=["1", "2"]),
                             ),
-                        ]
+                        ],
                     ),
                     V1beta1Operation(
                         operation_type="depthwise_convolution",
@@ -417,7 +540,9 @@ spec:
                             V1beta1ParameterSpec(
                                 name="filter_size",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["3", "5", "7"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["3", "5", "7"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="stride",
@@ -429,7 +554,7 @@ spec:
                                 parameter_type="categorical",
                                 feasible_space=V1beta1FeasibleSpace(list=["1", "2"]),
                             ),
-                        ]
+                        ],
                     ),
                     V1beta1Operation(
                         operation_type="reduction",
@@ -437,16 +562,20 @@ spec:
                             V1beta1ParameterSpec(
                                 name="reduction_type",
                                 parameter_type="categorical",
-                                feasible_space=V1beta1FeasibleSpace(list=["max_pooling", "avg_pooling"]),
+                                feasible_space=V1beta1FeasibleSpace(
+                                    list=["max_pooling", "avg_pooling"]
+                                ),
                             ),
                             V1beta1ParameterSpec(
                                 name="pool_size",
                                 parameter_type="int",
-                                feasible_space=V1beta1FeasibleSpace(min="2", max="3", step="1"),
-                            )
-                        ]
+                                feasible_space=V1beta1FeasibleSpace(
+                                    min="2", max="3", step="1"
+                                ),
+                            ),
+                        ],
                     ),
-                ]
+                ],
             )
 
             trial_spec = {
@@ -455,9 +584,7 @@ spec:
                 "spec": {
                     "template": {
                         "metadata": {
-                            "annotations": {
-                                "sidecar.istio.io/inject": "false"
-                            }
+                            "annotations": {"sidecar.istio.io/inject": "false"}
                         },
                         "spec": {
                             "containers": [
@@ -466,32 +593,24 @@ spec:
                                     "image": "gitlab-registry.wogra.com/developer/wogra/os4ml/"
                                              "enas-trial:509ba445",
                                     "command": [
-                                        'python3 ',
-                                        '-u ',
-                                        'RunTrial.py '
+                                        "python3 ",
+                                        "-u ",
+                                        "RunTrial.py "
                                         '--architecture="${trialParameters.neuralNetworkArchitecture}" '
                                         '--nn_config="${trialParameters.neuralNetworkConfig}" ',
-                                        f'--databag_file={databag_url}',
-                                        f'--dataset_file={dataset_url}',
-                                        f'--zip_file={zip_url}'
+                                        f"--databag_file={databag_url}",
+                                        f"--dataset_file={dataset_url}",
+                                        f"--zip_file={zip_url}",
                                     ],
                                     # Training container requires 1 GPU.
-                                    "resources": {
-                                        "limits": {
-                                            "nvidia.com/gpu": 1
-                                        }
-                                    }
+                                    "resources": {"limits": {"nvidia.com/gpu": 1}},
                                 },
                             ],
-                            "imagePullSecrets": [
-                                {
-                                    "name": "registry-credentials"
-                                }
-                            ],
-                            "restartPolicy": "Never"
-                        }
+                            "imagePullSecrets": [{"name": "registry-credentials"}],
+                            "restartPolicy": "Never",
+                        },
                     }
-                }
+                },
             }
 
             # Template with Trial parameters and Trial spec.
@@ -513,7 +632,7 @@ spec:
                         reference="nn_config",
                     ),
                 ],
-                trial_spec=trial_spec
+                trial_spec=trial_spec,
             )
 
             # Experiment object.
@@ -529,7 +648,7 @@ spec:
                     algorithm=algorithm_spec,
                     nas_config=nas_config,
                     trial_template=trial_template,
-                )
+                ),
             )
 
             # Create client.
@@ -537,6 +656,24 @@ spec:
 
             # Create your Experiment.
             kclient.create_experiment(experiment, namespace=namespace)
+
+            all_experiment_names = []
+            while experiment_name not in all_experiment_names:
+                all_experiments = kclient.list_experiments(namespace=namespace)
+                all_experiment_names = [exp.metadata.name for exp in all_experiments]
+                time.sleep(60)
+
+            while not kclient.is_experiment_succeeded(
+                    name=experiment_name, namespace=namespace
+            ):
+                time.sleep(60)
+
+            exp = kclient.get_experiment(name=experiment_name, namespace=namespace)
+            acc = exp["status"]["currentOptimalTrial"]["observation"]["metrics"][0][
+                "max"
+            ]
+
+            metrics.log_metric("accuracy", acc)
 
       - --executor_input
       - '{{$}}'
@@ -598,13 +735,13 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "97299b5dd452e9ea9173320e02c119b3931fb549db6c35f3e00663905e7bae43",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2fffd32451c637234eed1a867e56ba82a6389852d58e6766cc017fbabf585c46",
           "url": "../../components/katib-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"dataset_file_name": "{{inputs.parameters.dataset_file_name}}",
           "max_failed_trial_count": "1", "max_trial_count": "5", "parallel_trial_count":
           "1"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -623,6 +760,7 @@ spec:
       - {name: file_name}
       - {name: pipeline-name}
       - {name: pipeline-root}
+      - {name: solution_name}
     dag:
       tasks:
       - name: get-databag
@@ -632,6 +770,16 @@ spec:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+      - name: get-metrics
+        template: get-metrics
+        dependencies: [katib-solver]
+        arguments:
+          parameters:
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+          artifacts:
+          - {name: katib-solver-metrics, from: '{{tasks.katib-solver.outputs.artifacts.katib-solver-metrics}}'}
       - name: init-databag
         template: init-databag
         arguments:
@@ -753,7 +901,7 @@ spec:
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.dataset_file_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -768,6 +916,7 @@ spec:
     parameters:
     - {name: bucket}
     - {name: file_name}
+    - {name: solution_name, value: ''}
     - {name: dataset_file_name, value: dataset}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/katib-solver}

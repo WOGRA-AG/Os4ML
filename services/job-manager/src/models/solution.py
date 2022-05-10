@@ -1,11 +1,12 @@
 from typing import List, Optional
 
 from fastapi_utils.api_model import APIModel
-from openapi_server.models.solution_metrics import SolutionMetrics
+
+from .solution_metrics import SolutionMetrics
 
 
 class Solution(APIModel):
-    name: Optional[str] = None
+    name: str
     solver: Optional[str] = None
     databag_name: Optional[str] = None
     bucket_name: Optional[str] = None

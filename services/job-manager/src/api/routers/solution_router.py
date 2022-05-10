@@ -1,9 +1,38 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, Path
 
-from models import Solution
-from services.solution_service import SolutionService
+from src.models import Solution
+from src.services.solution_service import SolutionService
 
 router = APIRouter(prefix="/apis/v1beta1")
+
+
+@router.get(
+    "/jobmanager/solution/{solution_name}",
+    responses={200: {"description": "Solution found"}},
+    tags=['jobmanager, "solution'],
+    summary="Get a Sollution",
+)
+async def get_solution(
+    solution_name: str = Path(..., description="Name of the solution"),
+    solution_service: SolutionService = Depends(SolutionService),
+) -> Solution:
+    return solution_service.get_solution(solution_name)
+
+
+@router.put(
+    "/jobmanager/solution/{solution_name}",
+    responses={200: {"description": "Solution Updated"}},
+    tags=["jobmanager", "solution"],
+    summary="Update a Solution",
+)
+async def put_solution(
+    solution_name: str = Path(
+        ..., description="Name of the solution to update"
+    ),
+    solution: Solution = Body(..., description="Solution with updates"),
+    solution_service: SolutionService = Depends(SolutionService),
+) -> Solution:
+    return solution_service.put_solution(solution_name, solution)
 
 
 @router.post(
