@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-10T23:05:42.539166'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-11T00:25:39.111066'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
@@ -657,12 +657,21 @@ spec:
             # Create your Experiment.
             kclient.create_experiment(experiment, namespace=namespace)
 
-            time.sleep(60)
-            while not kclient.is_experiment_succeeded(name=experiment_name, namespace=namespace):
+            all_experiment_names = []
+            while experiment_name not in all_experiment_names:
+                all_experiments = kclient.list_experiments(namespace=namespace)
+                all_experiment_names = [exp.metadata.name for exp in all_experiments]
+                time.sleep(60)
+
+            while not kclient.is_experiment_succeeded(
+                    name=experiment_name, namespace=namespace
+            ):
                 time.sleep(60)
 
             exp = kclient.get_experiment(name=experiment_name, namespace=namespace)
-            acc = exp["status"]["currentOptimalTrial"]["observation"]["metrics"][0]["max"]
+            acc = exp["status"]["currentOptimalTrial"]["observation"]["metrics"][0][
+                "max"
+            ]
 
             metrics.log_metric("accuracy", acc)
 
@@ -726,7 +735,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "e886a809fe055645be3aff954995be2d67f3db89d83efe6b114973fe81724f9e",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2fffd32451c637234eed1a867e56ba82a6389852d58e6766cc017fbabf585c46",
           "url": "../../components/katib-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"dataset_file_name": "{{inputs.parameters.dataset_file_name}}",
           "max_failed_trial_count": "1", "max_trial_count": "5", "parallel_trial_count":
