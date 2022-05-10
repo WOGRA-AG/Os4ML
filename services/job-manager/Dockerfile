@@ -51,7 +51,7 @@ WORKDIR $PROJECT_DIR
 COPY . .
 COPY openapi.sh ./openapi.sh
 RUN chmod +x ./openapi.sh
-RUN ./openapi.sh
+RUN poetry run ./openapi.sh
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
