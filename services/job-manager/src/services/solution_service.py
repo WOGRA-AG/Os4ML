@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from uuid import UUID, uuid4
 
 from openapi_client.api.objectstore_api import ObjectstoreApi
@@ -18,6 +19,9 @@ class SolutionService:
     def create_solution(self, solution: Solution) -> str:
         uuid: UUID = uuid4()
         solution.name = f"{uuid}_{solution.name}"
+        solution.creation_time = datetime.utcnow().strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
         file_name: str = f"{solution.name}/{SOLUTION_CONFIG_FILE_NAME}"
         databag: Databag = self.objectstore.get_databag_by_bucket_name(
             solution.bucket_name

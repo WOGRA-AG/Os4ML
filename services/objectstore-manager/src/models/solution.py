@@ -13,4 +13,6 @@ class Solution(APIModel):
     output_fields: Optional[List[str]] = None
     run_id: Optional[str] = None
     status: Optional[str] = None
+    creation_time: Optional[str] = None
+    completion_time: Optional[str] = None
     metrics: Optional[SolutionMetrics] = None

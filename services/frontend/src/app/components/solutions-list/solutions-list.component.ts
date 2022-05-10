@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {PipelinePrecision} from '../../models/pipeline-precision';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
@@ -10,16 +9,24 @@ import {Solution} from '../../../../build/openapi/jobmanager';
 export class SolutionsListComponent {
   @Input() solutions: Solution[] = [];
 
-  precision(precision: string | undefined): string {
-    switch (precision) {
-      case PipelinePrecision.high:
-        return 'primary';
-      case PipelinePrecision.medium:
-        return 'accent';
-      case PipelinePrecision.low:
-        return 'warn';
-      default:
-        return 'accent';
+  private static msToHMS(ms: number): string {
+    // https://stackoverflow.com/a/29816921 with small fixes
+    let seconds = ms / 1000;
+    const hours = Math.round(seconds / 3600);
+    seconds = seconds % 3600;
+    const minutes = Math.round(seconds / 60);
+    seconds = Math.round(seconds % 60);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  getRuntime(creationTime: string | undefined, completionTime: string | undefined): string {
+    if (!creationTime) {
+      return '0s';
     }
+    const creationDate = new Date(creationTime);
+    const completionDate = completionTime ? new Date(completionTime) : new Date();
+    const timeDiff = completionDate.getTime() - creationDate.getTime();
+    return SolutionsListComponent.msToHMS(timeDiff);
   }
 }

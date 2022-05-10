@@ -1,7 +1,7 @@
 import json
 from contextlib import contextmanager
+from datetime import datetime
 from io import BytesIO
-from pathlib import PurePath
 from typing import Generator, List
 
 from fastapi import HTTPException
@@ -196,6 +196,9 @@ class MinioService(StorageServiceInterface):
                 status_code=404,
                 detail=f"Bucket with name {bucket_name} not found",
             )
+        databag.creation_time = datetime.utcnow().strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
         with open(f"/tmp/{self.config_file_name}", "w") as file:
             json.dump(databag.dict(), file)
         self.client.fput_object(bucket_name, self.config_file_name, file.name)
