@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Databag, DatabagService, Solution, SolutionService} from '../../../../build/openapi/objectstore';
+import {Databag, Solution, SolutionService} from '../../../../build/openapi/objectstore';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogAddDatabagComponent} from '../../components/dialog-add-databag/dialog-add-databag.component';
 import {DialogDynamicComponent} from '../../components/dialog-dynamic/dialog-dynamic.component';
@@ -17,15 +17,14 @@ export class DatabagPageComponent implements OnDestroy {
   selectedDatabag: Databag = {};
   intervalSub: Subscription;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private databagService: DatabagService,
+  constructor(private activatedRoute: ActivatedRoute, private router: Router,
               private solutionService: SolutionService, public dialog: MatDialog) {
     this.intervalSub = interval(10000).subscribe(x => {
-      databagService.getAllDatabags().subscribe(databags => {
-        this.databags = databags;
-      });
-      solutionService.getAllSolutions().subscribe(solutions => {
-        this.solutions = solutions;
-      });
+      router.navigate(['.'], {relativeTo: activatedRoute});
+    });
+    activatedRoute.data.subscribe(data => {
+      this.databags = data['databags'];
+      this.solutions = data['solutions'];
     });
   }
 

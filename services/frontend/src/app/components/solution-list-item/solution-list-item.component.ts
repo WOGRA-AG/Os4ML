@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {Solution} from '../../../../build/openapi/jobmanager';
-import {interval, Subscription, timer} from 'rxjs';
+import {Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'app-solution-list-item',
