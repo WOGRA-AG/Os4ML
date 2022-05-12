@@ -35,7 +35,7 @@ def init_databag(
     def _is_shepard_uri(uri: str) -> bool:
         if not _is_uri(uri):
             return False
-        return '/shepard/api/' in uri
+        return "/shepard/api/" in uri
 
     def _extract_filename_from_uri(file_url):
         parsed_url = urlparse(file_url)
@@ -71,7 +71,7 @@ def init_databag(
     if _is_shepard_uri(file_name):
         databag_type = DatabagTypes.shepard_url
         # TODO: Replace with real data
-        df = pd.DataFrame([1], columns=['a'])
+        df = pd.DataFrame([1], columns=["a"])
         return databag_info(databag_type.value, df.to_csv(index=False))
     elif _is_uri(file_name):
         data_uri = file_name

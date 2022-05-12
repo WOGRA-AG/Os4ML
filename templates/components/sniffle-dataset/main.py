@@ -17,10 +17,9 @@ def sniff_datatypes(
     import enum
     import json
     import pathlib
+    from urllib.parse import urlparse
 
     import pandas as pd
-
-    from urllib.parse import urlparse
 
     class ColumnDataType(str, enum.Enum):
         NUMERICAL = "numerical"
@@ -109,7 +108,11 @@ def sniff_datatypes(
     else:
         raise NotImplementedError()
 
-    databag_name = _extract_filename_from_uri(file_name) if _is_uri(file_name) else file_name
+    databag_name = (
+        _extract_filename_from_uri(file_name)
+        if _is_uri(file_name)
+        else file_name
+    )
     num_rows = get_num_rows(column_info)
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]

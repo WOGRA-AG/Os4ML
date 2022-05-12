@@ -11,7 +11,9 @@ train_random_forest_op = load_component("train-random-forest")
 
 @pipeline(name="titanic-randomforest-pipeline")
 def titanic_rf_pipeline(
-        bucket: str = "os4ml", file_name: str = "titanic.xlsx", solution_name: str = ""
+    bucket: str = "os4ml",
+    file_name: str = "titanic.xlsx",
+    solution_name: str = "",
 ):
     databag_info = init_databag_op(bucket, file_name)
     preprocess_task = preprocess_data_op(databag_info.outputs["dataset"])
