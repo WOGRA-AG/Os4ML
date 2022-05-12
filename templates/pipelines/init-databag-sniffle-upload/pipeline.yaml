@@ -3,8 +3,8 @@ kind: Workflow
 metadata:
   generateName: init-databag-sniffle-upload-
   annotations:
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-05T08:12:07.821388'
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T14:53:57.334724'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -15,7 +15,7 @@ metadata:
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
 spec:
   entrypoint: init-databag-sniffle-upload
   templates:
@@ -109,7 +109,7 @@ spec:
           "url": "../../components/create-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -131,7 +131,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -145,63 +145,101 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def init_databag(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
-                                                                    [('databag_type', str),
-                                                                     ('dataset', Dataset),
-                                                                     ]):
+        def init_databag(
+            bucket: str, file_name: str
+        ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset),]):
             """
             Inits the databag by specifying its type and creating the dataset.
             If the file is a zip file it should only contain directories in the top level.
             The names of them are used as labels and the files they contain are used as features.
             """
-            import pandas as pd
-            import pathlib
-            import zipfile
             import enum
-            import requests
+            import pathlib
             import tempfile
-            from typing import BinaryIO
+            import zipfile
             from collections.abc import Generator
+            from typing import BinaryIO
+            from urllib.parse import urlparse
+
+            import pandas as pd
+            import requests
 
             class DatabagTypes(str, enum.Enum):
-                local_file = 'local_file'
-                zip_file = 'zip_file'
+                local_file = "local_file"
+                zip_file = "zip_file"
+                file_url = "file_url"
+                shepard_url = "shepard_url"
+
+            def _is_uri(uri: str) -> bool:
+                parsed = urlparse(uri)
+                return True if parsed.scheme and parsed.netloc else False
+
+            def _is_shepard_uri(uri: str) -> bool:
+                if not _is_uri(uri):
+                    return False
+                return '/shepard/api/' in uri
+
+            def _extract_filename_from_uri(file_url):
+                parsed_url = urlparse(file_url)
+                return pathlib.Path(parsed_url.path).name
 
             def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
                 response = requests.get(url, stream=True)
                 for chunk in response.iter_content(chunk_size=chunk_size):
                     output_file.write(chunk)
 
-            def iter_dirs_of_zip_with_labels(zip_file: BinaryIO) -> Generator[tuple[str, str], None, None]:
+            def iter_dirs_of_zip_with_labels(
+                zip_file: BinaryIO,
+            ) -> Generator[tuple[str, str], None, None]:
                 with zipfile.ZipFile(zip_file) as root:
                     unpacked_root_dir = next(zipfile.Path(root).iterdir())
                     for label_dir in unpacked_root_dir.iterdir():
                         label = label_dir.name
                         for file in label_dir.iterdir():
-                            file_name = file.filename.resolve().relative_to(unpacked_root_dir.parent.filename.resolve())
+                            file_name = file.filename.resolve().relative_to(
+                                unpacked_root_dir.parent.filename.resolve()
+                            )
                             yield str(file_name), label
 
-            data_uri = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            databag_type = None
+            databag_info = NamedTuple(
+                "DatabagInfo",
+                [
+                    ("databag_type", str),
+                    ("dataset", Dataset),
+                ],
+            )
+
+            if _is_shepard_uri(file_name):
+                databag_type = DatabagTypes.shepard_url
+                df = pd.DataFrame([1], columns=['a'])
+                return databag_info(databag_type.value, df.to_csv(index=False))
+            elif _is_uri(file_name):
+                data_uri = file_name
+                file_name = _extract_filename_from_uri(file_name)
+                databag_type = DatabagTypes.file_url
+            else:
+                data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+
             file_path = pathlib.Path(file_name)
             match file_path.suffix:
-                case '.csv':
+                case ".csv":
                     df = pd.read_csv(data_uri)
-                    databag_type = DatabagTypes.local_file
-                case '.xls' | '.xlsx' | '.xlsm' | '.xlsb' | '.odf' | '.ods':
+                    databag_type = databag_type or DatabagTypes.local_file
+                case ".xls" | ".xlsx" | ".xlsm" | ".xlsb" | ".odf" | ".ods":
                     df = pd.read_excel(data_uri, sheet_name=0)
-                    databag_type = DatabagTypes.local_file
-                case '.zip':
+                    databag_type = databag_type or DatabagTypes.local_file
+                case ".zip":
                     with tempfile.NamedTemporaryFile() as tmp_file:
                         download_file(data_uri, tmp_file)
-                        df = pd.DataFrame(iter_dirs_of_zip_with_labels(tmp_file), columns=['file', 'label'])
+                        df = pd.DataFrame(
+                            iter_dirs_of_zip_with_labels(tmp_file),
+                            columns=["file", "label"],
+                        )
                     databag_type = DatabagTypes.zip_file
                 case _:
                     raise NotImplementedError()
 
-            databag_info = NamedTuple('DatabagInfo',
-                                      [('databag_type', str),
-                                       ('dataset', Dataset),
-                                       ])
             return databag_info(databag_type.value, df.to_csv(index=False))
 
       - --executor_input
@@ -262,12 +300,12 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "212b45e37594b2c539544c750458286994c9f8752c60e3839157c5928a530c69",
+        pipelines.kubeflow.org/component_ref: '{"digest": "f45d968b1e58757c78b0b7c54e4a34baadd6f4e98f1bb35c3073ca882526dd48",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -330,7 +368,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -344,32 +382,37 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def sniff_datatypes(dataset: Input[Dataset],
-                            dataset_type: str = 'local_file',
-                            max_categories: int = 10,
-                            file_name: str = '',
-                            bucket_name: str = '') -> Dataset:
+        def sniff_datatypes(
+            dataset: Input[Dataset],
+            dataset_type: str = "local_file",
+            max_categories: int = 10,
+            file_name: str = "",
+            bucket_name: str = "",
+        ) -> Dataset:
             """
             Guesses the datatypes of the columns in the dataframe.
             For local_file databags the type is derived from the values in the dataframe.
             For zip_file databags the type is derived from the suffix of the file names in the dataframe.
             """
-            import pandas as pd
+            import dataclasses
+            import enum
             import json
             import pathlib
-            import enum
-            import dataclasses
+
+            import pandas as pd
+
+            from urllib.parse import urlparse
 
             class ColumnDataType(str, enum.Enum):
-                NUMERICAL = 'numerical'
-                DATE = 'date'
-                CATEGORY = 'category'
-                TEXT = 'text'
-                IMAGE = 'image'
+                NUMERICAL = "numerical"
+                DATE = "date"
+                CATEGORY = "category"
+                TEXT = "text"
+                IMAGE = "image"
 
             class ColumnUsage(str, enum.Enum):
-                LABEL = 'label'
-                FEATURE = 'feature'
+                LABEL = "label"
+                FEATURE = "feature"
 
             @dataclasses.dataclass
             class Column:
@@ -380,39 +423,43 @@ spec:
 
             def sniff_column_datatypes(df: pd.DataFrame) -> list[Column]:
                 columns_and_types = (
-                    (name, *sniff_series(column))
-                    for name, column in df.iteritems()
+                    (name, *sniff_series(column)) for name, column in df.iteritems()
                 )
                 *columns, last_column = columns_and_types
                 feature_columns = (
                     Column(column, type_, ColumnUsage.FEATURE, num_entries)
                     for column, type_, num_entries in columns
                 )
-                label_column = Column(last_column[0], last_column[1],
-                                      ColumnUsage.LABEL, last_column[2])
+                label_column = Column(
+                    last_column[0], last_column[1], ColumnUsage.LABEL, last_column[2]
+                )
                 return [*feature_columns, label_column]
 
             def sniff_series(series: pd.Series) -> tuple[ColumnDataType, int]:
                 column_type = ColumnDataType.TEXT
                 datatype = str(series.dtype)
-                if 'int' in datatype or 'float' in datatype:
+                if "int" in datatype or "float" in datatype:
                     column_type = ColumnDataType.NUMERICAL
-                if 'date' in datatype:
+                if "date" in datatype:
                     column_type = ColumnDataType.DATE
                 if series.nunique() <= max_categories:
                     column_type = ColumnDataType.CATEGORY
                 return column_type, series.size
 
             def sniff_zip_types(df: pd.DataFrame) -> list[Column]:
-                example_file = df['file'][0]
-                num_files = len(df['file'])
+                example_file = df["file"][0]
+                num_files = len(df["file"])
                 suffix = pathlib.Path(example_file).suffix.lower()
-                if suffix in ('.jpg', '.jpeg', '.png', '.tiff'):
-                    file_column = Column('file', ColumnDataType.IMAGE, ColumnUsage.FEATURE, num_files)
+                if suffix in (".jpg", ".jpeg", ".png", ".tiff"):
+                    file_column = Column(
+                        "file", ColumnDataType.IMAGE, ColumnUsage.FEATURE, num_files
+                    )
                 else:
                     raise NotImplementedError()
-                num_labels = len(df['label'])
-                label_column = Column('label', ColumnDataType.CATEGORY, ColumnUsage.LABEL, num_labels)
+                num_labels = len(df["label"])
+                label_column = Column(
+                    "label", ColumnDataType.CATEGORY, ColumnUsage.LABEL, num_labels
+                )
                 return [file_column, label_column]
 
             def get_num_rows(columns: list[Column]) -> int:
@@ -423,28 +470,41 @@ spec:
                 assert (column.num_entries == rows for column in columns)
                 return rows
 
-            with open(dataset.path, 'r') as dataset_file:
+            def _is_uri(uri: str) -> bool:
+                parsed = urlparse(uri)
+                return True if parsed.scheme and parsed.netloc else False
+
+            def _extract_filename_from_uri(file_url):
+                parsed_url = urlparse(file_url)
+                return pathlib.Path(parsed_url.path).name
+
+            with open(dataset.path, "r") as dataset_file:
                 df = pd.read_csv(dataset_file)
 
-            if dataset_type == 'local_file':
+            if dataset_type == "local_file" or dataset_type == "file_url":
                 column_info = sniff_column_datatypes(df)
-            elif dataset_type == 'zip_file':
+            elif dataset_type == "zip_file":
                 column_info = sniff_zip_types(df)
+            elif dataset_type == "shepard_url":
+                column_info = []
             else:
                 raise NotImplementedError()
 
+            databag_name = _extract_filename_from_uri(file_name) if _is_uri(file_name) else file_name
             num_rows = get_num_rows(column_info)
             num_cols = len(column_info)
             column_info_dicts = [column.__dict__ for column in column_info]
-            return json.dumps({
-                'dataset_type': dataset_type,
-                'file_name': file_name,
-                'databag_name': file_name,
-                'bucket_name': bucket_name,
-                'number_rows': num_rows,
-                'number_columns': num_cols,
-                'columns': column_info_dicts,
-            })
+            return json.dumps(
+                {
+                    "dataset_type": dataset_type,
+                    "file_name": file_name,
+                    "databag_name": databag_name,
+                    "bucket_name": bucket_name,
+                    "number_rows": num_rows,
+                    "number_columns": num_cols,
+                    "columns": column_info_dicts,
+                }
+            )
 
       - --executor_input
       - '{{$}}'
@@ -507,13 +567,13 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "f06b9ea2776313458bd45bc358ba90897dab4f19c7aa4bc7fe82bc4021dbaea6",
+        pipelines.kubeflow.org/component_ref: '{"digest": "ed398781138b0577c60ef340cd2f0f3d4ca7ba8005f56b2e4f875952f997c812",
           "url": "../../components/sniffle-dataset/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket_name": "{{inputs.parameters.bucket}}",
           "dataset_type": "{{inputs.parameters.init-databag-databag_type}}", "file_name":
           "{{inputs.parameters.file_name}}", "max_categories": "{{inputs.parameters.max_categories}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
