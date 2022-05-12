@@ -21,7 +21,9 @@ def titanic_rf_pipeline(
     databag_info = init_databag_op(bucket, file_name)
     preprocess_task = preprocess_data_op(databag_info.outputs["dataset"])
     update_status_op(
-        solution_name, StatusMessages.running.value, databag_info.outputs["dataset"]
+        solution_name,
+        StatusMessages.running.value,
+        databag_info.outputs["dataset"],
     )
     rf_output = train_random_forest_op(
         preprocess_task.outputs["x"], preprocess_task.outputs["y"]
