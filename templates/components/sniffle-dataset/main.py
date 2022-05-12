@@ -100,10 +100,12 @@ def sniff_datatypes(
     with open(dataset.path, "r") as dataset_file:
         df = pd.read_csv(dataset_file)
 
-    if dataset_type == "local_file":
+    if dataset_type == "local_file" or dataset_type == "file_url":
         column_info = sniff_column_datatypes(df)
     elif dataset_type == "zip_file":
         column_info = sniff_zip_types(df)
+    elif dataset_type == "shepard_url":
+        column_info = []
     else:
         raise NotImplementedError()
 

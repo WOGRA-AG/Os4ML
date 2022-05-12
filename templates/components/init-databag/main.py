@@ -25,6 +25,7 @@ def init_databag(
     class DatabagTypes(str, enum.Enum):
         local_file = "local_file"
         zip_file = "zip_file"
+        file_url = "file_url"
         shepard_url = "shepard_url"
 
     def _is_uri(uri: str) -> bool:
@@ -34,9 +35,7 @@ def init_databag(
     def _is_shepard_uri(uri: str) -> bool:
         if not _is_uri(uri):
             return False
-        if '/shepard/' in uri:
-            return True
-        return False
+        return '/shepard/api/' in uri
 
     def _extract_filename_from_uri(file_url):
         parsed_url = urlparse(file_url)
@@ -60,11 +59,24 @@ def init_databag(
                     )
                     yield str(file_name), label
 
-    file_name_is_uri = _is_uri(file_name)
+    databag_type = None
+    databag_info = NamedTuple(
+        "DatabagInfo",
+        [
+            ("databag_type", str),
+            ("dataset", Dataset),
+        ],
+    )
 
-    if file_name_is_uri:
+    if _is_shepard_uri(file_name):
+        databag_type = DatabagTypes.shepard_url
+        # TODO: Replace with real data
+        df = pd.DataFrame([1], columns=['a'])
+        return databag_info(databag_type.value, df.to_csv(index=False))
+    elif _is_uri(file_name):
         data_uri = file_name
         file_name = _extract_filename_from_uri(file_name)
+        databag_type = DatabagTypes.file_url
     else:
         data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
 
@@ -72,10 +84,10 @@ def init_databag(
     match file_path.suffix:
         case ".csv":
             df = pd.read_csv(data_uri)
-            databag_type = DatabagTypes.local_file
+            databag_type = databag_type or DatabagTypes.local_file
         case ".xls" | ".xlsx" | ".xlsm" | ".xlsb" | ".odf" | ".ods":
             df = pd.read_excel(data_uri, sheet_name=0)
-            databag_type = DatabagTypes.local_file
+            databag_type = databag_type or DatabagTypes.local_file
         case ".zip":
             with tempfile.NamedTemporaryFile() as tmp_file:
                 download_file(data_uri, tmp_file)
@@ -87,13 +99,6 @@ def init_databag(
         case _:
             raise NotImplementedError()
 
-    databag_info = NamedTuple(
-        "DatabagInfo",
-        [
-            ("databag_type", str),
-            ("dataset", Dataset),
-        ],
-    )
     return databag_info(databag_type.value, df.to_csv(index=False))
 
 

@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T10:05:14.984877'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T13:07:59.557258'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -65,6 +65,7 @@ spec:
             class DatabagTypes(str, enum.Enum):
                 local_file = "local_file"
                 zip_file = "zip_file"
+                file_url = "file_url"
                 shepard_url = "shepard_url"
 
             def _is_uri(uri: str) -> bool:
@@ -100,11 +101,12 @@ spec:
                             )
                             yield str(file_name), label
 
-            file_name_is_uri = _is_uri(file_name)
+            databag_type = None
 
-            if file_name_is_uri:
+            if _is_uri(file_name):
                 data_uri = file_name
                 file_name = _extract_filename_from_uri(file_name)
+                databag_type = DatabagTypes.file_url
             else:
                 data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
 
@@ -112,10 +114,10 @@ spec:
             match file_path.suffix:
                 case ".csv":
                     df = pd.read_csv(data_uri)
-                    databag_type = DatabagTypes.local_file
+                    databag_type = databag_type or DatabagTypes.local_file
                 case ".xls" | ".xlsx" | ".xlsm" | ".xlsb" | ".odf" | ".ods":
                     df = pd.read_excel(data_uri, sheet_name=0)
-                    databag_type = DatabagTypes.local_file
+                    databag_type = databag_type or DatabagTypes.local_file
                 case ".zip":
                     with tempfile.NamedTemporaryFile() as tmp_file:
                         download_file(data_uri, tmp_file)
@@ -191,7 +193,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "8e4e157bbb7fb8b445c0d49c03abb1e1319e8c9ef0025eec75020b8adea48b9b",
+        pipelines.kubeflow.org/component_ref: '{"digest": "bdc7a0c6ed3b402af0f23b40a16c7350e06929c17269fd3a417e68c22988de4c",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
