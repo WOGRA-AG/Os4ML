@@ -34,9 +34,10 @@ import {SolutionsListComponent} from './components/solutions-list/solutions-list
 import {DialogDefineInputComponent} from './components/dialog-define-input/dialog-define-input.component';
 import {DialogDefineOutputComponent} from './components/dialog-define-output/dialog-define-output.component';
 import {DialogDefineSolverComponent} from './components/dialog-define-solver/dialog-define-solver.component';
-import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
+import {SolverListItemComponent} from './components/solver-list-item/solver-list-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
+import { SolutionListItemComponent } from './components/solution-list-item/solution-list-item.component';
 
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -68,6 +69,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogDefineInputComponent,
     DialogDefineOutputComponent,
     DialogDefineSolverComponent,
+    SolverListItemComponent,
     SolutionListItemComponent,
   ],
   imports: [

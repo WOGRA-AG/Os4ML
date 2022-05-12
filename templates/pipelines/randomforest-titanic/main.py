@@ -13,9 +13,9 @@ update_status_op = load_component("update-status")
 
 @pipeline(name="titanic-randomforest-pipeline")
 def titanic_rf_pipeline(
-        bucket: str = "os4ml",
-        file_name: str = "titanic.xlsx",
-        solution_name: str = ""
+    bucket: str = "os4ml",
+    file_name: str = "titanic.xlsx",
+    solution_name: str = "",
 ):
     update_status_op(solution_name, StatusMessages.created.value)
     databag_info = init_databag_op(bucket, file_name)
