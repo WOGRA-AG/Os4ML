@@ -20,6 +20,8 @@ def sniff_datatypes(
 
     import pandas as pd
 
+    from urllib.parse import urlparse
+
     class ColumnDataType(str, enum.Enum):
         NUMERICAL = "numerical"
         DATE = "date"
@@ -87,6 +89,14 @@ def sniff_datatypes(
         assert (column.num_entries == rows for column in columns)
         return rows
 
+    def _is_uri(uri: str) -> bool:
+        parsed = urlparse(uri)
+        return True if parsed.scheme and parsed.netloc else False
+
+    def _extract_filename_from_uri(file_url):
+        parsed_url = urlparse(file_url)
+        return pathlib.Path(parsed_url.path).name
+
     with open(dataset.path, "r") as dataset_file:
         df = pd.read_csv(dataset_file)
 
@@ -97,6 +107,7 @@ def sniff_datatypes(
     else:
         raise NotImplementedError()
 
+    databag_name = _extract_filename_from_uri(file_name) if _is_uri(file_name) else file_name
     num_rows = get_num_rows(column_info)
     num_cols = len(column_info)
     column_info_dicts = [column.__dict__ for column in column_info]
@@ -104,7 +115,7 @@ def sniff_datatypes(
         {
             "dataset_type": dataset_type,
             "file_name": file_name,
-            "databag_name": file_name,
+            "databag_name": databag_name,
             "bucket_name": bucket_name,
             "number_rows": num_rows,
             "number_columns": num_cols,

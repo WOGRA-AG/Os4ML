@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ObjectstoreService} from '../../../../build/openapi/objectstore';
-import {JobmanagerService} from '../../../../build/openapi/jobmanager';
+import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
@@ -17,6 +17,7 @@ import {PipelineStatus} from '../../models/pipeline-status';
 })
 export class DialogAddDatabagComponent {
   file: File = new File([], '');
+  fileUrl = '';
   running = false;
   uuid: string = uuidv4();
   intervalID = 0;
@@ -30,7 +31,7 @@ export class DialogAddDatabagComponent {
   }
 
   async nextPageClick(): Promise<void> {
-    if (!this.file.name) {
+    if (!(this.file.name || this.fileUrl)) {
       this.translate.get('error.no_dataset').subscribe((res: string) => {
         this.translate.get('error.confirm').subscribe((conf: string) => {
           this.matSnackBar.open(res, conf, {duration: 3000});
@@ -39,17 +40,22 @@ export class DialogAddDatabagComponent {
       return;
     }
 
+    this.dialogRef.componentInstance.data.uuid = this.uuid;
     this.running = true;
+    let runId = '';
+    const runParams: RunParams = {
+      bucket: this.uuid,
+      fileName: this.fileUrl ? this.fileUrl : this.file.name
+    };
     try {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
-      await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
-      const runId: string = await firstValueFrom(
-        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', {
-          bucket: `${this.uuid}`, fileName: `${this.file.name}`
-        })
+      runId = await firstValueFrom(
+        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
       );
+      if (!this.fileUrl) {
+        await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
+      }
       await this.retrievePipelineStatus(runId);
-      this.dialogRef.componentInstance.data.uuid = this.uuid;
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});

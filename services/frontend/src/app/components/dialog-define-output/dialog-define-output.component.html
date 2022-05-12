@@ -12,14 +12,14 @@
     </div>
     <mat-list>
       <mat-list-item class="bg-primary" *ngFor="let column of databag.columns">
-        <app-solution-list-item
+        <app-solver-list-item
           class="solution-item"
           [column]="column"
           [disabled]="solution?.inputFields?.includes(column.name || '') || false"
           (selectedChange)="selectionChanged(column.name)"
           [selected]="solution?.outputFields?.includes(column?.name || '') || false"
         >
-        </app-solution-list-item>
+        </app-solver-list-item>
       </mat-list-item>
     </mat-list>
   </mat-dialog-content>

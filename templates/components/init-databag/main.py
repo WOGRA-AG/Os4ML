@@ -17,6 +17,7 @@ def init_databag(
     import zipfile
     from collections.abc import Generator
     from typing import BinaryIO
+    from urllib.parse import urlparse
 
     import pandas as pd
     import requests
@@ -24,6 +25,22 @@ def init_databag(
     class DatabagTypes(str, enum.Enum):
         local_file = "local_file"
         zip_file = "zip_file"
+        shepard_url = "shepard_url"
+
+    def _is_uri(uri: str) -> bool:
+        parsed = urlparse(uri)
+        return True if parsed.scheme and parsed.netloc else False
+
+    def _is_shepard_uri(uri: str) -> bool:
+        if not _is_uri(uri):
+            return False
+        if '/shepard/' in uri:
+            return True
+        return False
+
+    def _extract_filename_from_uri(file_url):
+        parsed_url = urlparse(file_url)
+        return pathlib.Path(parsed_url.path).name
 
     def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
         response = requests.get(url, stream=True)
@@ -43,7 +60,14 @@ def init_databag(
                     )
                     yield str(file_name), label
 
-    data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+    file_name_is_uri = _is_uri(file_name)
+
+    if file_name_is_uri:
+        data_uri = file_name
+        file_name = _extract_filename_from_uri(file_name)
+    else:
+        data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+
     file_path = pathlib.Path(file_name)
     match file_path.suffix:
         case ".csv":

@@ -3,17 +3,18 @@ kind: Workflow
 metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-06T11:48:26.647263'
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T10:05:14.984877'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
-      "file_name", "optional": true, "type": "String"}, {"default": "", "name": "pipeline-root"},
+      "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
+      "optional": true, "type": "String"}, {"default": "", "name": "pipeline-root"},
       {"default": "pipeline/titanic-randomforest-pipeline", "name": "pipeline-name"}],
       "name": "titanic-randomforest-pipeline"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
     pipelines.kubeflow.org/v2_pipeline: "true"
-    pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+    pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
 spec:
   entrypoint: titanic-randomforest-pipeline
   templates:
@@ -28,7 +29,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -42,63 +43,97 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def init_databag(bucket: str, file_name: str) -> NamedTuple('DatabagInfo',
-                                                                    [('databag_type', str),
-                                                                     ('dataset', Dataset),
-                                                                     ]):
+        def init_databag(
+            bucket: str, file_name: str
+        ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset),]):
             """
             Inits the databag by specifying its type and creating the dataset.
             If the file is a zip file it should only contain directories in the top level.
             The names of them are used as labels and the files they contain are used as features.
             """
-            import pandas as pd
-            import pathlib
-            import zipfile
             import enum
-            import requests
+            import pathlib
             import tempfile
-            from typing import BinaryIO
+            import zipfile
             from collections.abc import Generator
+            from typing import BinaryIO
+            from urllib.parse import urlparse
+
+            import pandas as pd
+            import requests
 
             class DatabagTypes(str, enum.Enum):
-                local_file = 'local_file'
-                zip_file = 'zip_file'
+                local_file = "local_file"
+                zip_file = "zip_file"
+                shepard_url = "shepard_url"
+
+            def _is_uri(uri: str) -> bool:
+                parsed = urlparse(uri)
+                return True if parsed.scheme and parsed.netloc else False
+
+            def _is_shepard_uri(uri: str) -> bool:
+                if not _is_uri(uri):
+                    return False
+                if '/shepard/' in uri:
+                    return True
+                return False
+
+            def _extract_filename_from_uri(file_url):
+                parsed_url = urlparse(file_url)
+                return pathlib.Path(parsed_url.path).name
 
             def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
                 response = requests.get(url, stream=True)
                 for chunk in response.iter_content(chunk_size=chunk_size):
                     output_file.write(chunk)
 
-            def iter_dirs_of_zip_with_labels(zip_file: BinaryIO) -> Generator[tuple[str, str], None, None]:
+            def iter_dirs_of_zip_with_labels(
+                zip_file: BinaryIO,
+            ) -> Generator[tuple[str, str], None, None]:
                 with zipfile.ZipFile(zip_file) as root:
                     unpacked_root_dir = next(zipfile.Path(root).iterdir())
                     for label_dir in unpacked_root_dir.iterdir():
                         label = label_dir.name
                         for file in label_dir.iterdir():
-                            file_name = file.filename.resolve().relative_to(unpacked_root_dir.parent.filename.resolve())
+                            file_name = file.filename.resolve().relative_to(
+                                unpacked_root_dir.parent.filename.resolve()
+                            )
                             yield str(file_name), label
 
-            data_uri = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}'
+            file_name_is_uri = _is_uri(file_name)
+
+            if file_name_is_uri:
+                data_uri = file_name
+                file_name = _extract_filename_from_uri(file_name)
+            else:
+                data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+
             file_path = pathlib.Path(file_name)
             match file_path.suffix:
-                case '.csv':
+                case ".csv":
                     df = pd.read_csv(data_uri)
                     databag_type = DatabagTypes.local_file
-                case '.xls' | '.xlsx' | '.xlsm' | '.xlsb' | '.odf' | '.ods':
+                case ".xls" | ".xlsx" | ".xlsm" | ".xlsb" | ".odf" | ".ods":
                     df = pd.read_excel(data_uri, sheet_name=0)
                     databag_type = DatabagTypes.local_file
-                case '.zip':
+                case ".zip":
                     with tempfile.NamedTemporaryFile() as tmp_file:
                         download_file(data_uri, tmp_file)
-                        df = pd.DataFrame(iter_dirs_of_zip_with_labels(tmp_file), columns=['file', 'label'])
+                        df = pd.DataFrame(
+                            iter_dirs_of_zip_with_labels(tmp_file),
+                            columns=["file", "label"],
+                        )
                     databag_type = DatabagTypes.zip_file
                 case _:
                     raise NotImplementedError()
 
-            databag_info = NamedTuple('DatabagInfo',
-                                      [('databag_type', str),
-                                       ('dataset', Dataset),
-                                       ])
+            databag_info = NamedTuple(
+                "DatabagInfo",
+                [
+                    ("databag_type", str),
+                    ("dataset", Dataset),
+                ],
+            )
             return databag_info(databag_type.value, df.to_csv(index=False))
 
       - --executor_input
@@ -156,12 +191,12 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "212b45e37594b2c539544c750458286994c9f8752c60e3839157c5928a530c69",
+        pipelines.kubeflow.org/component_ref: '{"digest": "8e4e157bbb7fb8b445c0d49c03abb1e1319e8c9ef0025eec75020b8adea48b9b",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -349,7 +384,7 @@ spec:
         pipelines.kubeflow.org/component_ref: '{"digest": "24c4814498ab4805779867d20206c01f58be1be5895b9a27a7728340b7007f83",
           "url": "../../components/preprocess-data/component.yaml"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -511,7 +546,7 @@ spec:
         pipelines.kubeflow.org/component_ref: '{"digest": "bae1e2c9d5f6b435cea32865dbbdebe61b1f3b47583f7c7e15f97fffdd7a5112",
           "url": "../../components/train-random-forest/component.yaml"}'
       labels:
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
         pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/enable_caching: "true"
@@ -526,6 +561,7 @@ spec:
     parameters:
     - {name: bucket, value: os4ml}
     - {name: file_name, value: titanic.xlsx}
+    - {name: solution_name, value: ''}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/titanic-randomforest-pipeline}
   serviceAccountName: pipeline-runner
