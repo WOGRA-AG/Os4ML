@@ -90,7 +90,7 @@ def sniff_datatypes(
 
     def _is_uri(uri: str) -> bool:
         parsed = urlparse(uri)
-        return True if parsed.scheme and parsed.netloc else False
+        return bool(parsed.scheme and parsed.netloc)
 
     def _extract_filename_from_uri(file_url):
         parsed_url = urlparse(file_url)

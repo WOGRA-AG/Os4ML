@@ -30,7 +30,7 @@ def init_databag(
 
     def _is_uri(uri: str) -> bool:
         parsed = urlparse(uri)
-        return True if parsed.scheme and parsed.netloc else False
+        return bool(parsed.scheme and parsed.netloc)
 
     def _is_shepard_uri(uri: str) -> bool:
         if not _is_uri(uri):
