@@ -29,7 +29,7 @@ def train_random_forest(
     )
     clf = RandomForestClassifier(n_estimators=100, random_state=random_state)
     clf.fit(x_train, y_train)
-    score = clf.score(x_test, y_test) * 100
+    score = clf.score(x_test, y_test)
     y_pred = clf.predict(x_test)
     conf_matrix = confusion_matrix(y_test, y_pred).tolist()
     class_metrics.log_confusion_matrix(["Died", "Survived"], conf_matrix)
