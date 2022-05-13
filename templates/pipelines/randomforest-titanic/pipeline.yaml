@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T16:41:25.756424'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-13T12:17:57.994518'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -591,7 +591,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'scikit-learn>=1.0.2' 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'scikit-learn>=1.0.2' 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -605,26 +605,28 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def train_random_forest(data_x: Input[Dataset],
-                                data_y: Input[Dataset],
-                                class_metrics: Output[ClassificationMetrics],
-                                metrics: Output[Metrics]) -> float:
+        def train_random_forest(
+            data_x: Input[Dataset],
+            data_y: Input[Dataset],
+            class_metrics: Output[ClassificationMetrics],
+            metrics: Output[Metrics],
+        ) -> float:
             import pandas as pd
             from sklearn.ensemble import RandomForestClassifier
-            from sklearn.model_selection import train_test_split
             from sklearn.metrics import confusion_matrix
+            from sklearn.model_selection import train_test_split
 
             random_state = 42
-            with open(data_x.path, 'r') as f:
+            with open(data_x.path, "r") as f:
                 df_x = pd.read_csv(f)
-            with open(data_y.path, 'r') as f:
+            with open(data_y.path, "r") as f:
                 df_y = pd.read_csv(f)
-            x_train, x_test, y_train, y_test = train_test_split(df_x, df_y,
-                                                                test_size=0.33,
-                                                                random_state=random_state)
+            x_train, x_test, y_train, y_test = train_test_split(
+                df_x, df_y, test_size=0.33, random_state=random_state
+            )
             clf = RandomForestClassifier(n_estimators=100, random_state=random_state)
             clf.fit(x_train, y_train)
-            score = clf.score(x_test, y_test) * 100
+            score = clf.score(x_test, y_test)
             y_pred = clf.predict(x_test)
             conf_matrix = confusion_matrix(y_test, y_pred).tolist()
             class_metrics.log_confusion_matrix(["Died", "Survived"], conf_matrix)
@@ -692,7 +694,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "bae1e2c9d5f6b435cea32865dbbdebe61b1f3b47583f7c7e15f97fffdd7a5112",
+        pipelines.kubeflow.org/component_ref: '{"digest": "057f2834076ed656a12a1f505356549d9cfb62f8178a0846320ad986f3dd4430",
           "url": "../../components/train-random-forest/component.yaml"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
