@@ -136,6 +136,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PipelineTemplateName'
       tags:
+        - jobmanager
         - template
       requestBody:
         content:
@@ -157,6 +158,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SolutionName'
       tags:
+        - jobmanager
         - solution
       responses:
         200:
@@ -173,6 +175,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SolutionName'
       tags:
+        - jobmanager
         - solution
       requestBody:
         content:
@@ -192,6 +195,7 @@ paths:
       summary: "Create and deploy a Solution"
       operationId: postSolution
       tags:
+        - jobmanager
         - solution
       requestBody:
         content:
