@@ -10,12 +10,12 @@ fastapi = {extras = ["all"], version = "^0.73.0"}
 kfp = "^1.8.11"
 gunicorn = "^20.1.0"
 fastapi-utils = "^0.2.1"
-openapi-generator-cli = "^4.3.1"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
 coverage = { version = "^5.3", extras = ["toml"] }
-isort = { version = "^5.6.4", extras = ["pyproject"] }
+isort = { version = "^5.10.1", extras = ["pyproject"] }
 requests = "^2.25.0"
 black = "^22.3.0"
 pytest-asyncio = "^0.14.0"
@@ -51,14 +51,13 @@ multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0
 
-
 [tool.coverage]
 # https://github.com/nedbat/coveragepy
 
 [tool.coverage.run]
 source = ["src"]
 branch = true
-omit = ['']
+omit = ['src/build/openapi_client/*']
 
 [tool.coverage.report]
 exclude_lines = [
