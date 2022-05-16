@@ -6,7 +6,9 @@ from services.kfp_service import KfpService
 
 class ExperimentApiService:
     def __init__(self, kfp_service=None):
-        self.kfp_service = kfp_service if kfp_service is not None else KfpService()
+        self.kfp_service = (
+            kfp_service if kfp_service is not None else KfpService()
+        )
 
     def get_all_experiments(self) -> List[Experiment]:
         return self.kfp_service.get_all_experiments()

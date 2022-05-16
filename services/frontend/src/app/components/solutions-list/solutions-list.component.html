@@ -1,31 +1,5 @@
 <mat-list>
-  <mat-list-item class="bg-surface solution-list-item" *ngFor="let solution of solutions">
-    <div class="list-item-column">
-      <span class="mat-caption on-surface-medium">Solution</span>
-      <span class="mat-body-2 on-surface-high">{{solution?.name}}</span>
-    </div>
-    <div class="list-item-column">
-      <span class="mat-caption on-surface-medium">Accuracy</span>
-      <span class="mat-body-2 on-surface-high" *ngIf="solution?.metrics?.accuracy">
-        {{solution?.metrics?.accuracy}}
-        %
-      </span>
-    </div>
-    <div class="list-item-column">
-      <span class="mat-caption on-surface-medium">Runtime</span>
-      <span class="mat-body-2 on-surface-high">{{solution?.metrics?.runtime}}</span>
-    </div>
-    <div class="list-item-column">
-      <span class="mat-caption on-surface-medium">Precision</span>
-      <div class="precision" *ngIf="solution?.metrics?.precision" [ngClass]="precision(solution?.metrics?.precision)">
-        <mat-icon matListIcon>arrow_upward</mat-icon>
-        <span class="mat-body-2">
-          {{solution?.metrics?.precision}}
-        </span>
-      </div>
-    </div>
-    <div class="status bg-accent mat-button">
-      {{solution?.status}}
-    </div>
+  <mat-list-item class="bg-surface border-radius-24 item-padding" *ngFor="let solution of solutions">
+    <app-solution-list-item class="solution-list-item" [solution]="solution"></app-solution-list-item>
   </mat-list-item>
 </mat-list>

@@ -1,5 +1,6 @@
 include:
   - local: 'gitlab/.gitlab-ci.terraform.yml'
+  - local: 'gitlab/.gitlab-ci.lint-templates.yml'
   - local: 'gitlab/.gitlab-ci.template-build.yml'
   - local: 'gitlab/.gitlab-ci.enas-trial.yml'
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'

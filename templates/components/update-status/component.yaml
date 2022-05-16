@@ -1,0 +1,46 @@
+name: Update status
+inputs:
+- {name: solution_name, type: String, default: '', optional: true}
+- {name: status, type: String, default: '', optional: true}
+- {name: depends_on, type: Artifact, optional: true}
+implementation:
+  container:
+    image: python:3.10.2-slim
+    command:
+    - sh
+    - -c
+    - |2
+
+      if ! [ -x "$(command -v pip)" ]; then
+          python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+      fi
+
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+    - sh
+    - -ec
+    - |
+      program_path=$(mktemp -d)
+      printf "%s" "$0" > "$program_path/ephemeral_component.py"
+      python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+    - |2+
+
+      import kfp
+      from kfp.v2 import dsl
+      from kfp.v2.dsl import *
+      from typing import *
+
+      def update_status(solution_name: str = "", status: str = "", depends_on: Artifact = None):
+          import requests
+
+          url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
+
+          solution = requests.get(url).json()
+          solution["status"] = status
+
+          requests.put(url, json=solution)
+
+    args:
+    - --executor_input
+    - {executorInput: null}
+    - --function_to_execute
+    - update_status

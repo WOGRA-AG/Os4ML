@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {PipelinePrecision} from '../../models/pipeline-precision';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
@@ -10,16 +9,4 @@ import {Solution} from '../../../../build/openapi/jobmanager';
 export class SolutionsListComponent {
   @Input() solutions: Solution[] = [];
 
-  precision(precision: string | undefined): string {
-    switch (precision) {
-      case PipelinePrecision.high:
-        return 'primary';
-      case PipelinePrecision.medium:
-        return 'accent';
-      case PipelinePrecision.low:
-        return 'warn';
-      default:
-        return 'accent';
-    }
-  }
 }

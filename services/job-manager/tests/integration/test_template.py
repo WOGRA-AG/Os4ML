@@ -15,7 +15,11 @@ mock_api_service = TemplateApiService(template_service=mock_template_service)
 async def test_post_template(mocker):
     mocker.patch(
         "build.openapi_client.api.objectstore_api.ObjectstoreApi.get_pipeline_template_by_name",
-        return_value=PipelineTemplate(name="test-pipeline", file_url="https://wogra.com"),
+        return_value=PipelineTemplate(
+            name="test-pipeline", file_url="https://wogra.com"
+        ),
     )
-    run_id: str = await post_template("test-pipeline", {}, _service=mock_api_service)
+    run_id: str = await post_template(
+        "test-pipeline", {}, _service=mock_api_service
+    )
     assert type(run_id) == str

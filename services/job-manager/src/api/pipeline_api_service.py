@@ -7,7 +7,9 @@ from services.kfp_service import KfpService
 
 class PipelineApiService:
     def __init__(self, kfp_service=None):
-        self.kfp_service = kfp_service if kfp_service is not None else KfpService()
+        self.kfp_service = (
+            kfp_service if kfp_service is not None else KfpService()
+        )
 
     def get_all_pipelines(self) -> List[Pipeline]:
         return self.kfp_service.get_all_pipelines()

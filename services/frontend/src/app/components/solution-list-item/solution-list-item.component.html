@@ -1,29 +1,19 @@
-<ng-container *ngIf="disabled; then ItemDisabled; else ItemEnabled"></ng-container>
-
-<ng-template #ItemDisabled>
-  <div class="item-container disabled">
-    <div class="list-item-description">
-      <h6 class="on-surface-high">
-        {{column.name}}
-      </h6>
-      <div class="mat-subheading-2 on-surface-medium">
-        {{column.type}} {{"dialog.solution_list.field" | translate}}
-      </div>
-    </div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">Solution</span>
+  <span class="mat-body-2 on-surface-high">{{solution?.name}}</span>
+</div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">Accuracy</span>
+  <span class="mat-body-2 on-surface-high">
+        {{solution?.metrics?.accuracy? solution?.metrics?.accuracy! * 100 : 0}}%
+      </span>
+</div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">Runtime</span>
+  <span class="mat-body-2 on-surface-high">{{runtime}}</span>
+</div>
+<div class="status-column">
+  <div class="status bg-accent mat-button">
+    {{solution?.status}}
   </div>
-</ng-template>
-
-<ng-template #ItemEnabled>
-  <div class="item-container" (click)="toggleChange(toggle)">
-    <div class="list-item-description">
-      <h6 class="on-surface-high">
-        {{column.name}}
-      </h6>
-      <div class="mat-subheading-2 on-surface-medium">
-        {{column.type}} {{"dialog.solution_list.field" | translate}}
-      </div>
-    </div>
-    <mat-slide-toggle #toggle color="primary" (click)="toggleClick($event)" [checked]="selected">
-    </mat-slide-toggle>
-  </div>
-</ng-template>
+</div>

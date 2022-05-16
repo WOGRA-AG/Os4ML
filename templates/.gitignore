@@ -1,0 +1,38 @@
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.iml
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.venv
+venv
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+#src
+**/checkpoint
+build

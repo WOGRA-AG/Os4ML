@@ -46,6 +46,9 @@ terraform apply -auto-approve
 
 This takes a bit and offers the opportunity to get a coffee.
 
+** REMARK: We recommend using k3d. However, there are issues with the image
+k3s:v1.22.6-k3s1. In case of problems, try the image k3s:v1.21.7-k3s1. **
+
 ### Usage
 You won't believe it, but in fact your [Kubernetes][] cluster now hosts Os4ML 
 including a fully functional [Kubeflow][]. And that's how you get it:
@@ -60,23 +63,27 @@ the connection is terminated when the command is aborted. Whenever you are
 asked for credentials, there exists a standard user with email 
 `user@example.com` and password `12341234`.
 
+## Implemented Features
+We're heading towards the alpha release in early fall 2022. The following 
+features are currently already implemented experimentally:
+
+- Create a data bags using Excel sheets
+- Create a solution using [Ludwig](https://github.com/ludwig-ai/ludwig) for 
+  categorization problems
+
 ## Roadmap
 There is a lot of work to do. In the near future the following will happen:
 
-1. Integration of 3rd party Software
-   - [x] Deploy [Kubeflow][] using a customized [Terraform][] module, see 
-     [WOGRA-AG/kubeflow/kustomization][]
-   - [ ] Deploy [MinIO][] [just started]
-   - [ ] Deploy [Shepard][] (February 2022)
-2. Services
-   - [ ] Create Objectstore Manager using [FastAPI][] and [OpenAPI][] [just 
-     started]
-3. Frontend
-   - [x] Initial [Angular][] setup
-   - [ ] UI/UX Demoversion with some AutoML (March 2022)
-4. AutoML
-   - [ ] Workflow Templates [just started]
-   - [ ] Use [Kubeflow/Katib][] (March 2022)
+- [Shepard] Integration
+   - [x] [Terraform module](https://github.com/WOGRA-AG/terraform-kustomization-shepard) (April 2022)
+   - [ ] Os4ML Shepard Controller (Mai 2022)
+- Frontend
+   - [ ] Finalize UI/UX to create data bag and solutions (May 2022)
+   - [ ] Live Tutorial (July 2022)
+- AutoML
+   - [ ] Solver for Image data based using  [Kubeflow/Katib][] (Mai 2022)
+   - [ ] Intelligent Data Labeling (June 2022)
+   - [ ] Solving regression problems (Winter 2022)
    
 ## 	Acknowledgment
 Os4ML is a project of the [WOGRA AG][] research group in cooperation with the 

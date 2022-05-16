@@ -33,25 +33,53 @@ class KfpMockClient:
         return "os4ml"
 
     def list_experiments(
-        self, page_token="", page_size=10, sort_by="", namespace=None, filter=None
+        self,
+        page_token="",
+        page_size=10,
+        sort_by="",
+        namespace=None,
+        filter=None,
     ) -> ApiListExperimentsResponse:
-        return ApiListExperimentsResponse(experiments=[ApiExperiment(id="", name="", description="")], total_size=None)
+        return ApiListExperimentsResponse(
+            experiments=[ApiExperiment(id="", name="", description="")],
+            total_size=None,
+        )
 
-    def create_experiment(self, name: str, description: str = None, namespace: str = None) -> ApiExperiment:
+    def create_experiment(
+        self, name: str, description: str = None, namespace: str = None
+    ) -> ApiExperiment:
         return ApiExperiment(id="", name=name, description=description)
 
-    def list_pipelines(self, page_token="", page_size=10, sort_by="", filter=None) -> ApiListPipelinesResponse:
-        return ApiListPipelinesResponse(pipelines=[ApiPipeline(id="", name="", description="")], total_size=None)
+    def list_pipelines(
+        self, page_token="", page_size=10, sort_by="", filter=None
+    ) -> ApiListPipelinesResponse:
+        return ApiListPipelinesResponse(
+            pipelines=[ApiPipeline(id="", name="", description="")],
+            total_size=None,
+        )
 
     def upload_pipeline(
-        self, pipeline_package_path: str = None, pipeline_name: str = None, description: str = None
+        self,
+        pipeline_package_path: str = None,
+        pipeline_name: str = None,
+        description: str = None,
     ) -> ApiPipeline:
         return ApiPipeline(id="", name=pipeline_name, description=description)
 
     def list_runs(
-        self, page_token="", page_size=10, sort_by="", experiment_id=None, namespace=None, filter=None
+        self,
+        page_token="",
+        page_size=10,
+        sort_by="",
+        experiment_id=None,
+        namespace=None,
+        filter=None,
     ) -> ApiListRunsResponse:
-        return ApiListRunsResponse(runs=[ApiRun(id="", name="", description="", status="", error=None)])
+        return ApiListRunsResponse(
+            runs=[
+                ApiRun(id="", name="", description="", status="", error=None)
+            ]
+        )
 
     def run_pipeline(
         self,
@@ -65,7 +93,16 @@ class KfpMockClient:
         enable_caching: Optional[str] = None,
         service_account: Optional[str] = None,
     ) -> ApiRun:
-        return ApiRun(id="", name=job_name, description="", service_account=service_account, status="", error=None)
+        return ApiRun(
+            id="",
+            name=job_name,
+            description="",
+            service_account=service_account,
+            status="",
+            error=None,
+        )
 
     def get_run(self, run_id: str) -> ApiRunDetail:
-        return ApiRunDetail(run=ApiRun(id="", name="", description="", status="", error=None))
+        return ApiRunDetail(
+            run=ApiRun(id="", name="", description="", status="", error=None)
+        )

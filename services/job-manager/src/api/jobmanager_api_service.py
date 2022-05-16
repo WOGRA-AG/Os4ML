@@ -13,10 +13,22 @@ from services.template_service import TemplateService
 
 
 class JobmanagerApiService:
-    def __init__(self, kfp_service=None, solution_service=None, template_service=None):
-        self.kfp_service = kfp_service if kfp_service is not None else KfpService()
-        self.solution_service = solution_service if solution_service is not None else SolutionService()
-        self.template_service = template_service if template_service is not None else TemplateService()
+    def __init__(
+        self, kfp_service=None, solution_service=None, template_service=None
+    ):
+        self.kfp_service = (
+            kfp_service if kfp_service is not None else KfpService()
+        )
+        self.solution_service = (
+            solution_service
+            if solution_service is not None
+            else SolutionService()
+        )
+        self.template_service = (
+            template_service
+            if template_service is not None
+            else TemplateService()
+        )
 
     def get_all_experiments(self) -> List[Experiment]:
         return self.kfp_service.get_all_experiments()
@@ -33,8 +45,12 @@ class JobmanagerApiService:
     def get_run(self, run_id: str) -> Run:
         return self.kfp_service.get_run(run_id)
 
-    def post_run(self, experiment_id: str, pipeline_id: str, create_run: CreateRun) -> str:
-        return self.kfp_service.create_run(experiment_id, pipeline_id, create_run)
+    def post_run(
+        self, experiment_id: str, pipeline_id: str, create_run: CreateRun
+    ) -> str:
+        return self.kfp_service.create_run(
+            experiment_id, pipeline_id, create_run
+        )
 
     def post_pipeline(self, create_pipeline: CreatePipeline) -> str:
         return self.kfp_service.create_pipeline(create_pipeline)
@@ -42,5 +58,9 @@ class JobmanagerApiService:
     def post_solution(self, solution: Solution) -> str:
         return self.solution_service.create_solution(solution)
 
-    def post_template(self, pipeline_template_name: str, run_params: RunParams) -> str:
-        return self.template_service.run_pipeline_template(pipeline_template_name, run_params)
+    def post_template(
+        self, pipeline_template_name: str, run_params: RunParams
+    ) -> str:
+        return self.template_service.run_pipeline_template(
+            pipeline_template_name, run_params
+        )

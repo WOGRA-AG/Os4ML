@@ -11,4 +11,5 @@ class Databag(APIModel):
     bucket_name: Optional[str] = None
     number_rows: Optional[int] = None
     number_columns: Optional[int] = None
+    creation_time: Optional[str] = None
     columns: Optional[List[Column]] = None

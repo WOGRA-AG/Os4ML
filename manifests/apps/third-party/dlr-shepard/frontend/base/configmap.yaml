@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: shepard-frontend
-  namespace: shepard
-data:
-  vueAppBackend: "backend.shepard.svc.cluster.local:8080/shepard/api"
-  vueAppOidcAuth: "dex.auth.svc.cluster.local:32000"
-  vueAppClientId: "shepard-frontend"

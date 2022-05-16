@@ -27,7 +27,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 # https://github.com/psf/black
-line-length = 120
+line-length = 79
 target_version = ['py37']
 exclude = '''
 (
@@ -45,7 +45,7 @@ exclude = '''
 [tool.isort]
 # https://github.com/timothycrosley/isort
 # https://github.com/timothycrosley/isort/wiki/isort-Settings
-line_length = 120
+line_length = 79
 indent = '    '
 multi_line_output = 3
 include_trailing_comma = true
