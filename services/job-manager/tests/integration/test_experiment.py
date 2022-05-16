@@ -1,12 +1,12 @@
 from typing import List
 
 import pytest
-from services.kfp_service import KfpService
 from mocks.kfp_mock_client import KfpMockClient
 
 from api.experiment_api_service import ExperimentApiService
 from build.openapi_server.apis.experiment_api import get_all_experiments, post_experiment
 from build.openapi_server.models.experiment import Experiment
+from services.kfp_service import KfpService
 
 mock_kfp_client = KfpMockClient()
 mock_kfp_service = KfpService(client=mock_kfp_client)
