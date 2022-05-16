@@ -151,9 +151,48 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
 
+  "/apis/v1beta1/jobmanager/solution/{solution_name}":
+    get:
+      summary: "Get a solution"
+      operationId: getSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+        - solution
+      responses:
+        200:
+          description: "Solution found"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Solution'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "Update a Solution"
+      operationId: putSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+        - solution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Solution'
+      responses:
+        200:
+          description: "Solution updated"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Solution'
+
   "/apis/v1beta1/jobmanager/solution":
     post:
-      summary: "Upload and deploy a Solution"
+      summary: "Create and deploy a Solution"
       operationId: postSolution
       tags:
         - jobmanager
@@ -170,6 +209,7 @@ paths:
             application/json:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
+
 components:
   schemas:
     ExperimentId:
@@ -261,6 +301,8 @@ components:
           type: string
         fileName:
           type: string
+        solutionName:
+          type: string
     Error:
       required:
         - path
@@ -295,6 +337,13 @@ components:
       name: PipelineTemplateName
       in: path
       description: Name of the PipelineTemplate to run
+      required: true
+      schema:
+        type: string
+    SolutionName:
+      name: SolutionName
+      in: path
+      description: Name of the Solution
       required: true
       schema:
         type: string

@@ -95,6 +95,7 @@ FROM python-base as production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
+COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
 COPY gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR
@@ -103,7 +104,6 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 COPY /src $PROJECT_DIR/src
-COPY /build $PROJECT_DIR/build
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
