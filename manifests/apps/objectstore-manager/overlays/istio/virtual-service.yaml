@@ -4,9 +4,9 @@ metadata:
   name: os4ml-objectstore-manager
 spec:
   gateways:
-    - kubeflow/kubeflow-gateway
+    - os4ml/os4ml-gateway
   hosts:
-    - '*'
+    - 'os4ml.wogra.com'
   http:
     - name: "os4ml-objectstore-manager-route"
       match:

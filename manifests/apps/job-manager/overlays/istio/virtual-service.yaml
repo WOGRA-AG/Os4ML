@@ -5,9 +5,9 @@ metadata:
   namespace: os4ml
 spec:
   gateways:
-    - kubeflow/kubeflow-gateway
+    - os4ml/os4ml-gateway
   hosts:
-    - '*'
+    - 'os4ml.wogra.com'
   http:
     - name: "os4ml-jobmanager-route"
       match:
