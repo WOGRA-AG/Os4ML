@@ -46,7 +46,7 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{paramName}}{{^required}}=None{{/required}}{{^-last}}{{/-last}},
+    {{paramName}}={{#isFormParam}}Form(..., description="{{description}}"){{/isFormParam}}{{#isQueryParam}}Query(..., description="{{description}}"){{/isQueryParam}}{{#isPathParam}}Path(..., description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}Header(..., description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}Cookie(..., description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}Body(..., description="{{description}}"){{/isBodyParam}},
     {{/allParams}}
     _service: {{classname}}Service = Depends({{classname}}Service),
     {{#hasAuthMethods}}

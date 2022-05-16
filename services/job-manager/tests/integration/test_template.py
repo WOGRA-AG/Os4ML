@@ -1,4 +1,6 @@
 import pytest
+from fastapi.testclient import TestClient
+
 from mocks.kfp_mock_client import KfpMockClient
 from openapi_client.model.pipeline_template import PipelineTemplate
 

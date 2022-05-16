@@ -1,6 +1,6 @@
 # -> Original Mustache Templates https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator/src/main/resources/python-fastapi
 # -> Template Customization Tutorial https://duongnt.com/openapi-generator-mustache-customize/
-
+# -> https://github.com/OpenAPITools/openapi-generator/wiki/Mustache-Template-Variables
 
 openapi-generator-cli generate \
 -i oas/job-manager-oas.yaml \
