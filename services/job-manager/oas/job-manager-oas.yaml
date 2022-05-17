@@ -90,7 +90,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Run'
-  "/apis/v1beta1/jobmanager/run/{run_id}":
+  "/apis/v1beta1/jobmanager/run/{runId}":
     get:
       summary: 'Get single pipeline run'
       operationId: getRun
@@ -106,7 +106,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Run'
-  "/apis/v1beta1/jobmanager/experiment/{experiment_id}/pipeline/{pipeline_id}/run":
+  "/apis/v1beta1/jobmanager/experiment/{experimentId}/pipeline/{pipelineId}/run":
     post:
       summary: 'Create Run'
       operationId: postRun
@@ -129,7 +129,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
 
-  "/apis/v1beta1/jobmanager/template/{pipeline_template_name}":
+  "/apis/v1beta1/jobmanager/template/{pipelineTemplateName}":
     post:
       summary: "Convenience route to run a Pipeline Template directly"
       operationId: postTemplate
@@ -151,7 +151,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
 
-  "/apis/v1beta1/jobmanager/solution/{solution_name}":
+  "/apis/v1beta1/jobmanager/solution/{solutionName}":
     get:
       summary: "Get a solution"
       operationId: getSolution

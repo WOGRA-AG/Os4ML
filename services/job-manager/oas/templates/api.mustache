@@ -59,7 +59,7 @@ async def {{operationId}}(
 ) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
     return _service.{{operationId}}(
         {{#allParams}}
-        {{paramName}}{{^required}}={{paramName}}{{/required}},
+        {{paramName}}={{paramName}},
         {{/allParams}}
     )
 {{^-last}}
