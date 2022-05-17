@@ -90,7 +90,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Run'
-  "/apis/v1beta1/jobmanager/run/{RunId}":
+  "/apis/v1beta1/jobmanager/run/{run_id}":
     get:
       summary: 'Get single pipeline run'
       operationId: getRun
@@ -106,7 +106,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Run'
-  "/apis/v1beta1/jobmanager/experiment/{ExperimentId}/pipeline/{PipelineId}/run":
+  "/apis/v1beta1/jobmanager/experiment/{experiment_id}/pipeline/{pipeline_id}/run":
     post:
       summary: 'Create Run'
       operationId: postRun
