@@ -13,10 +13,6 @@ job-manager-validate-oas:
 job-manager-validate-backend:
   extends:
     - .build-development
-  dependencies:
-    - job-manager-build-oas
-  needs:
-    - job-manager-build-oas
   variables:
     DIR: 'services/job-manager'
     IMG_NAME: 'job-manager'
@@ -25,7 +21,6 @@ job-manager-build:
   extends:
     - .build-production
   needs:
-    - job-manager-build-oas
     - job-manager-validate-backend
   variables:
     DIR: 'services/job-manager'
