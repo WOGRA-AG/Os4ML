@@ -39,7 +39,7 @@ paths:
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Databag'
 
-  "/apis/v1beta1/objectstore/databag/{bucketName}":
+  "/apis/v1beta1/objectstore/databag/{bucket_name}":
     get:
       summary: "get databag by bucket name"
       operationId: getDatabagByBucketName
@@ -72,7 +72,7 @@ paths:
         201:
           $ref: '#/components/responses/Created'
 
-  "/apis/v1beta1/objectstore/{bucketName}":
+  "/apis/v1beta1/objectstore/{bucket_name}":
     post:
       summary: "create new bucket"
       operationId: postNewBucket
@@ -98,7 +98,7 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/objectstore/{bucketName}/object":
+  "/apis/v1beta1/objectstore/{bucket_name}/object":
     get:
       summary: "get all Objects in bucket"
       operationId: getAllObjects
@@ -120,7 +120,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{bucketName}/object/{objectName}":
+  "/apis/v1beta1/objectstore/{bucket_name}/object/{object_name}":
     get:
       summary: 'get specific Object from Bucket'
       operationId: getObjectByName
@@ -176,7 +176,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{bucketName}/presignedgeturl/{objectName}":
+  "/apis/v1beta1/objectstore/{bucket_name}/presignedgeturl/{object_name}":
     get:
       summary: "get Object Url"
       operationId: getObjectUrl
@@ -195,7 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Url'
 
-  "/apis/v1beta1/objectstore/{bucketName}/presignedputurl/{objectName}":
+  "/apis/v1beta1/objectstore/{bucket_name}/presignedputurl/{object_name}":
     get:
       summary: 'get presigned put Url'
       operationId: getPresignedPutUrl
@@ -250,7 +250,7 @@ paths:
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
 
-  "/apis/v1beta1/objectstore/template/component/{componentName}":
+  "/apis/v1beta1/objectstore/template/component/{component_name}":
     get:
       summary: 'get component template by name'
       operationId: getComponentTemplateByName
@@ -267,7 +267,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
 
-  "/apis/v1beta1/objectstore/template/pipeline/{pipelineName}":
+  "/apis/v1beta1/objectstore/template/pipeline/{pipeline_name}":
     get:
       summary: 'get component template by name'
       operationId: getPipelineTemplateByName

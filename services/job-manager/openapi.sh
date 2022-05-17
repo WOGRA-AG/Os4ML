@@ -12,6 +12,7 @@ openapi-generator-cli generate \
 
 cd src && openapi-generator-cli generate \
 -i ../oas/objectstore-manager-oas.yaml \
+-t ../oas/templates_client \
 -g python \
 --package-name build.openapi_client \
 -o . \
