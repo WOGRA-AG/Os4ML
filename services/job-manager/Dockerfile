@@ -32,6 +32,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 
 RUN cd src && bash /usr/local/bin/docker-entrypoint.sh generate \
 -i ../oas/objectstore-manager-oas.yaml \
+-t ../oas/templates_client \
 -g python \
 --package-name build.openapi_client \
 -o . \
