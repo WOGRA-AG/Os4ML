@@ -10,30 +10,6 @@ job-manager-validate-oas:
   variables:
     OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
 
-job-manager-build-oas:
-  stage: test
-  needs: []
-  image: gitlab-registry.wogra.com/developer/images/node-java:node-16-jre-11
-  before_script:
-    - cd $DIR
-    - npm install @openapitools/openapi-generator-cli -g
-    - openapi-generator-cli version
-  script:
-    - openapi-generator-cli generate
-      -i ./job-manager/oas/job-manager-oas.yaml
-      -g python-fastapi
-      -o ./job-manager/build
-      --global-property models,supportingFiles
-
-    - openapi-generator-cli generate
-      -i ./objectstore-manager/oas/objectstore-manager-oas.yaml
-      -g python
-      -o ./job-manager/build/clients/objectstore
-  variables:
-    DIR: 'services'
-  artifacts:
-    untracked: true
-
 job-manager-validate-backend:
   extends:
     - .build-development
