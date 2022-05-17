@@ -1,0 +1,5 @@
+build/
+docs/
+src/.openapi-generator
+src/docs
+test/

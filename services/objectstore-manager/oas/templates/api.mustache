@@ -1,0 +1,70 @@
+# coding: utf-8
+
+from typing import Dict, List
+
+from fastapi import (
+    APIRouter,
+    Body,
+    Cookie,
+    Depends,
+    Form,
+    Header,
+    Path,
+    Query,
+    Response,
+    Security,
+    status,
+)
+
+from {{modelPackage}}.extra_models import TokenModel
+{{#imports}}
+{{import}}
+{{/imports}}
+{{#securityImports.0}}from {{packageName}}.security_api import {{#securityImports}}get_token_{{.}}{{^-last}}, {{/-last}}{{/securityImports}}{{/securityImports.0}}
+
+from api.{{classFilename}}_service import {{classname}}Service
+
+router = APIRouter(prefix="")
+
+
+{{#operations}}
+{{#operation}}
+@router.{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}(
+    "{{path}}",
+    responses={
+        {{#responses}}
+        {{code}}: {{=<% %>=}}{<%#dataType%>"model": <%dataType%>, "description": "<%message%>"<%/dataType%><%^dataType%>"description": "<%message%>"<%/dataType%>}<%={{ }}=%>,
+        {{/responses}}
+    },
+    tags=[{{#tags}}"{{name}}"{{^-last}},{{/-last}}{{/tags}}],
+    {{#summary}}
+    summary="{{summary}}",
+    {{/summary}}
+    {{#description}}
+    description = "{{description}}",
+    {{/description}}
+)
+async def {{operationId}}(
+    {{#allParams}}
+    {{paramName}}={{#isFormParam}}Form(..., description="{{description}}"){{/isFormParam}}{{#isQueryParam}}Query(..., description="{{description}}"){{/isQueryParam}}{{#isPathParam}}Path(..., description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}Header(..., description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}Cookie(..., description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}Body(..., description="{{description}}"){{/isBodyParam}},
+    {{/allParams}}
+    _service: {{classname}}Service = Depends({{classname}}Service),
+    {{#hasAuthMethods}}
+    {{#authMethods}}
+    token_{{name}}: TokenModel = Security(
+        get_token_{{name}}{{#isOAuth}}, scopes=[{{#scopes}}"{{scope}}"{{^-last}}, {{/-last}}{{/scopes}}]{{/isOAuth}}
+    ),
+    {{/authMethods}}
+    {{/hasAuthMethods}}
+) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    return _service.{{operationId}}(
+        {{#allParams}}
+        {{paramName}}{{^required}}={{paramName}}{{/required}},
+        {{/allParams}}
+    )
+{{^-last}}
+
+
+{{/-last}}
+{{/operation}}
+{{/operations}}
