@@ -71,10 +71,6 @@ RUN --mount=type=cache,target=/root/.cache \
 
 WORKDIR $PROJECT_DIR
 COPY . .
-COPY openapi.sh ./openapi.sh
-RUN chmod +x ./openapi.sh
-RUN chmod +x $VENV_PATH/bin/activate
-
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
