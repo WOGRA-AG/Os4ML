@@ -14,22 +14,24 @@ terraform apply -auto-approve
 #### Create Cluster Service
 ```sh
 while ! kubectl apply -k github.com/kubeflow/manifests.git/example; do echo "Retrying to apply resources"; sleep 10; done
-kubectl apply -k common/profile
-kubectl apply -k common/base
-kubectl apply -k common/cert-manager
-kubectl apply -k apps/objectstore-manager
-kubectl apply -k apps/job-manager/base
-kubectl apply -k apps/frontend
+kubectl apply -k manifests/common/profile
+kubectl apply -k manifests/common/base
+kubectl apply -k manifests/common/cert-manager
+kubectl apply -k manifests/apps/objectstore-manager
+kubectl apply -k manifests/apps/job-manager/base
+// TODO: Check this
+kubectl apply -k manifests/apps/frontend
 ```
 
 #### Delete Cluster Service
 ```sh
-kubectl delete -k common/profile
-kubectl delete -k common/base
-kubectl delete -k common/cert-manager
-kubectl delete -k apps/objectstore-manager
-kubectl delete -k apps/job-manager/base
-kubectl delete -k apps/frontend
+kubectl delete -k manifests/common/profile
+kubectl delete -k manifests/common/base
+kubectl delete -k manifests/common/cert-manager
+kubectl delete -k manifests/apps/objectstore-manager
+kubectl delete -k manifests/apps/job-manager/base
+kubectl delete -k manifests/apps/frontend
+// TODO: Check this
 ```
 
 ## kubectl
