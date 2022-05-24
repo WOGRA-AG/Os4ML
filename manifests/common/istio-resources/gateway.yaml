@@ -14,13 +14,13 @@ spec:
       tls:
         httpsRedirect: false
       hosts:
-        - os4ml.wogra.com
+        - "$OS4ML_DNS_NAME"
     - port:
         number: 443
         name: https
         protocol: HTTPS
       tls:
         mode: SIMPLE
-        credentialName: kubeflow-ingress-cert
+        credentialName: os4ml-ingress-cert
       hosts:
-        - os4ml.wogra.com
+        - "$OS4ML_DNS_NAME"

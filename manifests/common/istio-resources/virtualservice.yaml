@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: os4ml-jobmanager
+  name: os4ml-dex
   namespace: os4ml
 spec:
   gateways:
@@ -9,12 +9,12 @@ spec:
   hosts:
     - '*'
   http:
-    - name: "os4ml-jobmanager-route"
+    - name: "dex-auth-route"
       match:
         - uri:
-            regex: \/apis\/.*\/jobmanager.*
+            prefix: /dex/
       route:
         - destination:
-            host: os4ml-jobmanager.os4ml.svc.cluster.local
+            host: dex.auth.svc.cluster.local
             port:
-              number: 8000
+              number: 5556

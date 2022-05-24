@@ -9,6 +9,11 @@ spec:
     matchLabels:
       app: os4ml
       name: objectstore-manager
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       annotations:
@@ -20,9 +25,11 @@ spec:
       containers:
         - name: objectstore-manager
           image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:latest"
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
               name: http
+              protocol: TCP
           env:
             - name: OBJECTSTORECONFIG_URL
               valueFrom:
@@ -47,9 +54,21 @@ spec:
                   name: os4ml-minio
                   key: secretkey
           resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
             requests:
-              cpu: 250m
-              memory: 500Mi
+              cpu: 50m
+              memory: 100Mi
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /docs
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
       serviceAccountName: service-account
       imagePullSecrets:
           - name: registry-credentials
