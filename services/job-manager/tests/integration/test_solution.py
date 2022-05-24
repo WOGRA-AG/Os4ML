@@ -1,19 +1,21 @@
 import pytest
 import requests
 from fastapi import HTTPException
+from mocks.kfp_mock_client import KfpMockClient
 from pytest_mock import MockerFixture
 
-from src.api.routers.solution_router import (
+from api.solution_api_service import SolutionApiService
+from build.openapi_server.apis.solution_api import (
     get_solution,
     post_solution,
     put_solution,
 )
-from src.models import Solution
-from src.services.solution_service import SolutionService
-from tests.mocks.kfp_mock_client import KfpMockClient
+from build.openapi_server.models.solution import Solution
+from services.solution_service import SolutionService
 
-kfp_mock = KfpMockClient()
-solution_service = SolutionService(kfp_client=kfp_mock)
+mock_kfp_client = KfpMockClient()
+mock_solution_service = SolutionService(kfp_client=mock_kfp_client)
+mock_api_service = SolutionApiService(solution_service=mock_solution_service)
 
 
 @pytest.mark.asyncio
@@ -21,11 +23,13 @@ async def test_get_solution(mocker: MockerFixture):
     solutions = [{"name": "solution_1"}, {"name": "other2"}]
     get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests, "get", return_value=get_mock,
+        requests,
+        "get",
+        return_value=get_mock,
     )
 
     solution: Solution = await get_solution(
-        solution_name="solution_1", solution_service=solution_service
+        solution_name="solution_1", _service=mock_api_service
     )
 
     assert solution["name"] == "solution_1"
@@ -36,12 +40,14 @@ async def test_get_solution_not_found(mocker: MockerFixture):
     solutions = [{"name": "other1"}, {"name": "other2"}]
     get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests, "get", return_value=get_mock,
+        requests,
+        "get",
+        return_value=get_mock,
     )
 
     with pytest.raises(HTTPException) as e:
         await get_solution(
-            solution_name="solution_1", solution_service=solution_service
+            solution_name="solution_1", _service=mock_api_service
         )
 
     assert e.errisinstance(HTTPException)
@@ -52,13 +58,13 @@ async def test_get_solution_not_found(mocker: MockerFixture):
 async def test_update_solution(mocker: MockerFixture):
     solution = Solution(name="solution")
     put_object_mock = mocker.patch.object(
-        solution_service.objectstore, "put_object_by_name"
+        mock_solution_service.objectstore, "put_object_by_name"
     )
 
     returned_solution: Solution = await put_solution(
         solution_name="solution",
         solution=solution,
-        solution_service=solution_service,
+        _service=mock_api_service,
     )
 
     assert solution == returned_solution
@@ -73,21 +79,21 @@ async def test_post_solution(mocker: MockerFixture):
     databag.bucket_name = "bucket"
     databag.file_name = "file_name"
     mocker.patch.object(
-        solution_service.objectstore,
+        mock_solution_service.objectstore,
         "get_databag_by_bucket_name",
         return_value=databag,
     )
     put_object_mock = mocker.patch.object(
-        solution_service.objectstore, "put_object_by_name"
+        mock_solution_service.objectstore, "put_object_by_name"
     )
     run_mock = mocker.patch.object(
-        solution_service.template_service,
+        mock_solution_service.template_service,
         "run_pipeline_template",
         return_value=1,
     )
 
     run_id: str = await post_solution(
-        solution=solution, solution_service=solution_service
+        solution=solution, _service=mock_api_service
     )
 
     assert run_id == 1
