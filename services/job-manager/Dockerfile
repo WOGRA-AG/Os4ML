@@ -14,8 +14,33 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VERSION=1.1.4
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
+<<<<<<< Updated upstream
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/build/clients/objectstore:$PROJECT_DIR/build/src:$PYTHONPATH"
 
+=======
+ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
+
+# Specify a base image
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
+
+WORKDIR /usr/app
+COPY ./ /usr/app
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i oas/job-manager-oas.yaml \
+-t oas/templates \
+--package-name build.openapi_server \
+-g python-fastapi \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+RUN cd src && bash /usr/local/bin/docker-entrypoint.sh generate \
+-i ../oas/objectstore-manager-oas.yaml \
+-t ../oas/templates_client \
+-g python \
+--package-name build.openapi_client \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+>>>>>>> Stashed changes
 
 FROM python-base as builder-base
 RUN apt-get update \
