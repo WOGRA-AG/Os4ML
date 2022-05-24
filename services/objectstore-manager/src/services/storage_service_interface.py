@@ -1,7 +1,10 @@
 from io import BytesIO
 from typing import List
 
-from src.models import Bucket, Databag, Item, Url
+from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.databag import Databag
+from build.openapi_server.models.item import Item
+from build.openapi_server.models.url import Url
 
 
 class StorageServiceInterface:

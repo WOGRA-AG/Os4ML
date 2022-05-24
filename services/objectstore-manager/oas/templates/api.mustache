@@ -46,7 +46,7 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{paramName}}={{#isFormParam}}Form(..., description="{{description}}"){{/isFormParam}}{{#isQueryParam}}Query(..., description="{{description}}"){{/isQueryParam}}{{#isPathParam}}Path(..., description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}Header(..., description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}Cookie(..., description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}Body(..., description="{{description}}"){{/isBodyParam}},
+    {{#isFormParam}}{{paramName}}=Form(None, description="{{description}}"){{/isFormParam}}{{#isQueryParam}}{{paramName}}=Query(None, description="{{description}}"){{/isQueryParam}}{{#isPathParam}}{{paramName}}=Path(None, description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}=Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}}=Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}=Body(None, description="{{description}}"){{/isBodyParam}},
     {{/allParams}}
     _service: {{classname}}Service = Depends({{classname}}Service),
     {{#hasAuthMethods}}
@@ -58,9 +58,9 @@ async def {{operationId}}(
     {{/hasAuthMethods}}
 ) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
     return _service.{{operationId}}(
-        {{#allParams}}
-        {{paramName}}{{^required}}={{paramName}}{{/required}},
-        {{/allParams}}
+    {{#allParams}}
+        {{#isFormParam}}{{paramName}}={{paramName}}{{/isFormParam}}{{#isQueryParam}}{{paramName}}={{paramName}}{{/isQueryParam}}{{#isPathParam}}{{paramName}}={{paramName}}{{/isPathParam}}{{#isHeaderParam}}{{paramName}}={{paramName}}{{/isHeaderParam}}{{#isCookieParam}}{{paramName}}={{paramName}}{{/isCookieParam}}{{#isBodyParam}}{{paramName}}={{paramName}}{{/isBodyParam}},
+    {{/allParams}}
     )
 {{^-last}}
 

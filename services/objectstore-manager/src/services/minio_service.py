@@ -10,7 +10,12 @@ from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 from urllib3 import HTTPResponse
 
-from src import (
+from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.databag import Databag
+from build.openapi_server.models.item import Item
+from build.openapi_server.models.pipeline_template import PipelineTemplate
+from build.openapi_server.models.url import Url
+from services import (
     COMPONENT_FILE_NAME,
     DATABAG_CONFIG_FILE_NAME,
     MINIO_KEY,
@@ -20,9 +25,8 @@ from src import (
     PIPELINE_FILE_NAME,
     TEMPLATE_METADATA_FILE_NAME,
 )
-from src.models import Bucket, Databag, Item, PipelineTemplate, Url
 
-from .storage_service_interface import StorageServiceInterface
+from services.storage_service_interface import StorageServiceInterface
 
 
 class MinioService(StorageServiceInterface):
