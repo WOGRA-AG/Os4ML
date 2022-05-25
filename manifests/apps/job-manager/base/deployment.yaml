@@ -50,10 +50,10 @@ spec:
           resources:
             limits:
               cpu: 200m
-              memory: 100Mi
+              memory: 200Mi
             requests:
               cpu: 50m
-              memory: 100Mi
+              memory: 200Mi
           readinessProbe:
             httpGet:
               port: http
