@@ -66,3 +66,21 @@ variable "user_id" {
   type        = string
   default     = "15841185641784"
 }
+
+variable "os4ml_dns_name" {
+  description = "Dns name for os4ml hosting"
+  type        = string
+  default     = "os4ml.example.com"
+}
+
+variable "letsencrypt_mail" {
+  description = "letsencrypt account email"
+  type        = string
+  default     = "letsencrypt@example.com"
+}
+
+variable "kubeflow_dns_name" {
+  description = "kubeflow dns name"
+  type        = string
+  default     = "kubeflow.example.com"
+}
