@@ -25,7 +25,7 @@ class ObjectApiService:
     def get_presigned_put_url(self, bucket_name, object_name) -> Url:
         return self.minio_service.get_presigned_put_url(bucket_name=bucket_name, object_name=object_name)
 
-    def put_object_by_name(self, bucket_name, object_name, body) -> Item:
+    def put_object_by_name(self, bucket_name, object_name, body):
         file_content: bytes = body
         file: BytesIO = BytesIO(file_content)
         return self.minio_service.put_object(

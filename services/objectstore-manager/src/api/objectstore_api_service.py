@@ -66,3 +66,6 @@ class ObjectstoreApiService:
 
     def get_all_solutions(self) -> List[Solution]:
         return self.solution_service.get_all_solutions()
+
+    def get_all_buckets(self):
+        return self.minio_service.get_buckets()

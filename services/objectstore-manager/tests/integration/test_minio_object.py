@@ -7,7 +7,8 @@ from starlette.datastructures import Headers
 from starlette.requests import Request
 from starlette.types import Message
 
-from src.api.routers.object_router import (
+from api.object_api_service import ObjectApiService
+from build.openapi_server.apis.object_api import (
     delete_object_by_name,
     get_all_objects,
     get_object_by_name,
@@ -15,29 +16,14 @@ from src.api.routers.object_router import (
     get_presigned_put_url,
     put_object_by_name,
 )
-from src.models import Item, Url
-from src.services.minio_service import MinioService
+from build.openapi_server.models.item import Item
+from build.openapi_server.models.url import Url
+from services.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
-minio_mock_client = MinioMock()
-minio_service_mock = MinioService(client=minio_mock_client)
-
-
-async def create_body() -> Message:
-    body = {"testBody": "testFile"}
-    return {
-        "type": "http.request",
-        "body": json.dumps(body).encode("utf-8"),
-        "more_body": False,
-    }
-
-
-def build_request(headers: Dict = None) -> Request:
-    if headers is None:
-        headers = {}
-    return Request(
-        {"type": "http", "headers": Headers(headers).raw}, receive=create_body
-    )
+mock_minio_client = MinioMock()
+mock_minio_service = MinioService(client=mock_minio_client)
+mock_object_api_service = ObjectApiService(minio_service=mock_minio_service)
 
 
 @pytest.mark.asyncio
@@ -45,7 +31,7 @@ async def test_get_object_by_name():
     url: str = await get_object_by_name(
         bucket_name="os4ml",
         object_name="object",
-        minio_service=minio_service_mock,
+        _service=mock_object_api_service,
     )
     assert type(url) == str
 
@@ -56,7 +42,7 @@ async def test_get_object_by_name_with_exception():
         await get_object_by_name(
             bucket_name="os5ml",
             object_name="object",
-            minio_service=minio_service_mock,
+            _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -66,7 +52,7 @@ async def test_delete_object_by_name():
     await delete_object_by_name(
         bucket_name="os4ml",
         object_name="object",
-        minio_service=minio_service_mock,
+        _service=mock_object_api_service,
     )
 
 
@@ -76,7 +62,7 @@ async def test_delete_object_by_name_with_exception():
         await delete_object_by_name(
             bucket_name="os5ml",
             object_name="object",
-            minio_service=minio_service_mock,
+            _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -84,7 +70,8 @@ async def test_delete_object_by_name_with_exception():
 @pytest.mark.asyncio
 async def test_get_all_objects():
     items: List[Item] = await get_all_objects(
-        bucket_name="os4ml", minio_service=minio_service_mock
+        bucket_name="os4ml",
+        _service=mock_object_api_service,
     )
     assert type(items) == list
     assert type(items.pop()) == Item
@@ -94,7 +81,8 @@ async def test_get_all_objects():
 async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_all_objects(
-            bucket_name="os5ml", minio_service=minio_service_mock
+            bucket_name="os5ml",
+            _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -104,7 +92,7 @@ async def test_get_presigned_url():
     url: Url = await get_presigned_put_url(
         bucket_name="os4ml",
         object_name="object",
-        minio_service=minio_service_mock,
+        _service=mock_object_api_service,
     )
     assert type(url) == Url
     assert "https://www.wogra.com" in url.url
@@ -116,20 +104,22 @@ async def test_get_presigned_url_with_exception():
         await get_presigned_put_url(
             bucket_name="os5ml",
             object_name="object",
-            minio_service=minio_service_mock,
+            _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
 
 
 @pytest.mark.asyncio
 async def test_put_object_by_name():
-    request: Request = build_request()
-    await put_object_by_name(
-        request=request,
+    body = b"test"
+    item: Item = await put_object_by_name(
+        body=body,
         bucket_name="os4ml",
         object_name="object",
-        minio_service=minio_service_mock,
+        _service=mock_object_api_service,
     )
+    assert item.bucket_name == "os4ml"
+    assert item.object_name == "object"
 
 
 @pytest.mark.asyncio
@@ -137,7 +127,7 @@ async def test_get_object_url():
     url: str = await get_object_url(
         bucket_name="os4ml",
         object_name="object",
-        minio_service=minio_service_mock,
+        _service=mock_object_api_service,
     )
     assert type(url) == str
 
@@ -148,6 +138,6 @@ async def test_get_object_url_with_exception():
         await get_object_url(
             bucket_name="os5ml",
             object_name="object",
-            minio_service=minio_service_mock,
+            _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
