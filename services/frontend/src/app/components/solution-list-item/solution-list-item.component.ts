@@ -44,4 +44,12 @@ export class SolutionListItemComponent implements OnDestroy {
   ngOnDestroy() {
     this.intervalSub.unsubscribe();
   }
+
+  trimSolutionName(name: string | undefined): string {
+    if(!name) {
+      return '';
+    }
+    const uuidIndex = name.indexOf('_');
+    return name.substring(uuidIndex + 1);
+  }
 }

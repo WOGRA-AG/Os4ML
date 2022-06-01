@@ -5,16 +5,14 @@ metadata:
   namespace: os4ml
 spec:
   gateways:
-    - kubeflow/kubeflow-gateway
+    - os4ml/os4ml-gateway
   hosts:
     - '*'
   http:
     - name: "frontend-route"
       match:
         - uri:
-            prefix: /os4ml/
-      rewrite:
-        uri: /
+            prefix: /
       route:
         - destination:
             host: os4ml-ui.os4ml.svc.cluster.local
