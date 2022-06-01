@@ -9,6 +9,11 @@ spec:
     matchLabels:
       app: os4ml
       tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       annotations:
@@ -20,15 +25,27 @@ spec:
       containers:
         - name: frontend
           image: "gitlab-registry.wogra.com/developer/wogra/os4ml/frontend:latest"
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
-          env:
-            - name: APP_PREFIX
-              value: ${OS4ML_PREFIX}
-            - name: USERID_HEADER
-              value: $(OS4ML_USERID_HEADER)
-            - name: USERID_PREFIX
-              value: $(OS4ML_USERID_PREFIX)
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 20Mi
+            requests:
+              cpu: 10m
+              memory: 20Mi
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
           lifecycle:
             preStop:
               exec:
