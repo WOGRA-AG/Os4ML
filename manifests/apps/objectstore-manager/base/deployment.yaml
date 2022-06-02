@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: objectstore-manager
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:latest"
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
