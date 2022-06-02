@@ -4,8 +4,8 @@ from minio.datatypes import Object
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.solution import Solution
-from services.minio_service import MinioService
 from services import SOLUTION_CONFIG_FILE_NAME
+from services.minio_service import MinioService
 
 
 class SolutionService:

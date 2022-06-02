@@ -164,8 +164,8 @@ paths:
         content:
           application/octet-stream:
             schema:
-              format: binary
               type: string
+              format: binary
       responses:
         201:
           description: Created

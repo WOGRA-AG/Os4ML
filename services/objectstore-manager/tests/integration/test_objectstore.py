@@ -8,14 +8,14 @@ from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
-mock_object_api_service = ObjectstoreApiService(minio_service=mock_minio_service)
+mock_object_api_service = ObjectstoreApiService(
+    minio_service=mock_minio_service
+)
 
 
 @pytest.mark.asyncio
 async def test_get_all_buckets():
-    buckets = await get_all_buckets(
-        _service=mock_object_api_service,
-    )
+    buckets = await get_all_buckets(_service=mock_object_api_service,)
     assert type(buckets) == list
     assert len(buckets) > 0
     assert type(buckets.pop()) == Bucket

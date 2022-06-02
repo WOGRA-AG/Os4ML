@@ -15,8 +15,7 @@ mock_bucket_api_service = BucketApiService(minio_service=mock_minio_service)
 @pytest.mark.asyncio
 async def test_post_new_bucket():
     new_bucket: Bucket = await post_new_bucket(
-        bucket_name="os4ml",
-        _service=mock_bucket_api_service,
+        bucket_name="os4ml", _service=mock_bucket_api_service,
     )
     assert type(new_bucket) == Bucket
 
@@ -25,8 +24,7 @@ async def test_post_new_bucket():
 async def test_post_new_bucket_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await post_new_bucket(
-            bucket_name="os4ml_test",
-            _service=mock_bucket_api_service,
+            bucket_name="os4ml_test", _service=mock_bucket_api_service,
         )
     assert "status_code=400" in str(excinfo)
 
@@ -34,14 +32,10 @@ async def test_post_new_bucket_with_exception():
 @pytest.mark.asyncio
 async def test_delete_bucket():
     await delete_bucket(
-        bucket_name="os4ml",
-        _service=mock_bucket_api_service,
+        bucket_name="os4ml", _service=mock_bucket_api_service,
     )
 
 
 @pytest.mark.asyncio
 async def test_delete_bucket_with_non_existant():
-    await delete_bucket(
-        bucket_name="os5ml",
-        _service=mock_bucket_api_service
-    )
+    await delete_bucket(bucket_name="os5ml", _service=mock_bucket_api_service)

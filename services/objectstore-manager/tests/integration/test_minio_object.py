@@ -70,8 +70,7 @@ async def test_delete_object_by_name_with_exception():
 @pytest.mark.asyncio
 async def test_get_all_objects():
     items: List[Item] = await get_all_objects(
-        bucket_name="os4ml",
-        _service=mock_object_api_service,
+        bucket_name="os4ml", _service=mock_object_api_service,
     )
     assert type(items) == list
     assert type(items.pop()) == Item
@@ -81,8 +80,7 @@ async def test_get_all_objects():
 async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_all_objects(
-            bucket_name="os5ml",
-            _service=mock_object_api_service,
+            bucket_name="os5ml", _service=mock_object_api_service,
         )
     assert "status_code=404" in str(excinfo)
 

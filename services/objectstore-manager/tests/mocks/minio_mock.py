@@ -6,9 +6,9 @@ from minio import Minio
 from minio.datatypes import Bucket, Object
 from urllib3 import HTTPResponse
 
-from services import DATABAG_CONFIG_FILE_NAME
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.pipeline_template import PipelineTemplate
+from services import DATABAG_CONFIG_FILE_NAME
 
 
 class MinioMock(Minio):

@@ -25,7 +25,6 @@ from services import (
     PIPELINE_FILE_NAME,
     TEMPLATE_METADATA_FILE_NAME,
 )
-
 from services.storage_service_interface import StorageServiceInterface
 
 
@@ -233,9 +232,9 @@ class MinioService(StorageServiceInterface):
                 bucket_name, f"{path}/{component_file_name}"
             )
             template.type = (
-                "Component"
+                "component"
                 if temp_type == "components"
-                else "Pipeline"
+                else "pipeline"
                 if temp_type == "pipelines"
                 else ""
             )
