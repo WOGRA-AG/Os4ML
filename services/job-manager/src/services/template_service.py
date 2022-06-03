@@ -18,8 +18,10 @@ class TemplateService:
         self, pipeline_name: str, params: RunParams
     ) -> str:
         name: str = f"{uuid.uuid4()}_{pipeline_name}"
-        pipe_template: PipelineTemplate = self.objectstore.get_pipeline_template_by_name(
-            pipeline_name=pipeline_name
+        pipe_template: PipelineTemplate = (
+            self.objectstore.get_pipeline_template_by_name(
+                pipeline_name=pipeline_name
+            )
         )
         experiment: Experiment = Experiment(name=name, description=name)
         run: CreateRun = CreateRun(name=name, description=name, params=params)
