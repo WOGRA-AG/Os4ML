@@ -12,7 +12,7 @@
       *ngFor="let databag of databags"
       (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">
-        <span class="mat-overline on-surface-disabled">{{databag.numberRows}} entries</span>
+        <span class="mat-overline on-surface-disabled">{{formatTimestamp(databag.creationTime)}}</span>
         <span class="mat-subheading-2">{{databag.databagName}}</span>
       </div>
     </mat-list-item>

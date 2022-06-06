@@ -52,4 +52,12 @@ export class SolutionListItemComponent implements OnDestroy {
     const uuidIndex = name.indexOf('_');
     return name.substring(uuidIndex + 1);
   }
+
+  formatTimestamp(creationTime: string | undefined): string {
+    if (!creationTime) {
+      return '';
+    }
+    const creationDate = new Date(creationTime);
+    return creationDate.toLocaleDateString('de-DE');
+  }
 }
