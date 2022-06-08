@@ -1,5 +1,7 @@
 from typing import List
 
+from fastapi.responses import RedirectResponse
+
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.url import Url
@@ -23,10 +25,11 @@ class BucketApiService:
     def get_all_objects(self, bucket_name) -> List[Item]:
         return self.minio_service.list_objects(bucket_name=bucket_name)
 
-    def get_object_by_name(self, bucket_name, object_name) -> str:
-        return self.minio_service.get_presigned_get_url(
+    def get_object_by_name(self, bucket_name, object_name) -> RedirectResponse:
+        url = self.minio_service.get_presigned_get_url(
             bucket_name=bucket_name, object_name=object_name
         )
+        return RedirectResponse(url)
 
     def get_object_url(self, bucket_name, object_name) -> str:
         return self.minio_service.get_presigned_get_url(
