@@ -3,6 +3,7 @@ from typing import Dict, List
 
 import pytest
 from fastapi import HTTPException
+from fastapi.responses import RedirectResponse
 from starlette.datastructures import Headers
 from starlette.requests import Request
 from starlette.types import Message
@@ -28,12 +29,13 @@ mock_object_api_service = ObjectApiService(minio_service=mock_minio_service)
 
 @pytest.mark.asyncio
 async def test_get_object_by_name():
-    url: str = await get_object_by_name(
+    redirect_response: RedirectResponse = await get_object_by_name(
         bucket_name="os4ml",
         object_name="object",
         _service=mock_object_api_service,
     )
-    assert type(url) == str
+    assert type(redirect_response) == RedirectResponse
+    assert redirect_response.headers["location"] == "https://www.wogra.com"
 
 
 @pytest.mark.asyncio
