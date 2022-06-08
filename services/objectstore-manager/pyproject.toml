@@ -26,6 +26,7 @@ isort = { version = "^5.6.4", extras = ["pyproject"] }
 requests = "^2.25.0"
 black = "19.10b0"
 pytest-asyncio = "^0.14.0"
+pytest-mock = "^3.7.0"
 
 [tool.black]
 # https://github.com/psf/black
