@@ -2,9 +2,10 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: os4ml-objectstore-manager
+  namespace: os4ml
 spec:
   gateways:
-    - kubeflow/kubeflow-gateway
+    - os4ml/os4ml-gateway
   hosts:
     - '*'
   http:

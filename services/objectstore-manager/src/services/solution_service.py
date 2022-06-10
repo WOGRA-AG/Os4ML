@@ -1,11 +1,11 @@
-import json
 from typing import List
 
 from minio.datatypes import Object
 
-from models import Bucket, Solution, SolutionMetrics
-from services import MinioService
-from src import SOLUTION_CONFIG_FILE_NAME
+from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.solution import Solution
+from services import SOLUTION_CONFIG_FILE_NAME
+from services.minio_service import MinioService
 
 
 class SolutionService:

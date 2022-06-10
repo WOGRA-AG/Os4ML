@@ -1,7 +1,5 @@
 # From: https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/315f04413114e938ff37a410b5979126facc90af/python3.7/gunicorn_conf.py
 
-import json
-import multiprocessing
 import os
 
 workers_per_core_str = os.getenv("WORKERS_PER_CORE", "1")
@@ -15,7 +13,7 @@ if bind_env:
 else:
     use_bind = f"{host}:{port}"
 
-cores = multiprocessing.cpu_count()
+cores = 2
 workers_per_core = float(workers_per_core_str)
 default_web_concurrency = workers_per_core * cores
 if web_concurrency_str:

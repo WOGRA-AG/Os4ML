@@ -44,4 +44,20 @@ export class SolutionListItemComponent implements OnDestroy {
   ngOnDestroy() {
     this.intervalSub.unsubscribe();
   }
+
+  trimSolutionName(name: string | undefined): string {
+    if(!name) {
+      return '';
+    }
+    const uuidIndex = name.indexOf('_');
+    return name.substring(uuidIndex + 1);
+  }
+
+  formatTimestamp(creationTime: string | undefined): string {
+    if (!creationTime) {
+      return '';
+    }
+    const creationDate = new Date(creationTime);
+    return creationDate.toLocaleDateString('de-DE');
+  }
 }

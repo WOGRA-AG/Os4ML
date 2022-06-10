@@ -5,4 +5,4 @@ metadata:
 spec:
   owner:
     kind: User
-    name: user@wogra.com   # replace with the email of the user
+    name: $USER_MAIL   # replace with the email of the user

@@ -1,3 +1,0 @@
-- op: replace
-  path: "/spec/http/rewrite/rewrite/uri"
-  value: "/kubeflow/"

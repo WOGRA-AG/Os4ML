@@ -1,6 +1,6 @@
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">Solution</span>
-  <span class="mat-body-2 on-surface-high">{{solution?.name}}</span>
+  <span class="mat-body-2 on-surface-high">{{trimSolutionName(solution?.name)}}</span>
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">Accuracy</span>
@@ -11,6 +11,10 @@
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">Runtime</span>
   <span class="mat-body-2 on-surface-high">{{runtime}}</span>
+</div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">Creation Date</span>
+  <span class="mat-body-2 on-surface-high">{{formatTimestamp(solution?.creationTime)}}</span>
 </div>
 <div class="status-column">
   <div class="status bg-accent mat-button">

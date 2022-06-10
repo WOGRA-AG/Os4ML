@@ -24,4 +24,12 @@ export class DatabagListComponent {
     const isSameCreationTime = databag1.creationTime === databag2.creationTime;
     return isSameDatabagName && isSameBucketName && isSameFileName && isSameCreationTime;
   }
+
+  formatTimestamp(creationTime: string | undefined): string {
+    if (!creationTime) {
+      return '';
+    }
+    const creationDate = new Date(creationTime);
+    return creationDate.toLocaleDateString('de-DE');
+  }
 }
