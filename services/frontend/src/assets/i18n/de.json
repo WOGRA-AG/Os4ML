@@ -63,10 +63,13 @@
     "solver": {
       "upload": "Bitte wähle deinen Solver"
     },
+        "dashboard": {
+      "title": "Dashboard"
+    },
     "databag": {
       "title": "Databags",
       "list": {
-        "title": "Current Bags"
+        "title": "Databags"
       },
       "empty": {
         "title": "Get started with Machine Learning",

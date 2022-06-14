@@ -9,7 +9,7 @@
     "generate:api": "npm run generate:objectstore && npm run generate:jobmanager",
     "prestart": "npm run generate:api",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --disable-host-check true",
     "prebuild": "npm run generate:api",
     "build": "ng build --base-href .",
     "watch": "ng build --base-href . --watch --configuration development",

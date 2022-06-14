@@ -3,14 +3,8 @@
     <h6>Solutions</h6>
   </div>
   <div class="button-bar">
-    <button class="bg-surface button-bar-button button-info" mat-icon-button color="primary">
-      <mat-icon>lightbulb_outline</mat-icon>
-    </button>
-    <button class="bg-surface button-bar-button button-list" mat-icon-button>
+    <button style="display: none" class="bg-surface button-bar-button button-list" mat-icon-button>
       <mat-icon>list</mat-icon>
-    </button>
-    <button class="bg-surface button-bar-button button-settings" mat-icon-button>
-      <mat-icon>settings_outline</mat-icon>
     </button>
   </div>
   <div class="spacer-item">
@@ -24,12 +18,7 @@
   <div class="solutions-list-container">
     <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
   </div>
-  <div class="solutions-add-button">
-    <button mat-raised-button color="accent" (click)="openCreateSolutionDialog()">
-      <mat-icon>add</mat-icon>
-      <span>Add Solution</span>
-    </button>
-  </div>
+  <button mat-mini-fab class="fab-button" color="primary" (click)="openCreateSolutionDialog()"><mat-icon>add</mat-icon></button>
 </ng-template>
 
 <ng-template #placeholder>

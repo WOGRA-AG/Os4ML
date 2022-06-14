@@ -65,6 +65,7 @@ telepresence connect
 ### Intercept
 ```sh
 telepresence connect
+telepresence intercept os4ml-ui --namespace os4ml --port 4200:80
 telepresence intercept os4ml-jobmanager --namespace os4ml --port 8000:8000
 telepresence intercept os4ml-jobmanager --namespace os4ml --port 8001:8001
 ```
