@@ -64,3 +64,6 @@ class JobmanagerApiService:
         return self.template_service.run_pipeline_template(
             pipeline_template_name, run_params
         )
+
+    def get_solution(self, solution_name: str) -> Solution:
+        return self.solution_service.get_solution(solution_name)
