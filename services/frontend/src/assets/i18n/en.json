@@ -66,10 +66,13 @@
     "solver": {
       "upload": "Please choose your pipeline configuration"
     },
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "databag": {
       "title": "Databags",
       "list": {
-        "title": "Current Bags"
+        "title": "Databags"
       },
       "empty": {
         "title": "Get started with Machine Learning",

@@ -16,6 +16,10 @@ const routes: Routes = [
     path: 'dashboard',
     component: MainPageComponent,
     runGuardsAndResolvers: 'always',
+    resolve: {
+      databags: DatabagResolver,
+      solutions: SolutionResolver
+    }
   },
   {
     path: 'databag',
