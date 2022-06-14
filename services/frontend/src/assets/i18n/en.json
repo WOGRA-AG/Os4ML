@@ -74,6 +74,20 @@
       "list": {
         "title": "Databags"
       },
+      "table": {
+        "columns": {
+          "fileName": "File",
+          "databagName": "Databag Name",
+          "datasetType": "Filename",
+          "numberColumns": "No. Columns",
+          "numberRows": "No. Rows",
+          "bucketName": "Bucket Name",
+          "creationTime": "Creation Time"
+        },
+        "buttons": {
+          "addDatabag": "Add Databag"
+        }
+      },
       "empty": {
         "title": "Get started with Machine Learning",
         "subtitle": "Databags allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
