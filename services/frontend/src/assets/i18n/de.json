@@ -69,7 +69,8 @@
     "databag": {
       "title": "Databags",
       "list": {
-        "title": "Databags"
+        "title": "Databags",
+        "add": "Add Databag"
       },
       "empty": {
         "title": "Get started with Machine Learning",

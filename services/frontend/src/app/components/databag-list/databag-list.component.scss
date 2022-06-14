@@ -10,7 +10,11 @@
   margin-top: 10px;
 }
 
-.databag-add-button {
-  float: right !important;
-  margin-top: 10px;
+.databag-list-mat-panel-title-icon {
+  position: absolute;
+  left: 15px;
+}
+
+.databag-list-mat-expansion-panel-add-button {
+  pointer-events: none;
 }
