@@ -2,7 +2,7 @@ from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 
-from pipelines.util import load_component
+from pipelines.util import compile_pipeline, load_component
 
 init_databag_op = load_component("init-databag")
 sniffle_op = load_component("sniffle-dataset")
@@ -28,6 +28,4 @@ def init_databag_sniffle_upload(
 
 
 if __name__ == "__main__":
-    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
-        init_databag_sniffle_upload, "pipeline.yaml"
-    )
+    compile_pipeline(init_databag_sniffle_upload)

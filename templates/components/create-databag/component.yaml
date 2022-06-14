@@ -2,9 +2,10 @@ name: Create databag
 inputs:
 - {name: file, type: Dataset}
 - {name: bucket, type: String}
+- {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: python:3.10.2-slim
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
     command:
     - sh
     - -c
@@ -14,7 +15,7 @@ implementation:
           python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
       fi
 
-      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
     - sh
     - -ec
     - |
@@ -28,15 +29,10 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def create_databag(file: Input[Dataset], bucket: str):
-          import requests
-          import json
-          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1' \
-                f'/objectstore/databag/{bucket}'
-          with open(file.path) as json_file:
-              json_data = json.load(json_file)
-              print(json_data)
-              requests.put(url, json=json_data)
+      def create_databag(file: Input[Dataset], bucket: str, solution_name: str = ''):
+          from src.components.create_databag import create_databag
+
+          return create_databag(file, bucket, solution_name=solution_name)
 
     args:
     - --executor_input

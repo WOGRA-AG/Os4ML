@@ -107,9 +107,14 @@ ENV PATH=/root/.pyenv/versions/3.7.9/bin:$PATH
 RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
 # Install ludwig using poetry lock files
-FROM pyenv as ludwig
-COPY *.toml *.lock ./
+FROM pyenv as ludwig-base
+COPY ludwig/*.toml ludwig/*.lock ./
 RUN --mount=type=cache,target=/root/.cache \
     poetry config virtualenvs.create false && poetry install
+
+# copy os4ml source code
+FROM ludwig-base as ludwig
+
+COPY component-base/src /src
 
 CMD ["python3"]

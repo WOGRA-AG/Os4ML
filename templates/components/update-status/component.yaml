@@ -1,11 +1,11 @@
 name: Update status
 inputs:
-- {name: solution_name, type: String, default: '', optional: true}
 - {name: status, type: String, default: '', optional: true}
 - {name: depends_on, type: Artifact, optional: true}
+- {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: python:3.10.2-slim
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
     command:
     - sh
     - -c
@@ -29,15 +29,12 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def update_status(solution_name: str = "", status: str = "", depends_on: Artifact = None):
-          import requests
+      def update_status(
+              status: str = "", depends_on: Artifact = None, solution_name: str = ''
+      ):
+          from src.components.update_status import update_status
 
-          url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-          solution = requests.get(url).json()
-          solution["status"] = status
-
-          requests.put(url, json=solution)
+          update_status(solution_name, status, solution_name=solution_name)
 
     args:
     - --executor_input
