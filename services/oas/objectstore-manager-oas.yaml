@@ -346,7 +346,7 @@ components:
         $ref: './shared-oas.yaml#/components/schemas/BucketName'
     ObjectName:
       name: ObjectName
-      in: query
+      in: path
       description: Name of Object
       required: true
       schema:
