@@ -26,8 +26,7 @@ const routes: Routes = [
     component: DatabagPageComponent,
     runGuardsAndResolvers: 'always',
     resolve: {
-      databags: DatabagResolver,
-      solutions: SolutionResolver
+      databags: DatabagResolver
     }
   },
   {

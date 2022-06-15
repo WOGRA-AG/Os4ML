@@ -1,0 +1,14 @@
+@mixin color($theme, $background) {
+}
+
+@mixin layout() {
+  .mat-table{
+      border-radius: 14px;
+      overflow:hidden !important;
+  }
+}
+
+@mixin theme($theme, $background) {
+  @include color($theme, $background);
+  @include layout();
+}
