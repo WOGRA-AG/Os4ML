@@ -1,8 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {
-  Databag, DatabagService,
+  Databag,
   Solution,
-  SolutionService
 } from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';

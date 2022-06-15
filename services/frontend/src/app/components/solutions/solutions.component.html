@@ -1,14 +1,14 @@
 <div class="solutions-taskbar">
   <div class="headline">
-    <h6>Solutions</h6>
+    <h6></h6>
   </div>
   <div class="button-bar">
-    <button style="display: none" class="bg-surface button-bar-button button-list" mat-icon-button>
-      <mat-icon>list</mat-icon>
+    <button class="bg-surface button-bar-button button-list" mat-icon-button>
+      <mat-icon *ngIf="getSolutionsInDatabag().length > 0">list</mat-icon>
     </button>
   </div>
   <div class="spacer-item">
-    <h6>Solutions</h6>
+    <h6></h6>
   </div>
 </div>
 
@@ -18,7 +18,10 @@
   <div class="solutions-list-container">
     <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
   </div>
-  <button mat-mini-fab class="fab-button" color="primary" (click)="openCreateSolutionDialog()"><mat-icon>add</mat-icon></button>
+  <button mat-raised-button class="fab-button mat-raised-button-solutions-add-button" color="primary" (click)="openCreateSolutionDialog()">
+    <mat-icon>add</mat-icon>
+    {{ "page.solution.add.button" | translate }}
+  </button>
 </ng-template>
 
 <ng-template #placeholder>

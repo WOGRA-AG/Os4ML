@@ -1,6 +1,7 @@
-<mat-expansion-panel expanded>
-  <mat-expansion-panel-header class="mat-button">
+<mat-expansion-panel expanded disabled>
+  <mat-expansion-panel-header>
     <mat-panel-title>
+      <mat-icon class="databag-list-mat-panel-title-icon">folder_open</mat-icon>
       <span>{{"page.databag.list.title" | translate}}</span>
     </mat-panel-title>
     <mat-panel-description>
@@ -16,6 +17,13 @@
         <span class="mat-subheading-2">{{databag.databagName}}</span>
       </div>
     </mat-list-item>
+    <mat-list-item (click)="openAddDialog()">
+      <div class="nav-item-extended">
+        <button mat-button class="databag-list-mat-expansion-panel-add-button">
+          <mat-icon>add</mat-icon>
+          {{"page.databag.list.add" | translate}}
+        </button>
+      </div>
+    </mat-list-item>
   </mat-nav-list>
-  <button mat-mini-fab class="fab-button databag-add-button" color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon></button>
 </mat-expansion-panel>

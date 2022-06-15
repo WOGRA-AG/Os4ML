@@ -69,7 +69,8 @@
     "databag": {
       "title": "Databags",
       "list": {
-        "title": "Databags"
+        "title": "Databags",
+        "add": "Add Databag"
       },
       "empty": {
         "title": "Get started with Machine Learning",
@@ -83,6 +84,9 @@
         "title": "Analyze your Data with Machine Learning",
         "subtitle": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
         "main_button": "Create Solution"
+      },
+      "add": {
+        "button": "Add Solution"
       }
     }
   }
