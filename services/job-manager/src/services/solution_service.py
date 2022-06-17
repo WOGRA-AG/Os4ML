@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from io import BytesIO
 from typing import List
 from uuid import UUID, uuid4
 
@@ -69,12 +70,10 @@ class SolutionService:
         return solution
 
     def _persist_solution(self, solution: Solution):
-        file_name = _solution_file_name(solution.name)
-        with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "w") as file:
-            json.dump(solution.dict(), file)
-        with open(f"/tmp/{SOLUTION_CONFIG_FILE_NAME}", "r") as file:
-            self.objectstore.put_object_by_name(
-                bucket_name=solution.bucket_name,
-                object_name=f"{file_name}",
-                body=file,
-            )
+        encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
+        self.objectstore.put_object_by_name(
+            bucket_name=solution.bucket_name,
+            object_name=solution.name,
+            # object_name=_solution_file_name(solution.name),
+            body=encoded_solution,
+        )
