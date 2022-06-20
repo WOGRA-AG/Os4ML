@@ -1,4 +1,5 @@
+#syntax=docker/dockerfile:1.4
 FROM amancevice/pandas:1.4.1-slim
 
-COPY src /var/lib/pandas/src
+COPY --from=templates src /var/lib/pandas/src
 

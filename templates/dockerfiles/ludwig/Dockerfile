@@ -1,3 +1,4 @@
+#syntax=docker/dockerfile:1.4
 # The lines for the base is inspired by https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/dockerfiles/dockerfiles/gpu.Dockerfile
 
 ARG UBUNTU_VERSION=20.04
@@ -108,13 +109,13 @@ RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
 # Install ludwig using poetry lock files
 FROM pyenv as ludwig-base
-COPY ludwig/*.toml ludwig/*.lock ./
+COPY pyproject.toml poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache \
     poetry config virtualenvs.create false && poetry install
 
 # copy os4ml source code
 FROM ludwig-base as ludwig
 
-COPY src /src
+COPY --from=templates src /src
 
 CMD ["python3"]
