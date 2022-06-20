@@ -1,4 +1,5 @@
 import pytest
+
 from src.model.databag_type import DatabagType
 
 

@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Dict
 
 import requests
+
 from src.util.date import FORMAT_STR
 
 

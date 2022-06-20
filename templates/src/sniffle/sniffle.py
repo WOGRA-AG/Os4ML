@@ -2,6 +2,7 @@ import pathlib
 from typing import Generator, List, Tuple
 
 import pandas as pd
+
 from src.model.column import Column
 from src.model.column_data_type import ColumnDataType
 from src.model.column_usage import ColumnUsage

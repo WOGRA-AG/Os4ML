@@ -1,3 +1,4 @@
+from components.images import ludwig_image
 from kfp.v2.dsl import (
     ClassificationMetrics,
     Dataset,
@@ -6,8 +7,6 @@ from kfp.v2.dsl import (
     Output,
     component,
 )
-
-from components.images import ludwig_image
 
 
 def ludwig_solver(

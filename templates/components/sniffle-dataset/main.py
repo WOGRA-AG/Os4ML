@@ -1,6 +1,5 @@
-from kfp.v2.dsl import Dataset, Input, component
-
 from components.images import pandas_image
+from kfp.v2.dsl import Dataset, Input, component
 
 
 def sniffle_dataset(

@@ -4,6 +4,7 @@ from collections import namedtuple
 from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
+
 from src.jobmanager.solution import error_status_update
 from src.model.databag_type import DatabagType
 from src.model.file_type import FileType

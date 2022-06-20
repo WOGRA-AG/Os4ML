@@ -1,6 +1,5 @@
-from kfp.v2.dsl import Dataset, component
-
 from components.images import python_image
+from kfp.v2.dsl import Dataset, component
 
 
 def get_databag(bucket: str, solution_name: str = "") -> Dataset:

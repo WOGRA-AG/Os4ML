@@ -1,6 +1,5 @@
-from kfp.v2.dsl import Artifact, component
-
 from components.images import python_image
+from kfp.v2.dsl import Artifact, component
 
 
 def update_status(
