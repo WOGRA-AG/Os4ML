@@ -4,7 +4,7 @@ metadata:
   generateName: init-databag-sniffle-upload-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-20T16:12:16.084019'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-20T16:28:03.155110'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -180,7 +180,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
           "STRING"}, "file_name": {"type": "STRING"}, "solution_name": {"type": "STRING"}},
           "inputArtifacts": {}, "outputParameters": {"databag_type": {"type": "STRING",
@@ -189,7 +189,7 @@ spec:
           "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -208,7 +208,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "a8c683f7b55858413cb7438df45e24fdbab084d7b21991a40603410a3cb14f7c",
+        pipelines.kubeflow.org/component_ref: '{"digest": "eca58dfd1dba3772e8316dfb2c3e856f1ffc29d838671b5ada89f4017643591f",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}", "solution_name": ""}'
