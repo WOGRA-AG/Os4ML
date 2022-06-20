@@ -1,0 +1,25 @@
+include:
+  - local: 'gitlab/shared/.gitlab-ci.build-template.yml'
+
+build-python:
+  extends:
+    - .build-template
+  variables:
+    DIR: 'templates/dockerfiles/python'
+    IMG_NAME: 'python'
+
+build-pandas:
+  extends:
+    - .build-template
+  variables:
+    DIR: 'templates/dockerfiles/pandas'
+    IMG_NAME: 'pandas'
+
+build-ludwig:
+  extends:
+    - .build-template
+  variables:
+    DIR: 'templates/dockerfiles/ludwig'
+    IMG_NAME: 'ludwig'
+
+

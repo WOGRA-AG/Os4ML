@@ -115,6 +115,6 @@ RUN --mount=type=cache,target=/root/.cache \
 # copy os4ml source code
 FROM ludwig-base as ludwig
 
-COPY component-base/src /src
+COPY src /src
 
 CMD ["python3"]
