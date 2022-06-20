@@ -19,11 +19,11 @@ def katib_solver(
     solution_name: str = "",
     dataset_file_name: str = "dataset",
 ):
-    update_status_op(solution_name, StatusMessages.created.value)
+    update_status_op(StatusMessages.created.value, solution_name=solution_name)
     df_info = init_databab_op(bucket, file_name)
     upload_op(df_info.outputs["dataset"], bucket, dataset_file_name)
     update_status_op(
-        solution_name, StatusMessages.running.value, df_info.outputs["dataset"]
+        StatusMessages.running.value, df_info.outputs["dataset"], solution_name=solution_name
     )
     databag = get_databag_op(bucket)
     katib_output = katib_solver_op(
@@ -32,11 +32,11 @@ def katib_solver(
         parallel_trial_count=1,
         max_trial_count=5,
     )
-    get_metrics_op(katib_output.outputs["metrics"], solution_name)
+    get_metrics_op(katib_output.outputs["metrics"], solution_name=solution_name)
     update_status_op(
-        solution_name,
         StatusMessages.finished.value,
         katib_output.outputs["metrics"],
+        solution_name=solution_name
     )
 
 

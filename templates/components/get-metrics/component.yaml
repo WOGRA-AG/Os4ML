@@ -4,7 +4,7 @@ inputs:
 - {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
     command:
     - sh
     - -c

@@ -1,5 +1,3 @@
-python_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16"
-pandas_image = (
-    "gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:test-dennis"
-)
-ludwig_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig:test-dennis-1"
+python_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates"
+pandas_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates"
+ludwig_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:166-cleaner-shared-models-for-pipeline-templates"

@@ -10,7 +10,7 @@ outputs:
 - {name: Output, type: Dataset}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates
     command:
     - sh
     - -c
@@ -35,16 +35,23 @@ implementation:
       from typing import *
 
       def sniffle_dataset(
-              dataset: Input[Dataset],
-              dataset_type: str = "local_file",
-              max_categories: int = 10,
-              file_name: str = "",
-              bucket_name: str = "",
-              solution_name: str = '',
+          dataset: Input[Dataset],
+          dataset_type: str = "local_file",
+          max_categories: int = 10,
+          file_name: str = "",
+          bucket_name: str = "",
+          solution_name: str = "",
       ) -> Dataset:
           from src.components.sniffle_dataset import sniffle_dataset
 
-          return sniffle_dataset(dataset, dataset_type, max_categories, file_name, bucket_name, solution_name=solution_name)
+          return sniffle_dataset(
+              dataset,
+              dataset_type,
+              max_categories,
+              file_name,
+              bucket_name,
+              solution_name=solution_name,
+          )
 
     args:
     - --executor_input

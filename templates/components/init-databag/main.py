@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from components.images import python_image
+from components.images import pandas_image
 from kfp.v2.dsl import Dataset, component
 
 
@@ -15,6 +15,6 @@ def init_databag(
 if __name__ == "__main__":
     component(
         init_databag,
-        base_image=python_image,
+        base_image=pandas_image,
         output_component_file="component.yaml",
     )

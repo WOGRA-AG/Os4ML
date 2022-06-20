@@ -8,7 +8,7 @@ outputs:
 - {name: dataset, type: Dataset}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates
     command:
     - sh
     - -c
@@ -33,7 +33,7 @@ implementation:
       from typing import *
 
       def init_databag(
-              bucket: str, file_name: str, solution_name: str = ''
+          bucket: str, file_name: str, solution_name: str = ""
       ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
           from src.components.init_databag import init_databag
 

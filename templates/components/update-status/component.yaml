@@ -5,7 +5,7 @@ inputs:
 - {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/component-base:test-dennis16
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
     command:
     - sh
     - -c
@@ -30,7 +30,7 @@ implementation:
       from typing import *
 
       def update_status(
-              status: str = "", depends_on: Artifact = None, solution_name: str = ''
+          status: str = "", depends_on: Artifact = None, solution_name: str = ""
       ):
           from src.components.update_status import update_status
 
