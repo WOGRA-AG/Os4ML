@@ -1,29 +1,17 @@
 from kfp.v2.dsl import Input, Metrics, component
 
+from components.images import python_image
+
 
 def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
-    from datetime import datetime
+    from src.components.get_metrics import get_metrics
 
-    import requests
-
-    if "accuracy" in metrics.metadata:
-        accuracy = metrics.metadata["accuracy"]
-        url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-        solution = requests.get(url).json()
-        if "metrics" not in solution or solution["metrics"] is None:
-            solution["metrics"] = dict()
-        solution["metrics"]["accuracy"] = accuracy
-        solution["completionTime"] = datetime.utcnow().strftime(
-            "%Y-%m-%dT%H:%M:%SZ"
-        )
-
-        requests.put(url, json=solution)
+    return get_metrics(metrics, solution_name=solution_name)
 
 
 if __name__ == "__main__":
     component(
         get_metrics,
-        base_image="python:3.10.2-slim",
+        base_image=python_image,
         output_component_file="component.yaml",
     )
