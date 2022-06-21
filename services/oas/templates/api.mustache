@@ -46,8 +46,8 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}}{{#isQueryParam}}{{paramName}}: {{dataType}} = Query(None, description="{{description}}", alias="{{baseName}}"),
-    {{paramName}}_q: {{dataType}} = Query(None, description="{{description}}"){{/isQueryParam}},
+    {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}}{{#isQueryParam}}{{paramName}}_q: {{dataType}} = Query(None, description="{{description}}", alias="{{baseName}}"),
+    {{paramName}}: {{dataType}} = Query(None, description="{{description}}"){{/isQueryParam}},
     {{/allParams}}
     _service: {{classname}}Service = Depends({{classname}}Service),
     {{#hasAuthMethods}}
@@ -58,7 +58,7 @@ async def {{operationId}}(
     {{/authMethods}}
     {{/hasAuthMethods}}
 ) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
-    {{#allParams}}{{#isQueryParam}}{{paramName}} = {{paramName}}_q or {{paramName}}{{/isQueryParam}}{{/allParams}}
+    {{#allParams}}{{#isQueryParam}}{{paramName}} = {{paramName}}_q if type({{paramName}}_q) is {{dataType}} else {{paramName}}{{/isQueryParam}}{{/allParams}}
     return _service.{{operationId}}(
     {{#allParams}}
         {{#isFormParam}}{{paramName}}={{paramName}}{{/isFormParam}}{{#isQueryParam}}{{paramName}}={{paramName}}{{/isQueryParam}}{{#isPathParam}}{{paramName}}={{paramName}}{{/isPathParam}}{{#isHeaderParam}}{{paramName}}={{paramName}}{{/isHeaderParam}}{{#isCookieParam}}{{paramName}}={{paramName}}{{/isCookieParam}}{{#isBodyParam}}{{paramName}}={{paramName}}{{/isBodyParam}},
