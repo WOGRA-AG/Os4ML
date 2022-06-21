@@ -119,23 +119,6 @@ paths:
                   $ref: '#/components/schemas/Item'
         404:
           $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/objectstore/{bucket_name}/object/{object_name}":
-    get:
-      summary: 'get specific Object from Bucket'
-      operationId: getObjectByName
-      tags:
-        - objectstore
-        - bucket
-        - object
-      parameters:
-        - $ref: '#/components/parameters/BucketName'
-        - $ref: '#/components/parameters/ObjectName'
-      responses:
-        307:
-          description: Redirect
-        404:
-          $ref: '#/components/responses/NotFound'
     delete:
       summary: 'delete specific Object from Bucket'
       operationId: deleteObjectByName
@@ -173,6 +156,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{bucket_name}/object/{object_name}":
+    get:
+      summary: 'get specific Object from Bucket'
+      operationId: getObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/PathObjectName'
+      responses:
+        307:
+          description: Redirect
         404:
           $ref: '#/components/responses/NotFound'
 
@@ -347,6 +347,13 @@ components:
     ObjectName:
       name: ObjectName
       in: query
+      description: Name of Object
+      required: true
+      schema:
+        $ref: '#/components/schemas/ObjectName'
+    PathObjectName:
+      name: ObjectName
+      in: path
       description: Name of Object
       required: true
       schema:

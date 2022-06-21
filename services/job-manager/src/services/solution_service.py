@@ -73,7 +73,7 @@ class SolutionService:
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
             bucket_name=solution.bucket_name,
-            object_name=solution.name,
-            # object_name=_solution_file_name(solution.name),
+            # object_name=solution.name,
+            object_name=_solution_file_name(solution.name),
             body=encoded_solution,
         )
