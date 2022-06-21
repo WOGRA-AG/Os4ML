@@ -8,7 +8,7 @@ outputs:
 - {name: dataset, type: Dataset}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:166-cleaner-shared-models-for-pipeline-templates
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
     command:
     - sh
     - -c

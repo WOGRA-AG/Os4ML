@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-20T16:15:02.426366'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-21T09:16:53.128539'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -79,14 +79,14 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}}, "inputArtifacts": {"metrics": {"metadataPath": "/tmp/inputs/metrics/data",
           "schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
           "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -99,7 +99,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "dcf656de79a06c059475d34458feee6f15564d1bf6c27982cf26ea35777f30a3",
+        pipelines.kubeflow.org/component_ref: '{"digest": "a5173deef9d23be315e89d045fa7f194d528e54a688835f7497de7192438f709",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
@@ -177,7 +177,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
           "STRING"}, "file_name": {"type": "STRING"}, "solution_name": {"type": "STRING"}},
           "inputArtifacts": {}, "outputParameters": {"databag_type": {"type": "STRING",
@@ -186,7 +186,7 @@ spec:
           "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -202,7 +202,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "a8c683f7b55858413cb7438df45e24fdbab084d7b21991a40603410a3cb14f7c",
+        pipelines.kubeflow.org/component_ref: '{"digest": "b9462fb25efeabd43add68017e91e5764286c226f55b4eae3fc0c6f4cb09896b",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}", "solution_name": ""}'
@@ -686,13 +686,13 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {},
           "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -703,7 +703,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "ffa4461459845e3629ae4fc49e2e216cc3859a5de0541c6d35d6d84bcbb3b8f2",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solution created"}'
@@ -782,7 +782,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
           {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
@@ -790,7 +790,7 @@ spec:
           "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -803,7 +803,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "ffa4461459845e3629ae4fc49e2e216cc3859a5de0541c6d35d6d84bcbb3b8f2",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver running"}'
@@ -882,7 +882,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
           {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
@@ -890,7 +890,7 @@ spec:
           "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:166-cleaner-shared-models-for-pipeline-templates
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -903,7 +903,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "ffa4461459845e3629ae4fc49e2e216cc3859a5de0541c6d35d6d84bcbb3b8f2",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver finished"}'
