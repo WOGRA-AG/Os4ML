@@ -46,7 +46,7 @@ router = APIRouter(prefix="")
 )
 async def {{operationId}}(
     {{#allParams}}
-    {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isQueryParam}}{{paramName}}: {{dataType}} = Query(None, description="{{description}}"){{/isQueryParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}},
+    {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isQueryParam}}{{paramName}}: {{dataType}} = Query(None, description="{{description}}", alias="{{baseName}}"){{/isQueryParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}", alias="{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}},
     {{/allParams}}
     _service: {{classname}}Service = Depends({{classname}}Service),
     {{#hasAuthMethods}}
