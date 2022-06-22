@@ -8,7 +8,7 @@ outputs:
 - {name: dataset, type: Dataset}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:test-dennis
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
     command:
     - sh
     - -c

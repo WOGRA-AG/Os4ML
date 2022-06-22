@@ -4,7 +4,7 @@ inputs:
 - {name: bucket, type: String}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:test-dennis
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c

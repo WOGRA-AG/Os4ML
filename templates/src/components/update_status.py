@@ -4,8 +4,6 @@ from src.util.error_handler import error_handler
 
 
 @error_handler
-def update_status(
-    status: str = "", *, solution_name: str = ""
-) -> None:
+def update_status(status: str = "", *, solution_name: str = "") -> None:
     """Update the status of the solution with the new status."""
     status_update(solution_name, status)

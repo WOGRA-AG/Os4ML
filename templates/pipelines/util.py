@@ -14,6 +14,12 @@ class StatusMessages(str, enum.Enum):
     finished = "Solver finished"
 
 
+class DatabagStatusMessages(str, enum.Enum):
+    uploading = "Uploading data"
+    inspecting = "Inspecting datatypes of columns"
+    creating = "Creating databag"
+
+
 def load_component(component_dir: str):
     comp_path = pathlib.Path("../../components")
     comp_name = "component.yaml"
