@@ -1,3 +1,15 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  $primary-palette: map.get($theme, 'primary');
+  $bg-color: mat.get-color-from-palette($primary-palette, A100);
+
+  .mat-sidenav-container {
+    background-color: $bg-color;
+  }
+}
+
 @mixin layout() {
   .mat-sidenav-container {
     height: 100%;
@@ -16,5 +28,6 @@
 }
 
 @mixin theme($theme) {
+  @include color($theme);
   @include layout();
 }
