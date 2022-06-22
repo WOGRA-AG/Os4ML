@@ -7,8 +7,7 @@ def sniffle_dataset(
     dataset_type: str = "local_file",
     max_categories: int = 10,
     file_name: str = "",
-    bucket_name: str = "",
-    solution_name: str = "",
+    bucket: str = "",
 ) -> Dataset:
     from src.components.sniffle_dataset import sniffle_dataset
 
@@ -17,8 +16,7 @@ def sniffle_dataset(
         dataset_type,
         max_categories,
         file_name,
-        bucket_name,
-        solution_name=solution_name,
+        bucket=bucket,
     )
 
 

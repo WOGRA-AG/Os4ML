@@ -1,17 +1,13 @@
 from datetime import datetime
 
 from kfp.v2.dsl import Input, Metrics
-from src.jobmanager.solution import (
-    error_status_update,
-    get_solution,
-    put_solution,
-)
+from src.jobmanager.solution import get_solution, put_solution
 from src.util.date import FORMAT_STR
 from src.util.error_handler import error_handler
 
 
-@error_handler(handler_func=error_status_update)
-def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
+@error_handler
+def get_metrics(metrics: Input[Metrics], *, solution_name: str = None) -> None:
     """Get the metrics from kubeflow and add them to the solution."""
     if "accuracy" in metrics.metadata:
         accuracy = metrics.metadata["accuracy"]

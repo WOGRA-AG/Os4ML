@@ -22,7 +22,7 @@ def init_databag_sniffle_upload(
         dataset_type=df_info.outputs["databag_type"],
         max_categories=max_categories,
         file_name=file_name,
-        bucket_name=bucket,
+        bucket=bucket,
     )
     create_databag_op(sniffle.output, bucket)
 

@@ -4,7 +4,6 @@ from typing import List
 import pandas as pd
 
 from kfp.v2.dsl import Dataset, Input
-from src.jobmanager.solution import error_status_update
 from src.kfp.dataset import load_dataset
 from src.model.column import Column
 from src.sniffle.sniffle import (
@@ -16,15 +15,15 @@ from src.util.error_handler import error_handler
 from src.util.uri import extract_filename_from_uri, is_uri
 
 
-@error_handler(handler_func=error_status_update)
+@error_handler
 def sniffle_dataset(
     dataset: Input[Dataset],
     dataset_type: str = "local_file",
     max_categories: int = 10,
     file_name: str = "",
-    bucket_name: str = "",
-    solution_name: str = "",
-) -> Dataset:
+    *,
+    bucket: str = None,
+) -> str:
     """
     Guesses the datatypes of the columns in the dataframe.
     For local_file databags the type is derived from the values in the dataframe.
@@ -46,7 +45,7 @@ def sniffle_dataset(
             "dataset_type": dataset_type,
             "file_name": file_name,
             "databag_name": databag_name,
-            "bucket_name": bucket_name,
+            "bucket_name": bucket,
             "number_rows": num_rows,
             "number_columns": num_cols,
             "columns": column_info_dicts,

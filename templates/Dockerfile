@@ -60,4 +60,4 @@ RUN isort --settings-path ./pyproject.toml --check-only src tests components
 
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 50
+RUN coverage report -m --fail-under 80

@@ -1,22 +1,27 @@
 from functools import wraps
 
+from src.jobmanager.solution import error_status_update
+from src.objectstore.objectstore import error_databag_status_update
 
-def error_handler(handler_func):
+
+def error_handler(func):
     """
-    Decorator that executes the handler_func when an error occurs while executing the decorated func.
-    The Error is thrown again after the execution of the handler_func.
+    Decorator that updates the status of the solution or databag if an error occurs during the executing of func.
     """
 
-    def _error_handler(func):
-        @wraps(func)
-        def func_with_error_status_update(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                if "solution_name" in kwargs:
-                    handler_func(kwargs["solution_name"])
-                raise e
+    @wraps(func)
+    def func_with_error_status_update(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            if solution_name := kwargs.get("solution_name", False):
+                error_status_update(solution_name)
+            elif bucket := kwargs.get("bucket", False):
+                error_databag_status_update(bucket)
+            else:
+                print(
+                    "Error occurred, but neither a solution_name nor a bucket is given"
+                )
+            raise e
 
-        return func_with_error_status_update
-
-    return _error_handler
+    return func_with_error_status_update
