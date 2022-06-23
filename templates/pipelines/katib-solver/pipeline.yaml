@@ -4,7 +4,7 @@ metadata:
   generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-21T09:16:45.180103'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-23T11:29:09.455286'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
@@ -379,12 +379,12 @@ spec:
 
             dataset_url = (
                 f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-                f'{databag["bucket_name"]}/object/{dataset_file_name}'
+                f'{databag["bucket_name"]}/object?object_name={dataset_file_name}'
             )
 
             zip_url = (
                 f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-                f'{databag["bucket_name"]}/object/{databag["file_name"]}'
+                f'{databag["bucket_name"]}/object?object_name={databag["file_name"]}'
             )
 
             namespace = "os4ml"
@@ -663,7 +663,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "2d8d1087320d15ed649e3387a27866368d61ef93878c7cb281a6c519c00317d6",
+        pipelines.kubeflow.org/component_ref: '{"digest": "1502a478d7fdcca7ba2a9d71f5081ff4c9aa514dbce1f6f2cfb3f9028c08babe",
           "url": "../../components/katib-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"dataset_file_name": "{{inputs.parameters.dataset_file_name}}",
           "max_failed_trial_count": "1", "max_trial_count": "5", "parallel_trial_count":
@@ -1092,10 +1092,10 @@ spec:
 
             url = (
                 f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
-                f"/objectstore/{bucket}/object/{file_name}"
+                f"/objectstore/{bucket}/object"
             )
             with open(file.path, "rb") as payload:
-                requests.put(url, data=payload)
+                requests.put(url, data=payload, params={"object_name": file_name})
 
       - --executor_input
       - '{{$}}'
@@ -1128,7 +1128,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
           "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {"file":
           {"metadataPath": "/tmp/inputs/file/data", "schemaTitle": "system.Dataset",
@@ -1136,7 +1136,7 @@ spec:
           "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -1150,7 +1150,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "330f8cd2886148a9ee11e15bb9ff0e0379a5b2ac4565d904f4e618efda946120",
+        pipelines.kubeflow.org/component_ref: '{"digest": "1f61155dab9aee497b7dbba53a110fc2f3b77354652bef8499352807adf82258",
           "url": "../../components/upload-to-objectstore/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.dataset_file_name}}"}'
