@@ -5,7 +5,6 @@ from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
 
-from src.jobmanager.solution import error_status_update
 from src.model.databag_type import DatabagType
 from src.model.file_type import FileType
 from src.objectstore.download import download_file
@@ -13,9 +12,9 @@ from src.util.error_handler import error_handler
 from src.util.uri import extract_filename_from_uri
 
 
-@error_handler(handler_func=error_status_update)
+@error_handler
 def init_databag(
-    bucket: str, file_name: str, solution_name: str = ""
+    file_name: str, *, bucket: str = None, solution_name: str = None
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", str)]):
     """
     Inits the databag by specifying its type and creating the dataset.
@@ -35,7 +34,7 @@ def init_databag(
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
     else:
-        data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
+        data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object?object_name={file_name}"
 
     file_type = FileType.from_file_name(file_name)
     if file_type == FileType.CSV:

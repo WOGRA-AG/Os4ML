@@ -2,7 +2,7 @@ from components.images import python_image
 from kfp.v2.dsl import Dataset, component
 
 
-def get_databag(bucket: str, solution_name: str = "") -> Dataset:
+def get_databag(bucket: str, solution_name: str = None) -> Dataset:
     from src.components.get_databag import get_databag
 
     return get_databag(bucket, solution_name=solution_name)

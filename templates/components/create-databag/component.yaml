@@ -2,7 +2,6 @@ name: Create databag
 inputs:
 - {name: file, type: Dataset}
 - {name: bucket, type: String}
-- {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
     image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -29,10 +28,10 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def create_databag(file: Input[Dataset], bucket: str, solution_name: str = ""):
+      def create_databag(file: Input[Dataset], bucket: str):
           from src.components.create_databag import create_databag
 
-          return create_databag(file, bucket, solution_name=solution_name)
+          return create_databag(file, bucket=bucket)
 
     args:
     - --executor_input

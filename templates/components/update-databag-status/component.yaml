@@ -1,8 +1,8 @@
-name: Upload file to objectstore
+name: Update databag status
 inputs:
-- {name: file, type: Dataset}
-- {name: bucket, type: String}
-- {name: file_name, type: String}
+- {name: status, type: String, default: '', optional: true}
+- {name: depends_on, type: Artifact, optional: true}
+- {name: bucket, type: String, default: '', optional: true}
 implementation:
   container:
     image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -29,20 +29,15 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def upload_file_to_objectstore(
-          file: Input[Dataset], bucket: str, file_name: str
+      def update_databag_status(
+          status: str = "", depends_on: Artifact = None, bucket: str = ""
       ):
-          import requests
+          from src.components.update_databag_status import update_databag_status
 
-          url = (
-              f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
-              f"/objectstore/{bucket}/object"
-          )
-          with open(file.path, "rb") as payload:
-              requests.put(url, data=payload, params={"object_name": file_name})
+          update_databag_status(status, bucket=bucket)
 
     args:
     - --executor_input
     - {executorInput: null}
     - --function_to_execute
-    - upload_file_to_objectstore
+    - update_databag_status

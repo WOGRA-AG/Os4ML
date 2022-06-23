@@ -166,7 +166,7 @@ class {{classname}}(object):
                 'attribute_map': {
 {{#allParams}}
 {{^isBodyParam}}
-                    '{{paramName}}': '{{paramName}}',
+                    '{{paramName}}': '{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}',
 {{/isBodyParam}}
 {{/allParams}}
                 },

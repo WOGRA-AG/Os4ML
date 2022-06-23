@@ -1,7 +1,7 @@
 name: Get databag
 inputs:
 - {name: bucket, type: String}
-- {name: solution_name, type: String, default: '', optional: true}
+- {name: solution_name, type: String, optional: true}
 outputs:
 - {name: Output, type: Dataset}
 implementation:
@@ -30,7 +30,7 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def get_databag(bucket: str, solution_name: str = "") -> Dataset:
+      def get_databag(bucket: str, solution_name: str = None) -> Dataset:
           from src.components.get_databag import get_databag
 
           return get_databag(bucket, solution_name=solution_name)

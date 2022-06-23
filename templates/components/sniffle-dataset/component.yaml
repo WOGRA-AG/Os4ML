@@ -4,8 +4,7 @@ inputs:
 - {name: dataset_type, type: String, default: local_file, optional: true}
 - {name: max_categories, type: Integer, default: '10', optional: true}
 - {name: file_name, type: String, default: '', optional: true}
-- {name: bucket_name, type: String, default: '', optional: true}
-- {name: solution_name, type: String, default: '', optional: true}
+- {name: bucket, type: String, default: '', optional: true}
 outputs:
 - {name: Output, type: Dataset}
 implementation:
@@ -39,8 +38,7 @@ implementation:
           dataset_type: str = "local_file",
           max_categories: int = 10,
           file_name: str = "",
-          bucket_name: str = "",
-          solution_name: str = "",
+          bucket: str = "",
       ) -> Dataset:
           from src.components.sniffle_dataset import sniffle_dataset
 
@@ -49,8 +47,7 @@ implementation:
               dataset_type,
               max_categories,
               file_name,
-              bucket_name,
-              solution_name=solution_name,
+              bucket=bucket,
           )
 
     args:
