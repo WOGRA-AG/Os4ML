@@ -17,22 +17,22 @@ def titanic_rf_pipeline(
     file_name: str = "titanic.xlsx",
     solution_name: str = "",
 ):
-    update_status_op(solution_name, StatusMessages.created.value)
+    update_status_op(StatusMessages.created.value, solution_name=solution_name)
     databag_info = init_databag_op(bucket, file_name)
     preprocess_task = preprocess_data_op(databag_info.outputs["dataset"])
     update_status_op(
-        solution_name,
         StatusMessages.running.value,
         databag_info.outputs["dataset"],
+        solution_name=solution_name,
     )
     rf_output = train_random_forest_op(
         preprocess_task.outputs["x"], preprocess_task.outputs["y"]
     )
     get_metrics_op(rf_output.outputs["metrics"], solution_name)
     update_status_op(
-        solution_name,
         StatusMessages.finished.value,
         rf_output.outputs["metrics"],
+        solution_name=solution_name,
     )
 
 
