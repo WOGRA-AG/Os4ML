@@ -4,7 +4,7 @@ inputs:
 - {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: python:3.10.2-slim
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c
@@ -29,20 +29,9 @@ implementation:
       from typing import *
 
       def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
-          import requests
-          from datetime import datetime
+          from src.components.get_metrics import get_metrics
 
-          if "accuracy" in metrics.metadata:
-              accuracy = metrics.metadata["accuracy"]
-              url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-              solution = requests.get(url).json()
-              if "metrics" not in solution or solution["metrics"] is None:
-                  solution["metrics"] = dict()
-              solution["metrics"]["accuracy"] = accuracy
-              solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-              requests.put(url, json=solution)
+          return get_metrics(metrics, solution_name=solution_name)
 
     args:
     - --executor_input

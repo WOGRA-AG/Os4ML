@@ -15,7 +15,7 @@ implementation:
           python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
       fi
 
-      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
     - sh
     - -ec
     - |
@@ -29,13 +29,16 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def upload_file_to_objectstore(file: Input[Dataset],
-                                     bucket: str,
-                                     file_name: str):
+      def upload_file_to_objectstore(
+          file: Input[Dataset], bucket: str, file_name: str
+      ):
           import requests
-          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1' \
-                f'/objectstore/{bucket}/object/{file_name}'
-          with open(file.path, 'rb') as payload:
+
+          url = (
+              f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
+              f"/objectstore/{bucket}/object/{file_name}"
+          )
+          with open(file.path, "rb") as payload:
               requests.put(url, data=payload)
 
     args:

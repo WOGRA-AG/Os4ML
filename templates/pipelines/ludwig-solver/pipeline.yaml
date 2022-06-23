@@ -4,7 +4,7 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-05-12T13:08:03.183343'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-21T09:16:49.020332'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
@@ -28,7 +28,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -42,21 +42,10 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_databag(bucket: str) -> Dataset:
-            import json
+        def get_databag(bucket: str, solution_name: str = "") -> Dataset:
+            from src.components.get_databag import get_databag
 
-            def camel_to_snake(camel: str):
-                """Converts a camelCase str to a snake_case str."""
-                return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
-
-            import requests
-            url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}'
-            response = requests.get(url)
-            databag = response.json()
-            return json.dumps({
-                camel_to_snake(key): value
-                for key, value in databag.items()
-            })
+            return get_databag(bucket, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -69,7 +58,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        --]
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -89,14 +78,14 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
-          {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
-          "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
+          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -104,15 +93,17 @@ spec:
       - {name: bucket}
       - {name: pipeline-name}
       - {name: pipeline-root}
+      - {name: solution_name}
     outputs:
       artifacts:
       - {name: get-databag-Output, path: /tmp/outputs/Output/data}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "b87fc21744ddbf14ba76b20c0a4f5ae232a9bdd750d36f783dc928bb5d9a94c6",
+        pipelines.kubeflow.org/component_ref: '{"digest": "1eab079c9a8a87f0e3052bb84431ba9700b7007021ae7981ad3df7094c6c883a",
           "url": "../../components/get-databag/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
+          "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -151,20 +142,9 @@ spec:
         from typing import *
 
         def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
-            import requests
-            from datetime import datetime
+            from src.components.get_metrics import get_metrics
 
-            if "accuracy" in metrics.metadata:
-                accuracy = metrics.metadata["accuracy"]
-                url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-                solution = requests.get(url).json()
-                if "metrics" not in solution or solution["metrics"] is None:
-                    solution["metrics"] = dict()
-                solution["metrics"]["accuracy"] = accuracy
-                solution["completionTime"] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-                requests.put(url, json=solution)
+            return get_metrics(metrics, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -197,14 +177,14 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}}, "inputArtifacts": {"metrics": {"metadataPath": "/tmp/inputs/metrics/data",
           "schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
           "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -217,7 +197,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "e5612aa4629dc6d0806fb0e86f32fc26f43d8cb125780d6a37917bda6b73f47d",
+        pipelines.kubeflow.org/component_ref: '{"digest": "a5173deef9d23be315e89d045fa7f194d528e54a688835f7497de7192438f709",
           "url": "../../components/get-metrics/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
@@ -243,7 +223,7 @@ spec:
             python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
         fi
 
-        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'pandas>=1.4.0' 'xlrd>=2.0.1' 'openpyxl>=3.0.9' 'kfp==1.8.12' && "$0" "$@"
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
       - |
@@ -258,99 +238,11 @@ spec:
         from typing import *
 
         def init_databag(
-            bucket: str, file_name: str
-        ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset),]):
-            """
-            Inits the databag by specifying its type and creating the dataset.
-            If the file is a zip file it should only contain directories in the top level.
-            The names of them are used as labels and the files they contain are used as features.
-            """
-            import enum
-            import pathlib
-            import tempfile
-            import zipfile
-            from collections.abc import Generator
-            from typing import BinaryIO
-            from urllib.parse import urlparse
+            bucket: str, file_name: str, solution_name: str = ""
+        ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
+            from src.components.init_databag import init_databag
 
-            import pandas as pd
-            import requests
-
-            class DatabagTypes(str, enum.Enum):
-                local_file = "local_file"
-                zip_file = "zip_file"
-                file_url = "file_url"
-                shepard_url = "shepard_url"
-
-            def _is_uri(uri: str) -> bool:
-                parsed = urlparse(uri)
-                return True if parsed.scheme and parsed.netloc else False
-
-            def _is_shepard_uri(uri: str) -> bool:
-                if not _is_uri(uri):
-                    return False
-                if '/shepard/' in uri:
-                    return True
-                return False
-
-            def _extract_filename_from_uri(file_url):
-                parsed_url = urlparse(file_url)
-                return pathlib.Path(parsed_url.path).name
-
-            def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
-                response = requests.get(url, stream=True)
-                for chunk in response.iter_content(chunk_size=chunk_size):
-                    output_file.write(chunk)
-
-            def iter_dirs_of_zip_with_labels(
-                zip_file: BinaryIO,
-            ) -> Generator[tuple[str, str], None, None]:
-                with zipfile.ZipFile(zip_file) as root:
-                    unpacked_root_dir = next(zipfile.Path(root).iterdir())
-                    for label_dir in unpacked_root_dir.iterdir():
-                        label = label_dir.name
-                        for file in label_dir.iterdir():
-                            file_name = file.filename.resolve().relative_to(
-                                unpacked_root_dir.parent.filename.resolve()
-                            )
-                            yield str(file_name), label
-
-            databag_type = None
-
-            if _is_uri(file_name):
-                data_uri = file_name
-                file_name = _extract_filename_from_uri(file_name)
-                databag_type = DatabagTypes.file_url
-            else:
-                data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
-
-            file_path = pathlib.Path(file_name)
-            match file_path.suffix:
-                case ".csv":
-                    df = pd.read_csv(data_uri)
-                    databag_type = databag_type or DatabagTypes.local_file
-                case ".xls" | ".xlsx" | ".xlsm" | ".xlsb" | ".odf" | ".ods":
-                    df = pd.read_excel(data_uri, sheet_name=0)
-                    databag_type = databag_type or DatabagTypes.local_file
-                case ".zip":
-                    with tempfile.NamedTemporaryFile() as tmp_file:
-                        download_file(data_uri, tmp_file)
-                        df = pd.DataFrame(
-                            iter_dirs_of_zip_with_labels(tmp_file),
-                            columns=["file", "label"],
-                        )
-                    databag_type = DatabagTypes.zip_file
-                case _:
-                    raise NotImplementedError()
-
-            databag_info = NamedTuple(
-                "DatabagInfo",
-                [
-                    ("databag_type", str),
-                    ("dataset", Dataset),
-                ],
-            )
-            return databag_info(databag_type.value, df.to_csv(index=False))
+            return init_databag(bucket, file_name, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -363,7 +255,8 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        'file_name={{inputs.parameters.file_name}}', --]
+        'file_name={{inputs.parameters.file_name}}', 'solution_name={{inputs.parameters.solution_name}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -383,15 +276,16 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}, "file_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {"databag_type": {"type": "STRING", "path": "/tmp/outputs/databag_type/data"}},
-          "outputArtifacts": {"dataset": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
+          "STRING"}, "file_name": {"type": "STRING"}, "solution_name": {"type": "STRING"}},
+          "inputArtifacts": {}, "outputParameters": {"databag_type": {"type": "STRING",
+          "path": "/tmp/outputs/databag_type/data"}}, "outputArtifacts": {"dataset":
+          {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -400,6 +294,7 @@ spec:
       - {name: file_name}
       - {name: pipeline-name}
       - {name: pipeline-root}
+      - {name: solution_name}
     outputs:
       artifacts:
       - {name: init-databag-databag_type, path: /tmp/outputs/databag_type/data}
@@ -407,10 +302,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "bdc7a0c6ed3b402af0f23b40a16c7350e06929c17269fd3a417e68c22988de4c",
+        pipelines.kubeflow.org/component_ref: '{"digest": "b9462fb25efeabd43add68017e91e5764286c226f55b4eae3fc0c6f4cb09896b",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "{{inputs.parameters.file_name}}"}'
+          "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -456,140 +351,20 @@ spec:
             batch_size: int = 8,
             epochs: int = 50,
             early_stop: int = 10,
-        ):
-            import dataclasses
-            import enum
-            import json
-            import logging
-            import pathlib
-            import zipfile
-            from typing import BinaryIO, List
+            solution_name: str = "",
+        ) -> None:
+            from src.components.ludwig_solver import ludwig_solver
 
-            import pandas as pd
-            import requests
-            from ludwig.api import LudwigModel
-            from sklearn.metrics import confusion_matrix
-            from sklearn.model_selection import train_test_split
-
-            class ColumnDataType(str, enum.Enum):
-                NUMERICAL = "numerical"
-                DATE = "date"
-                CATEGORY = "category"
-                TEXT = "text"
-                IMAGE = "image"
-
-            class ColumnUsage(str, enum.Enum):
-                LABEL = "label"
-                FEATURE = "feature"
-
-            class DatabagTypes(str, enum.Enum):
-                local_file = "local_file"
-                zip_file = "zip_file"
-
-            @dataclasses.dataclass
-            class Column:
-                name: str
-                type: str
-                usage: str
-                num_entries: int
-
-            def build_model_definition(columns: List[Column]):
-                definition = {
-                    "input_features": [],
-                    "output_features": [],
-                    "training": {
-                        "batch_size": batch_size,
-                        "epochs": epochs,
-                        "early_stop": early_stop,
-                    },
-                }
-                feature_descriptions = (
-                    create_feature_description(column)
-                    for column in columns
-                    if column.usage == ColumnUsage.FEATURE
-                )
-                label_descriptions = (
-                    create_label_description(column)
-                    for column in columns
-                    if column.usage == ColumnUsage.LABEL
-                )
-                definition["input_features"].extend(feature_descriptions)
-                definition["output_features"].extend(label_descriptions)
-                return definition
-
-            def create_feature_description(feature: Column) -> dict:
-                feature_desc = {
-                    "name": feature.name,
-                    "type": feature.type,
-                }
-                if feature.type == ColumnDataType.NUMERICAL:
-                    feature_desc["preprocessing"] = {"fill_value": 0}
-                return feature_desc
-
-            def create_label_description(label: Column) -> dict:
-                label_type = (
-                    ColumnDataType.NUMERICAL
-                    if label.type == ColumnDataType.NUMERICAL
-                    else ColumnDataType.CATEGORY
-                )
-                return {
-                    "name": label.name,
-                    "type": label_type,
-                }
-
-            def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
-                response = requests.get(url, stream=True)
-                for chunk in response.iter_content(chunk_size=chunk_size):
-                    output_file.write(chunk)
-
-            def path_to_absolute(rel_path: str):
-                rel = pathlib.Path(rel_path)
-                return str(rel.resolve())
-
-            def download_zip(output):
-                bucket = databag["bucket_name"]
-                file_name = databag["file_name"]
-                url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object/{file_name}"
-                with open(output, "wb") as output_file:
-                    download_file(url, output_file)
-
-            with open(databag_file.path) as file:
-                databag = json.load(file)
-
-            columns = [Column(**column_dict) for column_dict in databag["columns"]]
-
-            model_definition = build_model_definition(columns)
-            model = LudwigModel(model_definition, logging_level=logging.INFO)
-
-            with open(dataset_file.path, "r") as input_file:
-                dataset = pd.read_csv(input_file)
-
-            if databag["dataset_type"] == DatabagTypes.zip_file:
-                zip_file = "dataset.zip"
-                download_zip(zip_file)
-                with zipfile.ZipFile(zip_file) as ds_zip:
-                    ds_zip.extractall()
-                dataset["file"] = dataset["file"].map(path_to_absolute)
-
-            df_tmp, df_test = train_test_split(dataset, test_size=0.1, random_state=42)
-            df_train, df_validate = train_test_split(
-                df_tmp, test_size=0.1, random_state=42
+            ludwig_solver(
+                dataset_file,
+                databag_file,
+                cls_metrics,
+                metrics,
+                batch_size,
+                epochs,
+                early_stop,
+                solution_name=solution_name,
             )
-            label = model_definition["output_features"][0]["name"]
-            categories = dataset[label].unique().astype(str)
-
-            model.train(df_train, df_validate, df_test)
-            stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
-
-            accuracy = float(stats[label]["accuracy"])
-
-            prediction_key = next(iter(pred))
-            y_pred = pred[prediction_key]
-            y_true = df_test[label].astype(str)
-            conf_matrix = confusion_matrix(y_true, y_pred, labels=categories).tolist()
-
-            metrics.log_metric("accuracy", accuracy)
-            cls_metrics.log_confusion_matrix(categories, conf_matrix)
 
       - --executor_input
       - '{{$}}'
@@ -602,7 +377,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, batch_size=8, early_stop=10, 'epochs={{inputs.parameters.epochs}}',
-        --]
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -622,20 +397,21 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
-          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}}, "inputArtifacts":
-          {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data", "schemaTitle":
-          "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "dataset_file":
-          {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle": "system.Dataset",
-          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
-          "outputArtifacts": {"cls_metrics": {"schemaTitle": "system.ClassificationMetrics",
-          "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/cls_metrics/data"},
-          "metrics": {"schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
-          "0.0.1", "metadataPath": "/tmp/outputs/metrics/data"}}}'}
+          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}, "solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"databag_file": {"metadataPath":
+          "/tmp/inputs/databag_file/data", "schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1"}, "dataset_file": {"metadataPath": "/tmp/inputs/dataset_file/data",
+          "schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {"cls_metrics": {"schemaTitle":
+          "system.ClassificationMetrics", "instanceSchema": "", "schemaVersion": "0.0.1",
+          "metadataPath": "/tmp/outputs/cls_metrics/data"}, "metrics": {"schemaTitle":
+          "system.Metrics", "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath":
+          "/tmp/outputs/metrics/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: gitlab-registry.wogra.com/developer/wogra/os4ml/template-ludwig
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -643,6 +419,7 @@ spec:
       - {name: epochs}
       - {name: pipeline-name}
       - {name: pipeline-root}
+      - {name: solution_name}
       artifacts:
       - {name: get-databag-Output, path: /tmp/inputs/databag_file/data}
       - {name: init-databag-dataset, path: /tmp/inputs/dataset_file/data}
@@ -653,10 +430,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "2a62e8181132660d92022e9cba998d8f8f0ed36dba09372bd6e4931fc2f7c2bf",
+        pipelines.kubeflow.org/component_ref: '{"digest": "7ce27f8c1ca973215150496859a390ccd94fb90c27a43fea03175e9956cf2737",
           "url": "../../components/ludwig-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
-          "10", "epochs": "{{inputs.parameters.epochs}}"}'
+          "10", "epochs": "{{inputs.parameters.epochs}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -687,6 +464,7 @@ spec:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
       - name: get-metrics
         template: get-metrics
         dependencies: [ludwig-solver]
@@ -705,6 +483,7 @@ spec:
           - {name: file_name, value: '{{inputs.parameters.file_name}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
       - name: ludwig-solver
         template: ludwig-solver
         dependencies: [get-databag, init-databag]
@@ -713,6 +492,7 @@ spec:
           - {name: epochs, value: '{{inputs.parameters.epochs}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
           artifacts:
           - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
           - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
@@ -768,15 +548,12 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def update_status(solution_name: str = "", status: str = "", depends_on: Artifact = None):
-            import requests
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
 
-            url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-            solution = requests.get(url).json()
-            solution["status"] = status
-
-            requests.put(url, json=solution)
+            update_status(solution_name, status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -809,13 +586,13 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {},
           "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -826,7 +603,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "d792d5dfcb1825d1452f5784a0d8e487d2c7d8c2d6dd5bf53e67d7a2c0b59406",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solution created"}'
@@ -867,15 +644,12 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def update_status(solution_name: str = "", status: str = "", depends_on: Artifact = None):
-            import requests
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
 
-            url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-            solution = requests.get(url).json()
-            solution["status"] = status
-
-            requests.put(url, json=solution)
+            update_status(solution_name, status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -908,7 +682,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
           {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
@@ -916,7 +690,7 @@ spec:
           "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -929,7 +703,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "d792d5dfcb1825d1452f5784a0d8e487d2c7d8c2d6dd5bf53e67d7a2c0b59406",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver running"}'
@@ -970,15 +744,12 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def update_status(solution_name: str = "", status: str = "", depends_on: Artifact = None):
-            import requests
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
 
-            url = f"http://os4ml-jobmanager.os4ml:8000/apis/v1beta1/jobmanager/solution/{solution_name}"
-
-            solution = requests.get(url).json()
-            solution["status"] = status
-
-            requests.put(url, json=solution)
+            update_status(solution_name, status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -1011,7 +782,7 @@ spec:
       - name: ENABLE_CACHING
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
-      - {name: KFP_V2_IMAGE, value: 'python:3.10.2-slim'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
           {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
           {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
@@ -1019,7 +790,7 @@ spec:
           "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
-      image: python:3.10.2-slim
+      image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
@@ -1032,7 +803,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "d792d5dfcb1825d1452f5784a0d8e487d2c7d8c2d6dd5bf53e67d7a2c0b59406",
+        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver finished"}'
