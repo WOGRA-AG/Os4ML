@@ -1,5 +1,4 @@
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
-from src.jobmanager.solution import error_status_update
 from src.load.column import extract_columns
 from src.load.databag import load_databag
 from src.load.dataset import build_dataset
@@ -10,7 +9,7 @@ from src.ludwig.model import build_model, train_model
 from src.util.error_handler import error_handler
 
 
-@error_handler(handler_func=error_status_update)
+@error_handler
 def ludwig_solver(
     dataset_file: Input[Dataset],
     databag_file: Input[Dataset],
@@ -21,8 +20,9 @@ def ludwig_solver(
     early_stop: int = 10,
     test_split: float = 0.1,
     validation_split: float = 0.1,
-    solution_name: str = "",
-):
+    *,
+    solution_name: str = None,
+) -> None:
     """Train a ludwig model for the dataset."""
     databag = load_databag(databag_file.path)
     columns = extract_columns(databag)

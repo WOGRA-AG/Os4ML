@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-21T09:16:53.128539'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-22T10:20:04.502967'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -144,7 +144,7 @@ spec:
         ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
             from src.components.init_databag import init_databag
 
-            return init_databag(bucket, file_name, solution_name=solution_name)
+            return init_databag(file_name, bucket=bucket, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -202,7 +202,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "b9462fb25efeabd43add68017e91e5764286c226f55b4eae3fc0c6f4cb09896b",
+        pipelines.kubeflow.org/component_ref: '{"digest": "f12adb6834b7409870d7c2c46978e5ac5af710c6e4083c92e6ecffb0bf7442b3",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}", "solution_name": ""}'
@@ -653,7 +653,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -703,7 +703,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solution created"}'
@@ -749,7 +749,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -803,7 +803,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver running"}'
@@ -849,7 +849,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -903,7 +903,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver finished"}'

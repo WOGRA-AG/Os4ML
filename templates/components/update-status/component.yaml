@@ -34,7 +34,7 @@ implementation:
       ):
           from src.components.update_status import update_status
 
-          update_status(solution_name, status, solution_name=solution_name)
+          update_status(status, solution_name=solution_name)
 
     args:
     - --executor_input
