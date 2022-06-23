@@ -4,7 +4,7 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-23T11:29:31.264314'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-22T10:20:00.768848'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
@@ -42,7 +42,7 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_databag(bucket: str, solution_name: str = "") -> Dataset:
+        def get_databag(bucket: str, solution_name: str = None) -> Dataset:
             from src.components.get_databag import get_databag
 
             return get_databag(bucket, solution_name=solution_name)
@@ -100,7 +100,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "1eab079c9a8a87f0e3052bb84431ba9700b7007021ae7981ad3df7094c6c883a",
+        pipelines.kubeflow.org/component_ref: '{"digest": "c05cdd36c1d47eb47d58e5d4eb239f34c2925d999a3926941081e7e2a88cbbf9",
           "url": "../../components/get-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "solution_name": "{{inputs.parameters.solution_name}}"}'
@@ -242,7 +242,7 @@ spec:
         ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
             from src.components.init_databag import init_databag
 
-            return init_databag(bucket, file_name, solution_name=solution_name)
+            return init_databag(file_name, bucket=bucket, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -302,7 +302,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "b9462fb25efeabd43add68017e91e5764286c226f55b4eae3fc0c6f4cb09896b",
+        pipelines.kubeflow.org/component_ref: '{"digest": "f12adb6834b7409870d7c2c46978e5ac5af710c6e4083c92e6ecffb0bf7442b3",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
@@ -553,7 +553,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -603,7 +603,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solution created"}'
@@ -649,7 +649,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -703,7 +703,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver running"}'
@@ -749,7 +749,7 @@ spec:
         ):
             from src.components.update_status import update_status
 
-            update_status(solution_name, status, solution_name=solution_name)
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -803,7 +803,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "98b38c9679bcb7d768f770fb238d6c8069da0702ad384f9c0c8d2850a95ca817",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver finished"}'

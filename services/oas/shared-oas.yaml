@@ -73,6 +73,8 @@ components:
             $ref: "#/components/schemas/Column"
         creationTime:
           type: string
+        status:
+          type: string
     PipelineTemplate:
       properties:
         name:

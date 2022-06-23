@@ -22,3 +22,13 @@ def download_databag_from_bucket(bucket: str) -> Dict:
 def put_databag(databag: Dict, bucket: str):
     url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}"
     requests.put(url, json=databag)
+
+
+def update_databag_status(bucket: str, status: str):
+    databag = download_databag_from_bucket(bucket)
+    databag["status"] = status
+    put_databag(databag, bucket)
+
+
+def error_databag_status_update(bucket: str):
+    update_databag_status(bucket, "error")

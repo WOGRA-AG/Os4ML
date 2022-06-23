@@ -9,7 +9,7 @@ def init_databag(
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
     from src.components.init_databag import init_databag
 
-    return init_databag(bucket, file_name, solution_name=solution_name)
+    return init_databag(file_name, bucket=bucket, solution_name=solution_name)
 
 
 if __name__ == "__main__":

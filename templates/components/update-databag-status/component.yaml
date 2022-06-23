@@ -1,15 +1,11 @@
-name: Sniffle dataset
+name: Update databag status
 inputs:
-- {name: dataset, type: Dataset}
-- {name: dataset_type, type: String, default: local_file, optional: true}
-- {name: max_categories, type: Integer, default: '10', optional: true}
-- {name: file_name, type: String, default: '', optional: true}
+- {name: status, type: String, default: '', optional: true}
+- {name: depends_on, type: Artifact, optional: true}
 - {name: bucket, type: String, default: '', optional: true}
-outputs:
-- {name: Output, type: Dataset}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c
@@ -33,25 +29,15 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def sniffle_dataset(
-          dataset: Input[Dataset],
-          dataset_type: str = "local_file",
-          max_categories: int = 10,
-          file_name: str = "",
-          bucket: str = "",
-      ) -> Dataset:
-          from src.components.sniffle_dataset import sniffle_dataset
+      def update_databag_status(
+          status: str = "", depends_on: Artifact = None, bucket: str = ""
+      ):
+          from src.components.update_databag_status import update_databag_status
 
-          return sniffle_dataset(
-              dataset,
-              dataset_type,
-              max_categories,
-              file_name,
-              bucket=bucket,
-          )
+          update_databag_status(status, bucket=bucket)
 
     args:
     - --executor_input
     - {executorInput: null}
     - --function_to_execute
-    - sniffle_dataset
+    - update_databag_status

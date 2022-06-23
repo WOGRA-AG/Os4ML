@@ -7,7 +7,7 @@ def update_status(
 ):
     from src.components.update_status import update_status
 
-    update_status(solution_name, status, solution_name=solution_name)
+    update_status(status, solution_name=solution_name)
 
 
 if __name__ == "__main__":
