@@ -72,12 +72,12 @@ implementation:
 
           dataset_url = (
               f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-              f'{databag["bucket_name"]}/object/{dataset_file_name}'
+              f'{databag["bucket_name"]}/object?object_name={dataset_file_name}'
           )
 
           zip_url = (
               f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-              f'{databag["bucket_name"]}/object/{databag["file_name"]}'
+              f'{databag["bucket_name"]}/object?object_name={databag["file_name"]}'
           )
 
           namespace = "os4ml"

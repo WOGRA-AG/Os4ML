@@ -5,7 +5,7 @@ inputs:
 - {name: file_name, type: String}
 implementation:
   container:
-    image: python:3.10.2-slim
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c
@@ -36,10 +36,10 @@ implementation:
 
           url = (
               f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
-              f"/objectstore/{bucket}/object/{file_name}"
+              f"/objectstore/{bucket}/object"
           )
           with open(file.path, "rb") as payload:
-              requests.put(url, data=payload)
+              requests.put(url, data=payload, params={"object_name": file_name})
 
     args:
     - --executor_input
