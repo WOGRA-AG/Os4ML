@@ -1,5 +1,5 @@
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM python:3.10.4-slim as python-base
+FROM python:3.8.9-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -55,6 +55,9 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 
 
 FROM development AS lint
-RUN black --config ./pyproject.toml --check .
-RUN isort --settings-path ./pyproject.toml --check-only .
-CMD ["tail", "-f", "/dev/null"]
+RUN black --config ./pyproject.toml --check src tests components
+RUN isort --settings-path ./pyproject.toml --check-only src tests components
+
+FROM development AS test
+RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
+RUN coverage report -m --fail-under 50

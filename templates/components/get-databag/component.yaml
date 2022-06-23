@@ -1,11 +1,12 @@
 name: Get databag
 inputs:
 - {name: bucket, type: String}
+- {name: solution_name, type: String, default: '', optional: true}
 outputs:
 - {name: Output, type: Dataset}
 implementation:
   container:
-    image: python:3.10.2-slim
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c
@@ -15,7 +16,7 @@ implementation:
           python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
       fi
 
-      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.11' && "$0" "$@"
+      PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
     - sh
     - -ec
     - |
@@ -29,21 +30,10 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def get_databag(bucket: str) -> Dataset:
-          import json
+      def get_databag(bucket: str, solution_name: str = "") -> Dataset:
+          from src.components.get_databag import get_databag
 
-          def camel_to_snake(camel: str):
-              """Converts a camelCase str to a snake_case str."""
-              return ''.join('_' + c.lower() if c.isupper() else c for c in camel)
-
-          import requests
-          url = f'http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/databag/{bucket}'
-          response = requests.get(url)
-          databag = response.json()
-          return json.dumps({
-              camel_to_snake(key): value
-              for key, value in databag.items()
-          })
+          return get_databag(bucket, solution_name=solution_name)
 
     args:
     - --executor_input

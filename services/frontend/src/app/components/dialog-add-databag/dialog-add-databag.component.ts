@@ -49,12 +49,12 @@ export class DialogAddDatabagComponent {
     };
     try {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
-      runId = await firstValueFrom(
-        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
-      );
       if (!this.fileUrl) {
         await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       }
+      runId = await firstValueFrom(
+        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
+      );
       await this.retrievePipelineStatus(runId);
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
