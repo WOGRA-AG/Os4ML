@@ -40,7 +40,6 @@ kubectl get services -n <namespace>
 kubectl get pods -n <service>
 kubectl get events -n <namespace> 
 ```
-```
 ### Create
 ```sh
 kubectl create namespace <namespace>
