@@ -1,0 +1,9 @@
+include:
+  - local: 'gitlab/shared/.gitlab-ci.build-development.yml'
+
+validate-templates:
+  extends:
+    - .build-development
+  variables:
+    DIR: 'templates'
+    IMG_NAME: 'templates'
