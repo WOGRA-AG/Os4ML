@@ -1,18 +1,18 @@
 import uuid
 
-from build.openapi_client.api.objectstore_api import ObjectstoreApi
 from build.openapi_client.model.pipeline_template import PipelineTemplate
 from build.openapi_server.models.create_pipeline import CreatePipeline
 from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.run_params import RunParams
+from services.init_api_clients import init_objectstore_api
 from services.kfp_service import KfpService
 
 
 class TemplateService:
     def __init__(self, kfp_client=None):
         self.kfp_service = KfpService(client=kfp_client)
-        self.objectstore = ObjectstoreApi()
+        self.objectstore = init_objectstore_api()
 
     def run_pipeline_template(
         self, pipeline_name: str, params: RunParams

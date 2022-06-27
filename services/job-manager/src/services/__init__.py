@@ -17,3 +17,5 @@ SOLUTION_CONFIG_FILE_NAME: str = (
     if os.getenv("SOLUTION_CONFIG_FILE_NAME") is None
     else os.getenv("SOLUTION_CONFIG_FILE_NAME")
 )
+
+OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", "os4ml")
