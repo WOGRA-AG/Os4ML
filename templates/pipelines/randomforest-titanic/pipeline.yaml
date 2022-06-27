@@ -4,7 +4,7 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-22T10:20:04.502967'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:54.731680'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
@@ -140,7 +140,7 @@ spec:
         from typing import *
 
         def init_databag(
-            bucket: str, file_name: str, solution_name: str = ""
+            file_name: str, bucket: str, solution_name: str = ""
         ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
             from src.components.init_databag import init_databag
 
@@ -156,8 +156,8 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        'file_name={{inputs.parameters.file_name}}', solution_name=, --]
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.file_name}}',
+        'file_name={{inputs.parameters.bucket}}', solution_name=, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -202,10 +202,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "f12adb6834b7409870d7c2c46978e5ac5af710c6e4083c92e6ecffb0bf7442b3",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2678eef377710fcbd0b47d78e64f0d1cb25150d409f3de1be59b3fdf545efa01",
           "url": "../../components/init-databag/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "{{inputs.parameters.file_name}}", "solution_name": ""}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.file_name}}",
+          "file_name": "{{inputs.parameters.bucket}}", "solution_name": ""}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
