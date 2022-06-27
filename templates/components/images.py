@@ -1,3 +1,4 @@
-python_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest"
-pandas_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest"
-ludwig_image = "gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest"
+_tag = "latest"
+python_image = f"gitlab-registry.wogra.com/developer/wogra/os4ml/python:{_tag}"
+pandas_image = f"gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:{_tag}"
+ludwig_image = f"gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:{_tag}"
