@@ -8,7 +8,6 @@
     - cd $DIR
     - docker buildx build
       -f Dockerfile
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
       --build-context templates="../../"
