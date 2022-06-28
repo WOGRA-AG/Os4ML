@@ -1,0 +1,49 @@
+.headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-container {
+  max-height: 726px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-button {
+  align-self: end;
+}
+
+.back-button {
+  align-self: center;
+  background: none;
+}
+
+.divider {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.button-spacer {
+  flex: auto;
+}
+
+.upload-container {
+  min-width: 270px;
+  max-width: 270px;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  overflow: auto;
+}
+
+.columns {
+  padding-top: 20px;
+  overflow: auto;
+}
