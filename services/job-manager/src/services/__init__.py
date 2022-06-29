@@ -8,4 +8,4 @@ SOLUTION_CONFIG_FILE_NAME: str = os.getenv(
     "SOLUTION_CONFIG_FILE_NAME", default="solution.json"
 )
 
-OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", "os4ml")
+OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
