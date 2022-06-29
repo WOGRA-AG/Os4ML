@@ -1,7 +1,6 @@
 from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
-
 from pipelines.util import StatusMessages, load_component
 
 init_databab_op = load_component("init-databag")
@@ -24,7 +23,9 @@ def katib_solver(
     df_info = init_databab_op(bucket, file_name)
     upload_op(df_info.outputs["dataset"], bucket, dataset_file_name)
     update_status_op(
-        StatusMessages.running.value, df_info.outputs["dataset"], solution_name=solution_name
+        StatusMessages.running.value,
+        df_info.outputs["dataset"],
+        solution_name=solution_name,
     )
     databag = get_databag_op(bucket)
     katib_output = katib_solver_op(
@@ -33,11 +34,13 @@ def katib_solver(
         parallel_trial_count=1,
         max_trial_count=5,
     )
-    get_metrics_op(katib_output.outputs["metrics"], solution_name=solution_name)
+    get_metrics_op(
+        katib_output.outputs["metrics"], solution_name=solution_name
+    )
     update_status_op(
         StatusMessages.finished.value,
         katib_output.outputs["metrics"],
-        solution_name=solution_name
+        solution_name=solution_name,
     )
 
 

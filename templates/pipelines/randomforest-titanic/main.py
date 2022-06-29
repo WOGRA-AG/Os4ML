@@ -1,7 +1,6 @@
 from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
-
 from pipelines.util import StatusMessages, load_component
 
 init_databag_op = load_component("init-databag")
