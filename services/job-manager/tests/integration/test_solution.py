@@ -5,6 +5,7 @@ from mocks.kfp_mock_client import KfpMockClient
 from pytest_mock import MockerFixture
 
 from api.solution_api_service import SolutionApiService
+from build.openapi_client.api.objectstore_api import ObjectstoreApi
 from build.openapi_server.apis.solution_api import (
     get_solution,
     post_solution,
@@ -21,11 +22,10 @@ mock_api_service = SolutionApiService(solution_service=mock_solution_service)
 @pytest.mark.asyncio
 async def test_get_solution(mocker: MockerFixture):
     solutions = [{"name": "solution_1"}, {"name": "other2"}]
-    get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests,
-        "get",
-        return_value=get_mock,
+        ObjectstoreApi,
+        "get_all_solutions",
+        return_value=solutions,
     )
 
     solution: Solution = await get_solution(
@@ -38,11 +38,10 @@ async def test_get_solution(mocker: MockerFixture):
 @pytest.mark.asyncio
 async def test_get_solution_not_found(mocker: MockerFixture):
     solutions = [{"name": "other1"}, {"name": "other2"}]
-    get_mock = mocker.MagicMock(json=lambda: solutions)
     mocker.patch.object(
-        requests,
-        "get",
-        return_value=get_mock,
+        ObjectstoreApi,
+        "get_all_solutions",
+        return_value=solutions,
     )
 
     with pytest.raises(HTTPException) as e:
