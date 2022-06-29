@@ -23,7 +23,7 @@ black = "^22.3.0"
 [tool.black]
 # https://github.com/psf/black
 line-length = 79
-target_version = ['py310']
+target_version = ['py39']
 exclude = '''
 (
   /(
@@ -40,6 +40,7 @@ exclude = '''
 [tool.isort]
 # https://github.com/timothycrosley/isort
 # https://github.com/timothycrosley/isort/wiki/isort-Settings
+profile = "black"
 line_length = 79
 indent = '    '
 multi_line_output = 3

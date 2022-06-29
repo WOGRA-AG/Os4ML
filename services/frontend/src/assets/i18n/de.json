@@ -25,9 +25,16 @@
     "define_databag": {
       "title": "Add Databag",
       "label": "Databag Name",
-      "main_button": "Create Bag",
+      "main_button": "Create Databag",
       "placeholder": "Databag Name",
       "back_button": "Back",
+      "columns": "Databag Fields"
+    },
+    "edit_databag": {
+      "title": "Edit Databag",
+      "label": "Databag Name",
+      "main_button": "Save Databag",
+      "placeholder": "Databag Name",
       "columns": "Databag Fields"
     },
     "solution_list": {

@@ -1,10 +1,6 @@
 {
   "report": {
-    "title": "Report",
-    "upload": {
-      "completed": "Upload completed",
-      "failed": "Upload failed"
-    }
+    "title": "Report"
   },
   "upload": {
     "button": {
@@ -15,7 +11,7 @@
     "title": "Os4ML"
   },
   "error": {
-    "confirm": "Confirm",
+    "confirm": "OK",
     "no_dataset": "No Dataset specified",
     "run_failed": "Pipeline Run Failed"
   },
@@ -29,23 +25,31 @@
     "define_databag": {
       "title": "Add Databag",
       "label": "Databag Name",
-      "main_button": "Create Bag",
+      "main_button": "Create Databag",
       "placeholder": "Databag Name",
       "back_button": "Back",
       "columns": "Databag Fields"
     },
+    "edit_databag": {
+      "title": "Edit Databag",
+      "label": "Databag Name",
+      "main_button": "Save Databag",
+      "placeholder": "Databag Name",
+      "columns": "Databag Fields"
+    },
+    "solution_list": {
+      "field": "Field"
+    },
     "define_input": {
       "title": "Define Input",
       "description": "mark fields from your data bag, which the AI may use as input for its training",
-      "main_button": "Next Step",
-      "field": "Field"
+      "main_button": "Next Step"
     },
     "define_output": {
       "title": "Define Output",
       "description": "mark fields from your data bag, which you want the AI to predict",
       "main_button": "Next Step",
-      "back_button": "Back",
-      "field": "Field"
+      "back_button": "Back"
     },
     "define_solver": {
       "title": "Define Solver",
@@ -61,12 +65,12 @@
       "fail": "Upload failed"
     },
     "upload-data": {
-      "upload": "Please upload your dataset"
+      "upload": "Bitte wähle ein Datenset"
     },
     "solver": {
-      "upload": "Please choose your pipeline configuration"
+      "upload": "Bitte wähle deinen Solver"
     },
-    "dashboard": {
+        "dashboard": {
       "title": "Dashboard"
     },
     "databag": {
@@ -87,23 +91,26 @@
         },
         "buttons": {
           "addDatabag": "Add Databag"
+        },
+        "message": {
+          "noData": "Can't find databag for search string: "
         }
       },
       "empty": {
         "title": "Get started with Machine Learning",
         "subtitle": "Databags allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
         "main_button": "Create Databag"
+      }
+    },
+    "solution": {
+      "title": "Solutions",
+      "empty": {
+        "title": "Analyze your Data with Machine Learning",
+        "subtitle": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
+        "main_button": "Create Solution"
       },
-      "solution": {
-        "title": "Solutions",
-        "empty": {
-          "title": "Analyze your Data with Machine Learning",
-          "subtitle": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
-          "main_button": "Create Solution"
-        },
-        "add": {
-          "button": "Add Solution"
-        }
+      "add": {
+        "button": "Add Solution"
       }
     }
   }

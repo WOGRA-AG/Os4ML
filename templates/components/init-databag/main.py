@@ -5,7 +5,7 @@ from kfp.v2.dsl import Dataset, component
 
 
 def init_databag(
-    bucket: str, file_name: str, solution_name: str = ""
+    file_name: str, bucket: str, solution_name: str = ""
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
     from src.components.init_databag import init_databag
 

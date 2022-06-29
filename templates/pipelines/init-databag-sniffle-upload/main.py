@@ -16,7 +16,7 @@ def init_databag_sniffle_upload(
     max_categories: int = 10,
 ):
     update_databag_status_op(DatabagStatusMessages.uploading.value, bucket=bucket)
-    df_info = init_databag_op(bucket, file_name)
+    df_info = init_databag_op(file_name, bucket=bucket)
     update_databag_status_op(DatabagStatusMessages.inspecting.value, depends_on=df_info.outputs["dataset"], bucket=bucket)
     sniffle = sniffle_op(
         dataset=df_info.outputs["dataset"],

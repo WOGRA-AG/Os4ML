@@ -4,7 +4,7 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-22T10:20:00.768848'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:52.260915'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
@@ -238,7 +238,7 @@ spec:
         from typing import *
 
         def init_databag(
-            bucket: str, file_name: str, solution_name: str = ""
+            file_name: str, bucket: str, solution_name: str = ""
         ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
             from src.components.init_databag import init_databag
 
@@ -302,7 +302,7 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "f12adb6834b7409870d7c2c46978e5ac5af710c6e4083c92e6ecffb0bf7442b3",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2678eef377710fcbd0b47d78e64f0d1cb25150d409f3de1be59b3fdf545efa01",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
           "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
