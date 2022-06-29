@@ -1,6 +1,6 @@
 from kfp.v2.dsl import pipeline
 
-from pipelines.util import StatusMessages, load_component, build_pipeline_yaml
+from pipelines.util import StatusMessages, compile_pipeline, load_component
 
 init_databag_op = load_component("init-databag")
 get_databag_op = load_component("get-databag")
@@ -38,4 +38,4 @@ def ludwig_solver(
 
 
 if __name__ == "__main__":
-    build_pipeline_yaml(ludwig_solver)
+    compile_pipeline(ludwig_solver)

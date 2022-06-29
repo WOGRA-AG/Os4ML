@@ -2,7 +2,7 @@ from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 
-from pipelines.util import StatusMessages, load_component, build_pipeline_yaml
+from pipelines.util import StatusMessages, load_component
 
 init_databag_op = load_component("init-databag")
 preprocess_data_op = load_component("preprocess-data")
@@ -37,4 +37,6 @@ def titanic_rf_pipeline(
 
 
 if __name__ == "__main__":
-    build_pipeline_yaml(titanic_rf_pipeline)
+    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
+        titanic_rf_pipeline, "pipeline.yaml"
+    )

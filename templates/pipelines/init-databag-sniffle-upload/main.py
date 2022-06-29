@@ -1,6 +1,6 @@
 from kfp.v2.dsl import pipeline
 
-from pipelines.util import load_component, DatabagStatusMessages, build_pipeline_yaml
+from pipelines.util import compile_pipeline, load_component, DatabagStatusMessages
 
 init_databag_op = load_component("init-databag")
 sniffle_op = load_component("sniffle-dataset")
@@ -30,4 +30,4 @@ def init_databag_sniffle_upload(
 
 
 if __name__ == "__main__":
-    build_pipeline_yaml(init_databag_sniffle_upload)
+    compile_pipeline(init_databag_sniffle_upload)

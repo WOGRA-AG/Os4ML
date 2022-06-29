@@ -1,1094 +1,832 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
+  generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T15:14:33.981127'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:52.260915'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
       "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
       "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
       {"default": "pipeline/ludwig-solver", "name": "pipeline-name"}], "name": "ludwig-solver"}'
-    pipelines.kubeflow.org/v2_pipeline: 'true'
-  generateName: ludwig-solver-2-
+    pipelines.kubeflow.org/v2_pipeline: "true"
   labels:
+    pipelines.kubeflow.org/v2_pipeline: "true"
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/v2_pipeline: 'true'
 spec:
-  arguments:
-    parameters:
-    - name: bucket
-    - name: file_name
-    - name: solution_name
-      value: ''
-    - name: epochs
-      value: '50'
-    - name: pipeline-root
-      value: ''
-    - name: pipeline-name
-      value: pipeline/ludwig-solver
   entrypoint: ludwig-solver-2
-  imagePullSecrets:
-  - name: registry-credentials
-  serviceAccountName: pipeline-runner
   templates:
-  - container:
+  - name: get-databag
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef get_databag(bucket: str, solution_name: str = None) -> Dataset:\n\
-        \    from src.components.get_databag import get_databag\n\n    return get_databag(bucket,\
-        \ solution_name=solution_name)\n\n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def get_databag(bucket: str, solution_name: str = None) -> Dataset:
+            from src.components.get_databag import get_databag
+
+            return get_databag(bucket, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - get_databag
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - get-databag
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - bucket={{inputs.parameters.bucket}}
-      - solution_name={{inputs.parameters.solution_name}}
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, get-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"bucket": {"type": "STRING"}, "solution_name":
-          {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
-          {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
-          "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
+          "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
+          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - name: bucket
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
-    metadata:
-      annotations:
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "solution_name": "{{inputs.parameters.solution_name}}"}'
-        pipelines.kubeflow.org/component_ref: '{"digest": "c05cdd36c1d47eb47d58e5d4eb239f34c2925d999a3926941081e7e2a88cbbf9",
-          "url": "../../components/get-databag/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
-      labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-        pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: get-databag
+      - {name: bucket}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
     outputs:
       artifacts:
-      - name: get-databag-Output
-        path: /tmp/outputs/Output/data
+      - {name: get-databag-Output, path: /tmp/outputs/Output/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "c05cdd36c1d47eb47d58e5d4eb239f34c2925d999a3926941081e7e2a88cbbf9",
+          "url": "../../components/get-databag/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
+          "solution_name": "{{inputs.parameters.solution_name}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - container:
+    - {name: kfp-launcher}
+  - name: get-metrics
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef get_metrics(metrics: Input[Metrics], solution_name: str\
-        \ = \"\"):\n    from src.components.get_metrics import get_metrics\n\n   \
-        \ return get_metrics(metrics, solution_name=solution_name)\n\n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
+            from src.components.get_metrics import get_metrics
+
+            return get_metrics(metrics, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - get_metrics
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - get-metrics
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - solution_name={{inputs.parameters.solution_name}}
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, get-metrics, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"solution_name": {"type": "STRING"}}, "inputArtifacts":
-          {"metrics": {"metadataPath": "/tmp/inputs/metrics/data", "schemaTitle":
-          "system.Metrics", "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters":
-          {}, "outputArtifacts": {}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"metrics": {"metadataPath": "/tmp/inputs/metrics/data",
+          "schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
+          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
-      artifacts:
-      - name: ludwig-solver-metrics
-        path: /tmp/inputs/metrics/data
       parameters:
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+      artifacts:
+      - {name: ludwig-solver-metrics, path: /tmp/inputs/metrics/data}
     metadata:
       annotations:
-        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
+        pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "a5173deef9d23be315e89d045fa7f194d528e54a688835f7497de7192438f709",
           "url": "../../components/get-metrics/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: get-metrics
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - container:
+    - {name: kfp-launcher}
+  - name: init-databag
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef init_databag(\n    file_name: str, bucket: str, solution_name:\
-        \ str = \"\"\n) -> NamedTuple(\"DatabagInfo\", [(\"databag_type\", str), (\"\
-        dataset\", Dataset)]):\n    from src.components.init_databag import init_databag\n\
-        \n    return init_databag(file_name, bucket=bucket, solution_name=solution_name)\n\
-        \n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def init_databag(
+            file_name: str, bucket: str, solution_name: str = ""
+        ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
+            from src.components.init_databag import init_databag
+
+            return init_databag(file_name, bucket=bucket, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - init_databag
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - init-databag
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - bucket={{inputs.parameters.bucket}}
-      - file_name={{inputs.parameters.file_name}}
-      - solution_name={{inputs.parameters.solution_name}}
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, init-databag, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
+        'file_name={{inputs.parameters.file_name}}', 'solution_name={{inputs.parameters.solution_name}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"bucket": {"type": "STRING"}, "file_name": {"type":
-          "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {"databag_type": {"type": "STRING", "path": "/tmp/outputs/databag_type/data"}},
-          "outputArtifacts": {"dataset": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
+          "STRING"}, "file_name": {"type": "STRING"}, "solution_name": {"type": "STRING"}},
+          "inputArtifacts": {}, "outputParameters": {"databag_type": {"type": "STRING",
+          "path": "/tmp/outputs/databag_type/data"}}, "outputArtifacts": {"dataset":
+          {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - name: bucket
-      - name: file_name
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
-    metadata:
-      annotations:
-        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
-        pipelines.kubeflow.org/component_ref: '{"digest": "2678eef377710fcbd0b47d78e64f0d1cb25150d409f3de1be59b3fdf545efa01",
-          "url": "../../components/init-databag/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
-      labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-        pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: init-databag
+      - {name: bucket}
+      - {name: file_name}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
     outputs:
       artifacts:
-      - name: init-databag-databag_type
-        path: /tmp/outputs/databag_type/data
-      - name: init-databag-dataset
-        path: /tmp/outputs/dataset/data
+      - {name: init-databag-databag_type, path: /tmp/outputs/databag_type/data}
+      - {name: init-databag-dataset, path: /tmp/outputs/dataset/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "2678eef377710fcbd0b47d78e64f0d1cb25150d409f3de1be59b3fdf545efa01",
+          "url": "../../components/init-databag/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
+          "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - container:
+    - {name: kfp-launcher}
+  - name: ludwig-solver
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef ludwig_solver(\n    dataset_file: Input[Dataset],\n    databag_file:\
-        \ Input[Dataset],\n    cls_metrics: Output[ClassificationMetrics],\n    metrics:\
-        \ Output[Metrics],\n    batch_size: int = 8,\n    epochs: int = 50,\n    early_stop:\
-        \ int = 10,\n    solution_name: str = \"\",\n) -> None:\n    from src.components.ludwig_solver\
-        \ import ludwig_solver\n\n    ludwig_solver(\n        dataset_file,\n    \
-        \    databag_file,\n        cls_metrics,\n        metrics,\n        batch_size,\n\
-        \        epochs,\n        early_stop,\n        solution_name=solution_name,\n\
-        \    )\n\n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def ludwig_solver(
+            dataset_file: Input[Dataset],
+            databag_file: Input[Dataset],
+            cls_metrics: Output[ClassificationMetrics],
+            metrics: Output[Metrics],
+            batch_size: int = 8,
+            epochs: int = 50,
+            early_stop: int = 10,
+            solution_name: str = "",
+        ) -> None:
+            from src.components.ludwig_solver import ludwig_solver
+
+            ludwig_solver(
+                dataset_file,
+                databag_file,
+                cls_metrics,
+                metrics,
+                batch_size,
+                epochs,
+                early_stop,
+                solution_name=solution_name,
+            )
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - ludwig_solver
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - ludwig-solver
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - batch_size=8
-      - early_stop=10
-      - epochs={{inputs.parameters.epochs}}
-      - solution_name={{inputs.parameters.solution_name}}
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, ludwig-solver, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, batch_size=8, early_stop=10, 'epochs={{inputs.parameters.epochs}}',
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"batch_size": {"type": "INT"}, "early_stop":
-          {"type": "INT"}, "epochs": {"type": "INT"}, "solution_name": {"type": "STRING"}},
-          "inputArtifacts": {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data",
-          "schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
-          "0.0.1"}, "dataset_file": {"metadataPath": "/tmp/inputs/dataset_file/data",
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
+          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}, "solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"databag_file": {"metadataPath":
+          "/tmp/inputs/databag_file/data", "schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1"}, "dataset_file": {"metadataPath": "/tmp/inputs/dataset_file/data",
           "schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
           "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {"cls_metrics": {"schemaTitle":
           "system.ClassificationMetrics", "instanceSchema": "", "schemaVersion": "0.0.1",
           "metadataPath": "/tmp/outputs/cls_metrics/data"}, "metrics": {"schemaTitle":
           "system.Metrics", "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath":
-          "/tmp/outputs/metrics/data"}}}'
+          "/tmp/outputs/metrics/data"}}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
-      artifacts:
-      - name: get-databag-Output
-        path: /tmp/inputs/databag_file/data
-      - name: init-databag-dataset
-        path: /tmp/inputs/dataset_file/data
       parameters:
-      - name: epochs
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
-    metadata:
-      annotations:
-        pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
-          "10", "epochs": "{{inputs.parameters.epochs}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
-        pipelines.kubeflow.org/component_ref: '{"digest": "7ce27f8c1ca973215150496859a390ccd94fb90c27a43fea03175e9956cf2737",
-          "url": "../../components/ludwig-solver/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
-      labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
-        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-        pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: ludwig-solver
+      - {name: epochs}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+      artifacts:
+      - {name: get-databag-Output, path: /tmp/inputs/databag_file/data}
+      - {name: init-databag-dataset, path: /tmp/inputs/dataset_file/data}
     outputs:
       artifacts:
-      - name: ludwig-solver-cls_metrics
-        path: /tmp/outputs/cls_metrics/data
-      - name: ludwig-solver-metrics
-        path: /tmp/outputs/metrics/data
+      - {name: ludwig-solver-cls_metrics, path: /tmp/outputs/cls_metrics/data}
+      - {name: ludwig-solver-metrics, path: /tmp/outputs/metrics/data}
+    metadata:
+      annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "7ce27f8c1ca973215150496859a390ccd94fb90c27a43fea03175e9956cf2737",
+          "url": "../../components/ludwig-solver/component.yaml"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
+          "10", "epochs": "{{inputs.parameters.epochs}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - dag:
-      tasks:
-      - arguments:
-          parameters:
-          - name: bucket
-            value: '{{inputs.parameters.bucket}}'
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        name: get-databag
-        template: get-databag
-      - arguments:
-          artifacts:
-          - from: '{{tasks.ludwig-solver.outputs.artifacts.ludwig-solver-metrics}}'
-            name: ludwig-solver-metrics
-          parameters:
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        dependencies:
-        - ludwig-solver
-        name: get-metrics
-        template: get-metrics
-      - arguments:
-          parameters:
-          - name: bucket
-            value: '{{inputs.parameters.bucket}}'
-          - name: file_name
-            value: '{{inputs.parameters.file_name}}'
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        name: init-databag
-        template: init-databag
-      - arguments:
-          artifacts:
-          - from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'
-            name: get-databag-Output
-          - from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'
-            name: init-databag-dataset
-          parameters:
-          - name: epochs
-            value: '{{inputs.parameters.epochs}}'
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        dependencies:
-        - get-databag
-        - init-databag
-        name: ludwig-solver
-        template: ludwig-solver
-      - arguments:
-          parameters:
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        name: update-status
-        template: update-status
-      - arguments:
-          artifacts:
-          - from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'
-            name: init-databag-dataset
-          parameters:
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        dependencies:
-        - init-databag
-        name: update-status-2
-        template: update-status-2
-      - arguments:
-          artifacts:
-          - from: '{{tasks.ludwig-solver.outputs.artifacts.ludwig-solver-metrics}}'
-            name: ludwig-solver-metrics
-          parameters:
-          - name: pipeline-name
-            value: '{{inputs.parameters.pipeline-name}}'
-          - name: pipeline-root
-            value: '{{inputs.parameters.pipeline-root}}'
-          - name: solution_name
-            value: '{{inputs.parameters.solution_name}}'
-        dependencies:
-        - ludwig-solver
-        name: update-status-3
-        template: update-status-3
+    - {name: kfp-launcher}
+  - name: ludwig-solver-2
     inputs:
       parameters:
-      - name: bucket
-      - name: epochs
-      - name: file_name
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
-    name: ludwig-solver-2
-  - container:
+      - {name: bucket}
+      - {name: epochs}
+      - {name: file_name}
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+    dag:
+      tasks:
+      - name: get-databag
+        template: get-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+      - name: get-metrics
+        template: get-metrics
+        dependencies: [ludwig-solver]
+        arguments:
+          parameters:
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+          artifacts:
+          - {name: ludwig-solver-metrics, from: '{{tasks.ludwig-solver.outputs.artifacts.ludwig-solver-metrics}}'}
+      - name: init-databag
+        template: init-databag
+        arguments:
+          parameters:
+          - {name: bucket, value: '{{inputs.parameters.bucket}}'}
+          - {name: file_name, value: '{{inputs.parameters.file_name}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+      - name: ludwig-solver
+        template: ludwig-solver
+        dependencies: [get-databag, init-databag]
+        arguments:
+          parameters:
+          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+          artifacts:
+          - {name: get-databag-Output, from: '{{tasks.get-databag.outputs.artifacts.get-databag-Output}}'}
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
+      - name: update-status
+        template: update-status
+        arguments:
+          parameters:
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+      - name: update-status-2
+        template: update-status-2
+        dependencies: [init-databag]
+        arguments:
+          parameters:
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+          artifacts:
+          - {name: init-databag-dataset, from: '{{tasks.init-databag.outputs.artifacts.init-databag-dataset}}'}
+      - name: update-status-3
+        template: update-status-3
+        dependencies: [ludwig-solver]
+        arguments:
+          parameters:
+          - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
+          - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
+          - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
+          artifacts:
+          - {name: ludwig-solver-metrics, from: '{{tasks.ludwig-solver.outputs.artifacts.ludwig-solver-metrics}}'}
+  - name: update-status
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef update_status(\n    status: str = \"\", depends_on: Artifact\
-        \ = None, solution_name: str = \"\"\n):\n    from src.components.update_status\
-        \ import update_status\n\n    update_status(status, solution_name=solution_name)\n\
-        \n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
+
+            update_status(status, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - update_status
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - update-status
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - solution_name={{inputs.parameters.solution_name}}
-      - status=Solution created
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, update-status, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solution created, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"solution_name": {"type": "STRING"}, "status":
-          {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
-          {}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {},
+          "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
     metadata:
       annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
+          "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solution created"}'
-        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
-          "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
       labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: update-status
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - container:
+    - {name: kfp-launcher}
+  - name: update-status-2
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef update_status(\n    status: str = \"\", depends_on: Artifact\
-        \ = None, solution_name: str = \"\"\n):\n    from src.components.update_status\
-        \ import update_status\n\n    update_status(status, solution_name=solution_name)\n\
-        \n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
+
+            update_status(status, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - update_status
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - update-status-2
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - solution_name={{inputs.parameters.solution_name}}
-      - status=Solver running
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, update-status-2, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solver running, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"solution_name": {"type": "STRING"}, "status":
-          {"type": "STRING"}}, "inputArtifacts": {"depends_on": {"metadataPath": "/tmp/inputs/depends_on/data",
-          "schemaTitle": "system.Artifact", "instanceSchema": "", "schemaVersion":
-          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
+          {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
-      artifacts:
-      - name: init-databag-dataset
-        path: /tmp/inputs/depends_on/data
       parameters:
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+      artifacts:
+      - {name: init-databag-dataset, path: /tmp/inputs/depends_on/data}
     metadata:
       annotations:
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
+          "url": "../../components/update-status/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
           "status": "Solver running"}'
-        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
-          "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
       labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: update-status-2
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
-  - container:
+    - {name: kfp-launcher}
+  - name: update-status-3
+    container:
       args:
       - sh
       - -c
-      - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3\
-        \ -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
-        \ python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12'\
-        \ && \"$0\" \"$@\"\n"
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
       - sh
       - -ec
-      - 'program_path=$(mktemp -d)
-
+      - |
+        program_path=$(mktemp -d)
         printf "%s" "$0" > "$program_path/ephemeral_component.py"
-
         python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
 
-        '
-      - "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing\
-        \ import *\n\ndef update_status(\n    status: str = \"\", depends_on: Artifact\
-        \ = None, solution_name: str = \"\"\n):\n    from src.components.update_status\
-        \ import update_status\n\n    update_status(status, solution_name=solution_name)\n\
-        \n"
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def update_status(
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
+        ):
+            from src.components.update_status import update_status
+
+            update_status(status, solution_name=solution_name)
+
       - --executor_input
       - '{{$}}'
       - --function_to_execute
       - update_status
-      command:
-      - /kfp-launcher/launch
-      - --mlmd_server_address
-      - $(METADATA_GRPC_SERVICE_HOST)
-      - --mlmd_server_port
-      - $(METADATA_GRPC_SERVICE_PORT)
-      - --runtime_info_json
-      - $(KFP_V2_RUNTIME_INFO)
-      - --container_image
-      - $(KFP_V2_IMAGE)
-      - --task_name
-      - update-status-3
-      - --pipeline_name
-      - '{{inputs.parameters.pipeline-name}}'
-      - --run_id
-      - $(KFP_RUN_ID)
-      - --run_resource
-      - workflows.argoproj.io/$(WORKFLOW_ID)
-      - --namespace
-      - $(KFP_NAMESPACE)
-      - --pod_name
-      - $(KFP_POD_NAME)
-      - --pod_uid
-      - $(KFP_POD_UID)
-      - --pipeline_root
-      - '{{inputs.parameters.pipeline-root}}'
-      - --enable_caching
-      - $(ENABLE_CACHING)
-      - --
-      - solution_name={{inputs.parameters.solution_name}}
-      - status=Solver finished
-      - --
+      command: [/kfp-launcher/launch, --mlmd_server_address, $(METADATA_GRPC_SERVICE_HOST),
+        --mlmd_server_port, $(METADATA_GRPC_SERVICE_PORT), --runtime_info_json, $(KFP_V2_RUNTIME_INFO),
+        --container_image, $(KFP_V2_IMAGE), --task_name, update-status-3, --pipeline_name,
+        '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
+        workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
+        $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solver finished, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.name
+          fieldRef: {fieldPath: metadata.name}
       - name: KFP_POD_UID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.uid
+          fieldRef: {fieldPath: metadata.uid}
       - name: KFP_NAMESPACE
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+          fieldRef: {fieldPath: metadata.namespace}
       - name: WORKFLOW_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['workflows.argoproj.io/workflow']
+          fieldRef: {fieldPath: 'metadata.labels[''workflows.argoproj.io/workflow'']'}
       - name: KFP_RUN_ID
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipeline/runid']
+          fieldRef: {fieldPath: 'metadata.labels[''pipeline/runid'']'}
       - name: ENABLE_CACHING
         valueFrom:
-          fieldRef:
-            fieldPath: metadata.labels['pipelines.kubeflow.org/enable_caching']
-      - name: KFP_V2_IMAGE
-        value: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
-      - name: KFP_V2_RUNTIME_INFO
-        value: '{"inputParameters": {"solution_name": {"type": "STRING"}, "status":
-          {"type": "STRING"}}, "inputArtifacts": {"depends_on": {"metadataPath": "/tmp/inputs/depends_on/data",
-          "schemaTitle": "system.Artifact", "instanceSchema": "", "schemaVersion":
-          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'
+          fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
+      - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
+          {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {}}'}
       envFrom:
-      - configMapRef:
-          name: metadata-grpc-configmap
-          optional: true
-      - configMapRef:
-          name: os4ml-pipeline
-          optional: true
+      - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
       volumeMounts:
-      - mountPath: /kfp-launcher
-        name: kfp-launcher
-    initContainers:
-    - command:
-      - launcher
-      - --copy
-      - /kfp-launcher/launch
-      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
-      mirrorVolumeMounts: true
-      name: kfp-launcher
+      - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
-      artifacts:
-      - name: ludwig-solver-metrics
-        path: /tmp/inputs/depends_on/data
       parameters:
-      - name: pipeline-name
-      - name: pipeline-root
-      - name: solution_name
+      - {name: pipeline-name}
+      - {name: pipeline-root}
+      - {name: solution_name}
+      artifacts:
+      - {name: ludwig-solver-metrics, path: /tmp/inputs/depends_on/data}
     metadata:
       annotations:
-        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
-          "status": "Solver finished"}'
+        pipelines.kubeflow.org/v2_component: "true"
         pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/v2_component: 'true'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
+          "status": "Solver finished"}'
       labels:
-        pipelines.kubeflow.org/enable_caching: 'true'
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
-        pipelines.kubeflow.org/v2_component: 'true'
-    name: update-status-3
+        pipelines.kubeflow.org/v2_component: "true"
+        pipelines.kubeflow.org/enable_caching: "true"
+    initContainers:
+    - command: [launcher, --copy, /kfp-launcher/launch]
+      image: gcr.io/ml-pipeline/kfp-launcher:1.8.7
+      name: kfp-launcher
+      mirrorVolumeMounts: true
     volumes:
-    - name: kfp-launcher
+    - {name: kfp-launcher}
+  arguments:
+    parameters:
+    - {name: bucket}
+    - {name: file_name}
+    - {name: solution_name, value: ''}
+    - {name: epochs, value: '50'}
+    - {name: pipeline-root, value: ''}
+    - {name: pipeline-name, value: pipeline/ludwig-solver}
+  serviceAccountName: pipeline-runner
+  imagePullSecrets:
+  - {name: registry-credentials}

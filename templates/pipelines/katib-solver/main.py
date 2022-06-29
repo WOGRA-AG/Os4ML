@@ -2,7 +2,7 @@ from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
 
-from pipelines.util import StatusMessages, load_component, build_pipeline_yaml
+from pipelines.util import StatusMessages, load_component
 
 init_databab_op = load_component("init-databag")
 upload_op = load_component("upload-to-objectstore")
@@ -41,4 +41,6 @@ def katib_solver(
 
 
 if __name__ == "__main__":
-    build_pipeline_yaml(katib_solver)
+    Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
+        katib_solver, "pipeline.yaml"
+    )
