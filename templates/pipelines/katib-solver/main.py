@@ -17,6 +17,7 @@ def katib_solver(
     bucket: str,
     file_name: str,
     solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
     dataset_file_name: str = "dataset",
 ):
     update_status_op(StatusMessages.created.value, solution_name=solution_name)

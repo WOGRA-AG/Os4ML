@@ -4,10 +4,11 @@ metadata:
   generateName: titanic-randomforest-pipeline-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:54.731680'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-29T09:57:49.423344'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"default": "os4ml", "name":
       "bucket", "optional": true, "type": "String"}, {"default": "titanic.xlsx", "name":
       "file_name", "optional": true, "type": "String"}, {"default": "", "name": "solution_name",
+      "optional": true, "type": "String"}, {"default": "os4ml", "name": "os4ml_namespace",
       "optional": true, "type": "String"}, {"default": "", "name": "pipeline-root"},
       {"default": "pipeline/titanic-randomforest-pipeline", "name": "pipeline-name"}],
       "name": "titanic-randomforest-pipeline"}'
@@ -924,6 +925,7 @@ spec:
     - {name: bucket, value: os4ml}
     - {name: file_name, value: titanic.xlsx}
     - {name: solution_name, value: ''}
+    - {name: os4ml_namespace, value: os4ml}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/titanic-randomforest-pipeline}
   serviceAccountName: pipeline-runner

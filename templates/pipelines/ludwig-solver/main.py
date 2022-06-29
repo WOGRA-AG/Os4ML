@@ -11,7 +11,7 @@ update_status_op = load_component("update-status")
 
 @pipeline(name="ludwig-solver")
 def ludwig_solver(
-    bucket: str, file_name: str, solution_name: str = "", epochs: int = 50
+    bucket: str, file_name: str, solution_name: str = "", os4ml_namespace: str = "os4ml", epochs: int = 50
 ):
     update_status_op(StatusMessages.created.value, solution_name=solution_name)
     df_info = init_databag_op(file_name, bucket=bucket, solution_name=solution_name)

@@ -16,6 +16,7 @@ def titanic_rf_pipeline(
     bucket: str = "os4ml",
     file_name: str = "titanic.xlsx",
     solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
 ):
     update_status_op(StatusMessages.created.value, solution_name=solution_name)
     databag_info = init_databag_op(bucket, file_name)

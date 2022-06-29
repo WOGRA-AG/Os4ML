@@ -4,10 +4,11 @@ metadata:
   generateName: katib-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:50.002864'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-29T09:57:44.324175'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
-      "solution_name", "optional": true, "type": "String"}, {"default": "dataset",
+      "solution_name", "optional": true, "type": "String"}, {"default": "os4ml", "name":
+      "os4ml_namespace", "optional": true, "type": "String"}, {"default": "dataset",
       "name": "dataset_file_name", "optional": true, "type": "String"}, {"default":
       "", "name": "pipeline-root"}, {"default": "pipeline/katib-solver", "name": "pipeline-name"}],
       "name": "katib-solver"}'
@@ -1170,6 +1171,7 @@ spec:
     - {name: bucket}
     - {name: file_name}
     - {name: solution_name, value: ''}
+    - {name: os4ml_namespace, value: os4ml}
     - {name: dataset_file_name, value: dataset}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/katib-solver}

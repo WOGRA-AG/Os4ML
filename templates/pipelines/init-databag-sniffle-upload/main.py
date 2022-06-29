@@ -13,6 +13,7 @@ def init_databag_sniffle_upload(
     bucket: str = "os4ml",
     file_name: str = "titanic.xlsx",
     solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
     max_categories: int = 10,
 ):
     update_databag_status_op(DatabagStatusMessages.uploading.value, bucket=bucket)
