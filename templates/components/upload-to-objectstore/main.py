@@ -8,7 +8,7 @@ def upload_file_to_objectstore(
     import requests
 
     url = (
-        f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
+        f"http://objectstore-manager.os4ml:8000/apis/v1beta1"
         f"/objectstore/{bucket}/object"
     )
     with open(file.path, "rb") as payload:
