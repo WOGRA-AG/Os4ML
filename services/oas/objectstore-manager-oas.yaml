@@ -4,7 +4,7 @@ info:
   description: Os4ml Objectstore Manager
   version: 0.0.1
 servers:
-  - url: 'http://os4ml-objectstore-manager.os4ml.svc.cluster.local:8000'
+  - url: 'http://objectstore-manager.os4ml.svc.cluster.local:8000'
 paths:
   "/apis/v1beta1/objectstore":
     get:

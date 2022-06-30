@@ -31,7 +31,6 @@
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
     - /kaniko/executor
-      --reproducible
       --context $DIR
       --dockerfile Dockerfile
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL

@@ -401,17 +401,17 @@ spec:
                 databag = json.load(file)
 
             databag_url = (
-                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
                 f'databag/{databag["bucket_name"]}'
             )
 
             dataset_url = (
-                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
                 f'{databag["bucket_name"]}/object?objectNme={dataset_file_name}'
             )
 
             zip_url = (
-                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+                f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
                 f'{databag["bucket_name"]}/object?objectName={databag["file_name"]}'
             )
 
@@ -1152,7 +1152,7 @@ spec:
             import requests
 
             url = (
-                f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1"
+                f"http://objectstore-manager.os4ml:8000/apis/v1beta1"
                 f"/objectstore/{bucket}/object"
             )
             with open(file.path, "rb") as payload:
