@@ -2,7 +2,6 @@ name: Init databag
 inputs:
 - {name: file_name, type: String}
 - {name: bucket, type: String}
-- {name: os4ml_namespace, type: String}
 - {name: solution_name, type: String, default: '', optional: true}
 outputs:
 - {name: databag_type, type: String}
@@ -34,19 +33,11 @@ implementation:
       from typing import *
 
       def init_databag(
-          file_name: str,
-          bucket: str,
-          os4ml_namespace: str,
-          solution_name: str = "",
+          file_name: str, bucket: str, solution_name: str = ""
       ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
           from src.components.init_databag import init_databag
 
-          return init_databag(
-              file_name,
-              bucket=bucket,
-              os4ml_namespace=os4ml_namespace,
-              solution_name=solution_name,
-          )
+          return init_databag(file_name, bucket=bucket, solution_name=solution_name)
 
     args:
     - --executor_input

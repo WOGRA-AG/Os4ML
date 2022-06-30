@@ -4,11 +4,10 @@ metadata:
   generateName: ludwig-solver-2-
   annotations:
     pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
-    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-30T20:25:14.173838'
+    pipelines.kubeflow.org/pipeline_compilation_time: '2022-06-27T10:55:52.260915'
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "bucket", "type":
       "String"}, {"name": "file_name", "type": "String"}, {"default": "", "name":
-      "solution_name", "optional": true, "type": "String"}, {"default": "os4ml", "name":
-      "os4ml_namespace", "optional": true, "type": "String"}, {"default": "50", "name":
+      "solution_name", "optional": true, "type": "String"}, {"default": "50", "name":
       "epochs", "optional": true, "type": "Integer"}, {"default": "", "name": "pipeline-root"},
       {"default": "pipeline/ludwig-solver", "name": "pipeline-name"}], "name": "ludwig-solver"}'
     pipelines.kubeflow.org/v2_pipeline: "true"
@@ -43,14 +42,10 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_databag(
-            bucket: str, os4ml_namespace: str, solution_name: str
-        ) -> Dataset:
+        def get_databag(bucket: str, solution_name: str = None) -> Dataset:
             from src.components.get_databag import get_databag
 
-            return get_databag(
-                bucket, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-            )
+            return get_databag(bucket, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -63,8 +58,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        'os4ml_namespace={{inputs.parameters.os4ml_namespace}}', 'solution_name={{inputs.parameters.solution_name}}',
-        --]
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -86,10 +80,9 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}, "os4ml_namespace": {"type": "STRING"}, "solution_name": {"type":
-          "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
-          {"Output": {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
-          "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
+          "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
+          {}, "outputArtifacts": {"Output": {"schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/Output/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -98,7 +91,6 @@ spec:
     inputs:
       parameters:
       - {name: bucket}
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -108,11 +100,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "0d03934625981c2aa08417d38ae32c7d70261ddbb0526d599b3a2bd1cf546a6c",
+        pipelines.kubeflow.org/component_ref: '{"digest": "c05cdd36c1d47eb47d58e5d4eb239f34c2925d999a3926941081e7e2a88cbbf9",
           "url": "../../components/get-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}", "solution_name":
-          "{{inputs.parameters.solution_name}}"}'
+          "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -150,14 +141,10 @@ spec:
         from kfp.v2.dsl import *
         from typing import *
 
-        def get_metrics(
-            metrics: Input[Metrics], os4ml_namespace: str, solution_name: str
-        ):
+        def get_metrics(metrics: Input[Metrics], solution_name: str = ""):
             from src.components.get_metrics import get_metrics
 
-            return get_metrics(
-                metrics, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-            )
+            return get_metrics(metrics, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -169,8 +156,8 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'os4ml_namespace={{inputs.parameters.os4ml_namespace}}',
-        'solution_name={{inputs.parameters.solution_name}}', --]
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -191,11 +178,10 @@ spec:
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
-      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"os4ml_namespace":
-          {"type": "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts":
-          {"metrics": {"metadataPath": "/tmp/inputs/metrics/data", "schemaTitle":
-          "system.Metrics", "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters":
-          {}, "outputArtifacts": {}}'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"metrics": {"metadataPath": "/tmp/inputs/metrics/data",
+          "schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
+          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -203,7 +189,6 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -212,10 +197,9 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "729401d471cea5bacb8c27571c0c7d499c7f1bbf675e04c5eab1bab0532c9ab3",
+        pipelines.kubeflow.org/component_ref: '{"digest": "a5173deef9d23be315e89d045fa7f194d528e54a688835f7497de7192438f709",
           "url": "../../components/get-metrics/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -254,19 +238,11 @@ spec:
         from typing import *
 
         def init_databag(
-            file_name: str,
-            bucket: str,
-            os4ml_namespace: str,
-            solution_name: str = "",
+            file_name: str, bucket: str, solution_name: str = ""
         ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
             from src.components.init_databag import init_databag
 
-            return init_databag(
-                file_name,
-                bucket=bucket,
-                os4ml_namespace=os4ml_namespace,
-                solution_name=solution_name,
-            )
+            return init_databag(file_name, bucket=bucket, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -279,8 +255,8 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, 'bucket={{inputs.parameters.bucket}}',
-        'file_name={{inputs.parameters.file_name}}', 'os4ml_namespace={{inputs.parameters.os4ml_namespace}}',
-        'solution_name={{inputs.parameters.solution_name}}', --]
+        'file_name={{inputs.parameters.file_name}}', 'solution_name={{inputs.parameters.solution_name}}',
+        --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -302,11 +278,11 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"bucket": {"type":
-          "STRING"}, "file_name": {"type": "STRING"}, "os4ml_namespace": {"type":
-          "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts": {}, "outputParameters":
-          {"databag_type": {"type": "STRING", "path": "/tmp/outputs/databag_type/data"}},
-          "outputArtifacts": {"dataset": {"schemaTitle": "system.Dataset", "instanceSchema":
-          "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
+          "STRING"}, "file_name": {"type": "STRING"}, "solution_name": {"type": "STRING"}},
+          "inputArtifacts": {}, "outputParameters": {"databag_type": {"type": "STRING",
+          "path": "/tmp/outputs/databag_type/data"}}, "outputArtifacts": {"dataset":
+          {"schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1", "metadataPath": "/tmp/outputs/dataset/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:latest
@@ -316,7 +292,6 @@ spec:
       parameters:
       - {name: bucket}
       - {name: file_name}
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -327,11 +302,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "25f8d3d65d55d28f75482f1f7583fdd3ca2d66b7a32a6fc64807cfc6f9040215",
+        pipelines.kubeflow.org/component_ref: '{"digest": "2678eef377710fcbd0b47d78e64f0d1cb25150d409f3de1be59b3fdf545efa01",
           "url": "../../components/init-databag/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"bucket": "{{inputs.parameters.bucket}}",
-          "file_name": "{{inputs.parameters.file_name}}", "os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}"}'
+          "file_name": "{{inputs.parameters.file_name}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -377,7 +351,6 @@ spec:
             batch_size: int = 8,
             epochs: int = 50,
             early_stop: int = 10,
-            os4ml_namespace: str = "",
             solution_name: str = "",
         ) -> None:
             from src.components.ludwig_solver import ludwig_solver
@@ -390,7 +363,6 @@ spec:
                 batch_size,
                 epochs,
                 early_stop,
-                os4ml_namespace=os4ml_namespace,
                 solution_name=solution_name,
             )
 
@@ -405,8 +377,7 @@ spec:
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
         --enable_caching, $(ENABLE_CACHING), --, batch_size=8, early_stop=10, 'epochs={{inputs.parameters.epochs}}',
-        'os4ml_namespace={{inputs.parameters.os4ml_namespace}}', 'solution_name={{inputs.parameters.solution_name}}',
-        --]
+        'solution_name={{inputs.parameters.solution_name}}', --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -428,16 +399,16 @@ spec:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest'}
       - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"batch_size": {"type":
-          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}, "os4ml_namespace":
-          {"type": "STRING"}, "solution_name": {"type": "STRING"}}, "inputArtifacts":
-          {"databag_file": {"metadataPath": "/tmp/inputs/databag_file/data", "schemaTitle":
-          "system.Dataset", "instanceSchema": "", "schemaVersion": "0.0.1"}, "dataset_file":
-          {"metadataPath": "/tmp/inputs/dataset_file/data", "schemaTitle": "system.Dataset",
-          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
-          "outputArtifacts": {"cls_metrics": {"schemaTitle": "system.ClassificationMetrics",
-          "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath": "/tmp/outputs/cls_metrics/data"},
-          "metrics": {"schemaTitle": "system.Metrics", "instanceSchema": "", "schemaVersion":
-          "0.0.1", "metadataPath": "/tmp/outputs/metrics/data"}}}'}
+          "INT"}, "early_stop": {"type": "INT"}, "epochs": {"type": "INT"}, "solution_name":
+          {"type": "STRING"}}, "inputArtifacts": {"databag_file": {"metadataPath":
+          "/tmp/inputs/databag_file/data", "schemaTitle": "system.Dataset", "instanceSchema":
+          "", "schemaVersion": "0.0.1"}, "dataset_file": {"metadataPath": "/tmp/inputs/dataset_file/data",
+          "schemaTitle": "system.Dataset", "instanceSchema": "", "schemaVersion":
+          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {"cls_metrics": {"schemaTitle":
+          "system.ClassificationMetrics", "instanceSchema": "", "schemaVersion": "0.0.1",
+          "metadataPath": "/tmp/outputs/cls_metrics/data"}, "metrics": {"schemaTitle":
+          "system.Metrics", "instanceSchema": "", "schemaVersion": "0.0.1", "metadataPath":
+          "/tmp/outputs/metrics/data"}}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest
@@ -446,7 +417,6 @@ spec:
     inputs:
       parameters:
       - {name: epochs}
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -460,11 +430,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "74b94609b9cb9f27c85366eee006c2b9d528966d2424fa05f0744f42b196a8b9",
+        pipelines.kubeflow.org/component_ref: '{"digest": "7ce27f8c1ca973215150496859a390ccd94fb90c27a43fea03175e9956cf2737",
           "url": "../../components/ludwig-solver/component.yaml"}'
         pipelines.kubeflow.org/arguments.parameters: '{"batch_size": "8", "early_stop":
-          "10", "epochs": "{{inputs.parameters.epochs}}", "os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}"}'
+          "10", "epochs": "{{inputs.parameters.epochs}}", "solution_name": "{{inputs.parameters.solution_name}}"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -483,7 +452,6 @@ spec:
       - {name: bucket}
       - {name: epochs}
       - {name: file_name}
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -494,7 +462,6 @@ spec:
         arguments:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -503,7 +470,6 @@ spec:
         dependencies: [ludwig-solver]
         arguments:
           parameters:
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -515,7 +481,6 @@ spec:
           parameters:
           - {name: bucket, value: '{{inputs.parameters.bucket}}'}
           - {name: file_name, value: '{{inputs.parameters.file_name}}'}
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -525,7 +490,6 @@ spec:
         arguments:
           parameters:
           - {name: epochs, value: '{{inputs.parameters.epochs}}'}
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -536,7 +500,6 @@ spec:
         template: update-status
         arguments:
           parameters:
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -545,7 +508,6 @@ spec:
         dependencies: [init-databag]
         arguments:
           parameters:
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -556,7 +518,6 @@ spec:
         dependencies: [ludwig-solver]
         arguments:
           parameters:
-          - {name: os4ml_namespace, value: '{{inputs.parameters.os4ml_namespace}}'}
           - {name: pipeline-name, value: '{{inputs.parameters.pipeline-name}}'}
           - {name: pipeline-root, value: '{{inputs.parameters.pipeline-root}}'}
           - {name: solution_name, value: '{{inputs.parameters.solution_name}}'}
@@ -588,16 +549,11 @@ spec:
         from typing import *
 
         def update_status(
-            status: str = "",
-            depends_on: Artifact = None,
-            os4ml_namespace: str = "",
-            solution_name: str = "",
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
         ):
             from src.components.update_status import update_status
 
-            update_status(
-                status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-            )
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -609,9 +565,8 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'os4ml_namespace={{inputs.parameters.os4ml_namespace}}',
-        'solution_name={{inputs.parameters.solution_name}}', status=Solution created,
-        --]
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solution created, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -632,10 +587,9 @@ spec:
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
-      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"os4ml_namespace":
-          {"type": "STRING"}, "solution_name": {"type": "STRING"}, "status": {"type":
-          "STRING"}}, "inputArtifacts": {}, "outputParameters": {}, "outputArtifacts":
-          {}}'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {},
+          "outputParameters": {}, "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -643,18 +597,16 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "e70a6d3e45631f880ece05715faf111c1fd1c971885f421ab98bc9eacf04bd13",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}", "status": "Solution
-          created"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
+          "status": "Solution created"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -693,16 +645,11 @@ spec:
         from typing import *
 
         def update_status(
-            status: str = "",
-            depends_on: Artifact = None,
-            os4ml_namespace: str = "",
-            solution_name: str = "",
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
         ):
             from src.components.update_status import update_status
 
-            update_status(
-                status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-            )
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -714,9 +661,8 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'os4ml_namespace={{inputs.parameters.os4ml_namespace}}',
-        'solution_name={{inputs.parameters.solution_name}}', status=Solver running,
-        --]
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solver running, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -737,11 +683,11 @@ spec:
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
-      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"os4ml_namespace":
-          {"type": "STRING"}, "solution_name": {"type": "STRING"}, "status": {"type":
-          "STRING"}}, "inputArtifacts": {"depends_on": {"metadataPath": "/tmp/inputs/depends_on/data",
-          "schemaTitle": "system.Artifact", "instanceSchema": "", "schemaVersion":
-          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
+          {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -749,7 +695,6 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -758,11 +703,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "e70a6d3e45631f880ece05715faf111c1fd1c971885f421ab98bc9eacf04bd13",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}", "status": "Solver
-          running"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
+          "status": "Solver running"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -801,16 +745,11 @@ spec:
         from typing import *
 
         def update_status(
-            status: str = "",
-            depends_on: Artifact = None,
-            os4ml_namespace: str = "",
-            solution_name: str = "",
+            status: str = "", depends_on: Artifact = None, solution_name: str = ""
         ):
             from src.components.update_status import update_status
 
-            update_status(
-                status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-            )
+            update_status(status, solution_name=solution_name)
 
       - --executor_input
       - '{{$}}'
@@ -822,9 +761,8 @@ spec:
         '{{inputs.parameters.pipeline-name}}', --run_id, $(KFP_RUN_ID), --run_resource,
         workflows.argoproj.io/$(WORKFLOW_ID), --namespace, $(KFP_NAMESPACE), --pod_name,
         $(KFP_POD_NAME), --pod_uid, $(KFP_POD_UID), --pipeline_root, '{{inputs.parameters.pipeline-root}}',
-        --enable_caching, $(ENABLE_CACHING), --, 'os4ml_namespace={{inputs.parameters.os4ml_namespace}}',
-        'solution_name={{inputs.parameters.solution_name}}', status=Solver finished,
-        --]
+        --enable_caching, $(ENABLE_CACHING), --, 'solution_name={{inputs.parameters.solution_name}}',
+        status=Solver finished, --]
       env:
       - name: KFP_POD_NAME
         valueFrom:
@@ -845,11 +783,11 @@ spec:
         valueFrom:
           fieldRef: {fieldPath: 'metadata.labels[''pipelines.kubeflow.org/enable_caching'']'}
       - {name: KFP_V2_IMAGE, value: 'gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest'}
-      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"os4ml_namespace":
-          {"type": "STRING"}, "solution_name": {"type": "STRING"}, "status": {"type":
-          "STRING"}}, "inputArtifacts": {"depends_on": {"metadataPath": "/tmp/inputs/depends_on/data",
-          "schemaTitle": "system.Artifact", "instanceSchema": "", "schemaVersion":
-          "0.0.1"}}, "outputParameters": {}, "outputArtifacts": {}}'}
+      - {name: KFP_V2_RUNTIME_INFO, value: '{"inputParameters": {"solution_name":
+          {"type": "STRING"}, "status": {"type": "STRING"}}, "inputArtifacts": {"depends_on":
+          {"metadataPath": "/tmp/inputs/depends_on/data", "schemaTitle": "system.Artifact",
+          "instanceSchema": "", "schemaVersion": "0.0.1"}}, "outputParameters": {},
+          "outputArtifacts": {}}'}
       envFrom:
       - configMapRef: {name: metadata-grpc-configmap, optional: true}
       image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
@@ -857,7 +795,6 @@ spec:
       - {mountPath: /kfp-launcher, name: kfp-launcher}
     inputs:
       parameters:
-      - {name: os4ml_namespace}
       - {name: pipeline-name}
       - {name: pipeline-root}
       - {name: solution_name}
@@ -866,11 +803,10 @@ spec:
     metadata:
       annotations:
         pipelines.kubeflow.org/v2_component: "true"
-        pipelines.kubeflow.org/component_ref: '{"digest": "e70a6d3e45631f880ece05715faf111c1fd1c971885f421ab98bc9eacf04bd13",
+        pipelines.kubeflow.org/component_ref: '{"digest": "e4d6d92cfcbd5bdf4e7afb63c9c7a1318f6b95a4549a04b72a8b5d604905b331",
           "url": "../../components/update-status/component.yaml"}'
-        pipelines.kubeflow.org/arguments.parameters: '{"os4ml_namespace": "{{inputs.parameters.os4ml_namespace}}",
-          "solution_name": "{{inputs.parameters.solution_name}}", "status": "Solver
-          finished"}'
+        pipelines.kubeflow.org/arguments.parameters: '{"solution_name": "{{inputs.parameters.solution_name}}",
+          "status": "Solver finished"}'
       labels:
         pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
         pipelines.kubeflow.org/pipeline-sdk-type: kfp
@@ -888,7 +824,6 @@ spec:
     - {name: bucket}
     - {name: file_name}
     - {name: solution_name, value: ''}
-    - {name: os4ml_namespace, value: os4ml}
     - {name: epochs, value: '50'}
     - {name: pipeline-root, value: ''}
     - {name: pipeline-name, value: pipeline/ludwig-solver}

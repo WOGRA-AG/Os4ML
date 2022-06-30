@@ -1,9 +1,6 @@
 from kfp.v2.dsl import pipeline
-from pipelines.util import (
-    DatabagStatusMessages,
-    compile_pipeline,
-    load_component,
-)
+
+from pipelines.util import compile_pipeline, load_component, DatabagStatusMessages
 
 init_databag_op = load_component("init-databag")
 sniffle_op = load_component("sniffle-dataset")
@@ -16,23 +13,11 @@ def init_databag_sniffle_upload(
     bucket: str = "os4ml",
     file_name: str = "titanic.xlsx",
     solution_name: str = "",
-    os4ml_namespace: str = "os4ml",
     max_categories: int = 10,
 ):
-    update_databag_status_op(
-        DatabagStatusMessages.uploading.value,
-        bucket=bucket,
-        os4ml_namespace=os4ml_namespace,
-    )
-    df_info = init_databag_op(
-        file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
-    )
-    update_databag_status_op(
-        DatabagStatusMessages.inspecting.value,
-        depends_on=df_info.outputs["dataset"],
-        bucket=bucket,
-        os4ml_namespace=os4ml_namespace,
-    )
+    update_databag_status_op(DatabagStatusMessages.uploading.value, bucket=bucket)
+    df_info = init_databag_op(file_name, bucket=bucket)
+    update_databag_status_op(DatabagStatusMessages.inspecting.value, depends_on=df_info.outputs["dataset"], bucket=bucket)
     sniffle = sniffle_op(
         dataset=df_info.outputs["dataset"],
         dataset_type=df_info.outputs["databag_type"],
@@ -40,13 +25,8 @@ def init_databag_sniffle_upload(
         file_name=file_name,
         bucket=bucket,
     )
-    update_databag_status_op(
-        DatabagStatusMessages.creating.value,
-        depends_on=sniffle.output,
-        bucket=bucket,
-        os4ml_namespace=os4ml_namespace,
-    )
-    create_databag_op(sniffle.output, bucket, os4ml_namespace=os4ml_namespace)
+    update_databag_status_op(DatabagStatusMessages.creating.value, depends_on=sniffle.output, bucket=bucket)
+    create_databag_op(sniffle.output, bucket)
 
 
 if __name__ == "__main__":

@@ -7,11 +7,7 @@ from src.util.error_handler import error_handler
 
 @error_handler
 def update_databag_status(
-    status: str = "",
-    *,
-    depends_on: Artifact = None,
-    os4ml_namespace: str = "",
-    bucket: str = None,
+    status: str = "", *, depends_on: Artifact = None, bucket: str = None
 ) -> None:
     """Update the status of the solution with the new status."""
-    _update_databag_status(bucket, status, os4ml_namespace)
+    _update_databag_status(bucket, status)

@@ -14,12 +14,10 @@ def error_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            if not (os4ml_namespace := kwargs.get("os4ml_namespace", False)):
-                print("Error occurred, but no os4ml_namespace was given")
-            elif solution_name := kwargs.get("solution_name", False):
-                error_status_update(solution_name, os4ml_namespace)
+            if solution_name := kwargs.get("solution_name", False):
+                error_status_update(solution_name)
             elif bucket := kwargs.get("bucket", False):
-                error_databag_status_update(bucket, os4ml_namespace)
+                error_databag_status_update(bucket)
             else:
                 print(
                     "Error occurred, but neither a solution_name nor a bucket is given"

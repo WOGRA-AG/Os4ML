@@ -4,9 +4,7 @@ from src.util.json_util import snake_case_json_dumps
 
 
 @error_handler
-def get_databag(
-    bucket: str, *, os4ml_namespace: str = "", solution_name: str = ""
-) -> str:
+def get_databag(bucket: str, *, solution_name: str = None) -> str:
     """Download the databag json file from the minio bucket and return is as a string."""
-    databag = download_databag_from_bucket(bucket, os4ml_namespace)
+    databag = download_databag_from_bucket(bucket)
     return snake_case_json_dumps(databag)

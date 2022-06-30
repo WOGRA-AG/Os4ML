@@ -21,8 +21,7 @@ def ludwig_solver(
     test_split: float = 0.1,
     validation_split: float = 0.1,
     *,
-    os4ml_namespace: str = "",
-    solution_name: str = "",
+    solution_name: str = None,
 ) -> None:
     """Train a ludwig model for the dataset."""
     databag = load_databag(databag_file.path)
@@ -30,7 +29,7 @@ def ludwig_solver(
     model, model_definition = build_model(
         columns, batch_size, epochs, early_stop
     )
-    dataset = build_dataset(dataset_file.path, databag, os4ml_namespace)
+    dataset = build_dataset(dataset_file.path, databag)
     df_train, df_validate, df_test = train_validate_test_split(
         dataset, test_split, validation_split
     )

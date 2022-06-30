@@ -2,7 +2,6 @@ name: Update status
 inputs:
 - {name: status, type: String, default: '', optional: true}
 - {name: depends_on, type: Artifact, optional: true}
-- {name: os4ml_namespace, type: String, default: '', optional: true}
 - {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
@@ -31,16 +30,11 @@ implementation:
       from typing import *
 
       def update_status(
-          status: str = "",
-          depends_on: Artifact = None,
-          os4ml_namespace: str = "",
-          solution_name: str = "",
+          status: str = "", depends_on: Artifact = None, solution_name: str = ""
       ):
           from src.components.update_status import update_status
 
-          update_status(
-              status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
-          )
+          update_status(status, solution_name=solution_name)
 
     args:
     - --executor_input

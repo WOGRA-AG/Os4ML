@@ -2,7 +2,6 @@ name: Update databag status
 inputs:
 - {name: status, type: String, default: '', optional: true}
 - {name: depends_on, type: Artifact, optional: true}
-- {name: os4ml_namespace, type: String, default: '', optional: true}
 - {name: bucket, type: String, default: '', optional: true}
 implementation:
   container:
@@ -31,16 +30,11 @@ implementation:
       from typing import *
 
       def update_databag_status(
-          status: str = "",
-          depends_on: Artifact = None,
-          os4ml_namespace: str = "",
-          bucket: str = "",
+          status: str = "", depends_on: Artifact = None, bucket: str = ""
       ):
           from src.components.update_databag_status import update_databag_status
 
-          update_databag_status(
-              status, os4ml_namespace=os4ml_namespace, bucket=bucket
-          )
+          update_databag_status(status, bucket=bucket)
 
     args:
     - --executor_input

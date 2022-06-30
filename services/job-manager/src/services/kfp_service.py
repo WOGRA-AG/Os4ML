@@ -14,7 +14,7 @@ from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.pipeline import Pipeline
 from build.openapi_server.models.run import Run
-from services import ML_PIPELINE_NS, ML_PIPELINE_URL, OS4ML_NAMESPACE
+from services import ML_PIPELINE_NS, ML_PIPELINE_URL
 
 
 class KfpService:
@@ -99,13 +99,11 @@ class KfpService:
     def create_run(
         self, experiment_id: str, pipeline_id: str, run: CreateRun
     ) -> str:
-        params_dict = run.params.dict()
-        params_dict["os4ml_namespace"] = OS4ML_NAMESPACE
         run: ApiRun = self.client.run_pipeline(
             experiment_id=experiment_id,
             job_name=run.name,
             pipeline_id=pipeline_id,
-            params=params_dict,
+            params=run.params.dict(),
         )
         return run.id
 
