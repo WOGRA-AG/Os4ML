@@ -11,7 +11,7 @@
       <td mat-cell *matCellDef="let element"> {{element.bucketName}} </td>
     </ng-container>
     <ng-container matColumnDef="creationTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"page.databag.table.columns.creationTime" | translate}} </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"page.databag.table.columns.creationTime" | localizedDate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.creationTime | date:'long'}} </td>
     </ng-container>
     <ng-container matColumnDef="databagName">

@@ -42,7 +42,8 @@ import {DatabagTableComponent} from './components/databag-table/databag-table.co
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { DialogEditDatabagComponent } from './components/dialog-edit-databag/dialog-edit-databag.component';
+import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
+import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -78,6 +79,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SolutionListItemComponent,
     DatabagTableComponent,
     DialogEditDatabagComponent,
+    LocalizedDatePipe,
   ],
   imports: [
     BrowserModule,
