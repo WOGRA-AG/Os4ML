@@ -112,13 +112,13 @@ RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
 # Install ludwig using poetry lock files
 FROM pyenv as ludwig-base
-COPY pyproject.toml poetry.lock ./
+COPY dockerfiles/ludwig/pyproject.toml dockerfiles/ludwig/poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache \
     poetry config virtualenvs.create false && poetry install
 
 # copy os4ml source code
 FROM ludwig-base as ludwig
 
-COPY --from=templates src /src
+COPY --from=templates /data/templates/src /src
 
 CMD ["python3"]

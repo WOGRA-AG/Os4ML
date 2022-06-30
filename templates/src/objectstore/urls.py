@@ -14,4 +14,6 @@ def put_databag_url(bucket: str, os4ml_namespace: str) -> str:
 
 
 def _get_base_server_url(os4ml_namespace: str) -> str:
-    return f"http://os4ml-objectstore-manager.{os4ml_namespace}.svc.cluster.local:8000"
+    return (
+        f"http://objectstore-manager.{os4ml_namespace}.svc.cluster.local:8000"
+    )

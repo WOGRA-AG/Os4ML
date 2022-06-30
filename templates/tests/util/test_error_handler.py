@@ -29,7 +29,7 @@ def test_error_handler_with_error_with_solution_name(mocker, func_with_error):
     )
 
     with pytest.raises(ValueError):
-        func_with_error(solution_name="test")
+        func_with_error(solution_name="test", os4ml_namespace="os4ml")
 
     status_update_mock.assert_called_once()
 
@@ -60,7 +60,7 @@ def test_error_handler_with_error_with_bucket(mocker, func_with_error):
     )
 
     with pytest.raises(ValueError):
-        func_with_error(bucket="test")
+        func_with_error(bucket="test", os4ml_namespace="os4ml")
 
     databag_status_mock.assert_called_once()
 
