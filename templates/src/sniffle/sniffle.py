@@ -1,5 +1,5 @@
 import pathlib
-from typing import Generator, List, Tuple
+from typing import List
 
 import pandas as pd
 
