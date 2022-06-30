@@ -34,7 +34,7 @@ export class DatabagTableComponent implements AfterViewInit {
 
   intervalSub: Subscription;
   displayedColumns: string[] = [
-    'fileName', 'databagName', 'datasetType', 'numberColumns', 'numberRows',
+    'databagName', 'fileName', 'datasetType', 'numberColumns', 'numberRows',
     'bucketName', 'creationTime', 'actions'
   ];
 
