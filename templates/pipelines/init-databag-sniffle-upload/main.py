@@ -20,13 +20,18 @@ def init_databag_sniffle_upload(
     max_categories: int = 10,
 ):
     update_databag_status_op(
-        DatabagStatusMessages.uploading.value, bucket=bucket
+        DatabagStatusMessages.uploading.value,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
     )
-    df_info = init_databag_op(file_name, bucket=bucket)
+    df_info = init_databag_op(
+        file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
+    )
     update_databag_status_op(
         DatabagStatusMessages.inspecting.value,
         depends_on=df_info.outputs["dataset"],
         bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
     )
     sniffle = sniffle_op(
         dataset=df_info.outputs["dataset"],
@@ -39,8 +44,9 @@ def init_databag_sniffle_upload(
         DatabagStatusMessages.creating.value,
         depends_on=sniffle.output,
         bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
     )
-    create_databag_op(sniffle.output, bucket)
+    create_databag_op(sniffle.output, bucket, os4ml_namespace=os4ml_namespace)
 
 
 if __name__ == "__main__":

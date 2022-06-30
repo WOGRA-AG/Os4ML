@@ -2,9 +2,10 @@ name: Create databag
 inputs:
 - {name: file, type: Dataset}
 - {name: bucket, type: String}
+- {name: os4ml_namespace, type: String}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:test-dennis1
     command:
     - sh
     - -c
@@ -28,10 +29,10 @@ implementation:
       from kfp.v2.dsl import *
       from typing import *
 
-      def create_databag(file: Input[Dataset], bucket: str):
+      def create_databag(file: Input[Dataset], bucket: str, os4ml_namespace: str):
           from src.components.create_databag import create_databag
 
-          return create_databag(file, bucket=bucket)
+          return create_databag(file, os4ml_namespace=os4ml_namespace, bucket=bucket)
 
     args:
     - --executor_input

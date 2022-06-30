@@ -17,6 +17,7 @@ def ludwig_solver(
     batch_size: int = 8,
     epochs: int = 50,
     early_stop: int = 10,
+    os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> None:
     from src.components.ludwig_solver import ludwig_solver
@@ -29,6 +30,7 @@ def ludwig_solver(
         batch_size,
         epochs,
         early_stop,
+        os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
     )
 

@@ -19,15 +19,24 @@ def katib_solver(
     os4ml_namespace: str = "os4ml",
     dataset_file_name: str = "dataset",
 ):
-    update_status_op(StatusMessages.created.value, solution_name=solution_name)
-    df_info = init_databab_op(bucket, file_name)
+    update_status_op(
+        StatusMessages.created.value,
+        solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
+    )
+    df_info = init_databab_op(
+        bucket, file_name, os4ml_namespace=os4ml_namespace
+    )
     upload_op(df_info.outputs["dataset"], bucket, dataset_file_name)
     update_status_op(
         StatusMessages.running.value,
         df_info.outputs["dataset"],
         solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
-    databag = get_databag_op(bucket)
+    databag = get_databag_op(
+        bucket, solution_name=solution_name, os4ml_namespace=os4ml_namespace
+    )
     katib_output = katib_solver_op(
         databag_file=databag.output,
         dataset_file_name=dataset_file_name,
@@ -35,12 +44,15 @@ def katib_solver(
         max_trial_count=5,
     )
     get_metrics_op(
-        katib_output.outputs["metrics"], solution_name=solution_name
+        katib_output.outputs["metrics"],
+        solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
     update_status_op(
         StatusMessages.finished.value,
         katib_output.outputs["metrics"],
         solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
 
 
