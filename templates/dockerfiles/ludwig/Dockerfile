@@ -6,6 +6,9 @@ ARG UBUNTU_VERSION=20.04
 ARG ARCH=
 ARG CUDA=11.2
 
+FROM alpine:latest as templates
+COPY . /data/templates/
+
 FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.1-base-ubuntu${UBUNTU_VERSION} as base
 # ARCH and CUDA are specified again because the FROM directive resets ARGs
 # (but their default value is retained if set previously)
