@@ -7,11 +7,11 @@ from uuid import UUID, uuid4
 import requests
 from fastapi import HTTPException
 
-from build.openapi_client.api.objectstore_api import ObjectstoreApi
 from build.openapi_client.model.databag import Databag
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
 from services import SOLUTION_CONFIG_FILE_NAME
+from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
 
@@ -22,7 +22,7 @@ def _solution_file_name(solution_name: str):
 class SolutionService:
     def __init__(self, kfp_client=None):
         self.template_service = TemplateService(kfp_client=kfp_client)
-        self.objectstore = ObjectstoreApi()
+        self.objectstore = init_objectstore_api()
 
     def get_solution(self, solution_name: str) -> Solution:
         solutions_with_name = self._get_solutions_with_name(solution_name)
@@ -34,9 +34,7 @@ class SolutionService:
         return solutions_with_name.pop()
 
     def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
-        # TODO replace get_all_solution call
-        url = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/solution"
-        all_solutions = requests.get(url).json()
+        all_solutions = self.objectstore.get_all_solutions()
         return [
             solution
             for solution in all_solutions
@@ -73,7 +71,6 @@ class SolutionService:
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
             bucket_name=solution.bucket_name,
-            # object_name=solution.name,
             object_name=_solution_file_name(solution.name),
             body=encoded_solution,
         )
