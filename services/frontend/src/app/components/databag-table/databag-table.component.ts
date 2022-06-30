@@ -17,6 +17,7 @@ import {
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {DialogEditDatabagComponent} from '../dialog-edit-databag/dialog-edit-databag.component';
 
 @Component({
   selector: 'app-databag-table',
@@ -34,13 +35,12 @@ export class DatabagTableComponent implements AfterViewInit {
   intervalSub: Subscription;
   displayedColumns: string[] = [
     'fileName', 'databagName', 'datasetType', 'numberColumns', 'numberRows',
-    'bucketName', 'creationTime'
+    'bucketName', 'creationTime', 'actions'
   ];
 
   constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.intervalSub = interval(10000).subscribe(x => {
-      router.navigate(['.'], {relativeTo: activatedRoute});
-      this.refreshDatasource();
+    this.intervalSub = interval(10000).subscribe(() => {
+      router.navigate(['.'], {relativeTo: activatedRoute}).then(() => this.refreshDatasource());
     });
   }
 
@@ -72,7 +72,21 @@ export class DatabagTableComponent implements AfterViewInit {
       data: {component: DialogAddDatabagComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+      this.router.navigate(['.'], {relativeTo: this.activatedRoute}).then(() => this.refreshDatasource());
+    });
+  }
+
+  openEditDialog(databag: Databag) {
+    const uuid: string | undefined = databag.bucketName;
+    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {
+        component: DialogEditDatabagComponent,
+        uuid,
+        databag
+      }
+    });
+    dialogRef.beforeClosed().subscribe(() => {
+      this.router.navigate(['.'], {relativeTo: this.activatedRoute}).then(() => this.refreshDatasource());
     });
   }
 }

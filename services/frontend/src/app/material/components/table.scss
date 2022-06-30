@@ -2,7 +2,12 @@
 }
 
 @mixin layout() {
-  .mat-table{
+  .mat-table {
+      border-radius: 14px;
+      overflow:hidden !important;
+  }
+
+  .mat-paginator {
       border-radius: 14px;
       overflow:hidden !important;
   }
