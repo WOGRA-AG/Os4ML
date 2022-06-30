@@ -10,7 +10,7 @@ from fastapi import HTTPException
 from build.openapi_client.model.databag import Databag
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from services import SOLUTION_CONFIG_FILE_NAME, OS4ML_NAMESPACE
+from services import OS4ML_NAMESPACE, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
@@ -40,13 +40,19 @@ class SolutionService:
         #     for solution in all_solutions
         #     if solution["name"] == solution_name
         # ]
-        url = f'http://os4ml-objectstore-manager.{OS4ML_NAMESPACE}.svc.cluster.local:8000/apis/v1beta1/objectstore/solution'
+        url = f"http://os4ml-objectstore-manager.{OS4ML_NAMESPACE}.svc.cluster.local:8000/apis/v1beta1/objectstore/solution"
         import requests
-        solution_dicts = requests.get(url).json()
-        solution_dicts_with_name = (solution_dict for solution_dict in solution_dicts
-                                    if solution_dict["name"] == solution_name)
-        return [Solution(**solution_dict) for solution_dict in solution_dicts_with_name]
 
+        solution_dicts = requests.get(url).json()
+        solution_dicts_with_name = (
+            solution_dict
+            for solution_dict in solution_dicts
+            if solution_dict["name"] == solution_name
+        )
+        return [
+            Solution(**solution_dict)
+            for solution_dict in solution_dicts_with_name
+        ]
 
     def create_solution(self, solution: Solution) -> str:
         uuid: UUID = uuid4()

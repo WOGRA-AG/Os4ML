@@ -5,7 +5,7 @@ inputs:
 - {name: os4ml_namespace, type: String}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:test-dennis1
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c

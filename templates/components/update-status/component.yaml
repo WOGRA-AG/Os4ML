@@ -6,7 +6,7 @@ inputs:
 - {name: solution_name, type: String, default: '', optional: true}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:test-dennis1
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/python:latest
     command:
     - sh
     - -c
@@ -31,11 +31,16 @@ implementation:
       from typing import *
 
       def update_status(
-          status: str = "", depends_on: Artifact = None, os4ml_namespace: str = "", solution_name: str = ""
+          status: str = "",
+          depends_on: Artifact = None,
+          os4ml_namespace: str = "",
+          solution_name: str = "",
       ):
           from src.components.update_status import update_status
 
-          update_status(status, os4ml_namespace=os4ml_namespace, solution_name=solution_name)
+          update_status(
+              status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
+          )
 
     args:
     - --executor_input

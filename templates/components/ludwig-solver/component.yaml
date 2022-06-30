@@ -12,7 +12,7 @@ outputs:
 - {name: metrics, type: Metrics}
 implementation:
   container:
-    image: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:test-dennis1
+    image: gitlab-registry.wogra.com/developer/wogra/os4ml/ludwig:latest
     command:
     - sh
     - -c
