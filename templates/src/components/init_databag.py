@@ -34,7 +34,7 @@ def init_databag(
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
     else:
-        data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object?objectName={file_name}"
+        data_uri = f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object?objectName={file_name}"
 
     file_type = FileType.from_file_name(file_name)
     if file_type == FileType.CSV:

@@ -3,7 +3,7 @@ from datetime import timedelta
 
 MINIO_URL: str = os.getenv(
     "OBJECTSTORECONFIG_URL",
-    default="minio.os4ml-minio-tenant.svc.cluster.local",
+    default="minio.minio-tenant.svc.cluster.local",
 )
 
 MINIO_KEY: str = os.getenv("OBJECTSTORECONFIG_ACCESSKEY", default="minio")
