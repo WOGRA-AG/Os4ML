@@ -2,10 +2,11 @@ import enum
 import pathlib
 from typing import Callable
 
+from kubernetes.client.models import V1LocalObjectReference
+
 from kfp.compiler import Compiler
 from kfp.components import load_component_from_file
 from kfp.dsl import PipelineConf, PipelineExecutionMode
-from kubernetes.client.models import V1LocalObjectReference
 
 
 class StatusMessages(str, enum.Enum):
