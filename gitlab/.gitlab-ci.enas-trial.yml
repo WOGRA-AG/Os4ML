@@ -10,7 +10,8 @@ enas-trial-build:
     - /kaniko/executor
       --target production
       --context $DIR
-      --dockerfile $DOCKERFILE
+      --dockerfile Dockerfile
+      --skip-unused-stages
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   when: on_success
   variables:

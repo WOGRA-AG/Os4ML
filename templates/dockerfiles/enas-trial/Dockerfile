@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.7.0-gpu
+FROM tensorflow/tensorflow:2.7.0-gpu as production
 
 ENV TARGET_DIR /opt/enas-trial/
 

@@ -11,6 +11,7 @@
       --target production
       --context $DIR
       --dockerfile Dockerfile
+      --skip-unused-stages
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   variables:
     LABEL: $CI_COMMIT_REF_NAME

@@ -34,24 +34,11 @@ class SolutionService:
         return solutions_with_name.pop()
 
     def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
-        # all_solutions = self.objectstore.get_all_solutions()
-        # return [
-        #     solution
-        #     for solution in all_solutions
-        #     if solution["name"] == solution_name
-        # ]
-        url = f"http://os4ml-objectstore-manager.{OS4ML_NAMESPACE}.svc.cluster.local:8000/apis/v1beta1/objectstore/solution"
-        import requests
-
-        solution_dicts = requests.get(url).json()
-        solution_dicts_with_name = (
-            solution_dict
-            for solution_dict in solution_dicts
-            if solution_dict["name"] == solution_name
-        )
+        all_solutions = self.objectstore.get_all_solutions()
         return [
-            Solution(**solution_dict)
-            for solution_dict in solution_dicts_with_name
+            solution
+            for solution in all_solutions
+            if solution["name"] == solution_name
         ]
 
     def create_solution(self, solution: Solution) -> str:
