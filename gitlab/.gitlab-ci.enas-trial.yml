@@ -7,11 +7,11 @@ enas-trial-build:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
-    - cd $DIR
     - /kaniko/executor
       --target production
       --context $DIR
-      --dockerfile $DOCKERFILE
+      --dockerfile Dockerfile
+      --skip-unused-stages
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   when: on_success
   variables:

@@ -13,4 +13,4 @@ def put_solution_url(solution_name: str, os4ml_namespace: str) -> str:
 
 
 def _get_base_server_url(os4ml_namespace: str) -> str:
-    return f"http://os4ml-jobmanager.{os4ml_namespace}.svc.cluster.local:8000"
+    return f"http://jobmanager.{os4ml_namespace}.svc.cluster.local:8000"

@@ -6,7 +6,7 @@ build-python:
     - .build-template
   variables:
     DIR: 'templates'
-    IMG_NAME: 'Python'
+    IMG_NAME: 'python'
     DOCKERFILE: 'dockerfiles/python/Dockerfile'
 
 build-pandas:
@@ -14,7 +14,7 @@ build-pandas:
     - .build-template
   variables:
     DIR: 'templates'
-    IMG_NAME: 'Pandas'
+    IMG_NAME: 'pandas'
     DOCKERFILE: 'dockerfiles/pandas/Dockerfile'
 
 build-ludwig:
@@ -22,5 +22,5 @@ build-ludwig:
     - .build-template
   variables:
     DIR: 'templates'
-    IMG_NAME: 'Ludwig'
+    IMG_NAME: 'ludwig'
     DOCKERFILE: 'dockerfiles/ludwig/Dockerfile'
