@@ -117,7 +117,7 @@ RUN --mount=type=cache,target=/root/.cache \
     poetry config virtualenvs.create false && poetry install
 
 # copy os4ml source code
-FROM ludwig-base as ludwig
+FROM ludwig-base as production
 
 COPY --from=templates /data/templates/src /src
 
