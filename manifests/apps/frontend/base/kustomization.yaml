@@ -3,8 +3,6 @@ kind: Kustomization
 resources:
   - service.yaml
   - deployment.yaml
-namePrefix: os4ml-
 namespace: os4ml
 commonLabels:
   app: os4ml
-  kustomize.component: ui
