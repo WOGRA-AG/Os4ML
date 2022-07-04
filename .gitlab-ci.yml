@@ -83,20 +83,6 @@ variables:
     IMG_NAME: 'frontend'
     LABEL: 'rc'
 
-.frontend-deploy-dev:
-  extends:
-    .deploy
-  needs: [
-    build-frontend,
-    build-frontend-image
-  ]
-  dependencies:
-    - build-frontend
-  variables:
-    DIR: 'services/frontend'
-    IMG_NAME: 'frontend'
-    LABEL: 'dev'
-
 .frontend-deploy-feature:
   extends:
     .deploy
@@ -111,32 +97,46 @@ variables:
     IMG_NAME: 'frontend'
     LABEL: 'feature'
 
-.jobmanager-deploy-dev:
-  extends:
-    - .deploy
-  needs:
-    - job-manager-validate-backend
-  variables:
-    DIR: 'services/job-manager'
-    IMG_NAME: 'job-manager'
-    LABEL: 'dev'
-
-.objectstore-deploy-dev:
-  extends:
-    - .deploy
-  needs:
-    - os-manager-validate-backend
-  variables:
-    DIR: 'services/objectstore-manager'
-    IMG_NAME: 'objectstore-manager'
-    LABEL: 'dev'
-
 deploy-dev:
-  extends:
-    - .frontend-deploy-dev
-    - .objectstore-deploy-dev
-    - .jobmanager-deploy-dev
+  stage: deploy
   needs:
     - build-frontend
+    - build-frontend-image
     - job-manager-build
     - os-manager-build
+  dependencies:
+    - build-frontend
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --target production
+      --context services/objectstore-manager
+      --dockerfile Dockerfile
+      --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
+      --destination $CI_REGISTRY_IMAGE/objectstore-manager:dev
+    - /kaniko/executor
+      --target production
+      --context services/job-manager
+      --dockerfile Dockerfile
+      --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
+      --destination $CI_REGISTRY_IMAGE/job-manager:dev
+    - /kaniko/executor
+      --target production
+      --context services/frontend
+      --dockerfile Dockerfile
+      --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
+      --destination $CI_REGISTRY_IMAGE/frontend:dev
