@@ -1,6 +1,13 @@
-.validate-oas:
+distribute-oas:
   stage: prepare
   needs: []
+  script:
+    - cd services/oas
+    - sh distribute_oas.sh
+
+.validate-oas:
+  stage: prepare
+  needs: [distribute-oas]
   image: node:14
   script:
     - npm install -g swagger-cli@$SWAGGER_CLI_VERSION
