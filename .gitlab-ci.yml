@@ -138,3 +138,5 @@ deploy-dev:
     - .jobmanager-deploy-dev
   needs:
     - build-frontend
+    - job-manager-build
+    - os-manager-build
