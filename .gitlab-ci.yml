@@ -136,3 +136,5 @@ deploy-dev:
     - .frontend-deploy-dev
     - .objectstore-deploy-dev
     - .jobmanager-deploy-dev
+  needs:
+    - build-frontend
