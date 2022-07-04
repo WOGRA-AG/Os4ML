@@ -37,20 +37,27 @@
       --cache
       --cache-copy-layers
       --compressed-caching
+      --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
+      --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+
+.deploy:
+  stage: deploy
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --context $DIR
+      --dockerfile Dockerfile
+      --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-  variables:
-    LABEL: $CI_COMMIT_REF_NAME
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-      variables:
-        LABEL: "latest"
-    - if: '$CI_COMMIT_TAG'
-      variables:
-        LABEL: $CI_COMMIT_TAG
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
-      changes:
-        - $DIR/**/*
-      when: on_success
+  when: manual
 
 build-frontend:
   extends:
@@ -77,3 +84,78 @@ build-frontend-image:
   variables:
     DIR: 'services/frontend'
     IMG_NAME: 'frontend'
+
+frontend-deploy-prod:
+  extends:
+    .deploy
+  needs: [
+    build-frontend,
+    build-frontend-image
+  ]
+  dependencies:
+    - build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'frontend'
+    LABEL: 'latest'
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
+frontend-deploy-staging:
+  extends:
+    .deploy
+  needs: [
+    build-frontend,
+    build-frontend-image
+  ]
+  dependencies:
+    - build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'frontend'
+    LABEL: 'stage'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+
+frontend-deploy-release:
+  extends:
+    .deploy
+  needs: [
+    build-frontend,
+    build-frontend-image
+  ]
+  dependencies:
+    - build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'frontend'
+    LABEL: 'rc'
+
+frontend-deploy-dev:
+  extends:
+    .deploy
+  needs: [
+    build-frontend,
+    build-frontend-image
+  ]
+  dependencies:
+    - build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'frontend'
+    LABEL: 'dev'
+
+frontend-deploy-feature:
+  extends:
+    .deploy
+  needs: [
+    build-frontend,
+    build-frontend-image
+  ]
+  dependencies:
+    - build-frontend
+  variables:
+    DIR: 'services/frontend'
+    IMG_NAME: 'frontend'
+    LABEL: 'feature'
