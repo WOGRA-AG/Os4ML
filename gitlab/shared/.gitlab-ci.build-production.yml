@@ -12,6 +12,9 @@
       --context $DIR
       --dockerfile Dockerfile
       --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   variables:
     LABEL: $CI_COMMIT_REF_NAME

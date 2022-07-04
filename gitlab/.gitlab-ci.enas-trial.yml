@@ -12,6 +12,9 @@ enas-trial-build:
       --context $DIR
       --dockerfile Dockerfile
       --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   when: on_success
   variables:
