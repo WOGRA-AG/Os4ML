@@ -6,6 +6,9 @@ ARG UBUNTU_VERSION=20.04
 ARG ARCH=
 ARG CUDA=11.2
 
+FROM alpine:latest as templates
+COPY . /data/templates/
+
 FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.1-base-ubuntu${UBUNTU_VERSION} as base
 # ARCH and CUDA are specified again because the FROM directive resets ARGs
 # (but their default value is retained if set previously)
@@ -109,13 +112,13 @@ RUN rm -f /usr/local/bin/python && ln -s $(which python3) /usr/local/bin/python
 
 # Install ludwig using poetry lock files
 FROM pyenv as ludwig-base
-COPY pyproject.toml poetry.lock ./
+COPY dockerfiles/ludwig/pyproject.toml dockerfiles/ludwig/poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache \
     poetry config virtualenvs.create false && poetry install
 
 # copy os4ml source code
-FROM ludwig-base as ludwig
+FROM ludwig-base as production
 
-COPY --from=templates src /src
+COPY --from=templates /data/templates/src /src
 
 CMD ["python3"]

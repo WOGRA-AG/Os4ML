@@ -40,18 +40,18 @@ def katib_solver(
         databag = json.load(file)
 
     databag_url = (
-        f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+        f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
         f'databag/{databag["bucket_name"]}'
     )
 
     dataset_url = (
-        f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-        f'{databag["bucket_name"]}/object?object_name={dataset_file_name}'
+        f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+        f'{databag["bucket_name"]}/object?objectName={dataset_file_name}'
     )
 
     zip_url = (
-        f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
-        f'{databag["bucket_name"]}/object?object_name={databag["file_name"]}'
+        f"http://objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/"
+        f'{databag["bucket_name"]}/object?objectName={databag["file_name"]}'
     )
 
     namespace = "os4ml"

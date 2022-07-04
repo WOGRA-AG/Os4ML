@@ -8,13 +8,18 @@ import pandas as pd
 from src.model.databag_type import DatabagType
 from src.model.file_type import FileType
 from src.objectstore.download import download_file
+from src.objectstore.urls import get_download_url
 from src.util.error_handler import error_handler
 from src.util.uri import extract_filename_from_uri
 
 
 @error_handler
 def init_databag(
-    file_name: str, *, bucket: str = None, solution_name: str = ""
+    file_name: str,
+    *,
+    bucket: str = None,
+    os4ml_namespace: str = "",
+    solution_name: str = "",
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", str)]):
     """
     Inits the databag by specifying its type and creating the dataset.
@@ -34,7 +39,7 @@ def init_databag(
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
     else:
-        data_uri = f"http://os4ml-objectstore-manager.os4ml:8000/apis/v1beta1/objectstore/{bucket}/object?objectName={file_name}"
+        data_uri = get_download_url(bucket, file_name, os4ml_namespace)
 
     file_type = FileType.from_file_name(file_name)
     if file_type == FileType.CSV:

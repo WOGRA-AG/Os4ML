@@ -1,23 +1,23 @@
 enas-trial-build:
   stage: build
-  image: docker:19.03.13-dind
-  when: on_success
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
   before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
-    - cd $DIR
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-    - echo $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+    - /kaniko/executor
+      --target production
+      --context $DIR
+      --dockerfile Dockerfile
+      --skip-unused-stages
+      --destination $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+  when: on_success
   variables:
     DOCKER_DRIVER: overlay2
     DIR: 'templates/dockerfiles/enas-trial'
     IMG_NAME: 'enas-trial'
-    DOCKER_BUILDKIT: 1
     LABEL: $CI_COMMIT_SHORT_SHA
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'

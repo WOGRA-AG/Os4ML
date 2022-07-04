@@ -55,9 +55,9 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 
 
 FROM development AS lint
-RUN black --config ./pyproject.toml --check src tests components
-RUN isort --settings-path ./pyproject.toml --check-only src tests components
+RUN black --config ./pyproject.toml --check src tests components pipelines
+RUN isort --settings-path ./pyproject.toml --check-only src tests components pipelines
 
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 80
+RUN coverage report -m --fail-under 75

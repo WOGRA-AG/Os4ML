@@ -69,6 +69,13 @@ telepresence intercept os4ml-jobmanager --namespace os4ml --port 8000:8000
 telepresence intercept os4ml-objecstore-manager --namespace os4ml --port 8001:8000
 ```
 
+### Telepresence panic
+```sh
+sudo rm /var/run/telepresence-daemon.socket
+telepresence quit -u
+telepresence uninstall --everything
+telepresence connect
+```
 ### Formatting and Import Sorting
 ```sh
 black --config ./pyproject.toml src tests --exclude src/build --check 

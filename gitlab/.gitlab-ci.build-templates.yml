@@ -5,21 +5,22 @@ build-python:
   extends:
     - .build-template
   variables:
-    DIR: 'templates/dockerfiles/python'
+    DIR: 'templates'
     IMG_NAME: 'python'
+    DOCKERFILE: 'dockerfiles/python/Dockerfile'
 
 build-pandas:
   extends:
     - .build-template
   variables:
-    DIR: 'templates/dockerfiles/pandas'
+    DIR: 'templates'
     IMG_NAME: 'pandas'
+    DOCKERFILE: 'dockerfiles/pandas/Dockerfile'
 
 build-ludwig:
   extends:
     - .build-template
   variables:
-    DIR: 'templates/dockerfiles/ludwig'
+    DIR: 'templates'
     IMG_NAME: 'ludwig'
-
-
+    DOCKERFILE: 'dockerfiles/ludwig/Dockerfile'
