@@ -135,7 +135,6 @@ deploy-dev:
       --cleanup
       --destination $CI_REGISTRY_IMAGE/job-manager:dev
     - /kaniko/executor
-      --target production
       --context services/frontend
       --dockerfile Dockerfile
       --skip-unused-stages
