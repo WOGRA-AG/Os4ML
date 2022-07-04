@@ -123,6 +123,7 @@ deploy-dev:
       --compressed-caching
       --cleanup
       --destination $CI_REGISTRY_IMAGE/objectstore-manager:dev
+    - rm -R /kaniko/2/opt/pysetup
     - /kaniko/executor
       --target production
       --context services/job-manager
