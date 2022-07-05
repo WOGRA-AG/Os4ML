@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui
-  namespace: os4ml
+  name: frontend
 spec:
   replicas: 1
   selector:
@@ -24,7 +23,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/frontend:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/frontend"
           imagePullPolicy: Always
           ports:
             - containerPort: 80

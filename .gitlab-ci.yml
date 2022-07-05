@@ -1,11 +1,11 @@
 include:
-  - local: 'gitlab/.gitlab-ci.terraform.yml'
   - local: 'gitlab/.gitlab-ci.templates.yml'
   - local: 'gitlab/.gitlab-ci.build-templates.yml'
   - local: 'gitlab/.gitlab-ci.enas-trial.yml'
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
+  - local: 'gitlab/shared/.gitlab-ci.deploy.yml'
 
 stages:
   - prepare
@@ -16,5 +16,3 @@ stages:
 
 variables:
   SWAGGER_CLI_VERSION: 4.0.4
-
-
