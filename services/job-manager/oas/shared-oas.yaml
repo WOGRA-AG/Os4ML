@@ -38,8 +38,10 @@ components:
           type: string
         completionTime:
           type: string
+          nullable: true
         metrics:
           type: object
+          nullable: true
           properties:
             accuracy:
               type: number
@@ -75,6 +77,7 @@ components:
           type: string
         status:
           type: string
+          nullable: true
     PipelineTemplate:
       properties:
         name:
