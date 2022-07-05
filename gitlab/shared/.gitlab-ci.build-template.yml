@@ -13,7 +13,8 @@
       --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "$DOCKERFILE"
+      --file $DOCKERFILE
+      "."
     - docker push --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   variables:
     LABEL: $CI_COMMIT_REF_NAME
