@@ -2,9 +2,10 @@ FROM tensorflow/tensorflow:2.7.0-gpu as production
 
 ENV TARGET_DIR /opt/enas-trial/
 
-ADD *.py ${TARGET_DIR}
-ADD requirements.txt ${TARGET_DIR}
 WORKDIR  ${TARGET_DIR}
+
+COPY ./*.py ./
+COPY ./requirements.txt .
 
 ENV PYTHONPATH ${TARGET_DIR}
 
