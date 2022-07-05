@@ -83,9 +83,9 @@
         "columns": {
           "fileName": "File",
           "databagName": "Databag Name",
-          "datasetType": "Filename",
-          "numberColumns": "No. Columns",
-          "numberRows": "No. Rows",
+          "datasetType": "Type",
+          "numberColumns": "Features",
+          "numberRows": "Samples",
           "bucketName": "Bucket Name",
           "creationTime": "Creation Time"
         },

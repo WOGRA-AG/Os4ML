@@ -3,7 +3,7 @@
 <ng-template #databagsTemplate>
   <mat-form-field class="input-filter" appearance="standard">
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" #input>
+    <input matInput (keyup)="updateAndApplyFilterValue($event)" #input>
   </mat-form-field>
   <table mat-table class="mat-elevation-z0" [dataSource]="dataSource" matSortActive="creationTime" matSortDirection="desc" matSort>
     <ng-container matColumnDef="bucketName">
@@ -11,8 +11,8 @@
       <td mat-cell *matCellDef="let element"> {{element.bucketName}} </td>
     </ng-container>
     <ng-container matColumnDef="creationTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"page.databag.table.columns.creationTime" | localizedDate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.creationTime | date:'long'}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"page.databag.table.columns.creationTime" | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{element.creationTime | localizedDate}} {{element.creationTime | localizedDate:'mediumTime'}} </td>
     </ng-container>
     <ng-container matColumnDef="databagName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"page.databag.table.columns.databagName" | translate}} </th>

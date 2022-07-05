@@ -18,6 +18,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {DialogEditDatabagComponent} from '../dialog-edit-databag/dialog-edit-databag.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-databag-table',
@@ -32,6 +33,7 @@ export class DatabagTableComponent implements AfterViewInit {
 
   dataSource: MatTableDataSource<Databag> = new MatTableDataSource<Databag>();
 
+  filterValue = '';
   intervalSub: Subscription;
   displayedColumns: string[] = [
     'databagName', 'fileName', 'datasetType', 'numberColumns', 'numberRows',
@@ -40,7 +42,10 @@ export class DatabagTableComponent implements AfterViewInit {
 
   constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) {
     this.intervalSub = interval(10000).subscribe(() => {
-      router.navigate(['.'], {relativeTo: activatedRoute}).then(() => this.refreshDatasource());
+      router.navigate(['.'], {relativeTo: activatedRoute}).then(() => {
+        this.refreshDatasource();
+        this.applyFilter();
+      });
     });
   }
 
@@ -58,9 +63,13 @@ export class DatabagTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort!;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  updateAndApplyFilterValue(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
