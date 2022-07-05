@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobmanager
-  namespace: os4ml
 spec:
   replicas: 1
   selector:
@@ -41,6 +40,11 @@ spec:
                 configMapKeyRef:
                   name: jobmanager-config
                   key: pipelineNS
+            - name: OS4ML_NAMESPACE
+              valueFrom:
+                configMapKeyRef:
+                  name: jobmanager-config
+                  key: os4mlNS
             - name: KF_PIPELINES_SA_TOKEN_PATH
               value: /var/run/secrets/kubeflow/pipelines/token
           volumeMounts:
@@ -49,10 +53,9 @@ spec:
               readOnly: true
           resources:
             limits:
-              cpu: 200m
-              memory: 200Mi
+              cpu: 500m
             requests:
-              cpu: 50m
+              cpu: 100m
               memory: 200Mi
           readinessProbe:
             httpGet:

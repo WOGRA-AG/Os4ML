@@ -6,4 +6,4 @@ resources:
 namespace: os4ml
 commonLabels:
   app: os4ml
-  kustomize.component: os4ml-jobmanager
+  kustomize.component: jobmanager

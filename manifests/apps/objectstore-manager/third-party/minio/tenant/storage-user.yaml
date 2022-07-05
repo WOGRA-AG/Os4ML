@@ -7,5 +7,4 @@ data:
 kind: Secret
 metadata:
   name: storage-user
-  namespace: default
 type: Opaque
