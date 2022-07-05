@@ -1,8 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: os4ml-ui
-  namespace: os4ml
+  name: frontend
 spec:
   gateways:
     - os4ml/os4ml-gateway
@@ -15,6 +14,6 @@ spec:
             prefix: /
       route:
         - destination:
-            host: os4ml-ui.os4ml.svc.cluster.local
+            host: frontend.os4ml.svc.cluster.local
             port:
               number: 80
