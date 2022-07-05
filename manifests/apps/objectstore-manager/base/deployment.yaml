@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: objectstore-manager
-  namespace: os4ml
 spec:
   replicas: 1
   selector:
@@ -19,12 +18,11 @@ spec:
       annotations:
         sidecar.istio.io/inject: "false"
       labels:
-        app: os4ml
         name: objectstore-manager
     spec:
       containers:
         - name: objectstore-manager
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:latest"
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager"
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -46,12 +44,12 @@ spec:
             - name: OBJECTSTORECONFIG_ACCESSKEY
               valueFrom:
                 secretKeyRef:
-                  name: os4ml-minio
+                  name: minio
                   key: accesskey
             - name: OBJECTSTORECONFIG_SECRETACCESSKEY
               valueFrom:
                 secretKeyRef:
-                  name: os4ml-minio
+                  name: minio
                   key: secretkey
           resources:
             limits:
