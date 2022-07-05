@@ -12,12 +12,8 @@
       --context $DIR
       --dockerfile Dockerfile
       --skip-unused-stages
+      --cache
+      --cache-copy-layers
+      --compressed-caching
       --destination $CI_REGISTRY_IMAGE/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_TAG'
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
-      changes:
-        - $DIR/**/*
-      when: on_success

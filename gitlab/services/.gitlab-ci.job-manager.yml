@@ -1,7 +1,7 @@
 include:
   - local: 'gitlab/shared/.gitlab-ci.prepare-validate-oas.yml'
-  - local: 'gitlab/shared/.gitlab-ci.build-development.yml'
-  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-test.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-images.yml'
 
 # Build Jobmanager image
 job-manager-validate-oas:
