@@ -5,7 +5,6 @@ from fastapi.responses import RedirectResponse
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
-from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.url import Url
 from services.minio_service import MinioService
@@ -63,24 +62,6 @@ class ObjectstoreApiService:
 
     def post_new_bucket(self, bucket_name) -> Bucket:
         return self.minio_service.create_bucket(bucket_name=bucket_name)
-
-    def get_all_component_templates(self) -> List[PipelineTemplate]:
-        return self.minio_service.get_all_pipeline_templates("components")
-
-    def get_all_pipeline_templates(self) -> List[PipelineTemplate]:
-        return self.minio_service.get_all_pipeline_templates("pipelines")
-
-    def get_component_template_by_name(
-        self, component_name
-    ) -> PipelineTemplate:
-        return self.minio_service.get_pipeline_template_by_name(
-            "components", component_name
-        )
-
-    def get_pipeline_template_by_name(self, pipeline_name) -> PipelineTemplate:
-        return self.minio_service.get_pipeline_template_by_name(
-            "pipelines", pipeline_name
-        )
 
     def get_all_solutions(self) -> List[Solution]:
         return self.solution_service.get_all_solutions()
