@@ -6,13 +6,13 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - cd $DIR
     - docker build
+      -f $DOCKERFILE
       --target test
       --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:test
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
+      $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   variables:

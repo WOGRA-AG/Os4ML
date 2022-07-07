@@ -14,8 +14,9 @@ job-manager-validate-backend:
   extends:
     - .build-development
   variables:
-    DIR: 'services/job-manager'
+    DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'
+    BUILD_CONTEXT: '.'
 
 job-manager-build:
   extends:
@@ -23,5 +24,6 @@ job-manager-build:
   needs:
     - job-manager-validate-backend
   variables:
-    DIR: 'services/job-manager'
+    DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'
+    BUILD_CONTEXT: '.'

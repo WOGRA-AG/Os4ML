@@ -21,7 +21,7 @@ ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
-COPY ./ /usr/app
+COPY services/job-manager/ /usr/app
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i oas/job-manager-oas.yaml \
 -t oas/templates \
@@ -47,7 +47,7 @@ RUN apt-get update \
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
 WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
+COPY services/job-manager/poetry.lock services/job-manager/pyproject.toml ./
 
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --no-dev --no-interaction --no-ansi
@@ -61,7 +61,7 @@ COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR $PYSETUP_PATH
@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.cache \
     poetry install -q
 
 WORKDIR $PROJECT_DIR
-COPY . .
+COPY services/jobmanager/ .
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
@@ -92,14 +92,14 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY gunicorn_conf.py $PROJECT_DIR/
+COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-COPY /src $PROJECT_DIR/src
+COPY services/job-manager/src $PROJECT_DIR/src
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
