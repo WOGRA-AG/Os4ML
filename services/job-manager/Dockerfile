@@ -1,3 +1,6 @@
+FROM python:3.9.10-slim as pipeline-templates
+COPY templates/pipelines /pipelines
+
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
 FROM python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
@@ -60,6 +63,7 @@ ENV FASTAPI_ENV=development
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
+COPY --from=pipeline-templates /pipelines /pipelines
 
 COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
@@ -92,6 +96,7 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
+COPY --from=pipeline-templates /pipelines /pipelines
 COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR
