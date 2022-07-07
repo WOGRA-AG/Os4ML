@@ -73,7 +73,7 @@ RUN --mount=type=cache,target=/root/.cache \
     poetry install -q
 
 WORKDIR $PROJECT_DIR
-COPY services/jobmanager/ .
+COPY services/job-manager/ .
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh $0 $@
