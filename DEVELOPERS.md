@@ -64,9 +64,9 @@ telepresence connect
 ### Intercept
 ```sh
 telepresence connect
-telepresence intercept os4ml-ui --namespace os4ml --port 4200:80
-telepresence intercept os4ml-jobmanager --namespace os4ml --port 8000:8000
-telepresence intercept os4ml-objecstore-manager --namespace os4ml --port 8001:8000
+telepresence intercept frontend --namespace os4ml --port 4200:80
+telepresence intercept jobmanager --namespace os4ml --port 8000:8000
+telepresence intercept objecstore-manager --namespace os4ml --port 8001:8000
 ```
 
 ### Telepresence panic
@@ -80,7 +80,6 @@ telepresence connect
 ```sh
 black --config ./pyproject.toml src tests --exclude src/build --check 
 black --config ./pyproject.toml src tests --exclude src/build
-```sh
 isort --settings-path ./pyproject.toml src tests --skip-gitignore --check-only
 isort --settings-path ./pyproject.toml src tests --skip-gitignore
 ```
