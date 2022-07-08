@@ -1,9 +1,9 @@
 import json
 import pathlib
 
-from more_itertools import first
 import pytest
 from fastapi import HTTPException
+from more_itertools import first
 
 import services
 from api.template_api_service import TemplateApiService
@@ -34,7 +34,7 @@ def template_api_service(template_service):
 
 @pytest.mark.asyncio
 async def test_post_template(
-        mocker, mock_kfp_client, template_api_service, template_service
+    mocker, mock_kfp_client, template_api_service, template_service
 ):
     mocker.patch.object(
         template_service,
@@ -81,7 +81,7 @@ def mock_templates_dir(tmp_path):
 
 @pytest.mark.asyncio
 async def test_get_all_pipeline_templates(
-        monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, template_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -99,10 +99,14 @@ async def test_get_all_pipeline_templates(
 # works only on the dockerfile
 # create pipelines and change PIPELINES_TEMPLATES_DIR to run locally
 @pytest.mark.asyncio
-async def test_get_all_pipeline_templates_ludwig_solver_exists(template_api_service):
+async def test_get_all_pipeline_templates_ludwig_solver_exists(
+    template_api_service,
+):
     pipelines = await get_all_pipeline_templates(template_api_service)
     assert any(pipeline.name == "ludwig-solver" for pipeline in pipelines)
-    ludwig_solver = first(pipeline for pipeline in pipelines if pipeline.name == "ludwig-solver")
+    ludwig_solver = first(
+        pipeline for pipeline in pipelines if pipeline.name == "ludwig-solver"
+    )
     assert ludwig_solver.name == "ludwig-solver"
     assert ludwig_solver.description
     assert ludwig_solver.type == "pipeline"
@@ -112,10 +116,19 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(template_api_serv
 # works only on the dockerfile
 # create pipelines and change PIPELINES_TEMPLATES_DIR to run locally
 @pytest.mark.asyncio
-async def test_get_all_pipeline_templates_init_pipeline_exists(template_api_service):
+async def test_get_all_pipeline_templates_init_pipeline_exists(
+    template_api_service,
+):
     pipelines = await get_all_pipeline_templates(template_api_service)
-    assert any(pipeline.name == "init-databag-sniffle-upload" for pipeline in pipelines)
-    init_pipeline = first(pipeline for pipeline in pipelines if pipeline.name == "init-databag-sniffle-upload")
+    assert any(
+        pipeline.name == "init-databag-sniffle-upload"
+        for pipeline in pipelines
+    )
+    init_pipeline = first(
+        pipeline
+        for pipeline in pipelines
+        if pipeline.name == "init-databag-sniffle-upload"
+    )
     assert init_pipeline.name
     assert init_pipeline.description
     assert init_pipeline.type == "pipeline"
@@ -124,7 +137,7 @@ async def test_get_all_pipeline_templates_init_pipeline_exists(template_api_serv
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name(
-        monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, template_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -139,7 +152,7 @@ async def test_get_pipeline_file_by_name(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name_not_found(
-        monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, template_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -154,7 +167,7 @@ async def test_get_pipeline_file_by_name_not_found(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_template_by_name(
-        monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, template_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -172,7 +185,7 @@ async def test_get_pipeline_template_by_name(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_template_by_name_not_found(
-        monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, template_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
