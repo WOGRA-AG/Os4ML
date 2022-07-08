@@ -10,6 +10,7 @@ from kfp.dsl import PipelineConf, PipelineExecutionMode
 
 PIPELINE_FILE_NAME = "pipeline.yaml"
 
+
 class StatusMessages(str, enum.Enum):
     created = "Solution created"
     running = "Solver running"

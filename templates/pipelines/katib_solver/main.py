@@ -1,8 +1,7 @@
 from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
-
-from pipelines.util import StatusMessages, load_component, compile_pipeline
+from pipelines.util import StatusMessages, compile_pipeline, load_component
 
 init_databab_op = load_component("init_databag")
 upload_op = load_component("upload_to_objectstore")
@@ -14,11 +13,11 @@ update_status_op = load_component("update_status")
 
 @pipeline(name="katib-solver")
 def katib_solver(
-        bucket: str,
-        file_name: str,
-        solution_name: str = "",
-        os4ml_namespace: str = "os4ml",
-        dataset_file_name: str = "dataset",
+    bucket: str,
+    file_name: str,
+    solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
+    dataset_file_name: str = "dataset",
 ):
     update_status_op(
         StatusMessages.created.value,

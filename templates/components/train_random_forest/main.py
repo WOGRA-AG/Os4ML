@@ -1,19 +1,12 @@
-from kfp.v2.dsl import (
-    ClassificationMetrics,
-    Dataset,
-    Input,
-    Metrics,
-    Output,
-)
-
 from components.util import build_component
+from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
 
 def train_random_forest(
-        data_x: Input[Dataset],
-        data_y: Input[Dataset],
-        class_metrics: Output[ClassificationMetrics],
-        metrics: Output[Metrics],
+    data_x: Input[Dataset],
+    data_y: Input[Dataset],
+    class_metrics: Output[ClassificationMetrics],
+    metrics: Output[Metrics],
 ) -> float:
     import pandas as pd
     from sklearn.ensemble import RandomForestClassifier

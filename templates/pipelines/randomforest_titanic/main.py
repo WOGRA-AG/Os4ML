@@ -1,8 +1,7 @@
 from kfp.compiler import Compiler
 from kfp.dsl import PipelineExecutionMode
 from kfp.v2.dsl import pipeline
-
-from pipelines.util import StatusMessages, load_component, compile_pipeline
+from pipelines.util import StatusMessages, compile_pipeline, load_component
 
 init_databag_op = load_component("init_databag")
 preprocess_data_op = load_component("preprocess_data")
@@ -13,10 +12,10 @@ update_status_op = load_component("update_status")
 
 @pipeline(name="titanic-randomforest-pipeline")
 def titanic_rf_pipeline(
-        bucket: str = "os4ml",
-        file_name: str = "titanic.xlsx",
-        solution_name: str = "",
-        os4ml_namespace: str = "os4ml",
+    bucket: str = "os4ml",
+    file_name: str = "titanic.xlsx",
+    solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
 ):
     update_status_op(
         StatusMessages.created.value,

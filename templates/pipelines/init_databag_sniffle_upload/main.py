@@ -1,5 +1,4 @@
 from kfp.v2.dsl import pipeline
-
 from pipelines.util import (
     DatabagStatusMessages,
     compile_pipeline,
@@ -14,11 +13,11 @@ update_databag_status_op = load_component("update_databag_status")
 
 @pipeline(name="init-databag-sniffle-upload")
 def init_databag_sniffle_upload(
-        bucket: str = "os4ml",
-        file_name: str = "titanic.xlsx",
-        solution_name: str = "",
-        os4ml_namespace: str = "os4ml",
-        max_categories: int = 10,
+    bucket: str = "os4ml",
+    file_name: str = "titanic.xlsx",
+    solution_name: str = "",
+    os4ml_namespace: str = "os4ml",
+    max_categories: int = 10,
 ):
     update_databag_status_op(
         DatabagStatusMessages.uploading.value,

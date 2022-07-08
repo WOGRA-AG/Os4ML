@@ -1,12 +1,11 @@
 from typing import NamedTuple
 
-from kfp.v2.dsl import Dataset, Input
-
 from components.util import build_component
+from kfp.v2.dsl import Dataset, Input
 
 
 def preprocess_data(
-        dataframe: Input[Dataset],
+    dataframe: Input[Dataset],
 ) -> NamedTuple("Data", [("x", Dataset), ("y", Dataset)]):
     import re
     from collections import namedtuple

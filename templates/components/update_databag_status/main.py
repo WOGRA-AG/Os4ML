@@ -1,14 +1,13 @@
-from kfp.v2.dsl import Artifact
-
 from components.images import python_image
 from components.util import build_component
+from kfp.v2.dsl import Artifact
 
 
 def update_databag_status(
-        status: str = "",
-        depends_on: Artifact = None,
-        os4ml_namespace: str = "",
-        bucket: str = "",
+    status: str = "",
+    depends_on: Artifact = None,
+    os4ml_namespace: str = "",
+    bucket: str = "",
 ):
     from src.components.update_databag_status import update_databag_status
 
@@ -19,9 +18,7 @@ def update_databag_status(
 
 def main():
     build_component(
-        update_databag_status,
-        base_image=python_image,
-        file=__file__
+        update_databag_status, base_image=python_image, file=__file__
     )
 
 

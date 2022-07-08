@@ -1,15 +1,14 @@
-from kfp.v2.dsl import Dataset, Input
-
 from components.images import pandas_image
 from components.util import build_component
+from kfp.v2.dsl import Dataset, Input
 
 
 def sniffle_dataset(
-        dataset: Input[Dataset],
-        dataset_type: str = "local_file",
-        max_categories: int = 10,
-        file_name: str = "",
-        bucket: str = "",
+    dataset: Input[Dataset],
+    dataset_type: str = "local_file",
+    max_categories: int = 10,
+    file_name: str = "",
+    bucket: str = "",
 ) -> Dataset:
     from src.components.sniffle_dataset import sniffle_dataset
 

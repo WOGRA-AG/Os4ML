@@ -1,7 +1,6 @@
 from components.images import python_image
-from kfp.v2.dsl import Dataset, Input, component
-
 from components.util import build_component
+from kfp.v2.dsl import Dataset, Input, component
 
 
 def create_databag(file: Input[Dataset], bucket: str, os4ml_namespace: str):
@@ -11,11 +10,7 @@ def create_databag(file: Input[Dataset], bucket: str, os4ml_namespace: str):
 
 
 def main():
-    build_component(
-        create_databag,
-        base_image=python_image,
-        file=__file__
-    )
+    build_component(create_databag, base_image=python_image, file=__file__)
 
 
 if __name__ == "__main__":

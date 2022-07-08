@@ -1,11 +1,10 @@
-from kfp.v2.dsl import Input, Metrics
-
 from components.images import python_image
 from components.util import build_component
+from kfp.v2.dsl import Input, Metrics
 
 
 def get_metrics(
-        metrics: Input[Metrics], os4ml_namespace: str, solution_name: str
+    metrics: Input[Metrics], os4ml_namespace: str, solution_name: str
 ):
     from src.components.get_metrics import get_metrics
 
@@ -15,11 +14,7 @@ def get_metrics(
 
 
 def main():
-    build_component(
-        get_metrics,
-        base_image=python_image,
-        file=__file__
-    )
+    build_component(get_metrics, base_image=python_image, file=__file__)
 
 
 if __name__ == "__main__":
