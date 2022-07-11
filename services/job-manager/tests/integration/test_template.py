@@ -103,9 +103,13 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(
 ):
     pipelines = await get_all_pipeline_templates(template_api_service)
     assert any(pipeline.name == "ludwig-solver" for pipeline in pipelines)
-    ludwig_solver = next(iter(
-        pipeline for pipeline in pipelines if pipeline.name == "ludwig-solver"
-    ))
+    ludwig_solver = next(
+        iter(
+            pipeline
+            for pipeline in pipelines
+            if pipeline.name == "ludwig-solver"
+        )
+    )
     assert ludwig_solver.name == "ludwig-solver"
     assert ludwig_solver.description
     assert ludwig_solver.type == "pipeline"
@@ -123,10 +127,12 @@ async def test_get_all_pipeline_templates_init_pipeline_exists(
         pipeline.name == "init-databag-sniffle-upload"
         for pipeline in pipelines
     )
-    init_pipeline = first(
-        pipeline
-        for pipeline in pipelines
-        if pipeline.name == "init-databag-sniffle-upload"
+    init_pipeline = next(
+        iter(
+            pipeline
+            for pipeline in pipelines
+            if pipeline.name == "init-databag-sniffle-upload"
+        )
     )
     assert init_pipeline.name
     assert init_pipeline.description
