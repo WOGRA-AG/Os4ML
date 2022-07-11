@@ -33,7 +33,7 @@ class TemplateApiService:
             return self.template_service.get_pipeline_template_by_name(
                 pipeline_template_name
             )
-        except ValueError:
+        except StopIteration:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Pipeline with name {pipeline_template_name} not found",

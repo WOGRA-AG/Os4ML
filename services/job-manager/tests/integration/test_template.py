@@ -3,7 +3,6 @@ import pathlib
 
 import pytest
 from fastapi import HTTPException
-from more_itertools import first
 
 import services
 from api.template_api_service import TemplateApiService
@@ -104,9 +103,9 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(
 ):
     pipelines = await get_all_pipeline_templates(template_api_service)
     assert any(pipeline.name == "ludwig-solver" for pipeline in pipelines)
-    ludwig_solver = first(
+    ludwig_solver = next(iter(
         pipeline for pipeline in pipelines if pipeline.name == "ludwig-solver"
-    )
+    ))
     assert ludwig_solver.name == "ludwig-solver"
     assert ludwig_solver.description
     assert ludwig_solver.type == "pipeline"

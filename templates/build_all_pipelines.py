@@ -1,10 +1,9 @@
-from pipelines.init_databag_sniffle_upload.main import main as main1
-from pipelines.katib_solver.main import main as main2
-from pipelines.ludwig_solver.main import main as main3
-from pipelines.randomforest_titanic.main import main as main4
+import importlib
+import pathlib
 
 if __name__ == '__main__':
-    main1()
-    main2()
-    main3()
-    main4()
+    pipeline_dirs = (p for p in pathlib.Path("pipelines").iterdir()
+                     if p.is_dir() and p.name != "__pycache__")
+    for pipeline_dir in pipeline_dirs:
+        module = importlib.import_module(f"pipelines.{pipeline_dir.name}.main")
+        module.main()

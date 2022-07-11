@@ -3,8 +3,6 @@ import pathlib
 import uuid
 from typing import List
 
-from more_itertools import first
-
 from build.openapi_server.models.create_pipeline import CreatePipeline
 from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
@@ -58,7 +56,7 @@ class TemplateService:
             for pipeline_template in self.get_all_pipeline_templates()
             if pipeline_template.name == pipeline_name
         ]
-        return first(pipeline_templates_with_name)
+        return next(iter(pipeline_templates_with_name))
 
     def get_pipeline_file_path(self, pipeline_template_name: str) -> str:
         for pipeline_dir in self._iter_pipeline_dirs():
