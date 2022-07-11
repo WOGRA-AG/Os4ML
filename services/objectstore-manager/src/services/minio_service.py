@@ -2,7 +2,7 @@ import json
 from contextlib import contextmanager
 from datetime import datetime
 from io import BytesIO
-from typing import Generator, List
+from typing import List
 
 from fastapi import HTTPException
 from minio import Minio
@@ -13,7 +13,6 @@ from urllib3 import HTTPResponse
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
-from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.url import Url
 from services import (
     COMPONENT_FILE_NAME,
@@ -206,98 +205,11 @@ class MinioService(StorageServiceInterface):
             json.dump(databag.dict(), file)
         self.client.fput_object(bucket_name, self.config_file_name, file.name)
 
-    def get_all_pipeline_templates(
-        self, temp_type: str
-    ) -> List[PipelineTemplate]:
-        templates: List[PipelineTemplate] = []
-        bucket_name: str = "templates"
-        template_dirs = [
-            path
-            for path in self.get_directories(bucket_name, temp_type)
-            if self.is_template_dir(f"{temp_type}/{path}")
-        ]
-        for template_dir in template_dirs:
-            path: str = f"{temp_type}/{template_dir}"
-            template: PipelineTemplate = PipelineTemplate(
-                **self.get_dict_from_bucket(
-                    bucket_name, f"{path}/{self.metadata_file_name}"
-                )
-            )
-            component_file_name = (
-                self.component_file_name
-                if temp_type == "components"
-                else self.pipeline_file_name
-            )
-            template.file_url = self.get_presigned_get_url(
-                bucket_name, f"{path}/{component_file_name}"
-            )
-            template.type = (
-                "component"
-                if temp_type == "components"
-                else "pipeline"
-                if temp_type == "pipelines"
-                else ""
-            )
-            templates.append(template)
-        return templates
-
-    def get_directories(self, bucket_name: str, prefix: str = "") -> List[str]:
-        minio_objects: Generator[MinioObject] = self.client.list_objects(
-            bucket_name, prefix=prefix, recursive=True
-        )
-        directory_gen: Generator[str] = (
-            minio_object.object_name.split("/")
-            for minio_object in minio_objects
-        )
-        directory_gen = (i for i in directory_gen if len(i) > 1)
-        directories: List[str] = []
-        for path in directory_gen:
-            path = path[1:-1] if prefix else path[:-1]
-            current_path = ""
-            for path_component in path:
-                current_path = (
-                    f"{current_path}/{path_component}"
-                    if current_path
-                    else path_component
-                )
-                directories.append(current_path)
-        return list(set(directories))
-
-    def is_template_dir(self, path: str):
-        minio_objects: List[MinioObject] = list(
-            self.client.list_objects("templates", prefix=f"/{path}/")
-        )
-        return self.object_list_has_file(
-            minio_objects, f"{path}/{self.metadata_file_name}"
-        ) and (
-            self.object_list_has_file(
-                minio_objects, f"{path}/{self.pipeline_file_name}"
-            )
-            or self.object_list_has_file(
-                minio_objects, f"{path}/{self.component_file_name}"
-            )
-        )
-
     def object_list_has_file(
         self, minio_objects: List[MinioObject], file_name: str
     ) -> bool:
         file_list = [i for i in minio_objects if i.object_name == file_name]
         return len(file_list) > 0
-
-    def get_pipeline_template_by_name(
-        self, temp_type: str, template_name: str
-    ) -> PipelineTemplate:
-        comp_list = [
-            i
-            for i in self.get_all_pipeline_templates(temp_type)
-            if i.name == template_name
-        ]
-        if len(comp_list) == 0:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Template with name {template_name} not found",
-            )
-        return comp_list.pop()
 
     @contextmanager
     def _get_minio_object_context(self, bucket_name, file_name):

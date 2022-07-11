@@ -3,7 +3,6 @@ include:
   - local: 'gitlab/shared/.gitlab-ci.build-test.yml'
   - local: 'gitlab/shared/.gitlab-ci.build-images.yml'
 
-# Build Objectstore-manager image
 os-manager-validate-oas:
   extends:
     - .validate-oas
@@ -14,8 +13,9 @@ os-manager-validate-backend:
   extends:
     - .build-development
   variables:
-    DIR: 'services/objectstore-manager'
+    DOCKERFILE: 'services/objectstore-manager/Dockerfile'
     IMG_NAME: 'objectstore-manager'
+    BUILD_CONTEXT: 'services/objectstore-manager'
 
 os-manager-build:
   extends:
@@ -23,5 +23,6 @@ os-manager-build:
   needs:
     - os-manager-validate-backend
   variables:
-    DIR: 'services/objectstore-manager'
+    DOCKERFILE: 'services/objectstore-manager/Dockerfile'
     IMG_NAME: 'objectstore-manager'
+    BUILD_CONTEXT: 'services/objectstore-manager'

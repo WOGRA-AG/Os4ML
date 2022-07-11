@@ -54,7 +54,7 @@
     "define_solver": {
       "title": "Define Solver",
       "label": "Solution Name",
-      "subtitle_solver": "Solver Algorythm",
+      "subtitle_solver": "Solver Algorithm",
       "main_button": "Create Solution",
       "back_button": "Back"
     }

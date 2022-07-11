@@ -9,3 +9,7 @@ SOLUTION_CONFIG_FILE_NAME: str = os.getenv(
 )
 
 OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
+
+PIPELINE_TEMPLATES_DIR = "/pipelines/"
+TEMPLATE_METADATA_FILE_NAME: str = "metadata.json"
+PIPELINE_FILE_NAME = "pipeline.yaml"

@@ -216,73 +216,6 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/template/component":
-    get:
-      summary: 'get all component templates'
-      operationId: getAllComponentTemplates
-      tags:
-        - objectstore
-        - template
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
-
-  "/apis/v1beta1/objectstore/template/pipeline":
-    get:
-      summary: 'get all pipeline templates'
-      operationId: getAllPipelineTemplates
-      tags:
-        - objectstore
-        - template
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
-
-  "/apis/v1beta1/objectstore/template/component/{componentName}":
-    get:
-      summary: 'get component template by name'
-      operationId: getComponentTemplateByName
-      parameters:
-        - $ref: '#/components/parameters/ComponentName'
-      tags:
-        - objectstore
-        - template
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
-
-  "/apis/v1beta1/objectstore/template/pipeline/{pipelineName}":
-    get:
-      summary: 'get component template by name'
-      operationId: getPipelineTemplateByName
-      parameters:
-        - $ref: '#/components/parameters/PipelineName'
-      tags:
-        - objectstore
-        - template
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
   "/apis/v1beta1/objectstore/solution":
     get:
       summary: 'get all solutions'
@@ -358,13 +291,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ComponentName'
-    PipelineName:
-      name: pipelineName
-      in: path
-      description: Name of Pipeline Template
-      required: true
-      schema:
-        $ref: '#/components/schemas/PipelineName'
 
   responses:
     Created:

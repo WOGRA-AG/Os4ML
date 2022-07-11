@@ -7,7 +7,6 @@ from minio.datatypes import Bucket, Object
 from urllib3 import HTTPResponse
 
 from build.openapi_server.models.databag import Databag
-from build.openapi_server.models.pipeline_template import PipelineTemplate
 from services import DATABAG_CONFIG_FILE_NAME
 
 
@@ -156,9 +155,6 @@ class MinioMock(Minio):
         version_id=None,
         extra_query_params=None,
     ) -> HTTPResponse:
-        if bucket_name == "templates":
-            name = "pipeline" if "pipelines" in object_name else "component"
-            return HTTPResponse(json.dumps(PipelineTemplate(name=name).dict()))
         return HTTPResponse(
             json.dumps(
                 Databag(

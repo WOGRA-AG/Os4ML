@@ -76,6 +76,13 @@ class KfpService:
             description=pipeline.description,
         ).id
 
+    def create_pipeline_from_local_file(self, pipeline: CreatePipeline) -> str:
+        return self.client.upload_pipeline(
+            pipeline_package_path=pipeline.config_url,
+            pipeline_name=pipeline.name,
+            description=pipeline.description,
+        ).id
+
     def get_all_runs(self) -> List[Run]:
         runs: ApiListRunsResponse = self.client.list_runs(
             namespace=self.usernamespace

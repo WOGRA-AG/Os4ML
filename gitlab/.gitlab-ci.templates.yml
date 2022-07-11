@@ -5,5 +5,6 @@ validate-templates:
   extends:
     - .build-development
   variables:
-    DIR: 'templates'
+    DOCKERFILE: 'templates/Dockerfile'
     IMG_NAME: 'templates'
+    BUILD_CONTEXT: 'templates'

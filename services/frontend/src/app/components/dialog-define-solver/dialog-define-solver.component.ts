@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {DialogDefineOutputComponent} from '../dialog-define-output/dialog-define-output.component';
-import {Databag, ObjectstoreService, PipelineTemplate} from '../../../../build/openapi/objectstore';
-import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
+import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {JobmanagerService, PipelineTemplate, Solution} from '../../../../build/openapi/jobmanager';
 import {PipelineStep} from '../../models/pipeline-step';
 
 @Component({
@@ -20,7 +20,7 @@ export class DialogDefineSolverComponent {
               private jobmanagerService: JobmanagerService) {
     this.solution = dialogRef.componentInstance.data.solution;
     this.databag = dialogRef.componentInstance.data.databag;
-    this.objectstoreService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
+    this.jobmanagerService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
       this.solver = templates.filter(template => template.pipelineStep === PipelineStep.solver);
     });
   }

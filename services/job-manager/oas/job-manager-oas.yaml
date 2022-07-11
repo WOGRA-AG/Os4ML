@@ -151,6 +151,57 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
 
+  "/apis/v1beta1/jobmanager/template/pipeline":
+    get:
+      summary: 'get all pipeline templates'
+      operationId: getAllPipelineTemplates
+      tags:
+        - jobmanager
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/jobmanager/template/pipeline/{pipelineTemplateName}":
+    get:
+      summary: 'get pipeline template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+      tags:
+        - jobmanager
+        - template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/jobmanager/template/pipeline/file/{pipelineTemplateName}":
+    get:
+      summary: 'get pipeline file by name'
+      operationId: getPipelineFileByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+      tags:
+        - jobmanager
+        - template
+      responses:
+        200:
+          description: OK
+        404:
+          $ref: '#/components/responses/NotFound'
+
   "/apis/v1beta1/jobmanager/solution/{solutionName}":
     get:
       summary: "Get a solution"
@@ -336,7 +387,7 @@ components:
     PipelineTemplateName:
       name: pipelineTemplateName
       in: path
-      description: Name of the PipelineTemplate to run
+      description: Name of the PipelineTemplate
       required: true
       schema:
         type: string
