@@ -25,11 +25,12 @@ deploy-prod:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -68,11 +69,12 @@ deploy-staging:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -113,11 +115,12 @@ deploy-release:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -157,11 +160,12 @@ deploy-dev:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -198,11 +202,12 @@ deploy-feature:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -239,11 +244,12 @@ deploy-tag:
       "services/objectstore-manager"
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker build
+      -f services/job-manager/Dockerfile"
       --target production
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/job-manager"
+      "."
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker build
       --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
