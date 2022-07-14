@@ -78,6 +78,8 @@ components:
         status:
           type: string
           nullable: true
+        runId:
+          type: string
     PipelineTemplate:
       properties:
         name:
