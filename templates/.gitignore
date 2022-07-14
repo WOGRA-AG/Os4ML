@@ -36,3 +36,5 @@ venv
 #src
 **/checkpoint
 build
+**/component.yaml
+**/pipeline.yaml
