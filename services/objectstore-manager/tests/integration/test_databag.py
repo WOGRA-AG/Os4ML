@@ -2,6 +2,7 @@ from typing import List
 
 import pytest
 from fastapi import HTTPException
+from tests.mocks.minio_mock import MinioMock
 
 from api.databag_api_service import DatabagApiService
 from build.openapi_server.apis.databag_api import (
@@ -11,17 +12,19 @@ from build.openapi_server.apis.databag_api import (
 )
 from build.openapi_server.models.databag import Databag
 from services.minio_service import MinioService
-from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
-mock_databag_api_service = DatabagApiService(minio_service=mock_minio_service)
+mock_databag_api_service = DatabagApiService(
+    storage_service=mock_minio_service
+)
 
 
 @pytest.mark.asyncio
 async def test_get_databag_by_bucket_name():
     databag: Databag = await get_databag_by_bucket_name(
-        bucket_name="os4ml", _service=mock_databag_api_service,
+        bucket_name="os4ml",
+        _service=mock_databag_api_service,
     )
     assert type(databag) == Databag
 
@@ -30,18 +33,10 @@ async def test_get_databag_by_bucket_name():
 async def test_get_databag_by_bucket_name_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_databag_by_bucket_name(
-            bucket_name="os5ml", _service=mock_databag_api_service,
+            bucket_name="os5ml",
+            _service=mock_databag_api_service,
         )
     assert "status_code=404" in str(excinfo)
-
-
-@pytest.mark.asyncio
-async def test_get_databag_by_bucket_name_with_exception():
-    with pytest.raises(HTTPException) as excinfo:
-        await get_databag_by_bucket_name(
-            bucket_name="os6ml", _service=mock_databag_api_service,
-        )
-    assert "status_code=400" in str(excinfo)
 
 
 @pytest.mark.asyncio
