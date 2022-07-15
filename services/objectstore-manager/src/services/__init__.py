@@ -1,21 +1,28 @@
 import os
 from datetime import timedelta
 
-MINIO_URL: str = os.getenv(
-    "OBJECTSTORECONFIG_URL", default="minio.minio-tenant.svc.cluster.local",
+from services.gcs_service import GcsService
+from services.minio_service import MinioService
+
+STORAGE_BACKEND: str = os.getenv(
+    "OBJECTSTORE_STORAGE_BACKEND", default="gcs"
 )
 
-MINIO_KEY: str = os.getenv("OBJECTSTORECONFIG_ACCESSKEY", default="minio")
-
-MINIO_SECRET: str = os.getenv(
-    "OBJECTSTORECONFIG_SECRETACCESSKEY", default="minio123"
+STORAGE_URL: str = os.getenv(
+    "OBJECTSTORECONFIG_URL",
+    default="minio.minio-tenant.svc.cluster.local",
 )
 
-MINIO_SECURE: bool = os.getenv(
-    "OBJECTSTORECONFIG_SECURE", default="false"
-).lower() == "true"
+STORAGE_KEY: str = os.getenv("OBJECTSTORECONFIG_ACCESSKEY", default="minio")
 
-MINIO_BUCKET: str = os.getenv("OBJECTSTORECONFIG_BUCKETNAME", default="os4ml")
+STORAGE_SECRET: str = os.getenv(
+    "OBJECTSTORECONFIG_SECRETACCESSKEY",
+    default="minio123",
+)
+
+STORAGE_SECURE: bool = (
+    os.getenv("OBJECTSTORECONFIG_SECURE", default="false").lower() == "true"
+)
 
 DATABAG_CONFIG_FILE_NAME: str = os.getenv(
     "DATABAG_CONFIG_FILE_NAME", default="databag.json"
