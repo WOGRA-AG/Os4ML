@@ -61,7 +61,10 @@ class TemplateService:
     def get_pipeline_file_path(self, pipeline_template_name: str) -> str:
         for pipeline_dir in self._iter_pipeline_dirs():
             pipeline_template = self._create_pipeline_template(pipeline_dir)
-            if pipeline_template.name == pipeline_template_name:
+            if (
+                pipeline_template is not None
+                and pipeline_template.name == pipeline_template_name
+            ):
                 return str(pipeline_dir / PIPELINE_FILE_NAME)
         raise ValueError(
             f"No pipeline file for pipeline with name {pipeline_template_name} found"
@@ -79,6 +82,9 @@ class TemplateService:
         self, pipeline_dir: pathlib.Path
     ) -> PipelineTemplate:
         metadata_file_name = pipeline_dir / TEMPLATE_METADATA_FILE_NAME
-        with open(metadata_file_name) as metadata_file:
-            metadata = json.load(metadata_file)
-        return PipelineTemplate(**metadata)
+        try:
+            with open(metadata_file_name) as metadata_file:
+                metadata = json.load(metadata_file)
+            return PipelineTemplate(**metadata)
+        except FileNotFoundError:
+            return PipelineTemplate()

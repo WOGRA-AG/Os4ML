@@ -1,5 +1,6 @@
+from typing import Any
+
 import pytest
-import requests
 from fastapi import HTTPException
 from mocks.kfp_mock_client import KfpMockClient
 from pytest_mock import MockerFixture
@@ -19,9 +20,18 @@ mock_solution_service = SolutionService(kfp_client=mock_kfp_client)
 mock_api_service = SolutionApiService(solution_service=mock_solution_service)
 
 
+class TestSolution(Solution):
+    def __init__(self, name, **data: Any):
+        super().__init__(**data)
+        self.name = name
+
+    def to_dict(self):
+        return {"name": self.name}
+
+
 @pytest.mark.asyncio
 async def test_get_solution(mocker: MockerFixture):
-    solutions = [{"name": "solution_1"}, {"name": "other2"}]
+    solutions = [TestSolution(name="solution_1"), TestSolution(name="other2")]
     mocker.patch.object(
         ObjectstoreApi,
         "get_all_solutions",
@@ -32,12 +42,12 @@ async def test_get_solution(mocker: MockerFixture):
         solution_name="solution_1", _service=mock_api_service
     )
 
-    assert solution["name"] == "solution_1"
+    assert solution.name == "solution_1"
 
 
 @pytest.mark.asyncio
 async def test_get_solution_not_found(mocker: MockerFixture):
-    solutions = [{"name": "other1"}, {"name": "other2"}]
+    solutions = [TestSolution(name="other1"), TestSolution(name="other2")]
     mocker.patch.object(
         ObjectstoreApi,
         "get_all_solutions",
