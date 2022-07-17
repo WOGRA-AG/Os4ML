@@ -4,13 +4,12 @@ from io import BytesIO
 from typing import List
 from uuid import UUID, uuid4
 
-import requests
 from fastapi import HTTPException
 
 from build.openapi_client.model.databag import Databag
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from services import OS4ML_NAMESPACE, SOLUTION_CONFIG_FILE_NAME
+from services import SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
@@ -36,9 +35,9 @@ class SolutionService:
     def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
         all_solutions = self.objectstore.get_all_solutions()
         return [
-            solution
+            Solution(**solution.to_dict())
             for solution in all_solutions
-            if solution["name"] == solution_name
+            if solution.name == solution_name
         ]
 
     def create_solution(self, solution: Solution) -> str:
