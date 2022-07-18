@@ -5,16 +5,15 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {Solution} from '../../../build/openapi/jobmanager';
-import {ObjectstoreService} from '../../../build/openapi/objectstore';
+import {JobmanagerService, Solution} from '../../../build/openapi/jobmanager';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolutionResolver implements Resolve<Solution[]> {
-  constructor(private objectstoreService: ObjectstoreService) {
+  constructor(private jobmanagerService: JobmanagerService) {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Solution[]> {
-    return this.objectstoreService.getAllSolutions();
+    return this.jobmanagerService.getAllSolutions();
   }
 }
