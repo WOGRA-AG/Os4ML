@@ -120,6 +120,27 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  "/apis/v1beta1/objectstore/{bucketName}/json":
+    get:
+      summary: 'get specific json file from bucket'
+      operationId: getJsonObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          $ref: '#/components/responses/NotFound'
+
   "/apis/v1beta1/objectstore/{bucketName}/object":
     get:
       summary: 'get specific Object from Bucket'

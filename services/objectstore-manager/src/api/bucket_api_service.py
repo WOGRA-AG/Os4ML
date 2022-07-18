@@ -34,6 +34,9 @@ class BucketApiService:
         )
         return RedirectResponse(url)
 
+    def get_json_object_by_name(self, bucket_name: str, object_name: str) -> dict:
+        return self.storage_service.get_json_object_from_bucket(bucket_name, object_name)
+
     def get_object_url(self, bucket_name, object_name) -> str:
         return self.storage_service.get_presigned_get_url(
             bucket_name=bucket_name, object_name=object_name
