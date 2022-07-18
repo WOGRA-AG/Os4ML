@@ -110,3 +110,8 @@ class ObjectstoreApiController:
         return self.databag_service.put_databag_by_bucket_name(
             bucket_name=bucket_name, databag=databag
         )
+
+    def get_databag_by_run_id(self, run_id) -> Databag:
+        for databag in self.databag_service.get_databags():
+            if databag.run_id == run_id:
+                return databag
