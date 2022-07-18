@@ -7,10 +7,12 @@ from pytest_mock import MockerFixture
 
 from api.solution_api_service import SolutionApiService
 from build.openapi_client.api.objectstore_api import ObjectstoreApi
+from build.openapi_client.model.bucket import Bucket
+from build.openapi_client.model.item import Item
 from build.openapi_server.apis.solution_api import (
     get_solution,
     post_solution,
-    put_solution,
+    put_solution, get_all_solutions,
 )
 from build.openapi_server.models.solution import Solution
 from services.solution_service import SolutionService
@@ -30,10 +32,35 @@ class TestSolution(Solution):
 
 
 @pytest.mark.asyncio
+async def test_get_all_solutions(mocker: MockerFixture):
+    buckets = [Bucket("test-1"), Bucket("test-2")]
+    mocker.patch.object(ObjectstoreApi, "get_all_buckets", return_value=buckets)
+    mock_objects = [[Item("test-1", "solution.json")],
+                    [Item("test-2", "not-a-solution"), Item("test-2", "solution.json")]]
+    mocker.patch.object(ObjectstoreApi, "get_all_objects", side_effect=mock_objects)
+    mock_json_objects = [{
+        "name": "test-solution-1",
+        "status": "test",
+        "bucket_name": "test-1"
+    }, {
+        "name": "test-solution-2",
+        "status": "test",
+        "bucket_name": "test-2"
+    }]
+    mocker.patch.object(ObjectstoreApi, "get_json_object_by_name", side_effect=mock_json_objects)
+    solutions = await get_all_solutions(_service=mock_api_service)
+    solution1 = Solution(name="test-solution-1", status="test", bucket_name="test-1")
+    assert solution1 in solutions
+    solution2 = Solution(name="test-solution-2", status="test", bucket_name="test-2")
+    assert solution2 in solutions
+    assert len(solutions) == 2
+
+
+@pytest.mark.asyncio
 async def test_get_solution(mocker: MockerFixture):
     solutions = [TestSolution(name="solution_1"), TestSolution(name="other2")]
     mocker.patch.object(
-        ObjectstoreApi,
+        mock_solution_service,
         "get_all_solutions",
         return_value=solutions,
     )
@@ -49,7 +76,7 @@ async def test_get_solution(mocker: MockerFixture):
 async def test_get_solution_not_found(mocker: MockerFixture):
     solutions = [TestSolution(name="other1"), TestSolution(name="other2")]
     mocker.patch.object(
-        ObjectstoreApi,
+        mock_solution_service,
         "get_all_solutions",
         return_value=solutions,
     )

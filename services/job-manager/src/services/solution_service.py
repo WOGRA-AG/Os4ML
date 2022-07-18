@@ -1,3 +1,4 @@
+import itertools
 import json
 from datetime import datetime
 from io import BytesIO
@@ -7,6 +8,8 @@ from uuid import UUID, uuid4
 from fastapi import HTTPException
 
 from build.openapi_client.model.databag import Databag
+from build.openapi_client.model.bucket import Bucket
+from build.openapi_client.model.item import Item
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
 from services import SOLUTION_CONFIG_FILE_NAME
@@ -23,22 +26,34 @@ class SolutionService:
         self.template_service = TemplateService(kfp_client=kfp_client)
         self.objectstore = init_objectstore_api()
 
+    def get_all_solutions(self) -> List[Solution]:
+        buckets = self.objectstore.get_all_buckets()
+        all_solutions: List[List[Solution]] = [
+            self.get_solutions_from_bucket(bucket)
+            for bucket in buckets
+        ]
+        return list(itertools.chain(*all_solutions))
+
+    def get_solutions_from_bucket(self, bucket: Bucket) -> List[Solution]:
+        items: List[Item] = self.objectstore.get_all_objects(bucket.name)
+        return [self._create_solution_from_item(item) for item in items
+                if SOLUTION_CONFIG_FILE_NAME in item.object_name]
+
+    def _create_solution_from_item(self, item: Item) -> Solution:
+        solution_dict: dict = self.objectstore.get_json_object_by_name(item.bucket_name, item.object_name)
+        return Solution(**solution_dict)
+
     def get_solution(self, solution_name: str) -> Solution:
-        solutions_with_name = self._get_solutions_with_name(solution_name)
+        solutions_with_name = [solution
+                               for solution in self.get_all_solutions()
+                               if solution.name == solution_name
+                               ]
         if not solutions_with_name:
             raise HTTPException(
                 status_code=404,
                 detail=f"Solution with name {solution_name} not found",
             )
         return solutions_with_name.pop()
-
-    def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
-        all_solutions = self.objectstore.get_all_solutions()
-        return [
-            Solution(**solution.to_dict())
-            for solution in all_solutions
-            if solution.name == solution_name
-        ]
 
     def create_solution(self, solution: Solution) -> str:
         uuid: UUID = uuid4()
