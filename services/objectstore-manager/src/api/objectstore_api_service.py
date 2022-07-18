@@ -1,9 +1,11 @@
+import logging
 from io import BytesIO
 from typing import List
 
 from fastapi.responses import RedirectResponse
 
 from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.url import Url
@@ -68,3 +70,8 @@ class ObjectstoreApiService:
 
     def get_all_buckets(self):
         return self.minio_service.get_buckets()
+
+    def get_databag_by_run_id(self, run_id) -> Databag:
+        for databag in self.minio_service.get_databags():
+            if databag.run_id == run_id:
+                return databag
