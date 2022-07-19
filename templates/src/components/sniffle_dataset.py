@@ -3,7 +3,6 @@ from typing import List
 
 import pandas as pd
 
-from kfp.dsl import RUN_ID_PLACEHOLDER
 from kfp.v2.dsl import Dataset, Input
 from src.kfp.dataset import load_dataset
 from src.model.column import Column
@@ -24,6 +23,7 @@ def sniffle_dataset(
     file_name: str = "",
     *,
     bucket: str = None,
+    run_id: str = "",
 ) -> str:
     """
     Guesses the datatypes of the columns in the dataframe.
@@ -50,7 +50,7 @@ def sniffle_dataset(
             "number_rows": num_rows,
             "number_columns": num_cols,
             "columns": column_info_dicts,
-            "run_id": RUN_ID_PLACEHOLDER,
+            "run_id": run_id,
         }
     )
 
