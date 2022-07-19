@@ -12,7 +12,7 @@ from build.openapi_client.model.bucket import Bucket
 from build.openapi_client.model.item import Item
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from services import SOLUTION_CONFIG_FILE_NAME
+from services import SOLUTION_CONFIG_FILE_NAME, DATE_FORMAT
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
@@ -41,6 +41,12 @@ class SolutionService:
 
     def _create_solution_from_item(self, item: Item) -> Solution:
         solution_dict: dict = self.objectstore.get_json_object_by_name(item.bucket_name, item.object_name)
+        print(solution_dict)
+        if solution_dict.get("creation_time", None) is not None:
+            solution_dict["creation_time"] = solution_dict["creation_time"].strftime(DATE_FORMAT)
+        if solution_dict.get("completion_time", None) is not None:
+            solution_dict["completion_time"] = solution_dict["completion_time"].strftime(DATE_FORMAT)
+        print(solution_dict)
         return Solution(**solution_dict)
 
     def get_solution(self, solution_name: str) -> Solution:
@@ -59,7 +65,7 @@ class SolutionService:
         uuid: UUID = uuid4()
         solution.name = f"{uuid}_{solution.name}"
         solution.creation_time = datetime.utcnow().strftime(
-            "%Y-%m-%dT%H:%M:%SZ"
+            DATE_FORMAT
         )
         databag: Databag = self.objectstore.get_databag_by_bucket_name(
             solution.bucket_name

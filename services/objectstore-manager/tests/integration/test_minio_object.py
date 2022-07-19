@@ -50,15 +50,14 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
 @pytest.mark.asyncio
 async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
     minio_mock.bucket_exists.return_value = True
-    json_str = '{"name": "test"}'
+    json_str = '{"name": "test", "time": "2022-07-17T23:01:49Z"}'
     minio_mock.get_object.return_value = mocker.Mock(data=json_str)
 
     json_object = await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
 
     minio_mock.bucket_exists.assert_called_once_with("test-bucket")
     minio_mock.get_object.assert_called_once_with("test-bucket", "test-object")
-    assert json_object == {"name": "test"}
-
+    assert json_object == {"name": "test", "time": "2022-07-17T23:01:49Z"}
 
 @pytest.mark.asyncio
 async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):

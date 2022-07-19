@@ -137,7 +137,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: string
         404:
           $ref: '#/components/responses/NotFound'
 
