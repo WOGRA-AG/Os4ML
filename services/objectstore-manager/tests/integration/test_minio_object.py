@@ -1,7 +1,7 @@
 from typing import List
 
 import pytest
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
 from tests.mocks.minio_mock import MinioMock
 
@@ -12,7 +12,7 @@ from build.openapi_server.apis.object_api import (
     get_object_by_name,
     get_object_url,
     get_presigned_put_url,
-    put_object_by_name,
+    put_object_by_name, get_json_object_by_name,
 )
 from build.openapi_server.models.item import Item
 from services.minio_service import MinioService
@@ -43,8 +43,32 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
     )
     assert type(redirect_response) == RedirectResponse
     assert (
-        redirect_response.headers["location"] == "https://os4ml.com/test.csv"
+            redirect_response.headers["location"] == "https://os4ml.com/test.csv"
     )
+
+
+@pytest.mark.asyncio
+async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
+    minio_mock.bucket_exists.return_value = True
+    json_str = '{"name": "test"}'
+    minio_mock.get_object.return_value = mocker.Mock(data=json_str)
+
+    json_object = await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
+
+    minio_mock.bucket_exists.assert_called_once_with("test-bucket")
+    minio_mock.get_object.assert_called_once_with("test-bucket", "test-object")
+    assert json_object == {"name": "test"}
+
+
+@pytest.mark.asyncio
+async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):
+    minio_mock.bucket_exists.return_value = False
+
+    with pytest.raises(HTTPException) as e:
+        await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
+
+    assert e.value.status_code == status.HTTP_404_NOT_FOUND
+    minio_mock.bucket_exists.assert_called_once_with("test-bucket")
 
 
 @pytest.mark.asyncio
