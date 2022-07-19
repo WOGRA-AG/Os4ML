@@ -64,3 +64,7 @@ async def test_get_databag_by_run_id():
         run_id="os4ml_unique_run_id", _controller=mock_objectstore_controller,
     )
     assert databag.run_id == "os4ml_unique_run_id"
+    another_databag: Databag = await get_databag_by_run_id(
+        run_id="false_os4ml_unique_run_id", _service=mock_databag_api_service,
+    )
+    assert another_databag is None
