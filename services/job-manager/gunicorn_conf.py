@@ -1,9 +1,5 @@
-# From: https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/315f04413114e938ff37a410b5979126facc90af/python3.7/gunicorn_conf.py
-
 import os
 
-workers_per_core_str = os.getenv("WORKERS_PER_CORE", "1")
-web_concurrency_str = os.getenv("WEB_CONCURRENCY", None)
 host = os.getenv("HOST", "0.0.0.0")
 port = os.getenv("PORT", "8000")
 bind_env = os.getenv("BIND", None)
@@ -13,18 +9,11 @@ if bind_env:
 else:
     use_bind = f"{host}:{port}"
 
-cores = 2
-workers_per_core = float(workers_per_core_str)
-default_web_concurrency = workers_per_core * cores
-if web_concurrency_str:
-    web_concurrency = int(web_concurrency_str)
-    assert web_concurrency > 0
-else:
-    web_concurrency = max(int(default_web_concurrency), 2)
-
 # Gunicorn config variables
 loglevel = use_loglevel
-workers = web_concurrency
+workers = 1
+threads = 8
+timeout = 0
 bind = use_bind
 keepalive = 120
 errorlog = "-"
@@ -35,7 +24,6 @@ log_data = {
     "workers": workers,
     "bind": bind,
     # Additional, non-gunicorn variables
-    "workers_per_core": workers_per_core,
     "host": host,
     "port": port,
 }
