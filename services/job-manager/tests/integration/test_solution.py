@@ -33,12 +33,12 @@ class TestSolution(Solution):
 
 @pytest.mark.asyncio
 async def test_get_all_solutions(mocker: MockerFixture):
-    buckets = [Bucket("test-1"), Bucket("test-2")]
-    mocker.patch.object(ObjectstoreApi, "get_all_buckets", return_value=buckets)
-    mock_objects = [[Item("test-1", "solution.json")],
-                    [Item("test-2", "not-a-solution"), Item("test-2", "solution.json")]]
-    mocker.patch.object(ObjectstoreApi, "get_all_objects", side_effect=mock_objects)
-    mock_json_objects = [{
+    buckets_mock = mocker.MagicMock(return_value=[Bucket("test-1"), Bucket("test-2")])
+    mocker.patch.object(ObjectstoreApi, "get_all_buckets", buckets_mock)
+    objects_mock = mocker.MagicMock(side_effect=[[Item("test-1", "solution.json")],
+                    [Item("test-2", "not-a-solution"), Item("test-2", "solution.json")]])
+    mocker.patch.object(ObjectstoreApi, "get_all_objects", objects_mock)
+    json_objects_mock = mocker.MagicMock(side_effect=[{
         "name": "test-solution-1",
         "status": "test",
         "bucket_name": "test-1"
@@ -46,9 +46,18 @@ async def test_get_all_solutions(mocker: MockerFixture):
         "name": "test-solution-2",
         "status": "test",
         "bucket_name": "test-2"
-    }]
-    mocker.patch.object(ObjectstoreApi, "get_json_object_by_name", side_effect=mock_json_objects)
+    }])
+    mocker.patch.object(ObjectstoreApi, "get_json_object_by_name", json_objects_mock)
+
     solutions = await get_all_solutions(_service=mock_api_service)
+
+    buckets_mock.assert_called_once_with()
+    objects_mock.assert_any_call("test-1")
+    objects_mock.assert_any_call("test-2")
+    assert objects_mock.call_count == 2
+    json_objects_mock.assert_any_call("test-1", "solution.json")
+    json_objects_mock.assert_any_call("test-2", "solution.json")
+    assert json_objects_mock.call_count == 2
     solution1 = Solution(name="test-solution-1", status="test", bucket_name="test-1")
     assert solution1 in solutions
     solution2 = Solution(name="test-solution-2", status="test", bucket_name="test-2")
