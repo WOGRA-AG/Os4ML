@@ -166,6 +166,7 @@ class MinioMock(Minio):
         return HTTPResponse(
             json.dumps(
                 Databag(
+                    run_id="os4ml_unique_run_id",
                     bucket_name=bucket_name,
                     databag_name=bucket_name,
                     columns=[],
