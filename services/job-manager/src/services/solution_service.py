@@ -10,6 +10,7 @@ from fastapi import HTTPException
 from build.openapi_client.model.databag import Databag
 from build.openapi_client.model.bucket import Bucket
 from build.openapi_client.model.item import Item
+from build.openapi_client.model.json_response import JsonResponse
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
 from services import SOLUTION_CONFIG_FILE_NAME, DATE_FORMAT
@@ -40,14 +41,8 @@ class SolutionService:
                 if SOLUTION_CONFIG_FILE_NAME in item.object_name]
 
     def _create_solution_from_item(self, item: Item) -> Solution:
-        solution_dict: dict = self.objectstore.get_json_object_by_name(item.bucket_name, item.object_name)
-        print(solution_dict)
-        if solution_dict.get("creation_time", None) is not None:
-            solution_dict["creation_time"] = solution_dict["creation_time"].strftime(DATE_FORMAT)
-        if solution_dict.get("completion_time", None) is not None:
-            solution_dict["completion_time"] = solution_dict["completion_time"].strftime(DATE_FORMAT)
-        print(solution_dict)
-        return Solution(**solution_dict)
+        json_response: JsonResponse = self.objectstore.get_json_object_by_name(item.bucket_name, item.object_name)
+        return Solution(**json.loads(json_response.json_content))
 
     def get_solution(self, solution_name: str) -> Solution:
         solutions_with_name = [solution

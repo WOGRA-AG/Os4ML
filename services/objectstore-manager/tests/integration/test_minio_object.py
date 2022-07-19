@@ -1,3 +1,4 @@
+import base64
 from typing import List
 
 import pytest
@@ -15,6 +16,7 @@ from build.openapi_server.apis.object_api import (
     put_object_by_name, get_json_object_by_name,
 )
 from build.openapi_server.models.item import Item
+from build.openapi_server.models.json_response import JsonResponse
 from services.minio_service import MinioService
 
 mock_minio_client = MinioMock()
@@ -53,11 +55,13 @@ async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
     json_str = '{"name": "test", "time": "2022-07-17T23:01:49Z"}'
     minio_mock.get_object.return_value = mocker.Mock(data=json_str)
 
-    json_object = await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
+    json_response = await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
 
     minio_mock.bucket_exists.assert_called_once_with("test-bucket")
     minio_mock.get_object.assert_called_once_with("test-bucket", "test-object")
-    assert json_object == {"name": "test", "time": "2022-07-17T23:01:49Z"}
+    expected_response = JsonResponse(json_content=base64.encodebytes(json_str.encode()))
+    assert json_response == expected_response
+
 
 @pytest.mark.asyncio
 async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):

@@ -137,7 +137,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: './shared-oas.yaml#/components/schemas/JsonResponse'
         404:
           $ref: '#/components/responses/NotFound'
 
