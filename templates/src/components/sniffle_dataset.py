@@ -23,7 +23,6 @@ def sniffle_dataset(
     file_name: str = "",
     *,
     bucket: str = None,
-    run_id: str = "",
 ) -> str:
     """
     Guesses the datatypes of the columns in the dataframe.
@@ -50,7 +49,6 @@ def sniffle_dataset(
             "number_rows": num_rows,
             "number_columns": num_cols,
             "columns": column_info_dicts,
-            "run_id": run_id,
         }
     )
 

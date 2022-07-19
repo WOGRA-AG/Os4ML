@@ -47,7 +47,6 @@ def init_databag_sniffle_upload(
         max_categories=max_categories,
         file_name=file_name,
         bucket=bucket,
-        run_id='{{workflow_uid}}'
     )
     update_databag_status_op(
         DatabagStatusMessages.creating.value,
