@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import {ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {
+  Databag,
+  ObjectstoreService
+} from '../../../../build/openapi/objectstore';
 import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -21,6 +24,7 @@ export class DialogAddDatabagComponent {
   running = false;
   uuid: string = uuidv4();
   intervalID = 0;
+  pipelineStatus: string | null | undefined = null;
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
@@ -81,9 +85,13 @@ export class DialogAddDatabagComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
-          this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
-            console.log(databag);
-          });
+          if (run.status === PipelineStatus.running) {
+            this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
+              this.pipelineStatus = databag.status;
+              console.log(databag);
+              console.log(databag.status);
+            });
+          }
           if (run.status === PipelineStatus.failed) {
             clearInterval(this.intervalID);
             this.translate.get('error.run_failed').subscribe((res: string) => {
