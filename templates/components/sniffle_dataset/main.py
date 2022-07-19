@@ -9,7 +9,6 @@ def sniffle_dataset(
     max_categories: int = 10,
     file_name: str = "",
     bucket: str = "",
-    run_id: str = "",
 ) -> Dataset:
     from src.components.sniffle_dataset import sniffle_dataset
 
@@ -19,7 +18,6 @@ def sniffle_dataset(
         max_categories,
         file_name,
         bucket=bucket,
-        run_id=""
     )
 
 

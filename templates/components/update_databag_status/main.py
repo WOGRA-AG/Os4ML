@@ -8,11 +8,12 @@ def update_databag_status(
     depends_on: Artifact = None,
     os4ml_namespace: str = "",
     bucket: str = "",
+    run_id: str = "",
 ):
     from src.components.update_databag_status import update_databag_status
 
     update_databag_status(
-        status, os4ml_namespace=os4ml_namespace, bucket=bucket
+        status, os4ml_namespace=os4ml_namespace, bucket=bucket, run_id=run_id
     )
 
 
