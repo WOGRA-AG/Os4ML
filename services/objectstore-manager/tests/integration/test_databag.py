@@ -7,6 +7,7 @@ from build.openapi_server.apis.objectstore_api import (
     get_all_databags,
     get_databag_by_bucket_name,
     put_databag_by_bucket_name,
+    get_databag_by_run_id,
 )
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
@@ -55,3 +56,11 @@ async def test_put_databag_by_bucket_name():
         databag=databag,
         _controller=mock_objectstore_controller,
     )
+
+
+@pytest.mark.asyncio
+async def test_get_databag_by_run_id():
+    databag: Databag = await get_databag_by_run_id(
+        run_id="os4ml_unique_run_id", _service=mock_databag_api_service,
+    )
+    assert databag.run_id == "os4ml_unique_run_id"
