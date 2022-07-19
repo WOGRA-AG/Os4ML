@@ -3,10 +3,11 @@ from typing import List
 
 from fastapi.responses import RedirectResponse
 
-from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.solution import Solution
 from services import STORAGE_BACKEND
+from services.databag_service import DatabagService
 from services.init_storage_service import storage_services
 from services.solution_service import SolutionService
 from services.storage_service_interface import StorageService
@@ -26,6 +27,11 @@ class ObjectstoreApiService:
             SolutionService(storage_service)
             if storage_service is not None
             else SolutionService(storage_services[STORAGE_BACKEND]())
+        )
+        self.databag_service: DatabagService = (
+            DatabagService(storage_service)
+            if storage_service is not None
+            else DatabagService(storage_services[STORAGE_BACKEND]())
         )
 
     def delete_object_by_name(self, bucket_name, object_name) -> None:
@@ -66,7 +72,7 @@ class ObjectstoreApiService:
     def delete_bucket(self, bucket_name) -> None:
         return self.storage_service.delete_bucket(bucket_name=bucket_name)
 
-    def post_new_bucket(self, bucket_name) -> Bucket:
+    def post_new_bucket(self, bucket_name) -> str:
         return self.storage_service.create_bucket(bucket_name=bucket_name)
 
     def get_all_solutions(self) -> List[Solution]:
@@ -74,3 +80,8 @@ class ObjectstoreApiService:
 
     def get_all_buckets(self):
         return self.storage_service.list_buckets()
+
+    def get_databag_by_run_id(self, run_id) -> Databag:
+        for databag in self.databag_service.get_databags():
+            if databag.run_id == run_id:
+                return databag
