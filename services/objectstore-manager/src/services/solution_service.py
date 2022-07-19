@@ -1,19 +1,18 @@
 from typing import List
 
-from minio.datatypes import Object
-
 from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.item import Item
 from build.openapi_server.models.solution import Solution
 from services import SOLUTION_CONFIG_FILE_NAME
-from services.minio_service import MinioService
+from services.storage_service_interface import StorageService
 
 
 class SolutionService:
-    def __init__(self, minio_client=None):
-        self.minio_service = MinioService(client=minio_client)
+    def __init__(self, storage_service: StorageService):
+        self.storage = storage_service
 
     def get_all_solutions(self) -> List[Solution]:
-        bucket_list: List[Bucket] = self.minio_service.get_buckets()
+        bucket_list: List[Bucket] = self.storage.list_buckets()
         all_solutions: List[List[Solution]] = [
             self.get_solutions_from_bucket(bucket) for bucket in bucket_list
         ]
@@ -23,12 +22,12 @@ class SolutionService:
         return solution_list
 
     def get_solutions_from_bucket(self, bucket: Bucket) -> List[Solution]:
-        minio_objects: List[Object] = self.minio_service.client.list_objects(
-            bucket_name=bucket.name, recursive=True
+        minio_objects: List[Item] = self.storage.list_items(
+            bucket_name=bucket.name
         )
         solution_list: List[Solution] = [
             Solution(
-                **self.minio_service.get_dict_from_bucket(
+                **self.storage.get_json_object_from_bucket(
                     i.bucket_name, i.object_name
                 )
             )

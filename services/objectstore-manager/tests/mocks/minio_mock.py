@@ -4,13 +4,18 @@ from typing import List
 
 from minio import Minio
 from minio.datatypes import Bucket, Object
-from urllib3 import HTTPResponse
+from urllib3 import HTTPResponse, PoolManager
 
 from build.openapi_server.models.databag import Databag
 from services import DATABAG_CONFIG_FILE_NAME
 
 
 class MinioMock(Minio):
+
+    @property
+    def _http(self):
+        return PoolManager()
+
     def __init__(
         self,
         endpoint: str = "",

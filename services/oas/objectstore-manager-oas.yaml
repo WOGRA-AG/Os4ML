@@ -251,9 +251,7 @@ paths:
 components:
   schemas:
     Url:
-      properties:
-        url:
-          type: string
+      type: string
     ObjectName:
       type: string
     ComponentName:

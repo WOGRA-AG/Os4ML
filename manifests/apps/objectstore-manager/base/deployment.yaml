@@ -29,13 +29,21 @@ spec:
               name: http
               protocol: TCP
           env:
+            - name: STORAGE_BACKEND
+              valueFrom:
+                configMapKeyRef:
+                  key: storageBackend
+                  name: objectstore-config
             - name: OBJECTSTORECONFIG_URL
               valueFrom:
                 configMapKeyRef:
                   name: objectstore-config
                   key: url
             - name: OBJECTSTORECONFIG_SECURE
-              value: "false"
+              valueFrom:
+                configMapKeyRef:
+                  name: objectstore-config
+                  key: objectstoreSecure
             - name: OBJECTSTORECONFIG_BUCKETNAME
               valueFrom:
                 configMapKeyRef:

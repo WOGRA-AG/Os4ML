@@ -1,52 +1,60 @@
 from io import BytesIO
-from typing import List
+from typing import List, Optional
 
 from build.openapi_server.models.bucket import Bucket
-from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
-from build.openapi_server.models.url import Url
 
 
-class StorageServiceInterface:
-    def get_buckets(self) -> List[Bucket]:
+class StorageService:
+    def get_bucket(self, bucket_name: str) -> Bucket:
         raise NotImplementedError()
 
-    def create_bucket(self, bucket_name: str) -> Bucket:
+    def list_buckets(self) -> List[Bucket]:
+        raise NotImplementedError()
+
+    def create_bucket(self, bucket_name: str) -> str:
         raise NotImplementedError()
 
     def delete_bucket(self, bucket_name: str) -> None:
         raise NotImplementedError()
 
-    def list_objects(self, bucket_name: str) -> List[Item]:
+    def list_items(self, bucket_name: str) -> List[Item]:
+        raise NotImplementedError()
+
+    def get_item(self, bucket_name: str, object_name: str) -> Item:
         raise NotImplementedError()
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
         raise NotImplementedError()
 
-    def get_presigned_put_url(self, bucket_name: str, object_name: str) -> Url:
+    def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
         raise NotImplementedError()
 
-    def delete_object(self, bucket_name: str, object_name: str) -> None:
+    def delete_item(self, bucket_name: str, object_name: str) -> None:
         raise NotImplementedError()
 
-    def put_object(
+    def create_item(
         self,
         bucket_name: str,
         object_name: str,
         data: BytesIO,
         size: int,
         content_type: str,
-    ) -> None:
+    ) -> Item:
         raise NotImplementedError()
 
-    def get_databags(self) -> List[Databag]:
+    def create_item_by_filename(
+        self,
+        bucket_name: str,
+        object_name: str,
+        file_name: str,
+        size: Optional[int] = None,
+        content_type: Optional[str] = None,
+    ) -> Item:
         raise NotImplementedError()
 
-    def bucket_is_databag(self, bucket_name: str) -> bool:
+    def get_json_object_from_bucket(self, bucket_name, json_file_name) -> dict:
         raise NotImplementedError()
 
-    def get_databag_by_bucket_name(self, bucket_name: str) -> Databag:
-        raise NotImplementedError()
-
-    def put_databag_by_bucket_name(self, bucket_name: str, databag: Databag):
+    def get_object_from_bucket(self, bucket_name, file_name) -> str:
         raise NotImplementedError()
