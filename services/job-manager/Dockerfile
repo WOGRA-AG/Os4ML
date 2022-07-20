@@ -1,8 +1,7 @@
 FROM python:3.9.10-slim as pipeline-templates
-COPY templates/components /components
-COPY templates/pipelines /pipelines
-COPY templates/build_all_components.py templates/build_all_pipelines.py /
-RUN pip install kfp==1.8.12
+WORKDIR templates
+RUN --mount=type=cache,target=/root/.cache pip install kfp==1.8.12
+COPY templates /templates
 RUN python build_all_components.py
 RUN python build_all_pipelines.py
 RUN rm -r pipelines/__pycache__
@@ -69,7 +68,7 @@ ENV FASTAPI_ENV=development
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /pipelines /pipelines
+COPY --from=pipeline-templates /templates/pipelines /pipelines
 
 COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
@@ -102,7 +101,7 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /pipelines /pipelines
+COPY --from=pipeline-templates /templates/pipelines /pipelines
 COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR

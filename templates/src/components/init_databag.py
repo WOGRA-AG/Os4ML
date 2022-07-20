@@ -5,11 +5,9 @@ from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
 
-from src.pipelines.util import DatabagStatusMessages
 from src.model.databag_type import DatabagType
 from src.model.file_type import FileType
 from src.objectstore.download import download_file
-from src.objectstore.objectstore import put_databag
 from src.objectstore.urls import get_download_url
 from src.util.error_handler import error_handler
 from src.util.uri import extract_filename_from_uri
@@ -28,13 +26,6 @@ def init_databag(
     If the file is a zip file it should only contain directories in the top level.
     The names of them are used as labels and the files they contain are used as features.
     """
-    databag_init = {
-        "databag_name": file_name,
-        "file_name": file_name,
-        "bucket_name": bucket,
-        "status": DatabagStatusMessages.uploading.value,
-    }
-    put_databag(databag_init, bucket, os4ml_namespace)
     databag_type = DatabagType.from_uri(file_name)
     databag_info = namedtuple("DatabagInfo", ["databag_type", "dataset"])
 
