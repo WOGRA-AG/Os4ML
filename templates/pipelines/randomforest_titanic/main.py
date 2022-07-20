@@ -1,5 +1,5 @@
 from kfp.v2.dsl import pipeline
-from pipelines.util import StatusMessages, compile_pipeline, load_component
+from src.pipelines.util import StatusMessages, compile_pipeline, load_component
 
 init_databag_op = load_component("init_databag")
 preprocess_data_op = load_component("preprocess_data")
@@ -21,7 +21,10 @@ def titanic_rf_pipeline(
         os4ml_namespace=os4ml_namespace,
     )
     databag_info = init_databag_op(
-        file_name=file_name, bucket=bucket, os4ml_namespace=os4ml_namespace, solution_name=solution_name
+        file_name=file_name,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
+        solution_name=solution_name,
     )
     preprocess_task = preprocess_data_op(databag_info.outputs["dataset"])
     update_status_op(
