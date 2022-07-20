@@ -1,6 +1,7 @@
 FROM python:3.9.10-slim as pipeline-templates
 COPY templates/components /components
 COPY templates/pipelines /pipelines
+COPY templates/src /
 COPY templates/build_all_components.py templates/build_all_pipelines.py /
 RUN pip install kfp==1.8.12
 RUN python build_all_components.py
