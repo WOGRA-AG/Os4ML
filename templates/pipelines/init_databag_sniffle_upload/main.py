@@ -24,7 +24,10 @@ def init_databag_sniffle_upload(
         file_name=file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
     )
     df_info = init_databag_op(
-        file_name, bucket=bucket, os4ml_namespace=os4ml_namespace, depends_on=init_empty.output
+        file_name,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
+        depends_on=init_empty.output,
     )
     update_databag_status_op(
         DatabagStatusMessages.inspecting.value,
