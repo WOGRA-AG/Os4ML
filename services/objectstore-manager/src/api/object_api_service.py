@@ -37,7 +37,7 @@ class ObjectApiService:
     def get_json_object_by_name(self, bucket_name: str, object_name: str) -> JsonResponse:
         json_data = self.storage_service.get_json_object_from_bucket(bucket_name, object_name)
         json_str = json.dumps(json_data)
-        encoded_json_str = base64.encodebytes(json_str.encode())
+        encoded_json_str = base64.encodebytes(json_str.encode()).decode()
         return JsonResponse(json_content=encoded_json_str)
 
     def get_object_url(self, bucket_name, object_name) -> str:
