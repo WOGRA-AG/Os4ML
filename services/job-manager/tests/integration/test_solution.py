@@ -1,3 +1,5 @@
+import base64
+import json
 from typing import Any
 
 import pytest
@@ -8,6 +10,7 @@ from pytest_mock import MockerFixture
 from api.solution_api_service import SolutionApiService
 from build.openapi_client.api.objectstore_api import ObjectstoreApi
 from build.openapi_client.model.bucket import Bucket
+from build.openapi_client.model.json_response import JsonResponse
 from build.openapi_client.model.item import Item
 from build.openapi_server.apis.solution_api import (
     get_solution,
@@ -36,17 +39,22 @@ async def test_get_all_solutions(mocker: MockerFixture):
     buckets_mock = mocker.MagicMock(return_value=[Bucket("test-1"), Bucket("test-2")])
     mocker.patch.object(ObjectstoreApi, "get_all_buckets", buckets_mock)
     objects_mock = mocker.MagicMock(side_effect=[[Item("test-1", "solution.json")],
-                    [Item("test-2", "not-a-solution"), Item("test-2", "solution.json")]])
+                                                 [Item("test-2", "not-a-solution"), Item("test-2", "solution.json")]])
     mocker.patch.object(ObjectstoreApi, "get_all_objects", objects_mock)
-    json_objects_mock = mocker.MagicMock(side_effect=[{
+    solution1_json = {
         "name": "test-solution-1",
         "status": "test",
         "bucket_name": "test-1"
-    }, {
+    }
+    solution1_encoded = base64.encodebytes(json.dumps(solution1_json).encode()).decode()
+    solution2_json = {
         "name": "test-solution-2",
         "status": "test",
         "bucket_name": "test-2"
-    }])
+    }
+    solution2_encoded = base64.encodebytes(json.dumps(solution2_json).encode()).decode()
+    json_objects_mock = mocker.MagicMock(
+        side_effect=[JsonResponse(json_content=solution1_encoded), JsonResponse(json_content=solution2_encoded)])
     mocker.patch.object(ObjectstoreApi, "get_json_object_by_name", json_objects_mock)
 
     solutions = await get_all_solutions(_service=mock_api_service)

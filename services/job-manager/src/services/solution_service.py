@@ -1,3 +1,4 @@
+import base64
 import itertools
 import json
 from datetime import datetime
@@ -42,7 +43,10 @@ class SolutionService:
 
     def _create_solution_from_item(self, item: Item) -> Solution:
         json_response: JsonResponse = self.objectstore.get_json_object_by_name(item.bucket_name, item.object_name)
-        return Solution(**json.loads(json_response.json_content))
+        json_content_bytes = json_response.json_content.encode()
+        json_str = base64.decodebytes(json_content_bytes)
+        json_dict = json.loads(json_str)
+        return Solution(**json_dict)
 
     def get_solution(self, solution_name: str) -> Solution:
         solutions_with_name = [solution
