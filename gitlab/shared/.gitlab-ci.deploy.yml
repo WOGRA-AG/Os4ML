@@ -1,87 +1,52 @@
-deploy-prod:
+.deploy:
   stage: deploy
+  services:
+    - docker:20.10.14-dind
+  image: docker:20.10.14
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_BUILDKIT: 1
   needs:
     - build-frontend
     - build-frontend-image
     - job-manager-build
     - os-manager-build
-  dependencies:
-    - build-frontend
-  variables:
-    LABEL: 'latest'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
+    - docker pull $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
+    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
+
+deploy-tag:
+  extends:
+    - .deploy
+  variables:
+    LABEL: $CI_COMMIT_TAG
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
+deploy-prod:
+  extends:
+    - .deploy
+  variables:
+    LABEL: 'latest'
   when: manual
   rules:
     - if: '$CI_COMMIT_TAG'
 
 deploy-staging:
-  stage: deploy
-  needs:
-    - build-frontend
-    - build-frontend-image
-    - job-manager-build
-    - os-manager-build
-  dependencies:
-    - build-frontend
+  extends:
+    - .deploy
   variables:
     LABEL: 'stage'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
   when: manual
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -89,174 +54,25 @@ deploy-staging:
     - if: '$CI_COMMIT_TAG'
 
 deploy-release:
-  stage: deploy
-  needs:
-    - build-frontend
-    - build-frontend-image
-    - job-manager-build
-    - os-manager-build
-  dependencies:
-    - build-frontend
+  extends:
+    - .deploy
   variables:
     LABEL: 'rc'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
   when: manual
   rules:
     - if: $CI_COMMIT_REF_NAME =~ /^rc/
     - if: $CI_COMMIT_REF_NAME =~ /^release/
 
 deploy-dev:
-  stage: deploy
-  needs:
-    - build-frontend
-    - build-frontend-image
-    - job-manager-build
-    - os-manager-build
-  dependencies:
-    - build-frontend
+  extends:
+    - .deploy
   variables:
     LABEL: 'dev'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
   when: manual
 
 deploy-feature:
-  stage: deploy
-  needs:
-    - build-frontend
-    - build-frontend-image
-    - job-manager-build
-    - os-manager-build
-  dependencies:
-    - build-frontend
+  extends:
+    - .deploy
   variables:
     LABEL: 'feature'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
   when: manual
-
-deploy-tag:
-  stage: deploy
-  needs:
-    - build-frontend
-    - build-frontend-image
-    - job-manager-build
-    - os-manager-build
-  dependencies:
-    - build-frontend
-  variables:
-    LABEL: $CI_COMMIT_TAG
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/objectstore-manager"
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker build
-      -f services/job-manager/Dockerfile"
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --tag $CI_REGISTRY_IMAGE/frontend:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "services/frontend"
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
-  when: manual
-  rules:
-    - if: '$CI_COMMIT_TAG'
