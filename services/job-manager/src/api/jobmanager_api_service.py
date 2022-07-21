@@ -99,6 +99,9 @@ class JobmanagerApiService:
             )
         return FileResponse(pipeline_file_path)
 
+    def get_all_solutions(self) -> List[Solution]:
+        return self.solution_service.get_all_solutions()
+
     def get_solution(self, solution_name: str) -> Solution:
         return self.solution_service.get_solution(solution_name)
 

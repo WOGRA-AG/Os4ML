@@ -4,7 +4,6 @@ from tests.mocks.minio_mock import MinioMock
 
 from api.bucket_api_service import BucketApiService
 from build.openapi_server.apis.bucket_api import delete_bucket, post_new_bucket
-from build.openapi_server.models.bucket import Bucket
 from services.minio_service import MinioService
 
 mock_minio_client = MinioMock()
