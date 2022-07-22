@@ -107,3 +107,6 @@ class JobmanagerApiService:
 
     def put_solution(self, solution_name: str, solution: Solution) -> Solution:
         return self.solution_service.put_solution(solution_name, solution)
+
+    def delete_solution(self, solution_name: str) -> None:
+        return self.solution_service.delete_solution(solution_name)

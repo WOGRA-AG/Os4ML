@@ -93,3 +93,8 @@ class SolutionService:
             object_name=_solution_file_name(solution.name),
             body=encoded_solution,
         )
+
+    def delete_solution(self, solution_name: str) -> None:
+        solution = self.get_solution(solution_name)
+        self.objectstore.delete_object_by_name(solution.bucket_name, f"{solution.name}/{SOLUTION_CONFIG_FILE_NAME}")
+

@@ -240,6 +240,19 @@ paths:
             application/json:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
+    delete:
+      summary: "Delete a Solution"
+      operationId: deleteSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+        - solution
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/jobmanager/solution":
     get:
