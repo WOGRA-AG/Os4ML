@@ -9,7 +9,7 @@
   script:
     - cd $DIR
     - docker build
-      --target production
+      --target $TARGET
       --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
@@ -18,21 +18,6 @@
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
   variables:
     LABEL: $CI_COMMIT_REF_NAME
+    TARGET: 'production'
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "main"'
-      variables:
-        LABEL: "latest"
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      variables:
-        LABEL: "latest"
-    - if: '$CI_COMMIT_TAG'
-      variables:
-        LABEL: $CI_COMMIT_TAG
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
-      changes:
-        - $DIR
-    - if: '$CI_COMMIT_BRANCH'
-      changes:
-        - $DIR
