@@ -10,7 +10,7 @@ def ludwig_solver(
     metrics: Output[Metrics],
     batch_size: int = 8,
     epochs: int = 50,
-    early_stop: int = 10,
+    early_stop: int = 3,
     os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> None:
