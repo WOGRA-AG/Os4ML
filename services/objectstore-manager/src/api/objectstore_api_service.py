@@ -29,9 +29,13 @@ class ObjectstoreApiService:
             bucket_name=bucket_name, object_name=object_name
         )
 
-    def get_all_objects(self, bucket_name) -> List[Item]:
-        return self.storage_service.list_items(bucket_name=bucket_name)
-        return self.storage_service.list_items(bucket_name=bucket_name)
+    def get_all_objects(self, bucket_name, path_prefix) -> List[Item]:
+        # can be removed after issue #289 is solved
+        if not path_prefix:
+            path_prefix = ""
+        return self.storage_service.list_items(
+            bucket_name=bucket_name, path_prefix=path_prefix
+        )
 
     def get_object_by_name(self, bucket_name, object_name) -> RedirectResponse:
         url = self.storage_service.get_presigned_get_url(

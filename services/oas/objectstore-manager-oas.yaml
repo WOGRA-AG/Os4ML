@@ -298,7 +298,7 @@ components:
       name: pathPrefix
       in: query
       description: Prefix of the paths of the objects
-      required: false
+      required: true
       schema:
         type: string
         default: ""
