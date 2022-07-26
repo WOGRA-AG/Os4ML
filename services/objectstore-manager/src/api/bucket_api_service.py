@@ -8,6 +8,7 @@ from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from services import STORAGE_BACKEND
+from services.databag_service import DatabagService
 from services.init_storage_service import storage_services
 from services.storage_service_interface import StorageService
 
@@ -18,6 +19,11 @@ class BucketApiService:
             storage_service
             if storage_service is not None
             else storage_services[STORAGE_BACKEND]()
+        )
+        self.databag_service: DatabagService = (
+            DatabagService(storage_service)
+            if storage_service is not None
+            else DatabagService(storage_services[STORAGE_BACKEND]())
         )
 
     def delete_bucket(self, bucket_name) -> None:
