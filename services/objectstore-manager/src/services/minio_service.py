@@ -52,7 +52,7 @@ class MinioService(StorageService):
             self.client.remove_object(bucket_name, o.object_name)
         self.client.remove_bucket(bucket_name)
 
-    def list_items(self, bucket_name: str) -> List[Item]:
+    def list_items(self, bucket_name: str, path_prefix: str) -> List[Item]:
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(
                 status_code=404,
@@ -67,6 +67,7 @@ class MinioService(StorageService):
                 object_name=minio_object.object_name,
             )
             for minio_object in objects
+            if minio_object.object_name.startswith(path_prefix)
         ]
 
     def get_item(self, bucket_name: str, object_name: str) -> Item:

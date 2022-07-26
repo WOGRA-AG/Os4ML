@@ -11,7 +11,6 @@ from services import DATABAG_CONFIG_FILE_NAME
 
 
 class MinioMock(Minio):
-
     @property
     def _http(self):
         return PoolManager()

@@ -15,13 +15,14 @@ export class DialogDeleteSolutionComponent {
     this.solution = dialogRef.componentInstance.data.solution;
   }
 
-  obSubmit(): void {
-    if (this.solution.name !== undefined) {
-      this.jobmanagerService.deleteSolution(this.solution.name).subscribe(() => {
-          this.dialogRef.close();
-        }
-      );
+  onSubmit(): void {
+    if (!this.solution?.name) {
+      return;
     }
+    this.jobmanagerService.deleteSolution(this.solution.name).subscribe(() => {
+        this.dialogRef.close();
+      }
+    );
   }
 
 }

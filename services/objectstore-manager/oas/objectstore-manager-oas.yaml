@@ -100,7 +100,7 @@ paths:
 
   "/apis/v1beta1/objectstore/{bucketName}/objects":
     get:
-      summary: "get all Objects in bucket"
+      summary: "get all objects in bucket starting with the specified prefix"
       operationId: getAllObjects
       tags:
         - objectstore
@@ -108,6 +108,7 @@ paths:
         - object
       parameters:
         - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/PathPrefix'
       responses:
         200:
           description: OK
@@ -293,6 +294,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ComponentName'
+    PathPrefix:
+      name: pathPrefix
+      in: query
+      description: Prefix of the paths of the objects
+      required: false
+      schema:
+        type: string
+        default: ""
 
   responses:
     Created:

@@ -15,15 +15,14 @@ from services.storage_service_interface import StorageService
 
 class ObjectstoreApiService:
     def __init__(
-            self,
-            storage_service=None,
+        self,
+        storage_service=None,
     ):
         self.storage_service: StorageService = (
             storage_service
             if storage_service is not None
             else storage_services[STORAGE_BACKEND]()
         )
-
 
     def delete_object_by_name(self, bucket_name, object_name) -> None:
         return self.storage_service.delete_item(
@@ -32,6 +31,7 @@ class ObjectstoreApiService:
 
     def get_all_objects(self, bucket_name) -> List[Item]:
         return self.storage_service.list_items(bucket_name=bucket_name)
+        return self.storage_service.list_items(bucket_name=bucket_name)
 
     def get_object_by_name(self, bucket_name, object_name) -> RedirectResponse:
         url = self.storage_service.get_presigned_get_url(
@@ -39,8 +39,12 @@ class ObjectstoreApiService:
         )
         return RedirectResponse(url)
 
-    def get_json_object_by_name(self, bucket_name: str, object_name: str) -> JsonResponse:
-        json_data = self.storage_service.get_json_object_from_bucket(bucket_name, object_name)
+    def get_json_object_by_name(
+        self, bucket_name: str, object_name: str
+    ) -> JsonResponse:
+        json_data = self.storage_service.get_json_object_from_bucket(
+            bucket_name, object_name
+        )
         json_str = json.dumps(json_data)
         encoded_json_str = base64.encodebytes(json_str.encode()).decode()
         return JsonResponse(json_content=encoded_json_str)

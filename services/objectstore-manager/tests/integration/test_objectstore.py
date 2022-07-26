@@ -1,10 +1,10 @@
 import pytest
-from tests.mocks.minio_mock import MinioMock
 
 from api.objectstore_api_service import ObjectstoreApiService
 from build.openapi_server.apis.objectstore_api import get_all_buckets
 from build.openapi_server.models.bucket import Bucket
 from services.minio_service import MinioService
+from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)

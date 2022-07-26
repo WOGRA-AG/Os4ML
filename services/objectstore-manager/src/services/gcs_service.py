@@ -95,7 +95,7 @@ class GcsService(StorageService):
             return
         bucket.delete(force=True, timeout=self.gcs_timeout)
 
-    def list_items(self, bucket_name: str) -> List[Item]:
+    def list_items(self, bucket_name: str, path_prefix: str) -> List[Item]:
         bucket: GcpBucket = GcpBucket(client=self.client, name=bucket_name)
         if not bucket.exists(timeout=self.gcs_timeout):
             raise HTTPException(
@@ -106,6 +106,7 @@ class GcsService(StorageService):
         return [
             Item(bucket_name=bucket_name, object_name=blob.name)
             for blob in blobs
+            if blob.name.startswith(path_prefix)
         ]
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
