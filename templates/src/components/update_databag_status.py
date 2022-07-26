@@ -12,7 +12,6 @@ def update_databag_status(
     depends_on: Artifact = None,
     os4ml_namespace: str = "",
     bucket: str = None,
-    run_id: str = "",
 ) -> None:
     """Update the status of the solution with the new status."""
-    _update_databag_status(bucket, status, os4ml_namespace, run_id=run_id)
+    _update_databag_status(bucket, status, os4ml_namespace)

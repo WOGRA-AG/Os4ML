@@ -23,8 +23,12 @@ def init_databag_sniffle_upload(
     run_id: str = RUN_ID_PLACEHOLDER,
 ):
     init_empty = init_empty_databag_op(
-        file_name=file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
+        file_name=file_name,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
+        run_id=run_id,
     )
+
     df_info = init_databag_op(
         file_name,
         bucket=bucket,
@@ -36,7 +40,6 @@ def init_databag_sniffle_upload(
         depends_on=df_info.outputs["dataset"],
         bucket=bucket,
         os4ml_namespace=os4ml_namespace,
-        run_id=run_id,
     )
     sniffle = sniffle_op(
         dataset=df_info.outputs["dataset"],
@@ -50,7 +53,6 @@ def init_databag_sniffle_upload(
         depends_on=sniffle.output,
         bucket=bucket,
         os4ml_namespace=os4ml_namespace,
-        run_id=run_id,
     )
     create_databag_op(sniffle.output, bucket, os4ml_namespace=os4ml_namespace)
 
