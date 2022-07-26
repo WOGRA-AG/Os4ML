@@ -29,10 +29,9 @@ def put_databag(databag: Dict, bucket: str, os4ml_namespace: str):
     requests.put(url, json=databag)
 
 
-def update_databag_status(bucket: str, status: str, os4ml_namespace: str, run_id: str = ""):
+def update_databag_status(bucket: str, status: str, os4ml_namespace: str):
     databag = download_databag_from_bucket(bucket, os4ml_namespace)
     databag["status"] = status
-    databag["run_id"] = run_id
     put_databag(databag, bucket, os4ml_namespace)
 
 

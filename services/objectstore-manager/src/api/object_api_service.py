@@ -5,9 +5,11 @@ from typing import List
 
 from fastapi.responses import RedirectResponse
 
+from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from services import STORAGE_BACKEND
+from services.databag_service import DatabagService
 from services.init_storage_service import storage_services
 
 
@@ -17,6 +19,11 @@ class ObjectApiService:
             storage_service
             if storage_service is not None
             else storage_services[STORAGE_BACKEND]()
+        )
+        self.databag_service: DatabagService = (
+            DatabagService(storage_service)
+            if storage_service is not None
+            else DatabagService(storage_services[STORAGE_BACKEND]())
         )
 
     def delete_object_by_name(self, bucket_name, object_name) -> None:
@@ -76,3 +83,8 @@ class ObjectApiService:
         return self.storage_service.delete_items(
             bucket_name=bucket_name, path_prefix=path_prefix
         )
+
+    def get_databag_by_run_id(self, run_id) -> Databag:
+        for databag in self.databag_service.get_databags():
+            if databag.run_id == run_id:
+                return databag
