@@ -17,6 +17,7 @@ from build.openapi_server.models.solution import Solution
 from services import DATE_FORMAT, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
+from services.kfp_service import KfpService
 
 
 def _solution_file_name(solution_name: str):
@@ -27,6 +28,7 @@ class SolutionService:
     def __init__(self, kfp_client=None):
         self.template_service = TemplateService(kfp_client=kfp_client)
         self.objectstore = init_objectstore_api()
+        self.kfp_service = KfpService(client=kfp_client)
 
     def get_all_solutions(self) -> List[Solution]:
         buckets = self.objectstore.get_all_buckets()
@@ -99,7 +101,9 @@ class SolutionService:
 
     def delete_solution(self, solution_name: str) -> None:
         solution = self.get_solution(solution_name)
-        # TODO stop pipeline if still running
+        run = self.kfp_service.get_run(solution.run_id)
+        if run.status == "Running":
+            self.kfp_service.terminate_run(solution.run_id)
         self.objectstore.delete_objects(
             solution.bucket_name, path_prefix=f"{solution.name}/"
         )
