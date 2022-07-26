@@ -66,7 +66,7 @@ telepresence connect
 telepresence connect
 telepresence intercept frontend --namespace os4ml --port 4200:80
 telepresence intercept jobmanager --namespace os4ml --port 8000:8000
-telepresence intercept objecstore-manager --namespace os4ml --port 8001:8000
+telepresence intercept objectstore-manager --namespace os4ml --port 8001:8000
 ```
 
 ### Telepresence panic

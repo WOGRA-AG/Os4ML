@@ -26,7 +26,6 @@ def init_databag(
     If the file is a zip file it should only contain directories in the top level.
     The names of them are used as labels and the files they contain are used as features.
     """
-
     databag_type = DatabagType.from_uri(file_name)
     databag_info = namedtuple("DatabagInfo", ["databag_type", "dataset"])
 

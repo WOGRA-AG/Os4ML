@@ -1,7 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {
   Databag,
-  Solution,
 } from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -12,6 +11,7 @@ import {
 import {
   DialogAddDatabagComponent
 } from '../../components/dialog-add-databag/dialog-add-databag.component';
+import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-main-page',

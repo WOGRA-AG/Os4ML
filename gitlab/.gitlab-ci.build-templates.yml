@@ -1,26 +1,26 @@
 include:
-  - local: 'gitlab/shared/.gitlab-ci.build-template.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-images.yml'
 
 build-python:
   extends:
-    - .build-template
+    - .build-production
   variables:
-    DIR: 'templates'
+    BUILD_CONTEXT: 'templates'
     IMG_NAME: 'python'
-    DOCKERFILE: 'dockerfiles/python/Dockerfile'
+    DOCKERFILE: 'templates/dockerfiles/python/Dockerfile'
 
 build-pandas:
   extends:
-    - .build-template
+    - .build-production
   variables:
-    DIR: 'templates'
+    BUILD_CONTEXT: 'templates'
     IMG_NAME: 'pandas'
-    DOCKERFILE: 'dockerfiles/pandas/Dockerfile'
+    DOCKERFILE: 'templates/dockerfiles/pandas/Dockerfile'
 
 build-ludwig:
   extends:
-    - .build-template
+    - .build-production
   variables:
-    DIR: 'templates'
+    BUILD_CONTEXT: 'templates'
     IMG_NAME: 'ludwig'
-    DOCKERFILE: 'dockerfiles/ludwig/Dockerfile'
+    DOCKERFILE: 'templates/dockerfiles/ludwig/Dockerfile'

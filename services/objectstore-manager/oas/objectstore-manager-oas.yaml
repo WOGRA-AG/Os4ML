@@ -135,6 +135,27 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  "/apis/v1beta1/objectstore/{bucketName}/json":
+    get:
+      summary: 'get specific json file from bucket'
+      operationId: getJsonObjectByName
+      tags:
+        - objectstore
+        - bucket
+        - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/JsonResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+
   "/apis/v1beta1/objectstore/{bucketName}/object":
     get:
       summary: 'get specific Object from Bucket'
@@ -230,23 +251,6 @@ paths:
                 type: string
         404:
           $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/objectstore/solution":
-    get:
-      summary: 'get all solutions'
-      operationId: getAllSolutions
-      tags:
-        - objectstore
-        - solution
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solution'
 
 components:
   schemas:

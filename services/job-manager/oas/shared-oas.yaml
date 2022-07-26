@@ -92,3 +92,8 @@ components:
           type: string
         fileUrl:
           type: string
+    JsonResponse:
+      properties:
+        jsonContent:
+          type: string
+          format: byte

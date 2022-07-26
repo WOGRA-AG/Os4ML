@@ -1,4 +1,4 @@
-tag=latest
+tag=feature
 docker build -f dockerfiles/python/Dockerfile --tag gitlab-registry.wogra.com/developer/wogra/os4ml/python:$tag .
 
 docker build -f dockerfiles/pandas/Dockerfile --tag gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:$tag .
