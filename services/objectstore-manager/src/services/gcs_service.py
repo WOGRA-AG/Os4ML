@@ -102,11 +102,12 @@ class GcsService(StorageService):
                 status_code=404,
                 detail=f"Bucket with name {bucket_name} not found",
             )
-        blobs: Iterator[Blob] = bucket.list_blobs(timeout=self.gcs_timeout)
+        blobs: Iterator[Blob] = bucket.list_blobs(
+            timeout=self.gcs_timeout, prefix=path_prefix
+        )
         return [
             Item(bucket_name=bucket_name, object_name=blob.name)
             for blob in blobs
-            if blob.name.startswith(path_prefix)
         ]
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:

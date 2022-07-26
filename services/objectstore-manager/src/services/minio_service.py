@@ -59,7 +59,7 @@ class MinioService(StorageService):
                 detail=f"Bucket with name {bucket_name} not found",
             )
         objects: List[MinioObject] = self.client.list_objects(
-            bucket_name, recursive=True
+            bucket_name, recursive=True, prefix=path_prefix
         )
         return [
             Item(
@@ -67,7 +67,6 @@ class MinioService(StorageService):
                 object_name=minio_object.object_name,
             )
             for minio_object in objects
-            if minio_object.object_name.startswith(path_prefix)
         ]
 
     def get_item(self, bucket_name: str, object_name: str) -> Item:

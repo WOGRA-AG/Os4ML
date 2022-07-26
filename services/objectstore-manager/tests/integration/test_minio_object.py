@@ -129,7 +129,6 @@ async def test_get_all_objects_with_path_prefix(
 ):
     minio_mock.bucket_exists.return_value = True
     minio_mock.list_objects.return_value = [
-        mocker.Mock(bucket_name="os4ml", object_name="false/prefix/data.csv"),
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
     ]
@@ -143,7 +142,7 @@ async def test_get_all_objects_with_path_prefix(
     assert len(items) == 2
     object_names = {item.object_name for item in items}
     assert {"test/prefix/data.csv", "test/prefix"} <= object_names
-    assert "false/prefix/data.csv" not in object_names
+    assert minio_mock.list_objects.called_with(prefix="test/prefix")
 
 
 @pytest.mark.asyncio
