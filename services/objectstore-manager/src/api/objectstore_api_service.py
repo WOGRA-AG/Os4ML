@@ -7,6 +7,7 @@ from fastapi.responses import RedirectResponse
 
 from build.openapi_server.models.databag import Databag
 
+from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from services import STORAGE_BACKEND
@@ -82,7 +83,7 @@ class ObjectstoreApiService:
     def delete_bucket(self, bucket_name) -> None:
         return self.storage_service.delete_bucket(bucket_name=bucket_name)
 
-    def post_new_bucket(self, bucket_name) -> str:
+    def post_new_bucket(self, bucket_name) -> Bucket:
         return self.storage_service.create_bucket(bucket_name=bucket_name)
 
     def get_all_buckets(self):
