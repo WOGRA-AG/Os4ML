@@ -34,6 +34,7 @@ async def test_delete_items(api_service_mock, minio_mock, mocker):
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
     ]
+    minio_mock.remove_objects.return_value = []
 
     await delete_objects(
         bucket_name="bucket",
