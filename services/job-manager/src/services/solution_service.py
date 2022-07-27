@@ -101,7 +101,7 @@ class SolutionService:
         solution = self.get_solution(solution_name)
         # TODO stop pipeline if still running
         items_in_solution_dir = self.objectstore.get_all_objects(
-            solution.bucket_name, f"{solution.name}/"
+            solution.bucket_name, path_prefix=f"{solution.name}/"
         )
         for item in items_in_solution_dir:
             self.objectstore.delete_object_by_name(
