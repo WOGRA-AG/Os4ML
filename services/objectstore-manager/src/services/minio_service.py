@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
+from minio.deleteobjects import DeleteObject
 from urllib3 import HTTPResponse
 
 from build.openapi_server.models.bucket import Bucket
@@ -20,6 +21,13 @@ class MinioService(StorageService):
         client: Minio,
     ):
         self.client = client
+
+    def _check_if_bucket_exists(self, bucket_name):
+        if not self.client.bucket_exists(bucket_name):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Bucket with name {bucket_name} not found",
+            )
 
     def list_buckets(self) -> List[Bucket]:
         buckets: List[MinioBucket] = self.client.list_buckets()
@@ -35,29 +43,17 @@ class MinioService(StorageService):
         return bucket_name
 
     def get_bucket(self, bucket_name: str) -> Bucket:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         return Bucket(name=bucket_name)
 
     def delete_bucket(self, bucket_name: str) -> None:
         if not self.client.bucket_exists(bucket_name):
             return
-        object_list: List[MinioObject] = self.client.list_objects(
-            bucket_name, recursive=True
-        )
-        for o in object_list:
-            self.client.remove_object(bucket_name, o.object_name)
+        self.delete_items(bucket_name, path_prefix="")
         self.client.remove_bucket(bucket_name)
 
     def list_items(self, bucket_name: str, path_prefix: str) -> List[Item]:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         objects: List[MinioObject] = self.client.list_objects(
             bucket_name, recursive=True, prefix=path_prefix
         )
@@ -69,12 +65,16 @@ class MinioService(StorageService):
             for minio_object in objects
         ]
 
+    def delete_items(self, bucket_name: str, path_prefix: str) -> None:
+        self._check_if_bucket_exists(bucket_name)
+        objects = self.client.list_objects(
+            bucket_name, recursive=True, prefix=path_prefix
+        )
+        delete_objects = (DeleteObject(obj.object_name) for obj in objects)
+        self.client.remove_objects(bucket_name, delete_objects)
+
     def get_item(self, bucket_name: str, object_name: str) -> Item:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         try:
             self.client.get_object(bucket_name, object_name)
         except:
@@ -85,27 +85,15 @@ class MinioService(StorageService):
         return Item(bucket_name=bucket_name, object_name=object_name)
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         return self.client.presigned_get_object(bucket_name, object_name)
 
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         return self.client.get_presigned_url("PUT", bucket_name, object_name)
 
     def delete_item(self, bucket_name: str, object_name: str) -> None:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         self.client.remove_object(bucket_name, object_name)
 
     def create_item(
@@ -116,11 +104,7 @@ class MinioService(StorageService):
         size: int,
         content_type: str,
     ) -> Item:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         self.client.put_object(
             bucket_name, object_name, data, size, content_type
         )
@@ -134,31 +118,19 @@ class MinioService(StorageService):
         size: Optional[int] = None,
         content_type: Optional[str] = None,
     ) -> Item:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         self.client.fput_object(bucket_name, object_name, file_name)
         return Item(bucket_name=bucket_name, object_name=object_name)
 
     def get_json_object_from_bucket(self, bucket_name, json_file_name) -> dict:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         with self._get_minio_object_context(
             bucket_name, json_file_name
         ) as response:
             return json.loads(response.data)
 
     def get_object_from_bucket(self, bucket_name, file_name) -> str:
-        if not self.client.bucket_exists(bucket_name):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Bucket with name {bucket_name} not found",
-            )
+        self._check_if_bucket_exists(bucket_name)
         with self._get_minio_object_context(
             bucket_name, file_name
         ) as response:

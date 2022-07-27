@@ -8,10 +8,10 @@ from fastapi.responses import RedirectResponse
 from api.object_api_service import ObjectApiService
 from build.openapi_server.apis.object_api import (
     delete_object_by_name,
-    get_all_objects,
     get_json_object_by_name,
     get_object_by_name,
     get_object_url,
+    get_objects,
     get_presigned_put_url,
     put_object_by_name,
 )
@@ -23,17 +23,6 @@ from tests.mocks.minio_mock import MinioMock
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
 mock_object_api_service = ObjectApiService(storage_service=mock_minio_service)
-
-
-@pytest.fixture
-def minio_mock(mocker):
-    return mocker.Mock()
-
-
-@pytest.fixture
-def api_service_mock(minio_mock):
-    minio_service_mock = MinioService(client=minio_mock)
-    return ObjectApiService(storage_service=minio_service_mock)
 
 
 @pytest.mark.asyncio
@@ -114,7 +103,7 @@ async def test_delete_object_by_name_with_exception():
 
 @pytest.mark.asyncio
 async def test_get_all_objects():
-    items: List[Item] = await get_all_objects(
+    items: List[Item] = await get_objects(
         bucket_name="os4ml",
         path_prefix=None,
         _service=mock_object_api_service,
@@ -133,7 +122,7 @@ async def test_get_all_objects_with_path_prefix(
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
     ]
 
-    items: List[Item] = await get_all_objects(
+    items: List[Item] = await get_objects(
         bucket_name="os4ml",
         path_prefix="test/prefix",
         _service=api_service_mock,
@@ -142,13 +131,15 @@ async def test_get_all_objects_with_path_prefix(
     assert len(items) == 2
     object_names = {item.object_name for item in items}
     assert {"test/prefix/data.csv", "test/prefix"} <= object_names
-    assert minio_mock.list_objects.called_with(prefix="test/prefix")
+    minio_mock.list_objects.assert_called_with(
+        "os4ml", prefix="test/prefix", recursive=True
+    )
 
 
 @pytest.mark.asyncio
 async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
-        await get_all_objects(
+        await get_objects(
             bucket_name="os5ml",
             _service=mock_object_api_service,
         )

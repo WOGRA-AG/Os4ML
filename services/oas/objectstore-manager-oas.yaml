@@ -100,12 +100,31 @@ paths:
 
   "/apis/v1beta1/objectstore/{bucketName}/objects":
     get:
-      summary: "get all objects in bucket starting with the specified prefix"
-      operationId: getAllObjects
+      summary: "get all objects in bucket with the specified path prefix"
+      operationId: getObjects
       tags:
         - objectstore
         - bucket
         - object
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/PathPrefix'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: "delete all objects in bucket with the specified path prefix"
+      operationId: deleteObjects
+      tags:
+        - objectstore
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'

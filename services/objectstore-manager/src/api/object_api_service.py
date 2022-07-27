@@ -24,7 +24,7 @@ class ObjectApiService:
             bucket_name=bucket_name, object_name=object_name
         )
 
-    def get_all_objects(self, bucket_name, path_prefix) -> List[Item]:
+    def get_objects(self, bucket_name, path_prefix) -> List[Item]:
         # can be removed after issue #289 is solved
         if not path_prefix:
             path_prefix = ""
@@ -67,4 +67,12 @@ class ObjectApiService:
             data=file,
             size=len(file_content),
             content_type="application/octet-stream",
+        )
+
+    def delete_objects(self, bucket_name: str, path_prefix: str):
+        # can be removed after issue #289 is solved
+        if not path_prefix:
+            path_prefix = ""
+        return self.storage_service.delete_items(
+            bucket_name=bucket_name, path_prefix=path_prefix
         )
