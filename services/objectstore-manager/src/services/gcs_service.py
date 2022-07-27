@@ -108,8 +108,7 @@ class GcsService(StorageService):
         blobs: Iterator[Blob] = bucket.list_blobs(
             timeout=self.gcs_timeout, prefix=path_prefix
         )
-        for blob in blobs:
-            self._delete_blob(blob)
+        bucket.delete_blobs(list(blobs), timeout=self.gcs_timeout)
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
         bucket = self._get_gcp_bucket(bucket_name)
