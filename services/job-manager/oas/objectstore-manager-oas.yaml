@@ -129,14 +129,8 @@ paths:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'
       responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Item'
+        204:
+          $ref: '#/components/responses/Deleted'
         404:
           $ref: '#/components/responses/NotFound'
 
