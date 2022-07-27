@@ -71,7 +71,9 @@ class MinioService(StorageService):
             bucket_name, recursive=True, prefix=path_prefix
         )
         delete_objects = (DeleteObject(obj.object_name) for obj in objects)
-        self.client.remove_objects(bucket_name, delete_objects)
+        errors = self.client.remove_objects(bucket_name, delete_objects)
+        if errors:
+            print(errors)
 
     def get_item(self, bucket_name: str, object_name: str) -> Item:
         self._check_if_bucket_exists(bucket_name)

@@ -50,7 +50,7 @@ async def test_get_all_solutions(mocker: MockerFixture):
             ],
         ]
     )
-    mocker.patch.object(ObjectstoreApi, "get_all_objects", objects_mock)
+    mocker.patch.object(ObjectstoreApi, "get_objects", objects_mock)
     solution1_json = {
         "name": "test-solution-1",
         "status": "test",
