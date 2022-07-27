@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <mat-dialog-content>
+    <div class="confirmation">
+      {{"dialog.delete_solution.confirmation" | translate}}
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button>
+      {{"dialog.delete_solution.back_button" | translate}}
+    </button>
+    <button mat-raised-button color="primary" class="main-button" (click)="onSubmit()">
+      {{"dialog.delete_solution.main_button" | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

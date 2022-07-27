@@ -1,3 +1,5 @@
+from typing import Callable, Mapping
+
 from google.cloud.storage import Client as GcsClient
 from minio import Minio
 
@@ -8,6 +10,7 @@ from services import (
     STORAGE_URL,
     GcsService,
     MinioService,
+    StorageService,
 )
 
 
@@ -26,4 +29,7 @@ def _init_gcs() -> GcsService:
     return GcsService(client=client)
 
 
-storage_services: dict = {"minio": _init_minio, "gcs": _init_gcs}
+storage_services: Mapping[str, Callable[[], StorageService]] = {
+    "minio": _init_minio,
+    "gcs": _init_gcs,
+}

@@ -18,7 +18,7 @@ class StorageService:
     def delete_bucket(self, bucket_name: str) -> None:
         raise NotImplementedError()
 
-    def list_items(self, bucket_name: str) -> List[Item]:
+    def list_items(self, bucket_name: str, path_prefix: str) -> List[Item]:
         raise NotImplementedError()
 
     def get_item(self, bucket_name: str, object_name: str) -> Item:
@@ -31,6 +31,9 @@ class StorageService:
         raise NotImplementedError()
 
     def delete_item(self, bucket_name: str, object_name: str) -> None:
+        raise NotImplementedError()
+
+    def delete_items(self, bucket_name: str, path_prefix: str) -> None:
         raise NotImplementedError()
 
     def create_item(

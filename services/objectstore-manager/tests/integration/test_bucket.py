@@ -1,10 +1,10 @@
 import pytest
 from fastapi import HTTPException
-from tests.mocks.minio_mock import MinioMock
 
 from api.bucket_api_service import BucketApiService
 from build.openapi_server.apis.bucket_api import delete_bucket, post_new_bucket
 from services.minio_service import MinioService
+from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)

@@ -1,6 +1,12 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {Solution} from '../../../../build/openapi/jobmanager';
 import {Subscription, timer} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  DialogDynamicComponent
+} from '../dialog-dynamic/dialog-dynamic.component';
+import {DialogDeleteSolutionComponent} from '../dialog-delete-solution/dialog-delete-solution.component';
+import {ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-solution-list-item',
@@ -13,7 +19,7 @@ export class SolutionListItemComponent implements OnDestroy {
   runtime = '';
   intervalSub: Subscription;
 
-  constructor() {
+  constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) {
     this.intervalSub = timer(0, 250).subscribe(x => {
       const completionTime = this.solution.completionTime || new Date().toISOString();
       this.runtime = this.getRuntime(this.solution.creationTime, completionTime);
@@ -46,7 +52,7 @@ export class SolutionListItemComponent implements OnDestroy {
   }
 
   trimSolutionName(name: string | undefined): string {
-    if(!name) {
+    if (!name) {
       return '';
     }
     const uuidIndex = name.indexOf('_');
@@ -59,5 +65,15 @@ export class SolutionListItemComponent implements OnDestroy {
     }
     const creationDate = new Date(creationTime);
     return creationDate.toLocaleDateString('de-DE');
+  }
+
+  openDeleteDialog() {
+    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {component: DialogDeleteSolutionComponent, solution: this.solution}
+    });
+    dialogRef.afterClosed().subscribe(() => {
+        this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+      }
+    );
   }
 }

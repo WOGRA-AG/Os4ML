@@ -30,7 +30,7 @@ async def test_get_all_pipelines():
 
 @pytest.mark.asyncio
 async def test_post_pipeline():
-    test_url: str = "https://github.com/kubeflow/pipelines/blob/ef6e01c90c2c88606a0ad56d848ecc98609410c3/components/kubeflow/dnntrainer/component.yaml"
+    test_url: str = "https://raw.githubusercontent.com/kubeflow/pipelines/ef6e01c90c2c88606a0ad56d848ecc98609410c3/components/kubeflow/dnntrainer/component.yaml"
     create_pipeline: CreatePipeline = CreatePipeline(
         name="abc", description="def", config_url=test_url
     )

@@ -28,8 +28,13 @@ class BucketApiService:
             bucket_name=bucket_name, object_name=object_name
         )
 
-    def get_all_objects(self, bucket_name) -> List[Item]:
-        return self.storage_service.list_items(bucket_name=bucket_name)
+    def get_objects(self, bucket_name, path_prefix) -> List[Item]:
+        # can be removed after issue #289 is solved
+        if not path_prefix:
+            path_prefix = ""
+        return self.storage_service.list_items(
+            bucket_name=bucket_name, path_prefix=path_prefix
+        )
 
     def get_object_by_name(self, bucket_name, object_name) -> RedirectResponse:
         url = self.storage_service.get_presigned_get_url(
@@ -37,8 +42,12 @@ class BucketApiService:
         )
         return RedirectResponse(url)
 
-    def get_json_object_by_name(self, bucket_name: str, object_name: str) -> JsonResponse:
-        json_data = self.storage_service.get_json_object_from_bucket(bucket_name, object_name)
+    def get_json_object_by_name(
+        self, bucket_name: str, object_name: str
+    ) -> JsonResponse:
+        json_data = self.storage_service.get_json_object_from_bucket(
+            bucket_name, object_name
+        )
         json_str = json.dumps(json_data)
         encoded_json_str = base64.encodebytes(json_str.encode()).decode()
         return JsonResponse(json_content=encoded_json_str)
@@ -55,3 +64,11 @@ class BucketApiService:
 
     def post_new_bucket(self, bucket_name) -> str:
         return self.storage_service.create_bucket(bucket_name=bucket_name)
+
+    def delete_objects(self, bucket_name: str, path_prefix: str):
+        # can be removed after issue #289 is solved
+        if not path_prefix:
+            path_prefix = ""
+        return self.storage_service.delete_items(
+            bucket_name=bucket_name, path_prefix=path_prefix
+        )

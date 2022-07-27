@@ -4,35 +4,25 @@ from typing import List
 import pytest
 from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
-from tests.mocks.minio_mock import MinioMock
 
 from api.object_api_service import ObjectApiService
 from build.openapi_server.apis.object_api import (
     delete_object_by_name,
-    get_all_objects,
+    get_json_object_by_name,
     get_object_by_name,
     get_object_url,
+    get_objects,
     get_presigned_put_url,
-    put_object_by_name, get_json_object_by_name,
+    put_object_by_name,
 )
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from services.minio_service import MinioService
+from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
 mock_object_api_service = ObjectApiService(storage_service=mock_minio_service)
-
-
-@pytest.fixture
-def minio_mock(mocker):
-    return mocker.Mock()
-
-
-@pytest.fixture
-def api_service_mock(minio_mock):
-    minio_service_mock = MinioService(client=minio_mock)
-    return ObjectApiService(storage_service=minio_service_mock)
 
 
 @pytest.mark.asyncio
@@ -45,7 +35,7 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
     )
     assert type(redirect_response) == RedirectResponse
     assert (
-            redirect_response.headers["location"] == "https://os4ml.com/test.csv"
+        redirect_response.headers["location"] == "https://os4ml.com/test.csv"
     )
 
 
@@ -55,11 +45,15 @@ async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
     json_str = '{"name": "test", "time": "2022-07-17T23:01:49Z"}'
     minio_mock.get_object.return_value = mocker.Mock(data=json_str)
 
-    json_response = await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
+    json_response = await get_json_object_by_name(
+        "test-bucket", "test-object", api_service_mock
+    )
 
     minio_mock.bucket_exists.assert_called_once_with("test-bucket")
     minio_mock.get_object.assert_called_once_with("test-bucket", "test-object")
-    expected_response = JsonResponse(json_content=base64.encodebytes(json_str.encode()))
+    expected_response = JsonResponse(
+        json_content=base64.encodebytes(json_str.encode())
+    )
     assert json_response == expected_response
 
 
@@ -68,7 +62,9 @@ async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):
     minio_mock.bucket_exists.return_value = False
 
     with pytest.raises(HTTPException) as e:
-        await get_json_object_by_name("test-bucket", "test-object", api_service_mock)
+        await get_json_object_by_name(
+            "test-bucket", "test-object", api_service_mock
+        )
 
     assert e.value.status_code == status.HTTP_404_NOT_FOUND
     minio_mock.bucket_exists.assert_called_once_with("test-bucket")
@@ -107,8 +103,9 @@ async def test_delete_object_by_name_with_exception():
 
 @pytest.mark.asyncio
 async def test_get_all_objects():
-    items: List[Item] = await get_all_objects(
+    items: List[Item] = await get_objects(
         bucket_name="os4ml",
+        path_prefix=None,
         _service=mock_object_api_service,
     )
     assert type(items) == list
@@ -116,9 +113,33 @@ async def test_get_all_objects():
 
 
 @pytest.mark.asyncio
+async def test_get_all_objects_with_path_prefix(
+    api_service_mock, minio_mock, mocker
+):
+    minio_mock.bucket_exists.return_value = True
+    minio_mock.list_objects.return_value = [
+        mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
+        mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
+    ]
+
+    items: List[Item] = await get_objects(
+        bucket_name="os4ml",
+        path_prefix="test/prefix",
+        _service=api_service_mock,
+    )
+
+    assert len(items) == 2
+    object_names = {item.object_name for item in items}
+    assert {"test/prefix/data.csv", "test/prefix"} <= object_names
+    minio_mock.list_objects.assert_called_with(
+        "os4ml", prefix="test/prefix", recursive=True
+    )
+
+
+@pytest.mark.asyncio
 async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
-        await get_all_objects(
+        await get_objects(
             bucket_name="os5ml",
             _service=mock_object_api_service,
         )

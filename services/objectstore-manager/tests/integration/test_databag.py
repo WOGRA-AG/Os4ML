@@ -2,7 +2,6 @@ from typing import List
 
 import pytest
 from fastapi import HTTPException
-from tests.mocks.minio_mock import MinioMock
 
 from api.databag_api_service import DatabagApiService
 from build.openapi_server.apis.databag_api import (
@@ -12,6 +11,7 @@ from build.openapi_server.apis.databag_api import (
 )
 from build.openapi_server.models.databag import Databag
 from services.minio_service import MinioService
+from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
