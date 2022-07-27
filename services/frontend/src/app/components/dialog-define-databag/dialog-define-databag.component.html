@@ -10,9 +10,14 @@
     <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
       <mat-form-field appearance="outline">
         <mat-label>{{"dialog.define_databag.label" | translate}}</mat-label>
-        <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
-               name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
-               [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+        <input matInput
+               type="string"
+               placeholder="{{'dialog.define_databag.placeholder' | translate}}"
+               required
+               name="databag_name"
+               [(ngModel)]="databag.databagName" #databag_name="ngModel"
+               [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}"
+        >
         <mat-icon matSuffix>link</mat-icon>
       </mat-form-field>
       <mat-divider class="divider"></mat-divider>
@@ -20,8 +25,12 @@
       <div class="columns">
         <mat-form-field *ngFor="let column of databag.columns" appearance="outline">
           <mat-label>{{column.name}}</mat-label>
-          <mat-select [(ngModel)]="column.type" name="{{column.name}}" required #column_name="ngModel"
-          [ngClass]="{'is-invalid': f.submitted && column_name.invalid}">
+          <mat-select
+            [(ngModel)]="column.type"
+            name="{{column.name}}"
+            required #column_name="ngModel"
+            [ngClass]="{'is-invalid': f.submitted && column_name.invalid}"
+          >
             <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{type}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -35,7 +44,7 @@
       {{"dialog.define_databag.back_button" | translate}}
     </button>
     <div class="button-spacer"></div>
-    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit">
+    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
       {{"dialog.define_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>
