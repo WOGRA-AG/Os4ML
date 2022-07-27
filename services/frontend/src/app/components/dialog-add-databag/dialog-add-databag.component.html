@@ -7,9 +7,17 @@
   </div>
 
   <mat-dialog-content>
+    <form #dbForm="ngForm"></form>
     <mat-form-field appearance="outline">
       <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
-      <input matInput type="url" placeholder="{{'dialog.add_databag.placeholder' | translate}}" [(ngModel)]="fileUrl">
+      <input
+        #dbUrl="ngModel"
+        matInput
+        type="url"
+        placeholder="{{'dialog.add_databag.placeholder' | translate}}"
+        [(ngModel)]="fileUrl"
+        [pattern]="urlRgex"
+      >
       <mat-icon matSuffix>link</mat-icon>
     </mat-form-field>
     <div class="upload-container">
@@ -27,8 +35,14 @@
 
   <mat-dialog-actions align="end">
     <mat-spinner color="accent" *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
-    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()"
-            [disabled]="!(file.name || fileUrl)">
+    <button
+      mat-raised-button
+      color="primary"
+      class="main-button"
+      type="submit"
+      (click)="nextPageClick()"
+      [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
+    >
       {{"dialog.add_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>

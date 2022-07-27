@@ -21,6 +21,7 @@ export class DialogAddDatabagComponent {
   running = false;
   uuid: string = uuidv4();
   intervalID = 0;
+  urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
@@ -45,11 +46,11 @@ export class DialogAddDatabagComponent {
     let runId = '';
     const runParams: RunParams = {
       bucket: this.uuid,
-      fileName: this.fileUrl ? this.fileUrl : this.file.name
+      fileName: this.file.name ? this.file.name : this.fileUrl
     };
     try {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
-      if (!this.fileUrl) {
+      if (this.file.name) {
         await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       }
       runId = await firstValueFrom(
