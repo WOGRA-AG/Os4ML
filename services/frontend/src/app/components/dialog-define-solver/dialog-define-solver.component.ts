@@ -15,6 +15,7 @@ export class DialogDefineSolverComponent {
   solution: Solution;
   databag: Databag;
   solver: PipelineTemplate[] = [];
+  submitting = false;
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService) {
@@ -30,11 +31,13 @@ export class DialogDefineSolverComponent {
   };
 
   onSubmit(): void {
+    this.submitting = true;
     this.solution.status = 'Created';
     this.solution.bucketName = this.databag.bucketName;
     this.solution.databagName = this.databag.databagName;
     this.jobmanagerService.postSolution(this.solution).subscribe(runId => {
       this.solution.runId = runId;
+      this.submitting = false;
       this.dialogRef.close(this.solution);
     });
   }

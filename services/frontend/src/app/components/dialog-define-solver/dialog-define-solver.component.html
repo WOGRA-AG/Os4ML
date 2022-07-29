@@ -37,12 +37,13 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-icon-button class="back-button" [disableRipple]="true" (click)="back()">
+    <button mat-icon-button class="back-button" [disableRipple]="true" (click)="back()" [disabled]="submitting">
       <mat-icon>arrow_back_ios</mat-icon>
       {{"dialog.define_solver.back_button" | translate}}
     </button>
     <div class="button-spacer"></div>
-    <button mat-raised-button color="primary" class="main-button" form="ngForm" type="submit">
+    <mat-spinner color="accent" *ngIf="submitting" [diameter]="40" mode="indeterminate" class="spinner"></mat-spinner>
+    <button mat-raised-button color="primary" [disabled]="submitting" class="main-button" form="ngForm" type="submit">
       {{"dialog.define_solver.main_button" | translate}}
     </button>
   </mat-dialog-actions>
