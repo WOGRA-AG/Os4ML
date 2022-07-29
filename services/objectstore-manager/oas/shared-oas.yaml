@@ -80,7 +80,6 @@ components:
           nullable: true
         runId:
           type: string
-          nullable: true
     PipelineTemplate:
       properties:
         name:

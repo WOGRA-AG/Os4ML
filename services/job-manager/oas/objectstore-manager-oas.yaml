@@ -43,7 +43,6 @@ paths:
       operationId: getDatabagByRunId
       tags:
         - objectstore
-        - databag
       parameters:
         - $ref: '#/components/parameters/RunId'
       responses:

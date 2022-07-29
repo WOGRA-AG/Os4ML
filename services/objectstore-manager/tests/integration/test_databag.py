@@ -3,21 +3,22 @@ from typing import List
 import pytest
 from fastapi import HTTPException
 
+from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
     get_all_databags,
     get_databag_by_bucket_name,
     get_databag_by_run_id,
     put_databag_by_bucket_name,
 )
-
-from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.models.databag import Databag
 from repository.impl.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
-mock_objectstore_controller = ObjectstoreApiController(storage_service=mock_minio_service)
+mock_objectstore_controller = ObjectstoreApiController(
+    storage_service=mock_minio_service
+)
 
 
 @pytest.mark.asyncio
