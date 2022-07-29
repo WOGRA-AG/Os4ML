@@ -1,5 +1,5 @@
-from kfp.v2.dsl import pipeline
 from kfp.dsl import RUN_ID_PLACEHOLDER
+from kfp.v2.dsl import pipeline
 from src.pipelines.util import (
     DatabagStatusMessages,
     compile_pipeline,

@@ -6,8 +6,8 @@ from fastapi import HTTPException
 from build.openapi_server.apis.objectstore_api import (
     get_all_databags,
     get_databag_by_bucket_name,
-    put_databag_by_bucket_name,
     get_databag_by_run_id,
+    put_databag_by_bucket_name,
 )
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
@@ -61,10 +61,12 @@ async def test_put_databag_by_bucket_name():
 @pytest.mark.asyncio
 async def test_get_databag_by_run_id():
     databag: Databag = await get_databag_by_run_id(
-        run_id="os4ml_unique_run_id", _controller=mock_objectstore_controller,
+        run_id="os4ml_unique_run_id",
+        _controller=mock_objectstore_controller,
     )
     assert databag.run_id == "os4ml_unique_run_id"
     another_databag: Databag = await get_databag_by_run_id(
-        run_id="false_os4ml_unique_run_id", _service=mock_databag_api_service,
+        run_id="false_os4ml_unique_run_id",
+        _controller=mock_objectstore_controller,
     )
     assert another_databag is None
