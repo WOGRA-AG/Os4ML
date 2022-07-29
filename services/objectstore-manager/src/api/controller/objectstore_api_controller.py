@@ -10,9 +10,9 @@ from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from repository.interface.storage_service_interface import StorageService
+from repository.init_storage_service import storage_services
 from services import STORAGE_BACKEND
 from services.databag_service import DatabagService
-from services.init_storage_service import storage_services
 
 
 class ObjectstoreApiController:
