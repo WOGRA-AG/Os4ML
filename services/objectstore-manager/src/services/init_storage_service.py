@@ -3,15 +3,8 @@ from typing import Callable, Mapping
 from google.cloud.storage import Client as GcsClient
 from minio import Minio
 
-from services import (
-    STORAGE_KEY,
-    STORAGE_SECRET,
-    STORAGE_SECURE,
-    STORAGE_URL,
-    GcsService,
-    MinioService,
-    StorageService,
-)
+from repository import GcsService, MinioService, StorageService
+from services import STORAGE_KEY, STORAGE_SECRET, STORAGE_SECURE, STORAGE_URL
 
 
 def _init_minio() -> MinioService:

@@ -11,12 +11,12 @@ from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.run import Run
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from services.kfp_service import KfpService
+from executor.kfp_service import KfpService
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
 
-class JobmanagerApiService:
+class JobmanagerApiController:
     def __init__(
         self, kfp_service=None, solution_service=None, template_service=None
     ):
@@ -43,6 +43,9 @@ class JobmanagerApiService:
     def get_all_pipelines(self) -> List[Pipeline]:
         return self.kfp_service.get_all_pipelines()
 
+    def post_pipeline(self, create_pipeline: CreatePipeline) -> str:
+        return self.kfp_service.create_pipeline(create_pipeline)
+
     def get_all_runs(self) -> List[Run]:
         return self.kfp_service.get_all_runs()
 
@@ -55,9 +58,6 @@ class JobmanagerApiService:
         return self.kfp_service.create_run(
             experiment_id, pipeline_id, create_run
         )
-
-    def post_pipeline(self, create_pipeline: CreatePipeline) -> str:
-        return self.kfp_service.create_pipeline(create_pipeline)
 
     def post_solution(self, solution: Solution) -> str:
         return self.solution_service.create_solution(solution)

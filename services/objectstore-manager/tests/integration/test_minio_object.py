@@ -5,8 +5,8 @@ import pytest
 from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
 
-from api.object_api_service import ObjectApiService
-from build.openapi_server.apis.object_api import (
+from api.controller.objectstore_api_controller import ObjectstoreApiController
+from build.openapi_server.apis.objectstore_api import (
     delete_object_by_name,
     get_json_object_by_name,
     get_object_by_name,
@@ -17,12 +17,12 @@ from build.openapi_server.apis.object_api import (
 )
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
-from services.minio_service import MinioService
+from repository.impl.minio_service import MinioService
 from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioService(client=mock_minio_client)
-mock_object_api_service = ObjectApiService(storage_service=mock_minio_service)
+mock_objectstore_controller = ObjectstoreApiController(storage_service=mock_minio_service)
 
 
 @pytest.mark.asyncio
@@ -31,7 +31,7 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
     redirect_response: RedirectResponse = await get_object_by_name(
         bucket_name="os4ml",
         object_name="object",
-        _service=api_service_mock,
+        _controller=api_service_mock,
     )
     assert type(redirect_response) == RedirectResponse
     assert (
@@ -76,7 +76,7 @@ async def test_get_object_by_name_with_exception():
         await get_object_by_name(
             bucket_name="os5ml",
             object_name="object",
-            _service=mock_object_api_service,
+            _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -86,7 +86,7 @@ async def test_delete_object_by_name():
     await delete_object_by_name(
         bucket_name="os4ml",
         object_name="object",
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
 
 
@@ -96,7 +96,7 @@ async def test_delete_object_by_name_with_exception():
         await delete_object_by_name(
             bucket_name="os5ml",
             object_name="object",
-            _service=mock_object_api_service,
+            _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -106,7 +106,7 @@ async def test_get_all_objects():
     items: List[Item] = await get_objects(
         bucket_name="os4ml",
         path_prefix=None,
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
     assert type(items) == list
     assert type(items.pop()) == Item
@@ -125,7 +125,7 @@ async def test_get_all_objects_with_path_prefix(
     items: List[Item] = await get_objects(
         bucket_name="os4ml",
         path_prefix="test/prefix",
-        _service=api_service_mock,
+        _controller=api_service_mock,
     )
 
     assert len(items) == 2
@@ -141,7 +141,7 @@ async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_objects(
             bucket_name="os5ml",
-            _service=mock_object_api_service,
+            _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -151,7 +151,7 @@ async def test_get_presigned_url():
     url: str = await get_presigned_put_url(
         bucket_name="os4ml",
         object_name="object",
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
     assert type(url) == str
     assert url == "https://www.wogra.com"
@@ -163,7 +163,7 @@ async def test_get_presigned_url_with_exception():
         await get_presigned_put_url(
             bucket_name="os5ml",
             object_name="object",
-            _service=mock_object_api_service,
+            _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
 
@@ -175,7 +175,7 @@ async def test_put_object_by_name():
         body=body,
         bucket_name="os4ml",
         object_name="object",
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
     assert item.bucket_name == "os4ml"
     assert item.object_name == "object"
@@ -186,7 +186,7 @@ async def test_get_object_url():
     url: str = await get_object_url(
         bucket_name="os4ml",
         object_name="object",
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
     assert type(url) == str
 
@@ -197,6 +197,6 @@ async def test_get_object_url_with_exception():
         await get_object_url(
             bucket_name="os5ml",
             object_name="object",
-            _service=mock_object_api_service,
+            _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)

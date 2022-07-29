@@ -12,7 +12,7 @@ from urllib3 import HTTPResponse
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
-from services.storage_service_interface import StorageService
+from repository.interface.storage_service_interface import StorageService
 
 
 class MinioService(StorageService):
