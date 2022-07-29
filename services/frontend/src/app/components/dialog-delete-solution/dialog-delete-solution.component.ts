@@ -10,16 +10,23 @@ import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager'
 })
 export class DialogDeleteSolutionComponent {
   solution: Solution;
+  deleting = false;
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private jobmanagerService: JobmanagerService) {
     this.solution = dialogRef.componentInstance.data.solution;
   }
 
+  onBack(): void {
+    this.dialogRef.close();
+  }
+
   onSubmit(): void {
+    this.deleting = true;
     if (!this.solution?.name) {
       return;
     }
     this.jobmanagerService.deleteSolution(this.solution.name).subscribe(() => {
+      this.deleting = false;
         this.dialogRef.close();
       }
     );
