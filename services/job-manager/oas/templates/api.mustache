@@ -22,7 +22,7 @@ from {{modelPackage}}.extra_models import TokenModel
 {{/imports}}
 {{#securityImports.0}}from {{packageName}}.security_api import {{#securityImports}}get_token_{{.}}{{^-last}}, {{/-last}}{{/securityImports}}{{/securityImports.0}}
 
-from api.{{classFilename}}_service import {{classname}}Service
+from api.controller.{{classFilename}}_controller import {{classname}}Controller
 
 router = APIRouter(prefix="")
 
@@ -48,7 +48,7 @@ async def {{operationId}}(
     {{#allParams}}
     {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isQueryParam}}{{paramName}}: {{dataType}} = Query(None, description="{{description}}", alias="{{baseName}}"){{/isQueryParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}", alias="{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}},
     {{/allParams}}
-    _service: {{classname}}Service = Depends({{classname}}Service),
+    _controller: {{classname}}Controller = Depends({{classname}}Controller),
     {{#hasAuthMethods}}
     {{#authMethods}}
     token_{{name}}: TokenModel = Security(
@@ -57,7 +57,7 @@ async def {{operationId}}(
     {{/authMethods}}
     {{/hasAuthMethods}}
 ) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
-    return _service.{{operationId}}(
+    return _controller.{{operationId}}(
     {{#allParams}}
         {{#isFormParam}}{{paramName}}={{paramName}}{{/isFormParam}}{{#isQueryParam}}{{paramName}}={{paramName}}{{/isQueryParam}}{{#isPathParam}}{{paramName}}={{paramName}}{{/isPathParam}}{{#isHeaderParam}}{{paramName}}={{paramName}}{{/isHeaderParam}}{{#isCookieParam}}{{paramName}}={{paramName}}{{/isCookieParam}}{{#isBodyParam}}{{paramName}}={{paramName}}{{/isBodyParam}},
     {{/allParams}}

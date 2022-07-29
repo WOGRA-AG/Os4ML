@@ -3,20 +3,34 @@ from typing import List
 import pytest
 from mocks.kfp_mock_client import KfpMockClient
 
-from api.run_api_service import RunApiService
-from build.openapi_server.apis.run_api import get_all_runs, get_run, post_run
+from api.controller.jobmanager_api_controller import JobmanagerApiController
+from build.openapi_server.apis.jobmanager_api import (
+    get_all_runs,
+    get_run,
+    post_run,
+)
 from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.run import Run
-from services.kfp_service import KfpService
+from executor.kfp_service import KfpService
+from services.solution_service import SolutionService
+from services.template_service import TemplateService
 
 mock_kfp_client = KfpMockClient()
 mock_kfp_service = KfpService(client=mock_kfp_client)
-mock_run_service = RunApiService(kfp_service=mock_kfp_service)
+mock_solution_service = SolutionService(kfp_client=mock_kfp_client)
+mock_template_service = TemplateService(kfp_client=mock_kfp_client)
+mock_jobmanager_controller = JobmanagerApiController(
+    kfp_service=mock_kfp_service,
+    solution_service=mock_solution_service,
+    template_service=mock_template_service,
+)
 
 
 @pytest.mark.asyncio
 async def test_get_all_runs():
-    experiments: List[Run] = await get_all_runs(_service=mock_run_service)
+    experiments: List[Run] = await get_all_runs(
+        _controller=mock_jobmanager_controller
+    )
     assert type(experiments) == list
     assert type(experiments.pop()) == Run
 
@@ -28,7 +42,7 @@ async def test_post_run():
         name="abc", description="def", params=params
     )
     await post_run(
-        _service=mock_run_service,
+        _controller=mock_jobmanager_controller,
         experiment_id="",
         pipeline_id="",
         create_run=create_run,
@@ -37,4 +51,4 @@ async def test_post_run():
 
 @pytest.mark.asyncio
 async def test_get_run():
-    await get_run(_service=mock_run_service, run_id="")
+    await get_run(_controller=mock_jobmanager_controller, run_id="")

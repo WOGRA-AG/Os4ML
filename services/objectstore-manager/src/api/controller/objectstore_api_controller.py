@@ -1,27 +1,33 @@
 import base64
 import json
+from io import BytesIO
 from typing import List
 
 from fastapi.responses import RedirectResponse
 
-from build.openapi_server.models.bucket import Bucket
+from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
+from repository.interface.storage_service_interface import StorageService
 from services import STORAGE_BACKEND
+from services.databag_service import DatabagService
 from services.init_storage_service import storage_services
-from services.storage_service_interface import StorageService
 
 
-class BucketApiService:
-    def __init__(self, storage_service=None):
+class ObjectstoreApiController:
+    def __init__(
+        self,
+        storage_service=None,
+    ):
         self.storage_service: StorageService = (
             storage_service
             if storage_service is not None
             else storage_services[STORAGE_BACKEND]()
         )
 
-    def delete_bucket(self, bucket_name) -> None:
-        return self.storage_service.delete_bucket(bucket_name=bucket_name)
+        self.databag_service: DatabagService = DatabagService(
+            self.storage_service
+        )
 
     def delete_object_by_name(self, bucket_name, object_name) -> None:
         return self.storage_service.delete_item(
@@ -62,8 +68,25 @@ class BucketApiService:
             bucket_name=bucket_name, object_name=object_name
         )
 
+    def put_object_by_name(self, bucket_name, object_name, body) -> Item:
+        file_content: bytes = body
+        file: BytesIO = BytesIO(file_content)
+        return self.storage_service.create_item(
+            bucket_name=bucket_name,
+            object_name=object_name,
+            data=file,
+            size=len(file_content),
+            content_type="application/octet-stream",
+        )
+
+    def delete_bucket(self, bucket_name) -> None:
+        return self.storage_service.delete_bucket(bucket_name=bucket_name)
+
     def post_new_bucket(self, bucket_name) -> str:
         return self.storage_service.create_bucket(bucket_name=bucket_name)
+
+    def get_all_buckets(self):
+        return self.storage_service.list_buckets()
 
     def delete_objects(self, bucket_name: str, path_prefix: str):
         # can be removed after issue #289 is solved
@@ -71,4 +94,19 @@ class BucketApiService:
             path_prefix = ""
         return self.storage_service.delete_items(
             bucket_name=bucket_name, path_prefix=path_prefix
+        )
+
+    def get_all_databags(self) -> List[Databag]:
+        return self.databag_service.get_databags()
+
+    def get_databag_by_bucket_name(self, bucket_name: str) -> Databag:
+        return self.databag_service.get_databag_by_bucket_name(
+            bucket_name=bucket_name
+        )
+
+    def put_databag_by_bucket_name(
+        self, bucket_name: str, databag: Databag
+    ) -> None:
+        return self.databag_service.put_databag_by_bucket_name(
+            bucket_name=bucket_name, databag=databag
         )
