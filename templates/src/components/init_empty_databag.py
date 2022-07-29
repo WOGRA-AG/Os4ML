@@ -7,10 +7,10 @@ from src.util.error_handler import error_handler
 
 def init_empty_databag(
     file_name: str,
+    run_id: str = "",
     *,
     bucket: str = None,
     os4ml_namespace: str = "",
-    run_id: str = "",
 ) -> str:
     databag_init = {
         "databag_name": file_name,
