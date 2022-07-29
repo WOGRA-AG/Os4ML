@@ -113,8 +113,9 @@ class MinioMock(Minio):
     def remove_object(self, bucket_name, object_name, version_id=None) -> None:
         return
 
-    def remove_objects(self, bucket_name, delete_object_list,
-                       bypass_governance_mode=False) -> List:
+    def remove_objects(
+        self, bucket_name, delete_object_list, bypass_governance_mode=False
+    ) -> List:
         return []
 
     def put_object(
