@@ -86,9 +86,11 @@ export class DialogAddDatabagComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
-          this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
-            this.pipelineStatus = databag.status;
-          });
+          if (run.status === PipelineStatus.running) {
+            this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
+              this.pipelineStatus = databag.status;
+            });
+          }
           if (run.status === PipelineStatus.failed) {
             clearInterval(this.intervalID);
             this.translate.get('error.run_failed').subscribe((res: string) => {

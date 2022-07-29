@@ -35,6 +35,7 @@ def init_databag_sniffle_upload(
         os4ml_namespace=os4ml_namespace,
         depends_on=init_empty.output,
     )
+
     update_databag_status_op(
         DatabagStatusMessages.inspecting.value,
         depends_on=df_info.outputs["dataset"],

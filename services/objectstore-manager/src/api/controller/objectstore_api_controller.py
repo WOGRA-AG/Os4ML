@@ -6,7 +6,6 @@ from typing import List
 from fastapi.responses import RedirectResponse
 
 from build.openapi_server.models.databag import Databag
-
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
 from repository.interface.storage_service_interface import StorageService
@@ -24,6 +23,9 @@ class ObjectstoreApiController:
             storage_service
             if storage_service is not None
             else storage_services[STORAGE_BACKEND]()
+        )
+        self.databag_service: DatabagService = DatabagService(
+            self.storage_service
         )
 
         self.databag_service: DatabagService = DatabagService(
