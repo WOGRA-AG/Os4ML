@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {
-  Databag,
   ObjectstoreService
 } from '../../../../build/openapi/objectstore';
 import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
@@ -89,8 +88,6 @@ export class DialogAddDatabagComponent {
           if (run.status === PipelineStatus.running) {
             this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
               this.pipelineStatus = databag.status;
-              console.log(databag);
-              console.log(databag.status);
             });
           }
           if (run.status === PipelineStatus.failed) {
