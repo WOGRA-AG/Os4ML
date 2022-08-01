@@ -88,7 +88,7 @@ export class DialogAddDatabagComponent {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
           if (run.status === PipelineStatus.running) {
             this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
-              this.pipelineStatus = databag.status;
+              this.pipelineStatus = databag ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
             });
           }
           if (run.status === PipelineStatus.failed) {

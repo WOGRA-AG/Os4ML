@@ -21,7 +21,7 @@
       "label": "Url",
       "main_button": "Next Step",
       "placeholder": "Databag Url",
-      "placeholder_status": "Processing.."
+      "placeholder_status": "Starting"
     },
     "define_databag": {
       "title": "Add Databag",
