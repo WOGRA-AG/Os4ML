@@ -126,3 +126,6 @@ class KfpService:
             error=run.error,
             metrics=run.metrics,
         )
+
+    def terminate_run(self, run_id) -> None:
+        self.client.runs.terminate_run(run_id)
