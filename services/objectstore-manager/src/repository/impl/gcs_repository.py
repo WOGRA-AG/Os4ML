@@ -10,10 +10,10 @@ from google.cloud.storage import Client
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
-from services.storage_service_interface import StorageService
+from repository.interface.storage_repository_interface import StorageRepository
 
 
-class GcsService(StorageService):
+class GcsRepository(StorageRepository):
     def __init__(
         self,
         client: Client,
