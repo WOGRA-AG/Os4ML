@@ -10,7 +10,7 @@ from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.run_params import RunParams
-from executor.kfp_service import KfpService
+from executor.kfp_executor import KfpExecutor
 from services import (
     PIPELINE_FILE_NAME,
     PIPELINE_TEMPLATES_DIR,
@@ -21,7 +21,7 @@ from services.init_api_clients import init_objectstore_api
 
 class TemplateService:
     def __init__(self, kfp_client=None):
-        self.kfp_service = KfpService(client=kfp_client)
+        self.kfp_service = KfpExecutor(client=kfp_client)
         self.objectstore = init_objectstore_api()
 
     def run_pipeline_template(

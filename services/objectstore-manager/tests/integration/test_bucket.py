@@ -3,11 +3,11 @@ from fastapi import HTTPException
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import delete_bucket, post_new_bucket
-from repository.impl.minio_service import MinioService
+from repository.impl.minio_repository import MinioRepository
 from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
-mock_minio_service = MinioService(client=mock_minio_client)
+mock_minio_service = MinioRepository(client=mock_minio_client)
 mock_objectstore_controller = ObjectstoreApiController(storage_service=mock_minio_service)
 
 

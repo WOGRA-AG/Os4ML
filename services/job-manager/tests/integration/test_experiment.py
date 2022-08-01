@@ -9,12 +9,12 @@ from build.openapi_server.apis.jobmanager_api import (
     post_experiment,
 )
 from build.openapi_server.models.experiment import Experiment
-from executor.kfp_service import KfpService
+from executor.kfp_executor import KfpExecutor
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
 mock_kfp_client = KfpMockClient()
-mock_kfp_service = KfpService(client=mock_kfp_client)
+mock_kfp_service = KfpExecutor(client=mock_kfp_client)
 mock_solution_service = SolutionService(kfp_client=mock_kfp_client)
 mock_template_service = TemplateService(kfp_client=mock_kfp_client)
 mock_jobmanager_controller = JobmanagerApiController(
