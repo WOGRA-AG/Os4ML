@@ -7,11 +7,15 @@ def init_empty_databag(
     file_name: str,
     bucket: str,
     os4ml_namespace: str,
+    run_id: str,
 ) -> Artifact:
     from src.components.init_empty_databag import init_empty_databag
 
     return init_empty_databag(
-        file_name=file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
+        file_name=file_name,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
+        run_id=run_id,
     )
 
 

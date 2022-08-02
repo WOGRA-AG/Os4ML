@@ -1,18 +1,17 @@
 import pytest
-from minio.deleteobjects import DeleteObject
 
-from api.objectstore_api_service import ObjectstoreApiService
+from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
     delete_objects,
     get_all_buckets,
 )
 from build.openapi_server.models.bucket import Bucket
-from services.minio_service import MinioService
+from repository.impl.minio_repository import MinioRepository
 from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
-mock_minio_service = MinioService(client=mock_minio_client)
-mock_object_api_service = ObjectstoreApiService(
+mock_minio_service = MinioRepository(client=mock_minio_client)
+mock_objectstore_controller = ObjectstoreApiController(
     storage_service=mock_minio_service
 )
 
@@ -20,7 +19,7 @@ mock_object_api_service = ObjectstoreApiService(
 @pytest.mark.asyncio
 async def test_get_all_buckets():
     buckets = await get_all_buckets(
-        _service=mock_object_api_service,
+        _controller=mock_objectstore_controller,
     )
     assert type(buckets) == list
     assert len(buckets) > 0
@@ -39,7 +38,7 @@ async def test_delete_items(api_service_mock, minio_mock, mocker):
     await delete_objects(
         bucket_name="bucket",
         path_prefix="test/prefix",
-        _service=api_service_mock,
+        _controller=api_service_mock,
     )
 
     minio_mock.list_objects.assert_called_with(

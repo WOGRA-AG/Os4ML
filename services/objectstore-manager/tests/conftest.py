@@ -2,8 +2,8 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from api.object_api_service import ObjectApiService
-from services.minio_service import MinioService
+from api.controller.objectstore_api_controller import ObjectstoreApiController
+from repository.impl.minio_repository import MinioRepository
 from src.main import app as application
 
 
@@ -26,5 +26,5 @@ def minio_mock(mocker):
 
 @pytest.fixture
 def api_service_mock(minio_mock):
-    minio_service_mock = MinioService(client=minio_mock)
-    return ObjectApiService(storage_service=minio_service_mock)
+    minio_service_mock = MinioRepository(client=minio_mock)
+    return ObjectstoreApiController(storage_service=minio_service_mock)

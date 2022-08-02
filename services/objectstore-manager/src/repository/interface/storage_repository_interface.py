@@ -5,7 +5,7 @@ from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
 
 
-class StorageService:
+class StorageRepository:
     def get_bucket(self, bucket_name: str) -> Bucket:
         raise NotImplementedError()
 
