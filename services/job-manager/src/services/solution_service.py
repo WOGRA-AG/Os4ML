@@ -17,7 +17,7 @@ from build.openapi_server.models.solution import Solution
 from services import DATE_FORMAT, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
-from services.kfp_service import KfpService
+from executor.kfp_executor import KfpExecutor
 
 
 def _solution_file_name(solution_name: str):
@@ -28,7 +28,7 @@ class SolutionService:
     def __init__(self, kfp_client=None):
         self.template_service = TemplateService(kfp_client=kfp_client)
         self.objectstore = init_objectstore_api()
-        self.kfp_service = KfpService(client=kfp_client)
+        self.kfp_service = KfpExecutor(client=kfp_client)
 
     def get_all_solutions(self) -> List[Solution]:
         buckets = self.objectstore.get_all_buckets()
