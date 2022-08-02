@@ -7,8 +7,8 @@ from fastapi import HTTPException
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
+from repository.interface.storage_repository_interface import StorageRepository
 from exceptions.DatabagNotFoundException import DatabagNotFoundException
-from repository.interface.storage_service_interface import StorageService
 from services import (
     COMPONENT_FILE_NAME,
     DATABAG_CONFIG_FILE_NAME,
@@ -20,13 +20,13 @@ from services import (
 class DatabagService:
     def __init__(
         self,
-        storage_service: StorageService,
+        storage_repository: StorageRepository,
         config_file_name: str = DATABAG_CONFIG_FILE_NAME,
         metadata_file_name: str = TEMPLATE_METADATA_FILE_NAME,
         component_file_name: str = COMPONENT_FILE_NAME,
         pipeline_file_name: str = PIPELINE_FILE_NAME,
     ):
-        self.storage = storage_service
+        self.storage = storage_repository
         self.config_file_name = config_file_name
         self.metadata_file_name = metadata_file_name
         self.component_file_name = component_file_name

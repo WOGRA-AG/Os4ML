@@ -17,7 +17,7 @@ from build.openapi_server.models.run import Run
 from services import ML_PIPELINE_NS, ML_PIPELINE_URL, OS4ML_NAMESPACE
 
 
-class KfpService:
+class KfpExecutor:
     def __init__(
         self,
         host: str = ML_PIPELINE_URL,
@@ -126,3 +126,6 @@ class KfpService:
             error=run.error,
             metrics=run.metrics,
         )
+
+    def terminate_run(self, run_id) -> None:
+        self.client.runs.terminate_run(run_id)

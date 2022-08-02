@@ -11,7 +11,7 @@ from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.run import Run
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from executor.kfp_service import KfpService
+from executor.kfp_executor import KfpExecutor
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
@@ -21,7 +21,7 @@ class JobmanagerApiController:
         self, kfp_service=None, solution_service=None, template_service=None
     ):
         self.kfp_service = (
-            kfp_service if kfp_service is not None else KfpService()
+            kfp_service if kfp_service is not None else KfpExecutor()
         )
         self.solution_service = (
             solution_service

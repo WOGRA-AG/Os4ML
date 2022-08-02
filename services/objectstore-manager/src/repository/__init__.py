@@ -1,3 +1,3 @@
-from repository.impl.gcs_service import GcsService
-from repository.impl.minio_service import MinioService
-from repository.interface.storage_service_interface import StorageService
+from repository.impl.gcs_repository import GcsRepository
+from repository.impl.minio_repository import MinioRepository
+from repository.interface.storage_repository_interface import StorageRepository

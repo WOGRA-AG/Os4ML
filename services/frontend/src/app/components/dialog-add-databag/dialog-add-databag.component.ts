@@ -29,11 +29,7 @@ export class DialogAddDatabagComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService) {
-    this.dialogRef.backdropClick().subscribe(() => {
-      this.clearProgress().subscribe();
-    });
-  }
+              private jobmanagerService: JobmanagerService) {}
 
   async nextPageClick(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
