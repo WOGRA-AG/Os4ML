@@ -40,7 +40,7 @@ export class DialogDefineOutputComponent {
     this.solution.outputFields = outputFields;
   }
 
-  private getInputFields(): string[] | undefined{
+  private getInputFields(): string[] | undefined {
     return this.databag.columns?.map(column => column.name)
       .filter((colName): colName is string => !!colName)
       .filter(columnName => columnName && !this.solution.outputFields?.includes(columnName));
