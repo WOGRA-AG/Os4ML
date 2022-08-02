@@ -10,7 +10,7 @@
       {{"dialog.delete_solution.back_button" | translate}}
     </button>
     <mat-spinner color="accent" *ngIf="deleting" [diameter]="35" mode="indeterminate" class="spinner"></mat-spinner>
-    <button mat-raised-button color="primary" class="main-button" (click)="onSubmit()" [disabled]="deleting">
+    <button mat-raised-button color="primary" class="main-button" (click)="onSubmit()" [disabled]="deleting || invalidSolution()">
       {{"dialog.delete_solution.main_button" | translate}}
     </button>
   </mat-dialog-actions>

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-delete-solution',
@@ -22,14 +23,23 @@ export class DialogDeleteSolutionComponent {
 
   onSubmit(): void {
     this.deleting = true;
-    if (!this.solution?.name) {
+    if (!this.solution || !this.solution.name) {
+      this.deleting = false;
       return;
     }
-    this.jobmanagerService.deleteSolution(this.solution.name).subscribe(() => {
-      this.deleting = false;
+    this.jobmanagerService.deleteSolution(this.solution.name).pipe(
+      catchError(err => {
+        this.deleting = false;
+        return of({});
+      })
+    ).subscribe(() => {
+        this.deleting = false;
         this.dialogRef.close();
-      }
-    );
+      });
+  }
+
+  invalidSolution(): boolean {
+    return !this.solution || !this.solution.name;
   }
 
 }
