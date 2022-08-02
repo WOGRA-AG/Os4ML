@@ -5,6 +5,7 @@ import {DialogDefineOutputComponent} from '../dialog-define-output/dialog-define
 import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
 import {JobmanagerService, PipelineTemplate, Solution} from '../../../../build/openapi/jobmanager';
 import {PipelineStep} from '../../models/pipeline-step';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-define-solver',
@@ -31,6 +32,9 @@ export class DialogDefineSolverComponent {
   };
 
   onSubmit(): void {
+    if (!this.databag || !this.databag.bucketName || !this.databag.databagName) {
+      return;
+    }
     this.submitting = true;
     this.solution.status = 'Created';
     this.solution.bucketName = this.databag.bucketName;
@@ -39,6 +43,17 @@ export class DialogDefineSolverComponent {
       this.solution.runId = runId;
       this.submitting = false;
       this.dialogRef.close(this.solution);
+    });
+    this.jobmanagerService.postSolution(this.solution)
+      .pipe(
+        catchError(err => {
+          this.submitting = false;
+          return of('');
+        })
+      ).subscribe( runId => {
+        this.solution.runId = runId;
+        this.submitting = false;
+        this.dialogRef.close(this.solution);
     });
   }
 
