@@ -69,9 +69,10 @@ async def test_get_databag_by_run_id():
 
 
 @pytest.mark.asyncio
-async def test_get_databag_by_run_id_not_existing_run_id():
-    another_databag: Databag = await get_databag_by_run_id(
-        run_id="false_os4ml_unique_run_id",
-        _controller=mock_objectstore_controller,
-    )
-    assert another_databag is None
+async def test_get_databag_by_run_id_with_exception():
+    with pytest.raises(HTTPException) as excinfo:
+        await get_databag_by_run_id(
+            run_id="false_os4ml_unique_run_id",
+            _controller=mock_objectstore_controller,
+        )
+    assert "status_code=404" in str(excinfo)

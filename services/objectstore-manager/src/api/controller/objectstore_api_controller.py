@@ -3,11 +3,14 @@ import json
 from io import BytesIO
 from typing import List
 
+from fastapi import HTTPException
 from fastapi.responses import RedirectResponse
+from starlette import status
 
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
+from exceptions.DatabagNotFoundException import DatabagNotFoundException
 from repository.init_storage_service import storage_services
 from repository.interface.storage_service_interface import StorageService
 from services import STORAGE_BACKEND
@@ -115,4 +118,10 @@ class ObjectstoreApiController:
         )
 
     def get_databag_by_run_id(self, run_id) -> Databag:
-        return next((databag for databag in self.databag_service.get_databags() if databag.run_id == run_id), None)
+        try:
+            return self.databag_service.get_databag_by_run_id(run_id)
+        except DatabagNotFoundException as err:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=err
+            )
