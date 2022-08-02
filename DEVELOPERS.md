@@ -121,3 +121,13 @@ DOCKER_BUILDKIT=1 docker build services/objectstore-manager --tag gitlab-registr
 docker push gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992
 kubectl apply -k manifests/apps/objectstore-manager/overlays/istio
 ```
+
+## Access fastapi service swagger-docs
+
+To access the fastapi swagger docs forward port 8000 of the target service to an arbitrary local port
+
+`kubectl port-forward -n <service-namespace> services/<service-name> <local-port>:8000`
+
+and access the docs on
+
+`localhost:<local-port>/docs`
