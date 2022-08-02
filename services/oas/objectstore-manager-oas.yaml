@@ -37,7 +37,21 @@ paths:
                 type: array
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Databag'
-
+  "/apis/v1beta1/objectstore/databag/run/{runId}":
+    get:
+      summary: "get databag by run id"
+      operationId: getDatabagByRunId
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Databag'
   "/apis/v1beta1/objectstore/databag/{bucketName}":
     get:
       summary: "get databag by bucket name"
@@ -275,6 +289,13 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/BucketName'
+    RunId:
+      name: runId
+      in: path
+      description: Id of a run
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/RunId'
     ObjectName:
       name: objectName
       in: query

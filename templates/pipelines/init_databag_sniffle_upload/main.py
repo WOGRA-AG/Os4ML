@@ -1,3 +1,4 @@
+from kfp.dsl import RUN_ID_PLACEHOLDER
 from kfp.v2.dsl import pipeline
 from src.pipelines.util import (
     DatabagStatusMessages,
@@ -19,16 +20,22 @@ def init_databag_sniffle_upload(
     solution_name: str = "",
     os4ml_namespace: str = "os4ml",
     max_categories: int = 10,
+    run_id: str = RUN_ID_PLACEHOLDER,
 ):
     init_empty = init_empty_databag_op(
-        file_name=file_name, bucket=bucket, os4ml_namespace=os4ml_namespace
+        file_name=file_name,
+        bucket=bucket,
+        os4ml_namespace=os4ml_namespace,
+        run_id=run_id,
     )
+
     df_info = init_databag_op(
         file_name,
         bucket=bucket,
         os4ml_namespace=os4ml_namespace,
         depends_on=init_empty.output,
     )
+
     update_databag_status_op(
         DatabagStatusMessages.inspecting.value,
         depends_on=df_info.outputs["dataset"],

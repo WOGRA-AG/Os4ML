@@ -2,16 +2,19 @@ import base64
 from io import BytesIO
 from typing import List
 
+from fastapi import HTTPException
 from fastapi.responses import RedirectResponse
+from starlette import status
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
+from exceptions.DatabagNotFoundException import DatabagNotFoundException
+from repository.init_storage_service import storage_services
 from repository.interface.storage_repository_interface import StorageRepository
 from services import STORAGE_BACKEND
 from services.databag_service import DatabagService
-from services.init_storage_service import storage_services
 from services.storage_service import StorageService
 
 
@@ -81,7 +84,7 @@ class ObjectstoreApiController:
             bucket_name=bucket_name,
             object_name=object_name,
             file=file,
-            size=len(body)
+            size=len(body),
         )
 
     def delete_bucket(self, bucket_name) -> None:
@@ -115,3 +118,11 @@ class ObjectstoreApiController:
         return self.databag_service.put_databag_by_bucket_name(
             bucket_name=bucket_name, databag=databag
         )
+
+    def get_databag_by_run_id(self, run_id) -> Databag:
+        try:
+            return self.databag_service.get_databag_by_run_id(run_id)
+        except DatabagNotFoundException as err:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=err
+            )

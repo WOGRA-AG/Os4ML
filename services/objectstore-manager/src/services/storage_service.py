@@ -13,8 +13,8 @@ from repository import StorageRepository
 
 class StorageService:
     def __init__(
-            self,
-            storage_repository: StorageRepository,
+        self,
+        storage_repository: StorageRepository,
     ):
         self.storage = storage_repository
 
@@ -34,7 +34,7 @@ class StorageService:
         )
 
     def get_json_object_by_name(
-            self, bucket_name: str, object_name: str
+        self, bucket_name: str, object_name: str
     ) -> str:
         json_dict = self.storage.get_json_object_from_bucket(
             bucket_name, object_name
@@ -51,7 +51,9 @@ class StorageService:
             bucket_name=bucket_name, object_name=object_name
         )
 
-    def create_item_by_name(self, bucket_name, object_name, file, size) -> Item:
+    def create_item_by_name(
+        self, bucket_name, object_name, file, size
+    ) -> Item:
         return self.storage.create_item(
             bucket_name=bucket_name,
             object_name=object_name,

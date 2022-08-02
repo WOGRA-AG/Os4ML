@@ -104,7 +104,7 @@ imagePullPolicy: Always
 now run
 ```bash
 kubectl delete -k manifests/apps/job-manager/overlays/istio
-DOCKER_BUILDKIT=1 docker build services/job-manager --tag gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992 --target production --no-cache
+DOCKER_BUILDKIT=1 docker build -f services/job-manager/Dockerfile . --tag gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992 --target production --no-cache
 docker push gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992
 kubectl apply -k manifests/apps/job-manager/overlays/istio
 ```
