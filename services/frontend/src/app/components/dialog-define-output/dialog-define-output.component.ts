@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Databag} from '../../../../build/openapi/objectstore';
+import {Column, Databag} from '../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {DialogDefineSolverComponent} from '../dialog-define-solver/dialog-define-solver.component';
@@ -41,7 +41,8 @@ export class DialogDefineOutputComponent {
   }
 
   private getInputFields(): string[] | undefined{
-    return this.databag.columns?.map(column => column.name).filter((colName): colName is string => !!colName).
-    filter(columnName => columnName && !this.solution.outputFields?.includes(columnName));
+    return this.databag.columns?.map(column => column.name)
+      .filter((colName): colName is string => !!colName)
+      .filter(columnName => columnName && !this.solution.outputFields?.includes(columnName));
   }
 }
