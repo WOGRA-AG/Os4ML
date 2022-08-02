@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import {ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {
+  Databag,
+  ObjectstoreService
+} from '../../../../build/openapi/objectstore';
 import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -21,6 +24,7 @@ export class DialogAddDatabagComponent {
   running = false;
   uuid: string = uuidv4();
   intervalID = 0;
+  pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
@@ -78,6 +82,11 @@ export class DialogAddDatabagComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
+          if (run.status === PipelineStatus.running) {
+            this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
+              this.pipelineStatus = databag ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
+            });
+          }
           if (run.status === PipelineStatus.failed) {
             clearInterval(this.intervalID);
             this.translate.get('error.run_failed').subscribe((res: string) => {
