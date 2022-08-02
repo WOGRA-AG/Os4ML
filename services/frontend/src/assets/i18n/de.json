@@ -40,13 +40,8 @@
     "solution_list": {
       "field": "Field"
     },
-    "define_input": {
-      "title": "Define Input",
-      "description": "mark fields from your data bag, which the AI may use as input for its training",
-      "main_button": "Next Step"
-    },
     "define_output": {
-      "title": "Define Output",
+      "title": "Define Predictions",
       "description": "mark fields from your data bag, which you want the AI to predict",
       "main_button": "Next Step",
       "back_button": "Back"

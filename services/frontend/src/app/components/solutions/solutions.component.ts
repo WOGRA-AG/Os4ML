@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DialogDefineInputComponent} from '../dialog-define-input/dialog-define-input.component';
 import {Databag} from '../../../../build/openapi/objectstore';
 import {Solution} from '../../../../build/openapi/jobmanager';
+import {DialogDefineOutputComponent} from '../dialog-define-output/dialog-define-output.component';
 
 @Component({
   selector: 'app-solutions',
@@ -21,7 +21,7 @@ export class SolutionsComponent {
 
   openCreateSolutionDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDefineInputComponent, databag: this.databag}
+      data: {component: DialogDefineOutputComponent, databag: this.databag}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && (result as Solution).name) {

@@ -28,7 +28,6 @@ import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic
 import {SolutionsComponent} from './components/solutions/solutions.component';
 import {SolutionsPlaceholderComponent} from './components/solutions-placeholder/solutions-placeholder.component';
 import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
-import {DialogDefineInputComponent} from './components/dialog-define-input/dialog-define-input.component';
 import {DialogDefineOutputComponent} from './components/dialog-define-output/dialog-define-output.component';
 import {DialogDefineSolverComponent} from './components/dialog-define-solver/dialog-define-solver.component';
 import {SolverListItemComponent} from './components/solver-list-item/solver-list-item.component';
@@ -67,7 +66,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SolutionsComponent,
     SolutionsPlaceholderComponent,
     SolutionsListComponent,
-    DialogDefineInputComponent,
     DialogDefineOutputComponent,
     DialogDefineSolverComponent,
     SolverListItemComponent,
