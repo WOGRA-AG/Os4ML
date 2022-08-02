@@ -7,8 +7,8 @@ from fastapi import HTTPException
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
-from repository.interface.storage_repository_interface import StorageRepository
 from exceptions.DatabagNotFoundException import DatabagNotFoundException
+from repository.interface.storage_repository_interface import StorageRepository
 from services import (
     COMPONENT_FILE_NAME,
     DATABAG_CONFIG_FILE_NAME,
@@ -75,7 +75,11 @@ class DatabagService:
         return len(file_list) > 0
 
     def get_databag_by_run_id(self, run_id: str) -> Databag:
-        databags_by_runid = [databag for databag in self.get_databags() if databag.run_id == run_id]
+        databags_by_runid = [
+            databag
+            for databag in self.get_databags()
+            if databag.run_id == run_id
+        ]
         if not databags_by_runid:
             raise DatabagNotFoundException(run_id=run_id)
         return databags_by_runid.pop()

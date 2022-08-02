@@ -14,10 +14,10 @@ from build.openapi_client.model.item import Item
 from build.openapi_client.model.json_response import JsonResponse
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
+from executor.kfp_executor import KfpExecutor
 from services import DATE_FORMAT, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
-from executor.kfp_executor import KfpExecutor
 
 
 def _solution_file_name(solution_name: str):

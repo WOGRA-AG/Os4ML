@@ -22,7 +22,9 @@ from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
 mock_minio_service = MinioRepository(client=mock_minio_client)
-mock_objectstore_controller = ObjectstoreApiController(storage_service=mock_minio_service)
+mock_objectstore_controller = ObjectstoreApiController(
+    storage_service=mock_minio_service
+)
 
 
 @pytest.mark.asyncio
