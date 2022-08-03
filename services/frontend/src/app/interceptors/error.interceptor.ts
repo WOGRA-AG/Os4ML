@@ -26,7 +26,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (err.status === 401 || err.status === 403) {
         this.router.navigate(['/']);
       } else if(err.status === 404 && err.url.includes('/run/')) {
-        return of();
       } else if (err.status >= 400 && err.status <= 499) {
         this.translate.get('error.confirm').subscribe((res: string) => {
           this.matSnackBar.open(errorMsg, res, {duration: 3000});
