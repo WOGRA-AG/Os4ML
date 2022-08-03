@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Databag} from '../../../../build/openapi/objectstore';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
@@ -10,12 +10,15 @@ import {Solution} from '../../../../build/openapi/jobmanager';
 })
 export class DialogDynamicComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {
-    component: any;
-    uuid: string;
-    solution: Solution;
-    databag: Databag;
-  }) {
+  constructor(
+    private dialogRef: MatDialogRef<DialogDynamicComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      component: any;
+      uuid: string;
+      solution: Solution;
+      databag: Databag;
+    }) {
+    this.dialogRef.disableClose = true;
   }
 
 }

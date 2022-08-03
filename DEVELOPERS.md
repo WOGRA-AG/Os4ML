@@ -66,7 +66,7 @@ telepresence connect
 telepresence connect
 telepresence intercept frontend --namespace os4ml --port 4200:80
 telepresence intercept jobmanager --namespace os4ml --port 8000:8000
-telepresence intercept objecstore-manager --namespace os4ml --port 8001:8000
+telepresence intercept objectstore-manager --namespace os4ml --port 8001:8000
 ```
 
 ### Telepresence panic
@@ -104,7 +104,7 @@ imagePullPolicy: Always
 now run
 ```bash
 kubectl delete -k manifests/apps/job-manager/overlays/istio
-DOCKER_BUILDKIT=1 docker build services/job-manager --tag gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992 --target production --no-cache
+DOCKER_BUILDKIT=1 docker build -f services/job-manager/Dockerfile . --tag gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992 --target production --no-cache
 docker push gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992
 kubectl apply -k manifests/apps/job-manager/overlays/istio
 ```
@@ -121,3 +121,13 @@ DOCKER_BUILDKIT=1 docker build services/objectstore-manager --tag gitlab-registr
 docker push gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992
 kubectl apply -k manifests/apps/objectstore-manager/overlays/istio
 ```
+
+## Access fastapi service swagger-docs
+
+To access the fastapi swagger docs forward port 8000 of the target service to an arbitrary local port
+
+`kubectl port-forward -n <service-namespace> services/<service-name> <local-port>:8000`
+
+and access the docs on
+
+`localhost:<local-port>/docs`

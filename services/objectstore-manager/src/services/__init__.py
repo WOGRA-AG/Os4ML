@@ -1,9 +1,6 @@
 import os
 from datetime import timedelta
 
-from services.gcs_service import GcsService
-from services.minio_service import MinioService
-
 STORAGE_BACKEND: str = os.getenv(
     "OBJECTSTORE_STORAGE_BACKEND", default="minio"
 )

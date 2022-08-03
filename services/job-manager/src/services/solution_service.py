@@ -1,3 +1,5 @@
+import base64
+import itertools
 import json
 from datetime import datetime
 from io import BytesIO
@@ -6,10 +8,14 @@ from uuid import UUID, uuid4
 
 from fastapi import HTTPException
 
+from build.openapi_client.model.bucket import Bucket
 from build.openapi_client.model.databag import Databag
+from build.openapi_client.model.item import Item
+from build.openapi_client.model.json_response import JsonResponse
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
-from services import SOLUTION_CONFIG_FILE_NAME
+from executor.kfp_executor import KfpExecutor
+from services import DATE_FORMAT, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
@@ -22,9 +28,38 @@ class SolutionService:
     def __init__(self, kfp_client=None):
         self.template_service = TemplateService(kfp_client=kfp_client)
         self.objectstore = init_objectstore_api()
+        self.kfp_service = KfpExecutor(client=kfp_client)
+
+    def get_all_solutions(self) -> List[Solution]:
+        buckets = self.objectstore.get_all_buckets()
+        all_solutions: List[List[Solution]] = [
+            self.get_solutions_from_bucket(bucket) for bucket in buckets
+        ]
+        return list(itertools.chain(*all_solutions))
+
+    def get_solutions_from_bucket(self, bucket: Bucket) -> List[Solution]:
+        items: List[Item] = self.objectstore.get_objects(bucket.name)
+        return [
+            self._create_solution_from_item(item)
+            for item in items
+            if SOLUTION_CONFIG_FILE_NAME in item.object_name
+        ]
+
+    def _create_solution_from_item(self, item: Item) -> Solution:
+        json_response: JsonResponse = self.objectstore.get_json_object_by_name(
+            item.bucket_name, item.object_name
+        )
+        json_content_bytes = json_response.json_content.encode()
+        json_str = base64.decodebytes(json_content_bytes)
+        json_dict = json.loads(json_str)
+        return Solution(**json_dict)
 
     def get_solution(self, solution_name: str) -> Solution:
-        solutions_with_name = self._get_solutions_with_name(solution_name)
+        solutions_with_name = [
+            solution
+            for solution in self.get_all_solutions()
+            if solution.name == solution_name
+        ]
         if not solutions_with_name:
             raise HTTPException(
                 status_code=404,
@@ -32,20 +67,10 @@ class SolutionService:
             )
         return solutions_with_name.pop()
 
-    def _get_solutions_with_name(self, solution_name: str) -> List[Solution]:
-        all_solutions = self.objectstore.get_all_solutions()
-        return [
-            Solution(**solution.to_dict())
-            for solution in all_solutions
-            if solution.name == solution_name
-        ]
-
     def create_solution(self, solution: Solution) -> str:
         uuid: UUID = uuid4()
         solution.name = f"{uuid}_{solution.name}"
-        solution.creation_time = datetime.utcnow().strftime(
-            "%Y-%m-%dT%H:%M:%SZ"
-        )
+        solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT)
         databag: Databag = self.objectstore.get_databag_by_bucket_name(
             solution.bucket_name
         )
@@ -72,4 +97,13 @@ class SolutionService:
             bucket_name=solution.bucket_name,
             object_name=_solution_file_name(solution.name),
             body=encoded_solution,
+        )
+
+    def delete_solution(self, solution_name: str) -> None:
+        solution = self.get_solution(solution_name)
+        run = self.kfp_service.get_run(solution.run_id)
+        if run.status == "Running":
+            self.kfp_service.terminate_run(solution.run_id)
+        self.objectstore.delete_objects(
+            solution.bucket_name, path_prefix=f"{solution.name}/"
         )

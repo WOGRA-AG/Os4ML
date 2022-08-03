@@ -12,7 +12,6 @@ paths:
       operationId: getAllExperiments
       tags:
         - jobmanager
-        - experiment
       responses:
         200:
           description: "Success"
@@ -27,7 +26,6 @@ paths:
       operationId: postExperiment
       tags:
         - jobmanager
-        - experiment
       requestBody:
         content:
           application/json:
@@ -46,7 +44,6 @@ paths:
       operationId: getAllPipelines
       tags:
         - jobmanager
-        - pipeline
       responses:
         200:
           description: "Success"
@@ -61,7 +58,6 @@ paths:
       operationId: postPipeline
       tags:
         - jobmanager
-        - pipeline
       requestBody:
         content:
           application/json:
@@ -80,7 +76,6 @@ paths:
       operationId: getAllRuns
       tags:
         - jobmanager
-        - run
       responses:
         200:
           description: "Success"
@@ -98,7 +93,6 @@ paths:
         - $ref: '#/components/parameters/RunId'
       tags:
         - jobmanager
-        - run
       responses:
         200:
           description: "Success"
@@ -115,7 +109,6 @@ paths:
         - $ref: '#/components/parameters/PipelineId'
       tags:
         - jobmanager
-        - run
       requestBody:
         content:
           application/json:
@@ -137,7 +130,6 @@ paths:
         - $ref: '#/components/parameters/PipelineTemplateName'
       tags:
         - jobmanager
-        - template
       requestBody:
         content:
           application/json:
@@ -157,7 +149,6 @@ paths:
       operationId: getAllPipelineTemplates
       tags:
         - jobmanager
-        - template
       responses:
         200:
           description: OK
@@ -176,7 +167,6 @@ paths:
         - $ref: '#/components/parameters/PipelineTemplateName'
       tags:
         - jobmanager
-        - template
       responses:
         200:
           description: OK
@@ -195,7 +185,6 @@ paths:
         - $ref: '#/components/parameters/PipelineTemplateName'
       tags:
         - jobmanager
-        - template
       responses:
         200:
           description: OK
@@ -210,7 +199,6 @@ paths:
         - $ref: '#/components/parameters/SolutionName'
       tags:
         - jobmanager
-        - solution
       responses:
         200:
           description: "Solution found"
@@ -227,7 +215,6 @@ paths:
         - $ref: '#/components/parameters/SolutionName'
       tags:
         - jobmanager
-        - solution
       requestBody:
         content:
           application/json:
@@ -240,14 +227,39 @@ paths:
             application/json:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
+    delete:
+      summary: "Delete a Solution"
+      operationId: deleteSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/jobmanager/solution":
+    get:
+      summary: 'get all solutions'
+      operationId: getAllSolutions
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solution'
     post:
       summary: "Create and deploy a Solution"
       operationId: postSolution
       tags:
         - jobmanager
-        - solution
       requestBody:
         content:
           application/json:

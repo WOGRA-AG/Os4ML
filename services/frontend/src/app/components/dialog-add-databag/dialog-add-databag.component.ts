@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import {ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {
+  Databag,
+  ObjectstoreService
+} from '../../../../build/openapi/objectstore';
 import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -7,7 +10,7 @@ import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component
 import {DialogDefineDatabagComponent} from '../dialog-define-databag/dialog-define-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {firstValueFrom, Observable} from 'rxjs';
+import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../models/pipeline-status';
 
 @Component({
@@ -21,14 +24,12 @@ export class DialogAddDatabagComponent {
   running = false;
   uuid: string = uuidv4();
   intervalID = 0;
+  pipelineStatus: string | null | undefined = null;
+  urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService) {
-    this.dialogRef.backdropClick().subscribe(() => {
-      this.clearProgress().subscribe();
-    });
-  }
+              private jobmanagerService: JobmanagerService) {}
 
   async nextPageClick(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
@@ -45,11 +46,11 @@ export class DialogAddDatabagComponent {
     let runId = '';
     const runParams: RunParams = {
       bucket: this.uuid,
-      fileName: this.fileUrl ? this.fileUrl : this.file.name
+      fileName: this.file.name ? this.file.name : this.fileUrl
     };
     try {
       await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
-      if (!this.fileUrl) {
+      if (this.file.name) {
         await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
       }
       runId = await firstValueFrom(
@@ -81,6 +82,16 @@ export class DialogAddDatabagComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
+          if (run.status === PipelineStatus.running) {
+            this.objectstoreService.getDatabagByRunId(runId)
+              .pipe(
+                catchError(err => of({status: this.translate.instant('dialog.add_databag.placeholder_status')})
+                )
+              )
+              .subscribe((databag) => {
+              this.pipelineStatus = databag ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
+            });
+          }
           if (run.status === PipelineStatus.failed) {
             clearInterval(this.intervalID);
             this.translate.get('error.run_failed').subscribe((res: string) => {

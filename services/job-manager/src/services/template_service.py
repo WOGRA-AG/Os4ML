@@ -3,23 +3,25 @@ import pathlib
 import uuid
 from typing import List
 
+from fastapi import HTTPException
+
 from build.openapi_server.models.create_pipeline import CreatePipeline
 from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.run_params import RunParams
+from executor.kfp_executor import KfpExecutor
 from services import (
     PIPELINE_FILE_NAME,
     PIPELINE_TEMPLATES_DIR,
     TEMPLATE_METADATA_FILE_NAME,
 )
 from services.init_api_clients import init_objectstore_api
-from services.kfp_service import KfpService
 
 
 class TemplateService:
     def __init__(self, kfp_client=None):
-        self.kfp_service = KfpService(client=kfp_client)
+        self.kfp_service = KfpExecutor(client=kfp_client)
         self.objectstore = init_objectstore_api()
 
     def run_pipeline_template(
@@ -56,6 +58,11 @@ class TemplateService:
             for pipeline_template in self.get_all_pipeline_templates()
             if pipeline_template.name == pipeline_name
         ]
+        if not pipeline_templates_with_name:
+            raise HTTPException(
+                status_code=404,
+                detail=f"PipelineTemplate with name {pipeline_name} not found",
+            )
         return next(iter(pipeline_templates_with_name))
 
     def get_pipeline_file_path(self, pipeline_template_name: str) -> str:

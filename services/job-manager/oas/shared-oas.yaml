@@ -78,6 +78,9 @@ components:
         status:
           type: string
           nullable: true
+        runId:
+          type: string
+          nullable: true
     PipelineTemplate:
       properties:
         name:
@@ -90,3 +93,8 @@ components:
           type: string
         fileUrl:
           type: string
+    JsonResponse:
+      properties:
+        jsonContent:
+          type: string
+          format: byte
