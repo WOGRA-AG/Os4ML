@@ -1,3 +1,23 @@
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
+
+COPY oas/ /oas
+
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i /oas/objectstore-manager-oas.yaml \
+-t /oas/templates_client \
+-g python \
+--package-name build.objectstore \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i /oas/job-manager-oas.yaml \
+-t /oas/templates_client \
+-g python \
+--package-name build.jobmanager \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
 FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
@@ -49,9 +69,8 @@ RUN --mount=type=cache,target=/root/.cache \
 WORKDIR $PROJECT_DIR
 COPY . .
 
-EXPOSE 8000
-ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
+WORKDIR $PROJECT_DIR
+COPY --from=openapi /build/ ./src/build/
 
 
 FROM development AS lint

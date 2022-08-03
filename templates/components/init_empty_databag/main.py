@@ -9,7 +9,7 @@ def init_empty_databag(
     os4ml_namespace: str,
     run_id: str,
 ) -> Artifact:
-    from src.components.init_empty_databag import init_empty_databag
+    from components.init_empty_databag import init_empty_databag
 
     return init_empty_databag(
         file_name=file_name,

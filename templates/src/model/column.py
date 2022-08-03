@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 from typing import Dict
 
-from src.util.camel_snake_case import camel_to_snake
+from util.camel_snake_case import camel_to_snake
 
 
 @dataclasses.dataclass

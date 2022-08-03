@@ -3,16 +3,17 @@ from typing import List
 
 import pandas as pd
 
+from build.objectstore.model.databag import Databag
+from kfp.dataset import load_dataset
 from kfp.v2.dsl import Dataset, Input
-from src.kfp.dataset import load_dataset
-from src.model.column import Column
-from src.sniffle.sniffle import (
+from model.column import Column
+from sniffle.sniffle import (
     get_num_rows,
     sniff_column_datatypes,
     sniff_zip_types,
 )
-from src.util.error_handler import error_handler
-from src.util.uri import extract_filename_from_uri, is_uri
+from util.error_handler import error_handler
+from util.uri import extract_filename_from_uri, is_uri
 
 
 @error_handler
@@ -41,18 +42,17 @@ def sniffle_dataset(
     num_rows = get_num_rows(column_list)
     num_cols = len(column_list)
     column_info_dicts = [column.__dict__ for column in column_list]
-    return json.dumps(
-        {
-            "dataset_type": dataset_type,
-            "file_name": file_name,
-            "databag_name": databag_name,
-            "bucket_name": bucket,
-            "number_rows": num_rows,
-            "number_columns": num_cols,
-            "columns": column_info_dicts,
-            "run_id": run_id,
-        }
+    databag = Databag(
+        dataset_type=dataset_type,
+        file_name=file_name,
+        databag_name=databag_name,
+        bucket_name=bucket,
+        number_rows=num_rows,
+        number_columns=num_cols,
+        columns=column_info_dicts,
+        run_id=run_id,
     )
+    return json.dumps(databag.to_dict())
 
 
 def create_column_list(

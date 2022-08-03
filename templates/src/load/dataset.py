@@ -1,9 +1,9 @@
 import zipfile
 
-from src.kfp.dataset import load_dataset
-from src.model.databag_type import DatabagType
-from src.objectstore.objectstore import download_file_from_bucket
-from src.util.paths import path_to_absolute
+from kfp.dataset import load_dataset
+from model.databag_type import DatabagType
+from objectstore.objectstore import download_file_from_bucket
+from util.paths import path_to_absolute
 
 
 def build_dataset(dataset_file_path, databag, os4ml_namespace: str):

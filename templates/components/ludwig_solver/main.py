@@ -14,7 +14,7 @@ def ludwig_solver(
     os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> None:
-    from src.components.ludwig_solver import ludwig_solver
+    from components.ludwig_solver import ludwig_solver
 
     ludwig_solver(
         dataset_file,

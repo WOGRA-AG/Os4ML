@@ -23,3 +23,5 @@ FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as production
 COPY --from=openapi /build/ /src/build/
 COPY ./src /src
 
+WORKDIR src
+

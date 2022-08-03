@@ -9,7 +9,7 @@ def update_databag_status(
     os4ml_namespace: str = "",
     bucket: str = "",
 ):
-    from src.components.update_databag_status import update_databag_status
+    from components.update_databag_status import update_databag_status
 
     update_databag_status(
         status, os4ml_namespace=os4ml_namespace, bucket=bucket

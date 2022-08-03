@@ -2,9 +2,10 @@ import logging
 from typing import Dict, List, Tuple
 
 from ludwig.api import LudwigModel
-from src.model.column import Column
-from src.model.column_data_type import ColumnDataType
-from src.model.column_usage import ColumnUsage
+
+from model.column import Column
+from model.column_data_type import ColumnDataType
+from model.column_usage import ColumnUsage
 
 
 def build_model(

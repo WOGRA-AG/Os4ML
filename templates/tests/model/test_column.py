@@ -1,4 +1,4 @@
-from src.model.column import Column
+from model.column import Column
 
 
 def test_from_json():

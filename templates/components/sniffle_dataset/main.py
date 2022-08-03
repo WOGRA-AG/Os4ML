@@ -11,7 +11,7 @@ def sniffle_dataset(
     bucket: str = "",
     run_id: str = "",
 ) -> Dataset:
-    from src.components.sniffle_dataset import sniffle_dataset
+    from components.sniffle_dataset import sniffle_dataset
 
     return sniffle_dataset(
         dataset,
