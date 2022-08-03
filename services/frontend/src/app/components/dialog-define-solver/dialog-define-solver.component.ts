@@ -39,11 +39,6 @@ export class DialogDefineSolverComponent {
     this.solution.status = 'Created';
     this.solution.bucketName = this.databag.bucketName;
     this.solution.databagName = this.databag.databagName;
-    this.jobmanagerService.postSolution(this.solution).subscribe(runId => {
-      this.solution.runId = runId;
-      this.submitting = false;
-      this.dialogRef.close(this.solution);
-    });
     this.jobmanagerService.postSolution(this.solution)
       .pipe(
         catchError(err => {
