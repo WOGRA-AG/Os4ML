@@ -34,6 +34,7 @@ def compile_pipeline(pipeline_func: Callable, file: str):
     pipeline_name = pathlib.Path(file).parent / PIPELINE_FILE_NAME
     credentials = V1LocalObjectReference("registry-credentials")
     conf = PipelineConf().set_image_pull_secrets([credentials])
+    conf = conf.set_image_pull_policy("Always")
     Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
         pipeline_func, str(pipeline_name), pipeline_conf=conf
     )
