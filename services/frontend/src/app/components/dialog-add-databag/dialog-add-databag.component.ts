@@ -56,6 +56,7 @@ export class DialogAddDatabagComponent {
       runId = await firstValueFrom(
         this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
       );
+      this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
       await this.retrievePipelineStatus(runId);
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
@@ -85,11 +86,11 @@ export class DialogAddDatabagComponent {
           if (run.status === PipelineStatus.running) {
             this.objectstoreService.getDatabagByRunId(runId)
               .pipe(
-                catchError(err => of({status: this.translate.instant('dialog.add_databag.placeholder_status')})
+                catchError(err => of({} as Databag)
                 )
               )
               .subscribe((databag) => {
-              this.pipelineStatus = databag ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
+              this.pipelineStatus = databag?.status ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
             });
           }
           if (run.status === PipelineStatus.failed) {
