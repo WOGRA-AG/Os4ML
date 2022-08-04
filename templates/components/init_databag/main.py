@@ -1,8 +1,9 @@
 from typing import NamedTuple
 
+from kfp.v2.dsl import Artifact, Dataset
+
 from components.images import pandas_image
 from components.util import build_component
-from kfp.v2.dsl import Artifact, Dataset
 
 
 def init_databag(

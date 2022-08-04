@@ -42,7 +42,7 @@ export class DatabagListComponent {
     return isSameDatabagName && isSameBucketName && isSameFileName && isSameCreationTime;
   }
 
-  formatTimestamp(creationTime: string | undefined): string {
+  formatTimestamp(creationTime: string | null | undefined): string {
     if (!creationTime) {
       return '';
     }

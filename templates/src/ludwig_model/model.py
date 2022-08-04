@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 from ludwig.api import LudwigModel
 
-from model.column import Column
+from build.objectstore.model.column import Column
 from model.column_data_type import ColumnDataType
 from model.column_usage import ColumnUsage
 

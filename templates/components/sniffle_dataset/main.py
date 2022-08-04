@@ -1,6 +1,7 @@
+from kfp.v2.dsl import Dataset, Input
+
 from components.images import pandas_image
 from components.util import build_component
-from kfp.v2.dsl import Dataset, Input
 
 
 def sniffle_dataset(
@@ -10,6 +11,7 @@ def sniffle_dataset(
     file_name: str = "",
     bucket: str = "",
     run_id: str = "",
+    os4ml_namespace: str = "",
 ) -> Dataset:
     from components.sniffle_dataset import sniffle_dataset
 

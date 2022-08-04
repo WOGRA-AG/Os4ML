@@ -1,4 +1,4 @@
-tag=test-dennis
+tag=feature
 DOCKER_BUILDKIT=1 docker build -f dockerfiles/python/Dockerfile --tag gitlab-registry.wogra.com/developer/wogra/os4ml/python:$tag .
 
 DOCKER_BUILDKIT=1 docker build -f dockerfiles/pandas/Dockerfile --tag gitlab-registry.wogra.com/developer/wogra/os4ml/pandas:$tag .

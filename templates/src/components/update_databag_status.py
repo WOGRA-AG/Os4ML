@@ -1,4 +1,5 @@
 from kfp.v2.dsl import Artifact
+
 from objectstore.objectstore import (
     update_databag_status as _update_databag_status,
 )

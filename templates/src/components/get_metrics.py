@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from build.jobmanager.model.metrics import Metrics as SolutionMetrics
-from jobmanager.solution import get_solution, put_solution
 from kfp.v2.dsl import Input, Metrics
+
+from build.jobmanager.model.solution_metrics import SolutionMetrics
+from jobmanager.solution import get_solution, put_solution
 from util.date import DATE_FORMAT_STR
 from util.error_handler import error_handler
 

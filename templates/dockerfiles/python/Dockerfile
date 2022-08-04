@@ -24,4 +24,3 @@ COPY --from=openapi /build/ /src/build/
 COPY ./src /src
 
 WORKDIR src
-

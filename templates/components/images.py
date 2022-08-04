@@ -1,6 +1,6 @@
 import os
 
-default_tag = "test-dennis"
+default_tag = "feature"
 _tag = os.getenv("IMG_TAG", default_tag)
 if _tag == "":
     _tag = default_tag

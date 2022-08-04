@@ -1,6 +1,7 @@
+from kfp.v2.dsl import Dataset, Input
+
 from components.images import python_image
 from components.util import build_component
-from kfp.v2.dsl import Dataset, Input
 
 
 def create_databag(file: Input[Dataset], bucket: str, os4ml_namespace: str):
