@@ -1,12 +1,12 @@
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
-from src.load.column import extract_columns
-from src.load.databag import load_databag
-from src.load.dataset import build_dataset
-from src.ludwig.dataset import train_validate_test_split
-from src.ludwig.labels import get_all_label_values, get_label_name
-from src.ludwig.metrics import calculate_conf_matrix
-from src.ludwig.model import build_model, train_model
-from src.util.error_handler import error_handler
+
+from load.databag import load_databag
+from load.dataset import build_dataset
+from ludwig_model.dataset import train_validate_test_split
+from ludwig_model.labels import get_all_label_values, get_label_name
+from ludwig_model.metrics import calculate_conf_matrix
+from ludwig_model.model import build_model, train_model
+from util.error_handler import error_handler
 
 
 @error_handler
@@ -26,9 +26,8 @@ def ludwig_solver(
 ) -> None:
     """Train a ludwig model for the dataset."""
     databag = load_databag(databag_file.path)
-    columns = extract_columns(databag)
     model, model_definition = build_model(
-        columns, batch_size, epochs, early_stop
+        databag.columns, batch_size, epochs, early_stop
     )
     dataset = build_dataset(dataset_file.path, databag, os4ml_namespace)
     df_train, df_validate, df_test = train_validate_test_split(

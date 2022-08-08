@@ -1,6 +1,7 @@
+from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
+
 from components.images import ludwig_image
 from components.util import build_component
-from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
 
 def ludwig_solver(
@@ -14,7 +15,7 @@ def ludwig_solver(
     os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> None:
-    from src.components.ludwig_solver import ludwig_solver
+    from components.ludwig_solver import ludwig_solver
 
     ludwig_solver(
         dataset_file,

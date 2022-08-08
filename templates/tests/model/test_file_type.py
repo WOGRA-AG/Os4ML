@@ -1,6 +1,6 @@
 import pytest
 
-from src.model.file_type import FileType
+from model.file_type import FileType
 
 
 @pytest.mark.parametrize(

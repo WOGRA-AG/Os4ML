@@ -81,7 +81,7 @@ paths:
               $ref: './shared-oas.yaml#/components/schemas/Databag'
       responses:
         201:
-          $ref: '#/components/responses/Created'
+          $ref: '#/components/responses/DatabagCreated'
 
   "/apis/v1beta1/objectstore/{bucketName}":
     post:
@@ -326,6 +326,8 @@ components:
         application/json:
           schema:
             $ref: "./shared-oas.yaml#/components/schemas/BucketName"
+    DatabagCreated:
+      description: New resource created
     Deleted:
       description: The specified resource was deleted
     Updated:

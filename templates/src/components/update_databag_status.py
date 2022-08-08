@@ -1,8 +1,9 @@
 from kfp.v2.dsl import Artifact
-from src.objectstore.objectstore import (
+
+from objectstore.objectstore import (
     update_databag_status as _update_databag_status,
 )
-from src.util.error_handler import error_handler
+from util.error_handler import error_handler
 
 
 @error_handler
