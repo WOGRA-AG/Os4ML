@@ -40,8 +40,8 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
-import { DialogDeleteSolutionComponent } from './components/dialog-delete-solution/dialog-delete-solution.component';
-
+import {DialogDeleteSolutionComponent} from './components/dialog-delete-solution/dialog-delete-solution.component';
+import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -74,6 +74,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogEditDatabagComponent,
     LocalizedDatePipe,
     DialogDeleteSolutionComponent,
+    DialogDetailSolutionComponent
   ],
   imports: [
     BrowserModule,

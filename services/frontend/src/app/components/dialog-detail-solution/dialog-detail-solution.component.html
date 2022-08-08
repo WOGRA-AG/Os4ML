@@ -1,0 +1,14 @@
+<div class="dialog-container">
+  <div class="headline mat-dialog-header">
+    <h5 mat-dialog-title>{{"dialog.detail_solution.title" | translate}}</h5>
+    <button mat-icon-button (click)="close()" tabindex="-1">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-dialog-actions align="end">
+    <div class="button-spacer"></div>
+    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit">
+      {{"dialog.detail_solution.main_button" | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

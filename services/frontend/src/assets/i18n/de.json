@@ -58,6 +58,11 @@
       "main_button": "Delete",
       "back_button": "Cancel",
       "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    },
+    "detail_solution": {
+      "title": "Solution Details",
+      "main_button": "Save",
+      "back_button": "Cancel"
     }
   },
   "page": {
