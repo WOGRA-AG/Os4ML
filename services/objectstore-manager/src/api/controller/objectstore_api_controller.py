@@ -124,5 +124,5 @@ class ObjectstoreApiController:
             return self.databag_service.get_databag_by_run_id(run_id)
         except DatabagNotFoundException as err:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=err
+                status_code=status.HTTP_404_NOT_FOUND, detail=str(err)
             )

@@ -10,7 +10,7 @@ import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component
 import {DialogDefineDatabagComponent} from '../dialog-define-databag/dialog-define-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {firstValueFrom, Observable} from 'rxjs';
+import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../models/pipeline-status';
 
 @Component({
@@ -56,6 +56,7 @@ export class DialogAddDatabagComponent {
       runId = await firstValueFrom(
         this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
       );
+      this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
       await this.retrievePipelineStatus(runId);
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
@@ -83,8 +84,13 @@ export class DialogAddDatabagComponent {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
           if (run.status === PipelineStatus.running) {
-            this.objectstoreService.getDatabagByRunId(runId).subscribe((databag) => {
-              this.pipelineStatus = databag ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
+            this.objectstoreService.getDatabagByRunId(runId)
+              .pipe(
+                catchError(err => of({} as Databag)
+                )
+              )
+              .subscribe((databag) => {
+              this.pipelineStatus = databag?.status ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
             });
           }
           if (run.status === PipelineStatus.failed) {

@@ -1,5 +1,5 @@
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM python:3.8.9-slim as python-base
+FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
