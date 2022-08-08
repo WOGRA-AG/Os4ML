@@ -28,7 +28,7 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 
 # Specify a base image
-FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
+FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
 COPY services/job-manager/ /usr/app
