@@ -1,14 +1,56 @@
 <div class="dialog-container">
-  <div class="headline mat-dialog-header">
-    <h5 mat-dialog-title>{{"dialog.detail_solution.title" | translate}}</h5>
+  <div class="dialog-headline mat-dialog-header">
+    <h5 mat-dialog-title class="dialog-title">{{"dialog.detail_solution.title" | translate}}</h5>
     <button mat-icon-button (click)="close()" tabindex="-1">
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <mat-dialog-actions align="end">
-    <div class="button-spacer"></div>
-    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit">
-      {{"dialog.detail_solution.main_button" | translate}}
-    </button>
-  </mat-dialog-actions>
+
+  <mat-dialog-content>
+    <form id="ngForm" class="dialog-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
+      <mat-divider class="dialog-divider"></mat-divider>
+      <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.name" | translate}}</div>
+      <mat-form-field appearance="outline" style="margin-bottom: -1.25em">
+        <input matInput
+               type="string"
+               required
+               name="solution_name"
+               readonly="true"
+               [(ngModel)]="solutionName" #solution_name="ngModel"
+        >
+      </mat-form-field>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.input_fields" | translate}}</div>
+        <mat-chip-list>
+          <mat-chip class="dialog-chip" *ngFor="let input_fields of solution.inputFields">{{input_fields}}</mat-chip>
+        </mat-chip-list>
+      </div>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.output_fields" | translate}}</div>
+        <mat-chip-list>
+          <mat-chip class="dialog-chip" *ngFor="let output_fields of solution.outputFields">{{output_fields}}</mat-chip>
+        </mat-chip-list>
+
+      </div>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.solver" | translate}}</div>
+        <mat-form-field appearance="outline">
+          <input matInput
+                 type="string"
+                 required
+                 name="solver_name"
+                 readonly="true"
+                 [(ngModel)]="solution.solver" #solver_name="ngModel"
+          >
+        </mat-form-field>
+      </div>
+
+    </form>
+  </mat-dialog-content>
 </div>

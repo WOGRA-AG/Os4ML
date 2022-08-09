@@ -22,7 +22,11 @@ export class SolutionsListComponent {
 
   openDetailDialog(solution: Solution) {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDetailSolutionComponent, solution}
+      data: {component: DialogDetailSolutionComponent, solution},
+      height: '100%',
+      position: {
+        right: '12px',
+      }
     });
     dialogRef.afterClosed().subscribe(() => {
         this.router.navigate(['.'], {relativeTo: this.activatedRoute});

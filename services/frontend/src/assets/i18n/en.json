@@ -61,8 +61,10 @@
     },
     "detail_solution": {
       "title": "Solution Details",
-      "main_button": "Save",
-      "back_button": "Cancel"
+      "name": "Name",
+      "input_fields": "Input Fields",
+      "output_fields": "Output Fields",
+      "solver": "Solver"
     }
   },
   "page": {

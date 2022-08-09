@@ -61,8 +61,10 @@
     },
     "detail_solution": {
       "title": "Solution Details",
-      "main_button": "Save",
-      "back_button": "Cancel"
+      "name": "Name",
+      "input_fields": "Eingabefelder",
+      "output_fields": "Ausgabefelder",
+      "solver": "Löser"
     }
   },
   "page": {

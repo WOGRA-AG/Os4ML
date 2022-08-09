@@ -1,48 +1,55 @@
-.headline {
+.mat-dialog-container{
+  margin-top: 16px;
+  margin-bottom: 16px;
+  height: auto;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-headline {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.dialog-container {
-  width: 510px;
-  min-height: 635px;
-  display: flex;
-  flex-direction: column;
+.dialog-title{
+  /* Headline 6 */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: #0A1629;
+  padding-top: 10px;
 }
 
-.main-button {
-  align-self: end;
-  margin-left: 10px;
-}
-
-.divider-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+.dialog-divider {
   width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.line {
-  flex: 1
-}
-
-.text {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.upload-container {
-  min-width: 270px;
-  max-width: 270px;
-}
-
-.input-form {
+.dialog-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   width: 100%;
+}
+
+.dialog-element {
+  padding-top: 12px;
+  padding-bottom: 17px;
+}
+
+.dialog-element-title {
+  padding-bottom: 12px;
+}
+
+.dialog-chip{
+  background-color: #F4F9FD;
 }

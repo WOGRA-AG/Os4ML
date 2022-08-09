@@ -1,45 +1,32 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
-import { catchError, of } from 'rxjs';
+import {Solution} from '../../../../build/openapi/jobmanager';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-dialog-delete-solution',
   templateUrl: './dialog-detail-solution.component.html',
-  styleUrls: ['./dialog-detail-solution.component.scss']
+  styleUrls: ['./dialog-detail-solution.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DialogDetailSolutionComponent {
   solution: Solution;
+  solutionName: string;
   deleting = false;
+  solvers = new FormControl('');
 
-  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private jobmanagerService: JobmanagerService) {
+  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>) {
     this.solution = dialogRef.componentInstance.data.solution;
+    this.solutionName = this.trimSolutionName(this.solution.name);
   }
 
-  onBack(): void {
-    this.dialogRef.close();
-  }
-
-  onSubmit(): void {
-    this.deleting = true;
-    if (!this.solution || !this.solution.name) {
-      this.deleting = false;
-      return;
+  trimSolutionName(name: string | undefined): string {
+    if (!name) {
+      return '';
     }
-    this.jobmanagerService.deleteSolution(this.solution.name).pipe(
-      catchError(err => {
-        this.deleting = false;
-        return of({});
-      })
-    ).subscribe(() => {
-        this.deleting = false;
-        this.dialogRef.close();
-      });
-  }
-
-  invalidSolution(): boolean {
-    return !this.solution || !this.solution.name;
+    const uuidIndex = name.indexOf('_');
+    return name.substring(uuidIndex + 1);
   }
 
   close(): void {
