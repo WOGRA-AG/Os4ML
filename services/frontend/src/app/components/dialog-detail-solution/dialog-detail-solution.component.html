@@ -1,8 +1,8 @@
 <div class="dialog-container">
-  <div class="dialog-headline mat-dialog-header">
-    <h5 mat-dialog-title class="dialog-title">{{"dialog.detail_solution.title" | translate}}</h5>
-    <app-shared-close-button (closeEvent)="close()"></app-shared-close-button>
-  </div>
+  <app-shared-dialog-header (closeDialog)="close()">
+    {{"dialog.detail_solution.title" | translate}}
+  </app-shared-dialog-header>
+
   <mat-dialog-content>
     <form id="ngForm" class="dialog-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
       <mat-divider class="dialog-divider"></mat-divider>

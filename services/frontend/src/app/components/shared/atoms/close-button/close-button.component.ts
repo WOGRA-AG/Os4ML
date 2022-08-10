@@ -6,9 +6,9 @@ import {Component, Output, EventEmitter} from '@angular/core';
 })
 
 export class CloseButtonComponent {
-  @Output() closeEvent = new EventEmitter<boolean>();
+  @Output() clickClose = new EventEmitter<boolean>();
 
-  onClose() {
-    this.closeEvent.emit(true);
+  onClick() {
+    this.clickClose.emit(true);
   }
 }

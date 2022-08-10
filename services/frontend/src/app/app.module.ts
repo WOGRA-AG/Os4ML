@@ -44,6 +44,7 @@ import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
 import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
+import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -77,7 +78,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     LocalizedDatePipe,
     DialogDeleteResourceComponent,
     DialogDetailSolutionComponent,
-    CloseButtonComponent
+    CloseButtonComponent,
+    DialogHeaderComponent
   ],
   imports: [
     BrowserModule,

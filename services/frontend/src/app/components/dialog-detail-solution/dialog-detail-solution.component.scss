@@ -1,21 +1,18 @@
+.mat-dialog-container{
+  margin-top: 16px;
+  margin-bottom: 16px;
+  height: auto;
+}
+
 .dialog-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.dialog-headline {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .dialog-divider {
   width: 100%;
-  padding-bottom: 15px;
-  margin-top: -20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .dialog-form {
@@ -34,6 +31,6 @@
   padding-bottom: 12px;
 }
 
-.button-spacer {
-  flex: auto;
+.dialog-chip{
+  background-color: #F4F9FD;
 }
