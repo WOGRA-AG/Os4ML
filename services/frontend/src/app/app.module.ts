@@ -35,10 +35,15 @@ import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
 import {DatabagTableComponent} from './components/databag-table/databag-table.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatChipsModule} from '@angular/material/chips';
 import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
 import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
+import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -72,6 +77,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     LocalizedDatePipe,
     DialogDeleteResourceComponent,
     DialogDetailSolutionComponent,
+    CloseButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +103,11 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     )),
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatSortModule,
+    MatChipsModule,
+    MatPaginatorModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
