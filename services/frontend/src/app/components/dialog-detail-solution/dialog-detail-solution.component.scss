@@ -2,6 +2,7 @@
   margin-top: 16px;
   margin-bottom: 16px;
   height: auto;
+  position: right;
 }
 
 .dialog-container {
@@ -9,26 +10,11 @@
   flex-direction: column;
 }
 
-.dialog-divider {
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .dialog-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-}
-
-.dialog-element {
-  padding-top: 12px;
-  padding-bottom: 17px;
-}
-
-.dialog-element-title {
-  padding-bottom: 12px;
 }
 
 .dialog-chip{

@@ -45,6 +45,8 @@ import {DialogDeleteResourceComponent} from './components/dialog-delete-resource
 import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
+import {DialogElementComponent} from './components/shared/molecules/dialog-element/dialog-element.component';
+import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -79,7 +81,9 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogDeleteResourceComponent,
     DialogDetailSolutionComponent,
     CloseButtonComponent,
-    DialogHeaderComponent
+    DialogHeaderComponent,
+    DialogElementComponent,
+    DialogElementDividerComponent
   ],
   imports: [
     BrowserModule,
