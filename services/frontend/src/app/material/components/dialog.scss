@@ -25,7 +25,7 @@
 @mixin layout() {
   .mat-dialog-container {
     border-radius: 24px;
-    padding-left: 50px;
+    padding: 0px;
     max-width: 584px;
     overflow: hidden;
   }
@@ -53,6 +53,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 42px;
+    padding-bottom: 16px;
   }
 
   .mat-dialog-actions {
@@ -65,10 +69,7 @@
     justify-content: flex-start;
     align-items: center;
     flex: auto;
-    padding-right: 50px;
     overflow: auto;
-    padding-top: 40px;
-    max-height: 100%;
 
     .mat-form-field {
       width: 100%;
