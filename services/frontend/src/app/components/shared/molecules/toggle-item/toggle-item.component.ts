@@ -3,7 +3,7 @@ import {Column} from '../../../../../../build/openapi/objectstore';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
-  selector: 'app-solver-list-item',
+  selector: 'app-shared-toggle-item',
   templateUrl: './toggle-item.component.html',
   styleUrls: ['./toggle-item.component.scss']
 })
