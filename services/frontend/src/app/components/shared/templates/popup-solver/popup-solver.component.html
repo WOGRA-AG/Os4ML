@@ -18,17 +18,17 @@
     <div title>{{"dialog.define_solver.subtitle_solver" | translate}}</div>
     <mat-list>
       <mat-list-item
-        *ngFor="let tmp of solver"
+        *ngFor="let solver of solvers"
         class="pointer bg-primary"
-        [ngClass]="solution.solver === tmp.name ? 'active' : ''"
-        (click)="selectSolver(tmp)"
+        [ngClass]="solution.solver === solver.name ? 'active' : ''"
+        (click)="selectSolver(solver)"
       >
         <div>
           <h6 class="on-surface-high">
-            {{tmp.name}}
+            {{solver.name}}
           </h6>
           <p class="mat-subheading-2 on-surface-medium">
-            {{tmp.description}}
+            {{solver.description}}
           </p>
         </div>
       </mat-list-item>

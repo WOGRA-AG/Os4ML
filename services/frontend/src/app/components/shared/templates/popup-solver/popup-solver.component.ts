@@ -15,16 +15,22 @@ import { catchError, of } from 'rxjs';
 export class PopupSolverComponent {
   solution: Solution;
   databag: Databag;
-  solver: PipelineTemplate[] = [];
+  solvers: PipelineTemplate[] = [];
   submitting = false;
 
-  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService,
+  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>,
+              private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService) {
     this.solution = dialogRef.componentInstance.data.solution;
     this.databag = dialogRef.componentInstance.data.databag;
     this.jobmanagerService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
-      this.solver = templates.filter(template => template.pipelineStep === PipelineStep.solver);
-    });
+        this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
+        if (this.solution.solver === undefined) {
+          this.solution.solver = this.solvers[0].name;
+          console.log(this.solvers[0].name);
+        }
+      }
+    );
   }
 
   close(): void {
@@ -56,7 +62,7 @@ export class PopupSolverComponent {
     });
   }
 
-  selectSolver(tmp: PipelineTemplate) {
-    this.solution.solver = tmp.name;
+  selectSolver(solver: PipelineTemplate) {
+    this.solution.solver = solver.name;
   }
 }
