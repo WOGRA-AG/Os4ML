@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Column} from '../../../../build/openapi/objectstore';
+import {Column} from '../../../../../../build/openapi/objectstore';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-solver-list-item',
-  templateUrl: './solver-list-item.component.html',
-  styleUrls: ['./solver-list-item.component.scss']
+  templateUrl: './toggle-item.component.html',
+  styleUrls: ['./toggle-item.component.scss']
 })
-export class SolverListItemComponent {
+export class ToggleItemComponent {
   @Input() column: Column = {};
   @Input() disabled = false;
   @Input() selected = false;

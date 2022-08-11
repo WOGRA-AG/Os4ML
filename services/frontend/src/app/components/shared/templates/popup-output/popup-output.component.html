@@ -1,0 +1,25 @@
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"dialog.define_output.title" | translate}}
+</app-shared-dialog-header>
+
+<mat-dialog-content>
+  <app-shared-dialog-element>
+    <div description>{{"dialog.define_output.description" | translate}}</div>
+    <mat-list>
+      <mat-list-item class="bg-primary" *ngFor="let column of databag.columns">
+        <app-solver-list-item class="solution-item"
+          [column]="column"
+          (selectedChange)="selectionChanged(column.name)"
+          [selected]="solution?.outputFields?.includes(column?.name || '') || false"
+        >
+        </app-solver-list-item>
+      </mat-list-item>
+    </mat-list>
+  </app-shared-dialog-element>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()">
+    {{"dialog.define_output.main_button" | translate}}
+  </button>
+</mat-dialog-actions>

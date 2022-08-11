@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
-import {Databag} from '../../../../build/openapi/objectstore';
+import {Databag} from '../../../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {DialogDefineSolverComponent} from '../dialog-define-solver/dialog-define-solver.component';
-import {Solution} from '../../../../build/openapi/jobmanager';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {PopupSolverComponent} from '../../../shared/templates/popup-solver/popup-solver.component';
+import {Solution} from '../../../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-dialog-define-output',
-  templateUrl: './dialog-define-output.component.html',
-  styleUrls: ['./dialog-define-output.component.scss']
+  templateUrl: './popup-output.component.html',
+  styleUrls: ['./popup-output.component.scss']
 })
-export class DialogDefineOutputComponent {
+export class PopupOutputComponent {
   databag: Databag = {};
   solution: Solution = {};
 
@@ -19,10 +19,14 @@ export class DialogDefineOutputComponent {
     this.solution = dialogRef.componentInstance.data.solution ? dialogRef.componentInstance.data.solution : {};
   }
 
+  close(): void {
+    this.dialogRef.close();
+  }
+
   nextPageClick() {
     this.solution.inputFields = this.getInputFields();
     this.dialogRef.componentInstance.data.solution = this.solution;
-    this.dialogRef.componentInstance.data.component = DialogDefineSolverComponent;
+    this.dialogRef.componentInstance.data.component = PopupSolverComponent;
   }
 
   selectionChanged(columnName: string | undefined) {

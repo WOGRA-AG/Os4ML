@@ -1,18 +1,18 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {DialogDefineOutputComponent} from '../dialog-define-output/dialog-define-output.component';
-import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
-import {JobmanagerService, PipelineTemplate, Solution} from '../../../../build/openapi/jobmanager';
-import {PipelineStep} from '../../models/pipeline-step';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {PopupOutputComponent} from '../popup-output/popup-output.component';
+import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
+import {JobmanagerService, PipelineTemplate, Solution} from '../../../../../../build/openapi/jobmanager';
+import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-define-solver',
-  templateUrl: './dialog-define-solver.component.html',
-  styleUrls: ['./dialog-define-solver.component.scss']
+  templateUrl: './popup-solver.component.html',
+  styleUrls: ['./popup-solver.component.scss']
 })
-export class DialogDefineSolverComponent {
+export class PopupSolverComponent {
   solution: Solution;
   databag: Databag;
   solver: PipelineTemplate[] = [];
@@ -27,8 +27,12 @@ export class DialogDefineSolverComponent {
     });
   }
 
+  close(): void {
+    this.dialogRef.close();
+  }
+
   back(): void {
-    this.dialogRef.componentInstance.data.component = DialogDefineOutputComponent;
+    this.dialogRef.componentInstance.data.component = PopupOutputComponent;
   };
 
   onSubmit(): void {
