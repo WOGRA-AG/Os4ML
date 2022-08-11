@@ -4,8 +4,8 @@ import {
   DialogDynamicComponent
 } from '../dialog-dynamic/dialog-dynamic.component';
 import {
-  DialogDetailSolutionComponent
-} from '../dialog-detail-solution/dialog-detail-solution.component';
+  SettingSolutionComponent
+} from '../shared/templates/setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -19,10 +19,9 @@ export class SolutionsListComponent {
   constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
-
   openDetailDialog(solution: Solution) {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDetailSolutionComponent, solution},
+      data: {component: SettingSolutionComponent, solution},
       panelClass: 'setting-dialog',
       height: '100%',
       position: {

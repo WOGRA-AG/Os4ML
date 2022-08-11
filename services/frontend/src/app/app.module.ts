@@ -42,7 +42,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
-import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
+import {SettingSolutionComponent} from './components/shared/templates/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
 import {DialogElementComponent} from './components/shared/molecules/dialog-element/dialog-element.component';
@@ -79,7 +79,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogEditDatabagComponent,
     LocalizedDatePipe,
     DialogDeleteResourceComponent,
-    DialogDetailSolutionComponent,
+    SettingSolutionComponent,
     CloseButtonComponent,
     DialogHeaderComponent,
     DialogElementComponent,

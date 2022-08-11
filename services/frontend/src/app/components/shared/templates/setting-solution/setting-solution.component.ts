@@ -1,15 +1,16 @@
 import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
 import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
+import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-dialog-delete-solution',
-  templateUrl: './dialog-detail-solution.component.html',
-  styleUrls: ['./dialog-detail-solution.component.scss'],
+  selector: 'app-setting-solution',
+  templateUrl: './setting-solution.component.html',
+  styleUrls: ['./setting-solution.component.scss']
 })
-export class DialogDetailSolutionComponent {
+export class SettingSolutionComponent {
   solution: Solution;
   solutionName: string;
   deleting = false;
