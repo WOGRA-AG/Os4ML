@@ -10,14 +10,14 @@
     <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
       <mat-form-field appearance="outline">
         <mat-label>{{"dialog.define_solver.label" | translate}}</mat-label>
-        <input matInput type="string" placeholder="{{'dialog.define_solver.label' | translate}}" required
+        <input id="define-solver-name-input" matInput type="string" placeholder="{{'dialog.define_solver.label' | translate}}" required
                name="databag_name" [(ngModel)]="solution.name" #databag_name="ngModel"
                [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
       </mat-form-field>
       <mat-divider class="divider"></mat-divider>
       <span class="mat-body-1 on-surface-medium">{{"dialog.define_solver.subtitle_solver" | translate}}</span>
     </form>
-    <mat-list>
+    <mat-list id="define-solver-list">
       <mat-list-item
         *ngFor="let tmp of solver"
         class="pointer bg-primary"
@@ -43,7 +43,7 @@
     </button>
     <div class="button-spacer"></div>
     <mat-spinner color="accent" *ngIf="submitting" [diameter]="40" mode="indeterminate" class="spinner"></mat-spinner>
-    <button mat-raised-button color="primary" [disabled]="submitting" class="main-button" form="ngForm" type="submit">
+    <button mat-raised-button color="primary" [disabled]="submitting" class="main-button" id="define-solver-next-button" form="ngForm" type="submit">
       {{"dialog.define_solver.main_button" | translate}}
     </button>
   </mat-dialog-actions>

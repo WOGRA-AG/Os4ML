@@ -27,9 +27,17 @@ describe('Databags', () => {
     // Use cy.get('[id=\'databag-table\']').find('tbody').find('tr').eq(0).find('td').eq(0).contains('titanic.csv'); if multiple entries are present in the table
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(0).contains('titanic.csv');
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(1).contains(urlToPaste);
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(2).contains('file_url');
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(3).contains('8');
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(4).contains('887');
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(2).contains('file_url', { timeout: 60000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(3).contains('8', { timeout: 60000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(4).contains('887', { timeout: 60000 });
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(5);
+    cy.visit('/dashboard');
+    cy.get('.bag-list').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'add-solution-button-empty\']').click();
+    cy.get('[id=\'define-output-list\']').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'define-output-next-button\']').click();
+    cy.get('[id=\'define-solver-name-input\']').focus().type('My Solution').blur();
+    cy.get('[id=\'define-solver-list\']').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'define-solver-next-button\']').click();
   });
 });
