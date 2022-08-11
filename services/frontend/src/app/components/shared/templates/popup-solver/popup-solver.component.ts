@@ -27,7 +27,6 @@ export class PopupSolverComponent {
         this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
         if (this.solution.solver === undefined) {
           this.solution.solver = this.solvers[0].name;
-          console.log(this.solvers[0].name);
         }
       }
     );
