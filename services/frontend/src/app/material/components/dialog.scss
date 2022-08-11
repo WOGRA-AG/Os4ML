@@ -23,12 +23,17 @@
 }
 
 @mixin layout() {
-
   .mat-dialog-container {
     border-radius: 24px;
     padding-left: 50px;
     max-width: 584px;
     overflow: hidden;
+  }
+
+  .setting-dialog .mat-dialog-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    height: auto;
   }
 
   .mat-dialog-title {

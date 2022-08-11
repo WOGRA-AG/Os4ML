@@ -1,7 +1,6 @@
-<div class="dialog-container">
-  <app-shared-dialog-header (closeDialog)="close()">
-    {{"dialog.detail_solution.title" | translate}}
-  </app-shared-dialog-header>
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"dialog.detail_solution.title" | translate}}
+</app-shared-dialog-header>
 
   <mat-dialog-content>
     <form id="ngForm" class="dialog-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
@@ -20,23 +19,23 @@
         </div>
       </app-shared-dialog-element>
 
-      <app-shared-dialog-element>
-        <div title>{{"dialog.detail_solution.input_fields" | translate}}</div>
-        <div>
-          <mat-chip-list>
-            <mat-chip *ngFor="let input_fields of solution.inputFields">{{input_fields}}</mat-chip>
-          </mat-chip-list>
-        </div>
-      </app-shared-dialog-element>
+    <app-shared-dialog-element>
+      <div title>{{"dialog.detail_solution.input_fields" | translate}}</div>
+      <div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let input_fields of solution.inputFields">{{input_fields}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </app-shared-dialog-element>
 
-      <app-shared-dialog-element>
-        <div title>{{"dialog.detail_solution.output_fields" | translate}}</div>
-        <div>
-          <mat-chip-list>
-            <mat-chip *ngFor="let output_fields of solution.outputFields">{{output_fields}}</mat-chip>
-          </mat-chip-list>
-        </div>
-      </app-shared-dialog-element>
+    <app-shared-dialog-element>
+      <div title>{{"dialog.detail_solution.output_fields" | translate}}</div>
+      <div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let output_fields of solution.outputFields">{{output_fields}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </app-shared-dialog-element>
 
       <app-shared-dialog-element>
         <div title>{{"dialog.detail_solution.solver" | translate}}</div>
@@ -54,25 +53,3 @@
       </app-shared-dialog-element>
     </form>
   </mat-dialog-content>
-
-  <mat-dialog-actions align="end">
-    <button
-      mat-stroked-button
-      class="delete-button"
-      color="warn"
-      type="button"
-      (click)="delete()"
-    >
-      {{"dialog.detail_solution.delete_button" | translate}}
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="update()"
-      [disabled]="!(f.valid)"
-    >
-      {{"dialog.detail_solution.submit_button" | translate}}
-    </button>
-  </mat-dialog-actions>
-</div>
