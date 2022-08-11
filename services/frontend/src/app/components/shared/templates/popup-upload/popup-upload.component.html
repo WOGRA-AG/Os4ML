@@ -1,0 +1,51 @@
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"dialog.add_databag.title" | translate}}
+</app-shared-dialog-header>
+
+<mat-dialog-content>
+  <app-shared-dialog-element>
+    <mat-form-field appearance="outline">
+      <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
+      <input
+        #dbUrl="ngModel"
+        matInput
+        type="url"
+        placeholder="{{'dialog.add_databag.placeholder' | translate}}"
+        [(ngModel)]="fileUrl"
+        [pattern]="urlRgex"
+      >
+      <mat-icon matSuffix>link</mat-icon>
+    </mat-form-field>
+
+    <div class="upload-container">
+      <div class="or-container">
+        <mat-divider class="or-line"></mat-divider>
+        <span class="on-surface-disabled or-text">or</span>
+        <mat-divider class="or-line"></mat-divider>
+      </div>
+
+      <div class="upload-container">
+        <app-upload-field class="upload-field" [(file)]="file"></app-upload-field>
+        <span *ngIf="file.name" class="mat-caption">{{file.name}}</span>
+      </div>
+    </div>
+
+  </app-shared-dialog-element>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="on-surface-disabled spinner-status">
+    {{ this.pipelineStatus }}
+  </div>
+  <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
+  <button
+    mat-raised-button
+    color="primary"
+    class="main-button"
+    type="submit"
+    (click)="nextPageClick()"
+    [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
+  >
+    {{"dialog.add_databag.main_button" | translate}}
+  </button>
+</mat-dialog-actions>

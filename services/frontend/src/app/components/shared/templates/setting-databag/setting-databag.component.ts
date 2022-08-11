@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
-} from '../dialog-dynamic/dialog-dynamic.component';
+} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {
   Databag,
   ObjectstoreService
-} from '../../../../build/openapi/objectstore';
-import {MlTypes} from '../../models/ml-types';
+} from '../../../../../../build/openapi/objectstore';
+import {MlTypes} from '../../../../models/ml-types';
 import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
 
 @Component({
   selector: 'app-dialog-edit-databag',
-  templateUrl: './dialog-edit-databag.component.html',
-  styleUrls: ['./dialog-edit-databag.component.scss']
+  templateUrl: './setting-databag.component.html',
+  styleUrls: ['./setting-databag.component.scss']
 })
-export class DialogEditDatabagComponent {
+export class SettingDatabagComponent {
   mlTypesArray = Object.keys(MlTypes);
   uuid = '';
   databag: Databag = {};

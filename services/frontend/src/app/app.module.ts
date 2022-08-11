@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DatabagPageComponent} from './pages/databag-page/databag-page.component';
-import {FileUploadComponent} from './components/file-upload/file-upload.component';
+import {UploadFieldComponent} from './components/shared/molecules/upload-field/upload-field.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -20,7 +20,7 @@ import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-fo
 import {SupportComponent} from './components/support/support.component';
 import {DatabagListComponent} from './components/databag-list/databag-list.component';
 import {DatabagPlaceholderComponent} from './components/databag-placeholder/databag-placeholder.component';
-import {DialogAddDatabagComponent} from './components/dialog-add-databag/dialog-add-databag.component';
+import {PopupUploadComponent} from './components/shared/templates/popup-upload/popup-upload.component';
 import {DialogDefineDatabagComponent} from './components/dialog-define-databag/dialog-define-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -39,7 +39,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatChipsModule} from '@angular/material/chips';
-import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
+import {SettingDatabagComponent} from './components/shared/templates/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
 import {SettingSolutionComponent} from './components/shared/templates/setting-solution/setting-solution.component';
@@ -54,7 +54,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   declarations: [
     AppComponent,
     DatabagPageComponent,
-    FileUploadComponent,
+    UploadFieldComponent,
     MainPageComponent,
     ToolbarComponent,
     SidenavComponent,
@@ -64,7 +64,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SupportComponent,
     DatabagListComponent,
     DatabagPlaceholderComponent,
-    DialogAddDatabagComponent,
+    PopupUploadComponent,
     DialogDefineDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
@@ -76,7 +76,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ToggleItemComponent,
     SolutionListItemComponent,
     DatabagTableComponent,
-    DialogEditDatabagComponent,
+    SettingDatabagComponent,
     LocalizedDatePipe,
     DialogDeleteResourceComponent,
     SettingSolutionComponent,

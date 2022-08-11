@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {DialogAddDatabagComponent} from '../dialog-add-databag/dialog-add-databag.component';
+import {PopupUploadComponent} from '../shared/templates/popup-upload/popup-upload.component';
 import {MlTypes} from '../../models/ml-types';
 import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
 

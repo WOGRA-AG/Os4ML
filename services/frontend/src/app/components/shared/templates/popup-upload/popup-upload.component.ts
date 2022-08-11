@@ -2,12 +2,12 @@ import {Component} from '@angular/core';
 import {
   Databag,
   ObjectstoreService
-} from '../../../../build/openapi/objectstore';
-import {JobmanagerService, RunParams} from '../../../../build/openapi/jobmanager';
+} from '../../../../../../build/openapi/objectstore';
+import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {DialogDefineDatabagComponent} from '../dialog-define-databag/dialog-define-databag.component';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {DialogDefineDatabagComponent} from '../../../dialog-define-databag/dialog-define-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
@@ -16,10 +16,10 @@ import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dialog-add-databag',
-  templateUrl: './dialog-add-databag.component.html',
-  styleUrls: ['./dialog-add-databag.component.scss']
+  templateUrl: './popup-upload.component.html',
+  styleUrls: ['./popup-upload.component.scss']
 })
-export class DialogAddDatabagComponent {
+export class PopupUploadComponent {
   file: File = new File([], '');
   fileUrl = '';
   running = false;

@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  selector: 'app-upload-field',
+  templateUrl: './upload-field.component.html',
+  styleUrls: ['./upload-field.component.scss']
 })
-export class FileUploadComponent {
+export class UploadFieldComponent {
 
   @Input() file: File = new File([], '');
   @Input() uploadProgress = 0;
