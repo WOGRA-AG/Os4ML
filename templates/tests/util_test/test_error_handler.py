@@ -1,7 +1,7 @@
 import pytest
 
-import src.util.error_handler
-from src.util.error_handler import error_handler
+import util.error_handler
+from util.error_handler import error_handler
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def func_without_error():
 def test_error_handler_with_error_with_solution_name(mocker, func_with_error):
     status_update_mock = mocker.Mock()
     mocker.patch.object(
-        src.util.error_handler, "error_status_update", status_update_mock
+        util.error_handler, "error_status_update", status_update_mock
     )
 
     with pytest.raises(ValueError):
@@ -37,11 +37,9 @@ def test_error_handler_with_error_with_solution_name(mocker, func_with_error):
 def test_error_handler_with_error_without_solution_name_or_bucket(
     mocker, func_with_error
 ):
-    status_update_spy = mocker.spy(
-        src.util.error_handler, "error_status_update"
-    )
+    status_update_spy = mocker.spy(util.error_handler, "error_status_update")
     databag_status_spy = mocker.spy(
-        src.util.error_handler, "error_databag_status_update"
+        util.error_handler, "error_databag_status_update"
     )
 
     with pytest.raises(ValueError):
@@ -54,7 +52,7 @@ def test_error_handler_with_error_without_solution_name_or_bucket(
 def test_error_handler_with_error_with_bucket(mocker, func_with_error):
     databag_status_mock = mocker.Mock()
     mocker.patch.object(
-        src.util.error_handler,
+        util.error_handler,
         "error_databag_status_update",
         databag_status_mock,
     )
@@ -75,11 +73,9 @@ def test_error_handler_with_error_with_bucket(mocker, func_with_error):
     ],
 )
 def test_error_handler_without_error(mocker, func_without_error, kwargs):
-    status_update_spy = mocker.spy(
-        src.util.error_handler, "error_status_update"
-    )
+    status_update_spy = mocker.spy(util.error_handler, "error_status_update")
     databag_status_spy = mocker.spy(
-        src.util.error_handler, "error_databag_status_update"
+        util.error_handler, "error_databag_status_update"
     )
 
     func_without_error(**kwargs)

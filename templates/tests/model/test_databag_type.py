@@ -1,6 +1,6 @@
 import pytest
 
-from src.model.databag_type import DatabagType
+from model.databag_type import DatabagType
 
 
 @pytest.mark.parametrize(

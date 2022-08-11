@@ -1,6 +1,6 @@
 from typing import List
 
-from src.model.column import Column
+from build.objectstore.model.column import Column
 
 
 def extract_columns(databag) -> List[Column]:

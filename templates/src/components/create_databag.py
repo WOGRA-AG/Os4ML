@@ -1,7 +1,8 @@
 from kfp.v2.dsl import Dataset, Input
-from src.load.databag import load_databag
-from src.objectstore.objectstore import put_databag
-from src.util.error_handler import error_handler
+
+from load.databag import load_databag
+from objectstore.objectstore import put_databag
+from util.error_handler import error_handler
 
 
 @error_handler

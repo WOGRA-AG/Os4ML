@@ -1,5 +1,5 @@
-from src.jobmanager.solution import status_update
-from src.util.error_handler import error_handler
+from jobmanager.solution import status_update
+from util.error_handler import error_handler
 
 
 @error_handler

@@ -1,5 +1,6 @@
 from kfp.dsl import RUN_ID_PLACEHOLDER
 from kfp.v2.dsl import pipeline
+
 from src.pipelines.util import (
     DatabagStatusMessages,
     compile_pipeline,
@@ -49,6 +50,7 @@ def init_databag_sniffle_upload(
         file_name=file_name,
         bucket=bucket,
         run_id=run_id,
+        os4ml_namespace=os4ml_namespace,
     )
     update_databag_status_op(
         DatabagStatusMessages.creating.value,

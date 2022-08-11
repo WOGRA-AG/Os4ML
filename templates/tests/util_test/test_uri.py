@@ -1,4 +1,4 @@
-from src.util.uri import extract_filename_from_uri, is_shepard_uri, is_uri
+from util.uri import extract_filename_from_uri, is_shepard_uri, is_uri
 
 
 def test_is_uri_pos():

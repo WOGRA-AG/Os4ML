@@ -1,6 +1,7 @@
+from kfp.v2.dsl import Artifact
+
 from components.images import python_image
 from components.util import build_component
-from kfp.v2.dsl import Artifact
 
 
 def init_empty_databag(
@@ -9,7 +10,7 @@ def init_empty_databag(
     os4ml_namespace: str,
     run_id: str,
 ) -> Artifact:
-    from src.components.init_empty_databag import init_empty_databag
+    from components.init_empty_databag import init_empty_databag
 
     return init_empty_databag(
         file_name=file_name,

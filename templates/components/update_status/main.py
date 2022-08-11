@@ -1,6 +1,7 @@
+from kfp.v2.dsl import Artifact
+
 from components.images import python_image
 from components.util import build_component
-from kfp.v2.dsl import Artifact
 
 
 def update_status(
@@ -9,7 +10,7 @@ def update_status(
     os4ml_namespace: str = "",
     solution_name: str = "",
 ):
-    from src.components.update_status import update_status
+    from components.update_status import update_status
 
     update_status(
         status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
