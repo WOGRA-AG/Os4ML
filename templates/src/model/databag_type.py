@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum
 import pathlib
 
-from src.util.uri import is_shepard_uri, is_uri
+from util.uri import is_shepard_uri, is_uri
 
 
 class DatabagType(str, enum.Enum):

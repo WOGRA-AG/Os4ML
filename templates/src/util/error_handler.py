@@ -1,7 +1,7 @@
 from functools import wraps
 
-from src.jobmanager.solution import error_status_update
-from src.objectstore.objectstore import error_databag_status_update
+from jobmanager.solution import error_status_update
+from objectstore.objectstore import error_databag_status_update
 
 
 def error_handler(func):

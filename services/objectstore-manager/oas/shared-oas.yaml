@@ -59,6 +59,7 @@ components:
       properties:
         datasetType:
           type: string
+          nullable: true
         fileName:
           type: string
         databagName:
@@ -67,14 +68,18 @@ components:
           $ref: "#/components/schemas/BucketName"
         numberRows:
           type: integer
+          nullable: true
         numberColumns:
           type: integer
+          nullable: true
         columns:
           type: array
+          nullable: true
           items:
             $ref: "#/components/schemas/Column"
         creationTime:
           type: string
+          nullable: true
         status:
           type: string
           nullable: true

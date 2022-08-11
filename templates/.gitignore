@@ -38,3 +38,6 @@ venv
 build
 **/component.yaml
 **/pipeline.yaml
+
+# openapi generator
+src/.openapi-generator

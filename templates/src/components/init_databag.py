@@ -5,12 +5,11 @@ from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
 
-from src.model.databag_type import DatabagType
-from src.model.file_type import FileType
-from src.objectstore.download import download_file
-from src.objectstore.urls import get_download_url
-from src.util.error_handler import error_handler
-from src.util.uri import extract_filename_from_uri
+from model.databag_type import DatabagType
+from model.file_type import FileType
+from objectstore.objectstore import download_file, get_download_url
+from util.error_handler import error_handler
+from util.uri import extract_filename_from_uri
 
 
 @error_handler

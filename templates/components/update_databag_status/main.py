@@ -1,6 +1,7 @@
+from kfp.v2.dsl import Artifact
+
 from components.images import python_image
 from components.util import build_component
-from kfp.v2.dsl import Artifact
 
 
 def update_databag_status(
@@ -9,7 +10,7 @@ def update_databag_status(
     os4ml_namespace: str = "",
     bucket: str = "",
 ):
-    from src.components.update_databag_status import update_databag_status
+    from components.update_databag_status import update_databag_status
 
     update_databag_status(
         status, os4ml_namespace=os4ml_namespace, bucket=bucket

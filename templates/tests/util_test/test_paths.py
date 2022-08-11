@@ -1,8 +1,9 @@
 import tempfile
 from pathlib import Path
 
-from src.util.paths import path_to_absolute
-from tests.util import change_directory
+from test_util import change_directory
+
+from util.paths import path_to_absolute
 
 
 def test_path_to_absolute():
