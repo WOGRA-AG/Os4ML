@@ -8,6 +8,7 @@ from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 from minio.deleteobjects import DeleteObject
+from minio.error import MinioException
 from urllib3 import HTTPResponse
 
 from build.openapi_server.models.bucket import Bucket
@@ -89,11 +90,23 @@ class MinioRepository(StorageRepository):
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
         self._check_if_bucket_exists(bucket_name)
-        return self.client.presigned_get_object(bucket_name, object_name)
+        try:
+            return self.client.presigned_get_object(bucket_name, object_name)
+        except MinioException:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Object with name {object_name} not found",
+            )
 
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
         self._check_if_bucket_exists(bucket_name)
-        return self.client.get_presigned_url("PUT", bucket_name, object_name)
+        try:
+            return self.client.get_presigned_url("PUT", bucket_name, object_name)
+        except MinioException:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Object with name {object_name} not found",
+            )
 
     def delete_item(self, bucket_name: str, object_name: str) -> None:
         self._check_if_bucket_exists(bucket_name)

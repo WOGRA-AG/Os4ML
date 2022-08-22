@@ -127,9 +127,14 @@ class ObjectstoreApiController:
         )
 
     def get_databag_by_id(self, databag_id: str) -> Databag:
-        return self.databag_service.get_databag_by_id(
-            bucket_name=self.bucket_name, databag_id=databag_id
-        )
+        try:
+            return self.databag_service.get_databag_by_id(
+                bucket_name=self.bucket_name, databag_id=databag_id
+            )
+        except DatabagNotFoundException as err:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=str(err)
+            )
 
     def post_new_databag(self, databag_id: str) -> str:
         return self.databag_service.create_databag(

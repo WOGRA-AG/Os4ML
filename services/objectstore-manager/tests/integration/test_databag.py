@@ -6,9 +6,9 @@ from fastapi import HTTPException
 from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
     get_all_databags,
-    get_databag_by_bucket_name,
+    get_databag_by_id,
     get_databag_by_run_id,
-    put_databag_by_bucket_name,
+    put_databag_by_id,
 )
 from build.openapi_server.models.databag import Databag
 from repository.impl.minio_repository import MinioRepository
@@ -23,21 +23,11 @@ mock_objectstore_controller = ObjectstoreApiController(
 
 @pytest.mark.asyncio
 async def test_get_databag_by_bucket_name():
-    databag: Databag = await get_databag_by_bucket_name(
-        bucket_name="os4ml",
+    databag: Databag = await get_databag_by_id(
+        databag_id="db-1",
         _controller=mock_objectstore_controller,
     )
     assert type(databag) == Databag
-
-
-@pytest.mark.asyncio
-async def test_get_databag_by_bucket_name_with_exception():
-    with pytest.raises(HTTPException) as excinfo:
-        await get_databag_by_bucket_name(
-            bucket_name="os5ml",
-            _controller=mock_objectstore_controller,
-        )
-    assert "status_code=404" in str(excinfo)
 
 
 @pytest.mark.asyncio
@@ -51,9 +41,9 @@ async def test_get_all_databags():
 
 @pytest.mark.asyncio
 async def test_put_databag_by_bucket_name():
-    databag: Databag = Databag(bucket_name="os4ml", databag_name="os4ml_db")
-    await put_databag_by_bucket_name(
-        bucket_name="os4ml",
+    databag: Databag = Databag(bucket_name="os4ml", databag_name="os4ml_db", databag_id="db-2")
+    await put_databag_by_id(
+        databag_id="db-2",
         databag=databag,
         _controller=mock_objectstore_controller,
     )

@@ -151,7 +151,6 @@ async def test_get_all_objects_with_exception():
 @pytest.mark.asyncio
 async def test_get_presigned_url():
     url: str = await get_presigned_put_url(
-        bucket_name="os4ml",
         object_name="object",
         _controller=mock_objectstore_controller,
     )
@@ -163,8 +162,7 @@ async def test_get_presigned_url():
 async def test_get_presigned_url_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_presigned_put_url(
-            bucket_name="os5ml",
-            object_name="object",
+            object_name="object_err",
             _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
@@ -186,7 +184,6 @@ async def test_put_object_by_name():
 @pytest.mark.asyncio
 async def test_get_object_url():
     url: str = await get_object_url(
-        bucket_name="os4ml",
         object_name="object",
         _controller=mock_objectstore_controller,
     )
@@ -197,8 +194,7 @@ async def test_get_object_url():
 async def test_get_object_url_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_object_url(
-            bucket_name="os5ml",
-            object_name="object",
+            object_name="object_err",
             _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)

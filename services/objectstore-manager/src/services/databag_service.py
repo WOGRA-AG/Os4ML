@@ -44,10 +44,13 @@ class DatabagService:
         ]
 
     def get_databag_by_id(self, bucket_name: str, databag_id: str) -> Databag:
-        bucket: Dict = self.storage.get_json_object_from_bucket(
-            bucket_name, f"{databag_id}/{self.config_file_name}"
-        )
-        return Databag(**bucket)
+        try:
+            bucket: Dict = self.storage.get_json_object_from_bucket(
+                bucket_name, f"{databag_id}/{self.config_file_name}"
+            )
+            return Databag(**bucket)
+        except Exception:
+            raise DatabagNotFoundException(name=databag_id)
 
     def update_databag(
         self, bucket_name: str, databag_id: str, databag: Databag
