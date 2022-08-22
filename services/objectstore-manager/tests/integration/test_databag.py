@@ -41,7 +41,9 @@ async def test_get_all_databags():
 
 @pytest.mark.asyncio
 async def test_put_databag_by_bucket_name():
-    databag: Databag = Databag(bucket_name="os4ml", databag_name="os4ml_db", databag_id="db-2")
+    databag: Databag = Databag(
+        bucket_name="os4ml", databag_name="os4ml_db", databag_id="db-2"
+    )
     await put_databag_by_id(
         databag_id="db-2",
         databag=databag,

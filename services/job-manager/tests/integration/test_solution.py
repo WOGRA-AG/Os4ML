@@ -51,7 +51,7 @@ async def test_get_all_solutions(mocker: MockerFixture):
                 Item("test-1", "solution.json"),
                 Item("test-2", "not-a-solution"),
                 Item("test-2", "solution.json"),
-             ],
+            ],
         ]
     )
     mocker.patch.object(ObjectstoreApi, "get_objects", objects_mock)
@@ -59,7 +59,7 @@ async def test_get_all_solutions(mocker: MockerFixture):
         "name": "test-solution-1",
         "status": "test",
         "bucket_name": "test-1",
-        "databag_id": "test-1"
+        "databag_id": "test-1",
     }
     solution1_encoded = base64.encodebytes(
         json.dumps(solution1_json).encode()
@@ -68,7 +68,7 @@ async def test_get_all_solutions(mocker: MockerFixture):
         "name": "test-solution-2",
         "status": "test",
         "bucket_name": "test-2",
-        "databag_id": "test-2"
+        "databag_id": "test-2",
     }
     solution2_encoded = base64.encodebytes(
         json.dumps(solution2_json).encode()
@@ -88,11 +88,17 @@ async def test_get_all_solutions(mocker: MockerFixture):
     json_objects_mock.assert_any_call("test-1", "solution.json")
     assert json_objects_mock.call_count == 2
     solution1 = Solution(
-        name="test-solution-1", status="test", bucket_name="test-1", databag_id="test-1"
+        name="test-solution-1",
+        status="test",
+        bucket_name="test-1",
+        databag_id="test-1",
     )
     assert solution1 in solutions
     solution2 = Solution(
-        name="test-solution-2", status="test", bucket_name="test-2", databag_id="test-2"
+        name="test-solution-2",
+        status="test",
+        bucket_name="test-2",
+        databag_id="test-2",
     )
     assert solution2 in solutions
     assert len(solutions) == 2

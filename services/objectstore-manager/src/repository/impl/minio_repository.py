@@ -101,7 +101,9 @@ class MinioRepository(StorageRepository):
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
         self._check_if_bucket_exists(bucket_name)
         try:
-            return self.client.get_presigned_url("PUT", bucket_name, object_name)
+            return self.client.get_presigned_url(
+                "PUT", bucket_name, object_name
+            )
         except MinioException:
             raise HTTPException(
                 status_code=404,
