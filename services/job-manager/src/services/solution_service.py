@@ -1,5 +1,4 @@
 import base64
-import itertools
 import json
 from datetime import datetime
 from io import BytesIO
@@ -8,7 +7,6 @@ from uuid import UUID, uuid4
 
 from fastapi import HTTPException
 
-from build.openapi_client.model.bucket import Bucket
 from build.openapi_client.model.databag import Databag
 from build.openapi_client.model.item import Item
 from build.openapi_client.model.json_response import JsonResponse
@@ -20,8 +18,8 @@ from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
 
-def _solution_file_name(solution_name: str):
-    return f"{solution_name}/{SOLUTION_CONFIG_FILE_NAME}"
+def _solution_file_name(databag_id: str, solution_name: str):
+    return f"{databag_id}/{solution_name}/{SOLUTION_CONFIG_FILE_NAME}"
 
 
 class SolutionService:
@@ -29,20 +27,16 @@ class SolutionService:
         self.template_service = TemplateService(kfp_client=kfp_client)
         self.objectstore = init_objectstore_api()
         self.kfp_service = KfpExecutor(client=kfp_client)
+        self.solution_config_file = SOLUTION_CONFIG_FILE_NAME
 
-    def get_all_solutions(self) -> List[Solution]:
-        buckets = self.objectstore.get_all_buckets()
-        all_solutions: List[List[Solution]] = [
-            self.get_solutions_from_bucket(bucket) for bucket in buckets
-        ]
-        return list(itertools.chain(*all_solutions))
-
-    def get_solutions_from_bucket(self, bucket: Bucket) -> List[Solution]:
-        items: List[Item] = self.objectstore.get_objects(bucket.name)
+    def get_all_solutions(self, bucket_name: str) -> List[Solution]:
+        items: List[Item] = self.objectstore.get_objects(
+            bucket_name=bucket_name
+        )
         return [
             self._create_solution_from_item(item)
             for item in items
-            if SOLUTION_CONFIG_FILE_NAME in item.object_name
+            if self.solution_config_file in item.object_name
         ]
 
     def _create_solution_from_item(self, item: Item) -> Solution:
@@ -54,10 +48,10 @@ class SolutionService:
         json_dict = json.loads(json_str)
         return Solution(**json_dict)
 
-    def get_solution(self, solution_name: str) -> Solution:
+    def get_solution(self, bucket_name: str, solution_name: str) -> Solution:
         solutions_with_name = [
             solution
-            for solution in self.get_all_solutions()
+            for solution in self.get_all_solutions(bucket_name=bucket_name)
             if solution.name == solution_name
         ]
         if not solutions_with_name:
@@ -67,43 +61,52 @@ class SolutionService:
             )
         return solutions_with_name.pop()
 
-    def create_solution(self, solution: Solution) -> str:
+    def create_solution(self, bucket_name: str, solution: Solution) -> str:
         uuid: UUID = uuid4()
         solution.name = f"{uuid}_{solution.name}"
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT)
-        databag: Databag = self.objectstore.get_databag_by_bucket_name(
-            solution.bucket_name
+        databag: Databag = self.objectstore.get_databag_by_id(
+            solution.databag_id
         )
         run_params: RunParams = RunParams(
-            bucket=databag.bucket_name,
+            bucket=bucket_name,
+            databag_id=databag.databag_id,
             file_name=databag.file_name,
             solution_name=solution.name,
         )
-        self._persist_solution(solution)
+        self._persist_solution(bucket_name, solution)
         run_id: str = self.template_service.run_pipeline_template(
             solution.solver, run_params
         )
         solution.run_id = run_id
-        self._persist_solution(solution)
+        self._persist_solution(bucket_name, solution)
         return run_id
 
-    def put_solution(self, solution_name: str, solution: Solution) -> Solution:
-        self._persist_solution(solution)
+    def put_solution(
+        self, bucket_name: str, solution_name: str, solution: Solution
+    ) -> Solution:
+        solution.name = solution_name or solution.name
+        self._persist_solution(bucket_name, solution)
         return solution
 
-    def _persist_solution(self, solution: Solution):
+    def _persist_solution(self, bucket_name: str, solution: Solution):
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
-            bucket_name=solution.bucket_name,
-            object_name=_solution_file_name(solution.name),
+            bucket_name=bucket_name,
+            object_name=_solution_file_name(
+                solution.databag_id, solution.name
+            ),
             body=encoded_solution,
         )
 
-    def delete_solution(self, solution_name: str) -> None:
-        solution = self.get_solution(solution_name)
+    def delete_solution(self, bucket_name: str, solution_name: str) -> None:
+        solution = self.get_solution(
+            bucket_name=bucket_name, solution_name=solution_name
+        )
         run = self.kfp_service.get_run(solution.run_id)
         if run.status == "Running":
             self.kfp_service.terminate_run(solution.run_id)
         self.objectstore.delete_objects(
-            solution.bucket_name, path_prefix=f"{solution.name}/"
+            bucket_name=bucket_name,
+            path_prefix=f"{solution.databag_id}/{solution.name}/",
         )

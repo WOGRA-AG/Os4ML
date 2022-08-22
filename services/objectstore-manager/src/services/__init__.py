@@ -21,6 +21,8 @@ STORAGE_SECURE: bool = (
     os.getenv("OBJECTSTORECONFIG_SECURE", default="false").lower() == "true"
 )
 
+BUCKET_NAME: str = os.getenv("OS4ML_BUCKET_NAME", default="os4ml")
+
 DATABAG_CONFIG_FILE_NAME: str = os.getenv(
     "DATABAG_CONFIG_FILE_NAME", default="databag.json"
 )
