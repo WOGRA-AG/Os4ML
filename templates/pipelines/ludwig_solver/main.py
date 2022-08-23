@@ -12,6 +12,7 @@ update_status_op = load_component("update_status")
 @pipeline(name="ludwig-solver")
 def ludwig_solver(
     bucket: str,
+    databag_id: str,
     file_name: str,
     solution_name: str = "",
     os4ml_namespace: str = "os4ml",
@@ -25,11 +26,14 @@ def ludwig_solver(
     df_info = init_databag_op(
         file_name,
         bucket=bucket,
+        databag_id=databag_id,
         solution_name=solution_name,
         os4ml_namespace=os4ml_namespace,
     )
     databag_file = get_databag_op(
-        bucket, solution_name=solution_name, os4ml_namespace=os4ml_namespace
+        databag_id=databag_id,
+        solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
     update_status_op(
         StatusMessages.running.value,

@@ -12,6 +12,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../models/pipeline-status';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-dialog-add-databag',
@@ -29,7 +30,7 @@ export class DialogAddDatabagComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService) {}
+              private jobmanagerService: JobmanagerService, private http: HttpClient) {}
 
   async nextPageClick(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
@@ -45,13 +46,16 @@ export class DialogAddDatabagComponent {
     this.running = true;
     let runId = '';
     const runParams: RunParams = {
-      bucket: this.uuid,
+      bucket: '',
+      databagId: this.uuid,
       fileName: this.file.name ? this.file.name : this.fileUrl
     };
     try {
-      await firstValueFrom(this.objectstoreService.postNewBucket(this.uuid));
+      await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
       if (this.file.name) {
-        await firstValueFrom(this.objectstoreService.putObjectByName(this.uuid, this.file.name, this.file));
+        await firstValueFrom(
+          this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
+        );
       }
       runId = await firstValueFrom(
         this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)

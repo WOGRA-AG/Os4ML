@@ -12,14 +12,16 @@ def init_empty_databag(
     run_id: str = "",
     *,
     bucket: str = None,
+    databag_id: str = None,
     os4ml_namespace: str = "",
 ) -> str:
     databag = Databag(
         databag_name=file_name,
         file_name=file_name,
         bucket_name=bucket,
+        databag_id=databag_id,
         status=DatabagStatusMessages.uploading.value,
         run_id=run_id,
     )
-    put_databag(databag, bucket, os4ml_namespace)
+    put_databag(databag, os4ml_namespace)
     return json.dumps(databag.to_dict())

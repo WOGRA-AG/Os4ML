@@ -17,6 +17,7 @@ update_databag_status_op = load_component("update_databag_status")
 @pipeline(name="init-databag-sniffle-upload")
 def init_databag_sniffle_upload(
     bucket: str = "os4ml",
+    databag_id: str = "",
     file_name: str = "titanic.xlsx",
     solution_name: str = "",
     os4ml_namespace: str = "os4ml",
@@ -26,6 +27,7 @@ def init_databag_sniffle_upload(
     init_empty = init_empty_databag_op(
         file_name=file_name,
         bucket=bucket,
+        databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
         run_id=run_id,
     )
@@ -33,6 +35,7 @@ def init_databag_sniffle_upload(
     df_info = init_databag_op(
         file_name,
         bucket=bucket,
+        databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
         depends_on=init_empty.output,
     )
@@ -40,7 +43,7 @@ def init_databag_sniffle_upload(
     update_databag_status_op(
         DatabagStatusMessages.inspecting.value,
         depends_on=df_info.outputs["dataset"],
-        bucket=bucket,
+        databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
     )
     sniffle = sniffle_op(
@@ -49,16 +52,17 @@ def init_databag_sniffle_upload(
         max_categories=max_categories,
         file_name=file_name,
         bucket=bucket,
+        databag_id=databag_id,
         run_id=run_id,
         os4ml_namespace=os4ml_namespace,
     )
     update_databag_status_op(
         DatabagStatusMessages.creating.value,
         depends_on=sniffle.output,
-        bucket=bucket,
+        databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
     )
-    create_databag_op(sniffle.output, bucket, os4ml_namespace=os4ml_namespace)
+    create_databag_op(sniffle.output, os4ml_namespace=os4ml_namespace)
 
 
 def main():

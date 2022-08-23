@@ -25,6 +25,7 @@ def sniffle_dataset(
     *,
     os4ml_namespace: str = "",
     bucket: str = None,
+    databag_id: str = "",
     run_id: str = "",
 ) -> str:
     """
@@ -47,6 +48,7 @@ def sniffle_dataset(
         file_name=file_name,
         databag_name=databag_name,
         bucket_name=bucket,
+        databag_id=databag_id,
         number_rows=num_rows,
         number_columns=num_cols,
         columns=columns,

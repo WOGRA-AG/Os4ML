@@ -6,9 +6,7 @@ from util.error_handler import error_handler
 
 
 @error_handler
-def create_databag(
-    file: Input[Dataset], *, bucket: str, os4ml_namespace: str = ""
-) -> None:
+def create_databag(file: Input[Dataset], *, os4ml_namespace: str = "") -> None:
     """Loads the databag.json file from kubeflow and uploads it to the object store."""
     databag = load_databag(file.path)
-    put_databag(databag, bucket, os4ml_namespace)
+    put_databag(databag, os4ml_namespace)

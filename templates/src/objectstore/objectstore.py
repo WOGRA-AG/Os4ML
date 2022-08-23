@@ -14,21 +14,23 @@ def download_file_from_bucket(
         download_file(url, output_file)
 
 
-def download_databag_from_bucket(bucket: str, os4ml_namespace: str) -> Databag:
+def download_databag_by_id(databag_id: str, os4ml_namespace: str) -> Databag:
     objectstore = init_objectstore_client(os4ml_namespace)
-    return objectstore.get_databag_by_bucket_name(bucket)
+    return objectstore.get_databag_by_id(databag_id=databag_id)
 
 
-def put_databag(databag: Databag, bucket: str, os4ml_namespace: str):
+def put_databag(databag: Databag, os4ml_namespace: str):
     objectstore = init_objectstore_client(os4ml_namespace)
-    objectstore.put_databag_by_bucket_name(bucket, databag=databag)
+    objectstore.put_databag_by_id(
+        databag_id=databag.databag_id, databag=databag
+    )
 
 
-def update_databag_status(bucket: str, status: str, os4ml_namespace: str):
+def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
     objectstore = init_objectstore_client(os4ml_namespace)
-    databag = objectstore.get_databag_by_bucket_name(bucket)
+    databag = objectstore.get_databag_by_id(databag_id=databag_id)
     databag.status = status
-    objectstore.put_databag_by_bucket_name(bucket, databag=databag)
+    objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
 
 
 def error_databag_status_update(bucket: str, os4ml_namespace: str):
