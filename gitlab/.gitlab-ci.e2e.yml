@@ -1,0 +1,12 @@
+.e2e:
+  stage: e2e
+  needs:
+    - deploy-testing
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud387-terraform1.2
+  before_script:
+    - echo -e "credentials \"$CI_SERVER_HOST\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
+    - gcloud auth activate-service-account $GCP_service_account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    - gcloud container clusters get-credentials $GCP_cluster_name --zone=$GCP_zone --project=$GCP_project
+  script:
+    - kubectl minio tenant delete storage-testing --namespace minio-tenant-testing --force
+    - cd services/frontend && npx cypress run
