@@ -94,3 +94,10 @@ deploy-feature:
   variables:
     LABEL: 'feature'
   when: manual
+
+deploy-testing:
+  extends:
+    - .deploy
+  variables:
+    LABEL: 'testing'
+  when: manual
