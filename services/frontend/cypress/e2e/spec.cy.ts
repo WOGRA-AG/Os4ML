@@ -23,7 +23,7 @@ describe('Databags', () => {
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(4).contains('891', { timeout: 60000 });
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(5);
     cy.visit('/dashboard');
-    cy.get('.bag-list').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'bag-list\']').find('mat-list-item').eq(0).click();
     cy.get('[id=\'add-solution-button-empty\']').click();
     cy.get('[id=\'define-output-list\']').find('mat-list-item').eq(0).click();
     cy.get('[id=\'define-output-next-button\']').click();
