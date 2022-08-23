@@ -12,13 +12,18 @@ from build.openapi_server.models.run import Run
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
 from executor.kfp_executor import KfpExecutor
+from services import BUCKET_NAME
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
 
 class JobmanagerApiController:
     def __init__(
-        self, kfp_service=None, solution_service=None, template_service=None
+        self,
+        kfp_service=None,
+        solution_service=None,
+        template_service=None,
+        bucket_name=BUCKET_NAME,
     ):
         self.kfp_service = (
             kfp_service if kfp_service is not None else KfpExecutor()
@@ -33,6 +38,8 @@ class JobmanagerApiController:
             if template_service is not None
             else TemplateService()
         )
+
+        self.bucket_name = bucket_name
 
     def get_all_experiments(self) -> List[Experiment]:
         return self.kfp_service.get_all_experiments()
@@ -60,11 +67,14 @@ class JobmanagerApiController:
         )
 
     def post_solution(self, solution: Solution) -> str:
-        return self.solution_service.create_solution(solution)
+        return self.solution_service.create_solution(
+            self.bucket_name, solution
+        )
 
     def post_template(
         self, pipeline_template_name: str, run_params: RunParams
     ) -> str:
+        run_params.bucket = run_params.bucket or self.bucket_name
         return self.template_service.run_pipeline_template(
             pipeline_template_name, run_params
         )
@@ -100,13 +110,25 @@ class JobmanagerApiController:
         return FileResponse(pipeline_file_path)
 
     def get_all_solutions(self) -> List[Solution]:
-        return self.solution_service.get_all_solutions()
+        return self.solution_service.get_all_solutions(
+            bucket_name=self.bucket_name
+        )
 
     def get_solution(self, solution_name: str) -> Solution:
-        return self.solution_service.get_solution(solution_name)
+        return self.solution_service.get_solution(
+            bucket_name=self.bucket_name,
+            solution_name=solution_name,
+        )
 
     def put_solution(self, solution_name: str, solution: Solution) -> Solution:
-        return self.solution_service.put_solution(solution_name, solution)
+        return self.solution_service.put_solution(
+            bucket_name=self.bucket_name,
+            solution_name=solution_name,
+            solution=solution,
+        )
 
     def delete_solution(self, solution_name: str) -> None:
-        return self.solution_service.delete_solution(solution_name)
+        return self.solution_service.delete_solution(
+            bucket_name=self.bucket_name,
+            solution_name=solution_name,
+        )

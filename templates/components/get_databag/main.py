@@ -5,12 +5,14 @@ from components.util import build_component
 
 
 def get_databag(
-    bucket: str, os4ml_namespace: str, solution_name: str
+    databag_id: str, os4ml_namespace: str, solution_name: str
 ) -> Dataset:
     from components.get_databag import get_databag
 
     return get_databag(
-        bucket, os4ml_namespace=os4ml_namespace, solution_name=solution_name
+        databag_id=databag_id,
+        os4ml_namespace=os4ml_namespace,
+        solution_name=solution_name,
     )
 
 
