@@ -17,6 +17,7 @@ def init_databag(
     file_name: str,
     *,
     bucket: str = None,
+    databag_id: str = "",
     os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", str)]):
@@ -37,7 +38,9 @@ def init_databag(
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
     else:
-        data_uri = get_download_url(bucket, file_name, os4ml_namespace)
+        data_uri = get_download_url(
+            bucket, f"{databag_id}/{file_name}", os4ml_namespace
+        )
 
     file_type = FileType.from_file_name(file_name)
     if file_type == FileType.CSV:

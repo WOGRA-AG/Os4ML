@@ -18,7 +18,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {DialogEditDatabagComponent} from '../dialog-edit-databag/dialog-edit-databag.component';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-databag-table',
@@ -86,7 +85,7 @@ export class DatabagTableComponent implements AfterViewInit {
   }
 
   openEditDialog(databag: Databag) {
-    const uuid: string | undefined = databag.bucketName;
+    const uuid: string | undefined = databag.databagId;
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {
         component: DialogEditDatabagComponent,

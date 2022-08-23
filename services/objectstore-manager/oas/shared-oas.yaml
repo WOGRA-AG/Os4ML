@@ -12,6 +12,8 @@ components:
       type: string
     BucketName:
       type: string
+    DatabagId:
+      type: string
     Solution:
       properties:
         name:
@@ -22,8 +24,8 @@ components:
           type: string
         databagName:
           type: string
-        bucketName:
-          $ref: "#/components/schemas/BucketName"
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
         inputFields:
           type: array
           items:
@@ -64,8 +66,8 @@ components:
           type: string
         databagName:
           type: string
-        bucketName:
-          $ref: "#/components/schemas/BucketName"
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
         numberRows:
           type: integer
           nullable: true

@@ -35,11 +35,10 @@ export class DatabagListComponent {
   }
 
   isSameDatabag(databag1: Databag, databag2: Databag) {
-    const isSameDatabagName = databag1.databagName === databag2.databagName;
-    const isSameBucketName = databag1.bucketName === databag2.bucketName;
+    const isSameDatabagId = databag1.databagId === databag2.databagId;
     const isSameFileName = databag1.fileName === databag2.fileName;
     const isSameCreationTime = databag1.creationTime === databag2.creationTime;
-    return isSameDatabagName && isSameBucketName && isSameFileName && isSameCreationTime;
+    return isSameDatabagId && isSameFileName && isSameCreationTime;
   }
 
   formatTimestamp(creationTime: string | null | undefined): string {

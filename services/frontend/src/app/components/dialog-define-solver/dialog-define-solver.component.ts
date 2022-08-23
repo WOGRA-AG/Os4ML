@@ -32,12 +32,12 @@ export class DialogDefineSolverComponent {
   };
 
   onSubmit(): void {
-    if (!this.databag || !this.databag.bucketName || !this.databag.databagName) {
+    if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
       return;
     }
     this.submitting = true;
     this.solution.status = 'Created';
-    this.solution.bucketName = this.databag.bucketName;
+    this.solution.databagId = this.databag.databagId;
     this.solution.databagName = this.databag.databagName;
     this.jobmanagerService.postSolution(this.solution)
       .pipe(
