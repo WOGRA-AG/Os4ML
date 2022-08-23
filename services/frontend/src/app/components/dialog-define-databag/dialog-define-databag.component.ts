@@ -17,25 +17,25 @@ export class DialogDefineDatabagComponent {
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService) {
     this.uuid = dialogRef.componentInstance.data.uuid;
-    this.objectstoreService.getDatabagByBucketName(this.uuid).subscribe((databag: Databag) => {
+    this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
       this.databag = databag;
     });
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagByBucketName(this.uuid, this.databag).subscribe(() => {
+    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }
 
   back(): void {
-    this.objectstoreService.deleteBucket(this.uuid).pipe().subscribe(() => {
+    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
       this.dialogRef.componentInstance.data.component = DialogAddDatabagComponent;
     });
   }
 
   close(): void {
-    this.objectstoreService.deleteBucket(this.uuid).subscribe(() => {
+    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
       this.dialogRef.close();
     });
   }

@@ -32,8 +32,8 @@ export class SolutionsComponent {
   }
 
   getSolutionsInDatabag() {
-    return this.solutions.filter(solution =>
-      (solution.databagName === this.databag?.databagName && solution.bucketName === this.databag?.bucketName)
+    return this.solutions.filter(
+      solution => solution.databagId === this.databag?.databagId
     );
   }
 }

@@ -10,6 +10,7 @@ def sniffle_dataset(
     max_categories: int = 10,
     file_name: str = "",
     bucket: str = "",
+    databag_id: str = "",
     run_id: str = "",
     os4ml_namespace: str = "",
 ) -> Dataset:
@@ -21,6 +22,7 @@ def sniffle_dataset(
         max_categories,
         file_name,
         bucket=bucket,
+        databag_id=databag_id,
         run_id=run_id,
     )
 

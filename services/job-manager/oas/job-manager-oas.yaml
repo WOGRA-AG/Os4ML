@@ -364,6 +364,9 @@ components:
           type: string
         fileName:
           type: string
+        databagId:
+          type: string
+          nullable: true
         solutionName:
           type: string
     Error:

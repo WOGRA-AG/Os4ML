@@ -4,6 +4,7 @@ from typing import List
 
 from minio import Minio
 from minio.datatypes import Bucket, Object
+from minio.error import MinioException
 from urllib3 import HTTPResponse, PoolManager
 
 from build.openapi_server.models.databag import Databag
@@ -108,6 +109,8 @@ class MinioMock(Minio):
         version_id=None,
         extra_query_params=None,
     ) -> str:
+        if object_name not in ["object"]:
+            raise MinioException()
         return "https://www.wogra.com"
 
     def remove_object(self, bucket_name, object_name, version_id=None) -> None:
@@ -170,6 +173,7 @@ class MinioMock(Minio):
                     run_id="os4ml_unique_run_id",
                     bucket_name=bucket_name,
                     databag_name=bucket_name,
+                    databag_id="db-1",
                     columns=[],
                 ).dict()
             )

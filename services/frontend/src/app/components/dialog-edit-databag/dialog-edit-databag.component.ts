@@ -21,13 +21,13 @@ export class DialogEditDatabagComponent {
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService) {
     this.uuid = dialogRef.componentInstance.data.uuid;
-    this.objectstoreService.getDatabagByBucketName(this.uuid).subscribe((databag: Databag) => {
+    this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
       this.databag = databag;
     });
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagByBucketName(this.uuid, this.databag).subscribe(() => {
+    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }

@@ -4,10 +4,10 @@ from components.images import python_image
 from components.util import build_component
 
 
-def create_databag(file: Input[Dataset], bucket: str, os4ml_namespace: str):
+def create_databag(file: Input[Dataset], os4ml_namespace: str):
     from components.create_databag import create_databag
 
-    return create_databag(file, os4ml_namespace=os4ml_namespace, bucket=bucket)
+    return create_databag(file, os4ml_namespace=os4ml_namespace)
 
 
 def main():
