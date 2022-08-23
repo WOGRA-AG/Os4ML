@@ -6,11 +6,18 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-raised-button (click)="onBack()" [disabled]="deleting">
+    <button mat-raised-button (click)="onBack()" [disabled]="deleting" [tabIndex]="-1">
       {{"dialog.delete_solution.back_button" | translate}}
     </button>
     <mat-spinner color="accent" *ngIf="deleting" [diameter]="35" mode="indeterminate" class="spinner"></mat-spinner>
-    <button mat-raised-button color="primary" class="main-button" (click)="onSubmit()" [disabled]="deleting || invalidSolution()">
+    <button
+      mat-raised-button
+      color="primary"
+      class="main-button"
+      (click)="onSubmit()"
+      [disabled]="deleting || invalidSolution()"
+      [tabIndex]="-1"
+    >
       {{"dialog.delete_solution.main_button" | translate}}
     </button>
   </mat-dialog-actions>

@@ -64,7 +64,9 @@
       "name": "Name",
       "input_fields": "Eingabefelder",
       "output_fields": "Ausgabefelder",
-      "solver": "Löser"
+      "solver": "Löser",
+      "delete_button": "Löschen",
+      "submit_button": "Update"
     }
   },
   "page": {

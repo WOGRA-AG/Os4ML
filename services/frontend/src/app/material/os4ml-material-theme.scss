@@ -9,6 +9,7 @@
 @use './components/dialog.scss' as dialog;
 @use './components/list.scss' as list;
 @use './components/table.scss' as table;
+@use './components/chips.scss' as chips;
 
 $os4ml-theme: mat.define-light-theme((
   color: (
@@ -32,4 +33,5 @@ $os4ml-theme: mat.define-light-theme((
   @include dialog.theme($os4ml-theme, colors.$overlay, colors.$background);
   @include list.theme($os4ml-theme, colors.$background);
   @include table.theme($os4ml-theme, colors.$background);
+  @include chips.theme($os4ml-theme, colors.$background);
 }

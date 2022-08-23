@@ -64,7 +64,9 @@
       "name": "Name",
       "input_fields": "Input Fields",
       "output_fields": "Output Fields",
-      "solver": "Solver"
+      "solver": "Solver",
+      "delete_button": "Delete",
+      "submit_button": "Update"
     }
   },
   "page": {

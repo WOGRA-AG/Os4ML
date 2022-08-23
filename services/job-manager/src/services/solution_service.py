@@ -19,7 +19,7 @@ from services.template_service import TemplateService
 
 
 def _solution_file_name(databag_id: str, solution_name: str):
-    return f"{databag_id}/{solution_name}/{SOLUTION_CONFIG_FILE_NAME}"
+    return f"{databag_id}/{solution_name.split('_').pop(0)}/{SOLUTION_CONFIG_FILE_NAME}"
 
 
 class SolutionService:
@@ -74,27 +74,26 @@ class SolutionService:
             file_name=databag.file_name,
             solution_name=solution.name,
         )
-        self._persist_solution(bucket_name, solution)
+        self._persist_solution(bucket_name, solution.name, solution)
         run_id: str = self.template_service.run_pipeline_template(
             solution.solver, run_params
         )
         solution.run_id = run_id
-        self._persist_solution(bucket_name, solution)
+        self._persist_solution(bucket_name, solution.name, solution)
         return run_id
 
     def put_solution(
         self, bucket_name: str, solution_name: str, solution: Solution
     ) -> Solution:
-        solution.name = solution_name or solution.name
-        self._persist_solution(bucket_name, solution)
+        self._persist_solution(bucket_name, solution_name, solution)
         return solution
 
-    def _persist_solution(self, bucket_name: str, solution: Solution):
+    def _persist_solution(self, bucket_name: str, solution_name: str, solution: Solution):
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
             bucket_name=bucket_name,
             object_name=_solution_file_name(
-                solution.databag_id, solution.name
+                solution.databag_id, solution_name
             ),
             body=encoded_solution,
         )
@@ -108,5 +107,5 @@ class SolutionService:
             self.kfp_service.terminate_run(solution.run_id)
         self.objectstore.delete_objects(
             bucket_name=bucket_name,
-            path_prefix=f"{solution.databag_id}/{solution.name}/",
+            path_prefix=f"{solution.databag_id}/{solution.name.split('_').pop(0)}/",
         )

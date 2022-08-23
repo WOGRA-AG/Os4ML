@@ -80,7 +80,8 @@ export class DialogAddDatabagComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.objectstoreService.deleteBucket(this.uuid);
+    // TODO: STOP RUN BY RUNID
+    return this.objectstoreService.deleteDatabag(this.uuid);
   }
 
   retrievePipelineStatus(runId: string): Promise<string> {

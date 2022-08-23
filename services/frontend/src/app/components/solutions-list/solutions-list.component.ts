@@ -23,7 +23,8 @@ export class SolutionsListComponent {
   openDetailDialog(solution: Solution) {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: DialogDetailSolutionComponent, solution},
-      height: '100%',
+      height: '97%',
+      maxWidth: '410px',
       position: {
         right: '12px',
       }
