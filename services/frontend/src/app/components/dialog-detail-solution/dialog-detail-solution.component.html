@@ -1,0 +1,76 @@
+<div class="dialog-container">
+  <div class="dialog-headline mat-dialog-header">
+    <h6 mat-dialog-title>{{"dialog.detail_solution.title" | translate}}</h6>
+    <button mat-icon-button (click)="close()" tabindex="-1">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-divider class="dialog-divider"></mat-divider>
+    <form id="ngForm" class="dialog-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
+      <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.name" | translate}}</div>
+      <mat-form-field appearance="outline">
+        <input matInput
+               type="string"
+               required
+               name="solution-name"
+               [(ngModel)]="solutionName"
+               #solution_name="ngModel"
+        >
+      </mat-form-field>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.input_fields" | translate}}</div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let input_fields of solution.inputFields" [disableRipple]="true">{{input_fields}}</mat-chip>
+        </mat-chip-list>
+      </div>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.output_fields" | translate}}</div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let output_fields of solution.outputFields">{{output_fields}}</mat-chip>
+        </mat-chip-list>
+
+      </div>
+
+      <div class="dialog-element">
+        <mat-divider class="dialog-divider"></mat-divider>
+        <div class="mat-body-1 on-surface-medium dialog-element-title">{{"dialog.detail_solution.solver" | translate}}</div>
+        <mat-form-field appearance="outline">
+          <input matInput
+                 type="string"
+                 disabled
+                 name="solver-name"
+                 [(ngModel)]="solution.solver"
+                 #solver_name="ngModel"
+          >
+        </mat-form-field>
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button
+      mat-stroked-button
+      class="delete-button"
+      color="warn"
+      type="button"
+      (click)="delete()"
+    >
+      {{"dialog.detail_solution.delete_button" | translate}}
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="update()"
+      [disabled]="!(f.valid)"
+    >
+      {{"dialog.detail_solution.submit_button" | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

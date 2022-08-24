@@ -18,7 +18,7 @@ export class DialogDeleteSolutionComponent {
   }
 
   onBack(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('cancel');
   }
 
   onSubmit(): void {
@@ -34,7 +34,7 @@ export class DialogDeleteSolutionComponent {
       })
     ).subscribe(() => {
         this.deleting = false;
-        this.dialogRef.close();
+        this.dialogRef.close('deleted');
       });
   }
 

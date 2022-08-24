@@ -15,6 +15,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatButtonModule,
@@ -32,6 +36,10 @@ export const MATERIAL_MODULES: typeof MatInputModule[] = [
   MatOptionModule,
   MatProgressSpinnerModule,
   MatSlideToggleModule,
+  MatChipsModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({

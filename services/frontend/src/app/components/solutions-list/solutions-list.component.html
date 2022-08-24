@@ -1,5 +1,5 @@
 <mat-list>
   <mat-list-item class="bg-surface border-radius-24 item-padding" *ngFor="let solution of solutions">
-    <app-solution-list-item class="solution-list-item" [solution]="solution"></app-solution-list-item>
+    <app-solution-list-item (click)="openDetailDialog(solution)" class="solution-list-item" [solution]="solution"></app-solution-list-item>
   </mat-list-item>
 </mat-list>

@@ -58,6 +58,15 @@
       "main_button": "Delete",
       "back_button": "Cancel",
       "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    },
+    "detail_solution": {
+      "title": "Solution Details",
+      "name": "Name",
+      "input_fields": "Input Fields",
+      "output_fields": "Output Fields",
+      "solver": "Solver",
+      "delete_button": "Delete",
+      "submit_button": "Update"
     }
   },
   "page": {
