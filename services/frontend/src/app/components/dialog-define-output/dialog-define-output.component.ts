@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Column, Databag} from '../../../../build/openapi/objectstore';
+import {Databag} from '../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {DialogDefineSolverComponent} from '../dialog-define-solver/dialog-define-solver.component';
@@ -38,6 +38,14 @@ export class DialogDefineOutputComponent {
       outputFields.splice(columnIndex, 1);
     }
     this.solution.outputFields = outputFields;
+  }
+
+  isDisabled(columnName: string): boolean {
+    if (!this.solution || !this.solution.outputFields || !columnName) {
+      return false;
+    }
+    return this.solution.outputFields.length > 0
+      && !this.solution.outputFields.includes(columnName);
   }
 
   private getInputFields(): string[] | undefined {
