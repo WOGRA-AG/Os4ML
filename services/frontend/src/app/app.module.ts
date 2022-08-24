@@ -71,7 +71,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogEditDatabagComponent,
     LocalizedDatePipe,
     DialogDeleteSolutionComponent,
-    DialogDetailSolutionComponent
+    DialogDetailSolutionComponent,
   ],
   imports: [
     BrowserModule,
