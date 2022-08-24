@@ -30,7 +30,20 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit">
+    <button
+      mat-stroked-button
+      color="warn"
+      type="button"
+      (click)="delete()"
+    >
+      {{"dialog.edit_databag.delete_button" | translate}}
+    </button>
+    <button
+      mat-raised-button
+      form="ngForm"
+      color="primary"
+      type="submit"
+    >
       {{"dialog.edit_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>

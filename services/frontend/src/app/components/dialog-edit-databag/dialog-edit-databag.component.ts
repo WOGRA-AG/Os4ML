@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
 } from '../dialog-dynamic/dialog-dynamic.component';
@@ -8,6 +8,7 @@ import {
   ObjectstoreService
 } from '../../../../build/openapi/objectstore';
 import {MlTypes} from '../../models/ml-types';
+import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
 
 @Component({
   selector: 'app-dialog-edit-databag',
@@ -19,7 +20,11 @@ export class DialogEditDatabagComponent {
   uuid = '';
   databag: Databag = {};
 
-  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>, private objectstoreService: ObjectstoreService) {
+  constructor(
+    private dialogRef: MatDialogRef<DialogDynamicComponent>,
+    private objectstoreService: ObjectstoreService,
+    private dialog: MatDialog,
+  ) {
     this.uuid = dialogRef.componentInstance.data.uuid;
     this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
       this.databag = databag;
@@ -34,5 +39,16 @@ export class DialogEditDatabagComponent {
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  delete(): void {
+    const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {component: DialogDeleteResourceComponent, databag: this.databag}
+    });
+    deleteDialogRef.afterClosed().subscribe((msg) => {
+      if (msg === 'deleted') {
+        this.dialogRef.close();
+      }
+    });
   }
 }

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
-import {DialogDeleteSolutionComponent} from '../dialog-delete-solution/dialog-delete-solution.component';
+import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
 
 @Component({
   selector: 'app-dialog-delete-solution',
@@ -45,7 +45,7 @@ export class DialogDetailSolutionComponent {
 
   delete() {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDeleteSolutionComponent, solution: this.solution}
+      data: {component: DialogDeleteResourceComponent, solution: this.solution}
     });
     deleteDialogRef.afterClosed().subscribe((msg) => {
       if (msg === 'deleted') {
