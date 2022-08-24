@@ -9,4 +9,5 @@ e2e:
   script:
     - wget https://github.com/minio/operator/releases/download/v4.4.16/kubectl-minio_4.4.16_linux_amd64 -O kubectl-minio && chmod +x kubectl-minio && mv kubectl-minio /usr/local/bin/
     - kubectl minio tenant delete storage-testing --namespace minio-tenant-testing --force
-    - cd services/frontend && npx cypress run
+    - curl -qL https://www.npmjs.com/install.sh | sh
+    - cd services/frontend && npm install && npm run cypress run
