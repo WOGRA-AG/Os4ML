@@ -17,6 +17,7 @@
           [column]="column"
           (selectedChange)="selectionChanged(column.name)"
           [selected]="solution?.outputFields?.includes(column?.name || '') || false"
+          [disabled]="isDisabled(column.name!)"
         >
         </app-solver-list-item>
       </mat-list-item>
