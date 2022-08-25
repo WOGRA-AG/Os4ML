@@ -1,23 +1,21 @@
 .build-template:
   stage: build
   when: on_success
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
+  image:
+    name: gcr.io/kaniko-project/executor:stable
+    entrypoint: [""]
   before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
-    - cd $DIR
-    - docker build
-      --target $TARGET
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      --file $DOCKERFILE
-      "."
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+    - /kaniko/executor
+      --context=$DIR
+      --dockerfile=$DOCKERFILE
+      --target=$TARGET
+      --cache=true
+      --cache-repo=$CI_REGISTRY_IMAGE
+      --destination=$CI_REGISTRY_IMAGE/$IMG_NAME:$LABEL
+      --digest-file=$CI_PROJECT_DIR/$IMG_NAME-image-digest
   variables:
     LABEL: $CI_COMMIT_REF_NAME
     TARGET: 'production'
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
