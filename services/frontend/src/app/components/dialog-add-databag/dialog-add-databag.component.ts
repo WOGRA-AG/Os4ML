@@ -96,7 +96,9 @@ export class DialogAddDatabagComponent {
                 )
               )
               .subscribe((databag) => {
-              this.pipelineStatus = databag?.status ? databag.status : this.translate.instant('dialog.add_databag.placeholder_status');
+                if (databag.status) {
+                  this.pipelineStatus = databag.status;
+                }
             });
           }
           if (run.status === PipelineStatus.failed) {
