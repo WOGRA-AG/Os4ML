@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from typing import Dict, List
 
+from build.openapi_client.api.jobmanager_api import JobmanagerApi
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.item import Item
 from exceptions.DatabagNotFoundException import DatabagNotFoundException
@@ -12,6 +13,7 @@ from services import (
     PIPELINE_FILE_NAME,
     TEMPLATE_METADATA_FILE_NAME,
 )
+from services.init_api_clients import init_jobmanager_api
 
 
 class DatabagService:
@@ -28,6 +30,7 @@ class DatabagService:
         self.metadata_file_name = metadata_file_name
         self.component_file_name = component_file_name
         self.pipeline_file_name = pipeline_file_name
+        self.jobmanager = init_jobmanager_api()
 
     def get_databags(self, bucket_name: str) -> List[Databag]:
         items: List[Item] = self.storage.list_items(
@@ -87,9 +90,16 @@ class DatabagService:
         return databags_by_runid.pop()
 
     def delete_databag_by_id(self, bucket_name: str, databag_id: str) -> None:
-        self.storage.delete_items(
-            bucket_name=bucket_name, path_prefix=databag_id
-        )
+        try:
+            databag: Databag = self.get_databag_by_id(bucket_name, databag_id)
+            run_id: str = databag.run_id or ''
+            if run_id:
+                self.jobmanager.delete_run(run_id)
+            self.storage.delete_items(
+                bucket_name=bucket_name, path_prefix=databag_id
+            )
+        except DatabagNotFoundException:
+            return
 
     def create_databag(self, bucket_name, databag_id):
         databag: Databag = Databag(databag_id=databag_id)

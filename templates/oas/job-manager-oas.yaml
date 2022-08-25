@@ -100,6 +100,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Run'
+    delete:
+      summary: 'Delete a run'
+      operationId: deleteRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      tags:
+        - jobmanager
+      responses:
+        204:
+          description: "Deleted"
   "/apis/v1beta1/jobmanager/experiment/{experimentId}/pipeline/{pipelineId}/run":
     post:
       summary: 'Create Run'

@@ -24,6 +24,7 @@ export class DialogAddDatabagComponent {
   fileUrl = '';
   running = false;
   uuid: string = uuidv4();
+  runId = '';
   intervalID = 0;
   pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
@@ -44,7 +45,6 @@ export class DialogAddDatabagComponent {
 
     this.dialogRef.componentInstance.data.uuid = this.uuid;
     this.running = true;
-    let runId = '';
     const runParams: RunParams = {
       bucket: '',
       databagId: this.uuid,
@@ -57,11 +57,11 @@ export class DialogAddDatabagComponent {
           this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
         );
       }
-      runId = await firstValueFrom(
+      this.runId = await firstValueFrom(
         this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
       );
       this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
-      await this.retrievePipelineStatus(runId);
+      await this.retrievePipelineStatus(this.runId);
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
@@ -81,7 +81,6 @@ export class DialogAddDatabagComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    // TODO: STOP RUN BY RUNID
     return this.objectstoreService.deleteDatabag(this.uuid);
   }
 
