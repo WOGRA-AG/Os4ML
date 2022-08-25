@@ -65,6 +65,7 @@ export class DialogAddDatabagComponent {
       this.dialogRef.componentInstance.data.component = DialogDefineDatabagComponent;
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
+      await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
     } finally {
       this.running = false;
     }
