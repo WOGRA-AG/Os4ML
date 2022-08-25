@@ -18,4 +18,3 @@
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
-    FF_NETWORK_PER_BUILD: "true"
