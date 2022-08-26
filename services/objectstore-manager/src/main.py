@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from build.openapi_server.main import app
 from repository import StorageRepository
 from repository.init_storage_service import storage_services
-from services import STORAGE_BACKEND, BUCKET_NAME
+from services import BUCKET_NAME, STORAGE_BACKEND
 
 app.add_middleware(
     CORSMiddleware,
