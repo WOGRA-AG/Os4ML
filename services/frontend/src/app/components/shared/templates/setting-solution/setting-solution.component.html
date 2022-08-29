@@ -53,3 +53,24 @@
     </app-shared-dialog-element>
   </form>
 </mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    class="delete-button"
+    color="warn"
+    type="button"
+    (click)="delete()"
+  >
+    {{"dialog.detail_solution.delete_button" | translate}}
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="update()"
+    [disabled]="!(f.valid)"
+  >
+    {{"dialog.detail_solution.submit_button" | translate}}
+  </button>
+</mat-dialog-actions>

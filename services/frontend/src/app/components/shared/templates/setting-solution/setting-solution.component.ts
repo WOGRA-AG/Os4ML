@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
-import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
+import {DialogDeleteResourceComponent} from '../../../dialog-delete-resource/dialog-delete-resource.component';
 import {FormControl} from '@angular/forms';
 
 @Component({
