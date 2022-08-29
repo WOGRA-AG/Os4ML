@@ -8,7 +8,7 @@ import {
   ObjectstoreService
 } from '../../../../../../build/openapi/objectstore';
 import {MlTypes} from '../../../../models/ml-types';
-import {DialogDeleteResourceComponent} from '../dialog-delete-resource/dialog-delete-resource.component';
+import {DialogDeleteResourceComponent} from '../../../dialog-delete-resource/dialog-delete-resource.component';
 
 @Component({
   selector: 'app-dialog-edit-databag',

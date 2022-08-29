@@ -11,7 +11,7 @@ import {DialogDefineDatabagComponent} from '../../../dialog-define-databag/dialo
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
-import {PipelineStatus} from '../../models/pipeline-status';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 import {HttpClient} from '@angular/common/http';
 
 @Component({

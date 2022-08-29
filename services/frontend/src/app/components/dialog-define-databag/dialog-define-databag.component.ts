@@ -30,7 +30,7 @@ export class DialogDefineDatabagComponent {
 
   back(): void {
     this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      this.dialogRef.componentInstance.data.component = DialogAddDatabagComponent;
+      this.dialogRef.componentInstance.data.component = PopupUploadComponent;
     });
   }
 
