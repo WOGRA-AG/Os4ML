@@ -60,7 +60,14 @@
   }
 
   .mat-dialog-actions {
-    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 42px;
+    padding-bottom: 16px;
   }
 
   .mat-dialog-content {
