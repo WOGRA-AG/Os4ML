@@ -3,7 +3,7 @@
 </app-shared-dialog-header>
 
 <mat-dialog-content>
-  <app-shared-dialog-element>
+  <app-shared-dialog-section>
     <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
       <mat-form-field appearance="outline">
         <mat-label>{{"dialog.define_solver.label" | translate}}</mat-label>
@@ -12,9 +12,9 @@
                [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
       </mat-form-field>
     </form>
-  </app-shared-dialog-element>
+  </app-shared-dialog-section>
 
-  <app-shared-dialog-element>
+  <app-shared-dialog-section>
     <div title>{{"dialog.define_solver.subtitle_solver" | translate}}</div>
     <mat-list>
       <mat-list-item
@@ -33,7 +33,7 @@
         </div>
       </mat-list-item>
     </mat-list>
-  </app-shared-dialog-element>
+  </app-shared-dialog-section>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

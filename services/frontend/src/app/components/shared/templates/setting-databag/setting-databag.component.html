@@ -5,16 +5,16 @@
 <mat-dialog-content>
   <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
 
-    <app-shared-dialog-element>
+    <app-shared-dialog-section>
       <mat-form-field appearance="outline">
         <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
         <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
                name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
                [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
       </mat-form-field>
-    </app-shared-dialog-element>
+    </app-shared-dialog-section>
 
-    <app-shared-dialog-element>
+    <app-shared-dialog-section>
       <div title>{{"dialog.edit_databag.columns" | translate}}</div>
       <div>
         <mat-form-field *ngFor="let column of databag.columns" appearance="outline">
@@ -25,7 +25,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </app-shared-dialog-element>
+    </app-shared-dialog-section>
 
   </form>
 </mat-dialog-content>

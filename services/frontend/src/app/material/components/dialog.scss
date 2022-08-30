@@ -38,18 +38,6 @@
     height: auto;
   }
 
-  .mat-dialog-title {
-    /* Headline 6 */
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 0.15px;
-    color: #0A1629;
-    padding-top: 10px;
-  }
-
   .mat-dialog-header {
     display: flex;
     flex-direction: row;
@@ -81,9 +69,6 @@
       width: 100%;
     }
 
-    .mat-chip {
-      background-color: #F4F9FD;
-    }
   }
 }
 

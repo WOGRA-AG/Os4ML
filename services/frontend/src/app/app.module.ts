@@ -35,17 +35,13 @@ import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
 import {DatabagTableComponent} from './components/databag-table/databag-table.component';
-import {MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatChipsModule} from '@angular/material/chips';
 import {SettingDatabagComponent} from './components/shared/templates/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
 import {SettingSolutionComponent} from './components/shared/templates/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
-import {DialogElementComponent} from './components/shared/molecules/dialog-element/dialog-element.component';
+import {DialogSectionComponent} from './components/shared/molecules/dialog-section/dialog-section.component';
 import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -82,7 +78,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SettingSolutionComponent,
     CloseButtonComponent,
     DialogHeaderComponent,
-    DialogElementComponent,
+    DialogSectionComponent,
     DialogElementDividerComponent
   ],
   imports: [
@@ -109,11 +105,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     )),
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatSortModule,
-    MatChipsModule,
-    MatPaginatorModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -8,7 +8,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
 export class DialogHeaderComponent {
   @Output() closeDialog = new EventEmitter<boolean>();
 
-  onClickClose() {
+  close() {
     this.closeDialog.emit(true);
   }
 }

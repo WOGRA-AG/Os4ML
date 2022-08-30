@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-shared-close-button',
@@ -6,9 +6,4 @@ import {Component, Output, EventEmitter} from '@angular/core';
 })
 
 export class CloseButtonComponent {
-  @Output() clickClose = new EventEmitter<boolean>();
-
-  onClick() {
-    this.clickClose.emit(true);
-  }
 }

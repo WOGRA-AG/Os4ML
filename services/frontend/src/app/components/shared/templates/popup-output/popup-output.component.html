@@ -3,7 +3,7 @@
 </app-shared-dialog-header>
 
 <mat-dialog-content>
-  <app-shared-dialog-element>
+  <app-shared-dialog-section>
     <div description>{{"dialog.define_output.description" | translate}}</div>
     <mat-list>
       <mat-list-item class="bg-primary" *ngFor="let column of databag.columns">
@@ -16,7 +16,7 @@
         </app-shared-toggle-item>
       </mat-list-item>
     </mat-list>
-  </app-shared-dialog-element>
+  </app-shared-dialog-section>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
