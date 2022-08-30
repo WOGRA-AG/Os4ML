@@ -11,16 +11,19 @@ from util.error_handler import error_handler
 @error_handler
 def get_metrics(
     metrics: Input[Metrics],
+    status: str = "",
     *,
     os4ml_namespace: str = "",
     solution_name: str = "",
 ) -> None:
     """Get the metrics from kubeflow and add them to the solution."""
+    solution = get_solution(solution_name, os4ml_namespace)
+    solution.status = status
+    solution.completionTime = datetime.utcnow().strftime(DATE_FORMAT_STR)
     if "accuracy" in metrics.metadata:
         accuracy = metrics.metadata["accuracy"]
-        solution = get_solution(solution_name, os4ml_namespace)
         if solution.metrics is None:
             solution.metrics = SolutionMetrics()
         solution.metrics.accuracy = accuracy
-        solution.completionTime = datetime.utcnow().strftime(DATE_FORMAT_STR)
-        put_solution(solution, solution_name, os4ml_namespace)
+    print(solution)
+    put_solution(solution, solution_name, os4ml_namespace)

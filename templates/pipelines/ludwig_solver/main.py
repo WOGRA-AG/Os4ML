@@ -50,12 +50,7 @@ def ludwig_solver(
     )
     get_metrics_op(
         ludwig_output.outputs["metrics"],
-        solution_name=solution_name,
-        os4ml_namespace=os4ml_namespace,
-    )
-    update_status_op(
-        StatusMessages.finished.value,
-        ludwig_output.outputs["metrics"],
+        status=StatusMessages.finished.value,
         solution_name=solution_name,
         os4ml_namespace=os4ml_namespace,
     )
