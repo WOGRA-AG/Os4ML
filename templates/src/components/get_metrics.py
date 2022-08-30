@@ -19,7 +19,7 @@ def get_metrics(
     """Get the metrics from kubeflow and add them to the solution."""
     solution = get_solution(solution_name, os4ml_namespace)
     solution.status = status
-    solution.completionTime = datetime.utcnow().strftime(DATE_FORMAT_STR)
+    solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
     if "accuracy" in metrics.metadata:
         accuracy = metrics.metadata["accuracy"]
         if solution.metrics is None:
