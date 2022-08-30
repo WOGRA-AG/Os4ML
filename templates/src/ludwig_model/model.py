@@ -4,15 +4,15 @@ from typing import Dict, List, Tuple
 from ludwig.api import LudwigModel
 
 from build.objectstore.model.column import Column
+from build.jobmanager.model.solution import Solution
 from model.column_data_type import ColumnDataType
-from model.column_usage import ColumnUsage
 
 
 def build_model(
-    columns: List[Column], batch_size: int, epochs: int, early_stop: int
+    solution: Solution, columns: List[Column], batch_size: int, epochs: int, early_stop: int
 ) -> Tuple[LudwigModel, Dict]:
     model_definition = build_model_definition(
-        columns, batch_size, epochs, early_stop
+        solution, columns, batch_size, epochs, early_stop
     )
     return (
         LudwigModel(model_definition, logging_level=logging.INFO),
@@ -25,17 +25,17 @@ def train_model(model, df_train, df_validate, df_test):
 
 
 def build_model_definition(
-    columns: List[Column], batch_size: int, epochs: int, early_stop: int
+    solution: Solution, columns: List[Column], batch_size: int, epochs: int, early_stop: int
 ) -> dict:
     feature_descriptions = [
         create_feature_description(column)
         for column in columns
-        if column.usage == ColumnUsage.FEATURE
+        if column.name in solution.input_fields
     ]
     label_descriptions = [
         create_label_description(column)
         for column in columns
-        if column.usage == ColumnUsage.LABEL
+        if column.name in solution.output_fields
     ]
     return {
         "input_features": feature_descriptions,

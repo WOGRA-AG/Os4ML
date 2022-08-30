@@ -5,7 +5,6 @@ import pandas as pd
 
 from build.objectstore.model.column import Column
 from model.column_data_type import ColumnDataType
-from model.column_usage import ColumnUsage
 
 
 def sniff_column_datatypes(
@@ -19,15 +18,12 @@ def sniff_column_datatypes(
         )
         for name, column in df.iteritems()
     )
-    columns = (
+    return [
         Column(
-            name=name, type=type_, usage=ColumnUsage.FEATURE, num_entries=size
+            name=name, type=type_, num_entries=size
         )
         for name, type_, size in names_types_sizes
-    )
-    *feature_columns, label_column = columns
-    label_column.usage = ColumnUsage.LABEL
-    return [*feature_columns, label_column]
+    ]
 
 
 def sniff_series(series: pd.Series, max_categories=10) -> ColumnDataType:
@@ -50,7 +46,6 @@ def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
         file_column = Column(
             name="file",
             type=ColumnDataType.IMAGE,
-            usage=ColumnUsage.FEATURE,
             num_entires=num_files,
         )
     else:
@@ -59,7 +54,6 @@ def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
     label_column = Column(
         name="label",
         type=ColumnDataType.CATEGORY,
-        usage=ColumnUsage.LABEL,
         num_entries=num_labels,
     )
     return [file_column, label_column]
