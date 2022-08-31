@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {DialogAddDatabagComponent} from '../dialog-add-databag/dialog-add-databag.component';
+import {PopupUploadComponent} from '../shared/templates/popup-upload/popup-upload.component';
 import {MlTypes} from '../../models/ml-types';
 import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
 
@@ -30,7 +30,7 @@ export class DialogDefineDatabagComponent {
 
   back(): void {
     this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      this.dialogRef.componentInstance.data.component = DialogAddDatabagComponent;
+      this.dialogRef.componentInstance.data.component = PopupUploadComponent;
     });
   }
 

@@ -129,3 +129,6 @@ class KfpExecutor:
 
     def terminate_run(self, run_id) -> None:
         self.client.runs.terminate_run(run_id)
+
+    def delete_run(self, run_id) -> None:
+        self.client.runs.delete_run(run_id)
