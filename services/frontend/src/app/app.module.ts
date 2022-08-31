@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DatabagPageComponent} from './pages/databag-page/databag-page.component';
-import {FileUploadComponent} from './components/file-upload/file-upload.component';
+import {UploadFieldComponent} from './components/shared/molecules/upload-field/upload-field.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -20,7 +20,7 @@ import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-fo
 import {SupportComponent} from './components/support/support.component';
 import {DatabagListComponent} from './components/databag-list/databag-list.component';
 import {DatabagPlaceholderComponent} from './components/databag-placeholder/databag-placeholder.component';
-import {DialogAddDatabagComponent} from './components/dialog-add-databag/dialog-add-databag.component';
+import {PopupUploadComponent} from './components/shared/templates/popup-upload/popup-upload.component';
 import {DialogDefineDatabagComponent} from './components/dialog-define-databag/dialog-define-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -28,17 +28,21 @@ import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic
 import {SolutionsComponent} from './components/solutions/solutions.component';
 import {SolutionsPlaceholderComponent} from './components/solutions-placeholder/solutions-placeholder.component';
 import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
-import {DialogDefineOutputComponent} from './components/dialog-define-output/dialog-define-output.component';
-import {DialogDefineSolverComponent} from './components/dialog-define-solver/dialog-define-solver.component';
-import {SolverListItemComponent} from './components/solver-list-item/solver-list-item.component';
+import {PopupOutputComponent} from './components/shared/templates/popup-output/popup-output.component';
+import {PopupSolverComponent} from './components/shared/templates/popup-solver/popup-solver.component';
+import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
 import {DatabagTableComponent} from './components/databag-table/databag-table.component';
-import {DialogEditDatabagComponent} from './components/dialog-edit-databag/dialog-edit-databag.component';
+import {SettingDatabagComponent} from './components/shared/templates/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
-import {DialogDetailSolutionComponent} from './components/dialog-detail-solution/dialog-detail-solution.component';
+import {SettingSolutionComponent} from './components/shared/templates/setting-solution/setting-solution.component';
+import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
+import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
+import {DialogSectionComponent} from './components/shared/molecules/dialog-section/dialog-section.component';
+import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -46,7 +50,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   declarations: [
     AppComponent,
     DatabagPageComponent,
-    FileUploadComponent,
+    UploadFieldComponent,
     MainPageComponent,
     ToolbarComponent,
     SidenavComponent,
@@ -56,22 +60,26 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SupportComponent,
     DatabagListComponent,
     DatabagPlaceholderComponent,
-    DialogAddDatabagComponent,
+    PopupUploadComponent,
     DialogDefineDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
     SolutionsComponent,
     SolutionsPlaceholderComponent,
     SolutionsListComponent,
-    DialogDefineOutputComponent,
-    DialogDefineSolverComponent,
-    SolverListItemComponent,
+    PopupOutputComponent,
+    PopupSolverComponent,
+    ToggleItemComponent,
     SolutionListItemComponent,
     DatabagTableComponent,
-    DialogEditDatabagComponent,
+    SettingDatabagComponent,
     LocalizedDatePipe,
     DialogDeleteResourceComponent,
-    DialogDetailSolutionComponent,
+    SettingSolutionComponent,
+    CloseButtonComponent,
+    DialogHeaderComponent,
+    DialogSectionComponent,
+    DialogElementDividerComponent
   ],
   imports: [
     BrowserModule,

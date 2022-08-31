@@ -12,12 +12,12 @@ import {
 } from '../dialog-dynamic/dialog-dynamic.component';
 import {interval, Subscription} from 'rxjs';
 import {
-  DialogAddDatabagComponent
-} from '../dialog-add-databag/dialog-add-databag.component';
+  PopupUploadComponent
+} from '../shared/templates/popup-upload/popup-upload.component';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {DialogEditDatabagComponent} from '../dialog-edit-databag/dialog-edit-databag.component';
+import {SettingDatabagComponent} from '../shared/templates/setting-databag/setting-databag.component';
 
 @Component({
   selector: 'app-databag-table',
@@ -77,7 +77,7 @@ export class DatabagTableComponent implements AfterViewInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogAddDatabagComponent}
+      data: {component: PopupUploadComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute}).then(() => this.refreshDatasource());
@@ -87,10 +87,11 @@ export class DatabagTableComponent implements AfterViewInit {
   openEditDialog(databag: Databag) {
     const uuid: string | undefined = databag.databagId;
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {
-        component: DialogEditDatabagComponent,
-        uuid,
-        databag
+      data: {component: SettingDatabagComponent, uuid, databag},
+      panelClass: 'setting-dialog',
+      height: '100%',
+      position: {
+        right: '12px',
       }
     });
     dialogRef.beforeClosed().subscribe(() => {
