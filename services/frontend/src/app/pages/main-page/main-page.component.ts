@@ -9,8 +9,8 @@ import {
   DialogDynamicComponent
 } from '../../components/dialog-dynamic/dialog-dynamic.component';
 import {
-  DialogAddDatabagComponent
-} from '../../components/dialog-add-databag/dialog-add-databag.component';
+  PopupUploadComponent
+} from '../../components/shared/templates/popup-upload/popup-upload.component';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
@@ -40,7 +40,7 @@ export class MainPageComponent implements OnDestroy {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogAddDatabagComponent}
+      data: {component: PopupUploadComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});

@@ -132,3 +132,6 @@ class JobmanagerApiController:
             bucket_name=self.bucket_name,
             solution_name=solution_name,
         )
+
+    def delete_run(self, run_id: str) -> None:
+        return self.kfp_service.delete_run(run_id)

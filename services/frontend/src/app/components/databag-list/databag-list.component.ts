@@ -4,8 +4,8 @@ import {
   DialogDynamicComponent
 } from '../dialog-dynamic/dialog-dynamic.component';
 import {
-  DialogAddDatabagComponent
-} from '../dialog-add-databag/dialog-add-databag.component';
+  PopupUploadComponent
+} from '../shared/templates/popup-upload/popup-upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Subscription} from 'rxjs';
@@ -51,7 +51,7 @@ export class DatabagListComponent {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogAddDatabagComponent}
+      data: {component: PopupUploadComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});

@@ -5,11 +5,12 @@ from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
 
+from exceptions.resource_not_found_exception import ResourceNotFoundException
 from model.databag_type import DatabagType
 from model.file_type import FileType
 from objectstore.objectstore import download_file, get_download_url
 from util.error_handler import error_handler
-from util.uri import extract_filename_from_uri
+from util.uri import extract_filename_from_uri, resource_exists
 
 
 @error_handler
@@ -35,6 +36,8 @@ def init_databag(
         return databag_info(databag_type.value, df.to_csv(index=False))
 
     elif databag_type == DatabagType.file_url:
+        if not (resource_exists(file_name)):
+            raise ResourceNotFoundException(file_name)
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
     else:

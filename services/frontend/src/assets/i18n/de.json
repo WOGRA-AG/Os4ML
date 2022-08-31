@@ -34,7 +34,8 @@
     "edit_databag": {
       "title": "Edit Databag",
       "label": "Databag Name",
-      "main_button": "Save Databag",
+      "main_button": "Update Databag",
+      "delete_button": "Delete",
       "placeholder": "Databag Name",
       "columns": "Databag Fields"
     },
@@ -54,10 +55,19 @@
       "main_button": "Create Solution",
       "back_button": "Back"
     },
-    "delete_solution": {
+    "delete_resource": {
       "main_button": "Delete",
       "back_button": "Cancel",
-      "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+      "confirmation": "Are you sure you want to delete this resource? All data will be lost!"
+    },
+    "detail_solution": {
+      "title": "Solution Details",
+      "name": "Name",
+      "input_fields": "Eingabefelder",
+      "output_fields": "Ausgabefelder",
+      "solver": "Löser",
+      "delete_button": "Löschen",
+      "submit_button": "Update"
     }
   },
   "page": {
