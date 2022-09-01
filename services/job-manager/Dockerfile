@@ -21,7 +21,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
     PROJECT_DIR="/app" \
-    POETRY_VERSION=1.1.4 \
+    POETRY_VERSION=1.2.0 \
     OPENAPI_GENERATOR_CLI_VERSION=5.4.0
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
@@ -54,7 +54,7 @@ RUN apt-get update \
         build-essential curl \
     && apt-get autoclean
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR $PYSETUP_PATH
 COPY services/job-manager/poetry.lock services/job-manager/pyproject.toml ./
