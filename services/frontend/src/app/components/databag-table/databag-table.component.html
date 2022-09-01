@@ -54,7 +54,7 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"></mat-paginator>
 
-  <button mat-raised-button class="button-add-databag" color="primary" (click)="openAddDialog()">
+  <button mat-raised-button id="add-databag-button-empty" class="button-add-databag" color="primary" (click)="openAddDialog()">
     <mat-icon>add</mat-icon>
     {{"page.databag.table.buttons.addDatabag" | translate}}
   </button>

@@ -5,7 +5,7 @@
 <mat-dialog-content>
   <app-shared-dialog-section>
     <div description>{{"dialog.define_output.description" | translate}}</div>
-    <mat-list>
+    <mat-list id="define-output-list">
       <mat-list-item class="bg-primary" *ngFor="let column of databag.columns">
         <app-shared-toggle-item
           [column]="column"
@@ -20,7 +20,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick()">
+  <button id="define-output-next-button" mat-raised-button color="primary" class="main-button" (click)="nextPageClick()">
     {{"dialog.define_output.main_button" | translate}}
   </button>
 </mat-dialog-actions>
