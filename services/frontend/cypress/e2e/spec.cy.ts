@@ -16,11 +16,11 @@ describe('Databags', () => {
     cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(9).find('span').contains('text');
     cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(10).find('span').contains('category');
     cy.get('[id=\'define-databag-button\']').click();
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(0).contains('titanic.xls', { timeout: 2400000 });
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(1).contains('titanic.xls', { timeout: 2400000 });
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(2).contains('local_file', { timeout: 2400000 });
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(3).contains('11', { timeout: 2400000 });
-    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(4).contains('891', { timeout: 2400000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(0).contains('titanic.xls', { timeout: 400000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(1).contains('titanic.xls', { timeout: 400000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(2).contains('local_file', { timeout: 400000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(3).contains('11', { timeout: 400000 });
+    cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(4).contains('891', { timeout: 400000 });
     cy.get('[id=\'databag-table\']').find('tbody').find('tr').find('td').eq(5);
     cy.visit('/dashboard');
     cy.get('[id=\'bag-list\']').find('mat-list-item').eq(0).click();
