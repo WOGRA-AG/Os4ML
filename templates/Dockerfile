@@ -43,7 +43,7 @@ RUN apt-get update \
         build-essential curl \
     && apt-get autoclean
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
