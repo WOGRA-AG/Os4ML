@@ -19,9 +19,7 @@ def sniff_column_datatypes(
         for name, column in df.iteritems()
     )
     return [
-        Column(
-            name=name, type=type_, num_entries=size
-        )
+        Column(name=name, type=type_, num_entries=size)
         for name, type_, size in names_types_sizes
     ]
 

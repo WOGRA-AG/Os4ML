@@ -1,4 +1,3 @@
-import json
 from typing import List
 
 import pandas as pd
@@ -7,6 +6,8 @@ from kfp.v2.dsl import Dataset, Input
 from build.objectstore.model.column import Column
 from build.objectstore.model.databag import Databag
 from kfp_util.dataset import load_dataset
+from objectstore.objectstore import put_databag, update_databag_status
+from pipelines.util import DatabagStatusMessages
 from sniffle.sniffle import (
     get_num_rows,
     sniff_column_datatypes,
@@ -27,13 +28,15 @@ def sniffle_dataset(
     bucket: str = None,
     databag_id: str = "",
     run_id: str = "",
-) -> str:
+) -> None:
     """
     Guesses the datatypes of the columns in the dataframe.
     For local_file databags the type is derived from the values in the dataframe.
     For zip_file databags the type is derived from the suffix of the file names in the dataframe.
     """
-
+    update_databag_status(
+        databag_id, DatabagStatusMessages.inspecting, os4ml_namespace
+    )
     df = load_dataset(dataset.path)
     columns = create_columns(df, dataset_type, max_categories)
     databag_name = (
@@ -53,8 +56,9 @@ def sniffle_dataset(
         number_columns=num_cols,
         columns=columns,
         run_id=run_id,
+        status=DatabagStatusMessages.creating.value,
     )
-    return json.dumps(databag.to_dict())
+    put_databag(databag, os4ml_namespace)
 
 
 def create_columns(

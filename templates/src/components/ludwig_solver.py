@@ -1,12 +1,13 @@
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
-from jobmanager.solution import get_solution
+from jobmanager.solution import get_solution, status_update
 from load.databag import load_databag
 from load.dataset import build_dataset
 from ludwig_model.dataset import train_validate_test_split
 from ludwig_model.labels import get_all_label_values, get_label_name
 from ludwig_model.metrics import calculate_conf_matrix
 from ludwig_model.model import build_model, train_model
+from pipelines.util import StatusMessages
 from util.error_handler import error_handler
 
 
@@ -27,7 +28,9 @@ def ludwig_solver(
 ) -> None:
     """Train a ludwig model for the dataset."""
     databag = load_databag(databag_file.path)
-    solution = get_solution(solution_name, os4ml_namespace)
+    solution = status_update(
+        solution_name, StatusMessages.running.value, os4ml_namespace
+    )
     model, model_definition = build_model(
         solution, databag.columns, batch_size, epochs, early_stop
     )

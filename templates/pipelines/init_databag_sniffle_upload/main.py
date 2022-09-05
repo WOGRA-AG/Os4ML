@@ -1,17 +1,11 @@
 from kfp.dsl import RUN_ID_PLACEHOLDER
 from kfp.v2.dsl import pipeline
 
-from src.pipelines.util import (
-    DatabagStatusMessages,
-    compile_pipeline,
-    load_component,
-)
+from src.pipelines.util import compile_pipeline, load_component
 
 init_empty_databag_op = load_component("init_empty_databag")
 init_databag_op = load_component("init_databag")
 sniffle_op = load_component("sniffle_dataset")
-create_databag_op = load_component("create_databag")
-update_databag_status_op = load_component("update_databag_status")
 
 
 @pipeline(name="init-databag-sniffle-upload")
@@ -32,37 +26,24 @@ def init_databag_sniffle_upload(
         run_id=run_id,
     )
 
-    df_info = init_databag_op(
+    init_databag = init_databag_op(
         file_name,
         bucket=bucket,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
-        depends_on=init_empty.output,
     )
 
-    update_databag_status_op(
-        DatabagStatusMessages.inspecting.value,
-        depends_on=df_info.outputs["dataset"],
-        databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
-    )
-    sniffle = sniffle_op(
-        dataset=df_info.outputs["dataset"],
-        dataset_type=df_info.outputs["databag_type"],
+    sniffle_op(
+        dataset=init_databag.outputs["dataset"],
+        dataset_type=init_databag.outputs["databag_type"],
         max_categories=max_categories,
         file_name=file_name,
         bucket=bucket,
         databag_id=databag_id,
         run_id=run_id,
+        depends_on=init_empty.output,
         os4ml_namespace=os4ml_namespace,
     )
-    update_databag_status_op(
-        DatabagStatusMessages.creating.value,
-        depends_on=sniffle.output,
-        databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
-    )
-    create_databag_op(sniffle.output, os4ml_namespace=os4ml_namespace)
 
 
 def main():

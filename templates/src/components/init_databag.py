@@ -27,8 +27,8 @@ def init_databag(
     If the file is a zip file it should only contain directories in the top level.
     The names of them are used as labels and the files they contain are used as features.
     """
-    databag_type = DatabagType.from_uri(file_name)
     databag_info = namedtuple("DatabagInfo", ["databag_type", "dataset"])
+    databag_type = DatabagType.from_uri(file_name)
 
     if databag_type == DatabagType.shepard_url:
         # TODO: Replace with real data
@@ -36,7 +36,7 @@ def init_databag(
         return databag_info(databag_type.value, df.to_csv(index=False))
 
     elif databag_type == DatabagType.file_url:
-        if not (resource_exists(file_name)):
+        if not resource_exists(file_name):
             raise ResourceNotFoundException(file_name)
         data_uri = file_name
         file_name = extract_filename_from_uri(file_name)
