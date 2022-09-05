@@ -7,11 +7,12 @@ from util.init_jobmanager_client import init_jobmanager_client
 
 def status_update(
     solution_name: str, new_status: str, os4ml_namespace: str
-) -> None:
+) -> Solution:
     jobmanager = init_jobmanager_client(os4ml_namespace)
     solution = jobmanager.get_solution(solution_name)
     solution.status = new_status
     jobmanager.put_solution(solution.name, solution=solution)
+    return solution
 
 
 def error_status_update(solution_name: str, os4ml_namespace: str) -> None:

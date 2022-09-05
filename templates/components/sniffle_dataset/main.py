@@ -1,4 +1,4 @@
-from kfp.v2.dsl import Dataset, Input
+from kfp.v2.dsl import Artifact, Dataset, Input
 
 from components.images import pandas_image
 from components.util import build_component
@@ -12,6 +12,7 @@ def sniffle_dataset(
     bucket: str = "",
     databag_id: str = "",
     run_id: str = "",
+    depends_on: Artifact = None,
     os4ml_namespace: str = "",
 ) -> Dataset:
     from components.sniffle_dataset import sniffle_dataset
@@ -24,6 +25,7 @@ def sniffle_dataset(
         bucket=bucket,
         databag_id=databag_id,
         run_id=run_id,
+        os4ml_namespace=os4ml_namespace,
     )
 
 

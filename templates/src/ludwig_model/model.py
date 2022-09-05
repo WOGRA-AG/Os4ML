@@ -3,13 +3,17 @@ from typing import Dict, List, Tuple
 
 from ludwig.api import LudwigModel
 
-from build.objectstore.model.column import Column
 from build.jobmanager.model.solution import Solution
+from build.objectstore.model.column import Column
 from model.column_data_type import ColumnDataType
 
 
 def build_model(
-    solution: Solution, columns: List[Column], batch_size: int, epochs: int, early_stop: int
+    solution: Solution,
+    columns: List[Column],
+    batch_size: int,
+    epochs: int,
+    early_stop: int,
 ) -> Tuple[LudwigModel, Dict]:
     model_definition = build_model_definition(
         solution, columns, batch_size, epochs, early_stop
@@ -25,7 +29,11 @@ def train_model(model, df_train, df_validate, df_test):
 
 
 def build_model_definition(
-    solution: Solution, columns: List[Column], batch_size: int, epochs: int, early_stop: int
+    solution: Solution,
+    columns: List[Column],
+    batch_size: int,
+    epochs: int,
+    early_stop: int,
 ) -> dict:
     feature_descriptions = [
         create_feature_description(column)
