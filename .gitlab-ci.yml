@@ -1,6 +1,5 @@
 include:
   - local: 'gitlab/.gitlab-ci.templates.yml'
-  - local: 'gitlab/.gitlab-ci.build-templates.yml'
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'

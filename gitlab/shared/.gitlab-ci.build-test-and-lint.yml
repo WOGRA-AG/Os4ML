@@ -1,4 +1,4 @@
-.build-development:
+.build-test-and-lint:
   stage: test
   services:
     - docker:20.10.14-dind
@@ -6,6 +6,14 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
+    - docker build
+      -f $DOCKERFILE
+      --target lint
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      $BUILD_CONTEXT
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
     - docker build
       -f $DOCKERFILE
       --target test

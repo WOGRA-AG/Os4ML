@@ -1,18 +1,17 @@
 include:
-  - local: 'gitlab/shared/.gitlab-ci.prepare-validate-oas.yml'
-  - local: 'gitlab/shared/.gitlab-ci.build-test.yml'
-  - local: 'gitlab/shared/.gitlab-ci.build-images.yml'
+  - local: 'gitlab/shared/.gitlab-ci.validate-oas.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-test-and-lint.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
 
-# Build Jobmanager image
 job-manager-validate-oas:
   extends:
     - .validate-oas
   variables:
     OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
 
-job-manager-validate-backend:
+job-manager-test-and-lint:
   extends:
-    - .build-development
+    - .build-test-and-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'
@@ -22,7 +21,7 @@ job-manager-build:
   extends:
     - .build-production
   needs:
-    - job-manager-validate-backend
+    - job-manager-test-and-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'
