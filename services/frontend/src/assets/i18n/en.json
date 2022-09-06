@@ -13,7 +13,12 @@
   "error": {
     "confirm": "OK",
     "no_dataset": "No Dataset specified",
-    "run_failed": "Pipeline Run Failed"
+    "error_msg_key": {
+      "default": "Pipeline Run Failed",
+      "dataset_not_found": "Dataset not found",
+      "dataset_format_unknown": "Dataset format unknown",
+      "dataset_could_not_be_read": "Dataset could not be read"
+    }
   },
   "dialog": {
     "add_databag": {
