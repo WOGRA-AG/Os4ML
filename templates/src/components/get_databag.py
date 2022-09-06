@@ -6,7 +6,7 @@ from pipelines.util import StatusMessages
 from util.error_handler import error_handler
 
 
-@error_handler
+@error_handler()
 def get_databag(
     databag_id: str, *, os4ml_namespace: str = "", solution_name: str = ""
 ) -> str:

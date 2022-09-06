@@ -17,7 +17,7 @@ from util.error_handler import error_handler
 from util.uri import extract_filename_from_uri, is_uri
 
 
-@error_handler
+@error_handler()
 def sniffle_dataset(
     dataset: Input[Dataset],
     dataset_type: str = "local_file",

@@ -33,8 +33,14 @@ def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
     objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
 
 
-def error_databag_status_update(bucket: str, os4ml_namespace: str):
-    update_databag_status(bucket, "error", os4ml_namespace)
+def error_databag_status_update(
+    databag_id: str, error_msg_key: str, os4ml_namespace: str
+):
+    objectstore = init_objectstore_client(os4ml_namespace)
+    databag = objectstore.get_databag_by_id(databag_id=databag_id)
+    databag.status = "error"
+    databag.error_msg_key = error_msg_key
+    objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
 
 
 def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:

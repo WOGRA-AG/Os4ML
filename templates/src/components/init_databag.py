@@ -13,7 +13,7 @@ from util.error_handler import error_handler
 from util.uri import extract_filename_from_uri, resource_exists
 
 
-@error_handler
+@error_handler(error_msg_key="")
 def init_databag(
     file_name: str,
     *,

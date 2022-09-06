@@ -9,7 +9,7 @@ from util.date import DATE_FORMAT_STR
 from util.error_handler import error_handler
 
 
-@error_handler
+@error_handler()
 def get_metrics(
     metrics: Input[Metrics],
     *,

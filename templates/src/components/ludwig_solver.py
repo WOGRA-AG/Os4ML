@@ -11,7 +11,7 @@ from pipelines.util import StatusMessages
 from util.error_handler import error_handler
 
 
-@error_handler
+@error_handler()
 def ludwig_solver(
     dataset_file: Input[Dataset],
     databag_file: Input[Dataset],

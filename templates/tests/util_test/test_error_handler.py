@@ -6,7 +6,7 @@ from util.error_handler import error_handler
 
 @pytest.fixture
 def func_with_error():
-    @error_handler
+    @error_handler(error_msg_key="test_error")
     def _func_with_error(**kwargs):
         raise ValueError("This is a test error")
 
@@ -15,7 +15,7 @@ def func_with_error():
 
 @pytest.fixture
 def func_without_error():
-    @error_handler
+    @error_handler(error_msg_key="test_error")
     def _func_without_error(**kwargs):
         pass
 
@@ -85,8 +85,27 @@ def test_error_handler_without_error(mocker, func_without_error, kwargs):
 
 
 def test_error_handler_with_return_value():
-    @error_handler
+    @error_handler(error_msg_key="test_error")
     def forty_two():
         return 42
 
     assert forty_two() == 42
+
+
+def test_error_handler_error_msg_key(mocker):
+    @error_handler(error_msg_key="right_error_msg_key")
+    def value_error(bucket="test", os4ml_namespace="os4ml"):
+        raise ValueError(bucket + os4ml_namespace)
+
+    databag_status_mock = mocker.Mock()
+    mocker.patch.object(
+        util.error_handler,
+        "error_databag_status_update",
+        databag_status_mock,
+    )
+    with pytest.raises(ValueError):
+        value_error(bucket="test", os4ml_namespace="os4ml")
+
+    databag_status_mock.assert_called_once_with(
+        "test", "right_error_msg_key", "os4ml"
+    )

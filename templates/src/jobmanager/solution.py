@@ -15,10 +15,13 @@ def status_update(
     return solution
 
 
-def error_status_update(solution_name: str, os4ml_namespace: str) -> None:
+def error_status_update(
+    solution_name: str, error_msg_key: str, os4ml_namespace: str
+) -> None:
     jobmanager = init_jobmanager_client(os4ml_namespace)
     solution = jobmanager.get_solution(solution_name)
     solution.status = "error"
+    solution.error_msg_key = error_msg_key
     solution.completionTime = datetime.utcnow().strftime(DATE_FORMAT_STR)
     jobmanager.put_solution(solution.name, solution=solution)
 

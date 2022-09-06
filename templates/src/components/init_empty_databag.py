@@ -6,7 +6,7 @@ from pipelines.util import DatabagStatusMessages
 from util.error_handler import error_handler
 
 
-@error_handler
+@error_handler()
 def init_empty_databag(
     file_name: str,
     run_id: str = "",
