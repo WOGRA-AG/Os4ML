@@ -9,24 +9,28 @@ def ludwig_solver(
     databag_file: Input[Dataset],
     cls_metrics: Output[ClassificationMetrics],
     metrics: Output[Metrics],
+    solution_name: str,
+    os4ml_namespace: str,
     batch_size: int = 8,
     epochs: int = 50,
     early_stop: int = 3,
-    os4ml_namespace: str = "",
-    solution_name: str = "",
+    test_split: float = 0.1,
+    validation_split: float = 0.1,
 ) -> None:
     from components.ludwig_solver import ludwig_solver
 
     ludwig_solver(
-        dataset_file,
-        databag_file,
-        cls_metrics,
-        metrics,
-        batch_size,
-        epochs,
-        early_stop,
-        os4ml_namespace=os4ml_namespace,
+        dataset_file=dataset_file,
+        databag_file=databag_file,
+        cls_metrics=cls_metrics,
+        metrics=metrics,
         solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
+        batch_size=batch_size,
+        epochs=epochs,
+        early_stop=early_stop,
+        test_split=test_split,
+        validation_split=validation_split,
     )
 
 

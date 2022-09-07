@@ -20,29 +20,27 @@ def init_databag_sniffle_upload(
 ):
     init_empty = init_empty_databag_op(
         file_name=file_name,
+        run_id=run_id,
         bucket=bucket,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
-        run_id=run_id,
     )
 
     init_databag = init_databag_op(
-        file_name,
+        file_name=file_name,
         bucket=bucket,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
+        solution_name=solution_name,
     )
 
     sniffle_op(
         dataset=init_databag.outputs["dataset"],
         dataset_type=init_databag.outputs["databag_type"],
         max_categories=max_categories,
-        file_name=file_name,
-        bucket=bucket,
         databag_id=databag_id,
-        run_id=run_id,
-        depends_on=init_empty.output,
         os4ml_namespace=os4ml_namespace,
+        depends_on=init_empty.output,
     )
 
 
