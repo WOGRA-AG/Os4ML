@@ -10,7 +10,6 @@ def sniffle_dataset(
     max_categories: int,
     databag_id: str,
     os4ml_namespace: str,
-    depends_on: Artifact = None,
 ) -> Dataset:
     from components.sniffle_dataset import sniffle_dataset
 

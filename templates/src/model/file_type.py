@@ -3,6 +3,12 @@ from __future__ import annotations
 import enum
 import pathlib
 
+from model.error_msg_key import ErrorMsgKey
+
+
+class FileTypeUnknownError(ValueError):
+    error_msg_key = ErrorMsgKey.FILE_TYPE_UNKNOWN
+
 
 class FileType(str, enum.Enum):
     CSV = "csv"
@@ -19,4 +25,4 @@ class FileType(str, enum.Enum):
         elif suffix == ".zip":
             return FileType.ZIP
         else:
-            raise ValueError(f"Unknown file type: {suffix}")
+            raise FileTypeUnknownError(f"Unknown file type: {suffix}")

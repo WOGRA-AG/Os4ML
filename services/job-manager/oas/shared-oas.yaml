@@ -20,7 +20,7 @@ components:
           type: string
         status:
           type: string
-        error_msg_key:
+        errorMsgKey:
           type: string
           nullable: true
         solver:
@@ -86,7 +86,7 @@ components:
         status:
           type: string
           nullable: true
-        error_msg_key:
+        errorMsgKey:
           type: string
           nullable: true
         runId:

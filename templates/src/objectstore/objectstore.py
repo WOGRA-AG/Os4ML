@@ -3,6 +3,7 @@ from typing import BinaryIO
 import requests
 
 from build.objectstore.model.databag import Databag
+from model.error_msg_key import ErrorMsgKey
 from util.init_objectstore_client import init_objectstore_client
 
 
@@ -34,12 +35,12 @@ def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
 
 
 def error_databag_status_update(
-    databag_id: str, error_msg_key: str, os4ml_namespace: str
+    databag_id: str, error_msg_key: ErrorMsgKey, os4ml_namespace: str
 ):
     objectstore = init_objectstore_client(os4ml_namespace)
     databag = objectstore.get_databag_by_id(databag_id=databag_id)
     databag.status = "error"
-    databag.error_msg_key = error_msg_key
+    databag.error_msg_key = error_msg_key.value
     objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
 
 

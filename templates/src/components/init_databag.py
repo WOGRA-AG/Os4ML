@@ -36,7 +36,7 @@ def init_databag(
         functools.partial(
             error_status_update, solution_name, os4ml_namespace=os4ml_namespace
         )
-        if solution_name
+        if solution_name and not solution_name == "None"
         else functools.partial(
             error_databag_status_update,
             databag_id,

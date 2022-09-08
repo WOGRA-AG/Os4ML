@@ -32,6 +32,7 @@ def init_databag_sniffle_upload(
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
+        depends_on=init_empty.output,
     )
 
     sniffle_op(
@@ -40,7 +41,6 @@ def init_databag_sniffle_upload(
         max_categories=max_categories,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
-        depends_on=init_empty.output,
     )
 
 

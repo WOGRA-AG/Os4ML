@@ -107,10 +107,10 @@ export class PopupUploadComponent {
                 .pipe(
                   catchError(err => of({} as Databag)),
                   map(databag => {
-                    if (!databag.error_msg_key) {
+                    if (!databag.errorMsgKey) {
                       return 'error.error_msg_key.default';
                     }
-                    return `error.error_msg_key.${databag.error_msg_key}`;
+                    return `error.error_msg_key.${databag.errorMsgKey}`;
                   }),
                   mergeMap((toTranslate) => this.translate.get(toTranslate))
                 )

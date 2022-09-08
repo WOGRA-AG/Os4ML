@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from kfp.v2.dsl import Dataset
+from kfp.v2.dsl import Artifact, Dataset
 
 from components.images import pandas_image
 from components.util import build_component
@@ -12,6 +12,7 @@ def init_databag(
     databag_id: str,
     os4ml_namespace: str,
     solution_name: str,
+    depends_on: Artifact = None,
 ) -> NamedTuple("DatabagInfo", [("databag_type", str), ("dataset", Dataset)]):
     from components.init_databag import init_databag
 
