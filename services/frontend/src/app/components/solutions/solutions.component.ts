@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Databag} from '../../../../build/openapi/objectstore';
 import {Solution} from '../../../../build/openapi/jobmanager';
-import {PopupOutputComponent} from '../shared/templates/popup-output/popup-output.component';
+import {PopupOutputComponent} from '../shared/organisms/popup-output/popup-output.component';
 
 @Component({
   selector: 'app-solutions',

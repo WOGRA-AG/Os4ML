@@ -5,7 +5,7 @@ import {
 } from '../dialog-dynamic/dialog-dynamic.component';
 import {
   PopupUploadComponent
-} from '../shared/templates/popup-upload/popup-upload.component';
+} from '../shared/organisms/popup-upload/popup-upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Subscription} from 'rxjs';

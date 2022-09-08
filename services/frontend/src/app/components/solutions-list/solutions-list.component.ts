@@ -5,7 +5,7 @@ import {
 } from '../dialog-dynamic/dialog-dynamic.component';
 import {
   SettingSolutionComponent
-} from '../shared/templates/setting-solution/setting-solution.component';
+} from '../shared/organisms/setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 

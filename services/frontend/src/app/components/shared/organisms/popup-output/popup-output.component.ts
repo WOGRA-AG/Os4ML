@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Databag} from '../../../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {PopupSolverComponent} from '../../../shared/templates/popup-solver/popup-solver.component';
+import {PopupSolverComponent} from '../../../shared/organisms/popup-solver/popup-solver.component';
 import {Solution} from '../../../../../../build/openapi/jobmanager';
 
 @Component({
