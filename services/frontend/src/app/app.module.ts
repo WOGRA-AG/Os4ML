@@ -28,7 +28,7 @@ import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic
 import {SolutionsComponent} from './components/solutions/solutions.component';
 import {SolutionsPlaceholderComponent} from './components/solutions-placeholder/solutions-placeholder.component';
 import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
-import {PopupOutputComponent} from './components/shared/organisms/popup-output/popup-output.component';
+import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';
 import {PopupSolverComponent} from './components/shared/organisms/popup-solver/popup-solver.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
@@ -67,7 +67,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SolutionsComponent,
     SolutionsPlaceholderComponent,
     SolutionsListComponent,
-    PopupOutputComponent,
+    PopupPredictionsComponent,
     PopupSolverComponent,
     ToggleItemComponent,
     SolutionListItemComponent,

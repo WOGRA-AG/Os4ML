@@ -7,10 +7,10 @@ import {Solution} from '../../../../../../build/openapi/jobmanager';
 
 @Component({
   selector: 'app-dialog-define-output',
-  templateUrl: './popup-output.component.html',
-  styleUrls: ['./popup-output.component.scss']
+  templateUrl: './popup-predictions.component.html',
+  styleUrls: ['./popup-predictions.component.scss']
 })
-export class PopupOutputComponent {
+export class PopupPredictionsComponent {
   databag: Databag = {};
   solution: Solution = {};
 

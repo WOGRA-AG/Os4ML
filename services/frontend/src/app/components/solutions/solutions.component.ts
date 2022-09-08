@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Databag} from '../../../../build/openapi/objectstore';
 import {Solution} from '../../../../build/openapi/jobmanager';
-import {PopupOutputComponent} from '../shared/organisms/popup-output/popup-output.component';
+import {PopupPredictionsComponent} from '../shared/organisms/popup-predictions/popup-predictions.component';
 
 @Component({
   selector: 'app-solutions',
@@ -21,7 +21,7 @@ export class SolutionsComponent {
 
   openCreateSolutionDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: PopupOutputComponent, databag: this.databag}
+      data: {component: PopupPredictionsComponent, databag: this.databag}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && (result as Solution).name) {
