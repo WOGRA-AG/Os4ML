@@ -1,5 +1,5 @@
 <app-shared-dialog-header (closeDialog)="close()">
-  {{"dialog.edit_databag.title" | translate}}
+  {{"dialog.define_databag.title" | translate}}
 </app-shared-dialog-header>
 
 <mat-dialog-content>
@@ -31,20 +31,12 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button
-    mat-stroked-button
-    color="warn"
-    type="button"
-    (click)="delete()"
-  >
-    {{"dialog.edit_databag.delete_button" | translate}}
+  <button mat-icon-button class="back-button" [disableRipple]="true" (click)="back()">
+    <mat-icon>arrow_back_ios</mat-icon>
+    {{"dialog.define_databag.back_button" | translate}}
   </button>
-  <button
-    mat-raised-button
-    form="ngForm"
-    color="primary"
-    type="submit"
-  >
-    {{"dialog.edit_databag.main_button" | translate}}
+  <div class="button-spacer"></div>
+  <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
+    {{"dialog.define_databag.main_button" | translate}}
   </button>
 </mat-dialog-actions>

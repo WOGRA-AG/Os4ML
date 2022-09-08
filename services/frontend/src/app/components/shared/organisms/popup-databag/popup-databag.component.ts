@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {PopupUploadComponent} from '../shared/organisms/popup-upload/popup-upload.component';
-import {MlTypes} from '../../models/ml-types';
-import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {PopupUploadComponent} from '../popup-upload/popup-upload.component';
+import {MlTypes} from '../../../../models/ml-types';
+import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 
 @Component({
   selector: 'app-dialog-define-databag',
-  templateUrl: './dialog-define-databag.component.html',
-  styleUrls: ['./dialog-define-databag.component.scss']
+  templateUrl: './popup-databag.component.html',
+  styleUrls: ['./popup-databag.component.scss']
 })
-export class DialogDefineDatabagComponent {
+export class PopupDatabagComponent {
   mlTypesArray = Object.keys(MlTypes);
   uuid = '';
   databag: Databag = {};

@@ -6,7 +6,7 @@ import {PopupSolverComponent} from '../../../shared/organisms/popup-solver/popup
 import {Solution} from '../../../../../../build/openapi/jobmanager';
 
 @Component({
-  selector: 'app-dialog-define-output',
+  selector: 'app-popup-predictions',
   templateUrl: './popup-predictions.component.html',
   styleUrls: ['./popup-predictions.component.scss']
 })
