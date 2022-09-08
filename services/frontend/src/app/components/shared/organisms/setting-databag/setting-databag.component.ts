@@ -11,7 +11,7 @@ import {MlTypes} from '../../../../models/ml-types';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 
 @Component({
-  selector: 'app-dialog-edit-databag',
+  selector: 'app-shared-setting-databag',
   templateUrl: './setting-databag.component.html',
   styleUrls: ['./setting-databag.component.scss']
 })

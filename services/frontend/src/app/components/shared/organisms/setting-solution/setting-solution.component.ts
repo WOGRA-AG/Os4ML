@@ -3,10 +3,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
-import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-setting-solution',
+  selector: 'app-shared-setting-solution',
   templateUrl: './setting-solution.component.html',
   styleUrls: ['./setting-solution.component.scss']
 })

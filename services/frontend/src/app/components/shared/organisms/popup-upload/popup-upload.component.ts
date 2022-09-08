@@ -15,7 +15,7 @@ import {PipelineStatus} from '../../../../models/pipeline-status';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
-  selector: 'app-dialog-add-databag',
+  selector: 'app-shared-popup-upload',
   templateUrl: './popup-upload.component.html',
   styleUrls: ['./popup-upload.component.scss']
 })

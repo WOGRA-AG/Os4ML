@@ -8,7 +8,7 @@ import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 
 @Component({
-  selector: 'app-dialog-define-solver',
+  selector: 'app-shared-popup-solver',
   templateUrl: './popup-solver.component.html',
   styleUrls: ['./popup-solver.component.scss']
 })
