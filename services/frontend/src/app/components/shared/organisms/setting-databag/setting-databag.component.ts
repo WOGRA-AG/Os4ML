@@ -8,7 +8,7 @@ import {
   ObjectstoreService
 } from '../../../../../../build/openapi/objectstore';
 import {MlTypes} from '../../../../models/ml-types';
-import {DialogDeleteResourceComponent} from '../../../dialog-delete-resource/dialog-delete-resource.component';
+import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 
 @Component({
   selector: 'app-dialog-edit-databag',
@@ -43,7 +43,7 @@ export class SettingDatabagComponent {
 
   delete(): void {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDeleteResourceComponent, databag: this.databag}
+      data: {component: PopupDeleteComponent, databag: this.databag}
     });
     deleteDialogRef.afterClosed().subscribe((msg) => {
       if (msg === 'deleted') {

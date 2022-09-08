@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, Solution} from '../../../../build/openapi/jobmanager';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
 import { catchError, of } from 'rxjs';
-import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
+import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 
 @Component({
-  selector: 'app-dialog-delete-resource',
-  templateUrl: './dialog-delete-resource.component.html',
-  styleUrls: ['./dialog-delete-resource.component.scss']
+  selector: 'app-shared-popup-delete',
+  templateUrl: './popup-delete.component.html',
+  styleUrls: ['./popup-delete.component.scss']
 })
-export class DialogDeleteResourceComponent {
+export class PopupDeleteComponent {
   solution: Solution;
   databag: Databag;
   deleting = false;
@@ -24,7 +24,7 @@ export class DialogDeleteResourceComponent {
     this.databag = dialogRef.componentInstance.data.databag;
   }
 
-  onBack(): void {
+  close(): void {
     this.dialogRef.close('cancel');
   }
 

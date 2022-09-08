@@ -37,7 +37,7 @@ import {SolutionListItemComponent} from './components/solution-list-item/solutio
 import {DatabagTableComponent} from './components/databag-table/databag-table.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
-import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
+import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
 import {SettingSolutionComponent} from './components/shared/organisms/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
@@ -74,7 +74,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DatabagTableComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
-    DialogDeleteResourceComponent,
+    PopupDeleteComponent,
     SettingSolutionComponent,
     CloseButtonComponent,
     DialogHeaderComponent,

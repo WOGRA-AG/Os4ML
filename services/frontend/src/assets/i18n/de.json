@@ -55,10 +55,10 @@
       "main_button": "Create Solution",
       "back_button": "Back"
     },
-    "delete_resource": {
+    "delete_popup": {
+      "title": "Confirm Delete",
       "main_button": "Delete",
-      "back_button": "Cancel",
-      "confirmation": "Are you sure you want to delete this resource? All data will be lost!"
+      "confirmation": "Are you sure you want to delete? All data will be lost!"
     },
     "detail_solution": {
       "title": "Solution Details",
