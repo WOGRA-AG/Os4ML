@@ -60,4 +60,8 @@ export class SolutionListItemComponent implements OnDestroy {
     const creationDate = new Date(creationTime);
     return creationDate.toLocaleDateString('de-DE');
   }
+
+  formatAccuracy(solutionAccuracy: number): number {
+    return Math.round(solutionAccuracy * 100);
+  }
 }
