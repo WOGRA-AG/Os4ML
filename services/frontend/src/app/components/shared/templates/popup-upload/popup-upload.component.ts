@@ -10,7 +10,7 @@ import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.com
 import {DialogDefineDatabagComponent} from '../../../dialog-define-databag/dialog-define-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {catchError, firstValueFrom, Observable, of} from 'rxjs';
+import {catchError, firstValueFrom, map, mergeMap, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../../../models/pipeline-status';
 import {HttpClient} from '@angular/common/http';
 
@@ -88,27 +88,40 @@ export class PopupUploadComponent {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
         this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
-          if (run.status === PipelineStatus.running) {
-            this.objectstoreService.getDatabagByRunId(runId)
-              .pipe(
-                catchError(err => of({} as Databag)
+          switch (run.status) {
+            case PipelineStatus.running:
+              this.objectstoreService.getDatabagByRunId(runId)
+                .pipe(
+                  catchError(err => of({} as Databag)
+                  )
                 )
-              )
-              .subscribe((databag) => {
-                if (databag.status) {
-                  this.pipelineStatus = databag.status;
-                }
-            });
-          }
-          if (run.status === PipelineStatus.failed) {
-            clearInterval(this.intervalID);
-            this.translate.get('error.run_failed').subscribe((res: string) => {
-              reject(run.error || res);
-            });
-          }
-          if (run.status === PipelineStatus.succeeded) {
-            clearInterval(this.intervalID);
-            resolve(run.status);
+                .subscribe((databag) => {
+                  if (databag.status) {
+                    this.pipelineStatus = databag.status;
+                  }
+                });
+              break;
+            case PipelineStatus.failed:
+              clearInterval(this.intervalID);
+              this.objectstoreService.getDatabagByRunId(runId)
+                .pipe(
+                  catchError(err => of({} as Databag)),
+                  map(databag => {
+                    if (!databag.errorMsgKey) {
+                      return 'error.error_msg_key.default';
+                    }
+                    return `error.error_msg_key.${databag.errorMsgKey}`;
+                  }),
+                  mergeMap((toTranslate) => this.translate.get(toTranslate))
+                )
+                .subscribe((rejectMsg) => {
+                  reject(rejectMsg);
+                });
+              break;
+            case PipelineStatus.succeeded:
+              clearInterval(this.intervalID);
+              resolve(run.status);
+              break;
           }
         });
       }, 2000);

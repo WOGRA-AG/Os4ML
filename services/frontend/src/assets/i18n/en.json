@@ -13,7 +13,17 @@
   "error": {
     "confirm": "OK",
     "no_dataset": "No Dataset specified",
-    "run_failed": "Pipeline Run Failed"
+    "error_msg_key": {
+      "default": "Pipeline Run Failed",
+      "databag_not_accessible": "Databag not accessible",
+      "databag_could_not_be_created": "Databag_could_not_be_created",
+      "dataset_not_found": "Dataset not found",
+      "dataset_format_unknown": "Dataset format unknown",
+      "dataset_could_not_be_read": "Dataset could not be read",
+      "metrics_not_retrievable": "Metrics not retrievable",
+      "training_failed": "Training failed",
+      "file_type_unknown": "File type unknown"
+    }
   },
   "dialog": {
     "add_databag": {
@@ -67,7 +77,8 @@
       "output_fields": "Output Fields",
       "solver": "Solver",
       "delete_button": "Delete",
-      "submit_button": "Update"
+      "submit_button": "Update",
+      "error": "Error"
     }
   },
   "page": {
