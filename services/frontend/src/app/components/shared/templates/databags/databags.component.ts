@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {PopupUploadComponent} from '../shared/organisms/popup-upload/popup-upload.component';
-import {Databag} from '../../../../build/openapi/objectstore';
+import {PopupUploadComponent} from '../../organisms/popup-upload/popup-upload.component';
+import {Databag} from '../../../../../../build/openapi/objectstore';
 @Component({
   selector: 'app-shared-databags',
   templateUrl: './databags.component.html',
