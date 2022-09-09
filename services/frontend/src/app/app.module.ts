@@ -18,7 +18,7 @@ import {SettingsPageComponent} from './pages/settings-page/settings-page.compone
 import {UserPageComponent} from './pages/user-page/user-page.component';
 import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
 import {SupportComponent} from './components/support/support.component';
-import {DatabagListComponent} from './components/databag-list/databag-list.component';
+import {DatabagChooseComponent} from './components/shared/molecules/databag-choose/databag-choose.component';
 import {DatabagPlaceholderComponent} from './components/databag-placeholder/databag-placeholder.component';
 import {PopupUploadComponent} from './components/shared/organisms/popup-upload/popup-upload.component';
 import {PopupDatabagComponent} from './components/shared/organisms/popup-databag/popup-databag.component';
@@ -59,7 +59,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     UserPageComponent,
     PageNotFoundPageComponent,
     SupportComponent,
-    DatabagListComponent,
+    DatabagChooseComponent,
     DatabagPlaceholderComponent,
     PopupUploadComponent,
     PopupDatabagComponent,

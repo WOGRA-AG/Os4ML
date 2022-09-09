@@ -1,21 +1,21 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Databag} from '../../../../build/openapi/objectstore';
+import {Databag} from '../../../../../../build/openapi/objectstore';
 import {
   DialogDynamicComponent
-} from '../dialog-dynamic/dialog-dynamic.component';
+} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {
   PopupUploadComponent
-} from '../shared/organisms/popup-upload/popup-upload.component';
+} from '../../organisms/popup-upload/popup-upload.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-databag-list',
-  templateUrl: './databag-list.component.html',
-  styleUrls: ['./databag-list.component.scss']
+  selector: 'app-shared-databag-choose',
+  templateUrl: './databag-choose.component.html',
+  styleUrls: ['./databag-choose.component.scss']
 })
-export class DatabagListComponent {
+export class DatabagChooseComponent {
 
   @Input() databags: Databag[] = [];
   @Input() selectedDatabag: Databag = {};

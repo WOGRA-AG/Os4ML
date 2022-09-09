@@ -4,7 +4,7 @@
 
 <ng-template #databagTemplate>
   <div class="databag-container">
-    <app-databag-list [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-databag-list>
+    <app-shared-databag-choose [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-shared-databag-choose>
     <div *ngIf="selectedDatabag.databagName" class="solutions-template">
       <app-solutions [(solutions)]="solutions" [databag]="selectedDatabag"></app-solutions>
     </div>
