@@ -3,10 +3,7 @@
 </div>
 
 <ng-template #databagTemplate>
-  <div class="headline">
-    <h4>{{"page.dashboard.title" | translate}}</h4>
-  </div>
-  <div class="content-container">
+  <div class="databag-container">
     <app-databag-list [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-databag-list>
     <div *ngIf="selectedDatabag.databagName" class="solutions-template">
       <app-solutions [(solutions)]="solutions" [databag]="selectedDatabag"></app-solutions>
