@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
-import {Solution} from '../../../../build/openapi/jobmanager';
+import {Solution} from '../../../../../../build/openapi/jobmanager';
 import {
   DialogDynamicComponent
-} from '../dialog-dynamic/dialog-dynamic.component';
+} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {
   SettingSolutionComponent
-} from '../shared/organisms/setting-solution/setting-solution.component';
+} from '../setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 

@@ -26,14 +26,14 @@ import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
 import {SolutionsComponent} from './components/solutions/solutions.component';
-import {SolutionsPlaceholderComponent} from './components/shared/molecules/solutions-placeholder/solutions-placeholder.component';
-import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
+import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
+import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
 import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';
 import {PopupSolverComponent} from './components/shared/organisms/popup-solver/popup-solver.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
-import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
+import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
 import {DatabagTableComponent} from './components/databag-table/databag-table.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
@@ -66,7 +66,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DragAndDropDirective,
     DialogDynamicComponent,
     SolutionsComponent,
-    SolutionsPlaceholderComponent,
+    SolutionPlaceholderComponent,
     SolutionsListComponent,
     PopupPredictionsComponent,
     PopupSolverComponent,
