@@ -7,7 +7,6 @@ import {
   Databag,
   ObjectstoreService
 } from '../../../../../../build/openapi/objectstore';
-import {MlTypes} from '../../../../models/ml-types';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 
 @Component({
@@ -16,7 +15,6 @@ import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
   styleUrls: ['./setting-databag.component.scss']
 })
 export class SettingDatabagComponent {
-  mlTypesArray = Object.keys(MlTypes);
   uuid = '';
   databag: Databag = {};
 

@@ -43,6 +43,7 @@ import {CloseButtonComponent} from './components/shared/atoms/close-button/close
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
 import {DialogSectionComponent} from './components/shared/molecules/dialog-section/dialog-section.component';
 import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
+import {DatabagFieldsComponent} from './components/shared/molecules/databag-fields/databag-fields.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -79,7 +80,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     CloseButtonComponent,
     DialogHeaderComponent,
     DialogSectionComponent,
-    DialogElementDividerComponent
+    DialogElementDividerComponent,
+    DatabagFieldsComponent
   ],
   imports: [
     BrowserModule,

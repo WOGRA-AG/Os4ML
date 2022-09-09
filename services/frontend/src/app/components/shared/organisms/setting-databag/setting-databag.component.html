@@ -17,13 +17,8 @@
     <app-shared-dialog-section>
       <div title>{{"dialog.edit_databag.columns" | translate}}</div>
       <div>
-        <mat-form-field *ngFor="let column of databag.columns" appearance="outline">
-          <mat-label>{{column.name}}</mat-label>
-          <mat-select [(ngModel)]="column.type" name="{{column.name}}" required #column_name="ngModel"
-                      [ngClass]="{'is-invalid': f.submitted && column_name.invalid}">
-            <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{type}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <app-shared-databag-fields [databag]=databag>
+        </app-shared-databag-fields>
       </div>
     </app-shared-dialog-section>
 

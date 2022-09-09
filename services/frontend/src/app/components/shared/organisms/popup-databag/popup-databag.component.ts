@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {PopupUploadComponent} from '../popup-upload/popup-upload.component';
-import {MlTypes} from '../../../../models/ml-types';
 import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 
 @Component({
@@ -11,7 +10,6 @@ import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objec
   styleUrls: ['./popup-databag.component.scss']
 })
 export class PopupDatabagComponent {
-  mlTypesArray = Object.keys(MlTypes);
   uuid = '';
   databag: Databag = {};
 
