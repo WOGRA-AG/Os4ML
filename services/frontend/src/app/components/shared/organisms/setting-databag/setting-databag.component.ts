@@ -15,22 +15,21 @@ import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
   styleUrls: ['./setting-databag.component.scss']
 })
 export class SettingDatabagComponent {
-  uuid = '';
-  databag: Databag = {};
+  databag: Databag;
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
     private objectstoreService: ObjectstoreService,
     private dialog: MatDialog,
   ) {
-    this.uuid = dialogRef.componentInstance.data.uuid;
-    this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
+    this.databag = dialogRef.componentInstance.data.databag;
+    this.objectstoreService.getDatabagById(String(this.databag.databagId)).subscribe((databag: Databag) => {
       this.databag = databag;
     });
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
+    this.objectstoreService.putDatabagById(String(this.databag.databagId), this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }
