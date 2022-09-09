@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {PopupOutputComponent} from '../popup-output/popup-output.component';
+import {PopupPredictionsComponent} from '../popup-predictions/popup-predictions.component';
 import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 import {JobmanagerService, PipelineTemplate, Solution} from '../../../../../../build/openapi/jobmanager';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 
 @Component({
-  selector: 'app-dialog-define-solver',
+  selector: 'app-shared-popup-solver',
   templateUrl: './popup-solver.component.html',
   styleUrls: ['./popup-solver.component.scss']
 })
@@ -37,7 +37,7 @@ export class PopupSolverComponent {
   }
 
   back(): void {
-    this.dialogRef.componentInstance.data.component = PopupOutputComponent;
+    this.dialogRef.componentInstance.data.component = PopupPredictionsComponent;
   };
 
   onSubmit(): void {

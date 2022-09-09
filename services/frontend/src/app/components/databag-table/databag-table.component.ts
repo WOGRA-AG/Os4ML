@@ -13,11 +13,11 @@ import {
 import {interval, Subscription} from 'rxjs';
 import {
   PopupUploadComponent
-} from '../shared/templates/popup-upload/popup-upload.component';
+} from '../shared/organisms/popup-upload/popup-upload.component';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {SettingDatabagComponent} from '../shared/templates/setting-databag/setting-databag.component';
+import {SettingDatabagComponent} from '../shared/organisms/setting-databag/setting-databag.component';
 
 @Component({
   selector: 'app-databag-table',

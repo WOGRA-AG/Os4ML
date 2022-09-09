@@ -2,11 +2,10 @@ import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
-import {DialogDeleteResourceComponent} from '../../../dialog-delete-resource/dialog-delete-resource.component';
-import {FormControl} from '@angular/forms';
+import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 
 @Component({
-  selector: 'app-setting-solution',
+  selector: 'app-shared-setting-solution',
   templateUrl: './setting-solution.component.html',
   styleUrls: ['./setting-solution.component.scss']
 })
@@ -46,7 +45,7 @@ export class SettingSolutionComponent {
 
   delete() {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: DialogDeleteResourceComponent, solution: this.solution}
+      data: {component: PopupDeleteComponent, solution: this.solution}
     });
     deleteDialogRef.afterClosed().subscribe((msg) => {
       if (msg === 'deleted') {

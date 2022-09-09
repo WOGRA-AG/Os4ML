@@ -1,0 +1,21 @@
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"dialog.delete_popup.title" | translate}}
+</app-shared-dialog-header>
+
+<app-shared-dialog-section>
+    {{"dialog.delete_popup.confirmation" | translate}}
+</app-shared-dialog-section>
+
+<mat-dialog-actions align="end">
+  <mat-spinner color="accent" *ngIf="deleting" [diameter]="35" mode="indeterminate" class="spinner"></mat-spinner>
+  <button
+    mat-raised-button
+    color="primary"
+    class="main-button"
+    (click)="onSubmit()"
+    [disabled]="deleting || invalidResource()"
+    [tabIndex]="-1"
+  >
+    {{"dialog.delete_popup.main_button" | translate}}
+  </button>
+</mat-dialog-actions>

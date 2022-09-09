@@ -28,6 +28,7 @@
     padding: 0px;
     max-width: 584px;
     min-width: 384px;
+    min-height: 192px;
     overflow: hidden;
   }
 
@@ -36,6 +37,10 @@
     margin-bottom: 16px;
     width: 384px;
     height: auto;
+  }
+
+  .mat-dialog-title {
+    margin-bottom: 0px
   }
 
   .mat-dialog-header {
