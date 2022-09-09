@@ -5,13 +5,15 @@
     <app-shared-solutions-list [solutions]="getSolutionsInDatabag()">
     </app-shared-solutions-list>
   </div>
-  <button mat-raised-button
-          class="fab-button mat-raised-button"
-          color="primary"
-          (click)="addSolution()">
-    <mat-icon>add</mat-icon>
-    {{ "page.solution.add.button" | translate }}
-  </button>
+  <div class="actions">
+    <button mat-raised-button actions
+            class="fab-button mat-raised-button"
+            color="primary"
+            (click)="addSolution()">
+      <mat-icon>add</mat-icon>
+      {{ "page.solution.add.button" | translate }}
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #solutionsPlaceholder>

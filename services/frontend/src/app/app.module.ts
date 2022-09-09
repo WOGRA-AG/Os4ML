@@ -25,7 +25,7 @@ import {PopupDatabagComponent} from './components/shared/organisms/popup-databag
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
-import {SolutionsComponent} from './components/solutions/solutions.component';
+import {SolutionsComponent} from './components/shared/templates/solutions/solutions.component';
 import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
 import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';

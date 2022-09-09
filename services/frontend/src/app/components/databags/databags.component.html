@@ -5,12 +5,14 @@
     <app-shared-databags-list [databags]=databags>
     </app-shared-databags-list>
   </div>
-  <button mat-raised-button class="fab-button mat-raised-button"
-          color="primary"
-          (click)="addDatabag()">
-    <mat-icon>add</mat-icon>
-    {{ "page.databag.add.button" | translate }}
-  </button>
+  <div class="actions">
+    <button mat-raised-button class="fab-button mat-raised-button"
+            color="primary"
+            (click)="addDatabag()">
+      <mat-icon>add</mat-icon>
+      {{ "page.databag.list.add" | translate }}
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #databagsPlaceholder>

@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Databag} from '../../../../build/openapi/objectstore';
-import {Solution} from '../../../../build/openapi/jobmanager';
-import {PopupPredictionsComponent} from '../shared/organisms/popup-predictions/popup-predictions.component';
+import {Databag} from '../../../../../../build/openapi/objectstore';
+import {Solution} from '../../../../../../build/openapi/jobmanager';
+import {PopupPredictionsComponent} from '../../organisms/popup-predictions/popup-predictions.component';
 
 @Component({
   selector: 'app-solutions',
