@@ -38,7 +38,7 @@ export class MainPageComponent implements OnDestroy {
     });
   }
 
-  openAddDialog() {
+  addDatabag() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: PopupUploadComponent}
     });

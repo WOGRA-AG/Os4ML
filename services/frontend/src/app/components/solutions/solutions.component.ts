@@ -19,7 +19,7 @@ export class SolutionsComponent {
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
   }
 
-  openCreateSolutionDialog() {
+  addSolution() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: PopupPredictionsComponent, databag: this.databag}
     });

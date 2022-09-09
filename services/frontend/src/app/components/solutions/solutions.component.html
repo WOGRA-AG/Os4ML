@@ -1,21 +1,20 @@
-<div class="solutions-taskbar">
-  <div class="solutions-headline">
-    <h6>Solutions</h6>
-  </div>
-</div>
-
-<div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else placeholder"></div>
+<div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else solutionsPlaceholder"></div>
 
 <ng-template #solutionsTemplate>
-  <div class="solutions-list-container">
-    <app-solutions-list [solutions]="getSolutionsInDatabag()"></app-solutions-list>
+  <div class="list-container">
+    <app-shared-solutions-list [solutions]="getSolutionsInDatabag()">
+    </app-shared-solutions-list>
   </div>
-  <button mat-raised-button class="fab-button mat-raised-button-solutions-add-button" color="primary" (click)="openCreateSolutionDialog()">
+  <button mat-raised-button
+          class="fab-button mat-raised-button"
+          color="primary"
+          (click)="addSolution()">
     <mat-icon>add</mat-icon>
     {{ "page.solution.add.button" | translate }}
   </button>
 </ng-template>
 
-<ng-template #placeholder>
-  <app-shared-solution-placeholder (mainButton)="openCreateSolutionDialog()"></app-shared-solution-placeholder>
+<ng-template #solutionsPlaceholder>
+  <app-shared-solution-placeholder (mainButton)="addSolution()">
+  </app-shared-solution-placeholder>
 </ng-template>

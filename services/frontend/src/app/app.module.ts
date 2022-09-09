@@ -34,7 +34,7 @@ import {ToggleItemComponent} from './components/shared/molecules/toggle-item/tog
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
-import {DatabagTableComponent} from './components/databag-table/databag-table.component';
+import {DatabagsComponent} from './components/databags/databags.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
@@ -44,6 +44,8 @@ import {DialogHeaderComponent} from './components/shared/molecules/dialog-header
 import {DialogSectionComponent} from './components/shared/molecules/dialog-section/dialog-section.component';
 import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
 import {DatabagFieldsComponent} from './components/shared/molecules/databag-fields/databag-fields.component';
+import {DatabagsListComponent} from './components/shared/organisms/databags-list/databags-list.component';
+import {DatabagListItemComponent} from './components/shared/molecules/databag-list-item/databag-list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -72,7 +74,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     PopupSolverComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
-    DatabagTableComponent,
+    DatabagsComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
     PopupDeleteComponent,
@@ -81,7 +83,9 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogHeaderComponent,
     DialogSectionComponent,
     DialogElementDividerComponent,
-    DatabagFieldsComponent
+    DatabagFieldsComponent,
+    DatabagsListComponent,
+    DatabagListItemComponent
   ],
   imports: [
     BrowserModule,
