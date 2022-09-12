@@ -1,4 +1,5 @@
 import json
+from contextlib import suppress
 from datetime import datetime
 from typing import Dict, List
 
@@ -92,14 +93,13 @@ class DatabagService:
     def delete_databag_by_id(self, bucket_name: str, databag_id: str) -> None:
         try:
             databag: Databag = self.get_databag_by_id(bucket_name, databag_id)
-            run_id: str = databag.run_id or ""
-            if run_id:
-                self.jobmanager.delete_run(run_id)
-            self.storage.delete_items(
-                bucket_name=bucket_name, path_prefix=databag_id
-            )
         except DatabagNotFoundException:
             return
+        if run_id := databag.run_id:
+            self.jobmanager.delete_run(run_id)
+        self.storage.delete_items(
+            bucket_name=bucket_name, path_prefix=databag_id
+        )
 
     def create_databag(self, bucket_name, databag_id):
         databag: Databag = Databag(databag_id=databag_id)
