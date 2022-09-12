@@ -1,8 +1,10 @@
+import contextlib
 from typing import List
 from urllib.request import urlretrieve
 
 from kfp import Client
 from kfp_server_api import (
+    ApiException,
     ApiListExperimentsResponse,
     ApiListPipelinesResponse,
     ApiListRunsResponse,
@@ -131,4 +133,5 @@ class KfpExecutor:
         self.client.runs.terminate_run(run_id)
 
     def delete_run(self, run_id) -> None:
-        self.client.runs.delete_run(run_id)
+        with contextlib.suppress(ApiException):
+            self.client.runs.delete_run(run_id)
