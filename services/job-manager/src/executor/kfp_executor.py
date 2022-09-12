@@ -1,4 +1,3 @@
-import contextlib
 from typing import List
 from urllib.request import urlretrieve
 
@@ -133,5 +132,9 @@ class KfpExecutor:
         self.client.runs.terminate_run(run_id)
 
     def delete_run(self, run_id) -> None:
-        with contextlib.suppress(ApiException):
+        try:
             self.client.runs.delete_run(run_id)
+        except ApiException as e:
+            if e.status == 404:
+                return
+            raise
