@@ -7,7 +7,7 @@ import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobm
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {PopupDatabagComponent} from '../popup-databag/popup-databag.component';
+import {PopupDatabagComponent} from '../../organisms/popup-databag/popup-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
@@ -16,10 +16,10 @@ import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-shared-popup-upload',
-  templateUrl: './popup-upload.component.html',
-  styleUrls: ['./popup-upload.component.scss']
+  templateUrl: './create-databag.component.html',
+  styleUrls: ['./create-databag.component.scss']
 })
-export class PopupUploadComponent {
+export class CreateDatabagComponent {
   file: File = new File([], '');
   fileUrl = '';
   running = false;

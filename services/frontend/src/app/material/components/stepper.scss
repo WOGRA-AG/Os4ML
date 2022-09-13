@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin custom-stepper-theme() {
+  .mat-horizontal-stepper-header {
+  }
+}
+
+@mixin theme($theme) {
+  @include color();
+  @include layout();
+}

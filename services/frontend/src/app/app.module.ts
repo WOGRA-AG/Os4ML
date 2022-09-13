@@ -20,7 +20,7 @@ import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-fo
 import {SupportComponent} from './components/support/support.component';
 import {DatabagChooseComponent} from './components/shared/molecules/databag-choose/databag-choose.component';
 import {DatabagPlaceholderComponent} from './components/shared/molecules/databag-placeholder/databag-placeholder.component';
-import {PopupUploadComponent} from './components/shared/organisms/popup-upload/popup-upload.component';
+import {CreateDatabagComponent} from './components/shared/templates/create-databag/create-databag.component';
 import {PopupDatabagComponent} from './components/shared/organisms/popup-databag/popup-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -63,7 +63,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SupportComponent,
     DatabagChooseComponent,
     DatabagPlaceholderComponent,
-    PopupUploadComponent,
+    CreateDatabagComponent,
     PopupDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,

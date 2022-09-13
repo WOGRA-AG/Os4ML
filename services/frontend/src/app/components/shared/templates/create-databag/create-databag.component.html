@@ -1,7 +1,8 @@
 <app-shared-dialog-header (closeDialog)="close()">
   {{"dialog.add_databag.title" | translate}}
 </app-shared-dialog-header>
-
+<mat-horizontal-stepper linear selectedIndex="0">
+<mat-step completed="false">
 <mat-dialog-content>
   <app-shared-dialog-section>
     <mat-form-field appearance="outline">
@@ -49,3 +50,7 @@
     {{"dialog.add_databag.main_button" | translate}}
   </button>
 </mat-dialog-actions>
+</mat-step>
+<mat-step completed="false">
+</mat-step>
+</mat-horizontal-stepper>

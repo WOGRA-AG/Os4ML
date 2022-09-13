@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {PopupUploadComponent} from '../popup-upload/popup-upload.component';
+import {CreateDatabagComponent} from '../../templates/create-databag/create-databag.component';
 import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 
 @Component({
@@ -28,7 +28,7 @@ export class PopupDatabagComponent {
 
   back(): void {
     this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      this.dialogRef.componentInstance.data.component = PopupUploadComponent;
+      this.dialogRef.componentInstance.data.component = CreateDatabagComponent;
     });
   }
 
