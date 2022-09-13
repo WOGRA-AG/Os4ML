@@ -2,6 +2,18 @@
   flex-direction: column;
 }
 
+.solutions-taskbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.solutions-headline {
+  padding-top: 20px;
+}
+
 .databags-template {
   flex-direction: column;
 }
@@ -25,13 +37,8 @@
   right: 50px;
 }
 
-.headline {
-  margin-top: 30px;
-  margin-bottom: 45px;
-  width: 100%;
-}
-
-.content-container {
+.databag-container {
+  margin-top: 100px;
   min-width: 265px;
   width: 100%;
   flex: auto;

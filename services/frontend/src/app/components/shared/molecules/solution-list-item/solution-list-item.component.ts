@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {Solution} from '../../../../build/openapi/jobmanager';
+import {Solution} from '../../../../../../build/openapi/jobmanager';
 import {Subscription, timer} from 'rxjs';
 
 @Component({
-  selector: 'app-solution-list-item',
+  selector: 'app-shared-solution-list-item',
   templateUrl: './solution-list-item.component.html',
   styleUrls: ['./solution-list-item.component.scss']
 })
@@ -59,5 +59,9 @@ export class SolutionListItemComponent implements OnDestroy {
     }
     const creationDate = new Date(creationTime);
     return creationDate.toLocaleDateString('de-DE');
+  }
+
+  formatAccuracy(solutionAccuracy: number): number {
+    return Math.round(solutionAccuracy * 100);
   }
 }

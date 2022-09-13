@@ -1,0 +1,20 @@
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">{{"page.databag.table.columns.bucketName" | translate}}</span>
+  <span class="mat-body-2 on-surface-high">{{databag?.databagName}}</span>
+</div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">{{"page.databag.table.columns.datasetType" | translate}}</span>
+  <span class="mat-body-2 on-surface-high">{{databag?.datasetType}}</span>
+</div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">{{"page.databag.table.columns.numberColumns" | translate}} </span>
+  <span class="mat-body-2 on-surface-high">{{databag?.numberColumns}}</span>
+</div>
+    <div class="list-item-column">
+      <span class="mat-caption on-surface-medium">{{"page.databag.table.columns.numberRows" | translate}} </span>
+      <span class="mat-body-2 on-surface-high">{{databag?.numberRows}}</span>
+    </div>
+<div class="list-item-column">
+  <span class="mat-caption on-surface-medium">{{"page.databag.table.columns.creationTime" | translate}}</span>
+  <span class="mat-body-2 on-surface-high">{{databag?.creationTime | localizedDate}} {{databag?.creationTime | localizedDate:'mediumTime'}}</span>
+</div>

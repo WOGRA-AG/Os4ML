@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-databag-placeholder',
+  selector: 'app-shared-databag-placeholder',
   templateUrl: './databag-placeholder.component.html',
   styleUrls: ['./databag-placeholder.component.scss']
 })

@@ -1,0 +1,21 @@
+<div *ngIf="databags.length > 0; then databagsTemplate else databagsPlaceholder"></div>
+
+<ng-template #databagsTemplate>
+  <div class="list-container">
+    <app-shared-databags-list [databags]=databags>
+    </app-shared-databags-list>
+  </div>
+  <div class="actions">
+    <button mat-raised-button class="fab-button mat-raised-button"
+            color="primary"
+            (click)="addDatabag()">
+      <mat-icon>add</mat-icon>
+      {{ "page.databag.list.add" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #databagsPlaceholder>
+    <app-shared-databag-placeholder (mainButton)="addDatabag()">
+    </app-shared-databag-placeholder>
+</ng-template>
