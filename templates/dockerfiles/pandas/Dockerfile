@@ -20,6 +20,8 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 
 FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as production
 
+RUN pip install 'kfp==1.8.12'
+
 COPY dockerfiles/pandas/requirements.txt /requirements.txt
 
 RUN pip install -r /requirements.txt
