@@ -11,8 +11,8 @@ def get_databag(
 
     return get_databag(
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
 
 

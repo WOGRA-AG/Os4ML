@@ -1,0 +1,11 @@
+<mat-list id="databag-list">
+  <mat-list-item
+    class="bg-surface border-radius-24 item-padding"
+    *ngFor="let databag of databags">
+    <app-shared-databag-list-item
+      (click)="openDatabagSettingDialog(databag)"
+      class="databag-list-item"
+      [databag]=databag>
+    </app-shared-databag-list-item>
+  </mat-list-item>
+</mat-list>

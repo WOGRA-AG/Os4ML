@@ -20,6 +20,8 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 
 FROM gitlab-registry.wogra.com/developer/images/ludwig-gpu:latest as production
 
+RUN pip install 'kfp==1.8.12'
+
 COPY --from=openapi /build/ /src/build/
 COPY ./src /src
 

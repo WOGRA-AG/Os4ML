@@ -5,12 +5,14 @@ from components.util import build_component
 
 
 def get_metrics(
-    metrics: Input[Metrics], status: str, os4ml_namespace: str, solution_name: str
+    metrics: Input[Metrics], os4ml_namespace: str, solution_name: str
 ):
     from components.get_metrics import get_metrics
 
     return get_metrics(
-        metrics, status, os4ml_namespace=os4ml_namespace, solution_name=solution_name
+        metrics=metrics,
+        solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
 
 

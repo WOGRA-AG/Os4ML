@@ -1,27 +1,39 @@
+import functools
 import json
 
 from build.objectstore.model.databag import Databag
-from objectstore.objectstore import put_databag
+from model.error_msg_key import ErrorMsgKey
+from objectstore.objectstore import error_databag_status_update, put_databag
 from pipelines.util import DatabagStatusMessages
-from util.error_handler import error_handler
+from util.exception_handler import exception_handler
+from util.uri import extract_filename_from_uri, is_uri
 
 
-@error_handler
 def init_empty_databag(
     file_name: str,
-    run_id: str = "",
-    *,
-    bucket: str = None,
-    databag_id: str = None,
-    os4ml_namespace: str = "",
+    bucket: str,
+    databag_id: str,
+    run_id: str,
+    os4ml_namespace: str,
 ) -> str:
-    databag = Databag(
-        databag_name=file_name,
-        file_name=file_name,
-        bucket_name=bucket,
-        databag_id=databag_id,
-        status=DatabagStatusMessages.uploading.value,
-        run_id=run_id,
+    handler = functools.partial(
+        error_databag_status_update,
+        databag_id,
+        os4ml_namespace=os4ml_namespace,
     )
-    put_databag(databag, os4ml_namespace)
-    return json.dumps(databag.to_dict())
+    with exception_handler(handler, ErrorMsgKey.DATABAG_COULD_NOT_BE_CREATED):
+        databag_name = (
+            extract_filename_from_uri(file_name)
+            if is_uri(file_name)
+            else file_name
+        )
+        databag = Databag(
+            databag_name=databag_name,
+            file_name=file_name,
+            bucket_name=bucket,
+            databag_id=databag_id,
+            status=DatabagStatusMessages.uploading.value,
+            run_id=run_id,
+        )
+        put_databag(databag, os4ml_namespace)
+        return json.dumps(databag.to_dict())

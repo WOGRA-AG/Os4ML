@@ -1,0 +1,45 @@
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"dialog.edit_databag.title" | translate}}
+</app-shared-dialog-header>
+
+<mat-dialog-content>
+  <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+
+    <app-shared-dialog-section>
+      <mat-form-field appearance="outline">
+        <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
+        <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+               name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
+               [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+      </mat-form-field>
+    </app-shared-dialog-section>
+
+    <app-shared-dialog-section>
+      <div title>{{"dialog.edit_databag.columns" | translate}}</div>
+      <div>
+        <app-shared-databag-fields [databag]=databag>
+        </app-shared-databag-fields>
+      </div>
+    </app-shared-dialog-section>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    color="warn"
+    type="button"
+    (click)="delete()"
+  >
+    {{"dialog.edit_databag.delete_button" | translate}}
+  </button>
+  <button
+    mat-raised-button
+    form="ngForm"
+    color="primary"
+    type="submit"
+  >
+    {{"dialog.edit_databag.main_button" | translate}}
+  </button>
+</mat-dialog-actions>

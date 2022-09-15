@@ -10,7 +10,7 @@ import {
 } from '../../components/dialog-dynamic/dialog-dynamic.component';
 import {
   PopupUploadComponent
-} from '../../components/shared/templates/popup-upload/popup-upload.component';
+} from '../../components/shared/organisms/popup-upload/popup-upload.component';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({
@@ -38,7 +38,7 @@ export class MainPageComponent implements OnDestroy {
     });
   }
 
-  openAddDialog() {
+  addDatabag() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: PopupUploadComponent}
     });
