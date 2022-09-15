@@ -8,6 +8,6 @@ e2e:
   artifacts:
     when: always
     paths:
-      - cypress/videos/**/*.mp4
-      - cypress/screenshots/**/*.png
+      - services/frontend/cypress/videos/**/*.mp4
+      - services/frontend/cypress/screenshots/**/*.png
     expire_in: 1 day
