@@ -1,5 +1,5 @@
 include:
-  - local: 'gitlab/shared/.gitlab-ci.build-images.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
 
 .build-frontend:
   stage: build

@@ -18,31 +18,34 @@ import {SettingsPageComponent} from './pages/settings-page/settings-page.compone
 import {UserPageComponent} from './pages/user-page/user-page.component';
 import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
 import {SupportComponent} from './components/support/support.component';
-import {DatabagListComponent} from './components/databag-list/databag-list.component';
-import {DatabagPlaceholderComponent} from './components/databag-placeholder/databag-placeholder.component';
-import {PopupUploadComponent} from './components/shared/templates/popup-upload/popup-upload.component';
-import {DialogDefineDatabagComponent} from './components/dialog-define-databag/dialog-define-databag.component';
+import {DatabagChooseComponent} from './components/shared/molecules/databag-choose/databag-choose.component';
+import {DatabagPlaceholderComponent} from './components/shared/molecules/databag-placeholder/databag-placeholder.component';
+import {PopupUploadComponent} from './components/shared/organisms/popup-upload/popup-upload.component';
+import {PopupDatabagComponent} from './components/shared/organisms/popup-databag/popup-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
-import {SolutionsComponent} from './components/solutions/solutions.component';
-import {SolutionsPlaceholderComponent} from './components/solutions-placeholder/solutions-placeholder.component';
-import {SolutionsListComponent} from './components/solutions-list/solutions-list.component';
-import {PopupOutputComponent} from './components/shared/templates/popup-output/popup-output.component';
-import {PopupSolverComponent} from './components/shared/templates/popup-solver/popup-solver.component';
+import {SolutionsComponent} from './components/shared/templates/solutions/solutions.component';
+import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
+import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
+import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';
+import {PopupSolverComponent} from './components/shared/organisms/popup-solver/popup-solver.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
-import {SolutionListItemComponent} from './components/solution-list-item/solution-list-item.component';
-import {DatabagTableComponent} from './components/databag-table/databag-table.component';
-import {SettingDatabagComponent} from './components/shared/templates/setting-databag/setting-databag.component';
+import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
+import {DatabagsComponent} from './components/shared/templates/databags/databags.component';
+import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
-import {DialogDeleteResourceComponent} from './components/dialog-delete-resource/dialog-delete-resource.component';
-import {SettingSolutionComponent} from './components/shared/templates/setting-solution/setting-solution.component';
+import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
+import {SettingSolutionComponent} from './components/shared/organisms/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
 import {DialogHeaderComponent} from './components/shared/molecules/dialog-header/dialog-header.component';
 import {DialogSectionComponent} from './components/shared/molecules/dialog-section/dialog-section.component';
 import {DialogElementDividerComponent} from './components/shared/atoms/dialog-element-divider/dialog-element-divider.component';
+import {DatabagFieldsComponent} from './components/shared/molecules/databag-fields/databag-fields.component';
+import {DatabagsListComponent} from './components/shared/organisms/databags-list/databags-list.component';
+import {DatabagListItemComponent} from './components/shared/molecules/databag-list-item/databag-list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -58,28 +61,31 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     UserPageComponent,
     PageNotFoundPageComponent,
     SupportComponent,
-    DatabagListComponent,
+    DatabagChooseComponent,
     DatabagPlaceholderComponent,
     PopupUploadComponent,
-    DialogDefineDatabagComponent,
+    PopupDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
     SolutionsComponent,
-    SolutionsPlaceholderComponent,
+    SolutionPlaceholderComponent,
     SolutionsListComponent,
-    PopupOutputComponent,
+    PopupPredictionsComponent,
     PopupSolverComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
-    DatabagTableComponent,
+    DatabagsComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
-    DialogDeleteResourceComponent,
+    PopupDeleteComponent,
     SettingSolutionComponent,
     CloseButtonComponent,
     DialogHeaderComponent,
     DialogSectionComponent,
-    DialogElementDividerComponent
+    DialogElementDividerComponent,
+    DatabagFieldsComponent,
+    DatabagsListComponent,
+    DatabagListItemComponent
   ],
   imports: [
     BrowserModule,

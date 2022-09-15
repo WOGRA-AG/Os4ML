@@ -2,9 +2,10 @@
   width: 100%;
 }
 
-.dialog-element-divider {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.dialog-element-header {
+  padding-bottom: 6px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .dialog-element-content {
@@ -12,8 +13,4 @@
   padding-right: 30px;
 }
 
-.dialog-element-header {
-  padding-bottom: 12px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
+

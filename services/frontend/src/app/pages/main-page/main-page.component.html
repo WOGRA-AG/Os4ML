@@ -3,12 +3,14 @@
 </div>
 
 <ng-template #databagTemplate>
-  <div class="headline">
-    <h4>{{"page.dashboard.title" | translate}}</h4>
-  </div>
-  <div class="content-container">
-    <app-databag-list [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-databag-list>
+  <div class="databag-container">
+    <app-shared-databag-choose [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-shared-databag-choose>
     <div *ngIf="selectedDatabag.databagName" class="solutions-template">
+      <div class="solutions-taskbar">
+        <div class="solutions-headline">
+          <h6>Solutions</h6>
+        </div>
+      </div>
       <app-solutions [(solutions)]="solutions" [databag]="selectedDatabag"></app-solutions>
     </div>
   </div>
@@ -16,6 +18,6 @@
 
 <ng-template #placeholder>
   <div class="placeholder-container">
-    <app-databag-placeholder (mainButton)="openAddDialog()"></app-databag-placeholder>
+    <app-shared-databag-placeholder (mainButton)="addDatabag()"></app-shared-databag-placeholder>
   </div>
 </ng-template>

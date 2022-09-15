@@ -20,6 +20,9 @@ components:
           type: string
         status:
           type: string
+        errorMsgKey:
+          type: string
+          nullable: true
         solver:
           type: string
         databagName:
@@ -81,6 +84,9 @@ components:
           type: string
           nullable: true
         status:
+          type: string
+          nullable: true
+        errorMsgKey:
           type: string
           nullable: true
         runId:

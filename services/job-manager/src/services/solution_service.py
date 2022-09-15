@@ -88,7 +88,9 @@ class SolutionService:
         self._persist_solution(bucket_name, solution_name, solution)
         return solution
 
-    def _persist_solution(self, bucket_name: str, solution_name: str, solution: Solution):
+    def _persist_solution(
+        self, bucket_name: str, solution_name: str, solution: Solution
+    ):
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
             bucket_name=bucket_name,

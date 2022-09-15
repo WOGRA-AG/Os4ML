@@ -1,7 +1,7 @@
 import pathlib
 from urllib.parse import urlparse
-import requests
 
+import requests
 from requests import Response
 
 
