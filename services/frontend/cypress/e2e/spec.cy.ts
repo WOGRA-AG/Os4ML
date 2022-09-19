@@ -1,7 +1,7 @@
 describe('Databags', () => {
   it('add and define databag', () => {
     cy.visit('/databag');
-    cy.get('[id=\'add-databag-button-empty\']').click();
+    cy.get('[id=\'add-databag-button-empty\']', { timeout: 400000 }).click();
     cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
     cy.get('[id=\'add-databag-main-button\']').click();
     cy.get('[id=\'ngForm\']', { timeout: 600000 }).find('.columns').find('.mat-select-value-text').eq(0).find('span').contains('category');
