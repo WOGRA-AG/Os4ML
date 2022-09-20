@@ -41,7 +41,12 @@
     <mat-dialog-content>
       <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
         <app-shared-dialog-section>
-
+          <mat-form-field appearance="outline">
+            <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
+            <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+                   name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
+                   [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+          </mat-form-field>
         </app-shared-dialog-section>
 
         <app-shared-dialog-section>
