@@ -2,7 +2,7 @@ include:
   - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
   - local: 'gitlab/shared/.gitlab-ci.build-test-and-lint.yml'
 
-templates-test-and-lint:
+templates-test:
   extends:
     - .build-test
   variables:
@@ -10,7 +10,7 @@ templates-test-and-lint:
     IMG_NAME: 'templates'
     BUILD_CONTEXT: 'templates'
 
-templates-test-and-lint:
+templates-lint:
   extends:
     - .build-lint
   variables:
@@ -22,7 +22,8 @@ build-python:
   extends:
     - .build-production
   needs:
-    - templates-test-and-lint
+    - templates-test
+    - templates-lint
   variables:
     BUILD_CONTEXT: 'templates'
     IMG_NAME: 'python'
@@ -32,7 +33,8 @@ build-pandas:
   extends:
     - .build-production
   needs:
-    - templates-test-and-lint
+    - templates-test
+    - templates-lint
   variables:
     BUILD_CONTEXT: 'templates'
     IMG_NAME: 'pandas'
@@ -42,7 +44,8 @@ build-ludwig:
   extends:
     - .build-production
   needs:
-    - templates-test-and-lint
+    - templates-test
+    - templates-lint
   variables:
     BUILD_CONTEXT: 'templates'
     IMG_NAME: 'ludwig'

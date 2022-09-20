@@ -29,7 +29,8 @@ job-manager-build:
   extends:
     - .build-production
   needs:
-    - job-manager-test-and-lint
+    - job-manager-test
+    - job-manager-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'

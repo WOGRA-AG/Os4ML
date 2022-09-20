@@ -29,7 +29,8 @@ os-manager-build:
   extends:
     - .build-production
   needs:
-    - os-manager-test-and-lint
+    - os-manager-test
+    - os-manager-lint
   variables:
     DOCKERFILE: 'services/objectstore-manager/Dockerfile'
     IMG_NAME: 'objectstore-manager'
