@@ -5,7 +5,7 @@ import {
 } from '../../../dialog-dynamic/dialog-dynamic.component';
 import {
   CreateDatabagComponent
-} from '../../templates/create-databag/create-databag.component';
+} from '../../organisms/create-databag/create-databag.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {interval, Subscription} from 'rxjs';

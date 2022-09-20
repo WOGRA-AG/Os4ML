@@ -10,7 +10,7 @@ import {
 } from '../../components/dialog-dynamic/dialog-dynamic.component';
 import {
   CreateDatabagComponent
-} from '../../components/shared/templates/create-databag/create-databag.component';
+} from '../../components/shared/organisms/create-databag/create-databag.component';
 import {Solution} from '../../../../build/openapi/jobmanager';
 
 @Component({

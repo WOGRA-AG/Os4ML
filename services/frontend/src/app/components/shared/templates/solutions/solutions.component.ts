@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Databag} from '../../../../../../build/openapi/objectstore';
 import {Solution} from '../../../../../../build/openapi/jobmanager';
-import {CreateSolutionComponent} from '../create-solution/create-solution.component';
+import {CreateSolutionComponent} from '../../organisms/create-solution/create-solution.component';
 
 @Component({
   selector: 'app-solutions',

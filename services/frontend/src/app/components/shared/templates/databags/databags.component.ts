@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {CreateDatabagComponent} from '../create-databag/create-databag.component';
+import {CreateDatabagComponent} from '../../organisms/create-databag/create-databag.component';
 import {Databag} from '../../../../../../build/openapi/objectstore';
 @Component({
   selector: 'app-shared-databags',
