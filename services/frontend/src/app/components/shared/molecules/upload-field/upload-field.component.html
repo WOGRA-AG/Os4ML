@@ -1,7 +1,10 @@
 <input type="file" class="file-input" (change)="uploadFile($event)" #fileUpload>
 <div class="upload-file bg-primary border-color mat-body-1 on-surface-medium" appDragAndDrop
      (filesDropped)="uploadDroppedFile($event)" (click)="fileUpload.click()">
-  click to browse or <br>drag and drop your file
+  <div *ngIf="file.name; else templateName">{{file.name}}</div>
+  <ng-template #templateName>
+    click to browse or <br>drag and drop your file
+  </ng-template>
 </div>
 
 <div class="progress">

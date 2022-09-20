@@ -1,8 +1,5 @@
 import {
-  ChangeDetectionStrategy,
   Component,
-  OnInit,
-  ViewChild
 } from '@angular/core';
 import {
   Databag,
@@ -18,7 +15,6 @@ import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../../../models/pipeline-status';
 import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
-import {CdkStepper} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-shared-popup-upload',
