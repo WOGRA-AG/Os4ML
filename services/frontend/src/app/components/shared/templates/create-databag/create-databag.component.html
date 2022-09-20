@@ -2,8 +2,9 @@
   {{"dialog.add_databag.title" | translate}}
 </app-shared-dialog-header>
 
-<mat-horizontal-stepper #stepper selectedIndex="{{selectedIndex}}">
-  <mat-step completed="false" label="Upload Data">
+<mat-horizontal-stepper [selectedIndex]=selectedIndex>
+  <mat-step completed="{{selectedIndex>0}}" [editable]="false" label="Upload">
+    {{selectedIndex}}
     <mat-dialog-content>
       <app-shared-dialog-section>
         <mat-form-field appearance="outline">
@@ -36,10 +37,10 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false" label="Configure </br> Databag">
+  <mat-step completed="{{selectedIndex>1}}" [editable]="false" label="Configure">
+    {{selectedIndex}}
     <mat-dialog-content>
       <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
-
         <app-shared-dialog-section>
           <mat-form-field appearance="outline">
             <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>

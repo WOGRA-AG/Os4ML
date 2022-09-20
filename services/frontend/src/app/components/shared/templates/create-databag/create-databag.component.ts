@@ -73,13 +73,14 @@ export class CreateDatabagComponent {
       await this.retrievePipelineStatus(this.runId);
       this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
         this.databag = databag;
-        this.selectedIndex = this.selectedIndex + 1;
       });
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
       await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
     } finally {
       this.running = false;
+      this.pipelineStatus = null;
+      this.selectedIndex = 1;
     }
   }
 
@@ -129,6 +130,7 @@ export class CreateDatabagComponent {
 
   back(): void {
     this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
+      this.selectedIndex = 0;
       this.dialogRef.componentInstance.data.component = CreateDatabagComponent;
     });
   }

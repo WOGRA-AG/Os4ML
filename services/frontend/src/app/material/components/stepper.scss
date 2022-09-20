@@ -4,6 +4,10 @@
 @mixin custom-stepper-theme() {
   .mat-horizontal-stepper-header {
   }
+
+  .mat-horizontal-content-container {
+    padding: 0px 0px 0px 0px;
+  }
 }
 
 @mixin theme($theme) {
