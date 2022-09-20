@@ -2,8 +2,7 @@
 @use '@angular/material' as mat;
 
 @mixin custom-stepper-theme() {
-  .mat-horizontal-stepper-header {
-  }
+
 
   .mat-horizontal-content-container {
     padding: 0px 0px 0px 0px;

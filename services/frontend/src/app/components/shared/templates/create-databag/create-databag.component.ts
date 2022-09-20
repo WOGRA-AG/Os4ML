@@ -42,7 +42,7 @@ export class CreateDatabagComponent {
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService, private http: HttpClient) {}
 
-  async nextClick(): Promise<void> {
+  async nextClick(stepper: MatStepper): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
       this.translate.get('error.no_dataset').subscribe((res: string) => {
         this.translate.get('error.confirm').subscribe((conf: string) => {
@@ -81,6 +81,7 @@ export class CreateDatabagComponent {
       this.running = false;
       this.pipelineStatus = null;
       this.selectedIndex = 1;
+      stepper.next();
     }
   }
 
@@ -125,13 +126,6 @@ export class CreateDatabagComponent {
   onSubmit(): void {
     this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       this.dialogRef.close();
-    });
-  }
-
-  back(): void {
-    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      this.selectedIndex = 0;
-      this.dialogRef.componentInstance.data.component = CreateDatabagComponent;
     });
   }
 
