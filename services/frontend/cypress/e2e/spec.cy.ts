@@ -1,0 +1,32 @@
+describe('Databags', () => {
+  it('add and define databag', () => {
+    cy.visit('/databag');
+    cy.get('[id=\'add-databag-button-empty\']', { timeout: 400000 }).click();
+    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
+    cy.get('[id=\'add-databag-main-button\']').click();
+    cy.get('[id=\'ngForm\']', { timeout: 600000 }).find('.columns').find('.mat-select-value-text').eq(0).find('span').contains('category');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(1).find('span').contains('category');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(2).find('span').contains('text');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(3).find('span').contains('category');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(4).find('span').contains('numerical');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(5).find('span').contains('category');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(6).find('span').contains('category');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(7).find('span').contains('text');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(8).find('span').contains('numerical');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(9).find('span').contains('text');
+    cy.get('[id=\'ngForm\']').find('.columns').find('.mat-select-value-text').eq(10).find('span').contains('category');
+    cy.get('[id=\'define-databag-button\']').click();
+    cy.get('[id=\'databag-list\']').find('.list-item-column', { timeout: 400000 }).eq(0).find('span').eq(1).contains('titanic.xls', { timeout: 400000 });
+    cy.get('[id=\'databag-list\']').find('.list-item-column', { timeout: 400000 }).eq(1).find('span').eq(1).contains('local_file', { timeout: 400000 });
+    cy.get('[id=\'databag-list\']').find('.list-item-column', { timeout: 400000 }).eq(2).find('span').eq(1).contains('11', { timeout: 400000 });
+    cy.get('[id=\'databag-list\']').find('.list-item-column', { timeout: 400000 }).eq(3).find('span').eq(1).contains('891', { timeout: 400000 });
+    cy.visit('/dashboard');
+    cy.get('[id=\'bag-list\']').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'add-solution-button-empty\']').click();
+    cy.get('[id=\'define-output-list\']').find('mat-list-item').eq(0).click();
+    cy.get('[id=\'define-output-next-button\']').click();
+    cy.get('[id=\'define-solver-name-input\']').focus().type('My Solution').blur();
+    cy.get('[id=\'define-solver-next-button\']').click();
+    cy.get('[id=\'solution-status-finished\']', { timeout: 2400000 }).contains('Solver finished', { timeout: 2400000 });
+  });
+});
