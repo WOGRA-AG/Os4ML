@@ -3,11 +3,9 @@
 
 @mixin custom-stepper-theme() {
   .mat-horizontal-content-container {
-    padding: 0 0 0 0;
-  }
+    padding:0 !important;
+}
 }
 
 @mixin theme($theme) {
-  @include color();
-  @include layout();
 }

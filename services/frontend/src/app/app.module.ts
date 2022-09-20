@@ -27,8 +27,7 @@ import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic
 import {SolutionsComponent} from './components/shared/templates/solutions/solutions.component';
 import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
-import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';
-import {PopupSolverComponent} from './components/shared/organisms/popup-solver/popup-solver.component';
+import {CreateSolutionComponent} from './components/shared/templates/create-solution/create-solution.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
@@ -68,8 +67,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SolutionsComponent,
     SolutionPlaceholderComponent,
     SolutionsListComponent,
-    PopupPredictionsComponent,
-    PopupSolverComponent,
+    CreateSolutionComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
     DatabagsComponent,
