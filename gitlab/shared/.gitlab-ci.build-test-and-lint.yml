@@ -12,6 +12,11 @@
       --target lint
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:lint"
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+  name: image-digest
+  paths:
+    - image-digest
+  expire_in: never
 
 .build-test:
   stage: test
@@ -27,3 +32,9 @@
       --target test
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:test"
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+  name: image-digest
+  paths:
+    - image-digest
+  expire_in: never
+
