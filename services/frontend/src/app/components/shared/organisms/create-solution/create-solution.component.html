@@ -69,7 +69,10 @@
 
 <ng-template #nextButton>
   <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" class="main-button" (click)="nextPageClick(stepper)">
+    <button mat-raised-button color="primary"
+            class="main-button"
+            (click)="nextPageClick(stepper)"
+            [disabled]="!(solution.outputFields)">
       {{"dialog.define_output.main_button" | translate}}
     </button>
   </mat-dialog-actions>
