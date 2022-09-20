@@ -9,9 +9,17 @@ os-manager-validate-oas:
   variables:
     OAS_FILE: 'services/objectstore-manager/oas/objectstore-manager-oas.yaml'
 
-os-manager-test-and-lint:
+os-manager-test:
   extends:
-    - .build-test-and-lint
+    - .build-test
+  variables:
+    DOCKERFILE: 'services/objectstore-manager/Dockerfile'
+    IMG_NAME: 'objectstore-manager'
+    BUILD_CONTEXT: 'services/objectstore-manager'
+
+os-manager-lint:
+  extends:
+    - .build-lint
   variables:
     DOCKERFILE: 'services/objectstore-manager/Dockerfile'
     IMG_NAME: 'objectstore-manager'

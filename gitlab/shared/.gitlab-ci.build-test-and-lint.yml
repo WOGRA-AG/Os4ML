@@ -1,4 +1,4 @@
-.build-test-and-lint:
+.build-lint:
   stage: test
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
@@ -11,6 +11,16 @@
       --dockerfile "$DOCKERFILE"
       --target lint
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:lint"
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+
+.build-test:
+  stage: test
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  before_script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"},\"$CI_DEPENDENCY_PROXY_SERVER\":{\"auth\":\"$(printf "%s:%s" ${CI_DEPENDENCY_PROXY_USER} "${CI_DEPENDENCY_PROXY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+  script:
     - /kaniko/executor
       --context "${BUILD_CONTEXT}"
       --dockerfile "$DOCKERFILE"

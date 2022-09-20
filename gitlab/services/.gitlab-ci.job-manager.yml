@@ -9,9 +9,17 @@ job-manager-validate-oas:
   variables:
     OAS_FILE: 'services/job-manager/oas/job-manager-oas.yaml'
 
-job-manager-test-and-lint:
+job-manager-test:
   extends:
-    - .build-test-and-lint
+    - .build-test
+  variables:
+    DOCKERFILE: 'services/job-manager/Dockerfile'
+    IMG_NAME: 'job-manager'
+    BUILD_CONTEXT: '.'
+
+job-manager-lint:
+  extends:
+    - .build-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
     IMG_NAME: 'job-manager'

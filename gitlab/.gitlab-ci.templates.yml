@@ -4,7 +4,15 @@ include:
 
 templates-test-and-lint:
   extends:
-    - .build-test-and-lint
+    - .build-test
+  variables:
+    DOCKERFILE: 'templates/Dockerfile'
+    IMG_NAME: 'templates'
+    BUILD_CONTEXT: 'templates'
+
+templates-test-and-lint:
+  extends:
+    - .build-lint
   variables:
     DOCKERFILE: 'templates/Dockerfile'
     IMG_NAME: 'templates'
