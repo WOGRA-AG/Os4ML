@@ -1,4 +1,9 @@
-import {Component} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {
   Databag,
   ObjectstoreService
@@ -7,12 +12,13 @@ import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobm
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {PopupDatabagComponent} from '../../organisms/popup-databag/popup-databag.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../../../models/pipeline-status';
 import {HttpClient} from '@angular/common/http';
+import {MatStepper} from '@angular/material/stepper';
+import {CdkStepper} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -20,20 +26,23 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./create-databag.component.scss']
 })
 export class CreateDatabagComponent {
+
   file: File = new File([], '');
   fileUrl = '';
   running = false;
   uuid: string = uuidv4();
   runId = '';
   intervalID = 0;
+  selectedIndex = 0;
   pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  databag: Databag = {};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService, private http: HttpClient) {}
 
-  async nextPageClick(): Promise<void> {
+  async nextClick(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
       this.translate.get('error.no_dataset').subscribe((res: string) => {
         this.translate.get('error.confirm').subscribe((conf: string) => {
@@ -62,19 +71,16 @@ export class CreateDatabagComponent {
       );
       this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
       await this.retrievePipelineStatus(this.runId);
-      this.dialogRef.componentInstance.data.component = PopupDatabagComponent;
+      this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
+        this.databag = databag;
+        this.selectedIndex = this.selectedIndex + 1;
+      });
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
       await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
     } finally {
       this.running = false;
     }
-  }
-
-  close(): void {
-    this.clearProgress().subscribe(() => {
-      this.dialogRef.close();
-    });
   }
 
   clearProgress(): Observable<void> {
@@ -112,6 +118,24 @@ export class CreateDatabagComponent {
           }
         });
       }, 2000);
+    });
+  }
+
+  onSubmit(): void {
+    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
+      this.dialogRef.close();
+    });
+  }
+
+  back(): void {
+    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
+      this.dialogRef.componentInstance.data.component = CreateDatabagComponent;
+    });
+  }
+
+  close(): void {
+    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
+      this.dialogRef.close();
     });
   }
 }
