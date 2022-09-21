@@ -29,7 +29,7 @@ export class CreateDatabagComponent {
   uuid: string = uuidv4();
   runId = '';
   intervalID = 0;
-  selectedIndex = 0;
+  stepperStep = 0;
   pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
@@ -76,7 +76,7 @@ export class CreateDatabagComponent {
     } finally {
       this.running = false;
       this.pipelineStatus = null;
-      this.selectedIndex = 1;
+      this.stepperStep = 1;
       stepper.next();
     }
   }
@@ -129,6 +129,13 @@ export class CreateDatabagComponent {
           }
         });
       }, 2000);
+    });
+  }
+
+  back(stepper: MatStepper): void {
+    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
+      stepper.previous();
+      this.stepperStep -= 1;
     });
   }
 
