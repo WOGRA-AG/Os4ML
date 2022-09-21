@@ -51,6 +51,13 @@
         </mat-form-field>
       </div>
     </app-shared-dialog-section>
+
+    <app-shared-dialog-section *ngIf="solution.status === 'error' && solution.errorMsgKey">
+      <div title>{{"dialog.detail_solution.error" | translate}}</div>
+      <div>
+        {{"error.error_msg_key." + solution.errorMsgKey | translate}}
+      </div>
+    </app-shared-dialog-section>
   </form>
 </mat-dialog-content>
 

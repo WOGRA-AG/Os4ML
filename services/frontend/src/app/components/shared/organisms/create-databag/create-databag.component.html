@@ -68,6 +68,7 @@
     </div>
     <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
     <button
+      id="add-databag-main-button"
       mat-raised-button
       color="primary"
       class="main-button"
@@ -83,7 +84,7 @@
 <ng-template #createButton>
   <mat-dialog-actions align="end">
     <div class="button-spacer"></div>
-    <button mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
+    <button id="define-databag-button" mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
       {{"dialog.define_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>

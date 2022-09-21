@@ -10,7 +10,9 @@ def get_metrics(
     from components.get_metrics import get_metrics
 
     return get_metrics(
-        metrics, os4ml_namespace=os4ml_namespace, solution_name=solution_name
+        metrics=metrics,
+        solution_name=solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
 
 
