@@ -44,6 +44,7 @@ import {DialogElementDividerComponent} from './components/shared/atoms/dialog-el
 import {DatabagFieldsComponent} from './components/shared/molecules/databag-fields/databag-fields.component';
 import {DatabagsListComponent} from './components/shared/organisms/databags-list/databags-list.component';
 import {DatabagListItemComponent} from './components/shared/molecules/databag-list-item/databag-list-item.component';
+import {ListItemComponent} from './components/shared/atoms/list-item/list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -81,7 +82,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogElementDividerComponent,
     DatabagFieldsComponent,
     DatabagsListComponent,
-    DatabagListItemComponent
+    DatabagListItemComponent,
+    ListItemComponent
   ],
   imports: [
     BrowserModule,

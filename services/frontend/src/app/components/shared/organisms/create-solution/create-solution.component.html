@@ -13,14 +13,15 @@
         <div description>{{"dialog.define_output.description" | translate}}</div>
         <mat-list id="define-output-list">
           <ng-container *ngFor="let column of databag.columns">
-            <mat-list-item class="bg-primary" *ngIf="column.type==='category'">
-              <app-shared-toggle-item
-                [column]="column"
-                (selectedChange)="selectionChanged(column.name)"
-                [selected]="solution?.outputFields?.includes(column?.name || '') || false"
-                [disabled]="isDisabled(column.name!)"
-              >
-              </app-shared-toggle-item>
+            <mat-list-item
+              class="bg-primary"
+              *ngIf="column.type==='category'"
+              [ngClass]="solution?.outputFields?.includes(column?.name || '') ? 'active' : ''"
+              (click)="selectDatabag(column.name)">
+              <app-shared-list-item>
+                <div> {{column.name}} </div>
+                <div description> {{column.type}}</div>
+              </app-shared-list-item>
             </mat-list-item>
           </ng-container>
         </mat-list>

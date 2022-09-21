@@ -40,9 +40,12 @@ export class CreateSolutionComponent {
     stepper.next();
   }
 
-  selectionChanged(columnName: string | undefined) {
+  selectDatabag(columnName: string | undefined) {
     if (!columnName) {
       return;
+    }
+    else {
+      this.solution = {};
     }
 
     const outputFields = this.solution.outputFields || [];
