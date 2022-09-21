@@ -2,7 +2,7 @@
 ### Using terraform
 #### Create Cluster Service
 ```sh
-k3d cluster create os4ml-cluster
+k3d cluster create os4ml-cluster --k3s-node-label 'cloud.google.com/gke-nodepool=highcpu-pool@server:0'
 ```
 ```sh
 git clone https://github.com/WOGRA-AG/Os4ML.git
