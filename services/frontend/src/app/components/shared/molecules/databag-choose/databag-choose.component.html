@@ -7,7 +7,7 @@
     <mat-panel-description>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <mat-nav-list class="bag-list">
+  <mat-nav-list class="bag-list" id="bag-list">
     <mat-list-item
       [ngClass]="isSameDatabag(selectedDatabag, databag)? 'active': ''"
       *ngFor="let databag of databags"

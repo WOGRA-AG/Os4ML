@@ -17,7 +17,10 @@
   <span class="mat-body-2 on-surface-high">{{formatTimestamp(solution?.creationTime)}}</span>
 </div>
 <div class="status-column">
-  <div class="status bg-accent mat-button">
+  <div *ngIf="solution?.status !== 'Solver finished'" id="solution-status" class="status bg-accent mat-button">
+    {{solution?.status}}
+  </div>
+  <div *ngIf="solution?.status === 'Solver finished'" id="solution-status-finished" class="status bg-accent mat-button">
     {{solution?.status}}
   </div>
 </div>
