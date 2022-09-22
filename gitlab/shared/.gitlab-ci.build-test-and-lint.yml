@@ -11,7 +11,10 @@
       --dockerfile "$DOCKERFILE"
       --target lint
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:lint"
-      --digest-file=$CI_PROJECT_DIR/image-digest
+      --digest-file=$CI_PROJECT_DIR/image-digest \
+      --cache=true \
+      --cache-repo $CONTAINER_REGISTRY/$IMG_NAME:lint \
+      --cache-ttl $CACHE_TTL
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
     name: image-digest
@@ -32,7 +35,10 @@
       --dockerfile "$DOCKERFILE"
       --target test
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:test"
-      --digest-file=$CI_PROJECT_DIR/image-digest
+      --digest-file=$CI_PROJECT_DIR/image-digest \
+      --cache=true \
+      --cache-repo $CONTAINER_REGISTRY/$IMG_NAME:test \
+      --cache-ttl $CACHE_TTL
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
     name: image-digest
