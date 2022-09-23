@@ -67,7 +67,8 @@
     },
     "delete_popup": {
       "title": "Confirm Delete",
-      "main_button": "Delete",
+      "delete": "Delete",
+      "cancel": "Cancel",
       "confirmation": "Are you sure you want to delete? All data will be lost!"
     },
     "detail_solution": {
