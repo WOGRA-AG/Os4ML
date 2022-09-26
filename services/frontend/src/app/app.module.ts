@@ -20,16 +20,14 @@ import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-fo
 import {SupportComponent} from './components/support/support.component';
 import {DatabagChooseComponent} from './components/shared/molecules/databag-choose/databag-choose.component';
 import {DatabagPlaceholderComponent} from './components/shared/molecules/databag-placeholder/databag-placeholder.component';
-import {PopupUploadComponent} from './components/shared/organisms/popup-upload/popup-upload.component';
-import {PopupDatabagComponent} from './components/shared/organisms/popup-databag/popup-databag.component';
+import {CreateDatabagComponent} from './components/shared/organisms/create-databag/create-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
 import {SolutionsComponent} from './components/shared/templates/solutions/solutions.component';
 import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
-import {PopupPredictionsComponent} from './components/shared/organisms/popup-predictions/popup-predictions.component';
-import {PopupSolverComponent} from './components/shared/organisms/popup-solver/popup-solver.component';
+import {CreateSolutionComponent} from './components/shared/organisms/create-solution/create-solution.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
@@ -46,6 +44,7 @@ import {DialogElementDividerComponent} from './components/shared/atoms/dialog-el
 import {DatabagFieldsComponent} from './components/shared/molecules/databag-fields/databag-fields.component';
 import {DatabagsListComponent} from './components/shared/organisms/databags-list/databags-list.component';
 import {DatabagListItemComponent} from './components/shared/molecules/databag-list-item/databag-list-item.component';
+import {ListItemComponent} from './components/shared/atoms/list-item/list-item.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -63,15 +62,13 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SupportComponent,
     DatabagChooseComponent,
     DatabagPlaceholderComponent,
-    PopupUploadComponent,
-    PopupDatabagComponent,
+    CreateDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
     SolutionsComponent,
     SolutionPlaceholderComponent,
     SolutionsListComponent,
-    PopupPredictionsComponent,
-    PopupSolverComponent,
+    CreateSolutionComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
     DatabagsComponent,
@@ -85,7 +82,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DialogElementDividerComponent,
     DatabagFieldsComponent,
     DatabagsListComponent,
-    DatabagListItemComponent
+    DatabagListItemComponent,
+    ListItemComponent
   ],
   imports: [
     BrowserModule,
