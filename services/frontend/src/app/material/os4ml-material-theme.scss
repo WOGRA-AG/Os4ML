@@ -10,6 +10,7 @@
 @use './components/list.scss' as list;
 @use './components/table.scss' as table;
 @use './components/chips.scss' as chips;
+@use './components/stepper.scss' as stepper;
 
 $os4ml-theme: mat.define-light-theme((
   color: (
@@ -29,6 +30,7 @@ $os4ml-theme: mat.define-light-theme((
   @include toolbar.theme($os4ml-theme);
   @include navlist.theme($os4ml-theme);
   @include button.theme($os4ml-theme);
+  @include stepper.theme($os4ml-theme);
   @include expansionModule.theme($os4ml-theme, colors.$border-color);
   @include dialog.theme($os4ml-theme, colors.$overlay, colors.$background);
   @include list.theme($os4ml-theme, colors.$background);

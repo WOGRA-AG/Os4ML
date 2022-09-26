@@ -26,8 +26,7 @@
   .mat-dialog-container {
     border-radius: 24px;
     padding: 0px;
-    max-width: 584px;
-    min-width: 384px;
+    width: 384px;
     min-height: 192px;
     overflow: hidden;
   }
@@ -68,7 +67,9 @@
     align-items: center;
     flex: auto;
     overflow: auto;
-
+    padding: 0px 0px 0px 0px;
+    margin-left: 0px;
+    margin-right:0px;
     .mat-form-field {
       margin-bottom: -1.25em;
       width: 100%;
