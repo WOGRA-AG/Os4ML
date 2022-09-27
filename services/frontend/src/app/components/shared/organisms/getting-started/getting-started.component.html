@@ -2,21 +2,21 @@
   {{"dialog.get_started.title" | translate}}
 </app-shared-dialog-header>
 
-<mat-horizontal-stepper #stepper>
+<mat-horizontal-stepper #stepper labelPosition="bottom">
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-step label="Upload"
+  <mat-step label="{{'dialog.get_started.step_data' | translate}}"
             completed="{{stepperStep>0}}" >
     <mat-dialog-content>
       <app-shared-dialog-section>
         <mat-form-field appearance="outline">
-          <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
+          <mat-label>{{'dialog.common.placeholder_connect' | translate}}</mat-label>
           <input
             #dbUrl="ngModel"
             matInput
             type="url"
-            placeholder="{{'dialog.add_databag.placeholder' | translate}}"
+            placeholder="{{'dialog.common.placeholder_connect' | translate}}"
             [(ngModel)]="fileUrl"
             [pattern]="urlRgex"
           >
@@ -86,10 +86,50 @@
       </app-shared-dialog-section>
     </mat-dialog-content>
   </mat-step>
+
+  <mat-step completed="false" label="Settings">
+    <mat-dialog-content>
+      <app-shared-dialog-section>
+        <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
+          <mat-form-field appearance="outline">
+            <mat-label>{{"dialog.define_solver.label" | translate}}</mat-label>
+            <input id="define-solver-name-input"
+                   matInput type="string"
+                   placeholder="{{'dialog.define_solver.label' | translate}}"
+                   required
+                   name="databag_name" [(ngModel)]="solution.name" #solution_name="ngModel"
+                   [ngClass]="{'is-invalid': f.submitted && solution_name.invalid}">
+          </mat-form-field>
+        </form>
+      </app-shared-dialog-section>
+
+      <app-shared-dialog-section>
+        <div title>{{"dialog.define_solver.subtitle_solver" | translate}}</div>
+        <mat-list>
+          <mat-list-item
+            id="define-solver-list"
+            *ngFor="let solver of solvers"
+            class="pointer bg-primary"
+            [ngClass]="solution.solver === solver.name ? 'active' : ''"
+            (click)="selectSolver(solver)"
+          >
+            <div>
+              <h6 class="on-surface-high">
+                {{solver.name}}
+              </h6>
+              <p class="mat-subheading-2 on-surface-medium">
+                {{solver.description}}
+              </p>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </app-shared-dialog-section>
+    </mat-dialog-content>
+  </mat-step>
 </mat-horizontal-stepper>
 
 <mat-dialog-actions align="end">
-  <div *ngIf="stepperStep === 0">
+  <div *ngIf="stepperStep > 0">
     <button mat-icon-button class="back-button"
     [disableRipple]="true"
     (click)="back(stepper)">
@@ -112,9 +152,11 @@
       [disabled]="!(
       (stepperStep===0 && (file.name || (dbUrl?.valid && dbUrl?.value?.length > 0)))
       || (stepperStep===1)
-      || (stepperStep===2 && (solution.outputFields))
+      || (stepperStep===2 && solution.outputFields)
+      || (stepperStep===3 && solution_name.valid && solution.solver)
       )"
     >
-      {{"dialog.add_databag.main_button" | translate}}
+      <div *ngIf="stepperStep===3">{{"dialog.add_databag.finish" | translate}}</div>
+      <div *ngIf="stepperStep<3">{{"dialog.actions.next_step" | translate}}</div>
     </button>
 </mat-dialog-actions>

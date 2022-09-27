@@ -18,7 +18,8 @@ export class SupportComponent {
 
   openGettingStartedDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: GettingStartedComponent}
+      data: {component: GettingStartedComponent},
+      panelClass: 'getting-started-dialog'
     });
     dialogRef.afterClosed().subscribe();
   }

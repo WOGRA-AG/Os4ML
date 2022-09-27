@@ -36,6 +36,13 @@ export class GettingStartedComponent {
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
               private jobmanagerService: JobmanagerService, private http: HttpClient) {
+    this.jobmanagerService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
+        this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
+        if (this.solution.solver === undefined) {
+          this.solution.solver = this.solvers[0].name;
+        }
+      }
+    );
   }
 
   async next(stepper: MatStepper): Promise<void> {
@@ -89,6 +96,30 @@ export class GettingStartedComponent {
       this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       });
     }
+
+    if (this.stepperStep === 2) {
+      this.solution.inputFields = this.getInputFields();
+    }
+
+    if (this.stepperStep === 3) {
+      if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
+        return;
+      }
+      this.submitting = true;
+      this.solution.status = 'Created';
+      this.solution.databagId = this.databag.databagId;
+      this.solution.databagName = this.databag.databagName;
+      this.jobmanagerService.postSolution(this.solution)
+        .pipe(
+          catchError(err => {
+            this.submitting = false;
+            return of('');
+          })
+        ).subscribe( runId => {
+        this.solution.runId = runId;
+        this.submitting = false;
+      });
+    }
     stepper.next();
     this.stepperStep += 1;
   }
@@ -129,6 +160,10 @@ export class GettingStartedComponent {
       outputFields.splice(columnIndex, 1);
     }
     this.solution.outputFields = outputFields;
+  }
+
+  selectSolver(solver: PipelineTemplate) {
+    this.solution.solver = solver.name;
   }
 
   retrievePipelineStatus(runId: string): Promise<string> {
@@ -173,5 +208,11 @@ export class GettingStartedComponent {
         });
       }, 2000);
     });
+  }
+
+  private getInputFields(): string[] | undefined {
+    return this.databag.columns?.map(column => column.name)
+      .filter((colName): colName is string => !!colName)
+      .filter(columnName => columnName && !this.solution.outputFields?.includes(columnName));
   }
 }
