@@ -6,19 +6,19 @@
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-step label="{{'dialog.get_started.step_data' | translate}}"
+  <mat-step label="{{'dialog.get_started.step_one_title' | translate}}"
             completed="{{stepperStep>0}}" >
     <mat-dialog-content>
       <app-shared-dialog-section>
         <mat-form-field appearance="outline">
-          <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
-          <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+          <mat-label>{{"dialog.common.placeholder_databag" | translate}}</mat-label>
+          <input matInput type="string" placeholder="{{'dialog.common.placeholder_databag' | translate}}" required
                  name="databag_name" [(ngModel)]="databagName" #databag_name="ngModel"
                  [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
         </mat-form-field>
       </app-shared-dialog-section>
       <app-shared-dialog-section>
-        <div description>{{"dialog.get_started.step_data_description" | translate}}</div>
+        <div description>{{"dialog.get_started.upload_description" | translate}}</div>
         <mat-form-field appearance="outline">
           <mat-label>{{'dialog.common.placeholder_connect' | translate}}</mat-label>
           <input
@@ -48,12 +48,12 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step label="{{'dialog.get_started.step_prediction' | translate}}"
+  <mat-step label="{{'dialog.get_started.step_two_title' | translate}}"
             completed="{{stepperStep>1}}"
   >
     <mat-dialog-content>
       <app-shared-dialog-section>
-        <div description>{{"dialog.get_started.step_prediction_description" | translate}}</div>
+        <div description>{{"dialog.get_started.prediction_description" | translate}}</div>
         <mat-list>
           <ng-container *ngFor="let column of databag.columns">
             <mat-list-item
@@ -72,7 +72,7 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false" label="{{'dialog.get_started.step_solver' | translate}}">
+  <mat-step completed="false" label="{{'dialog.get_started.step_three_title' | translate}}">
     <mat-dialog-content>
       <app-shared-dialog-section>
         <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
@@ -88,7 +88,7 @@
       </app-shared-dialog-section>
 
       <app-shared-dialog-section>
-        <div description>{{"dialog.get_started.step_solver_description" | translate}}</div>
+        <div description>{{"dialog.get_started.solver_description" | translate}}</div>
         <mat-list>
           <mat-list-item
             id="define-solver-list"

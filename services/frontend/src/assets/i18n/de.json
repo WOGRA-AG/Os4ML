@@ -26,24 +26,26 @@
     }
   },
   "dialog": {
-  "dialog": {
     "common": {
-      "connect": "Url",
-      "placeholder_status": "Starting"
+      "placeholder_connect": "Url",
+      "placeholder_status": "Starting",
+      "placeholder_solution": "Solution Name",
+      "placeholder_databag": "Databag Name"
     },
     "actions": {
       "previous_step": "Back",
       "next_step": "Next",
-      "finish": "Create"
+      "last_step": "Finish"
     },
     "get_started": {
       "title": "Get Started",
-      "step_data": "Data",
-      "step_data_description": "Upload or connect your data.",
-      "step_prediction": "Prediction",
-      "step_prediction_description": "Pick the data you want to predict.",
-      "step_solver": "Solver",
-      "step_solver_description": "Choose your Solver"
+      "step_one_title": "Databag",
+      "upload_description": "Upload your data and create a databag.",
+      "step_two_title": "Prediction",
+      "prediction_description": "What du you want to predict?",
+      "step_three_title": "Solution",
+      "solver_description": "Choose a solver for your solution?"
+
     },
     "add_databag": {
       "title": "Add Databag",
@@ -86,18 +88,19 @@
     },
     "delete_popup": {
       "title": "Confirm Delete",
-      "main_button": "Delete",
+      "main_button": "Yes",
+      "back_button": "No",
       "confirmation": "Are you sure you want to delete? All data will be lost!"
     },
     "detail_solution": {
       "title": "Solution Details",
       "name": "Name",
-      "input_fields": "Eingabefelder",
-      "output_fields": "Ausgabefelder",
-      "solver": "Löser",
-      "delete_button": "Löschen",
+      "input_fields": "Input Fields",
+      "output_fields": "Output Fields",
+      "solver": "Solver",
+      "delete_button": "Delete",
       "submit_button": "Update",
-      "error": "Fehler"
+      "error": "Error"
     }
   },
   "page": {
