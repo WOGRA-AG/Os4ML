@@ -1,6 +1,6 @@
 import functools
 import logging
-import os
+import subprocess
 import tempfile
 import zipfile
 from collections import namedtuple
@@ -102,7 +102,12 @@ def execute_script(script_url: str) -> pd.DataFrame:
         with open(script.name, "wb") as script_file:
             download_file(script_url, script_file)
         with tempfile.NamedTemporaryFile() as output_file:
-            command = f"python {script.name} --output {output_file.name}"
+            command = [
+                "python",
+                script.name,
+                "--output",
+                output_file.name,
+            ]
             logging.info(f"Executing script: {command}")
-            os.system(command)
+            subprocess.run(command)
             return pd.read_csv(output_file.name)
