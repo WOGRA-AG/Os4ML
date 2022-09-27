@@ -26,12 +26,24 @@
     }
   },
   "dialog": {
+  "dialog": {
+    "common": {
+      "connect": "Url",
+      "placeholder_status": "Starting"
+    },
+    "actions": {
+      "previous_step": "Back",
+      "next_step": "Next",
+      "finish": "Create"
+    },
     "get_started": {
       "title": "Get Started",
-      "label": "Url",
-      "main_button": "Next Step",
-      "placeholder": "Databag Url",
-      "placeholder_status": "Starting"
+      "step_data": "Data",
+      "step_data_description": "Upload or connect your data.",
+      "step_prediction": "Prediction",
+      "step_prediction_description": "Pick the data you want to predict.",
+      "step_solver": "Solver",
+      "step_solver_description": "Choose your Solver"
     },
     "add_databag": {
       "title": "Add Databag",
