@@ -47,12 +47,7 @@ export class GettingStartedComponent {
 
   async next(stepper: MatStepper): Promise<void> {
     if (this.stepperStep === 0) {
-      this.objectstoreService.getDatabagById("27102ce4-b867-465d-bacd-2f8fe9abc9cf").subscribe((databag: Databag) => {
-        this.databag = databag;
-      });
-    }
-    /**
-     if (!(this.file.name || this.fileUrl)) {
+      if (!(this.file.name || this.fileUrl)) {
         this.translate.get('error.no_dataset').subscribe((res: string) => {
           this.translate.get('error.confirm').subscribe((conf: string) => {
             this.matSnackBar.open(res, conf, {duration: 3000});
@@ -61,14 +56,13 @@ export class GettingStartedComponent {
         return;
       }
 
-     this.dialogRef.componentInstance.data.uuid = this.uuid;
-     this.running = true;
-     const runParams: RunParams = {
+      this.running = true;
+      const runParams: RunParams = {
         bucket: '',
         databagId: this.uuid,
         fileName: this.file.name ? this.file.name : this.fileUrl
       };
-     try {
+      try {
         await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
         if (this.file.name) {
           await firstValueFrom(
@@ -90,8 +84,8 @@ export class GettingStartedComponent {
         this.running = false;
         this.pipelineStatus = null;
       }
-     }
-     */
+    }
+
     if (this.stepperStep === 1) {
       this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       });
@@ -119,16 +113,22 @@ export class GettingStartedComponent {
         this.solution.runId = runId;
         this.submitting = false;
       });
+      this.dialogRef.close();
     }
     stepper.next();
     this.stepperStep += 1;
   }
 
+
   back(stepper: MatStepper): void {
-    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      stepper.previous();
-      this.stepperStep -= 1;
-    });
+    if (this.stepperStep === 1) {
+      this.objectstoreService.deleteDatabag(this.uuid);
+      this.uuid = uuidv4();
+      this.solution = {};
+      this.solvers = [];
+    }
+    stepper.previous();
+    this.stepperStep -= 1;
   }
 
   close(): void {
