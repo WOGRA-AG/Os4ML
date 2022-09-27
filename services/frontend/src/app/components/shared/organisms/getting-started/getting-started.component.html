@@ -1,5 +1,5 @@
 <app-shared-dialog-header (closeDialog)="close()">
-  {{"dialog.add_databag.title" | translate}}
+  {{"dialog.get_started.title" | translate}}
 </app-shared-dialog-header>
 
 <mat-horizontal-stepper #stepper>
@@ -39,9 +39,12 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false" label="Settings">
+  <mat-step completed="false"
+            label="Settings"
+            completed="{{stepperStep>1}}"
+  >
     <mat-dialog-content>
-      <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+      <form id="ngForm" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
         <app-shared-dialog-section>
           <mat-form-field appearance="outline">
             <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
@@ -57,6 +60,30 @@
         </app-shared-dialog-section>
 
       </form>
+    </mat-dialog-content>
+  </mat-step>
+
+  <mat-step label="Predictions"
+            completed="{{stepperStep>2}}"
+  >
+    <mat-dialog-content>
+      <app-shared-dialog-section>
+        <div description>{{"dialog.define_output.description" | translate}}</div>
+        <mat-list id="define-output-list">
+          <ng-container *ngFor="let column of databag.columns">
+            <mat-list-item
+              class="bg-primary"
+              *ngIf="column.type==='category'"
+              [ngClass]="solution?.outputFields?.includes(column?.name || '') ? 'active' : ''"
+              (click)="selectDatabag(column.name)">
+              <app-shared-list-item>
+                <div> {{column.name}} </div>
+                <div description> {{column.type}}</div>
+              </app-shared-list-item>
+            </mat-list-item>
+          </ng-container>
+        </mat-list>
+      </app-shared-dialog-section>
     </mat-dialog-content>
   </mat-step>
 </mat-horizontal-stepper>
@@ -75,7 +102,7 @@
       color="primary"
       class="main-button"
       type="submit"
-      (click)="nextClick(stepper)"
+      (click)="next(stepper)"
       [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
     >
       {{"dialog.add_databag.main_button" | translate}}
@@ -92,7 +119,14 @@
       {{"dialog.define_databag.back_button" | translate}}
     </button>
     <div class="button-spacer"></div>
-    <button id="define-databag-button" mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
+    <button id="define-databag-button"
+            mat-raised-button form="ngForm"
+            class="main-button"
+            color="primary"
+            type="submit"
+            (click)="next(stepper)"
+            [disabled]="f.invalid"
+    >
       {{"dialog.define_databag.main_button" | translate}}
     </button>
   </mat-dialog-actions>

@@ -1,10 +1,5 @@
-import {
-  Component,
-} from '@angular/core';
-import {
-  Databag,
-  ObjectstoreService
-} from '../../../../../../build/openapi/objectstore';
+import {Component} from '@angular/core';
+import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -36,49 +31,70 @@ export class GettingStartedComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService, private http: HttpClient) {}
+              private jobmanagerService: JobmanagerService, private http: HttpClient) {
+  }
 
-  async nextClick(stepper: MatStepper): Promise<void> {
-    if (!(this.file.name || this.fileUrl)) {
-      this.translate.get('error.no_dataset').subscribe((res: string) => {
-        this.translate.get('error.confirm').subscribe((conf: string) => {
-          this.matSnackBar.open(res, conf, {duration: 3000});
+  async next(stepper: MatStepper): Promise<void> {
+    if (this.stepperStep === 0) {
+      if (!(this.file.name || this.fileUrl)) {
+        this.translate.get('error.no_dataset').subscribe((res: string) => {
+          this.translate.get('error.confirm').subscribe((conf: string) => {
+            this.matSnackBar.open(res, conf, {duration: 3000});
+          });
         });
-      });
-      return;
+        return;
+      }
+
+      this.dialogRef.componentInstance.data.uuid = this.uuid;
+      this.running = true;
+      const runParams: RunParams = {
+        bucket: '',
+        databagId: this.uuid,
+        fileName: this.file.name ? this.file.name : this.fileUrl
+      };
+      try {
+        await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
+        if (this.file.name) {
+          await firstValueFrom(
+            this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
+          );
+        }
+        this.runId = await firstValueFrom(
+          this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
+        );
+        this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
+        await this.retrievePipelineStatus(this.runId);
+        this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
+          this.databag = databag;
+        });
+      } catch (err: any) {
+        this.matSnackBar.open(err, '', {duration: 3000});
+        await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
+      } finally {
+        this.running = false;
+        this.pipelineStatus = null;
+      }
     }
 
-    this.dialogRef.componentInstance.data.uuid = this.uuid;
-    this.running = true;
-    const runParams: RunParams = {
-      bucket: '',
-      databagId: this.uuid,
-      fileName: this.file.name ? this.file.name : this.fileUrl
-    };
-    try {
-      await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
-      if (this.file.name) {
-        await firstValueFrom(
-          this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
-        );
-      }
-      this.runId = await firstValueFrom(
-        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
-      );
-      this.pipelineStatus = this.translate.instant('dialog.add_databag.placeholder_status');
-      await this.retrievePipelineStatus(this.runId);
-      this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
-        this.databag = databag;
+    if (this.stepperStep === 1) {
+      this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       });
-    } catch (err: any) {
-      this.matSnackBar.open(err, '', {duration: 3000});
-      await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
-    } finally {
-      this.running = false;
-      this.pipelineStatus = null;
-      this.stepperStep = 1;
-      stepper.next();
     }
+    stepper.next();
+    this.stepperStep += 1;
+  }
+
+  back(stepper: MatStepper): void {
+    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
+      stepper.previous();
+      this.stepperStep -= 1;
+    });
+  }
+
+  close(): void {
+    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
+      this.dialogRef.close();
+    });
   }
 
   clearProgress(): Observable<void> {
@@ -129,25 +145,6 @@ export class GettingStartedComponent {
           }
         });
       }, 2000);
-    });
-  }
-
-  back(stepper: MatStepper): void {
-    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
-      stepper.previous();
-      this.stepperStep -= 1;
-    });
-  }
-
-  onSubmit(): void {
-    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
-      this.dialogRef.close();
-    });
-  }
-
-  close(): void {
-    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
-      this.dialogRef.close();
     });
   }
 }
