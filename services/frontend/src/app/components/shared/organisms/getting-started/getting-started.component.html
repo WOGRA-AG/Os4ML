@@ -75,7 +75,7 @@
               class="bg-primary"
               *ngIf="column.type==='category'"
               [ngClass]="solution?.outputFields?.includes(column?.name || '') ? 'active' : ''"
-              (click)="selectDatabag(column.name)">
+              (click)="selectPrediction(column.name)">
               <app-shared-list-item>
                 <div> {{column.name}} </div>
                 <div description> {{column.type}}</div>
@@ -88,11 +88,17 @@
   </mat-step>
 </mat-horizontal-stepper>
 
-<div *ngIf="stepperStep === 0; then nextButton else createButton"></div>
-
-<ng-template #nextButton>
-  <mat-dialog-actions align="end">
-    <div class="on-surface-disabled spinner-status">
+<mat-dialog-actions align="end">
+  <div *ngIf="stepperStep === 0">
+    <button mat-icon-button class="back-button"
+    [disableRipple]="true"
+    (click)="back(stepper)">
+    <mat-icon>arrow_back_ios</mat-icon>
+    {{"dialog.define_databag.back_button" | translate}}
+    </button>
+  </div>
+  <div class="button-spacer"></div>
+  <div class="on-surface-disabled spinner-status">
       {{ this.pipelineStatus }}
     </div>
     <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
@@ -103,31 +109,12 @@
       class="main-button"
       type="submit"
       (click)="next(stepper)"
-      [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
+      [disabled]="!(
+      (stepperStep===0 && (file.name || (dbUrl?.valid && dbUrl?.value?.length > 0)))
+      || (stepperStep===1)
+      || (stepperStep===2 && (solution.outputFields))
+      )"
     >
       {{"dialog.add_databag.main_button" | translate}}
     </button>
-  </mat-dialog-actions>
-</ng-template>
-
-<ng-template #createButton>
-  <mat-dialog-actions align="end">
-    <button mat-icon-button class="back-button"
-            [disableRipple]="true"
-            (click)="back(stepper)">
-      <mat-icon>arrow_back_ios</mat-icon>
-      {{"dialog.define_databag.back_button" | translate}}
-    </button>
-    <div class="button-spacer"></div>
-    <button id="define-databag-button"
-            mat-raised-button form="ngForm"
-            class="main-button"
-            color="primary"
-            type="submit"
-            (click)="next(stepper)"
-            [disabled]="f.invalid"
-    >
-      {{"dialog.define_databag.main_button" | translate}}
-    </button>
-  </mat-dialog-actions>
-</ng-template>
+</mat-dialog-actions>

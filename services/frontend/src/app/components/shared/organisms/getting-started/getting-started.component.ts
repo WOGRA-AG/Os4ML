@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
-import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobmanager';
+import {JobmanagerService, RunParams, PipelineTemplate, Solution} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
@@ -8,6 +8,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, map, mergeMap, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../../../models/pipeline-status';
+import {PipelineStep} from '../../../../models/pipeline-step';
 import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
 
@@ -28,6 +29,9 @@ export class GettingStartedComponent {
   pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
+  solution: Solution = {};
+  solvers: PipelineTemplate[] = [];
+  submitting = false;
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
@@ -36,7 +40,12 @@ export class GettingStartedComponent {
 
   async next(stepper: MatStepper): Promise<void> {
     if (this.stepperStep === 0) {
-      if (!(this.file.name || this.fileUrl)) {
+      this.objectstoreService.getDatabagById("27102ce4-b867-465d-bacd-2f8fe9abc9cf").subscribe((databag: Databag) => {
+        this.databag = databag;
+      });
+    }
+    /**
+     if (!(this.file.name || this.fileUrl)) {
         this.translate.get('error.no_dataset').subscribe((res: string) => {
           this.translate.get('error.confirm').subscribe((conf: string) => {
             this.matSnackBar.open(res, conf, {duration: 3000});
@@ -45,14 +54,14 @@ export class GettingStartedComponent {
         return;
       }
 
-      this.dialogRef.componentInstance.data.uuid = this.uuid;
-      this.running = true;
-      const runParams: RunParams = {
+     this.dialogRef.componentInstance.data.uuid = this.uuid;
+     this.running = true;
+     const runParams: RunParams = {
         bucket: '',
         databagId: this.uuid,
         fileName: this.file.name ? this.file.name : this.fileUrl
       };
-      try {
+     try {
         await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
         if (this.file.name) {
           await firstValueFrom(
@@ -74,8 +83,8 @@ export class GettingStartedComponent {
         this.running = false;
         this.pipelineStatus = null;
       }
-    }
-
+     }
+     */
     if (this.stepperStep === 1) {
       this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
       });
@@ -102,6 +111,24 @@ export class GettingStartedComponent {
       clearInterval(this.intervalID);
     }
     return this.objectstoreService.deleteDatabag(this.uuid);
+  }
+
+  selectPrediction(columnName: string | undefined) {
+    if (!columnName) {
+      return;
+    }
+    else {
+      this.solution = {};
+    }
+
+    const outputFields = this.solution.outputFields || [];
+    const columnIndex = outputFields.indexOf(columnName);
+    if (columnIndex === -1) {
+      outputFields.push(columnName);
+    } else {
+      outputFields.splice(columnIndex, 1);
+    }
+    this.solution.outputFields = outputFields;
   }
 
   retrievePipelineStatus(runId: string): Promise<string> {
