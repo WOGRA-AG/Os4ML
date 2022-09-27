@@ -39,12 +39,12 @@
     },
     "get_started": {
       "title": "Get Started",
-      "step_data": "Data",
-      "step_data_description": "Upload or connect your data and create a databag.",
-      "step_prediction": "Prediction",
-      "step_prediction_description": "What du you want to predict?",
-      "step_solver": "Solver",
-      "step_solver_description": "Which solver do you want to use for your solution?"
+      "step_one_title": "Databag",
+      "upload_description": "Upload your data and create a databag.",
+      "step_two_title": "Prediction",
+      "prediction_description": "What du you want to predict?",
+      "step_three_title": "Solution",
+      "solver_description": "Choose a solver for your solution?"
 
     },
     "add_databag": {
