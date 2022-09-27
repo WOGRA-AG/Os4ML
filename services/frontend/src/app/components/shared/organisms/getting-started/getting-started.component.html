@@ -11,6 +11,15 @@
     <mat-dialog-content>
       <app-shared-dialog-section>
         <mat-form-field appearance="outline">
+          <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
+          <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+                 name="databag_name" [(ngModel)]="databagName" #databag_name="ngModel"
+                 [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+        </mat-form-field>
+      </app-shared-dialog-section>
+      <app-shared-dialog-section>
+        <div description>{{"dialog.get_started.step_data_description" | translate}}</div>
+        <mat-form-field appearance="outline">
           <mat-label>{{'dialog.common.placeholder_connect' | translate}}</mat-label>
           <input
             #dbUrl="ngModel"
@@ -39,37 +48,13 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false"
-            label="Settings"
+  <mat-step label="{{'dialog.get_started.step_prediction' | translate}}"
             completed="{{stepperStep>1}}"
   >
     <mat-dialog-content>
-      <form id="ngForm" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
-        <app-shared-dialog-section>
-          <mat-form-field appearance="outline">
-            <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
-            <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
-                   name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
-                   [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
-          </mat-form-field>
-        </app-shared-dialog-section>
-
-        <app-shared-dialog-section>
-          <app-shared-databag-fields [databag]=databag>
-          </app-shared-databag-fields>
-        </app-shared-dialog-section>
-
-      </form>
-    </mat-dialog-content>
-  </mat-step>
-
-  <mat-step label="Predictions"
-            completed="{{stepperStep>2}}"
-  >
-    <mat-dialog-content>
       <app-shared-dialog-section>
-        <div description>{{"dialog.define_output.description" | translate}}</div>
-        <mat-list id="define-output-list">
+        <div description>{{"dialog.get_started.step_prediction_description" | translate}}</div>
+        <mat-list>
           <ng-container *ngFor="let column of databag.columns">
             <mat-list-item
               class="bg-primary"
@@ -87,15 +72,14 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false" label="Settings">
+  <mat-step completed="false" label="{{'dialog.get_started.step_solver' | translate}}">
     <mat-dialog-content>
       <app-shared-dialog-section>
         <form id="ngForm" class="input-form" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
           <mat-form-field appearance="outline">
             <mat-label>{{"dialog.define_solver.label" | translate}}</mat-label>
-            <input id="define-solver-name-input"
-                   matInput type="string"
-                   placeholder="{{'dialog.define_solver.label' | translate}}"
+            <input matInput type="string"
+                   placeholder="{{'dialog.common.placeholder_solution' | translate}}"
                    required
                    name="databag_name" [(ngModel)]="solution.name" #solution_name="ngModel"
                    [ngClass]="{'is-invalid': f.submitted && solution_name.invalid}">
@@ -104,7 +88,7 @@
       </app-shared-dialog-section>
 
       <app-shared-dialog-section>
-        <div title>{{"dialog.define_solver.subtitle_solver" | translate}}</div>
+        <div description>{{"dialog.get_started.step_solver_description" | translate}}</div>
         <mat-list>
           <mat-list-item
             id="define-solver-list"
@@ -134,7 +118,7 @@
     [disableRipple]="true"
     (click)="back(stepper)">
     <mat-icon>arrow_back_ios</mat-icon>
-    {{"dialog.define_databag.back_button" | translate}}
+    {{"dialog.actions.previous_step" | translate}}
     </button>
   </div>
   <div class="button-spacer"></div>
@@ -151,12 +135,11 @@
       (click)="next(stepper)"
       [disabled]="!(
       (stepperStep===0 && (file.name || (dbUrl?.valid && dbUrl?.value?.length > 0)))
-      || (stepperStep===1)
-      || (stepperStep===2 && solution.outputFields)
-      || (stepperStep===3 && solution_name.valid && solution.solver)
+      || (stepperStep===1 && solution.outputFields)
+      || (stepperStep===2 && solution_name.valid && solution.solver)
       )"
     >
-      <div *ngIf="stepperStep===3">{{"dialog.add_databag.finish" | translate}}</div>
-      <div *ngIf="stepperStep<3">{{"dialog.actions.next_step" | translate}}</div>
+      <div *ngIf="stepperStep===2">{{"dialog.actions.last_step" | translate}}</div>
+      <div *ngIf="stepperStep<2">{{"dialog.actions.next_step" | translate}}</div>
     </button>
 </mat-dialog-actions>

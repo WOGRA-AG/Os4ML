@@ -28,21 +28,24 @@
   "dialog": {
     "common": {
       "placeholder_connect": "Url",
-      "placeholder_status": "Starting"
+      "placeholder_status": "Starting",
+      "placeholder_solution": "Solution Name",
+      "placeholder_databag": "Databag Name"
     },
     "actions": {
       "previous_step": "Back",
       "next_step": "Next",
-      "finish": "Create"
+      "last_step": "Finish"
     },
     "get_started": {
       "title": "Get Started",
       "step_data": "Data",
-      "step_data_description": "Upload or connect your data.",
+      "step_data_description": "Upload or connect your data and create a databag.",
       "step_prediction": "Prediction",
-      "step_prediction_description": "Pick the data you want to predict.",
+      "step_prediction_description": "What du you want to predict?",
       "step_solver": "Solver",
-      "step_solver_description": "Choose your Solver"
+      "step_solver_description": "Which solver do you want to use for your solution?"
+
     },
     "add_databag": {
       "title": "Add Databag",

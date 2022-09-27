@@ -24,6 +24,7 @@ export class GettingStartedComponent {
   running = false;
   uuid: string = uuidv4();
   runId = '';
+  databagName = '';
   intervalID = 0;
   stepperStep = 0;
   pipelineStatus: string | null | undefined = null;
@@ -76,6 +77,9 @@ export class GettingStartedComponent {
         await this.retrievePipelineStatus(this.runId);
         this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
           this.databag = databag;
+          this.databag.databagName = this.databagName;
+          this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
+          });
         });
       } catch (err: any) {
         this.matSnackBar.open(err, '', {duration: 3000});
@@ -87,15 +91,10 @@ export class GettingStartedComponent {
     }
 
     if (this.stepperStep === 1) {
-      this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
-      });
-    }
-
-    if (this.stepperStep === 2) {
       this.solution.inputFields = this.getInputFields();
     }
 
-    if (this.stepperStep === 3) {
+    if (this.stepperStep === 2) {
       if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
         return;
       }
