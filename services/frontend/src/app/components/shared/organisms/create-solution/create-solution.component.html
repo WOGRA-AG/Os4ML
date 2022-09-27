@@ -99,7 +99,7 @@
     <button
       id="define-solver-next-button"
       mat-raised-button color="primary"
-      [disabled]="submitting"
+      [disabled]="submitting || !(solution.solver) || !(solution.name)"
       class="main-button"
       form="ngForm"
       type="submit">

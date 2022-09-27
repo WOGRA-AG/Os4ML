@@ -45,7 +45,9 @@ def init_databag_sniffle_upload(
 
 
 def main():
-    compile_pipeline(init_databag_sniffle_upload, file=__file__)
+    compile_pipeline(
+        init_databag_sniffle_upload, file=__file__, node_pool="high-cpu"
+    )
 
 
 if __name__ == "__main__":

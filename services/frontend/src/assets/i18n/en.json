@@ -88,8 +88,8 @@
     },
     "delete_popup": {
       "title": "Confirm Delete",
-      "main_button": "Yes",
-      "back_button": "No",
+      "delete": "Delete",
+      "cancel": "Cancel",
       "confirmation": "Are you sure you want to delete? All data will be lost!"
     },
     "detail_solution": {
