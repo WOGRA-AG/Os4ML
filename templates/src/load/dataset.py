@@ -1,15 +1,16 @@
 import zipfile
 
 from kfp_util.dataset import load_dataset
-from model.databag_type import DatabagType
+from model.databag_type import DatasetType
+from model.file_type import FileType
 from objectstore.objectstore import download_file_from_bucket
 from util.paths import path_to_absolute
 
 
-def build_dataset(dataset_file_path, databag, os4ml_namespace: str):
+def build_dataset(dataset_file_path: str, databag, os4ml_namespace: str):
     dataset = load_dataset(dataset_file_path)
 
-    if databag["dataset_type"] == DatabagType.zip_file:
+    if databag["file_type"] == FileType.ZIP:
         download_and_extract_zip_file(
             databag["bucket_name"], databag["file_name"], os4ml_namespace
         )
