@@ -47,6 +47,8 @@ export class GettingStartedComponent {
   }
 
   async next(stepper: MatStepper): Promise<void> {
+    this.submitting = true;
+
     if (this.stepperStep === 0) {
       if (!(this.file.name || this.fileUrl)) {
         this.translate.get('error.no_dataset').subscribe((res: string) => {
@@ -116,6 +118,7 @@ export class GettingStartedComponent {
     }
     stepper.next();
     this.stepperStep += 1;
+    this.submitting = false;
   }
 
 
