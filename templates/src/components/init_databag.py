@@ -8,9 +8,9 @@ from typing import BinaryIO, Generator, NamedTuple, Tuple
 
 import pandas as pd
 
-from exceptions.resource_not_found_exception import ResourceNotFoundException
+from exceptions.resource_not_found import ResourceNotFoundException
 from jobmanager.solution import error_status_update
-from model.databag_type import DatabagType
+from model.databag_type import DatasetType
 from model.error_msg_key import ErrorMsgKey
 from model.file_type import FileType
 from objectstore.objectstore import (
@@ -47,14 +47,14 @@ def init_databag(
     )
     with exception_handler(handler, ErrorMsgKey.DATASET_NOT_FOUND):
         databag_info = namedtuple("DatabagInfo", ["databag_type", "dataset"])
-        databag_type = DatabagType.from_uri(file_name)
+        databag_type = DatasetType.from_uri(file_name)
 
-        if databag_type == DatabagType.shepard_url:
+        if databag_type == DatasetType.shepard_url:
             # TODO: Replace with real data
             df = pd.DataFrame([1], columns=["a"])
             return databag_info(databag_type.value, df.to_csv(index=False))
 
-        elif databag_type == DatabagType.file_url:
+        elif databag_type == DatasetType.file_url:
             if not resource_exists(file_name):
                 raise ResourceNotFoundException(file_name)
             data_uri = file_name
