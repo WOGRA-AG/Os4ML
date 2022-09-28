@@ -111,8 +111,8 @@ export class GettingStartedComponent {
         ).subscribe( runId => {
         this.solution.runId = runId;
         this.submitting = false;
+        this.dialogRef.close();
       });
-      this.dialogRef.close();
     }
     stepper.next();
     this.stepperStep += 1;
