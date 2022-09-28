@@ -26,6 +26,27 @@
     }
   },
   "dialog": {
+    "common": {
+      "placeholder_connect": "Url",
+      "placeholder_status": "Starting",
+      "placeholder_solution": "Solution Name",
+      "placeholder_databag": "Databag Name"
+    },
+    "actions": {
+      "previous_step": "Back",
+      "next_step": "Next",
+      "last_step": "Finish"
+    },
+    "get_started": {
+      "title": "Get Started",
+      "step_one_title": "Databag",
+      "upload_description": "Upload your data and create a databag.",
+      "step_two_title": "Prediction",
+      "prediction_description": "What du you want to predict?",
+      "step_three_title": "Solution",
+      "solver_description": "Choose a solver for your solution?"
+
+    },
     "add_databag": {
       "title": "Add Databag",
       "label": "Url",

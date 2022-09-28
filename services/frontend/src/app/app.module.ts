@@ -45,6 +45,7 @@ import {DatabagFieldsComponent} from './components/shared/molecules/databag-fiel
 import {DatabagsListComponent} from './components/shared/organisms/databags-list/databags-list.component';
 import {DatabagListItemComponent} from './components/shared/molecules/databag-list-item/databag-list-item.component';
 import {ListItemComponent} from './components/shared/atoms/list-item/list-item.component';
+import {GettingStartedComponent} from './components/shared/organisms/getting-started/getting-started.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -83,7 +84,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DatabagFieldsComponent,
     DatabagsListComponent,
     DatabagListItemComponent,
-    ListItemComponent
+    ListItemComponent,
+    GettingStartedComponent
   ],
   imports: [
     BrowserModule,
