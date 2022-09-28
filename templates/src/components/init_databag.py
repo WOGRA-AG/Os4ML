@@ -1,4 +1,6 @@
 import functools
+import logging
+import subprocess
 import tempfile
 import zipfile
 from collections import namedtuple
@@ -74,6 +76,8 @@ def init_databag(
                     iter_dirs_of_zip_with_labels(tmp_file),
                     columns=["file", "label"],
                 )
+        elif file_type == FileType.SCRIPT:
+            df = execute_script(data_uri)
         else:
             raise NotImplementedError()
         return databag_info(databag_type.value, df.to_csv(index=False))
@@ -91,3 +95,19 @@ def iter_dirs_of_zip_with_labels(
                     unpacked_root_dir.parent.filename.resolve()
                 )
                 yield str(file_name), label
+
+
+def execute_script(script_url: str) -> pd.DataFrame:
+    with tempfile.NamedTemporaryFile() as script:
+        with open(script.name, "wb") as script_file:
+            download_file(script_url, script_file)
+        with tempfile.NamedTemporaryFile() as output_file:
+            command = [
+                "python",
+                script.name,
+                "--output",
+                output_file.name,
+            ]
+            logging.info(f"Executing script: {command}")
+            subprocess.run(command)
+            return pd.read_csv(output_file.name)

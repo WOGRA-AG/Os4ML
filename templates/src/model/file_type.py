@@ -14,6 +14,7 @@ class FileType(str, enum.Enum):
     CSV = "csv"
     EXCEL = "excel"
     ZIP = "zip"
+    SCRIPT = "script"
 
     @classmethod
     def from_file_name(cls, file_name: str) -> FileType:
@@ -24,5 +25,7 @@ class FileType(str, enum.Enum):
             return FileType.EXCEL
         elif suffix == ".zip":
             return FileType.ZIP
+        elif suffix == ".py":
+            return FileType.SCRIPT
         else:
             raise FileTypeUnknownError(f"Unknown file type: {suffix}")
