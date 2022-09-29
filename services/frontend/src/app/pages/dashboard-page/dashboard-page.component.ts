@@ -18,10 +18,10 @@ import {
 
 @Component({
   selector: 'app-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss']
+  templateUrl: './dashboard-page.component.html',
+  styleUrls: ['./dashboard-page.component.scss']
 })
-export class MainPageComponent implements OnDestroy {
+export class DashboardPageComponent implements OnDestroy {
   databags: Databag[] = [];
   solutions: Solution[] = [];
   selectedDatabag: Databag = {};
