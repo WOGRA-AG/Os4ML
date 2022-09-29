@@ -14,10 +14,6 @@
   padding-top: 20px;
 }
 
-.databags-template {
-  flex-direction: column;
-}
-
 .solutions-template {
   margin-left: 15px;
   flex: auto;
@@ -37,11 +33,16 @@
   right: 50px;
 }
 
-.databag-container {
+.content-container {
   margin-top: 100px;
   min-width: 265px;
   width: 100%;
   flex: auto;
   display: flex;
   flex-direction: row;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }

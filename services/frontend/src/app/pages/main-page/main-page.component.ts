@@ -12,6 +12,9 @@ import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {Solution} from '../../../../build/openapi/jobmanager';
+import {
+  CreateSolutionComponent
+} from '../../components/shared/organisms/create-solution/create-solution.component';
 
 @Component({
   selector: 'app-main-page',
@@ -45,6 +48,23 @@ export class MainPageComponent implements OnDestroy {
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
+  }
+
+  addSolution() {
+    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {component: CreateSolutionComponent, databag: this.selectedDatabag}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && (result as Solution).name) {
+        this.solutions.push(result);
+      }
+    });
+  }
+
+  getSolutionsInDatabag() {
+    return this.solutions.filter(
+      solution => solution.databagId === this.selectedDatabag.databagId
+    );
   }
 
   ngOnDestroy() {
