@@ -22,7 +22,7 @@
         <mat-form-field appearance="outline">
           <mat-label>{{'dialog.common.placeholder_connect' | translate}}</mat-label>
           <input
-            #dbUrl="ngModel"
+            #db_url="ngModel"
             matInput
             type="url"
             placeholder="{{'dialog.common.placeholder_connect' | translate}}"
@@ -115,31 +115,27 @@
 <mat-dialog-actions align="end">
   <div *ngIf="stepperStep > 0">
     <button mat-icon-button class="back-button"
-    [disableRipple]="true"
-    (click)="back(stepper)">
-    <mat-icon>arrow_back_ios</mat-icon>
-    {{"dialog.actions.previous_step" | translate}}
+            [disableRipple]="true"
+            (click)="back(stepper)">
+      <mat-icon>arrow_back_ios</mat-icon>
+      {{"dialog.actions.previous_step" | translate}}
     </button>
   </div>
   <div class="button-spacer"></div>
   <div class="on-surface-disabled spinner-status">
-      {{ this.pipelineStatus }}
-    </div>
-    <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
-    <button
-      id="add-databag-main-button"
-      mat-raised-button
-      color="primary"
-      class="main-button"
-      type="submit"
-      (click)="next(stepper)"
-      [disabled]="(!(
-      (stepperStep===0 && (databagName !== '' && (file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))))
-      || (stepperStep===1 && solution.outputFields)
-      || (stepperStep===2 && solution_name.valid && solution.solver))
-      || submitting)"
-    >
-      <div *ngIf="stepperStep>=2">{{"dialog.actions.last_step" | translate}}</div>
-      <div *ngIf="stepperStep<2">{{"dialog.actions.next_step" | translate}}</div>
-    </button>
+    {{ this.pipelineStatus }}
+  </div>
+  <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
+  <button
+    id="add-databag-main-button"
+    mat-raised-button
+    color="primary"
+    class="main-button"
+    type="submit"
+    (click)="next(stepper)"
+    [disabled]="isDisabled(file, db_url,  databag_name.valid, solution_name.valid)"
+  >
+    <div *ngIf="stepperStep>=2">{{"dialog.actions.last_step" | translate}}</div>
+    <div *ngIf="stepperStep<2">{{"dialog.actions.next_step" | translate}}</div>
+  </button>
 </mat-dialog-actions>
