@@ -63,7 +63,7 @@ export class CreateDatabagComponent {
         );
       }
       this.runId = await firstValueFrom(
-        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
+        this.jobmanagerService.postTemplate('databag', runParams)
       );
       this.pipelineStatus = this.translate.instant('message.pipeline.default');
       await this.retrievePipelineStatus(this.runId);
@@ -72,7 +72,6 @@ export class CreateDatabagComponent {
       });
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
-      await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
     } finally {
       this.running = false;
       this.pipelineStatus = null;
