@@ -1,6 +1,6 @@
 cache:
   paths:
-    - /cache
+    - ./cache
 
 .build-lint:
   stage: test
@@ -16,7 +16,7 @@ cache:
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:lint"
       --digest-file=$CI_PROJECT_DIR/image-digest
       --cache=true
-      --cache-dir /cache
+      --cache-dir ./cache
       --cache-ttl 2190h0m0s
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
@@ -39,7 +39,7 @@ cache:
       --destination "$CI_REGISTRY_IMAGE/$IMG_NAME:test"
       --digest-file=$CI_PROJECT_DIR/image-digest
       --cache=true
-      --cache-dir /cache
+      --cache-dir ./cache
       --cache-ttl 2190h0m0s
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
