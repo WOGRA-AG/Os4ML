@@ -15,7 +15,7 @@
       --digest-file=$CI_PROJECT_DIR/image-digest
       --cache=true
       --cache-ttl 2190h0m0s
-      --cache-repo=172.16.10.15:6000/hello-world/cache
+      --cache-repo=172.16.10.15:6000/$IMG_NAME/cache
       --cache=true
       --insecure=true
       --insecure-registry=172.16.10.15:6000
