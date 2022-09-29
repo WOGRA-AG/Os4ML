@@ -4,12 +4,10 @@ from kfp.v2.dsl import Condition, pipeline
 from src.pipelines.util import compile_pipeline, load_component
 
 init_empty_databag_op = load_component("init_empty_databag")
-
-create_dataframe_op = load_component("create_dataframe")
+get_file_and_dataset_type_op = load_component("get_file_and_dataset_type")
 execute_dataframe_script_op = load_component("execute_dataframe_script")
 get_dataset_op = load_component("get_dataset")
-get_file_and_dataset_type_op = load_component("get_file_and_dataset_type")
-
+create_dataframe_op = load_component("create_dataframe")
 sniffle_op = load_component("sniffle_dataset")
 
 

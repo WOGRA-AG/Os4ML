@@ -59,7 +59,6 @@ class DatabagService:
     def update_databag(
         self, bucket_name: str, databag_id: str, databag: Databag
     ) -> str:
-        print(databag)
         self._persist_databag(
             bucket_name=bucket_name,
             databag_id=databag_id,
