@@ -1,9 +1,9 @@
 <div class="page-wrapper">
-  <div class="databags-template" *ngIf="databags.length > 0; then content else placeholder"></div>
+  <div *ngIf="databags.length > 0; then content else placeholder"></div>
 </div>
 
 <ng-template #content>
-  <div class="databag-container">
+  <div class="content-container">
     <app-shared-databag-choose [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-shared-databag-choose>
     <div *ngIf="selectedDatabag.databagName" class="solutions-template">
       <div class="solutions-taskbar">
@@ -11,7 +11,28 @@
           <h6>Solutions</h6>
         </div>
       </div>
-      <app-solutions [(solutions)]="solutions" [databag]="selectedDatabag"></app-solutions>
+      <div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else solutionsPlaceholder"></div>
+
+      <ng-template #solutionsTemplate>
+        <div class="list-container">
+          <app-shared-solutions-list [solutions]="getSolutionsInDatabag()">
+          </app-shared-solutions-list>
+        </div>
+        <div class="actions">
+          <button mat-raised-button actions
+                  class="fab-button mat-raised-button"
+                  color="primary"
+                  (click)="addSolution()">
+            <mat-icon>add</mat-icon>
+            {{ "page.solution.add.button" | translate }}
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #solutionsPlaceholder>
+        <app-shared-solution-placeholder (mainButton)="addSolution()">
+        </app-shared-solution-placeholder>
+      </ng-template>
     </div>
   </div>
 </ng-template>
