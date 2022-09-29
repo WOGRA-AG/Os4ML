@@ -32,7 +32,6 @@ import {ToggleItemComponent} from './components/shared/molecules/toggle-item/tog
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
-import {DatabagsComponent} from './components/shared/templates/databags/databags.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
@@ -72,7 +71,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     CreateSolutionComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
-    DatabagsComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
     PopupDeleteComponent,
