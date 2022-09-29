@@ -3,12 +3,20 @@ import {Databag} from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
+import {
+  DialogDynamicComponent
+} from '../../components/dialog-dynamic/dialog-dynamic.component';
+import {
+  CreateDatabagComponent
+} from '../../components/shared/organisms/create-databag/create-databag.component';
+
 
 @Component({
   selector: 'app-databag-page',
   templateUrl: './databag-page.component.html',
   styleUrls: ['./databag-page.component.scss']
 })
+
 export class DatabagPageComponent implements OnDestroy {
   databags: Databag[] = [];
   intervalSub: Subscription;
@@ -23,6 +31,14 @@ export class DatabagPageComponent implements OnDestroy {
     });
     activatedRoute.data.subscribe(data => {
       this.databags = data['databags'];
+    });
+  }
+
+  addDatabag() {
+    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {component: CreateDatabagComponent}
+    });
+    dialogRef.afterClosed().subscribe(() => {
     });
   }
 
