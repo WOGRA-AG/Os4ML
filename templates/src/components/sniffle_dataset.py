@@ -2,7 +2,7 @@ import functools
 from typing import List
 
 import pandas as pd
-from kfp.v2.dsl import Dataset, Input, Artifact
+from kfp.v2.dsl import Artifact, Dataset, Input
 
 from build.objectstore.model.column import Column
 from kfp_util.dataset import load_dataset
@@ -23,11 +23,11 @@ from util.exception_handler import exception_handler
 
 
 def sniffle_dataset(
-        dataset: Input[Dataset],
-        dataset_type: str,
-        max_categories: int,
-        databag_id: str,
-        os4ml_namespace: str,
+    dataset: Input[Dataset],
+    dataset_type: str,
+    max_categories: int,
+    databag_id: str,
+    os4ml_namespace: str,
 ) -> None:
     """
     Guesses the datatypes of the columns in the dataframe.

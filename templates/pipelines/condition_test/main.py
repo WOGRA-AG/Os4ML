@@ -1,5 +1,5 @@
 from kfp.dsl import RUN_ID_PLACEHOLDER
-from kfp.v2.dsl import pipeline, Condition
+from kfp.v2.dsl import Condition, pipeline
 
 from src.pipelines.util import compile_pipeline, load_component
 
@@ -14,9 +14,7 @@ def test(s: str):
 
 
 def main():
-    compile_pipeline(
-        test, file=__file__, node_pool="high-cpu"
-    )
+    compile_pipeline(test, file=__file__, node_pool="high-cpu")
 
 
 if __name__ == "__main__":

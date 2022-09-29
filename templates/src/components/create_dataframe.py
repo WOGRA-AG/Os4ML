@@ -2,27 +2,28 @@ import functools
 import zipfile
 from typing import BinaryIO, Generator, Tuple
 
+import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output
 
+from exceptions.file_type_unknown import FileTypeUnknownException
 from model.error_msg_key import ErrorMsgKey
 from model.file_type import FileType
-from util.exception_handler import exception_handler
-
-import pandas as pd
-
-from exceptions.file_type_unknown import FileTypeUnknownException
-
 from objectstore.objectstore import error_databag_status_update
+from util.exception_handler import exception_handler
 
 
 def create_dataframe(
-        dataset: Input[Dataset],
-        dataframe: Output[Dataset],
-        file_type: str,
-        databag_id: str,
-        os4ml_namespace: str,
+    dataset: Input[Dataset],
+    dataframe: Output[Dataset],
+    file_type: str,
+    databag_id: str,
+    os4ml_namespace: str,
 ):
-    handler = functools.partial(error_databag_status_update, databag_id, os4ml_namespace=os4ml_namespace)
+    handler = functools.partial(
+        error_databag_status_update,
+        databag_id,
+        os4ml_namespace=os4ml_namespace,
+    )
     with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
         if file_type == FileType.CSV:
             df = pd.read_csv(dataset.path)
@@ -31,16 +32,16 @@ def create_dataframe(
         elif file_type == FileType.ZIP:
             df = pd.DataFrame(
                 iter_dirs_of_zip_with_labels(dataset.path),
-                columns=["file", "label"]
+                columns=["file", "label"],
             )
         else:
             raise FileTypeUnknownException()
-        with open(dataframe.path, 'wb') as dataframe_file:
+        with open(dataframe.path, "wb") as dataframe_file:
             df.to_csv(dataframe_file, index=False)
 
 
 def iter_dirs_of_zip_with_labels(
-        zip_file: str,
+    zip_file: str,
 ) -> Generator[Tuple[str, str], None, None]:
     with zipfile.ZipFile(zip_file) as root:
         unpacked_root_dir = next(zipfile.Path(root).iterdir())

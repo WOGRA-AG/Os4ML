@@ -5,12 +5,12 @@ from components.util import build_component
 
 
 def get_dataset(
-        dataset_type: str,
-        file_name: str,
-        bucket: str,
-        databag_id: str,
-        os4ml_namespace: str,
-        dataset: Output[Dataset]
+    dataset_type: str,
+    file_name: str,
+    bucket: str,
+    databag_id: str,
+    os4ml_namespace: str,
+    dataset: Output[Dataset],
 ):
     from components.get_dataset import get_dataset
 
