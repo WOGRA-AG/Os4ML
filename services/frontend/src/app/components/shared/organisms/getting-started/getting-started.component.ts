@@ -1,9 +1,19 @@
 import {Component} from '@angular/core';
-import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
-import {JobmanagerService, RunParams, PipelineTemplate, Solution} from '../../../../../../build/openapi/jobmanager';
+import {
+  Databag,
+  ObjectstoreService
+} from '../../../../../../build/openapi/objectstore';
+import {
+  JobmanagerService,
+  PipelineTemplate,
+  RunParams,
+  Solution
+} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {
+  DialogDynamicComponent
+} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, map, mergeMap, Observable, of} from 'rxjs';
@@ -210,6 +220,32 @@ export class GettingStartedComponent {
         });
       }, 2000);
     });
+  }
+
+  isDisabled(
+    file: any,
+    dbUrl: any,
+    validDatabagName: any,
+    validSolutionName: any) {
+    if (this.submitting) {
+      return false;
+    }
+    if (this.stepperStep===0){
+      if (file.name && ((dbUrl?.valid && dbUrl?.value?.length > 0))) {
+        this.pipelineStatus = 'Url is ignored!';
+        return false;
+      }
+      else {
+        return !(this.databagName !== '' && (file.name || ((dbUrl?.valid && dbUrl?.value?.length > 0))));
+      }
+    }
+    if (this.stepperStep===1){
+      return !(this.solution.outputFields);
+    }
+    if (this.stepperStep===2){
+      return !(validSolutionName && this.solution.solver);
+    }
+    return false;
   }
 
   private getInputFields(): string[] | undefined {
