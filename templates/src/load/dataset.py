@@ -1,7 +1,6 @@
 import zipfile
 
 from kfp_util.dataset import load_dataset
-from model.databag_type import DatasetType
 from model.file_type import FileType
 from objectstore.objectstore import download_file_from_bucket
 from util.paths import path_to_absolute
