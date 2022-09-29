@@ -2,7 +2,7 @@ import functools
 from typing import List
 
 import pandas as pd
-from kfp.v2.dsl import Dataset, Input
+from kfp.v2.dsl import Dataset, Input, Artifact
 
 from build.objectstore.model.column import Column
 from kfp_util.dataset import load_dataset
@@ -23,11 +23,11 @@ from util.exception_handler import exception_handler
 
 
 def sniffle_dataset(
-    dataset: Input[Dataset],
-    dataset_type: str,
-    max_categories: int,
-    databag_id: str,
-    os4ml_namespace: str,
+        dataset: Input[Dataset],
+        dataset_type: str,
+        max_categories: int,
+        databag_id: str,
+        os4ml_namespace: str,
 ) -> None:
     """
     Guesses the datatypes of the columns in the dataframe.
@@ -52,6 +52,7 @@ def sniffle_dataset(
         databag.number_columns = len(columns)
         databag.columns = columns
         databag.status = DatabagStatusMessages.creating.value
+        databag.dataset_url = get_artifact_url(dataset)
         put_databag(databag, os4ml_namespace)
 
 
@@ -66,3 +67,7 @@ def create_columns(
         return []
     else:
         raise NotImplementedError()
+
+
+def get_artifact_url(artifact: Artifact) -> str:
+    return f"http://istio-ingressgateway.istio-system.svc.cluster.local/artifacts{artifact.path}"
