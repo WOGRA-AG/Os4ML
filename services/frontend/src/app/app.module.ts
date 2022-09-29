@@ -4,13 +4,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DatabagPageComponent} from './pages/databag-page/databag-page.component';
+import {DatabagsPageComponent} from './pages/databags-page/databags-page.component';
 import {UploadFieldComponent} from './components/shared/molecules/upload-field/upload-field.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
-import {MainPageComponent} from './pages/main-page/main-page.component';
+import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {SidenavComponent} from './components/sidenav/sidenav.component';
 import {MaterialModule} from './material/material.module';
@@ -24,7 +24,6 @@ import {CreateDatabagComponent} from './components/shared/organisms/create-datab
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
-import {SolutionsComponent} from './components/shared/templates/solutions/solutions.component';
 import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
 import {CreateSolutionComponent} from './components/shared/organisms/create-solution/create-solution.component';
@@ -32,7 +31,6 @@ import {ToggleItemComponent} from './components/shared/molecules/toggle-item/tog
 import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
 import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
-import {DatabagsComponent} from './components/shared/templates/databags/databags.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
@@ -52,9 +50,9 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
 @NgModule({
   declarations: [
     AppComponent,
-    DatabagPageComponent,
+    DatabagsPageComponent,
     UploadFieldComponent,
-    MainPageComponent,
+    DashboardPageComponent,
     ToolbarComponent,
     SidenavComponent,
     SettingsPageComponent,
@@ -66,13 +64,11 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     CreateDatabagComponent,
     DragAndDropDirective,
     DialogDynamicComponent,
-    SolutionsComponent,
     SolutionPlaceholderComponent,
     SolutionsListComponent,
     CreateSolutionComponent,
     ToggleItemComponent,
     SolutionListItemComponent,
-    DatabagsComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
     PopupDeleteComponent,

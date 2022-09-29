@@ -12,13 +12,16 @@ import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {Solution} from '../../../../build/openapi/jobmanager';
+import {
+  CreateSolutionComponent
+} from '../../components/shared/organisms/create-solution/create-solution.component';
 
 @Component({
   selector: 'app-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss']
+  templateUrl: './dashboard-page.component.html',
+  styleUrls: ['./dashboard-page.component.scss']
 })
-export class MainPageComponent implements OnDestroy {
+export class DashboardPageComponent implements OnDestroy {
   databags: Databag[] = [];
   solutions: Solution[] = [];
   selectedDatabag: Databag = {};
@@ -45,6 +48,23 @@ export class MainPageComponent implements OnDestroy {
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['.'], {relativeTo: this.activatedRoute});
     });
+  }
+
+  addSolution() {
+    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+      data: {component: CreateSolutionComponent, databag: this.selectedDatabag}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && (result as Solution).name) {
+        this.solutions.push(result);
+      }
+    });
+  }
+
+  getSolutionsInDatabag() {
+    return this.solutions.filter(
+      solution => solution.databagId === this.selectedDatabag.databagId
+    );
   }
 
   ngOnDestroy() {
