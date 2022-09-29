@@ -1,0 +1,44 @@
+<div class="page-wrapper">
+  <div *ngIf="databags.length > 0; then content else placeholder"></div>
+</div>
+
+<ng-template #content>
+  <div class="content-container">
+    <app-shared-databag-choose [databags]="databags" [(selectedDatabag)]="selectedDatabag"></app-shared-databag-choose>
+    <div *ngIf="selectedDatabag.databagName" class="solutions-template">
+      <div class="solutions-taskbar">
+        <div class="solutions-headline">
+          <h6>Solutions</h6>
+        </div>
+      </div>
+      <div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else solutionsPlaceholder"></div>
+
+      <ng-template #solutionsTemplate>
+        <div class="list-container">
+          <app-shared-solutions-list [solutions]="getSolutionsInDatabag()">
+          </app-shared-solutions-list>
+        </div>
+        <div class="actions">
+          <button mat-raised-button actions
+                  class="fab-button mat-raised-button"
+                  color="primary"
+                  (click)="addSolution()">
+            <mat-icon>add</mat-icon>
+            {{ "page.solution.add.button" | translate }}
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #solutionsPlaceholder>
+        <app-shared-solution-placeholder (mainButton)="addSolution()">
+        </app-shared-solution-placeholder>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-shared-databag-placeholder (mainButton)="addDatabag()"></app-shared-databag-placeholder>
+  </div>
+</ng-template>
