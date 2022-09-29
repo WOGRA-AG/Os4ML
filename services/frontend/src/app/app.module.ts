@@ -4,13 +4,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DatabagPageComponent} from './pages/databag-page/databag-page.component';
+import {DatabagsPageComponent} from './pages/databags-page/databags-page.component';
 import {UploadFieldComponent} from './components/shared/molecules/upload-field/upload-field.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
-import {MainPageComponent} from './pages/main-page/main-page.component';
+import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.component';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {SidenavComponent} from './components/sidenav/sidenav.component';
 import {MaterialModule} from './material/material.module';
@@ -50,9 +50,9 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
 @NgModule({
   declarations: [
     AppComponent,
-    DatabagPageComponent,
+    DatabagsPageComponent,
     UploadFieldComponent,
-    MainPageComponent,
+    DashboardPageComponent,
     ToolbarComponent,
     SidenavComponent,
     SettingsPageComponent,

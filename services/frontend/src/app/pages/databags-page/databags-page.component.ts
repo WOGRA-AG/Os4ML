@@ -12,12 +12,12 @@ import {
 
 
 @Component({
-  selector: 'app-databag-page',
-  templateUrl: './databag-page.component.html',
-  styleUrls: ['./databag-page.component.scss']
+  selector: 'app-databags-page',
+  templateUrl: './databags-page.component.html',
+  styleUrls: ['./databags-page.component.scss']
 })
 
-export class DatabagPageComponent implements OnDestroy {
+export class DatabagsPageComponent implements OnDestroy {
   databags: Databag[] = [];
   intervalSub: Subscription;
 
