@@ -1,5 +1,5 @@
 from kfp.dsl import RUN_ID_PLACEHOLDER
-from kfp.v2.dsl import pipeline, Condition
+from kfp.v2.dsl import Condition, pipeline
 
 from src.pipelines.util import compile_pipeline, load_component
 
@@ -15,13 +15,13 @@ sniffle_op = load_component("sniffle_dataset")
 
 @pipeline(name="databag")
 def databag(
-        bucket: str,
-        databag_id: str,
-        file_name: str,
-        solution_name: str,
-        os4ml_namespace: str,
-        max_categories: int = 10,
-        run_id: str = RUN_ID_PLACEHOLDER,
+    bucket: str,
+    databag_id: str,
+    file_name: str,
+    solution_name: str,
+    os4ml_namespace: str,
+    max_categories: int = 10,
+    run_id: str = RUN_ID_PLACEHOLDER,
 ):
     init_empty_databag_op(
         file_name=file_name,
@@ -78,9 +78,7 @@ def databag(
 
 
 def main():
-    compile_pipeline(
-        databag, file=__file__, node_pool="high-cpu"
-    )
+    compile_pipeline(databag, file=__file__, node_pool="high-cpu")
 
 
 if __name__ == "__main__":

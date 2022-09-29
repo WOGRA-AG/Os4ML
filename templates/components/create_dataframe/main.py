@@ -5,11 +5,11 @@ from components.util import build_component
 
 
 def create_dataframe(
-        dataset: Input[Dataset],
-        dataframe: Output[Dataset],
-        file_type: str,
-        databag_id: str,
-        os4ml_namespace: str,
+    dataset: Input[Dataset],
+    dataframe: Output[Dataset],
+    file_type: str,
+    databag_id: str,
+    os4ml_namespace: str,
 ):
     from components.create_dataframe import create_dataframe
 

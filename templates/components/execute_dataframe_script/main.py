@@ -5,11 +5,11 @@ from components.util import build_component
 
 
 def execute_dataframe_script(
-        dataframe: Output[Dataset],
-        bucket: str,
-        file_name: str,
-        databag_id: str,
-        os4ml_namespace: str
+    dataframe: Output[Dataset],
+    bucket: str,
+    file_name: str,
+    databag_id: str,
+    os4ml_namespace: str,
 ):
     from components.execute_dataframe_script import execute_dataframe_script
 
@@ -23,7 +23,9 @@ def execute_dataframe_script(
 
 
 def main():
-    build_component(execute_dataframe_script, base_image=pandas_image, file=__file__)
+    build_component(
+        execute_dataframe_script, base_image=pandas_image, file=__file__
+    )
 
 
 if __name__ == "__main__":
