@@ -3,7 +3,7 @@
      (filesDropped)="uploadDroppedFile($event)" (click)="fileUpload.click()">
   <div *ngIf="file.name; else templateName">{{file.name}}</div>
   <ng-template #templateName>
-    click to browse or <br>drag and drop your file
+    {{"dialog.section.upload.upper_field_placeholder" | translate}} <br>{{"dialog.section.upload.lower_field_placeholder" | translate}}
   </ng-template>
 </div>
 

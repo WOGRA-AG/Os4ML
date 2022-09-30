@@ -6,11 +6,11 @@
         <mat-nav-list class="nav-list">
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/dashboard']">
             <mat-icon matListIcon>apps</mat-icon>
-            <span class="nav-caption">Dashboard</span>
+            <span class="nav-caption">{{'page.dashboard.title' | translate}}</span>
           </mat-list-item>
           <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/databag']">
             <mat-icon matListIcon>folder_open</mat-icon>
-            <span class="nav-caption">Databags</span>
+            <span class="nav-caption">{{'databag.plural' | translate}}</span>
           </mat-list-item>
           <mat-list-item style="display: none" [routerLinkActive]="['active']" [routerLink]="['/settings']">
             <mat-icon matListIcon>settings</mat-icon>
