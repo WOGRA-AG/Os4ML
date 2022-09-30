@@ -1,9 +1,9 @@
 <app-shared-dialog-header (closeDialog)="close()">
-  {{"dialog.delete_popup.title" | translate}}
+  {{"dialog.delete.title" | translate}}
 </app-shared-dialog-header>
 
 <app-shared-dialog-section>
-    {{"dialog.delete_popup.confirmation" | translate}}
+    {{"dialog.delete.description" | translate}}
 </app-shared-dialog-section>
 
 <mat-dialog-actions align="end">
@@ -16,7 +16,7 @@
     [disabled]="deleting || invalidResource()"
     [tabIndex]="-1"
   >
-    {{"dialog.delete_popup.delete" | translate}}
+    {{"action.delete" | translate}}
   </button>
   <button
     mat-raised-button
@@ -25,6 +25,6 @@
     [tabIndex]="-1"
     (click)="close()"
   >
-    {{"dialog.delete_popup.cancel" | translate}}
+    {{"action.cancel" | translate}}
   </button>
 </mat-dialog-actions>
