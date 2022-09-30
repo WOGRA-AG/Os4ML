@@ -1,19 +1,19 @@
 <div class="list-item-column">
-  <span class="mat-caption on-surface-medium">Solution</span>
+  <span class="mat-caption on-surface-medium">{{"solution.placeholder" | translate}}</span>
   <span class="mat-body-2 on-surface-high">{{trimSolutionName(solution?.name)}}</span>
 </div>
 <div class="list-item-column">
-  <span class="mat-caption on-surface-medium">Accuracy</span>
+  <span class="mat-caption on-surface-medium">{{"solution.detail.accuracy" | translate}}</span>
   <span class="mat-body-2 on-surface-high">
         {{formatAccuracy(solution?.metrics?.accuracy? solution?.metrics?.accuracy! : 0)}}%
       </span>
 </div>
 <div class="list-item-column">
-  <span class="mat-caption on-surface-medium">Runtime</span>
+  <span class="mat-caption on-surface-medium">{{"solution.detail.runtime" | translate}}</span>
   <span class="mat-body-2 on-surface-high">{{runtime}}</span>
 </div>
 <div class="list-item-column">
-  <span class="mat-caption on-surface-medium">Creation Date</span>
+  <span class="mat-caption on-surface-medium">{{"solution.detail.creation" | translate}}</span>
   <span class="mat-body-2 on-surface-high">{{formatTimestamp(solution?.creationTime)}}</span>
 </div>
 <div class="status-column">
