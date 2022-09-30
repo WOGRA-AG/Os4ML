@@ -10,7 +10,7 @@ args = parser.parse_args()
 backend = 'https://shepard.os4ml.wogra.com/shepard/api'
 url = f'{backend}/files/16/payload/6332e13e7e8a77152c08b715'
 
-api_key = 'XXX'
+api_key = 'SHEPARD_API_KEY'
 headers = {'x-api-key': api_key}
 
 res = requests.get(url, headers=headers)
