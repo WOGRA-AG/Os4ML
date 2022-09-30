@@ -1,22 +1,22 @@
 <app-shared-dialog-header (closeDialog)="close()">
-  {{"dialog.add_databag.title" | translate}}
+  {{"databag.create" | translate}}
 </app-shared-dialog-header>
 
 <mat-horizontal-stepper #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-step label="Upload"
+  <mat-step label="{{'dialog.create_databag.step_one' | translate}}"
             completed="{{stepperStep>0}}" >
     <mat-dialog-content>
       <app-shared-dialog-section>
         <mat-form-field appearance="outline">
-          <mat-label>{{"dialog.add_databag.label" | translate}}</mat-label>
+          <mat-label>{{"dialog.section.upload.connect_placeholder" | translate}}</mat-label>
           <input
             #dbUrl="ngModel"
             matInput
             type="url"
-            placeholder="{{'dialog.add_databag.placeholder' | translate}}"
+            placeholder="{{'dialog.section.upload.connect_placeholder' | translate}}"
             [(ngModel)]="fileUrl"
             [pattern]="urlRgex"
           >
@@ -39,13 +39,13 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step completed="false" label="Settings">
+  <mat-step completed="false" label="{{'settings.name' | translate}}">
     <mat-dialog-content>
       <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
         <app-shared-dialog-section>
           <mat-form-field appearance="outline">
-            <mat-label>{{"dialog.edit_databag.label" | translate}}</mat-label>
-            <input matInput type="string" placeholder="{{'dialog.define_databag.placeholder' | translate}}" required
+            <mat-label>{{"solution.placeholder" | translate}}</mat-label>
+            <input matInput type="string" placeholder="{{'solution.placeholder' | translate}}" required
                    name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
                    [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
           </mat-form-field>
@@ -78,7 +78,7 @@
       (click)="nextClick(stepper)"
       [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
     >
-      {{"dialog.add_databag.main_button" | translate}}
+      {{"action.next_step" | translate}}
     </button>
   </mat-dialog-actions>
 </ng-template>
@@ -89,11 +89,11 @@
             [disableRipple]="true"
             (click)="back(stepper)">
       <mat-icon>arrow_back_ios</mat-icon>
-      {{"dialog.define_databag.back_button" | translate}}
+      {{"action.previous_step" | translate}}
     </button>
     <div class="button-spacer"></div>
     <button id="define-databag-button" mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
-      {{"dialog.define_databag.main_button" | translate}}
+      {{"action.last_step" | translate}}
     </button>
   </mat-dialog-actions>
 </ng-template>
