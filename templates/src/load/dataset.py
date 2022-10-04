@@ -1,9 +1,15 @@
 import zipfile
 
-from kfp_util.dataset import load_dataset
+import pandas as pd
+
 from model.file_type import FileType
 from objectstore.objectstore import download_file_from_bucket
 from util.paths import path_to_absolute
+
+
+def load_dataset(dataset_file_path) -> pd.DataFrame:
+    with open(dataset_file_path) as input_file:
+        return pd.read_csv(input_file)
 
 
 def build_dataset(dataset_file_path: str, databag, os4ml_namespace: str):

@@ -1,17 +1,22 @@
 import functools
+import io
+import tempfile
 from typing import List
 
 import pandas as pd
-from kfp.v2.dsl import Artifact, Dataset, Input
+from kfp.v2.dsl import Dataset, Input
 
 from build.objectstore.model.column import Column
-from kfp_util.dataset import load_dataset
+from build.objectstore.model.databag import Databag
+from components import DATASET_FILE_NAME
+from load.dataset import load_dataset
 from model.error_msg_key import ErrorMsgKey
 from objectstore.objectstore import (
     download_databag_by_id,
     error_databag_status_update,
     put_databag,
     update_databag_status,
+    upload_file_to_databag,
 )
 from pipelines.util import DatabagStatusMessages
 from sniffle.sniffle import (
@@ -52,8 +57,8 @@ def sniffle_dataset(
         databag.number_columns = len(columns)
         databag.columns = columns
         databag.status = DatabagStatusMessages.creating.value
-        databag.dataset_url = get_artifact_url(dataset)
         put_databag(databag, os4ml_namespace)
+        upload_dataset(df, databag, os4ml_namespace)
 
 
 def create_columns(
@@ -69,5 +74,13 @@ def create_columns(
         raise NotImplementedError()
 
 
-def get_artifact_url(artifact: Artifact) -> str:
-    return f"http://istio-ingressgateway.istio-system.svc.cluster.local/artifacts{artifact.path}"
+def upload_dataset(
+    df: pd.DataFrame, databag: Databag, os4ml_namespace: str
+) -> None:
+    with tempfile.NamedTemporaryFile() as file:
+        with open(file.name, "wb") as output_file:
+            df.to_csv(output_file, index=False)
+        with open(file.name, "rb") as upload_file:
+            upload_file_to_databag(
+                upload_file, DATASET_FILE_NAME, databag, os4ml_namespace
+            )
