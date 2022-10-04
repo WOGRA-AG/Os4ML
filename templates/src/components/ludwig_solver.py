@@ -4,7 +4,7 @@ from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
 from jobmanager.solution import error_status_update, status_update
 from load.databag import load_databag
-from load.dataset import build_dataset
+from load.dataset import load_dataset
 from ludwig_model.dataset import train_validate_test_split
 from ludwig_model.labels import get_all_label_values, get_label_name
 from ludwig_model.metrics import calculate_conf_matrix
@@ -39,7 +39,7 @@ def ludwig_solver(
         model, model_definition = build_model(
             solution, databag.columns, batch_size, epochs, early_stop
         )
-        dataset = build_dataset(dataset_file.path, databag, os4ml_namespace)
+        dataset = load_dataset(dataset_file.path)
         df_train, df_validate, df_test = train_validate_test_split(
             dataset, test_split, validation_split
         )

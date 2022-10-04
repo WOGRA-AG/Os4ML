@@ -63,9 +63,6 @@ components:
         datasetType:
           type: string
           nullable: true
-        datasetUrl:
-          type: string
-          nullable: true
         fileName:
           type: string
         databagName:

@@ -131,20 +131,13 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(
 # works only on the dockerfile
 # create pipelines and change PIPELINES_TEMPLATES_DIR to run locally
 @pytest.mark.asyncio
-async def test_get_all_pipeline_templates_init_pipeline_exists(
+async def test_get_all_pipeline_templates_databag_exists(
     jobmanager_api_service,
 ):
     pipelines = await get_all_pipeline_templates(jobmanager_api_service)
-    assert any(
-        pipeline.name == "init-databag-sniffle-upload"
-        for pipeline in pipelines
-    )
+    assert any(pipeline.name == "databag" for pipeline in pipelines)
     init_pipeline = next(
-        iter(
-            pipeline
-            for pipeline in pipelines
-            if pipeline.name == "init-databag-sniffle-upload"
-        )
+        iter(pipeline for pipeline in pipelines if pipeline.name == "databag")
     )
     assert init_pipeline.name
     assert init_pipeline.description

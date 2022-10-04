@@ -1,6 +1,0 @@
-{
-  "name": "init-databag-sniffle-upload",
-  "description": "Init databag and analyze datatypes",
-  "type": "pipeline",
-  "pipeline_step": "prepare"
-}
