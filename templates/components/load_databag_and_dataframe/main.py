@@ -4,7 +4,7 @@ from components.images import pandas_image
 from components.util import build_component
 
 
-def load_dataframe(
+def load_databag_and_dataframe(
     dataframe: Output[Dataset],
     databag: Output[Artifact],
     bucket: str,
@@ -27,7 +27,9 @@ def load_dataframe(
 
 
 def main():
-    build_component(load_dataframe, base_image=pandas_image, file=__file__)
+    build_component(
+        load_databag_and_dataframe, base_image=pandas_image, file=__file__
+    )
 
 
 if __name__ == "__main__":

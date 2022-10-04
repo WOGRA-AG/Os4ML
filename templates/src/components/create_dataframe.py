@@ -1,6 +1,6 @@
 import functools
 import zipfile
-from typing import BinaryIO, Generator, Tuple
+from typing import Generator, Tuple
 
 import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output

@@ -7,14 +7,6 @@ from model.error_msg_key import ErrorMsgKey
 from util.init_objectstore_client import init_objectstore_client
 
 
-def download_file_from_bucket(
-    bucket: str, file_name: str, output_file_name: str, os4ml_namespace: str
-) -> None:
-    url = get_download_url(bucket, file_name, os4ml_namespace)
-    with open(output_file_name, "wb") as output_file:
-        download_file(url, output_file)
-
-
 def download_file_from_databag(
     databag: Databag,
     file_name: str,
