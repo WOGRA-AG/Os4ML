@@ -1,3 +1,4 @@
+import io
 from typing import BinaryIO
 
 import requests
@@ -58,4 +59,13 @@ def get_download_url(bucket: str, file_name: str, os4ml_namespace: str) -> str:
 def _get_base_server_url(os4ml_namespace: str) -> str:
     return (
         f"http://objectstore-manager.{os4ml_namespace}.svc.cluster.local:8000"
+    )
+
+
+def upload_file_to_databag(
+    file: BinaryIO, file_name: str, databag: Databag, os4ml_namespace: str
+) -> None:
+    objectstore = init_objectstore_client(os4ml_namespace)
+    objectstore.put_dataset_by_databag_id(
+        databag.databag_id, file_name, body=file
     )

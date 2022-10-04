@@ -150,7 +150,7 @@ class ObjectstoreApiController:
 
     def put_dataset_by_databag_id(
         self, databag_id: str, object_name: str, body: bytes
-    ):
+    ) -> Item:
         object_name = f"{databag_id}/{object_name}"
         return self.put_object_by_name(
             bucket_name=self.bucket_name,

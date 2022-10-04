@@ -120,7 +120,11 @@ paths:
               format: binary
       responses:
         201:
-          $ref: '#/components/responses/Created'
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
 
   "/apis/v1beta1/objectstore/{bucketName}":
     post:
