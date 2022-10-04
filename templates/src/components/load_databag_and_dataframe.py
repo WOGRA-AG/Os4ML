@@ -3,9 +3,13 @@ import json
 
 from kfp.v2.dsl import Artifact, Dataset, Output
 
+from config import DATASET_FILE_NAME
 from jobmanager.solution import error_status_update, status_update
 from model.error_msg_key import ErrorMsgKey
-from objectstore.objectstore import download_databag_by_id, download_file
+from objectstore.objectstore import (
+    download_databag_by_id,
+    download_file_from_databag,
+)
 from pipelines.util import StatusMessages
 from util.exception_handler import exception_handler
 
@@ -13,6 +17,7 @@ from util.exception_handler import exception_handler
 def load_databag_and_dataframe(
     dataframe: Output[Dataset],
     databag: Output[Artifact],
+    bucket: str,
     databag_id: str,
     os4ml_namespace: str,
     solution_name: str,
@@ -29,10 +34,6 @@ def load_databag_and_dataframe(
         )
         with open(databag.path, "w") as databag_output:
             json.dump(bag.to_dict(), databag_output)
-        with open(dataframe.path, "wb") as dataframe_output:
-            download_file(bag.dataset_url, dataframe_output)
-        with open(dataframe.path) as file:
-            print(file.readlines())
-        with open(dataframe.path) as file:
-            for line in file:
-                print(line)
+        download_file_from_databag(
+            bag, DATASET_FILE_NAME, bucket, dataframe.path, os4ml_namespace
+        )
