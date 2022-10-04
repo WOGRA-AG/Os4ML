@@ -1,5 +1,4 @@
 import functools
-import io
 import tempfile
 from typing import List
 
@@ -8,7 +7,7 @@ from kfp.v2.dsl import Dataset, Input
 
 from build.objectstore.model.column import Column
 from build.objectstore.model.databag import Databag
-from components import DATASET_FILE_NAME
+from config import DATASET_FILE_NAME
 from load.dataset import load_dataset
 from model.error_msg_key import ErrorMsgKey
 from objectstore.objectstore import (

@@ -15,11 +15,11 @@ def load_dataset(dataset_file_path) -> pd.DataFrame:
 def build_dataset(dataset_file_path: str, databag, os4ml_namespace: str):
     dataset = load_dataset(dataset_file_path)
 
-    if databag["file_type"] == FileType.ZIP:
-        download_and_extract_zip_file(
-            databag["bucket_name"], databag["file_name"], os4ml_namespace
-        )
-        dataset["file"] = dataset["file"].map(path_to_absolute)
+    # if databag["file_type"] == FileType.ZIP:
+    #     download_and_extract_zip_file(
+    #         databag["bucket_name"], databag["file_name"], os4ml_namespace
+    #     )
+    #     dataset["file"] = dataset["file"].map(path_to_absolute)
     return dataset
 
 

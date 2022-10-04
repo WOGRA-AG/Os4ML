@@ -21,6 +21,7 @@ def ludwig_solver_pipeline(
     validation_split: float = 0.1,
 ):
     databag_and_dataframe = load_databag_and_dataframe_op(
+        bucket=bucket,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
