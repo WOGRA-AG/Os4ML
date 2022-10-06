@@ -11,7 +11,8 @@ following features:
 - Create a data bags using Excel sheets
 - Create a solution using [Ludwig](https://github.com/ludwig-ai/ludwig) for 
   categorization problems
-- Integration of external storage, e.g. [Shepard][] using python scipt files
+- Integration of external storage, e.g. [Shepard][] using python scripts
+- Multi-User Isolation
 
 The current version is an alpha release, i.e. everything is work in progress and 
 experimental. For more details including installation manuals please read the 
@@ -27,7 +28,7 @@ running Kubeflow. [Kubeflow][] runs under the hood at Os4ML.
 ## Roadmap
 There is a lot of work to do. In the near future the following will happen:
 
-- [x] A Terraform module to install Os4ML on a k3d cluster using ArgoCD
+- [ ] A Terraform module to install Os4ML on a k3d cluster using ArgoCD
   (October 2022)
 - [ ] Solving regression problems (Winter 2022)
 - [ ] Intelligent Data Labeling (Spring 2023)
