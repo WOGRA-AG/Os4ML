@@ -21,9 +21,7 @@ experimental. For more details including installation manuals please read the
 ## About the Project
 The project focuses on easy installation, intuitive UI/UX and comfortable 
 machine learning. So we do not reinvent the wheel. Whenever possible, we 
-use third-party open source software. For example, we rely on [Kubeflow][],
-especially for machine learning tasks. But don't worry, you don't need a 
-running Kubeflow. [Kubeflow][] runs under the hood at Os4ML.
+use third-party open source software.
 
 ## Roadmap
 There is a lot of work to do. In the near future the following will happen:
