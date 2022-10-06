@@ -250,6 +250,20 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  "/apis/v1beta1/jobmanager/solution/{solutionName}/model":
+    get:
+      summary: "download the model of the solution"
+      operationId: downloadModelBySolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      responses:
+        307:
+          description: Redirect
+        404:
+          $ref: '#/components/responses/NotFound'
+
   "/apis/v1beta1/jobmanager/solution":
     get:
       summary: 'get all solutions'
