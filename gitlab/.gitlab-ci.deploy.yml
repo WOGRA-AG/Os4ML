@@ -3,6 +3,8 @@
   services:
     - docker:20.10.14-dind
   image: docker:20.10.14
+  tags:
+    - aime
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
