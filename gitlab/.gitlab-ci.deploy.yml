@@ -15,8 +15,6 @@
     - build-python
     - build-pandas
     - build-ludwig
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA
     - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
