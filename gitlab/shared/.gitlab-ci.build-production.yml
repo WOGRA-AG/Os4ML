@@ -1,7 +1,8 @@
 .build-production:
   stage: build
   services:
-    - docker:20.10.14-dind
+    - name: docker:20.10.14-dind
+      command: ["--registry-mirror", "http://172.16.10.15:5000", "--registry-mirror", "http://172.16.10.15:5001"]  # Specify the registry mirror to use
   image: docker:20.10.14
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY

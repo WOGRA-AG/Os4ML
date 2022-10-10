@@ -1,7 +1,8 @@
 .deploy:
   stage: deploy
   services:
-    - docker:20.10.14-dind
+    - name: docker:20.10.14-dind
+      command: ["--registry-mirror", "http://172.16.10.15:5000", "--registry-mirror", "http://172.16.10.15:5001"]  # Specify the registry mirror to use
   image: docker:20.10.14
   variables:
     DOCKER_DRIVER: overlay2
