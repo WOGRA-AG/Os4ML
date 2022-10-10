@@ -7,10 +7,16 @@ from model.error_msg_key import ErrorMsgKey
 from util.init_objectstore_client import init_objectstore_client
 
 
-def download_file_from_bucket(
-    bucket: str, file_name: str, output_file_name: str, os4ml_namespace: str
+def download_file_from_databag(
+    databag: Databag,
+    file_name: str,
+    bucket: str,
+    output_file_name: str,
+    os4ml_namespace: str,
 ) -> None:
-    url = get_download_url(bucket, file_name, os4ml_namespace)
+    url = get_download_url(
+        bucket, f"{databag.databag_id}/{file_name}", os4ml_namespace
+    )
     with open(output_file_name, "wb") as output_file:
         download_file(url, output_file)
 
@@ -58,4 +64,13 @@ def get_download_url(bucket: str, file_name: str, os4ml_namespace: str) -> str:
 def _get_base_server_url(os4ml_namespace: str) -> str:
     return (
         f"http://objectstore-manager.{os4ml_namespace}.svc.cluster.local:8000"
+    )
+
+
+def upload_file_to_databag(
+    file: BinaryIO, file_name: str, databag: Databag, os4ml_namespace: str
+) -> None:
+    objectstore = init_objectstore_client(os4ml_namespace)
+    objectstore.put_dataset_by_databag_id(
+        databag.databag_id, file_name, body=file
     )

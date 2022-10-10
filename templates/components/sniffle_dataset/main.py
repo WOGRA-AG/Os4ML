@@ -1,4 +1,4 @@
-from kfp.v2.dsl import Artifact, Dataset, Input
+from kfp.v2.dsl import Dataset, Input
 
 from components.images import pandas_image
 from components.util import build_component
