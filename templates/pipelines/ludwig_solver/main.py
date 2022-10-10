@@ -2,8 +2,7 @@ from kfp.v2.dsl import pipeline
 
 from src.pipelines.util import compile_pipeline, load_component
 
-init_databag_op = load_component("init_databag")
-get_databag_op = load_component("get_databag")
+load_databag_and_dataframe_op = load_component("load_databag_and_dataframe")
 ludwig_solver_op = load_component("ludwig_solver")
 get_metrics_op = load_component("get_metrics")
 
@@ -21,21 +20,15 @@ def ludwig_solver_pipeline(
     test_split: float = 0.1,
     validation_split: float = 0.1,
 ):
-    init_databag = init_databag_op(
-        file_name=file_name,
+    databag_and_dataframe = load_databag_and_dataframe_op(
         bucket=bucket,
         databag_id=databag_id,
-        solution_name=solution_name,
         os4ml_namespace=os4ml_namespace,
-    )
-    get_databag = get_databag_op(
-        databag_id=databag_id,
         solution_name=solution_name,
-        os4ml_namespace=os4ml_namespace,
     )
     ludwig_solver = ludwig_solver_op(
-        dataset_file=init_databag.outputs["dataset"],
-        databag_file=get_databag.output,
+        dataset_file=databag_and_dataframe.outputs["dataframe"],
+        databag_file=databag_and_dataframe.outputs["databag"],
         solution_name=solution_name,
         os4ml_namespace=os4ml_namespace,
         batch_size=batch_size,

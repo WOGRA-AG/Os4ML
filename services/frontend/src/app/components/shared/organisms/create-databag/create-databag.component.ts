@@ -63,7 +63,7 @@ export class CreateDatabagComponent {
         );
       }
       this.runId = await firstValueFrom(
-        this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
+        this.jobmanagerService.postTemplate('databag', runParams)
       );
       this.pipelineStatus = this.translate.instant('message.pipeline.default');
       await this.retrievePipelineStatus(this.runId);
