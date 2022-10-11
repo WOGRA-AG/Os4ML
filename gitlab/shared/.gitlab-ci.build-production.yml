@@ -1,14 +1,18 @@
 .build-production:
   stage: build
   services:    
-  - name: docker:dind
-    command: ["--tls=false"]
+    - name: docker:dind
+      command: ["--tls=false"]
+  tags:
+    - aime
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
+    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
     - docker build
       -f $DOCKERFILE
       --target production
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
       $BUILD_CONTEXT
