@@ -252,15 +252,19 @@ paths:
 
   "/apis/v1beta1/jobmanager/solution/{solutionName}/model":
     get:
-      summary: "download the model of the solution"
-      operationId: downloadModelBySolution
+      summary: "get a download link for the model of the specified solution"
+      operationId: getDownloadLinkForModelOfSolution
       parameters:
         - $ref: '#/components/parameters/SolutionName'
       tags:
         - jobmanager
       responses:
-        307:
-          description: Redirect
+        200:
+          description: "Download link"
+          content:
+            application/json:
+              schema:
+                type: string
         404:
           $ref: '#/components/responses/NotFound'
 
