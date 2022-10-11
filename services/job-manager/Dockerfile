@@ -1,4 +1,4 @@
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as pipeline-templates
+FROM developer/wogra/images/python:3.9.10-slim as pipeline-templates
 ARG IMAGE_TAG
 ENV IMG_TAG=$IMAGE_TAG
 WORKDIR templates
@@ -9,7 +9,7 @@ RUN python build_all_pipelines.py
 RUN rm -r pipelines/__pycache__
 
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
+FROM developer/wogra/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -28,7 +28,7 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 
 # Specify a base image
-FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
+FROM developer/wogra/images/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
 COPY services/job-manager/ /usr/app
