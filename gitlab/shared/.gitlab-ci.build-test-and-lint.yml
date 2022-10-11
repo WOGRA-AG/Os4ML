@@ -2,7 +2,7 @@
   stage: test
   services:    
     - name: docker:dind
-      command: ["--tls=false", "--registry-mirror", "http://172.16.10.15:5000", "--registry-mirror", "http://172.16.10.15:5001"]
+      command: ["--tls=false"]
   tags:
     - aime
   script:
