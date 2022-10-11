@@ -6,15 +6,16 @@
   tags:
     - aime
   script:
-    - docker pull alpine
+    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:lint
     - docker build
       -f $DOCKERFILE
       --target lint
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       $BUILD_CONTEXT
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:test
     - docker build
       -f $DOCKERFILE
       --target test
@@ -22,6 +23,7 @@
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
       $BUILD_CONTEXT
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   variables:
     DOCKER_DRIVER: overlay2
