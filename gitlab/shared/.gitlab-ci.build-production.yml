@@ -6,6 +6,7 @@
   tags:
     - aime
   script:
+    - docker pull developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME
     - docker build
       -f $DOCKERFILE
       --target production
