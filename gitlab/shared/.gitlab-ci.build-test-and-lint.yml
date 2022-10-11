@@ -6,7 +6,7 @@
   tags:
     - aime
   script:
-    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker pull $IMG_NAME:lint
     - docker build
       -f $DOCKERFILE
       --target lint
