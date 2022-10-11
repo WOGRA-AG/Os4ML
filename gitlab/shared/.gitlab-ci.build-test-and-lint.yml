@@ -6,7 +6,7 @@
   tags:
     - aime
   script:
-    - docker pull gitlab-registry.wogra.com/developer/os4ml/$IMG_NAME:lint
+    - docker pull developer/wogra/os4ml/$IMG_NAME:lint
     - docker build
       -f $DOCKERFILE
       --target lint
@@ -15,7 +15,7 @@
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
-    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:test
+    - docker pull developer/wogra/os4ml/$IMG_NAME:test
     - docker build
       -f $DOCKERFILE
       --target test
