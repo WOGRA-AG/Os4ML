@@ -12,7 +12,7 @@
     - docker build
       -f $DOCKERFILE
       --target production
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --cache-from developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
