@@ -136,10 +136,9 @@ class JobmanagerApiController:
     def delete_run(self, run_id: str) -> None:
         return self.kfp_service.delete_run(run_id)
 
-    def download_model_by_solution(
+    def get_download_link_for_model_of_solution(
         self, solution_name: str
-    ) -> RedirectResponse:
-        url = self.solution_service.get_model_download_url(
+    ) -> str:
+        return self.solution_service.get_model_download_url(
             solution_name, self.bucket_name
         )
-        return RedirectResponse(url)

@@ -56,7 +56,9 @@ export class SettingSolutionComponent {
 
   download() {
     if (this.solution.name) {
-      this.jobmanagerService.downloadModelBySolution(this.solution.name).subscribe();
+      this.jobmanagerService.getDownloadLinkForModelOfSolution(this.solution.name).subscribe(url => {
+        window.open(url);
+      });
     }
   }
 }
