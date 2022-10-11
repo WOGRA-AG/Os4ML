@@ -6,7 +6,7 @@
   tags:
     - aime
   script:
-    - docker pull $IMG_NAME:lint
+    - docker pull gitlab-registry.wogra.com/developer/os4ml/$IMG_NAME:lint
     - docker build
       -f $DOCKERFILE
       --target lint
