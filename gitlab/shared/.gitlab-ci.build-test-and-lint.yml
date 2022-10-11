@@ -14,7 +14,7 @@
       --target lint
       --cache-from developer/wogra/os4ml/$IMG_NAME:lint
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --tag developer/wogra/os4ml/$IMG_NAME:lint
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
     - docker pull developer/wogra/os4ml/$IMG_NAME:test
@@ -23,7 +23,7 @@
       --target test
       --cache-from developer/wogra/os4ml/$IMG_NAME:test
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --tag developer/wogra/os4ml/$IMG_NAME:test
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
       $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
