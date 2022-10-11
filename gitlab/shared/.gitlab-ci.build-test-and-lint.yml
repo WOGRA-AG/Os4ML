@@ -8,14 +8,14 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME:lint
+    - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
     - docker build
       -f $DOCKERFILE
       --target lint
       --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       $BUILD_CONTEXT
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME
     - docker pull $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME:test
     - docker build
       -f $DOCKERFILE
