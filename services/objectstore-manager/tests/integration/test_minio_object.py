@@ -4,6 +4,7 @@ from typing import List
 import pytest
 from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
+from minio.datatypes import Object as MinioObject
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
@@ -29,6 +30,9 @@ mock_objectstore_controller = ObjectstoreApiController(
 
 @pytest.mark.asyncio
 async def test_get_object_by_name(api_service_mock, minio_mock):
+    minio_mock.list_objects.return_value = [
+        MinioObject(bucket_name="os4ml", object_name="object")
+    ]
     minio_mock.presigned_get_object.return_value = "https://os4ml.com/test.csv"
     redirect_response: RedirectResponse = await get_object_by_name(
         bucket_name="os4ml",
@@ -191,10 +195,11 @@ async def test_get_object_url():
 
 
 @pytest.mark.asyncio
-async def test_get_object_url_with_exception():
+async def test_get_object_url_with_exception(api_service_mock, minio_mock):
+    minio_mock.list_objects.return_value = []
     with pytest.raises(HTTPException) as excinfo:
         await get_object_url(
             object_name="object_err",
-            _controller=mock_objectstore_controller,
+            _controller=api_service_mock,
         )
     assert "status_code=404" in str(excinfo)

@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import HTTPException, status
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse
 
 from build.openapi_server.models.create_pipeline import CreatePipeline
 from build.openapi_server.models.create_run import CreateRun
