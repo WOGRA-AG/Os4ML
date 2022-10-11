@@ -6,6 +6,7 @@
   tags:
     - aime
   script:
+    - docker pull alpine
     - docker build
       -f $DOCKERFILE
       --target lint
