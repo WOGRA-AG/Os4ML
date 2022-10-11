@@ -23,11 +23,21 @@ class MinioRepository(StorageRepository):
     ):
         self.client = client
 
-    def _check_if_bucket_exists(self, bucket_name):
+    def _check_if_bucket_exists(self, bucket_name: str) -> None:
         if not self.client.bucket_exists(bucket_name):
             raise HTTPException(
                 status_code=404,
                 detail=f"Bucket with name {bucket_name} not found",
+            )
+
+    def _check_if_object_exists(
+        self, bucket_name: str, object_name: str
+    ) -> None:
+        objects = self.client.list_objects(bucket_name, prefix=object_name)
+        if next(iter(objects), None) is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Object with name {object_name} in bucket {bucket_name} not found",
             )
 
     def list_buckets(self) -> List[Bucket]:
@@ -90,13 +100,8 @@ class MinioRepository(StorageRepository):
 
     def get_presigned_get_url(self, bucket_name: str, object_name: str) -> str:
         self._check_if_bucket_exists(bucket_name)
-        try:
-            return self.client.presigned_get_object(bucket_name, object_name)
-        except MinioException:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Object with name {object_name} not found",
-            )
+        self._check_if_object_exists(bucket_name, object_name)
+        return self.client.presigned_get_object(bucket_name, object_name)
 
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
         self._check_if_bucket_exists(bucket_name)

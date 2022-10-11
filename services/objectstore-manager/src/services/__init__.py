@@ -7,7 +7,7 @@ STORAGE_BACKEND: str = os.getenv(
 
 STORAGE_URL: str = os.getenv(
     "OBJECTSTORECONFIG_URL",
-    default="minio.os4ml.wogra.com",
+    default="minio.minio-tenant.svc.cluster.local",
 )
 
 STORAGE_KEY: str = os.getenv("OBJECTSTORECONFIG_ACCESSKEY", default="minio")
