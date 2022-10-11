@@ -16,7 +16,7 @@
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag developer/wogra/os4ml/$IMG_NAME:lint
       $BUILD_CONTEXT
-    - docker push developer/wogra/os4ml/$IMG_NAME:lint
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
     - docker pull developer/wogra/os4ml/$IMG_NAME:test
     - docker build
       -f $DOCKERFILE
@@ -25,7 +25,7 @@
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag developer/wogra/os4ml/$IMG_NAME:test
       $BUILD_CONTEXT
-    - docker push developer/wogra/os4ml/$IMG_NAME:test
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   variables:
     DOCKER_DRIVER: overlay2
