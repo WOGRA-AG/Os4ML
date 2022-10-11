@@ -8,7 +8,7 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull --ignore-pull-failures developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME
+    - docker pull --ignore-pull-failures developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME || true
     - docker build
       -f $DOCKERFILE
       --target production
