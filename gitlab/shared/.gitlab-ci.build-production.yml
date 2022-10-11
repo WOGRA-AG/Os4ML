@@ -1,5 +1,8 @@
 .build-production:
   stage: build
+  services:    
+  - name: docker:dind
+    command: ["--tls=false"]
   script:
     - docker build
       -f $DOCKERFILE
