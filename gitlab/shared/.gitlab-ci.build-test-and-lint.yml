@@ -8,20 +8,20 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull developer/wogra/os4ml/$IMG_NAME:lint || true
+    - docker pull $CACHE_REGISTRY/$IMG_NAME:lint || true
     - docker build
       -f $DOCKERFILE
       --target lint
-      --cache-from developer/wogra/os4ml/$IMG_NAME:lint
+      --cache-from $CACHE_REGISTRY/$IMG_NAME:lint
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
       $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
-    - docker pull developer/wogra/os4ml/$IMG_NAME:test || true
+    - docker pull $CACHE_REGISTRY/$IMG_NAME:test || true
     - docker build
       -f $DOCKERFILE
       --target test
-      --cache-from developer/wogra/os4ml/$IMG_NAME:test
+      --cache-from $CACHE_REGISTRY/$IMG_NAME:test
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
       $BUILD_CONTEXT
@@ -31,3 +31,4 @@
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
+    CACHE_REGISTRY: developer/wogra/os4ml

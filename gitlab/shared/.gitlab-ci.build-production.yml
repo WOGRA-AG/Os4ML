@@ -8,11 +8,11 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME || true
+    - docker pull $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME || true
     - docker build
       -f $DOCKERFILE
       --target production
-      --cache-from developer/wogra/os4ml/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --cache-from $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME
       --build-arg BUILDKIT_INLINE_CACHE=1
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
@@ -23,3 +23,4 @@
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
+    CACHE_REGISTRY: developer/wogra/os4ml
