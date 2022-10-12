@@ -61,6 +61,7 @@ export class SettingSolutionComponent {
         link.href = url;
         link.toggleAttribute('download');
         link.click();
+        link.remove();
       });
     }
   }
