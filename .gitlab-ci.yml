@@ -1,17 +1,19 @@
 include:
   - local: 'gitlab/.gitlab-ci.templates.yml'
-  - local: 'gitlab/.gitlab-ci.build-templates.yml'
-  - local: 'gitlab/.gitlab-ci.enas-trial.yml'
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
-  - local: 'gitlab/shared/.gitlab-ci.deploy.yml'
+  - local: 'gitlab/.gitlab-ci.deploy.yml'
+  - local: 'gitlab/.gitlab-ci.reset.yml'
+  - local: 'gitlab/.gitlab-ci.e2e.yml'
 
 stages:
   - prepare
   - test
   - build
   - deploy
+  - e2e
+  - reset
   - clean
 
 variables:

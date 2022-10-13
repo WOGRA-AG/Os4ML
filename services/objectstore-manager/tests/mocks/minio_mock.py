@@ -1,9 +1,10 @@
 import json
 from datetime import datetime, timedelta
-from typing import List
+from typing import Iterator, List
 
 from minio import Minio
 from minio.datatypes import Bucket, Object
+from minio.error import MinioException
 from urllib3 import HTTPResponse, PoolManager
 
 from build.openapi_server.models.databag import Databag
@@ -11,7 +12,6 @@ from services import DATABAG_CONFIG_FILE_NAME
 
 
 class MinioMock(Minio):
-
     @property
     def _http(self):
         return PoolManager()
@@ -65,7 +65,7 @@ class MinioMock(Minio):
         include_version=False,
         use_api_v1=False,
         use_url_encoding_type=True,
-    ) -> List[Object]:
+    ) -> Iterator[Object]:
         objects_list_os4ml = [
             Object(bucket_name="os4ml", object_name="object.csv"),
             Object(bucket_name="os4ml", object_name=DATABAG_CONFIG_FILE_NAME),
@@ -109,10 +109,17 @@ class MinioMock(Minio):
         version_id=None,
         extra_query_params=None,
     ) -> str:
+        if object_name not in ["object"]:
+            raise MinioException()
         return "https://www.wogra.com"
 
     def remove_object(self, bucket_name, object_name, version_id=None) -> None:
         return
+
+    def remove_objects(
+        self, bucket_name, delete_object_list, bypass_governance_mode=False
+    ) -> List:
+        return []
 
     def put_object(
         self,
@@ -163,8 +170,10 @@ class MinioMock(Minio):
         return HTTPResponse(
             json.dumps(
                 Databag(
+                    run_id="os4ml_unique_run_id",
                     bucket_name=bucket_name,
                     databag_name=bucket_name,
+                    databag_id="db-1",
                     columns=[],
                 ).dict()
             )

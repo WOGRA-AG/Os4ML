@@ -1,4 +1,4 @@
-FROM nginx:1.19.10-alpine
+FROM gitlab-registry.wogra.com/developer/images/nginx:1.19.10-alpine as production
 
 COPY nginx/ /etc/nginx/conf.d/
 COPY dist/os4ml/ /usr/share/nginx/html/

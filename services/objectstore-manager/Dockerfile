@@ -1,5 +1,4 @@
-# From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM python:3.9.10-slim as python-base
+FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -11,14 +10,14 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
     PROJECT_DIR="/app" \
-    POETRY_VERSION=1.1.4 \
+    POETRY_VERSION=1.2.0 \
     OPENAPI_GENERATOR_CLI_VERSION=5.4.0
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 
 # Specify a base image
-FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
+FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
 COPY ./ /usr/app
@@ -30,13 +29,22 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
+WORKDIR /usr/app/src
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+    -i ../oas/job-manager-oas.yaml \
+    -t ../oas/templates_client \
+    -g python \
+    --package-name build.openapi_client \
+    -o . \
+    --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
 FROM python-base as builder-base
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         build-essential curl \
     && apt-get autoclean
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./

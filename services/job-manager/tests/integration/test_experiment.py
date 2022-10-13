@@ -3,25 +3,31 @@ from typing import List
 import pytest
 from mocks.kfp_mock_client import KfpMockClient
 
-from api.experiment_api_service import ExperimentApiService
-from build.openapi_server.apis.experiment_api import (
+from api.controller.jobmanager_api_controller import JobmanagerApiController
+from build.openapi_server.apis.jobmanager_api import (
     get_all_experiments,
     post_experiment,
 )
 from build.openapi_server.models.experiment import Experiment
-from services.kfp_service import KfpService
+from executor.kfp_executor import KfpExecutor
+from services.solution_service import SolutionService
+from services.template_service import TemplateService
 
 mock_kfp_client = KfpMockClient()
-mock_kfp_service = KfpService(client=mock_kfp_client)
-mock_experiment_api_service = ExperimentApiService(
-    kfp_service=mock_kfp_service
+mock_kfp_service = KfpExecutor(client=mock_kfp_client)
+mock_solution_service = SolutionService(kfp_client=mock_kfp_client)
+mock_template_service = TemplateService(kfp_client=mock_kfp_client)
+mock_jobmanager_controller = JobmanagerApiController(
+    kfp_service=mock_kfp_service,
+    solution_service=mock_solution_service,
+    template_service=mock_template_service,
 )
 
 
 @pytest.mark.asyncio
 async def test_get_all_experiments():
     experiments: List[Experiment] = await get_all_experiments(
-        _service=mock_experiment_api_service
+        _controller=mock_jobmanager_controller
     )
     assert type(experiments) == list
     assert type(experiments.pop()) == Experiment
@@ -31,5 +37,5 @@ async def test_get_all_experiments():
 async def test_post_experiment():
     create_experiment: Experiment = Experiment(name="", description="")
     await post_experiment(
-        experiment=create_experiment, _service=mock_experiment_api_service
+        experiment=create_experiment, _controller=mock_jobmanager_controller
     )

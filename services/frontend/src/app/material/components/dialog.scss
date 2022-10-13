@@ -23,16 +23,48 @@
 }
 
 @mixin layout() {
-
   .mat-dialog-container {
     border-radius: 24px;
-    padding-left: 50px;
-    max-width: 584px;
+    padding: 0px;
+    width: 384px;
+    min-height: 192px;
     overflow: hidden;
   }
 
+  .setting-dialog .mat-dialog-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 384px;
+    height: auto;
+  }
+
+  .getting-started-dialog .mat-dialog-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 444px;
+    height: auto;
+  }
+
+  .mat-dialog-title {
+    margin-bottom: 0px
+  }
+
+  .mat-dialog-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 42px;
+    padding-bottom: 16px;
+  }
+
   .mat-dialog-actions {
-    margin: 0;
+    margin-bottom: 35px;
+    margin-top: 16px;
+    margin-left: 30px;
+    margin-right: 30px;
   }
 
   .mat-dialog-content {
@@ -41,13 +73,15 @@
     justify-content: flex-start;
     align-items: center;
     flex: auto;
-    padding-right: 50px;
     overflow: auto;
-    padding-top: 40px;
-
+    padding: 0px 0px 0px 0px;
+    margin-left: 0px;
+    margin-right:0px;
     .mat-form-field {
+      margin-bottom: -1.25em;
       width: 100%;
     }
+
   }
 }
 

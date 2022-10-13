@@ -5,14 +5,15 @@ import pytest
 from fastapi import HTTPException
 
 import services
-from api.template_api_service import TemplateApiService
-from build.openapi_server.apis.template_api import (
+from api.controller.jobmanager_api_controller import JobmanagerApiController
+from build.openapi_server.apis.jobmanager_api import (
     get_all_pipeline_templates,
     get_pipeline_file_by_name,
     get_pipeline_template_by_name,
     post_template,
 )
 from build.openapi_server.models.run_params import RunParams
+from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
 
@@ -27,13 +28,24 @@ def template_service(mock_kfp_client):
 
 
 @pytest.fixture
-def template_api_service(template_service):
-    return TemplateApiService(template_service=template_service)
+def solution_service(mock_kfp_client):
+    return SolutionService(kfp_client=mock_kfp_client)
+
+
+@pytest.fixture
+def jobmanager_api_service(
+    template_service, solution_service, mock_kfp_client
+):
+    return JobmanagerApiController(
+        template_service=template_service,
+        solution_service=solution_service,
+        kfp_service=mock_kfp_client,
+    )
 
 
 @pytest.mark.asyncio
 async def test_post_template(
-    mocker, mock_kfp_client, template_api_service, template_service
+    mocker, mock_kfp_client, jobmanager_api_service, template_service
 ):
     mocker.patch.object(
         template_service,
@@ -47,7 +59,7 @@ async def test_post_template(
     mock_kfp_client.upload_pipeline = mocker.Mock(return_value=pipeline_id)
     mock_kfp_client.run_pipeline = mocker.Mock(return_value=run_id)
     run_id: str = await post_template(
-        "test-pipeline", RunParams(), _service=template_api_service
+        "test-pipeline", RunParams(), _controller=jobmanager_api_service
     )
     assert run_id == "run_id"
     call = mock_kfp_client.run_pipeline.call_args[1]
@@ -80,14 +92,14 @@ def mock_templates_dir(tmp_path):
 
 @pytest.mark.asyncio
 async def test_get_all_pipeline_templates(
-    monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, jobmanager_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
         "PIPELINE_TEMPLATES_DIR",
         str(mock_templates_dir),
     )
-    pipelines = await get_all_pipeline_templates(template_api_service)
+    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
     pipeline = pipelines[0]
     assert pipeline.name == "test-pipeline"
     assert pipeline.description == "test"
@@ -99,9 +111,9 @@ async def test_get_all_pipeline_templates(
 # create pipelines and change PIPELINES_TEMPLATES_DIR to run locally
 @pytest.mark.asyncio
 async def test_get_all_pipeline_templates_ludwig_solver_exists(
-    template_api_service,
+    jobmanager_api_service,
 ):
-    pipelines = await get_all_pipeline_templates(template_api_service)
+    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
     assert any(pipeline.name == "ludwig-solver" for pipeline in pipelines)
     ludwig_solver = next(
         iter(
@@ -119,20 +131,13 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(
 # works only on the dockerfile
 # create pipelines and change PIPELINES_TEMPLATES_DIR to run locally
 @pytest.mark.asyncio
-async def test_get_all_pipeline_templates_init_pipeline_exists(
-    template_api_service,
+async def test_get_all_pipeline_templates_databag_exists(
+    jobmanager_api_service,
 ):
-    pipelines = await get_all_pipeline_templates(template_api_service)
-    assert any(
-        pipeline.name == "init-databag-sniffle-upload"
-        for pipeline in pipelines
-    )
+    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
+    assert any(pipeline.name == "databag" for pipeline in pipelines)
     init_pipeline = next(
-        iter(
-            pipeline
-            for pipeline in pipelines
-            if pipeline.name == "init-databag-sniffle-upload"
-        )
+        iter(pipeline for pipeline in pipelines if pipeline.name == "databag")
     )
     assert init_pipeline.name
     assert init_pipeline.description
@@ -142,7 +147,7 @@ async def test_get_all_pipeline_templates_init_pipeline_exists(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name(
-    monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, jobmanager_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -150,14 +155,14 @@ async def test_get_pipeline_file_by_name(
         str(mock_templates_dir),
     )
     pipeline_file = await get_pipeline_file_by_name(
-        "test-pipeline", template_api_service
+        "test-pipeline", jobmanager_api_service
     )
     assert "pipeline.yaml" == pathlib.Path(pipeline_file.path).name
 
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name_not_found(
-    monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, jobmanager_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -166,13 +171,13 @@ async def test_get_pipeline_file_by_name_not_found(
     )
     with pytest.raises(HTTPException):
         await get_pipeline_file_by_name(
-            "this-pipeline-does-not-exist", template_api_service
+            "this-pipeline-does-not-exist", jobmanager_api_service
         )
 
 
 @pytest.mark.asyncio
 async def test_get_pipeline_template_by_name(
-    monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, jobmanager_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -180,7 +185,7 @@ async def test_get_pipeline_template_by_name(
         str(mock_templates_dir),
     )
     pipeline_template = await get_pipeline_template_by_name(
-        "test-pipeline", template_api_service
+        "test-pipeline", jobmanager_api_service
     )
     assert pipeline_template.name == "test-pipeline"
     assert pipeline_template.description == "test"
@@ -190,7 +195,7 @@ async def test_get_pipeline_template_by_name(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_template_by_name_not_found(
-    monkeypatch, template_api_service, mock_templates_dir
+    monkeypatch, jobmanager_api_service, mock_templates_dir
 ):
     monkeypatch.setattr(
         services.template_service,
@@ -199,5 +204,5 @@ async def test_get_pipeline_template_by_name_not_found(
     )
     with pytest.raises(HTTPException):
         await get_pipeline_template_by_name(
-            "this-pipeline-does-not-exist", template_api_service
+            "this-pipeline-does-not-exist", jobmanager_api_service
         )

@@ -3,9 +3,8 @@ from typing import List
 
 import pandas as pd
 
-from src.model.column import Column
-from src.model.column_data_type import ColumnDataType
-from src.model.column_usage import ColumnUsage
+from build.objectstore.model.column import Column
+from model.column_data_type import ColumnDataType
 
 
 def sniff_column_datatypes(
@@ -19,13 +18,10 @@ def sniff_column_datatypes(
         )
         for name, column in df.iteritems()
     )
-    columns = (
-        Column(name, type_, ColumnUsage.FEATURE, size)
+    return [
+        Column(name=name, type=type_, num_entries=size)
         for name, type_, size in names_types_sizes
-    )
-    *feature_columns, label_column = columns
-    label_column.usage = ColumnUsage.LABEL
-    return [*feature_columns, label_column]
+    ]
 
 
 def sniff_series(series: pd.Series, max_categories=10) -> ColumnDataType:
@@ -46,13 +42,17 @@ def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
     suffix = pathlib.Path(example_file).suffix.lower()
     if suffix in (".jpg", ".jpeg", ".png", ".tiff"):
         file_column = Column(
-            "file", ColumnDataType.IMAGE, ColumnUsage.FEATURE, num_files
+            name="file",
+            type=ColumnDataType.IMAGE,
+            num_entires=num_files,
         )
     else:
         raise NotImplementedError()
     num_labels = len(df["label"])
     label_column = Column(
-        "label", ColumnDataType.CATEGORY, ColumnUsage.LABEL, num_labels
+        name="label",
+        type=ColumnDataType.CATEGORY,
+        num_entries=num_labels,
     )
     return [file_column, label_column]
 

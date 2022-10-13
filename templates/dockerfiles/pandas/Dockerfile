@@ -1,12 +1,31 @@
-#syntax=docker/dockerfile:1.4
-FROM alpine:latest as templates
-COPY . /data/templates/
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
 
-FROM python:3.8.9-slim as production
+COPY oas/ /oas
+
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i /oas/objectstore-manager-oas.yaml \
+-t /oas/templates_client \
+-g python \
+--package-name build.objectstore \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i /oas/job-manager-oas.yaml \
+-t /oas/templates_client \
+-g python \
+--package-name build.jobmanager \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as production
 
 COPY dockerfiles/pandas/requirements.txt /requirements.txt
 
 RUN pip install -r /requirements.txt
 
-COPY --from=templates /data/templates/src /src
+COPY --from=openapi /build/ /src/build/
+COPY ./src /src
+
+WORKDIR src
 

@@ -1,0 +1,48 @@
+.page-wrapper {
+  flex-direction: column;
+}
+
+.solutions-taskbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.solutions-headline {
+  padding-top: 20px;
+}
+
+.solutions-template {
+  margin-left: 15px;
+  flex: auto;
+}
+
+.placeholder-container {
+  display: flex;
+  min-height: 366px;
+  max-width: 483px;
+  align-self: center;
+  margin: auto;
+}
+
+.fab-button {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+.content-container {
+  margin-top: 100px;
+  min-width: 265px;
+  width: 100%;
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

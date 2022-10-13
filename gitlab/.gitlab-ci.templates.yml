@@ -1,10 +1,41 @@
 include:
-  - local: 'gitlab/shared/.gitlab-ci.build-test.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
+  - local: 'gitlab/shared/.gitlab-ci.build-test-and-lint.yml'
 
-validate-templates:
+templates-test-and-lint:
   extends:
-    - .build-development
+    - .build-test-and-lint
   variables:
     DOCKERFILE: 'templates/Dockerfile'
     IMG_NAME: 'templates'
     BUILD_CONTEXT: 'templates'
+
+build-python:
+  extends:
+    - .build-production
+  needs:
+    - templates-test-and-lint
+  variables:
+    BUILD_CONTEXT: 'templates'
+    IMG_NAME: 'python'
+    DOCKERFILE: 'templates/dockerfiles/python/Dockerfile'
+
+build-pandas:
+  extends:
+    - .build-production
+  needs:
+    - templates-test-and-lint
+  variables:
+    BUILD_CONTEXT: 'templates'
+    IMG_NAME: 'pandas'
+    DOCKERFILE: 'templates/dockerfiles/pandas/Dockerfile'
+
+build-ludwig:
+  extends:
+    - .build-production
+  needs:
+    - templates-test-and-lint
+  variables:
+    BUILD_CONTEXT: 'templates'
+    IMG_NAME: 'ludwig'
+    DOCKERFILE: 'templates/dockerfiles/ludwig/Dockerfile'

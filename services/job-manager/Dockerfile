@@ -1,14 +1,15 @@
-FROM python:3.9.10-slim as pipeline-templates
-COPY templates/components /components
-COPY templates/pipelines /pipelines
-COPY templates/build_all_components.py templates/build_all_pipelines.py /
-RUN pip install kfp==1.8.12
+FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as pipeline-templates
+ARG IMAGE_TAG
+ENV IMG_TAG=$IMAGE_TAG
+WORKDIR templates
+RUN --mount=type=cache,target=/root/.cache pip install kfp==1.8.12
+COPY templates /templates
 RUN python build_all_components.py
 RUN python build_all_pipelines.py
 RUN rm -r pipelines/__pycache__
 
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM python:3.9.10-slim as python-base
+FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -20,14 +21,14 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
     PROJECT_DIR="/app" \
-    POETRY_VERSION=1.1.4 \
+    POETRY_VERSION=1.2.0 \
     OPENAPI_GENERATOR_CLI_VERSION=5.4.0
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 
 # Specify a base image
-FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
+FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
 COPY services/job-manager/ /usr/app
@@ -53,7 +54,7 @@ RUN apt-get update \
         build-essential curl \
     && apt-get autoclean
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR $PYSETUP_PATH
 COPY services/job-manager/poetry.lock services/job-manager/pyproject.toml ./
@@ -69,7 +70,7 @@ ENV FASTAPI_ENV=development
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /pipelines /pipelines
+COPY --from=pipeline-templates /templates/pipelines /pipelines
 
 COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
@@ -102,7 +103,7 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /pipelines /pipelines
+COPY --from=pipeline-templates /templates/pipelines /pipelines
 COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR

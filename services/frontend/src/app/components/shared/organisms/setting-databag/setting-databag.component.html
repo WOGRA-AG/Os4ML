@@ -1,0 +1,47 @@
+<app-shared-dialog-header (closeDialog)="close()">
+  {{"databag.settings" | translate}}
+</app-shared-dialog-header>
+
+<mat-dialog-content>
+  <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+    <app-shared-dialog-section>
+      <div title>{{"databag.placeholder" | translate}}</div>
+      <div>
+        <mat-form-field appearance="outline">
+
+          <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
+                 name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
+                 [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+        </mat-form-field>
+      </div>
+    </app-shared-dialog-section>
+
+    <app-shared-dialog-section>
+      <div title>{{"databag.features" | translate}}</div>
+      <div>
+        <app-shared-databag-fields [databag]=databag>
+        </app-shared-databag-fields>
+      </div>
+    </app-shared-dialog-section>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    color="warn"
+    type="button"
+    (click)="delete()"
+  >
+    {{"action.delete" | translate}}
+  </button>
+  <button
+    mat-raised-button
+    form="ngForm"
+    color="primary"
+    type="submit"
+  >
+    {{"action.update" | translate}}
+  </button>
+</mat-dialog-actions>

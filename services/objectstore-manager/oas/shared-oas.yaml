@@ -12,18 +12,23 @@ components:
       type: string
     BucketName:
       type: string
+    DatabagId:
+      type: string
     Solution:
       properties:
         name:
           type: string
         status:
           type: string
+        errorMsgKey:
+          type: string
+          nullable: true
         solver:
           type: string
         databagName:
           type: string
-        bucketName:
-          $ref: "#/components/schemas/BucketName"
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
         inputFields:
           type: array
           items:
@@ -51,31 +56,40 @@ components:
           type: string
         type:
           type: string
-        usage:
-          type: string
         numEntries:
           type: integer
     Databag:
       properties:
         datasetType:
           type: string
+          nullable: true
         fileName:
           type: string
         databagName:
           type: string
-        bucketName:
-          $ref: "#/components/schemas/BucketName"
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
         numberRows:
           type: integer
+          nullable: true
         numberColumns:
           type: integer
+          nullable: true
         columns:
           type: array
+          nullable: true
           items:
             $ref: "#/components/schemas/Column"
         creationTime:
           type: string
+          nullable: true
         status:
+          type: string
+          nullable: true
+        errorMsgKey:
+          type: string
+          nullable: true
+        runId:
           type: string
           nullable: true
     PipelineTemplate:
@@ -90,3 +104,8 @@ components:
           type: string
         fileUrl:
           type: string
+    JsonResponse:
+      properties:
+        jsonContent:
+          type: string
+          format: byte

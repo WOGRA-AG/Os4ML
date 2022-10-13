@@ -1,39 +1,15 @@
-# Build frontend Image and push to registry
+include:
+  - local: 'gitlab/shared/.gitlab-ci.build-production.yml'
+
 .build-frontend:
   stage: build
   needs: [ ]
   image: $CI_REGISTRY/developer/images/node-java:node-16-jre-11
-  before_script:
-    - apt-get update -y && apt-get upgrade -y
-    - curl https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome-stable_current_amd64.deb
-    - apt install -y ./google-chrome*.deb;
-    - export CHROME_BIN=/usr/bin/google-chrome
   script:
     - cd $DIR
-    - npm install --cache .npm_cache
+    - npm ci --cache .npm_cache
     - npm run lint
     - npm run build
-
-.build-frontend-image:
-  stage: build
-  services:
-    - docker:20.10.14-dind
-  image: docker:20.10.14
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - cd $DIR
-    - docker build
-      --cache-from $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      "."
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_BUILDKIT: 1
 
 build-frontend:
   extends:
@@ -52,11 +28,12 @@ build-frontend:
 
 build-frontend-image:
   extends:
-    - .build-frontend-image
+    - .build-production
   needs:
     - build-frontend
   dependencies:
     - build-frontend
   variables:
-    DIR: 'services/frontend'
+    DOCKERFILE: 'services/frontend/Dockerfile'
     IMG_NAME: 'frontend'
+    BUILD_CONTEXT: 'services/frontend'

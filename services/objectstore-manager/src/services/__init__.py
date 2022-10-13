@@ -1,9 +1,6 @@
 import os
 from datetime import timedelta
 
-from services.gcs_service import GcsService
-from services.minio_service import MinioService
-
 STORAGE_BACKEND: str = os.getenv(
     "OBJECTSTORE_STORAGE_BACKEND", default="minio"
 )
@@ -23,6 +20,8 @@ STORAGE_SECRET: str = os.getenv(
 STORAGE_SECURE: bool = (
     os.getenv("OBJECTSTORECONFIG_SECURE", default="false").lower() == "true"
 )
+
+BUCKET_NAME: str = os.getenv("OS4ML_BUCKET_NAME", default="os4ml")
 
 DATABAG_CONFIG_FILE_NAME: str = os.getenv(
     "DATABAG_CONFIG_FILE_NAME", default="databag.json"

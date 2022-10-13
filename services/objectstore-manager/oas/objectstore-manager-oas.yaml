@@ -28,7 +28,6 @@ paths:
       operationId: getAllDatabags
       tags:
         - objectstore
-        - databag
       responses:
         200:
           description: "Successful response"
@@ -38,16 +37,29 @@ paths:
                 type: array
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Databag'
-
-  "/apis/v1beta1/objectstore/databag/{bucketName}":
+  "/apis/v1beta1/objectstore/databag/run/{runId}":
     get:
-      summary: "get databag by bucket name"
-      operationId: getDatabagByBucketName
+      summary: "get databag by run id"
+      operationId: getDatabagByRunId
       tags:
         - objectstore
-        - databag
       parameters:
-        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        200:
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Databag'
+  "/apis/v1beta1/objectstore/databag/{databagId}":
+    get:
+      summary: "get databag by id"
+      operationId: getDatabagById
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
       responses:
         200:
           description: "Successful response"
@@ -57,12 +69,11 @@ paths:
                 $ref: './shared-oas.yaml#/components/schemas/Databag'
     put:
       summary: "update databag"
-      operationId: putDatabagByBucketName
+      operationId: putDatabagById
       tags:
         - objectstore
-        - databag
       parameters:
-        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/DatabagId'
       requestBody:
         content:
           application/json:
@@ -70,7 +81,50 @@ paths:
               $ref: './shared-oas.yaml#/components/schemas/Databag'
       responses:
         201:
+          $ref: '#/components/responses/DatabagCreated'
+    post:
+      summary: "create new Databag"
+      operationId: postNewDatabag
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+      responses:
+        201:
           $ref: '#/components/responses/Created'
+    delete:
+      summary: "delete Databag"
+      operationId: deleteDatabag
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
+  "/apis/v1beta1/objectstore/databag/{databagId}/dataset":
+    put:
+      summary: "create or update dataset"
+      operationId: putDatasetByDatabagId
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: '#/components/parameters/ObjectName'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
 
   "/apis/v1beta1/objectstore/{bucketName}":
     post:
@@ -78,7 +132,6 @@ paths:
       operationId: postNewBucket
       tags:
         - objectstore
-        - bucket
       parameters:
         - $ref: '#/components/parameters/BucketName'
       responses:
@@ -91,7 +144,6 @@ paths:
       operationId: deleteBucket
       tags:
         - objectstore
-        - bucket
       parameters:
         - $ref: '#/components/parameters/BucketName'
       responses:
@@ -100,14 +152,13 @@ paths:
 
   "/apis/v1beta1/objectstore/{bucketName}/objects":
     get:
-      summary: "get all Objects in bucket"
-      operationId: getAllObjects
+      summary: "get all objects in bucket with the specified path prefix"
+      operationId: getObjects
       tags:
         - objectstore
-        - bucket
-        - object
       parameters:
         - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/PathPrefix'
       responses:
         200:
           description: OK
@@ -119,6 +170,38 @@ paths:
                   $ref: '#/components/schemas/Item'
         404:
           $ref: '#/components/responses/NotFound'
+    delete:
+      summary: "delete all objects in bucket with the specified path prefix"
+      operationId: deleteObjects
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/PathPrefix'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/{bucketName}/json":
+    get:
+      summary: 'get specific json file from bucket'
+      operationId: getJsonObjectByName
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/JsonResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
 
   "/apis/v1beta1/objectstore/{bucketName}/object":
     get:
@@ -126,8 +209,6 @@ paths:
       operationId: getObjectByName
       tags:
         - objectstore
-        - bucket
-        - object
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
@@ -141,8 +222,6 @@ paths:
       operationId: deleteObjectByName
       tags:
         - objectstore
-        - bucket
-        - object
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
@@ -156,7 +235,6 @@ paths:
       operationId: putObjectByName
       tags:
         - objectstore
-        - object
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
@@ -176,16 +254,13 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{bucketName}/presignedgeturl":
+  "/apis/v1beta1/objectstore/presignedgeturl":
     get:
       summary: "get Object Url"
       operationId: getObjectUrl
       tags:
         - objectstore
-        - bucket
-        - object
       parameters:
-        - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
       responses:
         200:
@@ -195,16 +270,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Url'
 
-  "/apis/v1beta1/objectstore/{bucketName}/presignedputurl":
+  "/apis/v1beta1/objectstore/presignedputurl":
     get:
       summary: 'get presigned put Url'
       operationId: getPresignedPutUrl
       tags:
         - objectstore
-        - bucket
-        - object
       parameters:
-        - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
       responses:
         200:
@@ -215,23 +287,6 @@ paths:
                 type: string
         404:
           $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/objectstore/solution":
-    get:
-      summary: 'get all solutions'
-      operationId: getAllSolutions
-      tags:
-        - objectstore
-        - solution
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solution'
 
 components:
   schemas:
@@ -275,6 +330,20 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/BucketName'
+    DatabagId:
+      name: databagId
+      in: path
+      description: Id of Databag
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/DatabagId'
+    RunId:
+      name: runId
+      in: path
+      description: Id of a run
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/RunId'
     ObjectName:
       name: objectName
       in: query
@@ -289,6 +358,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ComponentName'
+    PathPrefix:
+      name: pathPrefix
+      in: query
+      description: Prefix of the paths of the objects
+      required: false
+      schema:
+        type: string
+        default: ""
 
   responses:
     Created:
@@ -297,6 +374,8 @@ components:
         application/json:
           schema:
             $ref: "./shared-oas.yaml#/components/schemas/BucketName"
+    DatabagCreated:
+      description: New resource created
     Deleted:
       description: The specified resource was deleted
     Updated:

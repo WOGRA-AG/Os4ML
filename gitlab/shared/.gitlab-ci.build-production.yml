@@ -1,0 +1,26 @@
+.build-production:
+  stage: build
+  services:    
+    - name: docker:dind
+      command: ["--tls=false"]
+  tags:
+    - aime
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME || true
+    - docker build
+      -f $DOCKERFILE
+      --target production
+      --cache-from $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --build-arg BUILDKIT_INLINE_CACHE=1
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
+      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      $BUILD_CONTEXT
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_BUILDKIT: 1
+    DOCKER_TLS_CERTDIR: ""
+    CACHE_REGISTRY: developer/wogra/os4ml
