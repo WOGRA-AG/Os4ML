@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: jobmanager
 spec:
+  revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
@@ -47,6 +48,11 @@ spec:
                   key: os4mlNS
             - name: KF_PIPELINES_SA_TOKEN_PATH
               value: /var/run/secrets/kubeflow/pipelines/token
+            - name: OS4ML_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: jobmanager-config
+                  key: os4mlBucket
           volumeMounts:
             - mountPath: /var/run/secrets/kubeflow/pipelines
               name: volume-kf-pipeline-token
@@ -66,7 +72,7 @@ spec:
             periodSeconds: 5
           securityContext:
             allowPrivilegeEscalation: false
-      serviceAccountName: default-editor
+      serviceAccountName: service-account
       imagePullSecrets:
         - name: registry-credentials
       volumes:
