@@ -5,6 +5,7 @@ import pytest
 from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
 from minio.datatypes import Object as MinioObject
+from minio.error import S3Error
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
@@ -186,17 +187,23 @@ async def test_put_object_by_name():
 
 
 @pytest.mark.asyncio
-async def test_get_object_url():
+async def test_get_object_url(api_service_mock, minio_mock):
+    minio_mock.stat_object.return_value = None
+    minio_mock.presigned_get_object.return_value = (
+        "https://presigned.bla/bla_bla"
+    )
     url: str = await get_object_url(
         object_name="object",
-        _controller=mock_objectstore_controller,
+        _controller=api_service_mock,
     )
     assert type(url) == str
 
 
 @pytest.mark.asyncio
 async def test_get_object_url_with_exception(api_service_mock, minio_mock):
-    minio_mock.list_objects.return_value = []
+    minio_mock.stat_object.side_effect = S3Error(
+        "NoSuchKey", "test_msg", None, None, None, None
+    )
     with pytest.raises(HTTPException) as excinfo:
         await get_object_url(
             object_name="object_err",

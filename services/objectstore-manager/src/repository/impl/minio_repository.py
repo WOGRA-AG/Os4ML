@@ -8,7 +8,7 @@ from minio import Minio
 from minio.datatypes import Bucket as MinioBucket
 from minio.datatypes import Object as MinioObject
 from minio.deleteobjects import DeleteObject
-from minio.error import MinioException
+from minio.error import MinioException, S3Error
 from urllib3 import HTTPResponse
 
 from build.openapi_server.models.bucket import Bucket
@@ -33,12 +33,14 @@ class MinioRepository(StorageRepository):
     def _check_if_object_exists(
         self, bucket_name: str, object_name: str
     ) -> None:
-        objects = self.client.list_objects(bucket_name, prefix=object_name)
-        if next(iter(objects), None) is None:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Object with name {object_name} in bucket {bucket_name} not found",
-            )
+        try:
+            self.client.stat_object(bucket_name, object_name)
+        except S3Error as err:
+            if err.code == "NoSuchKey":
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Object with name {object_name} in bucket {bucket_name} not found",
+                )
 
     def list_buckets(self) -> List[Bucket]:
         buckets: List[MinioBucket] = self.client.list_buckets()
