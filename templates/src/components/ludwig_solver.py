@@ -7,7 +7,7 @@ from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 from ludwig.api import LudwigModel
 
 from build.objectstore.model.databag import Databag
-from config import MODEL_FILE_NAME
+from config import MODEL_DIR_NAME, MODEL_FILE_NAME
 from jobmanager.solution import error_status_update, status_update
 from load.databag import load_databag
 from load.dataset import load_dataset
@@ -98,4 +98,7 @@ def zip_dir(dir_: str, zip_file: str) -> None:
     with zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED) as zipped:
         for root, _, files in os.walk(dir_):
             for file in files:
-                zipped.write(os.path.join(root, file))
+                zipped.write(
+                    os.path.join(root, file),
+                    arcname=os.path.join(MODEL_DIR_NAME, file),
+                )
