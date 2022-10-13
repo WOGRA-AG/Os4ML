@@ -5,6 +5,7 @@ metadata:
 spec:
   gateways:
     - os4ml/os4ml-gateway
+    - kubeflow/kubeflow-gateway
   hosts:
     - '*'
   http:

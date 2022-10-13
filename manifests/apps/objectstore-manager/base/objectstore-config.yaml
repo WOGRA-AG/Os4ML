@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: objectstore-config
 data:
-  storageBackend: 'gcs'
+  storageBackend: 'minio'
   bucketName: 'os4ml'
   url: 'minio.minio-tenant.svc.cluster.local'
-  templateBucket: 'templates'
   objectstoreSecure: 'false'
