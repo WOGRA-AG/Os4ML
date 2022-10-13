@@ -74,3 +74,14 @@ def upload_file_to_databag(
     objectstore.put_dataset_by_databag_id(
         databag.databag_id, file_name, body=file
     )
+
+
+def upload_file_to_solution(
+    file: BinaryIO,
+    file_name: str,
+    solution_name: str,
+    databag: Databag,
+    os4ml_namespace: str,
+) -> None:
+    file_name = f"{solution_name.split('_').pop(0)}/{file_name}"
+    upload_file_to_databag(file, file_name, databag, os4ml_namespace)

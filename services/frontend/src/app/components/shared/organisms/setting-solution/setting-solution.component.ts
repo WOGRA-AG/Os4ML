@@ -53,4 +53,16 @@ export class SettingSolutionComponent {
       }
     });
   }
+
+  download() {
+    if (this.solution.name) {
+      this.jobmanagerService.getDownloadLinkForModelOfSolution(this.solution.name).subscribe(url => {
+        const link = document.createElement('a');
+        link.href = url;
+        link.toggleAttribute('download');
+        link.click();
+        link.remove();
+      });
+    }
+  }
 }

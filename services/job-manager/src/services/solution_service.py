@@ -13,13 +13,17 @@ from build.openapi_client.model.json_response import JsonResponse
 from build.openapi_server.models.run_params import RunParams
 from build.openapi_server.models.solution import Solution
 from executor.kfp_executor import KfpExecutor
-from services import DATE_FORMAT, SOLUTION_CONFIG_FILE_NAME
+from services import DATE_FORMAT, MODEL_FILE_NAME, SOLUTION_CONFIG_FILE_NAME
 from services.init_api_clients import init_objectstore_api
 from services.template_service import TemplateService
 
 
-def _solution_file_name(databag_id: str, solution_name: str):
-    return f"{databag_id}/{solution_name.split('_').pop(0)}/{SOLUTION_CONFIG_FILE_NAME}"
+def _solution_file_name(solution: Solution):
+    return f"{_get_solution_prefix(solution)}{SOLUTION_CONFIG_FILE_NAME}"
+
+
+def _get_solution_prefix(solution: Solution) -> str:
+    return f"{solution.databag_id}/{solution.name.split('_').pop(0)}/"
 
 
 class SolutionService:
@@ -74,29 +78,25 @@ class SolutionService:
             file_name=databag.file_name,
             solution_name=solution.name,
         )
-        self._persist_solution(bucket_name, solution.name, solution)
+        self._persist_solution(bucket_name, solution)
         run_id: str = self.template_service.run_pipeline_template(
             solution.solver, run_params
         )
         solution.run_id = run_id
-        self._persist_solution(bucket_name, solution.name, solution)
+        self._persist_solution(bucket_name, solution)
         return run_id
 
     def put_solution(
         self, bucket_name: str, solution_name: str, solution: Solution
     ) -> Solution:
-        self._persist_solution(bucket_name, solution_name, solution)
+        self._persist_solution(bucket_name, solution)
         return solution
 
-    def _persist_solution(
-        self, bucket_name: str, solution_name: str, solution: Solution
-    ):
+    def _persist_solution(self, bucket_name: str, solution: Solution):
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
             bucket_name=bucket_name,
-            object_name=_solution_file_name(
-                solution.databag_id, solution_name
-            ),
+            object_name=_solution_file_name(solution),
             body=encoded_solution,
         )
 
@@ -109,5 +109,14 @@ class SolutionService:
             self.kfp_service.terminate_run(solution.run_id)
         self.objectstore.delete_objects(
             bucket_name=bucket_name,
-            path_prefix=f"{solution.databag_id}/{solution.name.split('_').pop(0)}/",
+            path_prefix=_get_solution_prefix(solution),
         )
+
+    def get_model_download_url(
+        self, solution_name: str, bucket_name: str
+    ) -> str:
+        solution = self.get_solution(
+            bucket_name=bucket_name, solution_name=solution_name
+        )
+        url = f"{_get_solution_prefix(solution)}{MODEL_FILE_NAME}"
+        return self.objectstore.get_object_url(url)

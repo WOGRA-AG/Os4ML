@@ -24,7 +24,8 @@
     "last_step": "Finish",
     "delete": "Delete",
     "update": "Update",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "download": "Download"
   },
   "databag": {
     "name": "Databag",

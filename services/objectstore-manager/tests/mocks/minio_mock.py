@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timedelta
-from typing import List
+from typing import Iterator, List
 
 from minio import Minio
 from minio.datatypes import Bucket, Object
@@ -65,7 +65,7 @@ class MinioMock(Minio):
         include_version=False,
         use_api_v1=False,
         use_url_encoding_type=True,
-    ) -> List[Object]:
+    ) -> Iterator[Object]:
         objects_list_os4ml = [
             Object(bucket_name="os4ml", object_name="object.csv"),
             Object(bucket_name="os4ml", object_name=DATABAG_CONFIG_FILE_NAME),
