@@ -1,7 +1,13 @@
 import functools
+import os
+import tempfile
+import zipfile
 
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
+from ludwig.api import LudwigModel
 
+from build.objectstore.model.databag import Databag
+from config import MODEL_DIR_NAME, MODEL_FILE_NAME
 from jobmanager.solution import error_status_update, status_update
 from load.databag import load_databag
 from load.dataset import load_dataset
@@ -10,6 +16,7 @@ from ludwig_model.labels import get_all_label_values, get_label_name
 from ludwig_model.metrics import calculate_conf_matrix
 from ludwig_model.model import build_model, train_model
 from model.error_msg_key import ErrorMsgKey
+from objectstore.objectstore import upload_file_to_solution
 from pipelines.util import StatusMessages
 from util.exception_handler import exception_handler
 
@@ -47,6 +54,7 @@ def ludwig_solver(
         evaluate_model(
             model, model_definition, dataset, df_test, metrics, cls_metrics
         )
+        upload_model(model, solution_name, databag, os4ml_namespace)
 
 
 def evaluate_model(
@@ -64,3 +72,33 @@ def evaluate_model(
         pred, label_name, df_test, label_values
     )
     cls_metrics.log_confusion_matrix(label_values, conf_matrix)
+
+
+def upload_model(
+    model: LudwigModel,
+    solution_name: str,
+    databag: Databag,
+    os4ml_namespace: str,
+) -> None:
+    with tempfile.TemporaryDirectory() as temp:
+        model.save(temp)
+        with tempfile.NamedTemporaryFile() as zip_file:
+            zip_dir(temp, zip_file.name)
+            with open(zip_file.name, "rb") as binary_zip:
+                upload_file_to_solution(
+                    binary_zip,
+                    MODEL_FILE_NAME,
+                    solution_name,
+                    databag,
+                    os4ml_namespace,
+                )
+
+
+def zip_dir(dir_: str, zip_file: str) -> None:
+    with zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED) as zipped:
+        for root, _, files in os.walk(dir_):
+            for file in files:
+                zipped.write(
+                    os.path.join(root, file),
+                    arcname=os.path.join(MODEL_DIR_NAME, file),
+                )

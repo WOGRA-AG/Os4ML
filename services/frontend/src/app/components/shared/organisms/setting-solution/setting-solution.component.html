@@ -63,6 +63,15 @@
 
 <mat-dialog-actions align="end">
   <button
+    *ngIf="solution.status === 'Solver finished'"
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="download()"
+  >
+    {{"action.download" | translate}}
+  </button>
+  <button
     mat-stroked-button
     class="delete-button"
     color="warn"

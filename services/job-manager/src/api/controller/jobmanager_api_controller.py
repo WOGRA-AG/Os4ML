@@ -135,3 +135,10 @@ class JobmanagerApiController:
 
     def delete_run(self, run_id: str) -> None:
         return self.kfp_service.delete_run(run_id)
+
+    def get_download_link_for_model_of_solution(
+        self, solution_name: str
+    ) -> str:
+        return self.solution_service.get_model_download_url(
+            solution_name, self.bucket_name
+        )
