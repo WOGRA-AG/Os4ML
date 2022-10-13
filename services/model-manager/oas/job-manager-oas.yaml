@@ -1,0 +1,468 @@
+openapi: 3.0.3
+info:
+  title: Job Manager
+  description: Job Manager
+  version: 1.0.0
+servers:
+  - url: 'http://jobmanager.os4ml.svc.cluster.local:8000'
+paths:
+  "/apis/v1beta1/jobmanager/experiment":
+    get:
+      summary: 'Get all Experiments'
+      operationId: getAllExperiments
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experiment'
+    post:
+      summary: 'Create new Experiment'
+      operationId: postExperiment
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+      responses:
+        201:
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentId'
+  "/apis/v1beta1/jobmanager/pipeline":
+    get:
+      summary: 'Get all pipelines'
+      operationId: getAllPipelines
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+    post:
+      summary: 'Create Pipeline'
+      operationId: postPipeline
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePipeline'
+      responses:
+        201:
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineId'
+  "/apis/v1beta1/jobmanager/run":
+    get:
+      summary: 'Get all pipeline runs'
+      operationId: getAllRuns
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Run'
+  "/apis/v1beta1/jobmanager/run/{runId}":
+    get:
+      summary: 'Get single pipeline run'
+      operationId: getRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Run'
+    delete:
+      summary: 'Delete a run'
+      operationId: deleteRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      tags:
+        - jobmanager
+      responses:
+        204:
+          description: "Deleted"
+  "/apis/v1beta1/jobmanager/experiment/{experimentId}/pipeline/{pipelineId}/run":
+    post:
+      summary: 'Create Run'
+      operationId: postRun
+      parameters:
+        - $ref: '#/components/parameters/ExperimentId'
+        - $ref: '#/components/parameters/PipelineId'
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRun'
+      responses:
+        201:
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
+
+  "/apis/v1beta1/jobmanager/template/{pipelineTemplateName}":
+    post:
+      summary: "Convenience route to run a Pipeline Template directly"
+      operationId: postTemplate
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunParams'
+      responses:
+        201:
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
+
+  "/apis/v1beta1/jobmanager/template/pipeline":
+    get:
+      summary: 'get all pipeline templates'
+      operationId: getAllPipelineTemplates
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+
+  "/apis/v1beta1/jobmanager/template/pipeline/{pipelineTemplateName}":
+    get:
+      summary: 'get pipeline template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/jobmanager/template/pipeline/file/{pipelineTemplateName}":
+    get:
+      summary: 'get pipeline file by name'
+      operationId: getPipelineFileByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: OK
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/jobmanager/solution/{solutionName}":
+    get:
+      summary: "Get a solution"
+      operationId: getSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Solution found"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Solution'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "Update a Solution"
+      operationId: putSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Solution'
+      responses:
+        200:
+          description: "Solution updated"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Solution'
+    delete:
+      summary: "Delete a Solution"
+      operationId: deleteSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/jobmanager/solution/{solutionName}/model":
+    get:
+      summary: "get a download link for the model of the specified solution"
+      operationId: getDownloadLinkForModelOfSolution
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: "Download link"
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/jobmanager/solution":
+    get:
+      summary: 'get all solutions'
+      operationId: getAllSolutions
+      tags:
+        - jobmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solution'
+    post:
+      summary: "Create and deploy a Solution"
+      operationId: postSolution
+      tags:
+        - jobmanager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Solution'
+      responses:
+        201:
+          description: "Solution created"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
+
+components:
+  schemas:
+    ExperimentId:
+      type: string
+    PipelineId:
+      type: string
+    ArtifactId:
+      type: string
+    Experiment:
+      description: Experiment Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/ExperimentId'
+        name:
+          type: string
+        description:
+          type: string
+    Pipeline:
+      description: Pipeline Object
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        id:
+          $ref: '#/components/schemas/PipelineId'
+        name:
+          type: string
+        description:
+          type: string
+    CreatePipeline:
+      description: Create Pipeline Object
+      allOf:
+        - $ref: '#/components/schemas/Pipeline'
+        - type: object
+          required:
+            - config_url
+          properties:
+            configUrl:
+              type: string
+    Metrics:
+      description: Run Metrics
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: number
+        format:
+          type: string
+    Run:
+      description: Run Object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          $ref: './shared-oas.yaml#/components/schemas/RunId'
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        error:
+          type: string
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metrics'
+    CreateRun:
+      description: Create Run Object
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        params:
+          $ref: '#/components/schemas/RunParams'
+    RunParams:
+      description: Default Parameters to start Run
+      type: object
+      properties:
+        bucket:
+          type: string
+        fileName:
+          type: string
+        databagId:
+          type: string
+          nullable: true
+        solutionName:
+          type: string
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+
+  parameters:
+    ExperimentId:
+      name: experimentId
+      in: path
+      description: Id of Experiment
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExperimentId'
+    PipelineId:
+      name: pipelineId
+      in: path
+      description: Id of Pipeline
+      required: true
+      schema:
+        $ref: '#/components/schemas/PipelineId'
+    RunId:
+      name: runId
+      in: path
+      description: Id of Run
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/RunId'
+    PipelineTemplateName:
+      name: pipelineTemplateName
+      in: path
+      description: Name of the PipelineTemplate
+      required: true
+      schema:
+        type: string
+    SolutionName:
+      name: solutionName
+      in: path
+      description: Name of the Solution
+      required: true
+      schema:
+        type: string
+  responses:
+    Created:
+      description: New resource created
+    Deleted:
+      description: The specified resource was deleted
+    Updated:
+      description: The specified resource was updated
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyMismatch:
+      description: The provided request body has the wrong format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyInvalid:
+      description: The content of the request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

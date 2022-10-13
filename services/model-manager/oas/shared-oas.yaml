@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Shared OAS
+  description: Shared OAS
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+    RunId:
+      type: string
+    BucketName:
+      type: string
+    DatabagId:
+      type: string
+    Solution:
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        errorMsgKey:
+          type: string
+          nullable: true
+        solver:
+          type: string
+        databagName:
+          type: string
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
+        inputFields:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            type: string
+        runId:
+          $ref: '#/components/schemas/RunId'
+        creationTime:
+          type: string
+        completionTime:
+          type: string
+          nullable: true
+        metrics:
+          type: object
+          nullable: true
+          properties:
+            accuracy:
+              type: number
+    Column:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        numEntries:
+          type: integer
+    Databag:
+      properties:
+        datasetType:
+          type: string
+          nullable: true
+        fileName:
+          type: string
+        databagName:
+          type: string
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
+        numberRows:
+          type: integer
+          nullable: true
+        numberColumns:
+          type: integer
+          nullable: true
+        columns:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/Column"
+        creationTime:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        errorMsgKey:
+          type: string
+          nullable: true
+        runId:
+          type: string
+          nullable: true
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string
+    JsonResponse:
+      properties:
+        jsonContent:
+          type: string
+          format: byte
