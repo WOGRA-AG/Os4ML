@@ -6,3 +6,4 @@ data:
   pipelineUrl: ''
   pipelineNS: ''
   os4mlNS: 'os4ml'
+  os4mlBucket: 'os4ml'
