@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: objectstore-manager
 spec:
+  revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
@@ -29,7 +30,7 @@ spec:
               name: http
               protocol: TCP
           env:
-            - name: STORAGE_BACKEND
+            - name: OBJECTSTORE_STORAGE_BACKEND
               valueFrom:
                 configMapKeyRef:
                   key: storageBackend
@@ -44,7 +45,7 @@ spec:
                 configMapKeyRef:
                   name: objectstore-config
                   key: objectstoreSecure
-            - name: OBJECTSTORECONFIG_BUCKETNAME
+            - name: OS4ML_BUCKET_NAME
               valueFrom:
                 configMapKeyRef:
                   name: objectstore-config
@@ -59,6 +60,12 @@ spec:
                 secretKeyRef:
                   name: minio
                   key: secretkey
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/gcs-creds/.credentials.json
+          volumeMounts:
+            - mountPath: /var/gcs-creds
+              name: gcs-creds
+              readOnly: true
           resources:
             limits:
               cpu: 200m
@@ -75,6 +82,11 @@ spec:
             periodSeconds: 5
           securityContext:
             allowPrivilegeEscalation: false
+      volumes:
+        - name: gcs-creds
+          secret:
+            secretName: google-credentials
+            optional: true
       serviceAccountName: service-account
       imagePullSecrets:
           - name: registry-credentials
