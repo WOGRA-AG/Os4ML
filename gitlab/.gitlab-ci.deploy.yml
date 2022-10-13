@@ -25,6 +25,7 @@
     - docker tag $CACHE_REGISTRY/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
 
+    - docker pull $CACHE_REGISTRY/job-manager:$CI_COMMIT_SHA
     - docker build
       -f 'services/job-manager/Dockerfile'
       --target production
