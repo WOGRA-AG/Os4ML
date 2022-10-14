@@ -15,10 +15,12 @@ cp -r ./templates_client ../objectstore-manager/oas/
 cp ./shared-oas.yaml ../model-manager/oas/
 cp ./objectstore-manager-oas.yaml ../model-manager/oas/
 cp ./job-manager-oas.yaml ../model-manager/oas/
+cp ./model-manager-oas.yaml ../model-manager/oas/
 cp -r ./templates ../model-manager/oas/
 cp -r ./templates_client ../model-manager/oas/
 
 cp ./shared-oas.yaml ../../templates/oas/
 cp ./job-manager-oas.yaml ../../templates/oas/
 cp ./objectstore-manager-oas.yaml ../../templates/oas/
+cp ./model-manager.yaml ../../templates/oas/
 cp -r ./templates_client ../../templates/oas/
