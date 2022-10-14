@@ -22,5 +22,5 @@ cp -r ./templates_client ../model-manager/oas/
 cp ./shared-oas.yaml ../../templates/oas/
 cp ./job-manager-oas.yaml ../../templates/oas/
 cp ./objectstore-manager-oas.yaml ../../templates/oas/
-cp ./model-manager.yaml ../../templates/oas/
+cp ./model-manager-oas.yaml ../../templates/oas/
 cp -r ./templates_client ../../templates/oas/
