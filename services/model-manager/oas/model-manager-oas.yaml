@@ -13,7 +13,6 @@ paths:
       operationId: getAllSolvers
       tags:
         - modelmanager
-        - solver
       responses:
         200:
           description: OK
@@ -24,128 +23,121 @@ paths:
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Solver'
 
-  "/solvers/{solverName}":
-    get:
-      summary: 'get solver by name'
-      operationId: getSolverByName
-      parameters:
-        - $ref: '#/components/parameters/SolverName'
-      tags:
-        - modelmanager
-        - solver
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solver'
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/solutions":
-    get:
-      summary: 'get all solutions'
-      operationId: getAllSolutions
-      tags:
-        - modelmanager
-        - solution
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solution'
-    post:
-      summary: "Create a Solution"
-      operationId: postSolution
-      tags:
-        - modelmanager
-        - solution
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
-      responses:
-        201:
-          description: "Solution created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/RunId'
-
-  "/solutions/{solutionName}":
-    get:
-      summary: "Get a solution"
-      operationId: getSolutionByName
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-      tags:
-        - modelmanager
-        - solution
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
-        404:
-          $ref: '#/components/responses/NotFound'
-    put:
-      summary: "Update a Solution"
-      operationId: putSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-      tags:
-        - modelmanager
-        - solution
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
-      responses:
-        200:
-          description: "Solution updated"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
-    delete:
-      summary: "Delete a Solution"
-      operationId: deleteSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-      tags:
-        - modelmanager
-        - solution
-      responses:
-        204:
-          $ref: '#/components/responses/Deleted'
-
-  "/solutions/{solutionName}/model":
-    get:
-      summary: "get a download link for the model of the specified solution"
-      operationId: getDownloadLinkForModelOfSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-      tags:
-        - modelmanager
-        - solution
-      responses:
-        200:
-          description: "Download link"
-          content:
-            application/json:
-              schema:
-                type: string
-        404:
-          $ref: '#/components/responses/NotFound'
+#  "/solvers/{solverName}":
+#    get:
+#      summary: 'get solver by name'
+#      operationId: getSolverByName
+#      parameters:
+#        - $ref: '#/components/parameters/SolverName'
+#      tags:
+#        - modelmanager
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './shared-oas.yaml#/components/schemas/Solver'
+#        404:
+#          $ref: '#/components/responses/NotFound'
+#
+#  "/solutions":
+#    get:
+#      summary: 'get all solutions'
+#      operationId: getAllSolutions
+#      tags:
+#        - modelmanager
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: './shared-oas.yaml#/components/schemas/Solution'
+#    post:
+#      summary: "Create a Solution"
+#      operationId: postSolution
+#      tags:
+#        - modelmanager
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './shared-oas.yaml#/components/schemas/Solution'
+#      responses:
+#        201:
+#          description: "Solution created"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './shared-oas.yaml#/components/schemas/RunId'
+#
+#  "/solutions/{solutionName}":
+#    get:
+#      summary: "Get a solution"
+#      operationId: getSolutionByName
+#      parameters:
+#        - $ref: '#/components/parameters/SolutionName'
+#      tags:
+#        - modelmanager
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './shared-oas.yaml#/components/schemas/Solution'
+#        404:
+#          $ref: '#/components/responses/NotFound'
+#    put:
+#      summary: "Update a Solution"
+#      operationId: putSolution
+#      parameters:
+#        - $ref: '#/components/parameters/SolutionName'
+#      tags:
+#        - modelmanager
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './shared-oas.yaml#/components/schemas/Solution'
+#      responses:
+#        200:
+#          description: "Solution updated"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './shared-oas.yaml#/components/schemas/Solution'
+#    delete:
+#      summary: "Delete a Solution"
+#      operationId: deleteSolution
+#      parameters:
+#        - $ref: '#/components/parameters/SolutionName'
+#      tags:
+#        - modelmanager
+#      responses:
+#        204:
+#          $ref: '#/components/responses/Deleted'
+#
+#  "/solutions/{solutionName}/model":
+#    get:
+#      summary: "get a download link for the model of the specified solution"
+#      operationId: getDownloadLinkForModelOfSolution
+#      parameters:
+#        - $ref: '#/components/parameters/SolutionName'
+#      tags:
+#        - modelmanager
+#      responses:
+#        200:
+#          description: "Download link"
+#          content:
+#            application/json:
+#              schema:
+#                type: string
+#        404:
+#          $ref: '#/components/responses/NotFound'
 
 components:
   schemas:

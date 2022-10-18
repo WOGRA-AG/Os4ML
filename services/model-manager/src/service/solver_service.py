@@ -1,4 +1,4 @@
-from models.solver import Solver
+from build.openapi_server.models.solver import Solver
 
 
 class SolverService:
