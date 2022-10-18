@@ -12,8 +12,8 @@ stages:
   - test
   - build
   - deploy
-  - e2e
   - reset
+  - e2e
   - clean
 
 variables:
