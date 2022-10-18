@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
-from services.solver import SolverService
-
 from models.solver import Solver
+from services.solver import SolverService
 
 router = APIRouter(prefix="/apis/v1beta1/modelmanager")
 
