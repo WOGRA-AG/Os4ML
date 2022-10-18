@@ -1,10 +1,10 @@
 # coding: utf-8
 
 from datetime import date, datetime
-
 from typing import Dict, List, Optional
-from pydantic import BaseModel, EmailStr, validator
+
 from fastapi_utils.api_model import APIModel
+from pydantic import BaseModel, EmailStr, validator
 
 
 class SolutionMetrics(APIModel):

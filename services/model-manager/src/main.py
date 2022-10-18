@@ -1,7 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.solver_api import router as solver_router
+
+from api.solver_api_controller import router as solver_router
 
 app = FastAPI(
     title="Model Manager",
