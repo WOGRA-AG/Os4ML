@@ -15,8 +15,7 @@ following features:
 - Multi-User Isolation
 
 The current version is an alpha release, i.e. everything is work in progress and 
-experimental. For more details including installation manuals please read the 
-[docs][]. 
+experimental. For more details please read the [docs][]. 
 
 ## About the Project
 The project focuses on easy installation, intuitive UI/UX and comfortable 
@@ -26,8 +25,7 @@ use third-party open source software.
 ## Roadmap
 There is a lot of work to do. In the near future the following will happen:
 
-- [ ] A Terraform module to install Os4ML on a k3d cluster using ArgoCD
-  (October 2022)
+- [x] A [Terraform module to install Os4ML](https://github.com/WOGRA-AG/terraform-kustomization-os4ml) on a k3d cluster using ArgoCD
 - [ ] Solving regression problems (Winter 2022)
 - [ ] Intelligent Data Labeling (Spring 2023)
    
