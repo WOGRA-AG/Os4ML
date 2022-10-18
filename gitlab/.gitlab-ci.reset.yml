@@ -1,7 +1,7 @@
 reset:
   stage: reset
   needs:
-    - e2e
+    - deploy-testing
   image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud387-terraform1.2
   before_script:
     - gcloud auth activate-service-account $GCP_service_account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
