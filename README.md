@@ -26,8 +26,7 @@ use third-party open source software.
 ## Roadmap
 There is a lot of work to do. In the near future the following will happen:
 
-- [ ] A Terraform module to install Os4ML on a k3d cluster using ArgoCD
-  (October 2022)
+- [x] A [Terraform module to install Os4ML](https://github.com/WOGRA-AG/terraform-kustomization-os4ml) on a k3d cluster using ArgoCD
 - [ ] Solving regression problems (Winter 2022)
 - [ ] Intelligent Data Labeling (Spring 2023)
    
