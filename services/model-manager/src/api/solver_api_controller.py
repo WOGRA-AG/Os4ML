@@ -1,10 +1,7 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-)
+from fastapi import APIRouter, Depends
+from services.solver import SolverService
 
 from models.solver import Solver
-from services.solver_service import SolverService
 
 router = APIRouter(prefix="/apis/v1beta1/modelmanager")
 
@@ -18,6 +15,6 @@ router = APIRouter(prefix="/apis/v1beta1/modelmanager")
     summary="get all solvers",
 )
 async def get_all_pipeline_templates(
-        service=Depends(SolverService)
+    service=Depends(SolverService),
 ) -> list[Solver]:
     return service.list_solvers()

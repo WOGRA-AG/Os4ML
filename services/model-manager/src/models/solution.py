@@ -1,11 +1,11 @@
 # coding: utf-8
 
 from datetime import date, datetime
-
 from typing import Dict, List, Optional
-from pydantic import BaseModel, EmailStr, validator
+
 from build.openapi_server.models.solution_metrics import SolutionMetrics
 from fastapi_utils.api_model import APIModel
+from pydantic import BaseModel, EmailStr, validator
 
 
 class Solution(APIModel):
