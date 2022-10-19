@@ -2,11 +2,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from api.controller.modelmanager_api_controller import (
-    ModelmanagerApiController,
-)
 from main import app as application
-from service.solver_service import SolverService
 
 
 @pytest.fixture
@@ -22,10 +18,5 @@ def client(app) -> TestClient:
 
 
 @pytest.fixture
-def solver_service():
-    return SolverService()
-
-
-@pytest.fixture
-def api_controller(solver_service):
-    return ModelmanagerApiController(solver_service=solver_service)
+def route_prefix() -> str:
+    return "/apis/v1beta1/modelmanager/"
