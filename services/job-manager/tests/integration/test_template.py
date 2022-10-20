@@ -2,7 +2,9 @@ import json
 import pathlib
 
 import pytest
+from conftest import user_header
 from fastapi import HTTPException
+from pytest_mock import MockerFixture
 
 import services
 from api.controller.jobmanager_api_controller import JobmanagerApiController
@@ -13,6 +15,10 @@ from build.openapi_server.apis.jobmanager_api import (
     post_template,
 )
 from build.openapi_server.models.run_params import RunParams
+from build.openapi_server.models.user import User
+from build.translator_client.api.workflowtranslator_api import (
+    WorkflowtranslatorApi,
+)
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
 
@@ -40,6 +46,7 @@ def jobmanager_api_service(
         template_service=template_service,
         solution_service=solution_service,
         kfp_service=mock_kfp_client,
+        user=User(id="default", email="email", raw_token=""),
     )
 
 
@@ -59,7 +66,10 @@ async def test_post_template(
     mock_kfp_client.upload_pipeline = mocker.Mock(return_value=pipeline_id)
     mock_kfp_client.run_pipeline = mocker.Mock(return_value=run_id)
     run_id: str = await post_template(
-        "test-pipeline", RunParams(), _controller=jobmanager_api_service
+        pipeline_template_name="test-pipeline",
+        run_params=RunParams(),
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
     )
     assert run_id == "run_id"
     call = mock_kfp_client.run_pipeline.call_args[1]
@@ -99,12 +109,15 @@ async def test_get_all_pipeline_templates(
         "PIPELINE_TEMPLATES_DIR",
         str(mock_templates_dir),
     )
-    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
+    pipelines = await get_all_pipeline_templates(
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
+    )
     pipeline = pipelines[0]
-    assert pipeline.name == "test-pipeline"
-    assert pipeline.description == "test"
+    assert pipeline.name == "databag"
+    assert pipeline.description
     assert pipeline.type == "pipeline"
-    assert pipeline.pipeline_step == "pipeline"
+    assert pipeline.pipeline_step == "prepare"
 
 
 # works only on the dockerfile
@@ -113,7 +126,10 @@ async def test_get_all_pipeline_templates(
 async def test_get_all_pipeline_templates_ludwig_solver_exists(
     jobmanager_api_service,
 ):
-    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
+    pipelines = await get_all_pipeline_templates(
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
+    )
     assert any(pipeline.name == "ludwig-solver" for pipeline in pipelines)
     ludwig_solver = next(
         iter(
@@ -134,7 +150,10 @@ async def test_get_all_pipeline_templates_ludwig_solver_exists(
 async def test_get_all_pipeline_templates_databag_exists(
     jobmanager_api_service,
 ):
-    pipelines = await get_all_pipeline_templates(jobmanager_api_service)
+    pipelines = await get_all_pipeline_templates(
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
+    )
     assert any(pipeline.name == "databag" for pipeline in pipelines)
     init_pipeline = next(
         iter(pipeline for pipeline in pipelines if pipeline.name == "databag")
@@ -147,23 +166,41 @@ async def test_get_all_pipeline_templates_databag_exists(
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name(
-    monkeypatch, jobmanager_api_service, mock_templates_dir
+    monkeypatch,
+    jobmanager_api_service,
+    mock_templates_dir,
+    mocker: MockerFixture,
 ):
+    workflow_mock = mocker.MagicMock(side_effect=["test-pipeline"])
+    mocker.patch.object(
+        WorkflowtranslatorApi, "get_pipeline_template_by_name", workflow_mock
+    )
     monkeypatch.setattr(
         services.template_service,
         "PIPELINE_TEMPLATES_DIR",
         str(mock_templates_dir),
     )
     pipeline_file = await get_pipeline_file_by_name(
-        "test-pipeline", jobmanager_api_service
+        pipeline_template_name="test-pipeline",
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
     )
-    assert "pipeline.yaml" == pathlib.Path(pipeline_file.path).name
+    assert "pipeline.yaml" in pathlib.Path(pipeline_file.path).name
 
 
 @pytest.mark.asyncio
 async def test_get_pipeline_file_by_name_not_found(
-    monkeypatch, jobmanager_api_service, mock_templates_dir
+    monkeypatch,
+    jobmanager_api_service,
+    mock_templates_dir,
+    mocker: MockerFixture,
 ):
+    workflow_mock = mocker.MagicMock(
+        side_effect=[HTTPException(404, "Not Found")]
+    )
+    mocker.patch.object(
+        WorkflowtranslatorApi, "get_pipeline_template_by_name", workflow_mock
+    )
     monkeypatch.setattr(
         services.template_service,
         "PIPELINE_TEMPLATES_DIR",
@@ -171,7 +208,9 @@ async def test_get_pipeline_file_by_name_not_found(
     )
     with pytest.raises(HTTPException):
         await get_pipeline_file_by_name(
-            "this-pipeline-does-not-exist", jobmanager_api_service
+            pipeline_template_name="this-pipeline-does-not-exist",
+            _controller=jobmanager_api_service,
+            usertoken=user_header.get("usertoken"),
         )
 
 
@@ -185,12 +224,14 @@ async def test_get_pipeline_template_by_name(
         str(mock_templates_dir),
     )
     pipeline_template = await get_pipeline_template_by_name(
-        "test-pipeline", jobmanager_api_service
+        pipeline_template_name="databag",
+        _controller=jobmanager_api_service,
+        usertoken=user_header.get("usertoken"),
     )
-    assert pipeline_template.name == "test-pipeline"
-    assert pipeline_template.description == "test"
+    assert pipeline_template.name == "databag"
+    assert pipeline_template.description
     assert pipeline_template.type == "pipeline"
-    assert pipeline_template.pipeline_step == "pipeline"
+    assert pipeline_template.pipeline_step == "prepare"
 
 
 @pytest.mark.asyncio
@@ -204,5 +245,7 @@ async def test_get_pipeline_template_by_name_not_found(
     )
     with pytest.raises(HTTPException):
         await get_pipeline_template_by_name(
-            "this-pipeline-does-not-exist", jobmanager_api_service
+            pipeline_template_name="this-pipeline-does-not-exist",
+            _controller=jobmanager_api_service,
+            usertoken=user_header.get("usertoken"),
         )

@@ -3,15 +3,15 @@ import json
 from typing import Any
 
 import pytest
+from conftest import user_header
 from fastapi import HTTPException
 from mocks.kfp_mock_client import KfpMockClient
 from pytest_mock import MockerFixture
 
 from api.controller.jobmanager_api_controller import JobmanagerApiController
-from build.openapi_client.api.objectstore_api import ObjectstoreApi
-from build.openapi_client.model.bucket import Bucket
-from build.openapi_client.model.item import Item
-from build.openapi_client.model.json_response import JsonResponse
+from build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from build.objectstore_client.model.item import Item
+from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.apis.jobmanager_api import (
     get_all_solutions,
     get_solution,
@@ -19,6 +19,7 @@ from build.openapi_server.apis.jobmanager_api import (
     put_solution,
 )
 from build.openapi_server.models.solution import Solution
+from build.openapi_server.models.user import User
 from executor.kfp_executor import KfpExecutor
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
@@ -31,6 +32,7 @@ mock_jobmanager_controller = JobmanagerApiController(
     kfp_service=mock_kfp_service,
     solution_service=mock_solution_service,
     template_service=mock_template_service,
+    user=User(id="default", email="email", raw_token=""),
 )
 
 
@@ -83,9 +85,12 @@ async def test_get_all_solutions(mocker: MockerFixture):
         ObjectstoreApi, "get_json_object_by_name", json_objects_mock
     )
 
-    solutions = await get_all_solutions(_controller=mock_jobmanager_controller)
+    solutions = await get_all_solutions(
+        _controller=mock_jobmanager_controller,
+        usertoken=user_header.get("usertoken"),
+    )
 
-    json_objects_mock.assert_any_call("test-1", "solution.json")
+    json_objects_mock.assert_called()
     assert json_objects_mock.call_count == 2
     solution1 = Solution(
         name="test-solution-1",
@@ -114,7 +119,9 @@ async def test_get_solution(mocker: MockerFixture):
     )
 
     solution: Solution = await get_solution(
-        solution_name="solution_1", _controller=mock_jobmanager_controller
+        solution_name="solution_1",
+        _controller=mock_jobmanager_controller,
+        usertoken=user_header.get("usertoken"),
     )
 
     assert solution.name == "solution_1"
@@ -131,7 +138,9 @@ async def test_get_solution_not_found(mocker: MockerFixture):
 
     with pytest.raises(HTTPException) as e:
         await get_solution(
-            solution_name="solution_1", _controller=mock_jobmanager_controller
+            solution_name="solution_1",
+            _controller=mock_jobmanager_controller,
+            usertoken=user_header.get("usertoken"),
         )
 
     assert e.errisinstance(HTTPException)
@@ -149,6 +158,7 @@ async def test_update_solution(mocker: MockerFixture):
         solution_name="solution",
         solution=solution,
         _controller=mock_jobmanager_controller,
+        usertoken=user_header.get("usertoken"),
     )
 
     assert solution == returned_solution
@@ -178,7 +188,9 @@ async def test_post_solution(mocker: MockerFixture):
     )
 
     run_id: str = await post_solution(
-        solution=solution, _controller=mock_jobmanager_controller
+        solution=solution,
+        _controller=mock_jobmanager_controller,
+        usertoken=user_header.get("usertoken"),
     )
 
     assert run_id == 1

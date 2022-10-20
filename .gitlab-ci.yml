@@ -3,6 +3,7 @@ include:
   - local: 'gitlab/services/.gitlab-ci.frontend.yml'
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
+  - local: 'gitlab/services/.gitlab-ci.workflow-translator.yml'
   - local: 'gitlab/services/.gitlab-ci.model-manager.yml'
   - local: 'gitlab/.gitlab-ci.deploy.yml'
   - local: 'gitlab/.gitlab-ci.reset.yml'

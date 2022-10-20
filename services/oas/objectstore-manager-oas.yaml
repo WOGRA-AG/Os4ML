@@ -10,6 +10,8 @@ paths:
     get:
       summary: "get all buckets"
       operationId: getAllBuckets
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - objectstore
       responses:
@@ -26,6 +28,8 @@ paths:
     get:
       summary: "get all databags"
       operationId: getAllDatabags
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - objectstore
       responses:
@@ -45,6 +49,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/RunId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: "Successful response"
@@ -60,6 +65,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: "Successful response"
@@ -74,6 +80,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
         content:
           application/json:
@@ -89,6 +96,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         201:
           $ref: '#/components/responses/Created'
@@ -99,6 +107,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
@@ -112,6 +121,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/DatabagId'
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
         content:
           application/octet-stream:
@@ -134,6 +144,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/BucketName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         201:
           $ref: '#/components/responses/Created'
@@ -146,6 +157,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/BucketName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
@@ -159,6 +171,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -178,6 +191,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
@@ -193,6 +207,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -212,6 +227,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         307:
           description: Redirect
@@ -225,6 +241,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
@@ -238,6 +255,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
         content:
           application/octet-stream:
@@ -262,6 +280,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -278,6 +297,7 @@ paths:
         - objectstore
       parameters:
         - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -298,6 +318,10 @@ components:
       type: string
     PipelineName:
       type: string
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
     Bucket:
       type: object
       properties:
