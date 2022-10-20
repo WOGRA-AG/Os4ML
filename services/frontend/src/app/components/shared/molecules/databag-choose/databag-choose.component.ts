@@ -7,8 +7,8 @@ import {
   CreateDatabagComponent
 } from '../../organisms/create-databag/create-databag.component';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {interval, Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-databag-choose',
@@ -21,12 +21,8 @@ export class DatabagChooseComponent {
   @Input() selectedDatabag: Databag = {};
   @Output() selectedDatabagChange: EventEmitter<Databag> = new EventEmitter<Databag>();
 
-  intervalSub: Subscription;
-
-  constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.intervalSub = interval(10000).subscribe(x => {
-      router.navigate(['.'], {relativeTo: activatedRoute});
-    });
+  constructor(public dialog: MatDialog, private activatedRoute: ActivatedRoute,
+              private userFacade: UserFacade) {
   }
 
   changeSelectedDatabag(databag: Databag) {
@@ -54,7 +50,7 @@ export class DatabagChooseComponent {
       data: {component: CreateDatabagComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+      this.userFacade.refresh();
     });
   }
 }

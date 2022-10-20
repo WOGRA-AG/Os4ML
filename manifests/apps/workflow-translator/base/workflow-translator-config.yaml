@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workflow-translator-config
+data:
+  os4mlNS: 'os4ml'
+  engine: 'kubeflow'

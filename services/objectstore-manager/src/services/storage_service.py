@@ -1,15 +1,18 @@
 import json
 from typing import List
 
+from fastapi import Depends
+
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
 from repository import StorageRepository
+from repository.init_storage_service import init_repository
 
 
 class StorageService:
     def __init__(
         self,
-        storage_repository: StorageRepository,
+        storage_repository: StorageRepository = Depends(init_repository),
     ):
         self.storage = storage_repository
 

@@ -8,6 +8,7 @@ import {
 } from '../setting-databag/setting-databag.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-databags-list',
@@ -16,10 +17,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class DatabagsListComponent {
   @Input() databags: Databag[] = [];
+
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private userFacade: UserFacade,
+  ) {
   }
 
   openDatabagSettingDialog(databag: Databag) {
@@ -32,7 +34,7 @@ export class DatabagsListComponent {
       }
     });
     dialogRef.afterClosed().subscribe(() => {
-        this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+        this.userFacade.refresh();
       }
     );
   }
