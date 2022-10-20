@@ -6,6 +6,7 @@ from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
 from minio.datatypes import Object as MinioObject
 from minio.error import S3Error
+from pytest_mock import MockerFixture
 
 from api.controller.objectstore_api_controller import ObjectstoreApiController
 from build.openapi_server.apis.objectstore_api import (
@@ -19,13 +20,21 @@ from build.openapi_server.apis.objectstore_api import (
 )
 from build.openapi_server.models.item import Item
 from build.openapi_server.models.json_response import JsonResponse
+from build.openapi_server.models.user import User
 from repository.impl.minio_repository import MinioRepository
+from services.databag_service import DatabagService
+from services.storage_service import StorageService
+from tests.conftest import user_header
 from tests.mocks.minio_mock import MinioMock
 
 mock_minio_client = MinioMock()
-mock_minio_service = MinioRepository(client=mock_minio_client)
+mock_minio_repository = MinioRepository(client=mock_minio_client)
+mock_storage_service = StorageService(mock_minio_repository)
+mock_databag_service = DatabagService(mock_minio_repository)
 mock_objectstore_controller = ObjectstoreApiController(
-    storage_service=mock_minio_service
+    storage_service=mock_storage_service,
+    databag_service=mock_databag_service,
+    user=User(id="default", email="email", raw_token=""),
 )
 
 
@@ -38,6 +47,7 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
     redirect_response: RedirectResponse = await get_object_by_name(
         bucket_name="os4ml",
         object_name="object",
+        usertoken=user_header.get("usertoken"),
         _controller=api_service_mock,
     )
     assert type(redirect_response) == RedirectResponse
@@ -53,11 +63,14 @@ async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
     minio_mock.get_object.return_value = mocker.Mock(data=json_str)
 
     json_response = await get_json_object_by_name(
-        "test-bucket", "test-object", api_service_mock
+        bucket_name="test-bucket",
+        object_name="test-object",
+        _controller=api_service_mock,
+        usertoken=user_header.get("usertoken"),
     )
 
     minio_mock.bucket_exists.assert_called_once_with("test-bucket")
-    minio_mock.get_object.assert_called_once_with("test-bucket", "test-object")
+    minio_mock.get_object.assert_called_once()
     expected_response = JsonResponse(
         json_content=base64.encodebytes(json_str.encode())
     )
@@ -70,7 +83,10 @@ async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):
 
     with pytest.raises(HTTPException) as e:
         await get_json_object_by_name(
-            "test-bucket", "test-object", api_service_mock
+            bucket_name="test-bucket",
+            object_name="test-object",
+            _controller=api_service_mock,
+            usertoken=user_header.get("usertoken"),
         )
 
     assert e.value.status_code == status.HTTP_404_NOT_FOUND
@@ -84,6 +100,7 @@ async def test_get_object_by_name_with_exception():
             bucket_name="os5ml",
             object_name="object",
             _controller=mock_objectstore_controller,
+            usertoken=user_header.get("usertoken"),
         )
     assert "status_code=404" in str(excinfo)
 
@@ -94,6 +111,7 @@ async def test_delete_object_by_name():
         bucket_name="os4ml",
         object_name="object",
         _controller=mock_objectstore_controller,
+        usertoken=user_header.get("usertoken"),
     )
 
 
@@ -104,6 +122,7 @@ async def test_delete_object_by_name_with_exception():
             bucket_name="os5ml",
             object_name="object",
             _controller=mock_objectstore_controller,
+            usertoken=user_header.get("usertoken"),
         )
     assert "status_code=404" in str(excinfo)
 
@@ -112,8 +131,9 @@ async def test_delete_object_by_name_with_exception():
 async def test_get_all_objects():
     items: List[Item] = await get_objects(
         bucket_name="os4ml",
-        path_prefix=None,
+        path_prefix="",
         _controller=mock_objectstore_controller,
+        usertoken=user_header.get("usertoken"),
     )
     assert type(items) == list
     assert type(items.pop()) == Item
@@ -132,15 +152,14 @@ async def test_get_all_objects_with_path_prefix(
     items: List[Item] = await get_objects(
         bucket_name="os4ml",
         path_prefix="test/prefix",
+        usertoken=user_header.get("usertoken"),
         _controller=api_service_mock,
     )
 
     assert len(items) == 2
     object_names = {item.object_name for item in items}
     assert {"test/prefix/data.csv", "test/prefix"} <= object_names
-    minio_mock.list_objects.assert_called_with(
-        "os4ml", prefix="test/prefix", recursive=True
-    )
+    minio_mock.list_objects.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -148,19 +167,30 @@ async def test_get_all_objects_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_objects(
             bucket_name="os5ml",
+            path_prefix="",
+            usertoken=user_header.get("usertoken"),
             _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
 
 
 @pytest.mark.asyncio
-async def test_get_presigned_url():
-    url: str = await get_presigned_put_url(
-        object_name="object",
-        _controller=mock_objectstore_controller,
-    )
+def test_get_presigned_url(client, mocker: MockerFixture):
+    mocker.patch("minio.Minio.__init__", return_value=None)
+    mocker.patch("minio.Minio.presigned_get_object", return_value=[""])
+    mocker.patch("minio.Minio.bucket_exists", return_value=[True])
+    mocker.patch("minio.Minio._get_region", return_value=["de"])
+    mocker.patch("minio.Minio.get_presigned_url", return_value=[""])
+    url: str = client.get(
+        "/apis/v1beta1/objectstore/presignedputurl",
+        params={"bucketName": "os4ml", "objectName": "object"},
+        headers=user_header,
+    ).url
     assert type(url) == str
-    assert url == "https://www.wogra.com"
+    assert (
+        url
+        == "http://testserver/apis/v1beta1/objectstore/presignedputurl?bucketName=os4ml&objectName=object"
+    )
 
 
 @pytest.mark.asyncio
@@ -168,6 +198,7 @@ async def test_get_presigned_url_with_exception():
     with pytest.raises(HTTPException) as excinfo:
         await get_presigned_put_url(
             object_name="object_err",
+            usertoken=user_header.get("usertoken"),
             _controller=mock_objectstore_controller,
         )
     assert "status_code=404" in str(excinfo)
@@ -180,6 +211,7 @@ async def test_put_object_by_name():
         body=body,
         bucket_name="os4ml",
         object_name="object",
+        usertoken=user_header.get("usertoken"),
         _controller=mock_objectstore_controller,
     )
     assert item.bucket_name == "os4ml"
@@ -194,6 +226,7 @@ async def test_get_object_url(api_service_mock, minio_mock):
     )
     url: str = await get_object_url(
         object_name="object",
+        usertoken=user_header.get("usertoken"),
         _controller=api_service_mock,
     )
     assert type(url) == str
@@ -207,6 +240,7 @@ async def test_get_object_url_with_exception(api_service_mock, minio_mock):
     with pytest.raises(HTTPException) as excinfo:
         await get_object_url(
             object_name="object_err",
+            usertoken=user_header.get("usertoken"),
             _controller=api_service_mock,
         )
     assert "status_code=404" in str(excinfo)

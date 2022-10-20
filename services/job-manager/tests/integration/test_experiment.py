@@ -9,6 +9,7 @@ from build.openapi_server.apis.jobmanager_api import (
     post_experiment,
 )
 from build.openapi_server.models.experiment import Experiment
+from build.openapi_server.models.user import User
 from executor.kfp_executor import KfpExecutor
 from services.solution_service import SolutionService
 from services.template_service import TemplateService
@@ -21,6 +22,7 @@ mock_jobmanager_controller = JobmanagerApiController(
     kfp_service=mock_kfp_service,
     solution_service=mock_solution_service,
     template_service=mock_template_service,
+    user=User(id="default", email="email", raw_token=""),
 )
 
 

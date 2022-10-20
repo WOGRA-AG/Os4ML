@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: Workflow Translator
+  description: Workflow Translation Service
+  version: 1.0.0
+servers:
+  - url: 'http://workflow-translator:8000'
+paths:
+  "/apis/v1beta1/workflowtranslator/template/pipeline/{pipelineTemplateName}":
+    get:
+      summary: 'get pipeline template by name'
+      operationId: getPipelineTemplateByName
+      parameters:
+        - $ref: '#/components/parameters/PipelineTemplateName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - workflowtranslator
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+  parameters:
+    PipelineTemplateName:
+      name: pipelineTemplateName
+      in: path
+      description: Name of the PipelineTemplate
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

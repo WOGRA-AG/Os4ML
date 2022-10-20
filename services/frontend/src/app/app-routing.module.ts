@@ -5,26 +5,17 @@ import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.comp
 import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
 import {UserPageComponent} from './pages/user-page/user-page.component';
 import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
-import {DatabagResolver} from './resolver/databag.resolver';
-import {SolutionResolver} from './resolver/solution.resolver';
 
 const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPageComponent,
     runGuardsAndResolvers: 'always',
-    resolve: {
-      databags: DatabagResolver,
-      solutions: SolutionResolver
-    }
   },
   {
     path: 'databag',
     component: DatabagsPageComponent,
     runGuardsAndResolvers: 'always',
-    resolve: {
-      databags: DatabagResolver
-    }
   },
   {
     path: 'settings',

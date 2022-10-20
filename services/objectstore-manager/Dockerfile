@@ -1,4 +1,4 @@
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
+FROM python:3.10.7-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
