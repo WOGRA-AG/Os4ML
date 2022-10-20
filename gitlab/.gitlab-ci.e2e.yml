@@ -6,7 +6,7 @@ e2e:
   needs:
     - reset
   script:
-    - cd services/frontend && npm ci && npx cypress run
+    - cd services/frontend && npm ci && CYPRESS_TEST_USER=$(CYPRESS_TEST_USER) CYPRESS_TEST_PASSWORD=$(CYPRESS_TEST_PASSWORDnpx) cypress run
   artifacts:
     when: always
     paths:
