@@ -10,6 +10,8 @@ paths:
     get:
       summary: 'Get all Experiments'
       operationId: getAllExperiments
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -24,6 +26,8 @@ paths:
     post:
       summary: 'Create new Experiment'
       operationId: postExperiment
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -42,6 +46,8 @@ paths:
     get:
       summary: 'Get all pipelines'
       operationId: getAllPipelines
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -56,6 +62,8 @@ paths:
     post:
       summary: 'Create Pipeline'
       operationId: postPipeline
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -74,6 +82,8 @@ paths:
     get:
       summary: 'Get all pipeline runs'
       operationId: getAllRuns
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -91,6 +101,7 @@ paths:
       operationId: getRun
       parameters:
         - $ref: '#/components/parameters/RunId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -105,6 +116,7 @@ paths:
       operationId: deleteRun
       parameters:
         - $ref: '#/components/parameters/RunId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -117,6 +129,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ExperimentId'
         - $ref: '#/components/parameters/PipelineId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -138,6 +151,7 @@ paths:
       operationId: postTemplate
       parameters:
         - $ref: '#/components/parameters/PipelineTemplateName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -157,6 +171,8 @@ paths:
     get:
       summary: 'get all pipeline templates'
       operationId: getAllPipelineTemplates
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -175,6 +191,7 @@ paths:
       operationId: getPipelineTemplateByName
       parameters:
         - $ref: '#/components/parameters/PipelineTemplateName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -193,6 +210,7 @@ paths:
       operationId: getPipelineFileByName
       parameters:
         - $ref: '#/components/parameters/PipelineTemplateName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -207,6 +225,7 @@ paths:
       operationId: getSolution
       parameters:
         - $ref: '#/components/parameters/SolutionName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -223,6 +242,7 @@ paths:
       operationId: putSolution
       parameters:
         - $ref: '#/components/parameters/SolutionName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -242,6 +262,7 @@ paths:
       operationId: deleteSolution
       parameters:
         - $ref: '#/components/parameters/SolutionName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -256,6 +277,7 @@ paths:
       operationId: getDownloadLinkForModelOfSolution
       parameters:
         - $ref: '#/components/parameters/SolutionName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -272,6 +294,8 @@ paths:
     get:
       summary: 'get all solutions'
       operationId: getAllSolutions
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       responses:
@@ -286,6 +310,8 @@ paths:
     post:
       summary: "Create and deploy a Solution"
       operationId: postSolution
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
       requestBody:
@@ -303,6 +329,10 @@ paths:
 
 components:
   schemas:
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
     ExperimentId:
       type: string
     PipelineId:

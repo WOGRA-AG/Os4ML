@@ -1,10 +1,14 @@
-from typing import Callable, Mapping
-
 from google.cloud.storage import Client as GcsClient
 from minio import Minio
 
 from repository import GcsRepository, MinioRepository, StorageRepository
-from services import STORAGE_KEY, STORAGE_SECRET, STORAGE_SECURE, STORAGE_URL
+from services import (
+    STORAGE_BACKEND,
+    STORAGE_KEY,
+    STORAGE_SECRET,
+    STORAGE_SECURE,
+    STORAGE_URL,
+)
 
 
 def _init_minio() -> MinioRepository:
@@ -22,7 +26,13 @@ def _init_gcs() -> GcsRepository:
     return GcsRepository(client=client)
 
 
-storage_services: Mapping[str, Callable[[], StorageRepository]] = {
-    "minio": _init_minio,
-    "gcs": _init_gcs,
-}
+def init_repository() -> StorageRepository:
+    match STORAGE_BACKEND:
+        case "minio":
+            return _init_minio()
+        case "gcs":
+            return _init_gcs()
+        case _:
+            raise NotImplementedError(
+                f"Storage Service {STORAGE_BACKEND} not implemented"
+            )

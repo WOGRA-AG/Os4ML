@@ -13,7 +13,9 @@ BUCKET_NAME: str = os.getenv("OS4ML_BUCKET_NAME", default="os4ml")
 OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
 
 PIPELINE_TEMPLATES_DIR = "/pipelines/"
-# PIPELINE_TEMPLATES_DIR = "../../../templates/pipelines/"  # for local development
+# PIPELINE_TEMPLATES_DIR = (
+#     "../../../templates/pipelines/"  # for local development
+# )
 TEMPLATE_METADATA_FILE_NAME: str = "metadata.json"
 MODEL_FILE_NAME = "model.os4ml.zip"
 PIPELINE_FILE_NAME = "pipeline.yaml"

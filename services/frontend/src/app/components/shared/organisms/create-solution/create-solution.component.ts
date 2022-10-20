@@ -2,10 +2,11 @@ import {Component} from '@angular/core';
 import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, PipelineTemplate, Solution} from '../../../../../../build/openapi/jobmanager';
+import {JobmanagerService, PipelineTemplate, Solution, User} from '../../../../../../build/openapi/jobmanager';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-popup-predictions',
@@ -18,13 +19,18 @@ export class CreateSolutionComponent {
   solvers: PipelineTemplate[] = [];
   submitting = false;
   stepperStep = 0;
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>,
               private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService) {
+              private jobmanagerService: JobmanagerService,
+              private userFacade: UserFacade) {
+    this.userFacade.currentUser$.pipe().subscribe(
+      currentUser => this.user = currentUser
+    );
     this.databag = dialogRef.componentInstance.data.databag;
     this.solution = dialogRef.componentInstance.data.solution ? dialogRef.componentInstance.data.solution : {};
-    this.jobmanagerService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
+    this.jobmanagerService.getAllPipelineTemplates(this.user?.rawToken).subscribe((templates: PipelineTemplate[]) => {
         this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
         if (this.solution.solver === undefined) {
           this.solution.solver = this.solvers[0].name;
@@ -83,7 +89,7 @@ export class CreateSolutionComponent {
     this.solution.status = 'Created';
     this.solution.databagId = this.databag.databagId;
     this.solution.databagName = this.databag.databagName;
-    this.jobmanagerService.postSolution(this.solution)
+    this.jobmanagerService.postSolution(this.user?.rawToken, this.solution)
       .pipe(
         catchError(err => {
           this.submitting = false;

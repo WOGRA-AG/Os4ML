@@ -8,6 +8,8 @@ import {
   ObjectstoreService
 } from '../../../../../../build/openapi/objectstore';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
+import {User} from '../../../../../../build/openapi/jobmanager';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-setting-databag',
@@ -15,21 +17,27 @@ import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
   styleUrls: ['./setting-databag.component.scss']
 })
 export class SettingDatabagComponent {
-  databag: Databag;
+  databag: Databag = {};
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
     private objectstoreService: ObjectstoreService,
     private dialog: MatDialog,
+    private userFacade: UserFacade,
   ) {
-    this.databag = dialogRef.componentInstance.data.databag;
-    this.objectstoreService.getDatabagById(String(this.databag.databagId)).subscribe((databag: Databag) => {
-      this.databag = databag;
-    });
+    this.userFacade.currentUser$.pipe().subscribe(currentUser => {
+        this.user = currentUser;
+        this.databag = dialogRef.componentInstance.data.databag;
+        this.objectstoreService.getDatabagById(String(this.databag.databagId), currentUser.rawToken).subscribe((databag: Databag) => {
+          this.databag = databag;
+        });
+      }
+    );
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagById(String(this.databag.databagId), this.databag).subscribe(() => {
+    this.objectstoreService.putDatabagById(String(this.databag.databagId), this.user?.rawToken, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }

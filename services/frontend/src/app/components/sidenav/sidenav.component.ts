@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {UserFacade} from '../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,4 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent {
+
+  constructor(public userFacade: UserFacade) {
+  }
 }

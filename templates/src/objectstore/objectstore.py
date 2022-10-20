@@ -1,3 +1,4 @@
+from os import getenv
 from typing import BinaryIO
 
 import requests
@@ -5,6 +6,8 @@ import requests
 from build.objectstore.model.databag import Databag
 from model.error_msg_key import ErrorMsgKey
 from util.init_objectstore_client import init_objectstore_client
+
+USER_TOKEN: str = getenv("OS4ML_ACCESS_TOKEN", "")
 
 
 def download_file_from_databag(
@@ -23,35 +26,47 @@ def download_file_from_databag(
 
 def download_databag_by_id(databag_id: str, os4ml_namespace: str) -> Databag:
     objectstore = init_objectstore_client(os4ml_namespace)
-    return objectstore.get_databag_by_id(databag_id=databag_id)
+    return objectstore.get_databag_by_id(
+        databag_id=databag_id, usertoken=USER_TOKEN
+    )
 
 
 def put_databag(databag: Databag, os4ml_namespace: str):
     objectstore = init_objectstore_client(os4ml_namespace)
     objectstore.put_databag_by_id(
-        databag_id=databag.databag_id, databag=databag
+        databag_id=databag.databag_id, databag=databag, usertoken=USER_TOKEN
     )
 
 
 def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
     objectstore = init_objectstore_client(os4ml_namespace)
-    databag = objectstore.get_databag_by_id(databag_id=databag_id)
+    databag = objectstore.get_databag_by_id(
+        databag_id=databag_id, usertoken=USER_TOKEN
+    )
     databag.status = status
-    objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
+    objectstore.put_databag_by_id(
+        databag_id=databag_id, databag=databag, usertoken=USER_TOKEN
+    )
 
 
 def error_databag_status_update(
     databag_id: str, error_msg_key: ErrorMsgKey, os4ml_namespace: str
 ):
     objectstore = init_objectstore_client(os4ml_namespace)
-    databag = objectstore.get_databag_by_id(databag_id=databag_id)
+    databag = objectstore.get_databag_by_id(
+        databag_id=databag_id, usertoken=USER_TOKEN
+    )
     databag.status = "error"
     databag.error_msg_key = error_msg_key.value
-    objectstore.put_databag_by_id(databag_id=databag_id, databag=databag)
+    objectstore.put_databag_by_id(
+        databag_id=databag_id, databag=databag, usertoken=USER_TOKEN
+    )
 
 
 def download_file(url: str, output_file: BinaryIO, chunk_size=128) -> None:
-    response = requests.get(url, stream=True)
+    response = requests.get(
+        url, stream=True, headers={"usertoken": USER_TOKEN}
+    )
     for chunk in response.iter_content(chunk_size=chunk_size):
         output_file.write(chunk)
 
@@ -72,7 +87,7 @@ def upload_file_to_databag(
 ) -> None:
     objectstore = init_objectstore_client(os4ml_namespace)
     objectstore.put_dataset_by_databag_id(
-        databag.databag_id, file_name, body=file
+        databag.databag_id, file_name, body=file, usertoken=USER_TOKEN
     )
 
 

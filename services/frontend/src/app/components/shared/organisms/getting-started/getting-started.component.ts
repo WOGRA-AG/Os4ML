@@ -7,7 +7,7 @@ import {
   JobmanagerService,
   PipelineTemplate,
   RunParams,
-  Solution
+  Solution, User
 } from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import {PipelineStatus} from '../../../../models/pipeline-status';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -43,15 +44,21 @@ export class GettingStartedComponent {
   solution: Solution = {};
   solvers: PipelineTemplate[] = [];
   submitting = false;
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService, private http: HttpClient) {
-    this.jobmanagerService.getAllPipelineTemplates().subscribe((templates: PipelineTemplate[]) => {
-        this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
-        if (this.solution.solver === undefined) {
-          this.solution.solver = this.solvers[0].name;
-        }
+              private jobmanagerService: JobmanagerService, private http: HttpClient,
+              private userFacade: UserFacade) {
+    this.userFacade.currentUser$.pipe().subscribe(currentUser => {
+        this.user = currentUser;
+        this.jobmanagerService.getAllPipelineTemplates(currentUser.rawToken).subscribe((templates: PipelineTemplate[]) => {
+            this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
+            if (this.solution.solver === undefined) {
+              this.solution.solver = this.solvers[0].name;
+            }
+          }
+        );
       }
     );
   }
@@ -76,26 +83,26 @@ export class GettingStartedComponent {
         fileName: this.file.name ? this.file.name : this.fileUrl
       };
       try {
-        await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
+        await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid, this.user?.rawToken));
         if (this.file.name) {
           await firstValueFrom(
-            this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
+            this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.user?.rawToken, this.file)
           );
         }
         this.runId = await firstValueFrom(
-          this.jobmanagerService.postTemplate('init-databag-sniffle-upload', runParams)
+          this.jobmanagerService.postTemplate('init-databag-sniffle-upload', this.user?.rawToken, runParams)
         );
         this.pipelineStatus = this.translate.instant('message.pipeline.default');
         await this.retrievePipelineStatus(this.runId);
-        this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
+        this.objectstoreService.getDatabagById(this.uuid, this.user?.rawToken).subscribe((databag: Databag) => {
           this.databag = databag;
           this.databag.databagName = this.databagName;
-          this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
+          this.objectstoreService.putDatabagById(this.uuid, this.user?.rawToken, this.databag).subscribe(() => {
           });
         });
       } catch (err: any) {
         this.matSnackBar.open(err, '', {duration: 3000});
-        await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
+        await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken));
       } finally {
         this.running = false;
         this.pipelineStatus = null;
@@ -114,13 +121,13 @@ export class GettingStartedComponent {
       this.solution.status = 'Created';
       this.solution.databagId = this.databag.databagId;
       this.solution.databagName = this.databag.databagName;
-      this.jobmanagerService.postSolution(this.solution)
+      this.jobmanagerService.postSolution(this.user?.rawToken, this.solution)
         .pipe(
           catchError(err => {
             this.submitting = false;
             return of('');
           })
-        ).subscribe( runId => {
+        ).subscribe(runId => {
         this.solution.runId = runId;
         this.submitting = false;
         this.dialogRef.close();
@@ -134,7 +141,7 @@ export class GettingStartedComponent {
 
   back(stepper: MatStepper): void {
     if (this.stepperStep === 1) {
-      this.objectstoreService.deleteDatabag(this.uuid);
+      this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken);
       this.uuid = uuidv4();
       this.solution = {};
       this.solvers = [];
@@ -144,7 +151,7 @@ export class GettingStartedComponent {
   }
 
   close(): void {
-    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
+    this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken).subscribe(() => {
       this.dialogRef.close();
     });
   }
@@ -153,14 +160,13 @@ export class GettingStartedComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.objectstoreService.deleteDatabag(this.uuid);
+    return this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken);
   }
 
   selectPrediction(columnName: string | undefined) {
     if (!columnName) {
       return;
-    }
-    else {
+    } else {
       this.solution = {};
     }
 
@@ -181,10 +187,10 @@ export class GettingStartedComponent {
   retrievePipelineStatus(runId: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
-        this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
+        this.jobmanagerService.getRun(runId, this.user?.rawToken).pipe().subscribe(run => {
           switch (run.status) {
             case PipelineStatus.running:
-              this.objectstoreService.getDatabagByRunId(runId)
+              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
                 .pipe(
                   catchError(err => of({} as Databag)
                   )
@@ -197,7 +203,7 @@ export class GettingStartedComponent {
               break;
             case PipelineStatus.failed:
               clearInterval(this.intervalID);
-              this.objectstoreService.getDatabagByRunId(runId)
+              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
                 .pipe(
                   catchError(err => of({} as Databag)),
                   map(databag => {
@@ -230,19 +236,18 @@ export class GettingStartedComponent {
     if (this.submitting) {
       return false;
     }
-    if (this.stepperStep===0){
+    if (this.stepperStep === 0) {
       if (file.name && ((dbUrl?.valid && dbUrl?.value?.length > 0))) {
         this.pipelineStatus = 'Url is ignored!';
         return false;
-      }
-      else {
+      } else {
         return !(this.databagName !== '' && (file.name || ((dbUrl?.valid && dbUrl?.value?.length > 0))));
       }
     }
-    if (this.stepperStep===1){
+    if (this.stepperStep === 1) {
       return !(this.solution.outputFields);
     }
-    if (this.stepperStep===2){
+    if (this.stepperStep === 2) {
       return !(validSolutionName && this.solution.solver);
     }
     return false;

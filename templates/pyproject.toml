@@ -10,8 +10,8 @@ authors = ["WOGRA AG <info@wogra.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-kfp = "^1.8.11"
 pandas = "^1.4.1"
+kfp = "^1.8.14"
 
 [tool.poetry.dev-dependencies]
 coverage = { version = "^5.3", extras = ["toml"] }

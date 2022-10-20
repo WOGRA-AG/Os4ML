@@ -1,0 +1,10 @@
+.gitignore
+.flake8
+openapi.yaml
+Dockerfile
+docker-compose.yaml
+pyproject.toml
+poetry.lock
+README.md
+requirements.txt
+setup.cfg
