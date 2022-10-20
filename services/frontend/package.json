@@ -6,6 +6,7 @@
     "generate:base": "openapi-generator-cli generate -g typescript-angular --generator-key v3.0 --additional-properties=ngVersion=13.0.0",
     "generate:objectstore": "npm run generate:base -- -i ../objectstore-manager/oas/objectstore-manager-oas.yaml -o ./build/openapi/objectstore",
     "generate:jobmanager": "npm run generate:base -- -i ../job-manager/oas/job-manager-oas.yaml -o ./build/openapi/jobmanager",
+    "generate:modelmanager": "npm run generate:base -- -i ../oas/model-manager-oas.yaml -o build/openapi/modelmanager",
     "generate:api": "npm run generate:objectstore && npm run generate:jobmanager",
     "prestart": "npm run generate:api",
     "ng": "ng",
