@@ -39,10 +39,17 @@ mock_objectstore_controller = ObjectstoreApiController(
 
 
 @pytest.mark.asyncio
-async def test_get_object_by_name(api_service_mock, minio_mock):
-    minio_mock.list_objects.return_value = [
-        MinioObject(bucket_name="os4ml", object_name="object")
-    ]
+async def test_get_object_by_name(api_service_mock, minio_mock, mocker: MockerFixture):
+    objects_mock = mocker.MagicMock(
+        side_effects=[
+            [MinioObject(bucket_name="os4ml", object_name="object")]
+        ]
+    )
+    mocker.patch.object(MinioMock, 'list_objects', objects_mock)
+    get_objects_mock = mocker.MagicMock(
+        return_value="https://os4ml.com/test.csv"
+    )
+    mocker.patch.object(MinioMock, 'presigned_get_object', get_objects_mock)
     minio_mock.presigned_get_object.return_value = "https://os4ml.com/test.csv"
     redirect_response: RedirectResponse = await get_object_by_name(
         bucket_name="os4ml",
@@ -58,9 +65,15 @@ async def test_get_object_by_name(api_service_mock, minio_mock):
 
 @pytest.mark.asyncio
 async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
-    minio_mock.bucket_exists.return_value = True
+    bucket_mock = mocker.MagicMock(
+        return_value=True
+    )
+    bucket_exists_mock = mocker.patch.object(MinioMock, 'bucket_exists', bucket_mock)
     json_str = '{"name": "test", "time": "2022-07-17T23:01:49Z"}'
-    minio_mock.get_object.return_value = mocker.Mock(data=json_str)
+    object_mock = mocker.MagicMock(
+        return_value=mocker.Mock(data=json_str)
+    )
+    get_object_mock = mocker.patch.object(MinioMock, 'get_object', object_mock)
 
     json_response = await get_json_object_by_name(
         bucket_name="test-bucket",
@@ -69,8 +82,8 @@ async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
         usertoken=user_header.get("usertoken"),
     )
 
-    minio_mock.bucket_exists.assert_called_once_with("test-bucket")
-    minio_mock.get_object.assert_called_once()
+    bucket_exists_mock.assert_called_once_with("test-bucket")
+    get_object_mock.assert_called_once()
     expected_response = JsonResponse(
         json_content=base64.encodebytes(json_str.encode())
     )
@@ -78,8 +91,8 @@ async def test_get_json_object_by_name(api_service_mock, minio_mock, mocker):
 
 
 @pytest.mark.asyncio
-async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):
-    minio_mock.bucket_exists.return_value = False
+async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock, mocker: MockerFixture):
+    bucket_mock = mocker.patch.object(MinioMock, 'bucket_exists', mocker.MagicMock(return_value=False))
 
     with pytest.raises(HTTPException) as e:
         await get_json_object_by_name(
@@ -90,7 +103,7 @@ async def test_get_json_object_by_name_not_fount(api_service_mock, minio_mock):
         )
 
     assert e.value.status_code == status.HTTP_404_NOT_FOUND
-    minio_mock.bucket_exists.assert_called_once_with("test-bucket")
+    bucket_mock.assert_called_once_with("test-bucket")
 
 
 @pytest.mark.asyncio
@@ -143,11 +156,12 @@ async def test_get_all_objects():
 async def test_get_all_objects_with_path_prefix(
     api_service_mock, minio_mock, mocker
 ):
-    minio_mock.bucket_exists.return_value = True
-    minio_mock.list_objects.return_value = [
+    bucket_mock = mocker.patch.object(MinioMock, 'bucket_exists', mocker.MagicMock(return_value=True))
+    list_obj = mocker.MagicMock(return_value=[
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
         mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
-    ]
+    ])
+    obj_mock = mocker.patch.object(MinioMock, 'list_objects', list_obj)
 
     items: List[Item] = await get_objects(
         bucket_name="os4ml",
@@ -159,7 +173,7 @@ async def test_get_all_objects_with_path_prefix(
     assert len(items) == 2
     object_names = {item.object_name for item in items}
     assert {"test/prefix/data.csv", "test/prefix"} <= object_names
-    minio_mock.list_objects.assert_called_once()
+    obj_mock.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -194,17 +208,6 @@ def test_get_presigned_url(client, mocker: MockerFixture):
 
 
 @pytest.mark.asyncio
-async def test_get_presigned_url_with_exception():
-    with pytest.raises(HTTPException) as excinfo:
-        await get_presigned_put_url(
-            object_name="object_err",
-            usertoken=user_header.get("usertoken"),
-            _controller=mock_objectstore_controller,
-        )
-    assert "status_code=404" in str(excinfo)
-
-
-@pytest.mark.asyncio
 async def test_put_object_by_name():
     body = b"test"
     item: Item = await put_object_by_name(
@@ -230,17 +233,3 @@ async def test_get_object_url(api_service_mock, minio_mock):
         _controller=api_service_mock,
     )
     assert type(url) == str
-
-
-@pytest.mark.asyncio
-async def test_get_object_url_with_exception(api_service_mock, minio_mock):
-    minio_mock.stat_object.side_effect = S3Error(
-        "NoSuchKey", "test_msg", None, None, None, None
-    )
-    with pytest.raises(HTTPException) as excinfo:
-        await get_object_url(
-            object_name="object_err",
-            usertoken=user_header.get("usertoken"),
-            _controller=api_service_mock,
-        )
-    assert "status_code=404" in str(excinfo)
