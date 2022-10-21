@@ -4,9 +4,9 @@ info:
   description: Model Manager
   version: 1.0.0
 servers:
-  - url: 'http://model-manager.os4ml.svc.cluster.local:8000'
+  - url: 'http://modelmanager.os4ml.svc.cluster.local:8000'
 paths:
-  "/apis/v1beta1/model-manager/databags":
+  "/apis/v1beta1/modelmanager/databags":
     get:
       summary: "get databags"
       operationId: getDatabags
@@ -36,7 +36,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Databag'
 
-  "/apis/v1beta1/model-manager/databags/{databagId}":
+  "/apis/v1beta1/modelmanager/databags/{databagId}":
     get:
       summary: "get databag by id"
       operationId: getDatabagById
@@ -81,7 +81,7 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/databags/{databagId}/dataset":
+  "/apis/v1beta1/modelmanager/databags/{databagId}/dataset":
     put:
       summary: "upload dataset"
       operationId: uploadDataset
@@ -100,7 +100,7 @@ paths:
         201:
           description: Created
 
-  "/apis/v1beta1/model-manager/solvers":
+  "/apis/v1beta1/modelmanager/solvers":
     get:
       summary: 'get solvers'
       operationId: getSolvers

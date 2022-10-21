@@ -6,22 +6,6 @@ info:
 servers:
   - url: 'http://model-manager.os4ml.svc.cluster.local:8000'
 paths:
-  "/apis/v1beta1/model-manager/solvers":
-    get:
-      summary: 'get solvers'
-      operationId: getSolvers
-      tags:
-        - modelmanager
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solver'
-
   "/apis/v1beta1/model-manager/databags":
     get:
       summary: "get databags"
@@ -52,69 +36,85 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Databag'
 
-"/apis/v1beta1/model-manager/databags/{databagId}":
-  get:
-    summary: "get databag by id"
-    operationId: getDatabagById
-    tags:
-      - modelmanager
-    parameters:
-      - $ref: '#/components/parameters/DatabagId'
-    responses:
-      200:
-        description: OK
+  "/apis/v1beta1/model-manager/databags/{databagId}":
+    get:
+      summary: "get databag by id"
+      operationId: getDatabagById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Databag'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "update databag"
+      operationId: putDatabagById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+      requestBody:
         content:
           application/json:
             schema:
               $ref: './shared-oas.yaml#/components/schemas/Databag'
-      404:
-        $ref: '#/components/responses/NotFound'
-  put:
-    summary: "update databag"
-    operationId: putDatabagById
-    tags:
-      - modelmanager
-    parameters:
-      - $ref: '#/components/parameters/DatabagId'
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: './shared-oas.yaml#/components/schemas/Databag'
-    responses:
-      201:
-        $ref: '#/components/responses/DatabagCreated'
-      404:
-        $ref: '#/components/responses/NotFound'
-  delete:
-    summary: "delete Databag"
-    operationId: deleteDatabagById
-    tags:
-      - modelmanager
-    parameters:
-      - $ref: '#/components/parameters/DatabagId'
-    responses:
-      204:
-        $ref: '#/components/responses/Deleted'
+      responses:
+        201:
+          $ref: '#/components/responses/DatabagCreated'
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: "delete Databag"
+      operationId: deleteDatabagById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
 
-"/apis/v1beta1/model-manager/databags/{databagId}/dataset":
-  put:
-    summary: "upload dataset"
-    operationId: uploadDataset
-    tags:
-      - modelmanager
-    parameters:
-      - $ref: '#/components/parameters/DatabagId'
-      - $ref: './shared-oas.yaml#/components/parameters/User'
-    requestBody:
-      content:
-        application/octet-stream:
-          schema:
-            type: string
-            format: binary
-    responses:
-      201:
-        description: Created
+  "/apis/v1beta1/model-manager/databags/{databagId}/dataset":
+    put:
+      summary: "upload dataset"
+      operationId: uploadDataset
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Created
+
+  "/apis/v1beta1/model-manager/solvers":
+    get:
+      summary: 'get solvers'
+      operationId: getSolvers
+      tags:
+        - modelmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Solver'
 
 #  "/solvers/{solverName}":
 #    get:

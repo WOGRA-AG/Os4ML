@@ -1,0 +1,208 @@
+openapi: 3.0.1
+info:
+  title: Os4ml Objectstore Manager Api
+  description: Os4ml Objectstore Manager
+  version: 0.0.1
+servers:
+  - url: 'http://objectstore-manager.os4ml.svc.cluster.local:8000'
+paths:
+  "/apis/v1beta1/objectstore/objects":
+    get:
+      summary: 'get specific Object'
+      operationId: getObjectByName
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        307:
+          description: Redirect
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: 'put Object to Bucket'
+      operationId: putObjectByName
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectName'
+        404:
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: 'delete specific Object from Bucket'
+      operationId: deleteObjectByName
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
+  "/apis/v1beta1/objectstore/objects/prefix":
+    get:
+      summary: "get objects with the specified path prefix"
+      operationId: getObjectsWithPrefix
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/PathPrefix'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ObjectName'
+    delete:
+      summary: "delete all objects with the specified path prefix"
+      operationId: deleteObjectsWithPrefix
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/PathPrefix'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
+  "/apis/v1beta1/objectstore/objects/json":
+    get:
+      summary: 'get specific json file from bucket'
+      operationId: getJsonObjectByName
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/JsonResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/objects/presignedgeturl":
+    get:
+      summary: "get presigned get url"
+      operationId: getPresignedGetUrl
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Url'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  "/apis/v1beta1/objectstore/object/presignedputurl":
+    get:
+      summary: 'get presigned put url'
+      operationId: getPresignedPutUrl
+      tags:
+        - objectstore
+      parameters:
+        - $ref: '#/components/parameters/ObjectName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Url'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+    Url:
+      type: string
+    ObjectName:
+      type: string
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
+
+  parameters:
+    ObjectName:
+      name: objectName
+      in: query
+      description: Name of Object
+      required: true
+      schema:
+        $ref: '#/components/schemas/ObjectName'
+    PathPrefix:
+      name: pathPrefix
+      in: query
+      description: Prefix of the paths of the objects
+      required: false
+      schema:
+        type: string
+        default: ""
+
+  responses:
+    Created:
+      description: New resource created
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/BucketName"
+    Deleted:
+      description: The specified resource was deleted
+    Updated:
+      description: The specified resource was updated
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyMismatch:
+      description: The provided request body has the wrong format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RequestBodyInvalid:
+      description: The content of the request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
