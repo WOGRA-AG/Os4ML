@@ -20,6 +20,28 @@ components:
       type: string
     DatabagId:
       type: string
+    Solver:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string
     Solution:
       properties:
         name:
@@ -98,18 +120,6 @@ components:
         runId:
           type: string
           nullable: true
-    PipelineTemplate:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-        fileUrl:
-          type: string
     JsonResponse:
       properties:
         jsonContent:

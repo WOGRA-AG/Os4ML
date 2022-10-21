@@ -337,8 +337,6 @@ components:
       type: string
     PipelineId:
       type: string
-    ArtifactId:
-      type: string
     Experiment:
       description: Experiment Object
       type: object
