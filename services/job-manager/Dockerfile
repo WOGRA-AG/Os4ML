@@ -40,11 +40,20 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-RUN cd src && bash /usr/local/bin/docker-entrypoint.sh generate \
+WORKDIR /usr/app/src
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i ../oas/objectstore-manager-oas.yaml \
 -t ../oas/templates_client \
 -g python \
---package-name build.openapi_client \
+--package-name build.objectstore_client \
+-o . \
+--global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+RUN bash /usr/local/bin/docker-entrypoint.sh generate \
+-i ../oas/workflow-translator-oas.yaml \
+-t ../oas/templates_client \
+-g python \
+--package-name build.translator_client \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 

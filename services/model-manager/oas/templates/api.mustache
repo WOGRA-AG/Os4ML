@@ -1,0 +1,70 @@
+# coding: utf-8
+
+from typing import Dict, List
+
+from fastapi import (
+    APIRouter,
+    Body,
+    Cookie,
+    Depends,
+    Form,
+    Header,
+    Path,
+    Query,
+    Response,
+    Security,
+    status,
+)
+
+from {{modelPackage}}.extra_models import TokenModel
+{{#imports}}
+{{import}}
+{{/imports}}
+{{#securityImports.0}}from {{packageName}}.security_api import {{#securityImports}}get_token_{{.}}{{^-last}}, {{/-last}}{{/securityImports}}{{/securityImports.0}}
+
+from api.controller.{{classFilename}}_controller import {{classname}}Controller
+
+router = APIRouter(prefix="")
+
+
+{{#operations}}
+{{#operation}}
+@router.{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}(
+    "{{path}}",
+    responses={
+        {{#responses}}
+        {{code}}: {{=<% %>=}}{<%#dataType%>"model": <%dataType%>, "description": "<%message%>"<%/dataType%><%^dataType%>"description": "<%message%>"<%/dataType%>}<%={{ }}=%>,
+        {{/responses}}
+    },
+    tags=[{{#tags}}"{{name}}"{{^-last}},{{/-last}}{{/tags}}],
+    {{#summary}}
+    summary="{{summary}}",
+    {{/summary}}
+    {{#description}}
+    description = "{{description}}",
+    {{/description}}
+)
+async def {{operationId}}(
+    {{#allParams}}
+    {{#isFormParam}}{{paramName}}: {{dataType}} = Form(None, description="{{description}}"){{/isFormParam}}{{#isQueryParam}}{{paramName}}: {{dataType}} = Query(None, description="{{description}}", alias="{{baseName}}"){{/isQueryParam}}{{#isPathParam}}{{paramName}}: {{dataType}} = Path(None, description="{{description}}", alias="{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}"){{/isPathParam}}{{#isHeaderParam}}{{paramName}}: {{dataType}} = Header(None, description="{{description}}"){{/isHeaderParam}}{{#isCookieParam}}{{paramName}} = Cookie(None, description="{{description}}"){{/isCookieParam}}{{#isBodyParam}}{{paramName}}: {{#isFile}}bytes{{/isFile}}{{^isFile}}{{dataType}}{{/isFile}} = Body(None, description="{{description}}"){{/isBodyParam}},
+    {{/allParams}}
+    _controller: {{classname}}Controller = Depends({{classname}}Controller),
+    {{#hasAuthMethods}}
+    {{#authMethods}}
+    token_{{name}}: TokenModel = Security(
+        get_token_{{name}}{{#isOAuth}}, scopes=[{{#scopes}}"{{scope}}"{{^-last}}, {{/-last}}{{/scopes}}]{{/isOAuth}}
+    ),
+    {{/authMethods}}
+    {{/hasAuthMethods}}
+) -> {{#returnType}}{{.}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    return _controller.{{operationId}}(
+    {{#allParams}}
+        {{#isFormParam}}{{paramName}}={{paramName}}{{/isFormParam}}{{#isQueryParam}}{{paramName}}={{paramName}}{{/isQueryParam}}{{#isPathParam}}{{paramName}}={{paramName}}{{/isPathParam}}{{#isHeaderParam}}{{paramName}}={{paramName}}{{/isHeaderParam}}{{#isCookieParam}}{{paramName}}={{paramName}}{{/isCookieParam}}{{#isBodyParam}}{{paramName}}={{paramName}}{{/isBodyParam}},
+    {{/allParams}}
+    )
+{{^-last}}
+
+
+{{/-last}}
+{{/operation}}
+{{/operations}}

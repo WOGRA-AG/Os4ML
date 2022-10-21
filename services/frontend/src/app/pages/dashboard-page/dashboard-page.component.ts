@@ -1,9 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
 import {
-  Databag,
+  Databag, ObjectstoreService,
 } from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
@@ -11,10 +10,11 @@ import {
 import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
-import {Solution} from '../../../../build/openapi/jobmanager';
+import {JobmanagerService, Solution, User} from '../../../../build/openapi/jobmanager';
 import {
   CreateSolutionComponent
 } from '../../components/shared/organisms/create-solution/create-solution.component';
+import {UserFacade} from '../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-main-page',
@@ -26,19 +26,28 @@ export class DashboardPageComponent implements OnDestroy {
   solutions: Solution[] = [];
   selectedDatabag: Databag = {};
   intervalSub: Subscription;
+  userSub: Subscription;
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public userFacade: UserFacade,
+    public objectstore: ObjectstoreService,
+    public jobmanager: JobmanagerService,
   ) {
     this.intervalSub = interval(10000).subscribe(x => {
-      router.navigate(['.'], {relativeTo: activatedRoute});
+      this.userFacade.refresh();
     });
-    activatedRoute.data.subscribe(data => {
-      this.databags = data['databags'];
-      this.solutions = data['solutions'];
-    });
+    this.userSub = this.userFacade.currentUser$.pipe().subscribe(currentUser => {
+        this.user = currentUser;
+        this.objectstore.getAllDatabags(currentUser.rawToken).pipe().subscribe(
+          databags => this.databags = databags
+        );
+        this.jobmanager.getAllSolutions(currentUser.rawToken).pipe().subscribe(
+          solutions => this.solutions = solutions
+        );
+      }
+    );
   }
 
   addDatabag() {
@@ -46,7 +55,7 @@ export class DashboardPageComponent implements OnDestroy {
       data: {component: CreateDatabagComponent}
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+      this.userFacade.refresh();
     });
   }
 
@@ -69,5 +78,6 @@ export class DashboardPageComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.intervalSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }

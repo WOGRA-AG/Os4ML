@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, Solution} from '../../../../../../build/openapi/jobmanager';
+import {JobmanagerService, Solution, User} from '../../../../../../build/openapi/jobmanager';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-setting-solution',
@@ -13,14 +14,19 @@ export class SettingSolutionComponent {
   solution: Solution;
   solutionName: string;
   deleting = false;
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
     private dialog: MatDialog,
     private jobmanagerService: JobmanagerService,
+    private userFacade: UserFacade,
     ) {
     this.solution = dialogRef.componentInstance.data.solution;
     this.solutionName = this.trimSolutionName(this.solution.name);
+    this.userFacade.currentUser$.pipe().subscribe(
+      currentUser => this.user = currentUser
+    );
   }
 
   trimSolutionName(name: string | undefined): string {
@@ -38,7 +44,7 @@ export class SettingSolutionComponent {
   update() {
     const oldName: string = this.solution.name || '';
     this.solution.name = oldName.replace(this.trimSolutionName(oldName), this.solutionName);
-    this.jobmanagerService.putSolution(oldName, this.solution).subscribe(() => {
+    this.jobmanagerService.putSolution(oldName, this.user?.rawToken, this.solution).subscribe(() => {
       this.dialogRef.close('updated');
     });
   }
@@ -56,7 +62,7 @@ export class SettingSolutionComponent {
 
   download() {
     if (this.solution.name) {
-      this.jobmanagerService.getDownloadLinkForModelOfSolution(this.solution.name).subscribe(url => {
+      this.jobmanagerService.getDownloadLinkForModelOfSolution(this.solution.name, this.user?.rawToken).subscribe(url => {
         const link = document.createElement('a');
         link.href = url;
         link.toggleAttribute('download');

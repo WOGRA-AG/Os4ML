@@ -1,8 +1,9 @@
 import json
 import pathlib
 import uuid
-from typing import List
+from typing import Dict, List
 
+import yaml
 from fastapi import HTTPException
 
 from build.openapi_server.models.create_pipeline import CreatePipeline
@@ -10,6 +11,9 @@ from build.openapi_server.models.create_run import CreateRun
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.pipeline_template import PipelineTemplate
 from build.openapi_server.models.run_params import RunParams
+from build.translator_client.api.workflowtranslator_api import (
+    WorkflowtranslatorApi,
+)
 from executor.kfp_executor import KfpExecutor
 from services import (
     PIPELINE_FILE_NAME,
@@ -23,16 +27,26 @@ class TemplateService:
     def __init__(self, kfp_client=None):
         self.kfp_service = KfpExecutor(client=kfp_client)
         self.objectstore = init_objectstore_api()
+        self.workflowtranslator = WorkflowtranslatorApi()
+        self.pipeline_templates_dir = pathlib.Path(PIPELINE_TEMPLATES_DIR)
+        self.pipeline_file_name = PIPELINE_FILE_NAME
+        self.template_metadata_file_name = TEMPLATE_METADATA_FILE_NAME
 
     def run_pipeline_template(
-        self, pipeline_name: str, params: RunParams
+        self,
+        pipeline_name: str,
+        params: RunParams,
+        user_token: str,
+        user_id: str,
     ) -> str:
         name = f"{uuid.uuid4()}_{pipeline_name}"
 
         experiment = Experiment(name=name, description=name)
         exp_id: str = self.kfp_service.create_experiment(experiment)
 
-        pipe_file_path = self.get_pipeline_file_path(pipeline_name)
+        pipe_file_path = self.get_pipeline_file_path(
+            pipeline_name, user_token=user_token, user_id=user_id
+        )
         pipeline = CreatePipeline(
             name=name, description=name, config_url=pipe_file_path
         )
@@ -65,30 +79,33 @@ class TemplateService:
             )
         return next(iter(pipeline_templates_with_name))
 
-    def get_pipeline_file_path(self, pipeline_template_name: str) -> str:
-        for pipeline_dir in self._iter_pipeline_dirs():
-            pipeline_template = self._create_pipeline_template(pipeline_dir)
-            if (
-                pipeline_template is not None
-                and pipeline_template.name == pipeline_template_name
-            ):
-                return str(pipeline_dir / PIPELINE_FILE_NAME)
-        raise ValueError(
-            f"No pipeline file for pipeline with name {pipeline_template_name} found"
+    def get_pipeline_file_path(
+        self, pipeline_template_name: str, user_token: str, user_id: str
+    ) -> str:
+        pipeline_file: Dict[
+            str, object
+        ] = self.workflowtranslator.get_pipeline_template_by_name(
+            pipeline_template_name, usertoken=user_token
         )
+        tmp_pipeline_file = (
+            self.pipeline_templates_dir
+            / f"{user_id}_{self.pipeline_file_name}"
+        )
+        with open(tmp_pipeline_file, "w") as f:
+            yaml.safe_dump(pipeline_file, f)
+            return f.name
 
     def _iter_pipeline_dirs(self):
-        pipeline_templates_dir = pathlib.Path(PIPELINE_TEMPLATES_DIR)
         return (
             pipeline_dir
-            for pipeline_dir in pipeline_templates_dir.iterdir()
+            for pipeline_dir in self.pipeline_templates_dir.iterdir()
             if pipeline_dir.is_dir()
         )
 
     def _create_pipeline_template(
         self, pipeline_dir: pathlib.Path
     ) -> PipelineTemplate:
-        metadata_file_name = pipeline_dir / TEMPLATE_METADATA_FILE_NAME
+        metadata_file_name = pipeline_dir / self.template_metadata_file_name
         try:
             with open(metadata_file_name) as metadata_file:
                 metadata = json.load(metadata_file)

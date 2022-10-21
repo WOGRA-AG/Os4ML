@@ -5,7 +5,7 @@ import {
   Databag,
   ObjectstoreService
 } from '../../../../../../build/openapi/objectstore';
-import {JobmanagerService, RunParams} from '../../../../../../build/openapi/jobmanager';
+import {JobmanagerService, RunParams, User} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
@@ -13,8 +13,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, map, mergeMap, Observable, of} from 'rxjs';
 import {PipelineStatus} from '../../../../models/pipeline-status';
-import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -33,15 +33,20 @@ export class CreateDatabagComponent {
   pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
+  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService, private http: HttpClient) {}
+              private jobmanagerService: JobmanagerService, private userFacade: UserFacade) {
+    userFacade.currentUser$.pipe().subscribe(
+      currentUser => this.user = currentUser
+    );
+  }
 
   async nextClick(stepper: MatStepper): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
-      this.translate.get('error.no_dataset').subscribe((res: string) => {
-        this.translate.get('error.confirm').subscribe((conf: string) => {
+      this.translate.get('message.no_dataset').subscribe((res: string) => {
+        this.translate.get('action.confirm').subscribe((conf: string) => {
           this.matSnackBar.open(res, conf, {duration: 3000});
         });
       });
@@ -56,23 +61,23 @@ export class CreateDatabagComponent {
       fileName: this.file.name ? this.file.name : this.fileUrl
     };
     try {
-      await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid));
+      await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid, this.user?.rawToken));
       if (this.file.name) {
         await firstValueFrom(
-          this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.file)
+          this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.user?.rawToken, this.file)
         );
       }
       this.runId = await firstValueFrom(
-        this.jobmanagerService.postTemplate('databag', runParams)
+        this.jobmanagerService.postTemplate('databag',this.user?.rawToken, runParams,)
       );
       this.pipelineStatus = this.translate.instant('message.pipeline.default');
       await this.retrievePipelineStatus(this.runId);
-      this.objectstoreService.getDatabagById(this.uuid).subscribe((databag: Databag) => {
+      this.objectstoreService.getDatabagById(this.uuid, this.user?.rawToken).subscribe((databag: Databag) => {
         this.databag = databag;
       });
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
-      await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid));
+      await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken));
     } finally {
       this.running = false;
       this.pipelineStatus = null;
@@ -85,16 +90,16 @@ export class CreateDatabagComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.objectstoreService.deleteDatabag(this.uuid);
+    return this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken);
   }
 
   retrievePipelineStatus(runId: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       this.intervalID = setInterval(() => {
-        this.jobmanagerService.getRun(runId).pipe().subscribe(run => {
+        this.jobmanagerService.getRun(runId, this.user?.rawToken).pipe().subscribe(run => {
           switch (run.status) {
             case PipelineStatus.running:
-              this.objectstoreService.getDatabagByRunId(runId)
+              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
                 .pipe(
                   catchError(err => of({} as Databag)
                   )
@@ -107,14 +112,14 @@ export class CreateDatabagComponent {
               break;
             case PipelineStatus.failed:
               clearInterval(this.intervalID);
-              this.objectstoreService.getDatabagByRunId(runId)
+              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
                 .pipe(
                   catchError(err => of({} as Databag)),
                   map(databag => {
                     if (!databag.errorMsgKey) {
-                      return 'error.error_msg_key.default';
+                      return 'message.pipeline.error.default';
                     }
-                    return `error.error_msg_key.${databag.errorMsgKey}`;
+                    return `message.pipeline.error.${databag.errorMsgKey}`;
                   }),
                   mergeMap((toTranslate) => this.translate.get(toTranslate))
                 )
@@ -133,20 +138,20 @@ export class CreateDatabagComponent {
   }
 
   back(stepper: MatStepper): void {
-    this.objectstoreService.deleteDatabag(this.uuid).pipe().subscribe(() => {
+    this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken).pipe().subscribe(() => {
       stepper.previous();
       this.stepperStep -= 1;
     });
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagById(this.uuid, this.databag).subscribe(() => {
+    this.objectstoreService.putDatabagById(this.uuid, this.user?.rawToken, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }
 
   close(): void {
-    this.objectstoreService.deleteDatabag(this.uuid).subscribe(() => {
+    this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken).subscribe(() => {
       this.dialogRef.close();
     });
   }
