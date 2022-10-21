@@ -35,14 +35,22 @@ async def test_get_all_buckets():
 
 @pytest.mark.asyncio
 async def test_delete_items(api_service_mock, minio_mock, mocker):
-    bucket_mock = mocker.patch.object(MinioMock, 'bucket_exists', mocker.MagicMock(return_value=True))
-    obj_mock = mocker.MagicMock(return_value=[
-        mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
-        mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
-    ])
-    list_obj_mock = mocker.patch.object(MinioMock, 'list_objects', obj_mock)
+    bucket_mock = mocker.patch.object(
+        MinioMock, "bucket_exists", mocker.MagicMock(return_value=True)
+    )
+    obj_mock = mocker.MagicMock(
+        return_value=[
+            mocker.Mock(
+                bucket_name="os4ml", object_name="test/prefix/data.csv"
+            ),
+            mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
+        ]
+    )
+    list_obj_mock = mocker.patch.object(MinioMock, "list_objects", obj_mock)
 
-    rm_obj_mock = mocker.patch.object(MinioMock, 'remove_objects', mocker.MagicMock(return_value=[]))
+    rm_obj_mock = mocker.patch.object(
+        MinioMock, "remove_objects", mocker.MagicMock(return_value=[])
+    )
     await delete_objects(
         bucket_name="bucket",
         path_prefix="test/prefix",
