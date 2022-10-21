@@ -68,8 +68,8 @@ export class GettingStartedComponent {
 
     if (this.stepperStep === 0) {
       if (!(this.file.name || this.fileUrl)) {
-        this.translate.get('error.no_dataset').subscribe((res: string) => {
-          this.translate.get('error.confirm').subscribe((conf: string) => {
+        this.translate.get('message.no_dataset').subscribe((res: string) => {
+          this.translate.get('action.confirm').subscribe((conf: string) => {
             this.matSnackBar.open(res, conf, {duration: 3000});
           });
         });
@@ -208,9 +208,9 @@ export class GettingStartedComponent {
                   catchError(err => of({} as Databag)),
                   map(databag => {
                     if (!databag.errorMsgKey) {
-                      return 'error.error_msg_key.default';
+                      return 'message.pipeline.error.default';
                     }
-                    return `error.error_msg_key.${databag.errorMsgKey}`;
+                    return `message.pipeline.error.${databag.errorMsgKey}`;
                   }),
                   mergeMap((toTranslate) => this.translate.get(toTranslate))
                 )
