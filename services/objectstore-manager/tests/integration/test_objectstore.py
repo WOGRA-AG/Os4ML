@@ -35,13 +35,22 @@ async def test_get_all_buckets():
 
 @pytest.mark.asyncio
 async def test_delete_items(api_service_mock, minio_mock, mocker):
-    minio_mock.bucket_exists.return_value = True
-    minio_mock.list_objects.return_value = [
-        mocker.Mock(bucket_name="os4ml", object_name="test/prefix/data.csv"),
-        mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
-    ]
-    minio_mock.remove_objects.return_value = []
+    bucket_mock = mocker.patch.object(
+        MinioMock, "bucket_exists", mocker.MagicMock(return_value=True)
+    )
+    obj_mock = mocker.MagicMock(
+        return_value=[
+            mocker.Mock(
+                bucket_name="os4ml", object_name="test/prefix/data.csv"
+            ),
+            mocker.Mock(bucket_name="os4ml", object_name="test/prefix"),
+        ]
+    )
+    list_obj_mock = mocker.patch.object(MinioMock, "list_objects", obj_mock)
 
+    rm_obj_mock = mocker.patch.object(
+        MinioMock, "remove_objects", mocker.MagicMock(return_value=[])
+    )
     await delete_objects(
         bucket_name="bucket",
         path_prefix="test/prefix",
@@ -49,8 +58,8 @@ async def test_delete_items(api_service_mock, minio_mock, mocker):
         usertoken=user_header.get("usertoken"),
     )
 
-    minio_mock.list_objects.assert_called_once()
+    list_obj_mock.assert_called_once()
     object_name_to_delete = {"test/prefix/data.csv", "test/prefix"}
-    bucket, generator = minio_mock.remove_objects.call_args[0]
+    bucket, generator = rm_obj_mock.call_args[0]
     assert bucket == "bucket"
     assert {obj._name for obj in generator} == object_name_to_delete
