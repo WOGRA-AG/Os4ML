@@ -180,6 +180,12 @@ class MinioMock(Minio):
             )
         )
 
-    def stat_object(self, bucket_name, object_name, ssec=None, version_id=None,
-                    extra_query_params=None):
+    def stat_object(
+        self,
+        bucket_name,
+        object_name,
+        ssec=None,
+        version_id=None,
+        extra_query_params=None,
+    ):
         pass
