@@ -116,24 +116,24 @@ paths:
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Solver'
 
-#  "/solvers/{solverName}":
-#    get:
-#      summary: 'get solver by name'
-#      operationId: getSolverByName
-#      parameters:
-#        - $ref: '#/components/parameters/SolverName'
-#      tags:
-#        - modelmanager
-#      responses:
-#        200:
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                $ref: './shared-oas.yaml#/components/schemas/Solver'
-#        404:
-#          $ref: '#/components/responses/NotFound'
-#
+  "/apis/v1beta1/modelmanager/solvers/{solverName}":
+    get:
+      summary: 'get solver by name'
+      operationId: getSolverByName
+      parameters:
+        - $ref: '#/components/parameters/SolverName'
+      tags:
+        - modelmanager
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Solver'
+        404:
+          $ref: '#/components/responses/NotFound'
+
 #  "/solutions":
 #    get:
 #      summary: 'get all solutions'
@@ -241,6 +241,10 @@ components:
         - timestamp
         - message
         - status
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
   parameters:
     DatabagId:
       name: databagId

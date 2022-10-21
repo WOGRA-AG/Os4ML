@@ -11,3 +11,12 @@ class SolverService:
                 pipeline_step="solver",
             )
         ]
+
+    def get_solver_by_name(self, solver_name: str) -> Solver:
+        all_solvers = self.list_solvers()
+        solvers_with_name = [
+            solver for solver in all_solvers if solver.name == solver_name
+        ]
+        if not solvers_with_name:
+            raise
+        return solvers_with_name.pop()
