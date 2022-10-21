@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import {catchError, Observable, of, throwError} from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
@@ -24,10 +24,10 @@ export class ErrorInterceptor implements HttpInterceptor {
       const errorMsg: string = err.error.message || err.statusText;
 
       if (err.status === 401 || err.status === 403) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/']).then(() => window.location.reload());
       } else if(err.status === 404 && err.url.includes('/run/')) {
       } else if (err.status >= 400 && err.status <= 499) {
-        this.translate.get('error.confirm').subscribe((res: string) => {
+        this.translate.get('action.confirm').subscribe((res: string) => {
           this.matSnackBar.open(errorMsg, res, {duration: 3000});
         });
       }
