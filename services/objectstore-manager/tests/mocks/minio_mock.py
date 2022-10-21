@@ -31,6 +31,7 @@ class MinioMock(Minio):
             Bucket(name="os4ml", creation_date=datetime.utcnow()),
             Bucket(name="os6ml", creation_date=datetime.utcnow()),
             Bucket(name="templates", creation_date=datetime.utcnow()),
+            Bucket(name="test-bucket", creation_date=datetime.utcnow()),
         ]
 
     def make_bucket(
@@ -109,7 +110,7 @@ class MinioMock(Minio):
         version_id=None,
         extra_query_params=None,
     ) -> str:
-        if object_name not in ["object"]:
+        if "object" not in object_name:
             raise MinioException()
         return "https://www.wogra.com"
 
@@ -178,3 +179,7 @@ class MinioMock(Minio):
                 ).dict()
             )
         )
+
+    def stat_object(self, bucket_name, object_name, ssec=None, version_id=None,
+                    extra_query_params=None):
+        pass
