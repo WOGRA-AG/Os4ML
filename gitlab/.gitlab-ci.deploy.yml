@@ -68,7 +68,7 @@ deploy-tag:
     - .deploy
   variables:
     LABEL: $CI_COMMIT_TAG
-  when: manual
+  when: always
   rules:
     - if: '$CI_COMMIT_TAG'
 
