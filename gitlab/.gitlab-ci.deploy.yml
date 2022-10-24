@@ -47,6 +47,10 @@
       '.'
     - docker push $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
 
+    - docker pull $CACHE_REGISTRY/model-manager:$CI_COMMIT_SHA
+    - docker tag $CACHE_REGISTRY/model-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/model-manager:$LABEL
+    - docker push $CI_REGISTRY_IMAGE/model-manager:$LABEL
+
     - docker pull $CACHE_REGISTRY/frontend:$CI_COMMIT_SHA
     - docker tag $CACHE_REGISTRY/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
@@ -68,7 +72,7 @@ deploy-tag:
     - .deploy
   variables:
     LABEL: $CI_COMMIT_TAG
-  when: manual
+  when: always
   rules:
     - if: '$CI_COMMIT_TAG'
 
