@@ -7,6 +7,12 @@ info:
 paths: {}
 
 components:
+  parameters:
+    User:
+      name: usertoken
+      in: header
+      schema:
+        type: string
   schemas:
     RunId:
       type: string
@@ -14,6 +20,28 @@ components:
       type: string
     DatabagId:
       type: string
+    Solver:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string
     Solution:
       properties:
         name:
@@ -92,20 +120,65 @@ components:
         runId:
           type: string
           nullable: true
-    PipelineTemplate:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-        fileUrl:
-          type: string
     JsonResponse:
       properties:
         jsonContent:
           type: string
           format: byte
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - rawToken
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        rawToken:
+          type: string
+          format: byte
+    OIDCUser:
+      type: object
+      required:
+        - sub
+        - iat
+        - exp
+        - scope
+        - email_verified
+        - realm_access
+        - resource_access
+        - extra_fields
+      properties:
+        sub:
+          type: string
+        iat:
+          type: integer
+        exp:
+          type: integer
+        scope:
+          type: string
+        email_verified:
+          type: boolean
+        name:
+          type: string
+        given_name:
+          type: string
+        family_name:
+          type: string
+        email:
+          type: string
+        preferred_username:
+          type: string
+        realm_access:
+          type: object
+        resource_access:
+          type: object
+        extra_fields:
+          type: object
+

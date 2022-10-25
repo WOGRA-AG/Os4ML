@@ -8,6 +8,7 @@ import {
 } from '../setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UserFacade} from '../../../../user/services/user-facade.service';
 
 @Component({
   selector: 'app-shared-solutions-list',
@@ -18,8 +19,7 @@ export class SolutionsListComponent {
   @Input() solutions: Solution[] = [];
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private userFacade: UserFacade) {
   }
 
   openSolutionSettingDialog(solution: Solution) {
@@ -32,7 +32,7 @@ export class SolutionsListComponent {
       }
     });
     dialogRef.afterClosed().subscribe(() => {
-        this.router.navigate(['.'], {relativeTo: this.activatedRoute});
+      this.userFacade.refresh();
       }
     );
   }

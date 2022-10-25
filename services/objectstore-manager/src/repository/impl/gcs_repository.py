@@ -10,15 +10,16 @@ from google.cloud.storage import Client
 
 from build.openapi_server.models.bucket import Bucket
 from build.openapi_server.models.item import Item
+from decorators.singleton_metaclass import Singleton
 from repository.interface.storage_repository_interface import StorageRepository
 
 
-class GcsRepository(StorageRepository):
+class GcsRepository(StorageRepository, metaclass=Singleton):
     def __init__(
         self,
-        client: Client,
+        client: Client = None,
     ):
-        self.client = client
+        self.client: Client = client if client else Client()
         self.gcs_timeout = 1
 
     def _get_gcp_bucket(self, bucket_name: str) -> GcpBucket:

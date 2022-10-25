@@ -6,19 +6,19 @@ authors = ["WOGRA AG <info@wogra.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = {extras = ["all"], version = "^0.73.0"}
+fastapi = {extras = ["all"], version = "^0.85.0"}
 kfp = "^1.8.11"
 gunicorn = "^20.1.0"
 fastapi-utils = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.1.2"
-coverage = { version = "^5.3", extras = ["toml"] }
+pytest = "^7.1.3"
+coverage = { version = "^6.5.0", extras = ["toml"] }
 isort = { version = "^5.10.1", extras = ["pyproject"] }
 requests = "^2.25.0"
 black = "^22.3.0"
-pytest-asyncio = "^0.14.0"
-pytest-mock = "^3.7.0"
+pytest-asyncio = "^0.19.0"
+pytest-mock = "^3.10.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -56,7 +56,7 @@ force_grid_wrap = 0
 [tool.coverage.run]
 source = ["src"]
 branch = true
-omit = ['src/build/openapi_client/*']
+omit = ['src/build/*']
 
 [tool.coverage.report]
 exclude_lines = [

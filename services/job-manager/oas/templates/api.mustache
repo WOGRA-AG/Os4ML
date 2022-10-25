@@ -16,11 +16,11 @@ from fastapi import (
     status,
 )
 
-from {{modelPackage}}.extra_models import TokenModel
+from {{modelPackage}}.user import User
 {{#imports}}
 {{import}}
 {{/imports}}
-{{#securityImports.0}}from {{packageName}}.security_api import {{#securityImports}}get_token_{{.}}{{^-last}}, {{/-last}}{{/securityImports}}{{/securityImports.0}}
+{{#securityImports.0}}from services.auth_service import get_parsed_token{{/securityImports.0}}
 
 from api.controller.{{classFilename}}_controller import {{classname}}Controller
 
@@ -51,8 +51,8 @@ async def {{operationId}}(
     _controller: {{classname}}Controller = Depends({{classname}}Controller),
     {{#hasAuthMethods}}
     {{#authMethods}}
-    token_{{name}}: TokenModel = Security(
-        get_token_{{name}}{{#isOAuth}}, scopes=[{{#scopes}}"{{scope}}"{{^-last}}, {{/-last}}{{/scopes}}]{{/isOAuth}}
+    token: User = Security(
+        get_parsed_token{{#isOAuth}}, scopes=[{{#scopes}}"{{scope}}"{{^-last}}, {{/-last}}{{/scopes}}]{{/isOAuth}}
     ),
     {{/authMethods}}
     {{/hasAuthMethods}}
@@ -61,6 +61,9 @@ async def {{operationId}}(
     {{#allParams}}
         {{#isFormParam}}{{paramName}}={{paramName}}{{/isFormParam}}{{#isQueryParam}}{{paramName}}={{paramName}}{{/isQueryParam}}{{#isPathParam}}{{paramName}}={{paramName}}{{/isPathParam}}{{#isHeaderParam}}{{paramName}}={{paramName}}{{/isHeaderParam}}{{#isCookieParam}}{{paramName}}={{paramName}}{{/isCookieParam}}{{#isBodyParam}}{{paramName}}={{paramName}}{{/isBodyParam}},
     {{/allParams}}
+    {{#hasAuthMethods}}
+        user=token,
+    {{/hasAuthMethods}}
     )
 {{^-last}}
 
