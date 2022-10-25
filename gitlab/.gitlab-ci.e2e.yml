@@ -2,9 +2,9 @@ e2e:
   image: cypress/browsers:node12.14.1-chrome85-ff81
   tags:
     - aime
+  stage: e2e
   needs:
-    - pipeline: $PARENT_PIPELINE_ID
-      job: "reset-testing"
+    - reset
   script:
     - cd services/frontend && npm ci && npx cypress run
   artifacts:
@@ -13,3 +13,4 @@ e2e:
       - services/frontend/cypress/videos/**/*.mp4
       - services/frontend/cypress/screenshots/**/*.png
     expire_in: 1 day
+  resource_group: testing
