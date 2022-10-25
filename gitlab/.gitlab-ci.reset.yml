@@ -1,7 +1,17 @@
 reset-testing:
   stage: reset
+  tags:
+    - aime
   needs:
     - deploy-testing
+  image: $CI_REGISTRY/developer/images/gitlab-terraform-gcloud-kubectl:gcloud387-terraform1.2
+  before_script:
+    - gcloud auth activate-service-account $GCP_service_account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    - gcloud container clusters get-credentials $GCP_cluster_name --zone=$GCP_zone --project=$GCP_project
+  script:
+    - wget https://github.com/minio/operator/releases/download/v4.4.16/kubectl-minio_4.4.16_linux_amd64 -O kubectl-minio && chmod +x kubectl-minio && mv kubectl-minio /usr/local/bin/
+    - kubectl minio tenant delete storage-testing --namespace minio-tenant-testing --force
+    - kubectl delete pvc --namespace minio-tenant-testing data0-storage-testing-pool-0-0 --force
   resource_group: testing
   trigger:
     include: gitlab/.gitlab-ci.e2e.yml
