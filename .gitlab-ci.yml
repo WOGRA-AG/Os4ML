@@ -4,7 +4,6 @@ include:
   - local: 'gitlab/services/.gitlab-ci.job-manager.yml'
   - local: 'gitlab/services/.gitlab-ci.objectstore-manager.yml'
   - local: 'gitlab/.gitlab-ci.deploy.yml'
-  - local: 'gitlab/.gitlab-ci.reset.yml'
   - local: 'gitlab/.gitlab-ci.e2e.yml'
 
 stages:
@@ -12,7 +11,6 @@ stages:
   - test
   - build
   - deploy
-  - reset
   - e2e
   - clean
 
