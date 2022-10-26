@@ -15,7 +15,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 # Uses multi-stage builds requiring Docker 17.05 or higher
 # See https://docs.docker.com/develop/develop-images/multistage-build/
 # Creating a python base with shared environment variables
-FROM python:3.10-slim-bullseye AS python-base
+FROM gitlab-registry.wogra.com/developer/images/python:3.10.7-slim AS python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
