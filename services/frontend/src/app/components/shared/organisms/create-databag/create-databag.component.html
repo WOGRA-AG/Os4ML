@@ -44,8 +44,8 @@
       <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
         <app-shared-dialog-section>
           <mat-form-field appearance="outline">
-            <mat-label>{{"solution.placeholder" | translate}}</mat-label>
-            <input matInput type="string" placeholder="{{'solution.placeholder' | translate}}" required
+            <mat-label>{{"databag.placeholder" | translate}}</mat-label>
+            <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
                    name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
                    [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
           </mat-form-field>
