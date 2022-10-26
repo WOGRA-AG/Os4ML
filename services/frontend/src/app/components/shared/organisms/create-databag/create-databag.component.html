@@ -76,7 +76,7 @@
       class="main-button"
       type="submit"
       (click)="nextClick(stepper)"
-      [disabled]="!(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
+      [disabled]="running || !(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
     >
       {{"action.next_step" | translate}}
     </button>
