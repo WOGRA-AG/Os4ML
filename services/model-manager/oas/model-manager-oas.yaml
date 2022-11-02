@@ -4,10 +4,10 @@ info:
   description: Model Manager
   version: 1.0.0
 servers:
-  - url: 'http://modelmanager.os4ml.svc.cluster.local:8000'
+  - url: 'http://model-manager.os4ml.svc.cluster.local:8000'
 paths:
 
-  "/apis/v1beta1/modelmanager/solvers":
+  "/apis/v1beta1/model-manager/solvers":
     get:
       summary: 'get all solver'
       operationId: getAllSolvers
