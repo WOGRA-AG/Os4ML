@@ -104,7 +104,7 @@ CMD ["tail", "-f", "/dev/null"]
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 85
+RUN coverage report -m --fail-under 70
 
 
 FROM python-base as production

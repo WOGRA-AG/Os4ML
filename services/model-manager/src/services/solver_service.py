@@ -2,6 +2,7 @@ from build.openapi_server.models.solver import Solver
 
 
 class SolverService:
+    # TODO implement real methods
     def list_solvers(self) -> list[Solver]:
         return [
             Solver(

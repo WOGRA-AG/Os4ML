@@ -7,11 +7,11 @@ from minio.deleteobjects import DeleteObject
 from minio.error import S3Error
 from urllib3 import HTTPResponse
 
-from exceptions import BucketNotFoundException, ObjectNotFoundException
 from decorators.singleton_metaclass import Singleton
+from exceptions import BucketNotFoundException, ObjectNotFoundException
 
 
-class MinioRepository(metaclass= Singleton):
+class MinioRepository(metaclass=Singleton):
     def __init__(
         self,
         client: Minio = None,

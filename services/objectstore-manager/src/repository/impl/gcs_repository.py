@@ -4,8 +4,8 @@ from io import BytesIO
 
 from google.cloud.storage import Blob, Bucket, Client
 
-from exceptions import BucketNotFoundException, ObjectNotFoundException
 from decorators.singleton_metaclass import Singleton
+from exceptions import BucketNotFoundException, ObjectNotFoundException
 
 
 class GcsRepository(metaclass=Singleton):

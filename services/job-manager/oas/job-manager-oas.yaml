@@ -6,46 +6,10 @@ info:
 servers:
   - url: 'http://jobmanager.os4ml.svc.cluster.local:8000'
 paths:
-  "/apis/v1beta1/jobmanager/experiment":
-    get:
-      summary: 'Get all Experiments'
-      operationId: getAllExperiments
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Experiment'
-    post:
-      summary: 'Create new Experiment'
-      operationId: postExperiment
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Experiment'
-      responses:
-        201:
-          description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentId'
-  "/apis/v1beta1/jobmanager/pipeline":
+  "/apis/v1beta1/jobmanager/pipelines":
     get:
       summary: 'Get all pipelines'
-      operationId: getAllPipelines
+      operationId: getPipelines
       parameters:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
@@ -61,7 +25,7 @@ paths:
                   $ref: '#/components/schemas/Pipeline'
     post:
       summary: 'Create Pipeline'
-      operationId: postPipeline
+      operationId: createPipeline
       parameters:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
@@ -78,10 +42,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PipelineId'
-  "/apis/v1beta1/jobmanager/run":
+  "/apis/v1beta1/jobmanager/runs":
     get:
       summary: 'Get all pipeline runs'
-      operationId: getAllRuns
+      operationId: getRuns
       parameters:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
@@ -95,10 +59,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Run'
-  "/apis/v1beta1/jobmanager/run/{runId}":
+  "/apis/v1beta1/jobmanager/runs/{runId}":
     get:
       summary: 'Get single pipeline run'
-      operationId: getRun
+      operationId: getRunById
       parameters:
         - $ref: '#/components/parameters/RunId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
@@ -113,7 +77,7 @@ paths:
                 $ref: '#/components/schemas/Run'
     delete:
       summary: 'Delete a run'
-      operationId: deleteRun
+      operationId: deleteRunById
       parameters:
         - $ref: '#/components/parameters/RunId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
@@ -122,10 +86,11 @@ paths:
       responses:
         204:
           description: "Deleted"
-  "/apis/v1beta1/jobmanager/experiment/{experimentId}/pipeline/{pipelineId}/run":
+
+  "/apis/v1beta1/jobmanager/pipelines/{pipelineId}/run":
     post:
       summary: 'Create Run'
-      operationId: postRun
+      operationId: createRun
       parameters:
         - $ref: '#/components/parameters/ExperimentId'
         - $ref: '#/components/parameters/PipelineId'
@@ -145,10 +110,10 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/RunId'
 
-  "/apis/v1beta1/jobmanager/template/{pipelineTemplateName}":
+  "/apis/v1beta1/jobmanager/templates/{pipelineTemplateName}":
     post:
       summary: "Convenience route to run a Pipeline Template directly"
-      operationId: postTemplate
+      operationId: runTemplate
       parameters:
         - $ref: '#/components/parameters/PipelineTemplateName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
@@ -162,166 +127,6 @@ paths:
       responses:
         201:
           description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/RunId'
-
-  "/apis/v1beta1/jobmanager/template/pipeline":
-    get:
-      summary: 'get all pipeline templates'
-      operationId: getAllPipelineTemplates
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
-
-  "/apis/v1beta1/jobmanager/template/pipeline/{pipelineTemplateName}":
-    get:
-      summary: 'get pipeline template by name'
-      operationId: getPipelineTemplateByName
-      parameters:
-        - $ref: '#/components/parameters/PipelineTemplateName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/PipelineTemplate'
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/jobmanager/template/pipeline/file/{pipelineTemplateName}":
-    get:
-      summary: 'get pipeline file by name'
-      operationId: getPipelineFileByName
-      parameters:
-        - $ref: '#/components/parameters/PipelineTemplateName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: OK
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/jobmanager/solution/{solutionName}":
-    get:
-      summary: "Get a solution"
-      operationId: getSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: "Solution found"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
-        404:
-          $ref: '#/components/responses/NotFound'
-    put:
-      summary: "Update a Solution"
-      operationId: putSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
-      responses:
-        200:
-          description: "Solution updated"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
-    delete:
-      summary: "Delete a Solution"
-      operationId: deleteSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        204:
-          $ref: '#/components/responses/Deleted'
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/jobmanager/solution/{solutionName}/model":
-    get:
-      summary: "get a download link for the model of the specified solution"
-      operationId: getDownloadLinkForModelOfSolution
-      parameters:
-        - $ref: '#/components/parameters/SolutionName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: "Download link"
-          content:
-            application/json:
-              schema:
-                type: string
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/jobmanager/solution":
-    get:
-      summary: 'get all solutions'
-      operationId: getAllSolutions
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solution'
-    post:
-      summary: "Create and deploy a Solution"
-      operationId: postSolution
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
-      responses:
-        201:
-          description: "Solution created"
           content:
             application/json:
               schema:

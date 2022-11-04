@@ -9,15 +9,18 @@ from src.build.openapi_server.models.user import User
 
 
 def _parse_oidc_token(usertoken: str = Header()) -> OIDCUser:
-    if usertoken:
-        encoded_payload: str = usertoken.split(".")[1]
-        base64_bytes = encoded_payload.encode("ascii")
-        message_bytes = base64.b64decode(
-            base64_bytes + b"=" * (-len(base64_bytes) % 4)
+    if not usertoken:
+        raise HTTPException(
+            HTTPStatus.UNAUTHORIZED, "Invalid Authorization Header"
         )
-        payload: str = message_bytes.decode("ascii")
-        kc_token = OIDCUser(**json.JSONDecoder().decode(payload))
-        return kc_token
+    encoded_payload: str = usertoken.split(".")[1]
+    base64_bytes = encoded_payload.encode("ascii")
+    message_bytes = base64.b64decode(
+        base64_bytes + b"=" * (-len(base64_bytes) % 4)
+    )
+    payload: str = message_bytes.decode("ascii")
+    kc_token = OIDCUser(**json.JSONDecoder().decode(payload))
+    return kc_token
 
 
 def _parse_user_from_oidc(

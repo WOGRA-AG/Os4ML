@@ -18,7 +18,7 @@ def test_delete_objects_with_prefix(
 ):
     mocker.patch.object(
         repository.init_repository,
-        "_init_minio",
+        "init_repository",
         return_value=MinioRepository(client=existing_objects_mock),
     )
     response = client.get(

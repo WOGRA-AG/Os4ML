@@ -1,16 +1,14 @@
 from fastapi.testclient import TestClient
-from pytest_mock import MockerFixture
 
 
 def test_get_presigned_get_url_with_user(
     client: TestClient,
-    mocker: MockerFixture,
+    existing_objects_repository,
     user_header: dict[str, str],
     route_prefix: str,
 ):
-    mocker.patch("minio.Minio.bucket_exists", return_value=True)
-    mocker.patch("minio.Minio.stat_object")
-    mocker.patch("minio.Minio.presigned_get_object")
+    existing_objects_repository.stat_object.return_value = True
+    existing_objects_repository.presigned_get_object.return_value = "url"
     response = client.get(
         route_prefix + "objects/presignedgeturl",
         headers=user_header,
