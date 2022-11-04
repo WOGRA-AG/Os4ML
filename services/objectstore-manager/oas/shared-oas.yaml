@@ -16,8 +16,6 @@ components:
   schemas:
     RunId:
       type: string
-    BucketName:
-      type: string
     DatabagId:
       type: string
     Solver:

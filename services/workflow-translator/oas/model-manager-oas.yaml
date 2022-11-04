@@ -12,6 +12,8 @@ paths:
       operationId: getDatabags
       tags:
         - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -23,11 +25,12 @@ paths:
                   $ref: './shared-oas.yaml#/components/schemas/Databag'
     post:
       summary: "create databag"
-      operationId: postDatabag
+      operationId: createDatabag
       tags:
         - modelmanager
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         201:
           description: "Resource created"
@@ -44,6 +47,7 @@ paths:
         - modelmanager
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -55,11 +59,12 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       summary: "update databag"
-      operationId: putDatabagById
+      operationId: updateDatabagById
       tags:
         - modelmanager
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
         content:
           application/json:
@@ -77,6 +82,7 @@ paths:
         - modelmanager
       parameters:
         - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
@@ -106,6 +112,8 @@ paths:
       operationId: getSolvers
       tags:
         - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
           description: OK
@@ -122,6 +130,7 @@ paths:
       operationId: getSolverByName
       parameters:
         - $ref: '#/components/parameters/SolverName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - modelmanager
       responses:

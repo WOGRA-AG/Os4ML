@@ -7,7 +7,7 @@
     "generate:objectstore": "npm run generate:base -- -i ../oas/objectstore-manager-oas.yaml -o ./build/openapi/objectstore",
     "generate:jobmanager": "npm run generate:base -- -i ../oas/job-manager-oas.yaml -o ./build/openapi/jobmanager",
     "generate:modelmanager": "npm run generate:base -- -i ../oas/model-manager-oas.yaml -o build/openapi/modelmanager",
-    "generate:api": "npm run generate:objectstore && npm run generate:jobmanager",
+    "generate:api": "npm run generate:objectstore && npm run generate:jobmanager && npm run generate:modelmanager",
     "prestart": "npm run generate:api",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check true",

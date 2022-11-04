@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: Os4ml Objectstore Manager Api
   description: Os4ml Objectstore Manager
@@ -144,6 +144,13 @@ paths:
 
 components:
   schemas:
+    Error:
+      required:
+        - path
+        - error
+        - timestamp
+        - message
+        - status
     Url:
       type: string
     ObjectName:
@@ -152,14 +159,6 @@ components:
       $ref: './shared-oas.yaml#/components/schemas/User'
     OIDCUser:
       $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
-    Error:
-      required:
-        - path
-        - error
-        - timestamp
-        - message
-        - status
-
   parameters:
     ObjectName:
       name: objectName
@@ -176,14 +175,9 @@ components:
       schema:
         type: string
         default: ""
-
   responses:
     Created:
       description: New resource created
-      content:
-        application/json:
-          schema:
-            $ref: "./shared-oas.yaml#/components/schemas/BucketName"
     Deleted:
       description: The specified resource was deleted
     Updated:
