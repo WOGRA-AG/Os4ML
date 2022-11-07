@@ -14,11 +14,11 @@ from build.openapi_server.models.create_pipeline import (
 )
 from build.openapi_server.models.user import User
 from executor.kfp_executor import KfpExecutor
-from services.template_service import TemplateService
+from services.run_service import RunService
 
 mock_kfp_client = KfpMockClient()
 mock_kfp_service = KfpExecutor(client=mock_kfp_client)
-mock_template_service = TemplateService(kfp_client=mock_kfp_client)
+mock_template_service = RunService(kfp_client=mock_kfp_client)
 mock_jobmanager_controller = JobmanagerApiController(
     kfp_service=mock_kfp_service,
     template_service=mock_template_service,

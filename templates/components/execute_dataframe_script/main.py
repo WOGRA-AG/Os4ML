@@ -6,8 +6,6 @@ from components.util import build_component
 
 def execute_dataframe_script(
     dataframe: Output[Dataset],
-    bucket: str,
-    file_name: str,
     databag_id: str,
     os4ml_namespace: str,
 ):
@@ -15,8 +13,6 @@ def execute_dataframe_script(
 
     return execute_dataframe_script(
         dataframe=dataframe,
-        bucket=bucket,
-        file_name=file_name,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
     )

@@ -2,15 +2,20 @@ from build.openapi_server.models.solver import Solver
 
 
 class SolverService:
-    # TODO implement real methods
     def list_solvers(self) -> list[Solver]:
         return [
+            Solver(
+                name="databag",
+                type="pipeline",
+                description="Transforms the input to a pandas dataframe and analyses the datatypes of the columns",
+                pipeline_step="prepare",
+            ),
             Solver(
                 name="ludwig-solver",
                 type="pipeline",
                 description="Solver with Ludwig AutoML",
                 pipeline_step="solver",
-            )
+            ),
         ]
 
     def get_solver_by_name(self, solver_name: str) -> Solver:

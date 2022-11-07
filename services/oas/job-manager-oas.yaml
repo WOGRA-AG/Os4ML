@@ -6,27 +6,12 @@ info:
 servers:
   - url: 'http://jobmanager.os4ml.svc.cluster.local:8000'
 paths:
-  "/apis/v1beta1/jobmanager/pipelines":
-    get:
-      summary: 'Get all pipelines'
-      operationId: getPipelines
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pipeline'
+  "/apis/v1beta1/jobmanager/runs/{solverName}":
     post:
-      summary: 'Create Pipeline'
-      operationId: createPipeline
+      summary: 'Create a run by solver name'
+      operationId: createRunBySolverName
       parameters:
+        - $ref: '#/components/parameters/SolverName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - jobmanager
@@ -34,34 +19,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePipeline'
+              $ref: "#/components/schemas/RunParams"
       responses:
         201:
           description: "Resource created"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineId'
-  "/apis/v1beta1/jobmanager/runs":
-    get:
-      summary: 'Get all pipeline runs'
-      operationId: getRuns
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      responses:
-        200:
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Run'
+                $ref: './shared-oas.yaml#/components/schemas/RunId'
+
   "/apis/v1beta1/jobmanager/runs/{runId}":
     get:
-      summary: 'Get single pipeline run'
+      summary: 'Get a run by id'
       operationId: getRunById
       parameters:
         - $ref: '#/components/parameters/RunId'
@@ -75,9 +44,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Run'
-    delete:
-      summary: 'Delete a run'
-      operationId: deleteRunById
+    put:
+      summary: 'Terminate a run'
+      operationId: terminateRunById
       parameters:
         - $ref: '#/components/parameters/RunId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
@@ -86,51 +55,6 @@ paths:
       responses:
         204:
           description: "Deleted"
-
-  "/apis/v1beta1/jobmanager/pipelines/{pipelineId}/run":
-    post:
-      summary: 'Create Run'
-      operationId: createRun
-      parameters:
-        - $ref: '#/components/parameters/ExperimentId'
-        - $ref: '#/components/parameters/PipelineId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateRun'
-      responses:
-        201:
-          description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/RunId'
-
-  "/apis/v1beta1/jobmanager/templates/{pipelineTemplateName}":
-    post:
-      summary: "Convenience route to run a Pipeline Template directly"
-      operationId: runTemplate
-      parameters:
-        - $ref: '#/components/parameters/PipelineTemplateName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - jobmanager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RunParams'
-      responses:
-        201:
-          description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/RunId'
 
 components:
   schemas:
@@ -197,8 +121,6 @@ components:
           $ref: './shared-oas.yaml#/components/schemas/RunId'
         name:
           type: string
-        description:
-          type: string
         status:
           type: string
         error:
@@ -207,6 +129,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Metrics'
+    RunParams:
+      description: Parameters to start a run
+      type: object
+      properties:
+        databagId:
+          type: string
+        solutionName:
+          type: string
     CreateRun:
       description: Create Run Object
       type: object
@@ -216,20 +146,7 @@ components:
         description:
           type: string
         params:
-          $ref: '#/components/schemas/RunParams'
-    RunParams:
-      description: Default Parameters to start Run
-      type: object
-      properties:
-        bucket:
-          type: string
-        fileName:
-          type: string
-        databagId:
-          type: string
-          nullable: true
-        solutionName:
-          type: string
+          $ref: "#/components/schemas/RunParams"
     Error:
       required:
         - path
@@ -271,6 +188,13 @@ components:
       name: solutionName
       in: path
       description: Name of the Solution
+      required: true
+      schema:
+        type: string
+    SolverName:
+      name: solverName
+      in: path
+      description: Name of the solver
       required: true
       schema:
         type: string

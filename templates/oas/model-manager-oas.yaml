@@ -29,8 +29,12 @@ paths:
       tags:
         - modelmanager
       parameters:
-        - $ref: '#/components/parameters/DatabagId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Databag'
       responses:
         201:
           description: "Resource created"

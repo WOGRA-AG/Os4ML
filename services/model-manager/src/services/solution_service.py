@@ -6,6 +6,8 @@ from io import BytesIO
 
 from fastapi import Depends
 
+from build.job_manager_client.api.jobmanager_api import JobmanagerApi
+from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
@@ -17,7 +19,7 @@ from services import (
     SOLUTION_CONFIG_FILE_NAME,
 )
 from services.databag_service import DatabagService
-from services.init_api_clients import init_objectstore_api
+from services.init_api_clients import init_objectstore_api, init_jobmanager_api
 
 
 def _solution_file_name(solution: Solution) -> str:
@@ -32,9 +34,11 @@ class SolutionService:
     def __init__(
         self,
         objectstore: ObjectstoreApi = Depends(init_objectstore_api),
+        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
         databag_service: DatabagService = Depends(),
     ):
         self.objectstore = objectstore
+        self.jobmanager = jobmanager
         self.databag_service = databag_service
         self.solution_config_file_name = SOLUTION_CONFIG_FILE_NAME
 
@@ -72,8 +76,6 @@ class SolutionService:
 
     def create_solution(self, solution: Solution, usertoken: str) -> Solution:
         # TODO split into id and name field
-        # TODO remove bucket_name from RunParams
-        # TODO start run
         uuid_: uuid.UUID = uuid.uuid4()
         solution.name = f"{uuid_}_{solution.name}"
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
@@ -82,14 +84,11 @@ class SolutionService:
         )
         run_params = RunParams(
             databag_id=databag.databag_id,
-            file_name=databag.file_name,
             solution_name=solution.name,
         )
         self._persist_solution(solution, usertoken=usertoken)
-        # run_id: str = self.template_service.run_pipeline_template(
-        #     solution.solver, run_params, usertoken=usertoken, user_id=user_id
-        # )
-        # solution.run_id = run_id
+        run_id: str = self.jobmanager.create_run_by_solver_name(solution.solver, run_params=run_params, usertoken=usertoken)
+        solution.run_id = run_id
         self._persist_solution(solution, usertoken=usertoken)
         return solution
 
@@ -112,7 +111,6 @@ class SolutionService:
     def delete_solution_by_name(
         self, solution_name: str, usertoken: str
     ) -> None:
-        # TODO stop running pipelines
         try:
             solution = self.get_solution_by_name(
                 solution_name=solution_name,
@@ -120,9 +118,9 @@ class SolutionService:
             )
         except SolutionNotFoundException:
             return
-        # run = self.kfp_service.get_run(solution.run_id)
-        # if run.status == "Running":
-        #     self.kfp_service.terminate_run(solution.run_id)
+        run: Run = self.jobmanager.get_run_by_id(solution.run_id, usertoken=usertoken)
+        if run.status == "Running":
+            self.jobmanager.terminate_run_by_id(solution.run_id, usertoken=usertoken)
         self.objectstore.delete_objects_with_prefix(
             path_prefix=_get_solution_prefix(solution),
             usertoken=usertoken,

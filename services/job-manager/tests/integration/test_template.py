@@ -14,7 +14,7 @@ from build.openapi_server.models.user import User
 from build.translator_client.api.workflowtranslator_api import (
     WorkflowtranslatorApi,
 )
-from services.template_service import TemplateService
+from services.run_service import RunService
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def mock_kfp_client(mocker):
 
 @pytest.fixture
 def template_service(mock_kfp_client):
-    return TemplateService(kfp_client=mock_kfp_client)
+    return RunService(kfp_client=mock_kfp_client)
 
 
 @pytest.fixture

@@ -17,7 +17,7 @@ class ModelmanagerApiController:
     ):
         self.solver_service = solver_service
         self.databag_service = databag_service
-        self.solver_service = solver_service
+        self.solution_service = solution_service
 
     # ----- solvers -----
     def get_solvers(self, usertoken: str = "") -> list[Solver]:
@@ -39,8 +39,8 @@ class ModelmanagerApiController:
     ) -> Databag:
         return self.databag_service.get_databag_by_id(databag_id, usertoken)
 
-    def create_databag(self, databag_id: str, usertoken: str = "") -> Databag:
-        return self.databag_service.create_databag(databag_id, usertoken)
+    def create_databag(self, databag: Databag, usertoken: str = "") -> Databag:
+        return self.databag_service.create_databag(databag, usertoken)
 
     def update_databag_by_id(
         self, databag_id: str, databag: Databag, usertoken: str = ""
@@ -63,27 +63,35 @@ class ModelmanagerApiController:
     def create_solution(
         self, solution: Solution, usertoken: str = ""
     ) -> Solution:
-        ...
+        return self.solution_service.create_solution(solution, usertoken)
 
     def delete_solution_by_name(
         self, solution_name: str, usertoken: str = ""
     ) -> None:
-        ...
+        return self.solution_service.delete_solution_by_name(  # type: ignore
+            solution_name, usertoken
+        )
 
     def get_download_link_for_model_of_solution(
         self, solution_name: str, usertoken: str = ""
     ) -> str:
-        ...
+        return self.solution_service.get_download_link_for_model_of_solution(  # type: ignore
+            solution_name, usertoken
+        )
 
     def get_solution_by_name(
         self, solution_name: str, usertoken: str = ""
     ) -> Solution:
-        ...
+        return self.solution_service.get_solution_by_name(
+            solution_name, usertoken
+        )
 
     def get_solutions(self, usertoken: str = "") -> list[Solution]:
-        ...
+        return self.solution_service.get_solutions(usertoken)  # type: ignore
 
     def update_solution_by_name(
         self, solution_name: str, solution: Solution, usertoken: str = ""
     ) -> Solution:
-        ...
+        return self.solution_service.update_solution_by_name(
+            solution_name, solution, usertoken
+        )

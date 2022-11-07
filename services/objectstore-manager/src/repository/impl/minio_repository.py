@@ -9,14 +9,21 @@ from urllib3 import HTTPResponse
 
 from decorators.singleton_metaclass import Singleton
 from exceptions import BucketNotFoundException, ObjectNotFoundException
+from services import STORAGE_KEY, STORAGE_SECRET, STORAGE_SECURE, STORAGE_URL
 
 
 class MinioRepository(metaclass=Singleton):
-    def __init__(
-        self,
-        client: Minio = None,
-    ):
-        self.client = client
+    def __init__(self, client: Minio = None):
+        self.client: Minio = (
+            client
+            if client
+            else Minio(
+                endpoint=STORAGE_URL,
+                access_key=STORAGE_KEY,
+                secret_key=STORAGE_SECRET,
+                secure=STORAGE_SECURE,
+            )
+        )
 
     def _check_if_bucket_exists(self, bucket_name: str) -> None:
         if not self.client.bucket_exists(bucket_name):

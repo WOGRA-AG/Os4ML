@@ -9,9 +9,7 @@ get_metrics_op = load_component("get_metrics")
 
 @pipeline(name="ludwig-solver")
 def ludwig_solver_pipeline(
-    bucket: str,
     databag_id: str,
-    file_name: str,
     solution_name: str,
     os4ml_namespace: str,
     batch_size: int = 8,
@@ -21,7 +19,6 @@ def ludwig_solver_pipeline(
     validation_split: float = 0.1,
 ):
     databag_and_dataframe = load_databag_and_dataframe_op(
-        bucket=bucket,
         databag_id=databag_id,
         os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,

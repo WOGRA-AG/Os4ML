@@ -11,11 +11,11 @@ USER_TOKEN: str = getenv("OS4ML_ACCESS_TOKEN", "")
 
 
 def download_file_from_databag(
-    databag: Databag,
-    file_name: str,
-    bucket: str,
-    output_file_name: str,
-    os4ml_namespace: str,
+        databag: Databag,
+        file_name: str,
+        bucket: str,
+        output_file_name: str,
+        os4ml_namespace: str,
 ) -> None:
     url = get_download_url(
         bucket, f"{databag.databag_id}/{file_name}", os4ml_namespace
@@ -31,6 +31,9 @@ def download_databag_by_id(databag_id: str, os4ml_namespace: str) -> Databag:
     )
 
 
+get_databag_by_id = download_databag_by_id
+
+
 def put_databag(databag: Databag, os4ml_namespace: str):
     objectstore = init_objectstore_client(os4ml_namespace)
     objectstore.put_databag_by_id(
@@ -38,7 +41,10 @@ def put_databag(databag: Databag, os4ml_namespace: str):
     )
 
 
-def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
+update_databag = put_databag
+
+
+def update_databag_status(databag_id: str, status: str, os4ml_namespace: str) -> Databag:
     objectstore = init_objectstore_client(os4ml_namespace)
     databag = objectstore.get_databag_by_id(
         databag_id=databag_id, usertoken=USER_TOKEN
@@ -47,10 +53,11 @@ def update_databag_status(databag_id: str, status: str, os4ml_namespace: str):
     objectstore.put_databag_by_id(
         databag_id=databag_id, databag=databag, usertoken=USER_TOKEN
     )
+    return databag
 
 
 def error_databag_status_update(
-    databag_id: str, error_msg_key: ErrorMsgKey, os4ml_namespace: str
+        databag_id: str, error_msg_key: ErrorMsgKey, os4ml_namespace: str
 ):
     objectstore = init_objectstore_client(os4ml_namespace)
     databag = objectstore.get_databag_by_id(
@@ -83,7 +90,7 @@ def _get_base_server_url(os4ml_namespace: str) -> str:
 
 
 def upload_file_to_databag(
-    file: BinaryIO, file_name: str, databag: Databag, os4ml_namespace: str
+        file: BinaryIO, file_name: str, databag: Databag, os4ml_namespace: str
 ) -> None:
     objectstore = init_objectstore_client(os4ml_namespace)
     objectstore.put_dataset_by_databag_id(
@@ -92,11 +99,11 @@ def upload_file_to_databag(
 
 
 def upload_file_to_solution(
-    file: BinaryIO,
-    file_name: str,
-    solution_name: str,
-    databag: Databag,
-    os4ml_namespace: str,
+        file: BinaryIO,
+        file_name: str,
+        solution_name: str,
+        databag: Databag,
+        os4ml_namespace: str,
 ) -> None:
     file_name = f"{solution_name.split('_').pop(0)}/{file_name}"
     upload_file_to_databag(file, file_name, databag, os4ml_namespace)
