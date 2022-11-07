@@ -15,7 +15,7 @@ describe('Databags', () => {
     cy.get('#kc-page-title').contains('You are logged out');
   });
   it('add initial databag', () => {
-    let remainingAttempts = 500;
+    let remainingAttempts = 1000;
     function waitUntilElementExists(el: string) {
       const $element = Cypress.$(el);
       if ($element.length) {
@@ -31,10 +31,10 @@ describe('Databags', () => {
     }
     cy.visit('/databag');
     waitUntilElementExists('#add-databag-button-empty');
-    cy.get('[id=\'add-databag-button-empty\']', { timeout: 300000 }).click();
+    cy.get('[id=\'add-databag-button-empty\']', { timeout: 600000 }).click();
     cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
     cy.get('[id=\'add-databag-main-button\']').click();
-    cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix', { timeout: 300000 }).get('.mat-select-min-line ', { timeout: 300000 }).contains('category');
+    cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix', { timeout: 600000 }).get('.mat-select-min-line ', { timeout: 600000 }).contains('category');
     cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix').get('.mat-select-min-line ').contains('category');
     cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix').get('.mat-select-min-line ').contains('text');
     cy.get('#define-databag-button').click();
@@ -50,6 +50,6 @@ describe('Databags', () => {
     cy.get('#define-solver-name-input').type('Solution Test Ludwig Solver');
     cy.get('#define-solver-list > .mat-list-item-content').click();
     cy.get('#define-solver-next-button > .mat-button-wrapper').click();
-    cy.get('[id=\'solution-status-finished\']', { timeout: 300000 }).contains('Solver finished', { timeout: 300000 });
+    cy.get('[id=\'solution-status-finished\']', { timeout: 600000 }).contains('Solver finished', { timeout: 600000 });
   });
 });
