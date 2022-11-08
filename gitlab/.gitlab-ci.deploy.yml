@@ -21,8 +21,8 @@
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CACHE_REGISTRY/objectstore-manager:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
 
     - docker pull $CACHE_REGISTRY/job-manager:$CI_COMMIT_SHA
