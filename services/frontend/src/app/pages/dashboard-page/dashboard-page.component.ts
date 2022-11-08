@@ -7,12 +7,11 @@ import {
 import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
-import {User} from '../../../../build/openapi/jobmanager';
 import {
   CreateSolutionComponent
 } from '../../components/shared/organisms/create-solution/create-solution.component';
 import {UserFacade} from '../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, Solution, User} from '../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-main-page',

@@ -1,7 +1,9 @@
+from build.job_manager_client import ApiClient as JobmanagerApiClient
+from build.job_manager_client import Configuration as JobmanagerConfiguration
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
-from build.job_manager_client import ApiClient as JobmanagerApiClient, Configuration as JobmanagerConfiguration
+from build.objectstore_client import ApiClient as ObjectstoreApiClient
+from build.objectstore_client import Configuration as ObjectstoreConfiguration
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from build.objectstore_client import ApiClient as ObjectstoreApiClient, Configuration as ObjectstoreConfiguration
 from services import OS4ML_NAMESPACE
 
 
@@ -25,5 +27,3 @@ def init_jobmanager_api() -> JobmanagerApi:
     default_config.host = ".".join(url_arr)
     api_client = JobmanagerApiClient(configuration=default_config)
     return JobmanagerApi(api_client=api_client)
-
-

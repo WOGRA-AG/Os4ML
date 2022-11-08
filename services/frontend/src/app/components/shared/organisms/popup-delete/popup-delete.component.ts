@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {User} from '../../../../../../build/openapi/jobmanager';
 import { catchError, of } from 'rxjs';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, Solution} from '../../../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-popup-delete',

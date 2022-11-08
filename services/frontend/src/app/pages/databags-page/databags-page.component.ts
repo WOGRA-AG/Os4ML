@@ -9,8 +9,7 @@ import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {UserFacade} from '../../user/services/user-facade.service';
-import {User} from '../../../../build/openapi/jobmanager';
-import {Databag, ModelmanagerService} from '../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, User} from '../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-databags-page',

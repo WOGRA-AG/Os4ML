@@ -6,17 +6,19 @@ import zipfile
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 from ludwig.api import LudwigModel
 
-from build.objectstore.model.databag import Databag
-from config import MODEL_DIR_NAME, MODEL_FILE_NAME
-from jobmanager.solution import error_status_update, status_update
+from config import MODEL_DIR_NAME
 from load.databag import load_databag
-from load.dataset import load_dataset
+from load.dataframe import load_dataframe
 from ludwig_model.dataset import train_validate_test_split
 from ludwig_model.labels import get_all_label_values, get_label_name
 from ludwig_model.metrics import calculate_conf_matrix
 from ludwig_model.model import build_model, train_model
-from model.error_msg_key import ErrorMsgKey
-from objectstore.objectstore import upload_file_to_solution
+from model_manager.solutions import (
+    update_solution_error_status,
+    update_solution_status,
+    upload_model,
+)
+from models.error_msg_key import ErrorMsgKey
 from pipelines.util import StatusMessages
 from util.exception_handler import exception_handler
 
@@ -36,25 +38,27 @@ def ludwig_solver(
 ) -> None:
     """Train a ludwig model for the dataset."""
     handler = functools.partial(
-        error_status_update, solution_name, os4ml_namespace=os4ml_namespace
+        update_solution_error_status,
+        solution_name,
+        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.TRAINING_FAILED):
         databag = load_databag(databag_file.path)
-        solution = status_update(
+        solution = update_solution_status(
             solution_name, StatusMessages.running.value, os4ml_namespace
         )
         model, model_definition = build_model(
             solution, databag.columns, batch_size, epochs, early_stop
         )
-        dataset = load_dataset(dataset_file.path)
+        dataframe = load_dataframe(dataset_file.path)
         df_train, df_validate, df_test = train_validate_test_split(
-            dataset, test_split, validation_split
+            dataframe, test_split, validation_split
         )
         train_model(model, df_train, df_validate, df_test)
         evaluate_model(
-            model, model_definition, dataset, df_test, metrics, cls_metrics
+            model, model_definition, dataframe, df_test, metrics, cls_metrics
         )
-        upload_model(model, solution_name, databag, os4ml_namespace)
+        upload_model_to_solution(model, solution_name, os4ml_namespace)
 
 
 def evaluate_model(
@@ -74,10 +78,9 @@ def evaluate_model(
     cls_metrics.log_confusion_matrix(label_values, conf_matrix)
 
 
-def upload_model(
+def upload_model_to_solution(
     model: LudwigModel,
     solution_name: str,
-    databag: Databag,
     os4ml_namespace: str,
 ) -> None:
     with tempfile.TemporaryDirectory() as temp:
@@ -85,13 +88,7 @@ def upload_model(
         with tempfile.NamedTemporaryFile() as zip_file:
             zip_dir(temp, zip_file.name)
             with open(zip_file.name, "rb") as binary_zip:
-                upload_file_to_solution(
-                    binary_zip,
-                    MODEL_FILE_NAME,
-                    solution_name,
-                    databag,
-                    os4ml_namespace,
-                )
+                upload_model(binary_zip, solution_name, os4ml_namespace)
 
 
 def zip_dir(dir_: str, zip_file: str) -> None:

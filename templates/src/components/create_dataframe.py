@@ -6,9 +6,9 @@ import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output
 
 from exceptions.file_type_unknown import FileTypeUnknownException
-from model.error_msg_key import ErrorMsgKey
-from model.file_type import FileType
-from objectstore.objectstore import error_databag_status_update
+from model_manager.databags import update_databag_error_status
+from models.error_msg_key import ErrorMsgKey
+from models.file_type import FileType
 from util.exception_handler import exception_handler
 
 
@@ -20,7 +20,7 @@ def create_dataframe(
     os4ml_namespace: str,
 ):
     handler = functools.partial(
-        error_databag_status_update,
+        update_databag_error_status,
         databag_id,
         os4ml_namespace=os4ml_namespace,
     )

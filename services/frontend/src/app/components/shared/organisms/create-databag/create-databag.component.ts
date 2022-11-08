@@ -1,7 +1,6 @@
 import {
   Component,
 } from '@angular/core';
-import {JobmanagerService, User} from '../../../../../../build/openapi/jobmanager';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -9,7 +8,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService} from '../../../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -32,7 +31,7 @@ export class CreateDatabagComponent {
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private translate: TranslateService,
               private modelManager: ModelmanagerService,
-              private jobmanagerService: JobmanagerService, private userFacade: UserFacade) {
+              private userFacade: UserFacade) {
     userFacade.currentUser$.pipe().subscribe(
       currentUser => this.user = currentUser
     );

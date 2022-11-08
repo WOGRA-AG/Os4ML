@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {User} from '../../../../../../build/openapi/jobmanager';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {ModelmanagerService, Solution} from '../../../../../../build/openapi/modelmanager';
+import {ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-setting-solution',
@@ -63,7 +62,7 @@ export class SettingSolutionComponent {
 
   download() {
     if (this.solution.name) {
-      this.modelManager.getDownloadLinkForModelOfSolution(this.solution.name, this.user?.rawToken).subscribe(url => {
+      this.modelManager.downloadModel(this.solution.name, this.user?.rawToken).subscribe(url => {
         const link = document.createElement('a');
         link.href = url;
         link.toggleAttribute('download');

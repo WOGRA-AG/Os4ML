@@ -1,7 +1,7 @@
 #!/bin/sh
 
 docker run --rm \
-  -v $PWD:/local/ openapitools/openapi-generator-cli:v6.2.0 generate \
+  -v $PWD:/local/ openapitools/openapi-generator-cli:v5.4.0 generate \
   -i /local/oas/model-manager-oas.yaml \
   -t /local/oas/templates_client \
   -g python \

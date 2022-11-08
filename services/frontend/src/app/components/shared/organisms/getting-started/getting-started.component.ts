@@ -1,8 +1,4 @@
 import {Component} from '@angular/core';
-import {
-  RunParams,
-  User
-} from '../../../../../../build/openapi/jobmanager';
 import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {
@@ -15,7 +11,7 @@ import {PipelineStep} from '../../../../models/pipeline-step';
 import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, Solution, Solver} from '../../../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-popup-upload',

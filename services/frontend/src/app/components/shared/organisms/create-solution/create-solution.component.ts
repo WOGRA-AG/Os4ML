@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {User} from '../../../../../../build/openapi/jobmanager';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, Solution, Solver} from '../../../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-popup-predictions',

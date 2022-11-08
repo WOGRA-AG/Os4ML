@@ -91,9 +91,22 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/databags/{databagId}/dataset":
+  "/apis/v1beta1/model-manager/databags/{databagId}/files/dataset":
+    get:
+      summary: "download dataset from databag"
+      operationId: downloadDataset
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/DownloadLink'
+        404:
+          $ref: '#/components/responses/NotFound'
     put:
-      summary: "upload dataset"
+      summary: "upload dataset to databag"
       operationId: uploadDataset
       tags:
         - modelmanager
@@ -107,8 +120,40 @@ paths:
               type: string
               format: binary
       responses:
-        201:
-          description: Created
+        200:
+          $ref: '#/components/responses/Uploaded'
+
+  "/apis/v1beta1/model-manager/databags/{databagId}/files/dataframe":
+    get:
+      summary: "download dataset as a pandas dataframe from databag"
+      operationId: downloadDataframe
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/DownloadLink'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "upload dataset as pandas dataframe to databag"
+      operationId: uploadDataframe
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          $ref: '#/components/responses/Uploaded'
 
   "/apis/v1beta1/model-manager/solvers":
     get:
@@ -184,7 +229,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
 
-  "/solutions/{solutionName}":
+  "/apis/v1beta1/modelmanager/solutions/{solutionName}":
     get:
       summary: "Get a solution"
       operationId: getSolutionByName
@@ -234,24 +279,37 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/solutions/{solutionName}/model":
+  "/apis/v1beta1/modelmanager/solutions/{solutionName}/files/model":
     get:
-      summary: "get a download link for the model of the specified solution"
-      operationId: getDownloadLinkForModelOfSolution
+      summary: "download model from solution"
+      operationId: downloadModel
+      tags:
+        - modelmanager
       parameters:
         - $ref: '#/components/parameters/SolutionName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - modelmanager
       responses:
         200:
-          description: "Download link"
-          content:
-            application/json:
-              schema:
-                type: string
+          $ref: '#/components/responses/DownloadLink'
         404:
           $ref: '#/components/responses/NotFound'
+    put:
+      summary: "upload model to solution"
+      operationId: uploadModel
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          $ref: '#/components/responses/Uploaded'
 
 components:
   schemas:
@@ -301,6 +359,14 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+    DownloadLink:
+      description: Download link
+      content:
+        application/json:
+          schema:
+            type: string
+    Uploaded:
+      description: The file was uploaded
     RequestBodyMismatch:
       description: The provided request body has the wrong format
       content:

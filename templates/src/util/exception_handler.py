@@ -1,7 +1,7 @@
 import contextlib
 from typing import Callable, Protocol, runtime_checkable
 
-from model.error_msg_key import ErrorMsgKey
+from models.error_msg_key import ErrorMsgKey
 
 ErrorMsgKeyHandler = Callable[[ErrorMsgKey], None]
 

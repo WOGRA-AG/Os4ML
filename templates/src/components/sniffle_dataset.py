@@ -5,18 +5,17 @@ from typing import List
 import pandas as pd
 from kfp.v2.dsl import Dataset, Input
 
-from build.objectstore.model.column import Column
-from build.objectstore.model.databag import Databag
-from config import DATASET_FILE_NAME
-from load.dataset import load_dataset
-from model.error_msg_key import ErrorMsgKey
-from objectstore.objectstore import (
-    download_databag_by_id,
-    error_databag_status_update,
-    put_databag,
+from build.model_manager_client.model.column import Column
+from build.model_manager_client.model.databag import Databag
+from load.dataframe import load_dataframe
+from model_manager.databags import (
+    get_databag_by_id,
+    update_databag,
+    update_databag_error_status,
     update_databag_status,
-    upload_file_to_databag,
+    upload_dataframe,
 )
+from models.error_msg_key import ErrorMsgKey
 from pipelines.util import DatabagStatusMessages
 from sniffle.sniffle import (
     get_num_rows,
@@ -39,7 +38,7 @@ def sniffle_dataset(
     For zip_file databags the type is derived from the suffix of the file names in the dataframe.
     """
     handler = functools.partial(
-        error_databag_status_update,
+        update_databag_error_status,
         databag_id,
         os4ml_namespace=os4ml_namespace,
     )
@@ -47,17 +46,17 @@ def sniffle_dataset(
         update_databag_status(
             databag_id, DatabagStatusMessages.inspecting, os4ml_namespace
         )
-        df = load_dataset(dataset.path)
+        df = load_dataframe(dataset.path)
         columns = create_columns(df, dataset_type, max_categories)
 
-        databag = download_databag_by_id(databag_id, os4ml_namespace)
+        databag = get_databag_by_id(databag_id, os4ml_namespace)
         databag.dataset_type = dataset_type
         databag.number_rows = get_num_rows(columns)
         databag.number_columns = len(columns)
         databag.columns = columns
         databag.status = DatabagStatusMessages.creating.value
-        put_databag(databag, os4ml_namespace)
-        upload_dataset(df, databag, os4ml_namespace)
+        update_databag(databag, os4ml_namespace)
+        upload_dataframe_to_databag(df, databag, os4ml_namespace)
 
 
 def create_columns(
@@ -73,13 +72,11 @@ def create_columns(
         raise NotImplementedError()
 
 
-def upload_dataset(
+def upload_dataframe_to_databag(
     df: pd.DataFrame, databag: Databag, os4ml_namespace: str
 ) -> None:
     with tempfile.NamedTemporaryFile() as file:
         with open(file.name, "wb") as output_file:
             df.to_csv(output_file, index=False)
         with open(file.name, "rb") as upload_file:
-            upload_file_to_databag(
-                upload_file, DATASET_FILE_NAME, databag, os4ml_namespace
-            )
+            upload_dataframe(upload_file, databag, os4ml_namespace)

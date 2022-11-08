@@ -11,4 +11,5 @@ SOLUTION_CONFIG_FILE_NAME: str = os.getenv(
 )
 
 MODEL_FILE_NAME = "model.os4ml.zip"
+DATAFRAME_FILE_NAME = "dataframe"
 DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"

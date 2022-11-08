@@ -4,9 +4,8 @@ import {
   DialogDynamicComponent
 } from '../../../dialog-dynamic/dialog-dynamic.component';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
-import {User} from '../../../../../../build/openapi/jobmanager';
 import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService} from '../../../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-setting-databag',

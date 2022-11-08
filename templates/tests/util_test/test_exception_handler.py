@@ -1,6 +1,6 @@
 import pytest
 
-from model.error_msg_key import ErrorMsgKey
+from models.error_msg_key import ErrorMsgKey
 from util.exception_handler import (
     ErrorWithMsgKey,
     ExceptionHandlerException,

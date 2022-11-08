@@ -7,10 +7,10 @@ from services import ML_PIPELINE_NS, ML_PIPELINE_URL
 
 class KfpExecutor:
     def __init__(
-            self,
-            host: str = ML_PIPELINE_URL,
-            namespace: str = ML_PIPELINE_NS,
-            client=None,
+        self,
+        host: str = ML_PIPELINE_URL,
+        namespace: str = ML_PIPELINE_NS,
+        client=None,
     ):
         self.client = client if client is not None else Client(host, namespace)
         self.usernamespace = self.client.get_user_namespace()
@@ -24,7 +24,11 @@ class KfpExecutor:
         return experiment.id
 
     def create_run(
-            self, name: str, experiment_id: str, pipeline_path: str, run_params: dict[str, str]
+        self,
+        name: str,
+        experiment_id: str,
+        pipeline_path: str,
+        run_params: dict[str, str],
     ) -> str:
         run = self.client.run_pipeline(
             job_name=name,

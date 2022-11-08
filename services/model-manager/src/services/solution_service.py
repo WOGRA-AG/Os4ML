@@ -8,7 +8,6 @@ from fastapi import Depends
 
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
-from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
@@ -19,7 +18,8 @@ from services import (
     SOLUTION_CONFIG_FILE_NAME,
 )
 from services.databag_service import DatabagService
-from services.init_api_clients import init_objectstore_api, init_jobmanager_api
+from services.init_api_clients import init_jobmanager_api, init_objectstore_api
+from src.build.job_manager_client.model.run_params import RunParams
 
 
 def _solution_file_name(solution: Solution) -> str:
@@ -41,6 +41,7 @@ class SolutionService:
         self.jobmanager = jobmanager
         self.databag_service = databag_service
         self.solution_config_file_name = SOLUTION_CONFIG_FILE_NAME
+        self.model_file_name = MODEL_FILE_NAME
 
     def get_solutions(self, usertoken: str) -> list[Solution]:
         objects: list[str] = self.objectstore.get_objects_with_prefix(
@@ -87,7 +88,9 @@ class SolutionService:
             solution_name=solution.name,
         )
         self._persist_solution(solution, usertoken=usertoken)
-        run_id: str = self.jobmanager.create_run_by_solver_name(solution.solver, run_params=run_params, usertoken=usertoken)
+        run_id: str = self.jobmanager.create_run_by_solver_name(
+            solution.solver, run_params=run_params, usertoken=usertoken
+        )
         solution.run_id = run_id
         self._persist_solution(solution, usertoken=usertoken)
         return solution
@@ -118,22 +121,52 @@ class SolutionService:
             )
         except SolutionNotFoundException:
             return
-        run: Run = self.jobmanager.get_run_by_id(solution.run_id, usertoken=usertoken)
+        run: Run = self.jobmanager.get_run_by_id(
+            solution.run_id, usertoken=usertoken
+        )
         if run.status == "Running":
-            self.jobmanager.terminate_run_by_id(solution.run_id, usertoken=usertoken)
+            self.jobmanager.terminate_run_by_id(
+                solution.run_id, usertoken=usertoken
+            )
         self.objectstore.delete_objects_with_prefix(
             path_prefix=_get_solution_prefix(solution),
             usertoken=usertoken,
         )
 
-    def get_download_link_for_model_of_solution(
-        self, solution_name: str, usertoken: str
+    def download_model(self, solution_name: str, usertoken: str) -> str:
+        return self._get_presigned_get_url_for_solution_file(
+            solution_name, self.model_file_name, usertoken
+        )
+
+    def upload_model(
+        self, solution_name: str, body: bytes, usertoken: str
+    ) -> None:
+        self._upload_file_to_solution(
+            solution_name, body, self.model_file_name, usertoken
+        )
+
+    def _get_presigned_get_url_for_solution_file(
+        self, solution_name: str, file_name: str, usertoken: str
     ) -> str:
         solution = self.get_solution_by_name(
             solution_name=solution_name,
             usertoken=usertoken,
         )
-        object_name = f"{_get_solution_prefix(solution)}{MODEL_FILE_NAME}"
+        object_name = f"{_get_solution_prefix(solution)}{file_name}"
         return self.objectstore.get_presigned_get_url(  # type: ignore
             object_name, usertoken=usertoken
+        )
+
+    def _upload_file_to_solution(
+        self, solution_name: str, body: bytes, file_name: str, usertoken: str
+    ) -> None:
+        solution = self.get_solution_by_name(
+            solution_name=solution_name,
+            usertoken=usertoken,
+        )
+        bytes_io = BytesIO(body)
+        bytes_io.seek(0)
+        object_name = f"{_get_solution_prefix(solution)}{file_name}"
+        self.objectstore.put_object_by_name(
+            object_name, body=bytes_io, usertoken=usertoken
         )

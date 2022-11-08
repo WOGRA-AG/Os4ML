@@ -44,6 +44,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Run'
+        404:
+          $ref: '#/components/responses/NotFound'
     put:
       summary: 'Terminate a run'
       operationId: terminateRunById
@@ -53,8 +55,8 @@ paths:
       tags:
         - jobmanager
       responses:
-        204:
-          description: "Deleted"
+        200:
+          description: Terminated
 
 components:
   schemas:
@@ -120,8 +122,6 @@ components:
         id:
           $ref: './shared-oas.yaml#/components/schemas/RunId'
         name:
-          type: string
-        description:
           type: string
         status:
           type: string
