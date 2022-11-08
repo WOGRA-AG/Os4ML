@@ -25,46 +25,46 @@
     - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
 
-    - docker pull $CACHE_REGISTRY/job-manager:$CI_COMMIT_SHA
+    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA || true
     - docker build
       -f 'services/job-manager/Dockerfile'
       --target production
-      --cache-from $CACHE_REGISTRY/job-manager:$CI_COMMIT_SHA
+      --cache-from $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
       --build-arg IMAGE_TAG=$LABEL
       '.'
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
 
-    - docker pull $CACHE_REGISTRY/workflow-translator:$CI_COMMIT_SHA
+    - docker pull $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA || true
     - docker build
       -f 'services/workflow-translator/Dockerfile'
       --target production
-      --cache-from $CACHE_REGISTRY/workflow-translator:$CI_COMMIT_SHA
+      --cache-from $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
       --build-arg IMAGE_TAG=$LABEL
       '.'
     - docker push $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
 
-    - docker pull $CACHE_REGISTRY/model-manager:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/model-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/model-manager:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/model-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/model-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/model-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/model-manager:$LABEL
 
-    - docker pull $CACHE_REGISTRY/frontend:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
 
-    - docker pull $CACHE_REGISTRY/python:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/python:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/python:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/python:$LABEL
     - docker push $CI_REGISTRY_IMAGE/python:$LABEL
 
-    - docker pull $CACHE_REGISTRY/pandas:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
     - docker push $CI_REGISTRY_IMAGE/pandas:$LABEL
 
-    - docker pull $CACHE_REGISTRY/ludwig:$CI_COMMIT_SHA
-    - docker tag $CACHE_REGISTRY/ludwig:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/ludwig:$LABEL
+    - docker pull $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/ludwig:$LABEL
     - docker push $CI_REGISTRY_IMAGE/ludwig:$LABEL
 
 deploy-tag:
