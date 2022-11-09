@@ -173,7 +173,7 @@ paths:
                 items:
                   $ref: './shared-oas.yaml#/components/schemas/Solver'
 
-  "/apis/v1beta1/modelmanager/solvers/{solverName}":
+  "/apis/v1beta1/model-manager/solvers/{solverName}":
     get:
       summary: 'get solver by name'
       operationId: getSolverByName
@@ -192,7 +192,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/modelmanager/solutions":
+  "/apis/v1beta1/model-manager/solutions":
     get:
       summary: 'get all solutions'
       operationId: getSolutions
@@ -229,7 +229,7 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
 
-  "/apis/v1beta1/modelmanager/solutions/{solutionName}":
+  "/apis/v1beta1/model-manager/solutions/{solutionName}":
     get:
       summary: "Get a solution"
       operationId: getSolutionByName
@@ -279,7 +279,7 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/modelmanager/solutions/{solutionName}/files/model":
+  "/apis/v1beta1/model-manager/solutions/{solutionName}/files/model":
     get:
       summary: "download model from solution"
       operationId: downloadModel

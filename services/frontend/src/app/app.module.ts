@@ -95,6 +95,11 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
         deps: [HttpClient]
       }
     }),
+    ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
+      {
+        basePath: ''
+      }
+    )),
     MaterialModule,
     UserModule,
     FormsModule,
