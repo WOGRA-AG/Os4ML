@@ -1,13 +1,3 @@
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as pipeline-templates
-ARG IMAGE_TAG
-ENV IMG_TAG=$IMAGE_TAG
-WORKDIR templates
-RUN --mount=type=cache,target=/root/.cache pip install kfp==1.8.12
-COPY templates /templates
-RUN python build_all_components.py
-RUN python build_all_pipelines.py
-RUN rm -r pipelines/__pycache__
-
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
 FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
@@ -40,18 +30,9 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-WORKDIR /usr/app/src
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i ../oas/objectstore-manager-oas.yaml \
--t ../oas/templates_client \
--g python \
---package-name build.objectstore_client \
--o . \
---global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
-
-RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i ../oas/workflow-translator-oas.yaml \
--t ../oas/templates_client \
+-i oas/workflow-translator-oas.yaml \
+-t oas/templates_client \
 -g python \
 --package-name build.translator_client \
 -o . \
@@ -79,7 +60,6 @@ ENV FASTAPI_ENV=development
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /templates/pipelines /pipelines
 
 COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh

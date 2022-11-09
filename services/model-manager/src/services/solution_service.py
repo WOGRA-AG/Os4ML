@@ -1,11 +1,13 @@
 import base64
 import json
+import logging
 import uuid
 from datetime import datetime
 from io import BytesIO
 
 from fastapi import Depends
 
+from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
@@ -65,7 +67,6 @@ class SolutionService:
     def get_solution_by_name(
         self, solution_name: str, usertoken: str
     ) -> Solution:
-        # TODO more efficiently by directly looking for the solution.json file?
         solutions_with_name = [
             solution
             for solution in self.get_solutions(usertoken=usertoken)
@@ -76,7 +77,6 @@ class SolutionService:
         return solutions_with_name.pop()
 
     def create_solution(self, solution: Solution, usertoken: str) -> Solution:
-        # TODO split into id and name field
         uuid_: uuid.UUID = uuid.uuid4()
         solution.name = f"{uuid_}_{solution.name}"
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
@@ -121,13 +121,19 @@ class SolutionService:
             )
         except SolutionNotFoundException:
             return
-        run: Run = self.jobmanager.get_run_by_id(
-            solution.run_id, usertoken=usertoken
-        )
-        if run.status == "Running":
-            self.jobmanager.terminate_run_by_id(
-                solution.run_id, usertoken=usertoken
-            )
+        if solution.run_id is not None:
+            try:
+                run: Run = self.jobmanager.get_run_by_id(
+                    solution.run_id, usertoken=usertoken
+                )
+                if run.status == "Running":
+                    self.jobmanager.terminate_run_by_id(
+                        solution.run_id, usertoken=usertoken
+                    )
+            except ApiException as e:
+                logging.warning(e)
+            except ApiTypeError as e:
+                logging.error(e)
         self.objectstore.delete_objects_with_prefix(
             path_prefix=_get_solution_prefix(solution),
             usertoken=usertoken,

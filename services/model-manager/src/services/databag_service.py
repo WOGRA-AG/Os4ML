@@ -1,11 +1,13 @@
 import base64
 import json
+import logging
 import uuid
 from datetime import datetime
 from io import BytesIO, StringIO
 
 from fastapi import Depends
 
+from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
@@ -103,13 +105,18 @@ class DatabagService:
         except DatabagNotFoundException:
             return
         if databag.run_id is not None:
-            run: Run = self.jobmanager.get_run_by_id(
-                databag.run_id, usertoken=usertoken
-            )
-            if run.status == "Running":
-                self.jobmanager.terminate_run_by_id(
+            try:
+                run: Run = self.jobmanager.get_run_by_id(
                     databag.run_id, usertoken=usertoken
                 )
+                if run.status == "Running":
+                    self.jobmanager.terminate_run_by_id(
+                        databag.run_id, usertoken=usertoken
+                    )
+            except ApiException as e:
+                logging.warning(e)
+            except ApiTypeError as e:
+                logging.error(e)
         self.objectstore.delete_objects_with_prefix(
             path_prefix=databag_id, usertoken=usertoken
         )

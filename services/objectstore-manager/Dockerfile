@@ -22,21 +22,12 @@ FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as 
 WORKDIR /usr/app
 COPY ./ /usr/app
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i ./oas/objectstore-manager-oas.yaml \
+-i oas/objectstore-manager-oas.yaml \
 -t oas/templates \
 --package-name build.openapi_server \
 -g python-fastapi \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
-
-WORKDIR /usr/app/src
-RUN bash /usr/local/bin/docker-entrypoint.sh generate \
-    -i ../oas/job-manager-oas.yaml \
-    -t ../oas/templates_client \
-    -g python \
-    --package-name build.openapi_client \
-    -o . \
-    --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
 FROM python-base as builder-base
 RUN apt-get update \
