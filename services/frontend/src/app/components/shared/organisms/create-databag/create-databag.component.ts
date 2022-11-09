@@ -60,6 +60,7 @@ export class CreateDatabagComponent {
         );
       }
       this.pipelineStatus = this.translate.instant('message.pipeline.default');
+      await this.retrievePipelineStatus();
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
       if (this.databag.databagId) {
@@ -71,6 +72,35 @@ export class CreateDatabagComponent {
       this.stepperStep = 1;
       stepper.next();
     }
+  }
+
+  retrievePipelineStatus(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.intervalID = setInterval(() => {
+        if (this.databag.databagId === undefined) {
+          return;
+        }
+        this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
+          this.databag = databag;
+          if (this.databag.status !== undefined && this.databag.status !== '') {
+            this.pipelineStatus = this.databag.status;
+          }
+          switch (this.databag.status) {
+            case 'error':
+              clearInterval(this.intervalID);
+              reject();
+              break;
+            case 'Creating databag':
+              if(this.databag.columns === undefined) {
+                return;
+              }
+              clearInterval(this.intervalID);
+              resolve();
+              break;
+          }
+        });
+      }, 2000);
+    });
   }
 
   clearProgress(): Observable<void> {

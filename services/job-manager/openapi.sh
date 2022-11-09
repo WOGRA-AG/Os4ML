@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sudo rm -r src/build
+
 docker run --rm \
   -v $PWD:/local/ openapitools/openapi-generator-cli:v5.4.0 generate \
   -i /local/oas/job-manager-oas.yaml \
@@ -14,6 +16,6 @@ docker run --rm \
   -i /local/oas/workflow-translator-oas.yaml \
   -t /local/oas/templates_client \
   -g python \
-  --package-name src.build.translator_client \
-  -o /local \
+  --package-name build.translator_client \
+  -o /local/src \
   --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false

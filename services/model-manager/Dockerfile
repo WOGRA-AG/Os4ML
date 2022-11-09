@@ -10,17 +10,18 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
+WORKDIR /usr/app/src
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i oas/objectstore-manager-oas.yaml \
--t oas/templates_client \
+-i ../oas/objectstore-manager-oas.yaml \
+-t ../oas/templates_client \
 -g python \
 --package-name build.objectstore_client \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i oas/job-manager-oas.yaml \
--t oas/templates_client \
+-i ../oas/job-manager-oas.yaml \
+-t ../oas/templates_client \
 -g python \
 --package-name build.job_manager_client \
 -o . \

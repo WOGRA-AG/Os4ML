@@ -30,9 +30,10 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
+WORKDIR /usr/app/src
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i oas/workflow-translator-oas.yaml \
--t oas/templates_client \
+-i ../oas/workflow-translator-oas.yaml \
+-t ../oas/templates_client \
 -g python \
 --package-name build.translator_client \
 -o . \
@@ -92,7 +93,6 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /templates/pipelines /pipelines
 COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR

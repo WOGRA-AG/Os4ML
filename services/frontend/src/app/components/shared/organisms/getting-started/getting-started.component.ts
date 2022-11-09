@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
@@ -23,7 +22,6 @@ export class GettingStartedComponent {
   file: File = new File([], '');
   fileUrl = '';
   running = false;
-  uuid: string = uuidv4();
   runId = '';
   databagName = '';
   intervalID = 0;
@@ -71,24 +69,22 @@ export class GettingStartedComponent {
       try {
         const databagToCreate: Databag = {
           fileName: this.file.name ? this.file.name : this.fileUrl,
-          databagName: this.file.name ? this.file.name : this.fileUrl,
+          databagName: this.databagName,
         };
-        await firstValueFrom(this.modelManager.createDatabag(this.user?.rawToken, databagToCreate));
-        if (this.file.name) {
+        this.databag = await firstValueFrom(this.modelManager.createDatabag(this.user?.rawToken, databagToCreate));
+        if (this.file.name && this.databag.databagId !== undefined) {
           await firstValueFrom(
-            this.modelManager.uploadDataset(this.uuid, this.user?.rawToken, this.file)
+            this.modelManager.uploadDataset(this.databag.databagId, this.user?.rawToken, this.file)
           );
         }
         this.pipelineStatus = this.translate.instant('message.pipeline.default');
-        this.modelManager.getDatabagById(this.uuid, this.user?.rawToken).subscribe((databag: Databag) => {
-          this.databag = databag;
-          this.databag.databagName = this.databagName;
-          this.modelManager.updateDatabagById(this.uuid, this.user?.rawToken, this.databag).subscribe(() => {
-          });
-        });
+        await this.retrievePipelineStatus();
       } catch (err: any) {
         this.matSnackBar.open(err, '', {duration: 3000});
-        await firstValueFrom(this.modelManager.deleteDatabagById(this.uuid, this.user?.rawToken));
+        if (this.databag.databagId === undefined) {
+          return;
+        }
+        await firstValueFrom(this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken));
       } finally {
         this.running = false;
         this.pipelineStatus = null;
@@ -123,11 +119,38 @@ export class GettingStartedComponent {
     this.submitting = false;
   }
 
+  retrievePipelineStatus(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.intervalID = setInterval(() => {
+        if (this.databag.databagId === undefined) {
+          return;
+        }
+        this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
+          this.databag = databag;
+          if (this.databag.status !== undefined) {
+            this.pipelineStatus = this.databag.status;
+          }
+          switch (this.databag.status) {
+            case 'error':
+              clearInterval(this.intervalID);
+              reject();
+              break;
+            case 'Creating databag':
+              if(this.databag.columns === undefined) {
+                return;
+              }
+              clearInterval(this.intervalID);
+              resolve();
+              break;
+          }
+        });
+      }, 2000);
+    });
+  }
 
   back(stepper: MatStepper): void {
-    if (this.stepperStep === 1) {
-      this.modelManager.deleteDatabagById(this.uuid, this.user?.rawToken);
-      this.uuid = uuidv4();
+    if (this.stepperStep === 1 && this.databag.databagId !== undefined) {
+      this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken);
       this.solution = {};
       this.solvers = [];
     }
@@ -136,7 +159,10 @@ export class GettingStartedComponent {
   }
 
   close(): void {
-    this.modelManager.deleteDatabagById(this.uuid, this.user?.rawToken).subscribe(() => {
+    if (this.databag.databagId === undefined) {
+      return;
+    }
+    this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).subscribe(() => {
       this.dialogRef.close();
     });
   }
@@ -145,7 +171,10 @@ export class GettingStartedComponent {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.modelManager.deleteDatabagById(this.uuid, this.user?.rawToken);
+    if (this.databag.databagId === undefined) {
+      return of(undefined);
+    }
+    return this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken);
   }
 
   selectPrediction(columnName: string | undefined) {
