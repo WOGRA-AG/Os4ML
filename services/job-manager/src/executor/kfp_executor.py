@@ -1,7 +1,9 @@
 from kfp import Client
+from kfp_server_api import ApiException
 
 from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.run import Run
+from exceptions import RunNotFoundException
 from services import ML_PIPELINE_NS, ML_PIPELINE_URL
 
 
@@ -39,7 +41,10 @@ class KfpExecutor:
         return run.id
 
     def get_run(self, run_id: str) -> Run:
-        run = self.client.get_run(run_id).run
+        try:
+            run = self.client.get_run(run_id).run
+        except ApiException:
+            raise RunNotFoundException(run_id)
         return Run(
             id=run.id,
             name=run.name,

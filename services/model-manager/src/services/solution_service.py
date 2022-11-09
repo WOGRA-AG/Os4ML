@@ -8,6 +8,7 @@ from fastapi import Depends
 
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
+from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
@@ -19,7 +20,6 @@ from services import (
 )
 from services.databag_service import DatabagService
 from services.init_api_clients import init_jobmanager_api, init_objectstore_api
-from src.build.job_manager_client.model.run_params import RunParams
 
 
 def _solution_file_name(solution: Solution) -> str:
