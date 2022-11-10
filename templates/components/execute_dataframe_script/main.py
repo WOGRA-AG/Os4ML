@@ -1,7 +1,7 @@
 from kfp.v2.dsl import Dataset, Output
 
-from components.images import pandas_image
 from components.build import build_component
+from components.images import pandas_image
 
 
 def execute_dataframe_script(

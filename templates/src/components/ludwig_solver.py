@@ -18,6 +18,7 @@ from model_manager.solutions import (
     update_solution_status,
     upload_model,
 )
+from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 
 
@@ -38,10 +39,10 @@ def ludwig_solver(
         update_solution_error_status,
         solution_name,
     )
-    with exception_handler(handler, ErrorMsgKey.TRAINING_FAILED):
+    with exception_handler(handler, StatusMessage.TRAINING_FAILED):
         databag = load_databag(databag_file.path)
         solution = update_solution_status(
-            solution_name, StatusMessages.running.value
+            solution_name, StatusMessage.SOLVER_RUNNING
         )
         model, model_definition = build_model(
             solution, databag.columns, batch_size, epochs, early_stop

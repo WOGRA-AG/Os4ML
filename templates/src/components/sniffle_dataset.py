@@ -11,10 +11,10 @@ from load.dataframe import load_dataframe
 from model_manager.databags import (
     get_databag_by_id,
     update_databag,
-    update_databag_error_status,
     update_databag_status,
     upload_dataframe,
 )
+from models.status_message import StatusMessage
 from sniffle.sniffle import (
     get_num_rows,
     sniff_column_datatypes,
@@ -35,11 +35,11 @@ def sniffle_dataset(
     For zip_file databags the type is derived from the suffix of the file names in the dataframe.
     """
     handler = functools.partial(
-        update_databag_error_status,
+        update_databag_status,
         databag_id,
     )
-    with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
-        update_databag_status(databag_id, DatabagStatusMessages.inspecting)
+    with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
+        update_databag_status(databag_id, StatusMessage.INSPECTING_DATATYPES)
         df = load_dataframe(dataset.path)
         columns = create_columns(df, dataset_type, max_categories)
 
@@ -48,7 +48,7 @@ def sniffle_dataset(
         databag.number_rows = get_num_rows(columns)
         databag.number_columns = len(columns)
         databag.columns = columns
-        databag.status = DatabagStatusMessages.creating.value
+        databag.status = StatusMessage.DATABAG_DONE.value
         update_databag(databag)
         upload_dataframe_to_databag(df, databag)
 

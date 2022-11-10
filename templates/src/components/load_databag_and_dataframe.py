@@ -11,6 +11,7 @@ from model_manager.solutions import (
     update_solution_error_status,
     update_solution_status,
 )
+from models.status_message import StatusMessage
 from util.download import download_file
 from util.exception_handler import exception_handler
 
@@ -25,9 +26,9 @@ def load_databag_and_dataframe(
         update_solution_error_status,
         solution_name,
     )
-    with exception_handler(handler, ErrorMsgKey.DATABAG_NOT_ACCESSIBLE):
-        update_solution_status(solution_name, StatusMessages.created.value)
-        databag = get_databag_by_id(databag_id=databag_id)
+    with exception_handler(handler, StatusMessage.DATABAG_NOT_ACCESSIBLE):
+        update_solution_status(solution_name, StatusMessage.SOLUTION_CREATED)
+        databag = get_databag_by_id(databag_id)
         with open(databag_output.path, "w") as databag_file:
             json.dump(databag.to_dict(), databag_file)
         dataframe_url = get_dataframe_download_url(databag)

@@ -4,12 +4,10 @@ from collections import namedtuple
 from typing import NamedTuple
 
 from exceptions.file_type_unknown import FileTypeUnknownException
-from model_manager.databags import (
-    update_databag_error_status,
-    update_databag_status,
-)
+from model_manager.databags import update_databag_status
 from models.databag_type import DatasetType
 from models.file_type import FileType
+from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 from util.uri import is_uri
 
@@ -18,12 +16,12 @@ def get_file_and_dataset_type(
     databag_id: str,
 ) -> NamedTuple("Types", [("file_type", str), ("dataset_type", str)]):
     handler = functools.partial(
-        update_databag_error_status,
+        update_databag_status,
         databag_id,
     )
-    with exception_handler(handler, ErrorMsgKey.FILE_TYPE_UNKNOWN):
+    with exception_handler(handler, StatusMessage.FILE_TYPE_UNKNOWN):
         databag = update_databag_status(
-            databag_id, DatabagStatusMessages.uploading.value
+            databag_id, StatusMessage.UPLOADING_DATA
         )
         types = namedtuple("Types", ["file_type", "dataset_type"])
         file_type = file_type_from_file_name(databag.file_name)

@@ -20,6 +20,7 @@ NODE_POOL_TO_SELECTOR: Mapping[str, NodeSelector] = {
     "high-cpu": NodeSelector("cloud.google.com/gke-nodepool", "highcpu-pool")
 }
 
+
 def load_component(component_dir: str):
     comp_path = pathlib.Path("components")
     comp_name = "component.yaml"

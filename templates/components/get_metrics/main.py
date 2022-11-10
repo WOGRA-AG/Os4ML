@@ -1,7 +1,7 @@
 from kfp.v2.dsl import Input, Metrics
 
-from components.images import python_image
 from components.build import build_component
+from components.images import python_image
 
 
 def get_metrics(metrics: Input[Metrics], solution_name: str):

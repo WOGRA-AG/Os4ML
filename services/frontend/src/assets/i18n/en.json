@@ -24,7 +24,8 @@
         "dataset_could_not_be_read": "Dataset could not be read",
         "metrics_not_retrievable": "Metrics not retrievable",
         "training_failed": "Training failed",
-        "file_type_unknown": "File type unknown"
+        "file_type_unknown": "File type unknown",
+        "resource_not_found": "Resource not found"
       }
     }
   },
