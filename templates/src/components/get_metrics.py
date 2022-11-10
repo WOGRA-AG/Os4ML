@@ -28,6 +28,6 @@ def get_metrics(
             accuracy = metrics.metadata["accuracy"]
             if solution.metrics is None:
                 solution.metrics = SolutionMetrics()
-            solution.metrics.accuracy = accuracy
+            solution.metrics.accuracy = float(accuracy)
         print(solution)
         put_solution(solution, solution_name, os4ml_namespace)
