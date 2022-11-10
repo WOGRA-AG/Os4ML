@@ -53,4 +53,12 @@ describe('Databags', () => {
     cy.get('#define-solver-next-button > .mat-button-wrapper').click();
     cy.get('[id=\'solution-status-finished\']', { timeout: 600000 }).contains('Solver finished', { timeout: 600000 });
   });
+  it('download model', () => {
+    cy.visit('/dashboard');
+    cy.get('.ng-star-inserted > .mat-list-item-content > .nav-item-extended').click();
+    cy.get(':nth-child(1) > .mat-body-2').click();
+    cy.get('.ng-star-inserted > .mat-button-wrapper').click();
+    cy.window().then((win) => { setTimeout(() => { win.location.reload(); },10000); });
+    cy.readFile('cypress/downloads/model.os4ml.zip', { timeout: 15000 });
+  });
 });
