@@ -9,7 +9,6 @@ from model_manager.databags import (
     update_databag_error_status,
 )
 from models.databag_type import DatasetType
-from models.error_msg_key import ErrorMsgKey
 from util.download import download_file
 from util.exception_handler import exception_handler
 from util.uri import resource_exists

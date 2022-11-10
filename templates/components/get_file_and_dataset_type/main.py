@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
 from components.images import python_image
-from components.util import build_component
+from components.build import build_component
 
 
 def get_file_and_dataset_type(

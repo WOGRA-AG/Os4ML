@@ -4,6 +4,17 @@
     "error": "Error",
     "pipeline": {
       "default": "Starting",
+      "running": {
+        "uploading_data": "Uploading data",
+        "inspecting_datatypes": "inspecting datatypes of columns",
+        "creating_databag": "Creating_databag",
+        "Solution_created": "Solution_created",
+        "solver_running": "Solver running"
+      },
+      "done": {
+        "solver_done": "Solver finished",
+        "databag_done": "Databag created"
+      },
       "error": {
         "default": "Pipeline Run Failed",
         "databag_not_accessible": "Databag not accessible",

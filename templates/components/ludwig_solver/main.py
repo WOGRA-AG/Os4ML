@@ -1,7 +1,7 @@
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
 from components.images import ludwig_image
-from components.util import build_component
+from components.build import build_component
 
 
 def ludwig_solver(

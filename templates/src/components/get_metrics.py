@@ -10,8 +10,6 @@ from model_manager.solutions import (
     update_solution,
     update_solution_error_status,
 )
-from models.error_msg_key import ErrorMsgKey
-from pipelines.util import StatusMessages
 from util.exception_handler import exception_handler
 
 
