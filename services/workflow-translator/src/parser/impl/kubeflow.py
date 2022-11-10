@@ -1,8 +1,7 @@
-from typing import Any, Dict
+from typing import Any
 
 import yaml
 
-from src.parser.interfaces.parser import Parser
 from src.repositories import FS
 from src.repositories.interfaces.template_repository import TemplateRepository
 from src.services import (
@@ -12,12 +11,12 @@ from src.services import (
 )
 
 
-class KubeflowParser(Parser):
+class KubeflowParser:
     def __init__(
         self,
         repository: TemplateRepository = FS(),
         annotation: str = USER_TOKEN_ANNOTATION,
-        user_token_env: Dict[str, Any] = USER_TOKEN_ENV,
+        user_token_env: dict[str, Any] = USER_TOKEN_ENV,
         os4ml_namespace_env: dict[str, str] = OS4ML_NAMESPACE_ENV,
     ):
         self.repository = repository
@@ -27,11 +26,11 @@ class KubeflowParser(Parser):
 
     def get_pipeline_template_by_name(
         self, name: str, user_token: str = None
-    ) -> Dict:
+    ) -> dict:
         template: str = self.repository.get_pipeline_template_by_name(
             name=name
         )
-        pipeline: Dict = yaml.safe_load(template)
+        pipeline: dict = yaml.safe_load(template)
 
         if user_token is None:
             return pipeline
@@ -41,7 +40,7 @@ class KubeflowParser(Parser):
         )
         return pipeline
 
-    def _update_user_token_env(self, pipeline, user_token: str) -> Dict:
+    def _update_user_token_env(self, pipeline, user_token: str) -> dict:
         for container in pipeline["spec"]["templates"]:
             if "dag" in container:
                 continue
