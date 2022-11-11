@@ -17,10 +17,10 @@ from services import OS4ML_NAMESPACE
 class RunService:
     def __init__(
         self,
-        kfp_client=None,
+        kfp_executor: KfpExecutor = Depends(),
         workflowtranslator: WorkflowtranslatorApi = Depends(),
     ):
-        self.kfp_executor = KfpExecutor(client=kfp_client)
+        self.kfp_executor = kfp_executor
         self.workflowtranslator = workflowtranslator
 
     def get_run_by_id(self, run_id: str) -> Run:
