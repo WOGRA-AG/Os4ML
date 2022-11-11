@@ -87,14 +87,14 @@ export class CreateDatabagComponent {
           }
           switch (this.databag.status) {
             case 'error':
-              clearInterval(this.intervalID);
+              this.clearIntervalSafe();
               reject();
               break;
             case 'Creating databag':
               if(this.databag.columns === undefined) {
                 return;
               }
-              clearInterval(this.intervalID);
+              this.clearIntervalSafe();
               resolve();
               break;
           }
@@ -103,10 +103,24 @@ export class CreateDatabagComponent {
     });
   }
 
-  clearProgress(): Observable<void> {
+  onSubmit(): void {
+    if (this.databag.databagId === undefined) {
+      return;
+    }
+    this.clearIntervalSafe();
+    this.modelManager.updateDatabagById(this.databag.databagId, this.user?.rawToken, this.databag).subscribe(() => {
+      this.dialogRef.close();
+    });
+  }
+
+  clearIntervalSafe(): void {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
+  }
+
+  clearProgress(): Observable<void> {
+    this.clearIntervalSafe();
     if (this.databag.databagId === undefined) {
       return of(undefined);
     }
@@ -114,29 +128,15 @@ export class CreateDatabagComponent {
   }
 
   back(stepper: MatStepper): void {
-    if (this.databag.databagId === undefined) {
-      return;
-    }
-    this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(() => {
+    this.clearProgress().subscribe(() => {
       stepper.previous();
       this.stepperStep -= 1;
     });
   }
 
-  onSubmit(): void {
-    if (this.databag.databagId === undefined) {
-      return;
-    }
-    this.modelManager.updateDatabagById(this.databag.databagId, this.user?.rawToken, this.databag).subscribe(() => {
-      this.dialogRef.close();
-    });
-  }
 
   close(): void {
-    if (this.databag.databagId === undefined) {
-      return;
-    }
-    this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).subscribe(() => {
+    this.clearProgress().subscribe(() => {
       this.dialogRef.close();
     });
   }

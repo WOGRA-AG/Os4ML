@@ -132,7 +132,7 @@ export class GettingStartedComponent {
           }
           switch (this.databag.status) {
             case 'error':
-              clearInterval(this.intervalID);
+              this.clearIntervalSafe();
               reject();
               break;
             case 'Creating databag':
@@ -149,28 +149,34 @@ export class GettingStartedComponent {
   }
 
   back(stepper: MatStepper): void {
+    this.clearIntervalSafe();
     if (this.stepperStep === 1 && this.databag.databagId !== undefined) {
-      this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken);
-      this.solution = {};
-      this.solvers = [];
+      this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).subscribe(() => {
+        this.solution = {};
+        this.solvers = [];
+        stepper.previous();
+        this.stepperStep -= 1;
+      });
+    } else {
+      stepper.previous();
+      this.stepperStep -= 1;
     }
-    stepper.previous();
-    this.stepperStep -= 1;
   }
 
   close(): void {
-    if (this.databag.databagId === undefined) {
-      return;
-    }
-    this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).subscribe(() => {
+    this.clearProgress().subscribe(() => {
       this.dialogRef.close();
     });
   }
 
-  clearProgress(): Observable<void> {
+  clearIntervalSafe(): void {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
+  }
+
+  clearProgress(): Observable<void> {
+    this.clearIntervalSafe();
     if (this.databag.databagId === undefined) {
       return of(undefined);
     }
