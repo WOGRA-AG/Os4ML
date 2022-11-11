@@ -17,7 +17,7 @@ from util.uri import is_uri
 
 
 def get_file_and_dataset_type(
-    databag_id: str
+    databag_id: str,
 ) -> NamedTuple("Types", [("file_type", str), ("dataset_type", str)]):
     handler = functools.partial(
         update_databag_error_status,

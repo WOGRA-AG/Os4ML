@@ -18,7 +18,4 @@ USER_TOKEN_ENV = {
 }
 
 OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
-OS4ML_NAMESPACE_ENV = {
-    "name": "OS4ML_NAMESPACE",
-    "value": OS4ML_NAMESPACE
-}
+OS4ML_NAMESPACE_ENV = {"name": "OS4ML_NAMESPACE", "value": OS4ML_NAMESPACE}

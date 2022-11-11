@@ -1,6 +1,4 @@
 import pytest
-
-from executor.kfp_executor import KfpExecutor
 from mocks.kfp_mock_client import KfpMockClient
 from pytest_mock import MockerFixture
 
@@ -10,6 +8,7 @@ from build.openapi_server.apis.jobmanager_api import (
     get_run_by_id,
 )
 from build.openapi_server.models.run_params import RunParams
+from executor.kfp_executor import KfpExecutor
 from services.run_service import RunService
 
 
@@ -37,7 +36,7 @@ def mock_jobmanager_controller(mock_workflowtranslator_api, mock_kfp_executor):
 
 @pytest.mark.asyncio
 async def test_post_run(
-        mock_jobmanager_controller, mock_workflowtranslator_api, usertoken
+    mock_jobmanager_controller, mock_workflowtranslator_api, usertoken
 ):
     run_params = RunParams(
         databag_id="test-databag", solution_name="test-solution"

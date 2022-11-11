@@ -1,3 +1,4 @@
+from fastapi import Depends
 from kfp import Client
 from kfp_server_api import ApiException
 
@@ -5,7 +6,6 @@ from build.openapi_server.models.experiment import Experiment
 from build.openapi_server.models.run import Run
 from exceptions import RunNotFoundException
 from services import ML_PIPELINE_NS, ML_PIPELINE_URL
-from fastapi import Depends
 
 
 def init_kfp_client() -> Client:
@@ -13,10 +13,7 @@ def init_kfp_client() -> Client:
 
 
 class KfpExecutor:
-    def __init__(
-            self,
-            client: Client = Depends(init_kfp_client)
-    ):
+    def __init__(self, client: Client = Depends(init_kfp_client)):
         self.client = client
         self.usernamespace = self.client.get_user_namespace()
 
@@ -29,11 +26,11 @@ class KfpExecutor:
         return experiment.id
 
     def create_run(
-            self,
-            name: str,
-            experiment_id: str,
-            pipeline_path: str,
-            run_params: dict[str, str],
+        self,
+        name: str,
+        experiment_id: str,
+        pipeline_path: str,
+        run_params: dict[str, str],
     ) -> str:
         run = self.client.run_pipeline(
             job_name=name,

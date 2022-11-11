@@ -28,12 +28,8 @@ def load_databag_and_dataframe(
         solution_name,
     )
     with exception_handler(handler, ErrorMsgKey.DATABAG_NOT_ACCESSIBLE):
-        update_solution_status(
-            solution_name, StatusMessages.created.value
-        )
-        databag = get_databag_by_id(
-            databag_id=databag_id
-        )
+        update_solution_status(solution_name, StatusMessages.created.value)
+        databag = get_databag_by_id(databag_id=databag_id)
         with open(databag_output.path, "w") as databag_file:
             json.dump(databag.to_dict(), databag_file)
         dataframe_url = get_dataframe_download_url(databag)

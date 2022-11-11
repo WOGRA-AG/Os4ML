@@ -41,9 +41,7 @@ def sniffle_dataset(
         databag_id,
     )
     with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
-        update_databag_status(
-            databag_id, DatabagStatusMessages.inspecting
-        )
+        update_databag_status(databag_id, DatabagStatusMessages.inspecting)
         df = load_dataframe(dataset.path)
         columns = create_columns(df, dataset_type, max_categories)
 
@@ -70,9 +68,7 @@ def create_columns(
         raise NotImplementedError()
 
 
-def upload_dataframe_to_databag(
-    df: pd.DataFrame, databag: Databag
-) -> None:
+def upload_dataframe_to_databag(df: pd.DataFrame, databag: Databag) -> None:
     with tempfile.NamedTemporaryFile() as file:
         with open(file.name, "wb") as output_file:
             df.to_csv(output_file, index=False)

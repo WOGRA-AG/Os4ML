@@ -14,18 +14,14 @@ def get_solution_by_name(solution_name: str) -> Solution:
     )
 
 
-def update_solution(
-    solution: Solution, solution_name: str
-) -> None:
+def update_solution(solution: Solution, solution_name: str) -> None:
     model_manager = init_model_manager_client()
     model_manager.update_solution_by_name(
         solution_name, solution=solution, usertoken=USER_TOKEN
     )
 
 
-def update_solution_status(
-    solution_name: str, status: str
-) -> Solution:
+def update_solution_status(solution_name: str, status: str) -> Solution:
     model_manager = init_model_manager_client()
     solution = model_manager.get_solution_by_name(
         solution_name, usertoken=USER_TOKEN
@@ -52,8 +48,6 @@ def update_solution_error_status(
     )
 
 
-def upload_model(
-    model: IO[bytes], solution_name: str
-) -> None:
+def upload_model(model: IO[bytes], solution_name: str) -> None:
     model_manager = init_model_manager_client()
     model_manager.upload_model(solution_name, body=model, usertoken=USER_TOKEN)

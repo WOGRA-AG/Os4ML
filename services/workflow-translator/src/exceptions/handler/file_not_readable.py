@@ -3,8 +3,8 @@ from http import HTTPStatus
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from main import app
 from exceptions import FileNotReadableException
+from main import app
 
 
 @app.exception_handler(FileNotReadableException)

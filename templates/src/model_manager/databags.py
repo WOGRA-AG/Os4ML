@@ -18,9 +18,7 @@ def update_databag(databag: Databag) -> None:
     )
 
 
-def update_databag_status(
-    databag_id: str, status: str
-) -> Databag:
+def update_databag_status(databag_id: str, status: str) -> Databag:
     model_manager = init_model_manager_client()
     databag = model_manager.get_databag_by_id(databag_id, usertoken=USER_TOKEN)
     databag.status = status
@@ -56,9 +54,7 @@ def get_dataframe_download_url(databag: Databag) -> str:
     )
 
 
-def upload_dataframe(
-    dataframe: IO[bytes], databag: Databag
-) -> None:
+def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
     model_manager = init_model_manager_client()
     model_manager.upload_dataframe(
         databag.databag_id, body=dataframe, usertoken=USER_TOKEN

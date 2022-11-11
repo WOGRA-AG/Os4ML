@@ -4,9 +4,7 @@ from components.images import python_image
 from components.util import build_component
 
 
-def get_metrics(
-    metrics: Input[Metrics], solution_name: str
-):
+def get_metrics(metrics: Input[Metrics], solution_name: str):
     from components.get_metrics import get_metrics
 
     return get_metrics(

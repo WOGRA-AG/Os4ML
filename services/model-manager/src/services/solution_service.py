@@ -33,15 +33,15 @@ def _get_solution_prefix(solution: Solution) -> str:
 
 
 def _get_solution_id(solution_name: str) -> str:
-    return solution_name.split('_').pop(0)
+    return solution_name.split("_").pop(0)
 
 
 class SolutionService:
     def __init__(
-            self,
-            objectstore: ObjectstoreApi = Depends(init_objectstore_api),
-            jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
-            databag_service: DatabagService = Depends(),
+        self,
+        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
+        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
+        databag_service: DatabagService = Depends(),
     ):
         self.objectstore = objectstore
         self.jobmanager = jobmanager
@@ -69,7 +69,7 @@ class SolutionService:
         return Solution(**json_dict)
 
     def get_solution_by_name(
-            self, solution_name: str, usertoken: str
+        self, solution_name: str, usertoken: str
     ) -> Solution:
         solutions_with_name = [
             solution
@@ -108,7 +108,7 @@ class SolutionService:
         )
 
     def update_solution_by_name(
-            self, solution_name: str, solution: Solution, usertoken: str
+        self, solution_name: str, solution: Solution, usertoken: str
     ) -> Solution:
         if _get_solution_id(solution_name) != _get_solution_id(solution.name):
             raise NotImplementedError()
@@ -116,7 +116,7 @@ class SolutionService:
         return solution
 
     def delete_solution_by_name(
-            self, solution_name: str, usertoken: str
+        self, solution_name: str, usertoken: str
     ) -> None:
         try:
             solution = self.get_solution_by_name(
@@ -149,14 +149,14 @@ class SolutionService:
         )
 
     def upload_model(
-            self, solution_name: str, body: bytes, usertoken: str
+        self, solution_name: str, body: bytes, usertoken: str
     ) -> None:
         self._upload_file_to_solution(
             solution_name, body, self.model_file_name, usertoken
         )
 
     def _get_presigned_get_url_for_solution_file(
-            self, solution_name: str, file_name: str, usertoken: str
+        self, solution_name: str, file_name: str, usertoken: str
     ) -> str:
         solution = self.get_solution_by_name(
             solution_name=solution_name,
@@ -168,7 +168,7 @@ class SolutionService:
         )
 
     def _upload_file_to_solution(
-            self, solution_name: str, body: bytes, file_name: str, usertoken: str
+        self, solution_name: str, body: bytes, file_name: str, usertoken: str
     ) -> None:
         solution = self.get_solution_by_name(
             solution_name=solution_name,
