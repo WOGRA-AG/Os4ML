@@ -9,7 +9,6 @@ def create_dataframe(
     dataframe: Output[Dataset],
     file_type: str,
     databag_id: str,
-    os4ml_namespace: str,
 ):
     from components.create_dataframe import create_dataframe
 
@@ -18,7 +17,6 @@ def create_dataframe(
         dataframe=dataframe,
         file_type=file_type,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
 
 

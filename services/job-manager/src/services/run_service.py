@@ -37,9 +37,6 @@ class RunService:
         experiment = Experiment(name=name)
         experiment_id = self.kfp_executor.create_experiment(experiment)
 
-        params = run_params.dict()
-        params["os4ml_namespace"] = OS4ML_NAMESPACE
-
         pipeline_dict: dict[
             str, object
         ] = self.workflowtranslator.get_pipeline_template_by_name(
@@ -49,5 +46,5 @@ class RunService:
             with open(pipeline_tmp_file.name, "w") as pipeline_file:
                 yaml.safe_dump(pipeline_dict, pipeline_file)
             return self.kfp_executor.create_run(
-                name, experiment_id, pipeline_tmp_file.name, params
+                name, experiment_id, pipeline_tmp_file.name, run_params.dict()
             )

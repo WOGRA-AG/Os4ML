@@ -7,14 +7,12 @@ from components.util import build_component
 def execute_dataframe_script(
     dataframe: Output[Dataset],
     databag_id: str,
-    os4ml_namespace: str,
 ):
     from components.execute_dataframe_script import execute_dataframe_script
 
     return execute_dataframe_script(
         dataframe=dataframe,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
 
 

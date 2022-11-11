@@ -29,7 +29,6 @@ def ludwig_solver(
     cls_metrics: Output[ClassificationMetrics],
     metrics: Output[Metrics],
     solution_name: str,
-    os4ml_namespace: str,
     batch_size: int,
     epochs: int,
     early_stop: int,
@@ -40,12 +39,11 @@ def ludwig_solver(
     handler = functools.partial(
         update_solution_error_status,
         solution_name,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.TRAINING_FAILED):
         databag = load_databag(databag_file.path)
         solution = update_solution_status(
-            solution_name, StatusMessages.running.value, os4ml_namespace
+            solution_name, StatusMessages.running.value
         )
         model, model_definition = build_model(
             solution, databag.columns, batch_size, epochs, early_stop
@@ -58,7 +56,7 @@ def ludwig_solver(
         evaluate_model(
             model, model_definition, dataframe, df_test, metrics, cls_metrics
         )
-        upload_model_to_solution(model, solution_name, os4ml_namespace)
+        upload_model_to_solution(model, solution_name)
 
 
 def evaluate_model(
@@ -81,14 +79,13 @@ def evaluate_model(
 def upload_model_to_solution(
     model: LudwigModel,
     solution_name: str,
-    os4ml_namespace: str,
 ) -> None:
     with tempfile.TemporaryDirectory() as temp:
         model.save(temp)
         with tempfile.NamedTemporaryFile() as zip_file:
             zip_dir(temp, zip_file.name)
             with open(zip_file.name, "rb") as binary_zip:
-                upload_model(binary_zip, solution_name, os4ml_namespace)
+                upload_model(binary_zip, solution_name)
 
 
 def zip_dir(dir_: str, zip_file: str) -> None:

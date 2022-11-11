@@ -17,16 +17,15 @@ from util.uri import is_uri
 
 
 def get_file_and_dataset_type(
-    databag_id: str, os4ml_namespace: str
+    databag_id: str
 ) -> NamedTuple("Types", [("file_type", str), ("dataset_type", str)]):
     handler = functools.partial(
         update_databag_error_status,
         databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.FILE_TYPE_UNKNOWN):
         databag = update_databag_status(
-            databag_id, DatabagStatusMessages.uploading.value, os4ml_namespace
+            databag_id, DatabagStatusMessages.uploading.value
         )
         types = namedtuple("Types", ["file_type", "dataset_type"])
         file_type = file_type_from_file_name(databag.file_name)

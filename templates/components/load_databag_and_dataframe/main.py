@@ -8,7 +8,6 @@ def load_databag_and_dataframe(
     dataframe: Output[Dataset],
     databag: Output[Artifact],
     databag_id: str,
-    os4ml_namespace: str,
     solution_name: str,
 ):
     from components.load_databag_and_dataframe import (
@@ -19,7 +18,6 @@ def load_databag_and_dataframe(
         dataframe_output=dataframe,
         databag_output=databag,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
     )
 

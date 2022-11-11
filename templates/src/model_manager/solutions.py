@@ -7,26 +7,26 @@ from model_manager.init_api_client import init_model_manager_client
 from models.error_msg_key import ErrorMsgKey
 
 
-def get_solution_by_name(solution_name: str, os4ml_namespace: str) -> Solution:
-    model_manager = init_model_manager_client(os4ml_namespace)
+def get_solution_by_name(solution_name: str) -> Solution:
+    model_manager = init_model_manager_client()
     return model_manager.get_solution_by_name(
         solution_name, usertoken=USER_TOKEN
     )
 
 
 def update_solution(
-    solution: Solution, solution_name: str, os4ml_namespace: str
+    solution: Solution, solution_name: str
 ) -> None:
-    model_manager = init_model_manager_client(os4ml_namespace)
+    model_manager = init_model_manager_client()
     model_manager.update_solution_by_name(
         solution_name, solution=solution, usertoken=USER_TOKEN
     )
 
 
 def update_solution_status(
-    solution_name: str, status: str, os4ml_namespace: str
+    solution_name: str, status: str
 ) -> Solution:
-    model_manager = init_model_manager_client(os4ml_namespace)
+    model_manager = init_model_manager_client()
     solution = model_manager.get_solution_by_name(
         solution_name, usertoken=USER_TOKEN
     )
@@ -38,9 +38,9 @@ def update_solution_status(
 
 
 def update_solution_error_status(
-    solution_name: str, error_msg_key: ErrorMsgKey, os4ml_namespace: str
+    solution_name: str, error_msg_key: ErrorMsgKey
 ) -> None:
-    model_manager = init_model_manager_client(os4ml_namespace)
+    model_manager = init_model_manager_client()
     solution = model_manager.get_solution_by_name(
         solution_name, usertoken=USER_TOKEN
     )
@@ -53,7 +53,7 @@ def update_solution_error_status(
 
 
 def upload_model(
-    model: IO[bytes], solution_name: str, os4ml_namespace: str
+    model: IO[bytes], solution_name: str
 ) -> None:
-    model_manager = init_model_manager_client(os4ml_namespace)
+    model_manager = init_model_manager_client()
     model_manager.upload_model(solution_name, body=model, usertoken=USER_TOKEN)

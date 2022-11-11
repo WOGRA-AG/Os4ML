@@ -17,12 +17,10 @@ def create_dataframe(
     dataframe: Output[Dataset],
     file_type: str,
     databag_id: str,
-    os4ml_namespace: str,
 ):
     handler = functools.partial(
         update_databag_error_status,
         databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
         if file_type == FileType.CSV:

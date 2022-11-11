@@ -30,7 +30,6 @@ def sniffle_dataset(
     dataset_type: str,
     max_categories: int,
     databag_id: str,
-    os4ml_namespace: str,
 ) -> None:
     """
     Guesses the datatypes of the columns in the dataframe.
@@ -40,23 +39,22 @@ def sniffle_dataset(
     handler = functools.partial(
         update_databag_error_status,
         databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
         update_databag_status(
-            databag_id, DatabagStatusMessages.inspecting, os4ml_namespace
+            databag_id, DatabagStatusMessages.inspecting
         )
         df = load_dataframe(dataset.path)
         columns = create_columns(df, dataset_type, max_categories)
 
-        databag = get_databag_by_id(databag_id, os4ml_namespace)
+        databag = get_databag_by_id(databag_id)
         databag.dataset_type = dataset_type
         databag.number_rows = get_num_rows(columns)
         databag.number_columns = len(columns)
         databag.columns = columns
         databag.status = DatabagStatusMessages.creating.value
-        update_databag(databag, os4ml_namespace)
-        upload_dataframe_to_databag(df, databag, os4ml_namespace)
+        update_databag(databag)
+        upload_dataframe_to_databag(df, databag)
 
 
 def create_columns(
@@ -73,10 +71,10 @@ def create_columns(
 
 
 def upload_dataframe_to_databag(
-    df: pd.DataFrame, databag: Databag, os4ml_namespace: str
+    df: pd.DataFrame, databag: Databag
 ) -> None:
     with tempfile.NamedTemporaryFile() as file:
         with open(file.name, "wb") as output_file:
             df.to_csv(output_file, index=False)
         with open(file.name, "rb") as upload_file:
-            upload_dataframe(upload_file, databag, os4ml_namespace)
+            upload_dataframe(upload_file, databag)

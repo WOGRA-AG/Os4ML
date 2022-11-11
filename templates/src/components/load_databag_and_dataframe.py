@@ -21,23 +21,21 @@ def load_databag_and_dataframe(
     dataframe_output: Output[Dataset],
     databag_output: Output[Artifact],
     databag_id: str,
-    os4ml_namespace: str,
     solution_name: str,
 ):
     handler = functools.partial(
         update_solution_error_status,
         solution_name,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.DATABAG_NOT_ACCESSIBLE):
         update_solution_status(
-            solution_name, StatusMessages.created.value, os4ml_namespace
+            solution_name, StatusMessages.created.value
         )
         databag = get_databag_by_id(
-            databag_id=databag_id, os4ml_namespace=os4ml_namespace
+            databag_id=databag_id
         )
         with open(databag_output.path, "w") as databag_file:
             json.dump(databag.to_dict(), databag_file)
-        dataframe_url = get_dataframe_download_url(databag, os4ml_namespace)
+        dataframe_url = get_dataframe_download_url(databag)
         with open(dataframe_output.path, "wb") as dataframe_file:
             download_file(dataframe_url, dataframe_file)

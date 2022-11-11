@@ -18,16 +18,14 @@ from util.exception_handler import exception_handler
 def get_metrics(
     metrics: Input[Metrics],
     solution_name: str,
-    os4ml_namespace: str,
 ) -> None:
     """Get the metrics from kubeflow and add them to the solution."""
     handler = functools.partial(
         update_solution_error_status,
         solution_name,
-        os4ml_namespace=os4ml_namespace,
     )
     with exception_handler(handler, ErrorMsgKey.METRICS_NOT_RETRIEVABLE):
-        solution = get_solution_by_name(solution_name, os4ml_namespace)
+        solution = get_solution_by_name(solution_name)
         solution.status = StatusMessages.finished.value
         solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         if "accuracy" in metrics.metadata:
@@ -35,4 +33,4 @@ def get_metrics(
             if solution.metrics is None:
                 solution.metrics = SolutionMetrics()
             solution.metrics.accuracy = float(accuracy)
-        update_solution(solution, solution_name, os4ml_namespace)
+        update_solution(solution, solution_name)
