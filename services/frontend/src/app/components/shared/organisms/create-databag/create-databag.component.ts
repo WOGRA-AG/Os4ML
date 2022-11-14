@@ -1,6 +1,4 @@
-import {
-  Component,
-} from '@angular/core';
+import {Component,} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -9,6 +7,8 @@ import {firstValueFrom, Observable, of} from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
+import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -23,12 +23,12 @@ export class CreateDatabagComponent {
   runId = '';
   intervalID = 0;
   stepperStep = 0;
-  pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
   user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
+              private shortStatus: ShortStatusPipe,
               private translate: TranslateService,
               private modelManager: ModelmanagerService,
               private userFacade: UserFacade) {
@@ -59,7 +59,6 @@ export class CreateDatabagComponent {
           this.modelManager.uploadDataset(this.databag.databagId, this.user?.rawToken, this.file)
         );
       }
-      this.pipelineStatus = this.translate.instant('message.pipeline.default');
       await this.retrievePipelineStatus();
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
@@ -68,7 +67,6 @@ export class CreateDatabagComponent {
       }
     } finally {
       this.running = false;
-      this.pipelineStatus = null;
       this.stepperStep = 1;
       stepper.next();
     }
@@ -82,18 +80,12 @@ export class CreateDatabagComponent {
         }
         this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
           this.databag = databag;
-          if (this.databag.status !== undefined && this.databag.status !== '') {
-            this.pipelineStatus = this.databag.status;
-          }
-          switch (this.databag.status) {
-            case 'error':
+          switch (this.shortStatus.transform(this.databag.status)) {
+            case PipelineStatus.error:
               this.clearIntervalSafe();
               reject();
               break;
-            case 'Creating databag':
-              if(this.databag.columns === undefined) {
-                return;
-              }
+            case PipelineStatus.done:
               this.clearIntervalSafe();
               resolve();
               break;

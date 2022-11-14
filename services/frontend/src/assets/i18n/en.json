@@ -7,9 +7,10 @@
       "running": {
         "uploading_data": "Uploading data",
         "inspecting_datatypes": "inspecting datatypes of columns",
-        "creating_databag": "Creating_databag",
-        "Solution_created": "Solution_created",
-        "solver_running": "Solver running"
+        "creating_databag": "Creating databag",
+        "Solution_created": "Solution created",
+        "solver_running": "Solver running",
+        "url_is_ignored": "Url is ignored"
       },
       "done": {
         "solver_done": "Solver finished",
@@ -18,10 +19,11 @@
       "error": {
         "default": "Pipeline Run Failed",
         "databag_not_accessible": "Databag not accessible",
-        "databag_could_not_be_created": "Databag_could_not_be_created",
+        "databag_could_not_be_created": "Databag could not be created",
         "dataset_not_found": "Dataset not found",
         "dataset_format_unknown": "Dataset format unknown",
         "dataset_could_not_be_read": "Dataset could not be read",
+        "dataset_could_not_be_loaded": "Dataset could not be loaded",
         "metrics_not_retrievable": "Metrics not retrievable",
         "training_failed": "Training failed",
         "file_type_unknown": "File type unknown",
@@ -66,7 +68,8 @@
       "output_fields": "Output Fields",
       "accuracy": "Accuracy",
       "runtime": "Runtime",
-      "creation": "Creation"
+      "creation": "Creation",
+      "status": "Status"
     },
     "empty": "Analyze your Data with Machine Learning"
   },

@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {Subscription, timer} from 'rxjs';
 import {Solution} from '../../../../../../build/openapi/modelmanager';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 
 @Component({
   selector: 'app-shared-solution-list-item',
@@ -12,6 +13,7 @@ export class SolutionListItemComponent implements OnDestroy {
   @Input() solution: Solution = {};
   runtime = '';
   intervalSub: Subscription;
+  readonly pipelineStatus = PipelineStatus;
 
   constructor() {
     this.intervalSub = timer(0, 250).subscribe(x => {
