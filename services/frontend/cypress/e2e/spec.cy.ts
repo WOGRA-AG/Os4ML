@@ -31,7 +31,7 @@ describe('Databags', () => {
     }
     cy.visit('/databag');
     waitUntilElementExists('#add-databag-button-empty');
-    cy.wait(360000);
+    cy.wait(600000);
     cy.get('[id=\'add-databag-button-empty\']', { timeout: 600000 }).click();
     cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
     cy.get('[id=\'add-databag-main-button\']').click();
@@ -73,13 +73,11 @@ describe('Databags', () => {
   });
     it('rename solution', () => {
       cy.visit('/dashboard');
-      /* ==== Generated with Cypress Studio ==== */
       cy.get('.mat-subheading-2').click();
       cy.get(':nth-child(2) > .mat-body-2').click();
       cy.get('#mat-input-0').clear('R');
       cy.get('#mat-input-0').type('Rename Solution');
       cy.get('[type="submit"] > .mat-button-wrapper').click();
       cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
-      /* ==== End Cypress Studio ==== */
     });
 });
