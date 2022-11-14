@@ -1,4 +1,4 @@
-from model.error_msg_key import ErrorMsgKey
+from models.error_msg_key import ErrorMsgKey
 
 
 class FileTypeUnknownException(ValueError):

@@ -8,7 +8,7 @@ from src.build.openapi_server.models.oidc_user import OIDCUser
 from src.build.openapi_server.models.user import User
 
 
-def _parse_oidc_token(usertoken: str = Header()) -> OIDCUser:
+def _parse_oidc_token(usertoken: str = Header(default="")) -> OIDCUser:
     if usertoken:
         encoded_payload: str = usertoken.split(".")[1]
         base64_bytes = encoded_payload.encode("ascii")
@@ -21,7 +21,7 @@ def _parse_oidc_token(usertoken: str = Header()) -> OIDCUser:
 
 
 def _parse_user_from_oidc(
-    oidc_user: OIDCUser, usertoken: str = Header()
+    oidc_user: OIDCUser, usertoken: str = Header(default="")
 ) -> User:
     user: User = User(
         id=oidc_user.sub,
@@ -33,7 +33,7 @@ def _parse_user_from_oidc(
     return user
 
 
-def get_parsed_token(usertoken: str = Header()) -> User:
+def get_parsed_token(usertoken: str = Header(default="")) -> User:
     if not usertoken:
         return User(id="default", email="", raw_token="")
     try:

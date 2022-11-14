@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MlTypes} from '../../../../models/ml-types';
-import {Databag} from '../../../../../../build/openapi/objectstore';
+import {Databag} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-databag-fields',

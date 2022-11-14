@@ -1,12 +1,6 @@
 {
-  "/apis/**/objectstore/**": {
-    "target": "http://objectstore-manager.os4ml.svc.cluster.local:8000",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  },
-  "/apis/**/jobmanager/**": {
-    "target": "http://jobmanager.os4ml.svc.cluster.local:8000",
+  "/apis/**/model-manager/**": {
+    "target": "http://model-manager.os4ml.svc.cluster.local:8000",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

@@ -1,13 +1,3 @@
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as pipeline-templates
-ARG IMAGE_TAG
-ENV IMG_TAG=$IMAGE_TAG
-WORKDIR templates
-RUN --mount=type=cache,target=/root/.cache pip install kfp==1.8.12
-COPY templates /templates
-RUN python build_all_components.py
-RUN python build_all_pipelines.py
-RUN rm -r pipelines/__pycache__
-
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
 FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
@@ -42,14 +32,6 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 
 WORKDIR /usr/app/src
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
--i ../oas/objectstore-manager-oas.yaml \
--t ../oas/templates_client \
--g python \
---package-name build.objectstore_client \
--o . \
---global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
-
-RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i ../oas/workflow-translator-oas.yaml \
 -t ../oas/templates_client \
 -g python \
@@ -79,7 +61,6 @@ ENV FASTAPI_ENV=development
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /templates/pipelines /pipelines
 
 COPY services/job-manager/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
@@ -104,7 +85,7 @@ CMD ["tail", "-f", "/dev/null"]
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 85
+RUN coverage report -m --fail-under 60
 
 
 FROM python-base as production
@@ -112,7 +93,6 @@ ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=pipeline-templates /templates/pipelines /pipelines
 COPY services/job-manager/gunicorn_conf.py $PROJECT_DIR/
 
 WORKDIR $PROJECT_DIR

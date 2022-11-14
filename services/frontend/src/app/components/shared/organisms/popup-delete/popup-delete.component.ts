@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {JobmanagerService, Solution, User} from '../../../../../../build/openapi/jobmanager';
 import { catchError, of } from 'rxjs';
-import {Databag, ObjectstoreService} from '../../../../../../build/openapi/objectstore';
 import {UserFacade} from '../../../../user/services/user-facade.service';
+import {Databag, ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-popup-delete',
@@ -19,8 +18,7 @@ export class PopupDeleteComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
-    private jobmanagerService: JobmanagerService,
-    private objectstoreService: ObjectstoreService,
+    private modelManager: ModelmanagerService,
     private userFacade: UserFacade,
   ) {
     this.solution = dialogRef.componentInstance.data.solution;
@@ -58,7 +56,7 @@ export class PopupDeleteComponent {
       this.deleting = false;
       return;
     }
-    this.jobmanagerService.deleteSolution(solutionName, this.user?.rawToken).pipe(
+    this.modelManager.deleteSolutionByName(solutionName, this.user?.rawToken).pipe(
       catchError(err => {
         this.deleting = false;
         return of({});
@@ -74,7 +72,7 @@ export class PopupDeleteComponent {
       this.deleting = false;
       return;
     }
-    this.objectstoreService.deleteDatabag(databagId, this.user?.rawToken).pipe(
+    this.modelManager.deleteDatabagById(databagId, this.user?.rawToken).pipe(
       catchError(err => {
         this.deleting = false;
         return of({});

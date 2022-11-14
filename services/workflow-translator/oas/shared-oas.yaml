@@ -16,10 +16,30 @@ components:
   schemas:
     RunId:
       type: string
-    BucketName:
-      type: string
     DatabagId:
       type: string
+    Solver:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+    PipelineTemplate:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
+        fileUrl:
+          type: string
     Solution:
       properties:
         name:
@@ -71,10 +91,12 @@ components:
           nullable: true
         fileName:
           type: string
+          nullable: true
         databagName:
           type: string
         databagId:
           $ref: "#/components/schemas/DatabagId"
+          nullable: true
         numberRows:
           type: integer
           nullable: true
@@ -98,18 +120,6 @@ components:
         runId:
           type: string
           nullable: true
-    PipelineTemplate:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-        fileUrl:
-          type: string
     JsonResponse:
       properties:
         jsonContent:

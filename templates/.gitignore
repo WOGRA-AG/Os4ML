@@ -40,4 +40,4 @@ build
 **/pipeline.yaml
 
 # openapi generator
-src/.openapi-generator
+.openapi-generator

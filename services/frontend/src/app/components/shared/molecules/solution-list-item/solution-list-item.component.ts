@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {Solution} from '../../../../../../build/openapi/jobmanager';
 import {Subscription, timer} from 'rxjs';
+import {Solution} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-solution-list-item',

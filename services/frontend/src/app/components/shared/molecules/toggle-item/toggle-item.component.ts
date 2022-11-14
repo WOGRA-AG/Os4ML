@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Column} from '../../../../../../build/openapi/objectstore';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {Column} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-toggle-item',

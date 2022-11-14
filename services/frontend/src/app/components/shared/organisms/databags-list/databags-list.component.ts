@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Databag} from '../../../../../../build/openapi/objectstore';
 import {
   DialogDynamicComponent
 } from '../../../dialog-dynamic/dialog-dynamic.component';
@@ -7,8 +6,8 @@ import {
   SettingDatabagComponent
 } from '../setting-databag/setting-databag.component';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
 import {UserFacade} from '../../../../user/services/user-facade.service';
+import {Databag} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-databags-list',

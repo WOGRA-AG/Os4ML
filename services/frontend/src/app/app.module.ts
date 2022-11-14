@@ -28,8 +28,7 @@ import {SolutionPlaceholderComponent} from './components/shared/molecules/soluti
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
 import {CreateSolutionComponent} from './components/shared/organisms/create-solution/create-solution.component';
 import {ToggleItemComponent} from './components/shared/molecules/toggle-item/toggle-item.component';
-import {ApiModule as ObjectstoreApi, Configuration as ObjectstoreApiConfig} from '../../build/openapi/objectstore';
-import {ApiModule as JobmanagerApi, Configuration as JobmanagerApiConfig} from '../../build/openapi/jobmanager';
+import {ApiModule as ModelmanagerApi, Configuration as ModelmanagerApiConfig} from '../../build/openapi/modelmanager';
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
@@ -96,12 +95,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
         deps: [HttpClient]
       }
     }),
-    ObjectstoreApi.forRoot(() => new ObjectstoreApiConfig(
-      {
-        basePath: ''
-      }
-    )),
-    JobmanagerApi.forRoot(() => new JobmanagerApiConfig(
+    ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
       {
         basePath: ''
       }

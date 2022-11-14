@@ -1,6 +1,5 @@
 import os
 
-OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
 WORKFLOW_ENGINE: str = os.getenv("ENGINE", default="kubeflow")
 
 PIPELINE_TEMPLATES_DIR = "/pipelines"
@@ -17,3 +16,6 @@ USER_TOKEN_ENV = {
         }
     },
 }
+
+OS4ML_NAMESPACE: str = os.getenv("OS4ML_NAMESPACE", default="os4ml")
+OS4ML_NAMESPACE_ENV = {"name": "OS4ML_NAMESPACE", "value": OS4ML_NAMESPACE}

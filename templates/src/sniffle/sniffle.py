@@ -3,8 +3,8 @@ from typing import List
 
 import pandas as pd
 
-from build.objectstore.model.column import Column
-from model.column_data_type import ColumnDataType
+from build.model_manager_client.model.column import Column
+from models.column_data_type import ColumnDataType
 
 
 def sniff_column_datatypes(

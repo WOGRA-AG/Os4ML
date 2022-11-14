@@ -1,7 +1,9 @@
 import os
 
-DATASET_FILE_NAME = os.getenv("DATASET_FILE_NAME", default="dataset.os4ml")
-
 MODEL_DIR_NAME = os.getenv("MODEL_DIR", default="model.os4ml")
 
-MODEL_FILE_NAME = os.getenv("MODEL_FILE_NAME", default="model.os4ml.zip")
+USER_TOKEN = os.getenv("OS4ML_ACCESS_TOKEN", default="")
+
+OS4ML_NAMESPACE = os.getenv("OS4ML_NAMESPACE", default="os4ml")
+
+DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"

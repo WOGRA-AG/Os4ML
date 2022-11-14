@@ -1,5 +1,5 @@
-import {Component, Input, OnDestroy} from '@angular/core';
-import {Databag} from '../../../../../../build/openapi/objectstore';
+import {Component, Input} from '@angular/core';
+import {Databag} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-databag-list-item',

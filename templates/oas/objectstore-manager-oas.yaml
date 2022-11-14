@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: Os4ml Objectstore Manager Api
   description: Os4ml Objectstore Manager
@@ -6,120 +6,26 @@ info:
 servers:
   - url: 'http://objectstore-manager.os4ml.svc.cluster.local:8000'
 paths:
-  "/apis/v1beta1/objectstore":
+  "/apis/v1beta1/objectstore/objects":
     get:
-      summary: "get all buckets"
-      operationId: getAllBuckets
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - objectstore
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Bucket'
-
-  "/apis/v1beta1/objectstore/databag":
-    get:
-      summary: "get all databags"
-      operationId: getAllDatabags
-      parameters:
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - objectstore
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Databag'
-  "/apis/v1beta1/objectstore/databag/run/{runId}":
-    get:
-      summary: "get databag by run id"
-      operationId: getDatabagByRunId
+      summary: 'get specific Object'
+      operationId: getObjectByName
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/ObjectName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Databag'
-  "/apis/v1beta1/objectstore/databag/{databagId}":
-    get:
-      summary: "get databag by id"
-      operationId: getDatabagById
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/DatabagId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        200:
-          description: "Successful response"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Databag'
+        307:
+          description: Redirect
+        404:
+          $ref: '#/components/responses/NotFound'
     put:
-      summary: "update databag"
-      operationId: putDatabagById
+      summary: 'put Object to Bucket'
+      operationId: putObjectByName
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/DatabagId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Databag'
-      responses:
-        201:
-          $ref: '#/components/responses/DatabagCreated'
-    post:
-      summary: "create new Databag"
-      operationId: postNewDatabag
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/DatabagId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        201:
-          $ref: '#/components/responses/Created'
-    delete:
-      summary: "delete Databag"
-      operationId: deleteDatabag
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/DatabagId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        204:
-          $ref: '#/components/responses/Deleted'
-
-  "/apis/v1beta1/objectstore/databag/{databagId}/dataset":
-    put:
-      summary: "create or update dataset"
-      operationId: putDatasetByDatabagId
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/DatabagId'
         - $ref: '#/components/parameters/ObjectName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
@@ -134,42 +40,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-
-  "/apis/v1beta1/objectstore/{bucketName}":
-    post:
-      summary: "create new bucket"
-      operationId: postNewBucket
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/BucketName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        201:
-          $ref: '#/components/responses/Created'
-        400:
-          $ref: '#/components/responses/RequestBodyInvalid'
+                $ref: '#/components/schemas/ObjectName'
+        404:
+          $ref: '#/components/responses/NotFound'
     delete:
-      summary: "delete bucket"
-      operationId: deleteBucket
+      summary: 'delete specific Object from Bucket'
+      operationId: deleteObjectByName
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/BucketName'
+        - $ref: '#/components/parameters/ObjectName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/objectstore/{bucketName}/objects":
+  "/apis/v1beta1/objectstore/objects/prefix":
     get:
-      summary: "get all objects in bucket with the specified path prefix"
-      operationId: getObjects
+      summary: "get objects with the specified path prefix"
+      operationId: getObjectsWithPrefix
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
@@ -180,32 +72,26 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Item'
-        404:
-          $ref: '#/components/responses/NotFound'
+                  $ref: '#/components/schemas/ObjectName'
     delete:
-      summary: "delete all objects in bucket with the specified path prefix"
-      operationId: deleteObjects
+      summary: "delete all objects with the specified path prefix"
+      operationId: deleteObjectsWithPrefix
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/PathPrefix'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         204:
           $ref: '#/components/responses/Deleted'
-        404:
-          $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{bucketName}/json":
+  "/apis/v1beta1/objectstore/objects/json":
     get:
       summary: 'get specific json file from bucket'
       operationId: getJsonObjectByName
       tags:
         - objectstore
       parameters:
-        - $ref: '#/components/parameters/BucketName'
         - $ref: '#/components/parameters/ObjectName'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
@@ -218,64 +104,10 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/{bucketName}/object":
+  "/apis/v1beta1/objectstore/objects/presignedgeturl":
     get:
-      summary: 'get specific Object from Bucket'
-      operationId: getObjectByName
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/BucketName'
-        - $ref: '#/components/parameters/ObjectName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        307:
-          description: Redirect
-        404:
-          $ref: '#/components/responses/NotFound'
-    delete:
-      summary: 'delete specific Object from Bucket'
-      operationId: deleteObjectByName
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/BucketName'
-        - $ref: '#/components/parameters/ObjectName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        204:
-          $ref: '#/components/responses/Deleted'
-        404:
-          $ref: '#/components/responses/NotFound'
-    put:
-      summary: 'put Object to Bucket'
-      operationId: putObjectByName
-      tags:
-        - objectstore
-      parameters:
-        - $ref: '#/components/parameters/BucketName'
-        - $ref: '#/components/parameters/ObjectName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Item'
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  "/apis/v1beta1/objectstore/presignedgeturl":
-    get:
-      summary: "get Object Url"
-      operationId: getObjectUrl
+      summary: "get presigned get url"
+      operationId: getPresignedGetUrl
       tags:
         - objectstore
       parameters:
@@ -288,10 +120,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Url'
+        404:
+          $ref: '#/components/responses/NotFound'
 
-  "/apis/v1beta1/objectstore/presignedputurl":
+  "/apis/v1beta1/objectstore/object/presignedputurl":
     get:
-      summary: 'get presigned put Url'
+      summary: 'get presigned put url'
       operationId: getPresignedPutUrl
       tags:
         - objectstore
@@ -304,40 +138,12 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/Url'
         404:
           $ref: '#/components/responses/NotFound'
 
 components:
   schemas:
-    Url:
-      type: string
-    ObjectName:
-      type: string
-    ComponentName:
-      type: string
-    PipelineName:
-      type: string
-    User:
-      $ref: './shared-oas.yaml#/components/schemas/User'
-    OIDCUser:
-      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
-    Bucket:
-      type: object
-      properties:
-        name:
-          $ref: './shared-oas.yaml#/components/schemas/BucketName'
-      required:
-        - name
-    Item:
-      properties:
-        bucketName:
-          $ref: "./shared-oas.yaml#/components/schemas/BucketName"
-        objectName:
-          $ref: "#/components/schemas/ObjectName"
-      required:
-        - bucketName
-        - objectName
     Error:
       required:
         - path
@@ -345,29 +151,15 @@ components:
         - timestamp
         - message
         - status
-
+    Url:
+      type: string
+    ObjectName:
+      type: string
+    User:
+      $ref: './shared-oas.yaml#/components/schemas/User'
+    OIDCUser:
+      $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
   parameters:
-    BucketName:
-      name: bucketName
-      in: path
-      description: Name of Bucket
-      required: true
-      schema:
-        $ref: './shared-oas.yaml#/components/schemas/BucketName'
-    DatabagId:
-      name: databagId
-      in: path
-      description: Id of Databag
-      required: true
-      schema:
-        $ref: './shared-oas.yaml#/components/schemas/DatabagId'
-    RunId:
-      name: runId
-      in: path
-      description: Id of a run
-      required: true
-      schema:
-        $ref: './shared-oas.yaml#/components/schemas/RunId'
     ObjectName:
       name: objectName
       in: query
@@ -375,13 +167,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ObjectName'
-    ComponentName:
-      name: componentName
-      in: path
-      description: Name of Component Template
-      required: true
-      schema:
-        $ref: '#/components/schemas/ComponentName'
     PathPrefix:
       name: pathPrefix
       in: query
@@ -390,15 +175,8 @@ components:
       schema:
         type: string
         default: ""
-
   responses:
     Created:
-      description: New resource created
-      content:
-        application/json:
-          schema:
-            $ref: "./shared-oas.yaml#/components/schemas/BucketName"
-    DatabagCreated:
       description: New resource created
     Deleted:
       description: The specified resource was deleted

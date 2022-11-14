@@ -1,7 +1,4 @@
 import {Component, OnDestroy} from '@angular/core';
-import {
-  Databag, ObjectstoreService,
-} from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {
@@ -10,11 +7,11 @@ import {
 import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
-import {JobmanagerService, Solution, User} from '../../../../build/openapi/jobmanager';
 import {
   CreateSolutionComponent
 } from '../../components/shared/organisms/create-solution/create-solution.component';
 import {UserFacade} from '../../user/services/user-facade.service';
+import {Databag, ModelmanagerService, Solution, User} from '../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-main-page',
@@ -32,18 +29,17 @@ export class DashboardPageComponent implements OnDestroy {
   constructor(
     public dialog: MatDialog,
     public userFacade: UserFacade,
-    public objectstore: ObjectstoreService,
-    public jobmanager: JobmanagerService,
+    public modelManager: ModelmanagerService,
   ) {
     this.intervalSub = interval(10000).subscribe(x => {
       this.userFacade.refresh();
     });
     this.userSub = this.userFacade.currentUser$.pipe().subscribe(currentUser => {
         this.user = currentUser;
-        this.objectstore.getAllDatabags(currentUser.rawToken).pipe().subscribe(
+        this.modelManager.getDatabags(currentUser.rawToken).pipe().subscribe(
           databags => this.databags = databags
         );
-        this.jobmanager.getAllSolutions(currentUser.rawToken).pipe().subscribe(
+        this.modelManager.getSolutions(currentUser.rawToken).pipe().subscribe(
           solutions => this.solutions = solutions
         );
       }
