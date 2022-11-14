@@ -1,5 +1,4 @@
 from parser.init_parser import init_parser
-from typing import Dict
 
 from yaml.parser import ParserError
 
@@ -13,7 +12,7 @@ class PipelineTemplateService:
         template_name: str,
         user_token: str,
         parser: Parser = init_parser(),
-    ) -> Dict:
+    ) -> dict:
         try:
             return parser.get_pipeline_template_by_name(
                 name=template_name,
