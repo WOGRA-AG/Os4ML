@@ -17,13 +17,7 @@
   <span class="mat-body-2 on-surface-high">{{formatTimestamp(solution?.creationTime)}}</span>
 </div>
 <div class="status-column">
-  <div *ngIf="(solution?.status | shortStatus) === pipelineStatus.running" id="solution-status" class="status running mat-button">
-    {{solution?.status | shortStatus}}
-  </div>
-  <div *ngIf="(solution?.status | shortStatus) === pipelineStatus.error" id="solution-status-error" class="status error mat-button">
-    {{solution?.status | shortStatus}}
-  </div>
-  <div *ngIf="(solution?.status | shortStatus)  === pipelineStatus.done" id="solution-status-finished" class="status done mat-button">
+  <div id="solution-status" class="status mat-button" [ngClass]="getCssClassForStatus(solution?.status)">
     {{solution?.status | shortStatus}}
   </div>
 </div>

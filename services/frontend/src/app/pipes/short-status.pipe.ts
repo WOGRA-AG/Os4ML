@@ -7,7 +7,7 @@ import {PipelineStatus} from '../models/pipeline-status';
 export class ShortStatusPipe implements PipeTransform {
 
   transform(status: string | undefined | null): PipelineStatus {
-    if (status === undefined || status === null) {
+    if (!status) {
       return PipelineStatus.running;
     }
     if (status.startsWith('message.pipeline.done')) {
