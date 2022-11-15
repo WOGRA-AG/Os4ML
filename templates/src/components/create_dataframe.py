@@ -6,9 +6,9 @@ import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output
 
 from exceptions.file_type_unknown import FileTypeUnknownException
-from model_manager.databags import update_databag_error_status
-from models.error_msg_key import ErrorMsgKey
+from model_manager.databags import update_databag_status
 from models.file_type import FileType
+from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 
 
@@ -19,10 +19,10 @@ def create_dataframe(
     databag_id: str,
 ):
     handler = functools.partial(
-        update_databag_error_status,
+        update_databag_status,
         databag_id,
     )
-    with exception_handler(handler, ErrorMsgKey.DATASET_COULD_NOT_BE_READ):
+    with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
         if file_type == FileType.CSV:
             df = pd.read_csv(dataset.path)
         elif file_type == FileType.EXCEL:

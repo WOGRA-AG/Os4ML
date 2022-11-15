@@ -32,6 +32,7 @@ import {ApiModule as ModelmanagerApi, Configuration as ModelmanagerApiConfig} fr
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
+import {ShortStatusPipe} from './pipes/short-status.pipe';
 import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
 import {SettingSolutionComponent} from './components/shared/organisms/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
@@ -71,6 +72,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SolutionListItemComponent,
     SettingDatabagComponent,
     LocalizedDatePipe,
+    ShortStatusPipe,
     PopupDeleteComponent,
     SettingSolutionComponent,
     CloseButtonComponent,
@@ -107,6 +109,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    ShortStatusPipe,
   ],
   bootstrap: [AppComponent]
 })

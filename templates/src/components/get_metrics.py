@@ -10,8 +10,7 @@ from model_manager.solutions import (
     update_solution,
     update_solution_error_status,
 )
-from models.error_msg_key import ErrorMsgKey
-from pipelines.util import StatusMessages
+from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 
 
@@ -24,9 +23,9 @@ def get_metrics(
         update_solution_error_status,
         solution_name,
     )
-    with exception_handler(handler, ErrorMsgKey.METRICS_NOT_RETRIEVABLE):
+    with exception_handler(handler, StatusMessage.METRICS_NOT_RETRIEVABLE):
         solution = get_solution_by_name(solution_name)
-        solution.status = StatusMessages.finished.value
+        solution.status = StatusMessage.SOLVER_DONE.value
         solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         if "accuracy" in metrics.metadata:
             accuracy = metrics.metadata["accuracy"]

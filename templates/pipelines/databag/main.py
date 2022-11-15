@@ -1,6 +1,6 @@
 from kfp.v2.dsl import Condition, pipeline
 
-from src.pipelines.util import compile_pipeline, load_component
+from pipelines.build import compile_pipeline, load_component
 
 get_file_and_dataset_type_op = load_component("get_file_and_dataset_type")
 execute_dataframe_script_op = load_component("execute_dataframe_script")

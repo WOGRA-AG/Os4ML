@@ -1,5 +1,5 @@
-from models.error_msg_key import ErrorMsgKey
+from models.status_message import StatusMessage
 
 
 class FileTypeUnknownException(ValueError):
-    error_msg_key = ErrorMsgKey.FILE_TYPE_UNKNOWN
+    error_status = StatusMessage.FILE_TYPE_UNKNOWN

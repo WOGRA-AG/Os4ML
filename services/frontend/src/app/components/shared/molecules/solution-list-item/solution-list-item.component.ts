@@ -1,6 +1,8 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {Subscription, timer} from 'rxjs';
 import {Solution} from '../../../../../../build/openapi/modelmanager';
+import {PipelineStatus} from '../../../../models/pipeline-status';
+import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
 
 @Component({
   selector: 'app-shared-solution-list-item',
@@ -13,7 +15,7 @@ export class SolutionListItemComponent implements OnDestroy {
   runtime = '';
   intervalSub: Subscription;
 
-  constructor() {
+  constructor(private shortStatus: ShortStatusPipe) {
     this.intervalSub = timer(0, 250).subscribe(x => {
       const completionTime = this.solution.completionTime || new Date().toISOString();
       this.runtime = this.getRuntime(this.solution.creationTime, completionTime);
@@ -63,5 +65,19 @@ export class SolutionListItemComponent implements OnDestroy {
 
   formatAccuracy(solutionAccuracy: number): number {
     return Math.round(solutionAccuracy * 100);
+  }
+
+  getCssClassForStatus(status: string | undefined | null): string {
+    if (!status) {
+      return 'running';
+    }
+    switch(this.shortStatus.transform(status)) {
+      case PipelineStatus.running:
+        return 'running';
+      case PipelineStatus.done:
+        return 'done';
+      case PipelineStatus.error:
+        return 'error';
+    }
   }
 }

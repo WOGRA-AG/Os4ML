@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {
-  DialogDynamicComponent
-} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
@@ -11,6 +9,8 @@ import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
+import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -26,7 +26,6 @@ export class GettingStartedComponent {
   databagName = '';
   intervalID = 0;
   stepperStep = 0;
-  pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
   solution: Solution = {};
@@ -35,6 +34,7 @@ export class GettingStartedComponent {
   user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
+              private shortStatus: ShortStatusPipe,
               private translate: TranslateService,
               private modelManager: ModelmanagerService,
               private http: HttpClient,
@@ -77,7 +77,6 @@ export class GettingStartedComponent {
             this.modelManager.uploadDataset(this.databag.databagId, this.user?.rawToken, this.file)
           );
         }
-        this.pipelineStatus = this.translate.instant('message.pipeline.default');
         await this.retrievePipelineStatus();
       } catch (err: any) {
         this.matSnackBar.open(err, '', {duration: 3000});
@@ -87,7 +86,6 @@ export class GettingStartedComponent {
         await firstValueFrom(this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken));
       } finally {
         this.running = false;
-        this.pipelineStatus = null;
       }
     }
 
@@ -127,18 +125,12 @@ export class GettingStartedComponent {
         }
         this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
           this.databag = databag;
-          if (this.databag.status !== undefined) {
-            this.pipelineStatus = this.databag.status;
-          }
-          switch (this.databag.status) {
-            case 'error':
+          switch (this.shortStatus.transform(this.databag.status)) {
+            case PipelineStatus.error:
               this.clearIntervalSafe();
               reject();
               break;
-            case 'Creating databag':
-              if(this.databag.columns === undefined) {
-                return;
-              }
+            case PipelineStatus.done:
               clearInterval(this.intervalID);
               resolve();
               break;
@@ -214,7 +206,7 @@ export class GettingStartedComponent {
     }
     if (this.stepperStep === 0) {
       if (file.name && ((dbUrl?.valid && dbUrl?.value?.length > 0))) {
-        this.pipelineStatus = 'Url is ignored!';
+        this.databag.status = 'message.pipeline.running.url_is_ignored';
         return false;
       } else {
         return !(this.databagName !== '' && (file.name || ((dbUrl?.valid && dbUrl?.value?.length > 0))));

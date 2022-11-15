@@ -17,10 +17,7 @@
   <span class="mat-body-2 on-surface-high">{{formatTimestamp(solution?.creationTime)}}</span>
 </div>
 <div class="status-column">
-  <div *ngIf="solution?.status !== 'Solver finished'" id="solution-status" class="status bg-accent mat-button">
-    {{solution?.status}}
-  </div>
-  <div *ngIf="solution?.status === 'Solver finished'" id="solution-status-finished" class="status bg-accent mat-button">
-    {{solution?.status}}
+  <div id="solution-status" class="status mat-button" [ngClass]="getCssClassForStatus(solution?.status)">
+    {{solution?.status | shortStatus}}
   </div>
 </div>

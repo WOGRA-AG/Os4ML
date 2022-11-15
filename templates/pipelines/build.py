@@ -1,5 +1,4 @@
 import dataclasses
-import enum
 import pathlib
 from typing import Callable, Mapping
 
@@ -20,18 +19,6 @@ class NodeSelector:
 NODE_POOL_TO_SELECTOR: Mapping[str, NodeSelector] = {
     "high-cpu": NodeSelector("cloud.google.com/gke-nodepool", "highcpu-pool")
 }
-
-
-class StatusMessages(str, enum.Enum):
-    created = "Solution created"
-    running = "Solver running"
-    finished = "Solver finished"
-
-
-class DatabagStatusMessages(str, enum.Enum):
-    uploading = "Uploading data"
-    inspecting = "Inspecting datatypes of columns"
-    creating = "Creating databag"
 
 
 def load_component(component_dir: str):

@@ -52,10 +52,10 @@
       </div>
     </app-shared-dialog-section>
 
-    <app-shared-dialog-section *ngIf="solution.status === 'error' && solution.errorMsgKey">
-      <div title>{{"message.error" | translate}}</div>
+    <app-shared-dialog-section *ngIf="solution.status">
+      <div title>{{"solution.detail.status" | translate}}</div>
       <div>
-        {{"message.pipeline.error." + solution.errorMsgKey | translate}}
+        {{solution.status | translate}}
       </div>
     </app-shared-dialog-section>
   </form>

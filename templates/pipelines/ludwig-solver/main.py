@@ -1,6 +1,6 @@
 from kfp.v2.dsl import pipeline
 
-from src.pipelines.util import compile_pipeline, load_component
+from pipelines.build import compile_pipeline, load_component
 
 load_databag_and_dataframe_op = load_component("load_databag_and_dataframe")
 ludwig_solver_op = load_component("ludwig_solver")
