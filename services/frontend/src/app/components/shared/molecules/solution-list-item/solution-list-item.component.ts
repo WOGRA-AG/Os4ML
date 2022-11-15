@@ -79,5 +79,5 @@ export class SolutionListItemComponent implements OnDestroy {
       case PipelineStatus.error:
         return 'error';
     }
-}
+  }
 }
