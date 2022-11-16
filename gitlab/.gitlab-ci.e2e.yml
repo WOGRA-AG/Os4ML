@@ -14,7 +14,3 @@ e2e:
       - services/frontend/cypress/screenshots/**/*.png
     expire_in: 1 day
   resource_group: testing
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "develop"
-    - if: $CI_COMMIT_TAG
