@@ -4,6 +4,7 @@ import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.com
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 
 @Component({
   selector: 'app-shared-setting-solution',
@@ -15,6 +16,7 @@ export class SettingSolutionComponent {
   solutionName: string;
   deleting = false;
   user: User = {id: '', email: '', rawToken: ''};
+  readonly pipelineStatus = PipelineStatus;
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,

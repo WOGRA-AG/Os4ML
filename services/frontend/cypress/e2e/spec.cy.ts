@@ -31,7 +31,7 @@ describe('Databags', () => {
     }
     cy.visit('/databag');
     waitUntilElementExists('#add-databag-button-empty');
-    cy.wait(600000);
+    cy.wait(60000);
     cy.get('[id=\'add-databag-button-empty\']', { timeout: 600000 }).click();
     cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
     cy.get('[id=\'add-databag-main-button\']').click();
@@ -51,7 +51,7 @@ describe('Databags', () => {
     cy.get('#define-solver-name-input').type('Solution Test Ludwig Solver');
     cy.get('#define-solver-list > .mat-list-item-content').click();
     cy.get('#define-solver-next-button > .mat-button-wrapper').click();
-    cy.get('[id=\'solution-status-finished\']', { timeout: 600000 }).contains('Solver finished', { timeout: 600000 });
+    cy.get('.status-column > .done', { timeout: 600000});
   });
   it('download model', () => {
     cy.visit('/dashboard');
