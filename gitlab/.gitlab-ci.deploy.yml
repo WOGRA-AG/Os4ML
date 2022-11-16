@@ -127,7 +127,3 @@ deploy-testing:
     LABEL: 'testing'
   resource_group: testing
   when: manual
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-    - if: '$CI_COMMIT_TAG'

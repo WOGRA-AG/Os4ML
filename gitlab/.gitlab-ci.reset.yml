@@ -13,7 +13,3 @@ reset:
     - kubectl minio tenant delete storage-testing --namespace minio-tenant-testing --force
     - kubectl delete pvc --namespace minio-tenant-testing data0-storage-testing-pool-0-0 --force
   resource_group: testing
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "develop"
-    - if: $CI_COMMIT_TAG
