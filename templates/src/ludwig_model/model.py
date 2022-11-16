@@ -3,9 +3,9 @@ from typing import Dict, List, Tuple
 
 from ludwig.api import LudwigModel
 
-from build.jobmanager.model.solution import Solution
-from build.objectstore.model.column import Column
-from model.column_data_type import ColumnDataType
+from build.model_manager_client.model.column import Column
+from build.model_manager_client.model.solution import Solution
+from models.column_data_type import ColumnDataType
 
 
 def build_model(

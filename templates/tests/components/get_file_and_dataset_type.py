@@ -1,11 +1,11 @@
 import pytest
+from model.databag_type import DatasetType
+from model.file_type import FileType
 
 from components.get_file_and_dataset_type import (
     dataset_type_from_file_name,
     file_type_from_file_name,
 )
-from model.databag_type import DatasetType
-from model.file_type import FileType
 
 
 @pytest.mark.parametrize(

@@ -16,8 +16,6 @@ components:
   schemas:
     RunId:
       type: string
-    BucketName:
-      type: string
     DatabagId:
       type: string
     Solver:
@@ -47,8 +45,6 @@ components:
         name:
           type: string
         status:
-          type: string
-        errorMsgKey:
           type: string
           nullable: true
         solver:
@@ -93,10 +89,12 @@ components:
           nullable: true
         fileName:
           type: string
+          nullable: true
         databagName:
           type: string
         databagId:
           $ref: "#/components/schemas/DatabagId"
+          nullable: true
         numberRows:
           type: integer
           nullable: true
@@ -112,9 +110,6 @@ components:
           type: string
           nullable: true
         status:
-          type: string
-          nullable: true
-        errorMsgKey:
           type: string
           nullable: true
         runId:

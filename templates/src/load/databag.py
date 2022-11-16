@@ -1,7 +1,7 @@
 import json
 
-from build.objectstore.model.column import Column
-from build.objectstore.model.databag import Databag
+from build.model_manager_client.model.column import Column
+from build.model_manager_client.model.databag import Databag
 
 
 def load_databag(databag_file_path) -> Databag:

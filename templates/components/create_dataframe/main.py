@@ -1,7 +1,7 @@
 from kfp.v2.dsl import Dataset, Input, Output
 
+from components.build import build_component
 from components.images import pandas_image
-from components.util import build_component
 
 
 def create_dataframe(
@@ -9,7 +9,6 @@ def create_dataframe(
     dataframe: Output[Dataset],
     file_type: str,
     databag_id: str,
-    os4ml_namespace: str,
 ):
     from components.create_dataframe import create_dataframe
 
@@ -18,7 +17,6 @@ def create_dataframe(
         dataframe=dataframe,
         file_type=file_type,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
 
 

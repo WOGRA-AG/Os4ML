@@ -1,15 +1,13 @@
 from kfp.v2.dsl import Artifact, Dataset, Output
 
+from components.build import build_component
 from components.images import pandas_image
-from components.util import build_component
 
 
 def load_databag_and_dataframe(
     dataframe: Output[Dataset],
     databag: Output[Artifact],
-    bucket: str,
     databag_id: str,
-    os4ml_namespace: str,
     solution_name: str,
 ):
     from components.load_databag_and_dataframe import (
@@ -17,11 +15,9 @@ def load_databag_and_dataframe(
     )
 
     return load_databag_and_dataframe(
-        dataframe=dataframe,
-        databag=databag,
-        bucket=bucket,
+        dataframe_output=dataframe,
+        databag_output=databag,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
         solution_name=solution_name,
     )
 

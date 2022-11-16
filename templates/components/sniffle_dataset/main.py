@@ -1,7 +1,7 @@
 from kfp.v2.dsl import Dataset, Input
 
+from components.build import build_component
 from components.images import pandas_image
-from components.util import build_component
 
 
 def sniffle_dataset(
@@ -9,7 +9,6 @@ def sniffle_dataset(
     dataset_type: str,
     max_categories: int,
     databag_id: str,
-    os4ml_namespace: str,
 ) -> Dataset:
     from components.sniffle_dataset import sniffle_dataset
 
@@ -18,7 +17,6 @@ def sniffle_dataset(
         dataset_type=dataset_type,
         max_categories=max_categories,
         databag_id=databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
 
 

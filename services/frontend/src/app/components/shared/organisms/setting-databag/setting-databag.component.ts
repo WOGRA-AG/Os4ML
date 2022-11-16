@@ -3,13 +3,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
 } from '../../../dialog-dynamic/dialog-dynamic.component';
-import {
-  Databag,
-  ObjectstoreService
-} from '../../../../../../build/openapi/objectstore';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
-import {User} from '../../../../../../build/openapi/jobmanager';
 import {UserFacade} from '../../../../user/services/user-facade.service';
+import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-setting-databag',
@@ -22,14 +18,14 @@ export class SettingDatabagComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
-    private objectstoreService: ObjectstoreService,
+    private modelManager: ModelmanagerService,
     private dialog: MatDialog,
     private userFacade: UserFacade,
   ) {
     this.userFacade.currentUser$.pipe().subscribe(currentUser => {
         this.user = currentUser;
         this.databag = dialogRef.componentInstance.data.databag;
-        this.objectstoreService.getDatabagById(String(this.databag.databagId), currentUser.rawToken).subscribe((databag: Databag) => {
+        this.modelManager.getDatabagById(String(this.databag.databagId), currentUser.rawToken).subscribe((databag: Databag) => {
           this.databag = databag;
         });
       }
@@ -37,7 +33,7 @@ export class SettingDatabagComponent {
   }
 
   onSubmit(): void {
-    this.objectstoreService.putDatabagById(String(this.databag.databagId), this.user?.rawToken, this.databag).subscribe(() => {
+    this.modelManager.updateDatabagById(String(this.databag.databagId), this.user?.rawToken, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }

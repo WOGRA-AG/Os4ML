@@ -1,5 +1,3 @@
-from typing import Dict
-
 from fastapi import Depends
 
 from build.openapi_server.models.user import User
@@ -20,7 +18,7 @@ class WorkflowtranslatorApiController:
         self,
         pipeline_template_name: str,
         usertoken: str = "",
-    ) -> Dict:
+    ) -> dict:
         return self.template_service.get_pipeline_template(
             template_name=pipeline_template_name, user_token=usertoken
         )

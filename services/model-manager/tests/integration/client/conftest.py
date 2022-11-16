@@ -19,4 +19,4 @@ def client(app) -> TestClient:
 
 @pytest.fixture
 def route_prefix() -> str:
-    return "/apis/v1beta1/modelmanager/"
+    return "/apis/v1beta1/model-manager/"

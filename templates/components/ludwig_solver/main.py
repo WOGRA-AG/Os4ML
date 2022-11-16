@@ -1,7 +1,7 @@
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 
+from components.build import build_component
 from components.images import ludwig_image
-from components.util import build_component
 
 
 def ludwig_solver(
@@ -10,7 +10,6 @@ def ludwig_solver(
     cls_metrics: Output[ClassificationMetrics],
     metrics: Output[Metrics],
     solution_name: str,
-    os4ml_namespace: str,
     batch_size: int = 8,
     epochs: int = 50,
     early_stop: int = 3,
@@ -25,7 +24,6 @@ def ludwig_solver(
         cls_metrics=cls_metrics,
         metrics=metrics,
         solution_name=solution_name,
-        os4ml_namespace=os4ml_namespace,
         batch_size=batch_size,
         epochs=epochs,
         early_stop=early_stop,

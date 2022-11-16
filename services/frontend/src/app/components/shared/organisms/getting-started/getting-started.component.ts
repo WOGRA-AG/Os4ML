@@ -1,27 +1,16 @@
 import {Component} from '@angular/core';
-import {
-  Databag,
-  ObjectstoreService
-} from '../../../../../../build/openapi/objectstore';
-import {
-  JobmanagerService,
-  PipelineTemplate,
-  RunParams,
-  Solution, User
-} from '../../../../../../build/openapi/jobmanager';
-import {v4 as uuidv4} from 'uuid';
 import {MatDialogRef} from '@angular/material/dialog';
-import {
-  DialogDynamicComponent
-} from '../../../dialog-dynamic/dialog-dynamic.component';
+import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {catchError, firstValueFrom, map, mergeMap, Observable, of} from 'rxjs';
-import {PipelineStatus} from '../../../../models/pipeline-status';
+import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
+import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
+import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
+import {PipelineStatus} from '../../../../models/pipeline-status';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -33,27 +22,27 @@ export class GettingStartedComponent {
   file: File = new File([], '');
   fileUrl = '';
   running = false;
-  uuid: string = uuidv4();
   runId = '';
   databagName = '';
   intervalID = 0;
   stepperStep = 0;
-  pipelineStatus: string | null | undefined = null;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
   solution: Solution = {};
-  solvers: PipelineTemplate[] = [];
+  solvers: Solver[] = [];
   submitting = false;
   user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
-              private translate: TranslateService, private objectstoreService: ObjectstoreService,
-              private jobmanagerService: JobmanagerService, private http: HttpClient,
+              private shortStatus: ShortStatusPipe,
+              private translate: TranslateService,
+              private modelManager: ModelmanagerService,
+              private http: HttpClient,
               private userFacade: UserFacade) {
     this.userFacade.currentUser$.pipe().subscribe(currentUser => {
         this.user = currentUser;
-        this.jobmanagerService.getAllPipelineTemplates(currentUser.rawToken).subscribe((templates: PipelineTemplate[]) => {
-            this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
+        this.modelManager.getSolvers(currentUser.rawToken).subscribe((solvers: Solver[]) => {
+            this.solvers = solvers.filter(solver => solver.pipelineStep === PipelineStep.solver);
             if (this.solution.solver === undefined) {
               this.solution.solver = this.solvers[0].name;
             }
@@ -77,35 +66,26 @@ export class GettingStartedComponent {
       }
 
       this.running = true;
-      const runParams: RunParams = {
-        bucket: '',
-        databagId: this.uuid,
-        fileName: this.file.name ? this.file.name : this.fileUrl
-      };
       try {
-        await firstValueFrom(this.objectstoreService.postNewDatabag(this.uuid, this.user?.rawToken));
-        if (this.file.name) {
+        const databagToCreate: Databag = {
+          fileName: this.file.name ? this.file.name : this.fileUrl,
+          databagName: this.databagName,
+        };
+        this.databag = await firstValueFrom(this.modelManager.createDatabag(this.user?.rawToken, databagToCreate));
+        if (this.file.name && this.databag.databagId !== undefined) {
           await firstValueFrom(
-            this.objectstoreService.putDatasetByDatabagId(this.uuid, `${this.file.name}`, this.user?.rawToken, this.file)
+            this.modelManager.uploadDataset(this.databag.databagId, this.user?.rawToken, this.file)
           );
         }
-        this.runId = await firstValueFrom(
-          this.jobmanagerService.postTemplate('init-databag-sniffle-upload', this.user?.rawToken, runParams)
-        );
-        this.pipelineStatus = this.translate.instant('message.pipeline.default');
-        await this.retrievePipelineStatus(this.runId);
-        this.objectstoreService.getDatabagById(this.uuid, this.user?.rawToken).subscribe((databag: Databag) => {
-          this.databag = databag;
-          this.databag.databagName = this.databagName;
-          this.objectstoreService.putDatabagById(this.uuid, this.user?.rawToken, this.databag).subscribe(() => {
-          });
-        });
+        await this.retrievePipelineStatus();
       } catch (err: any) {
         this.matSnackBar.open(err, '', {duration: 3000});
-        await firstValueFrom(this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken));
+        if (this.databag.databagId === undefined) {
+          return;
+        }
+        await firstValueFrom(this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken));
       } finally {
         this.running = false;
-        this.pipelineStatus = null;
       }
     }
 
@@ -121,14 +101,13 @@ export class GettingStartedComponent {
       this.solution.status = 'Created';
       this.solution.databagId = this.databag.databagId;
       this.solution.databagName = this.databag.databagName;
-      this.jobmanagerService.postSolution(this.user?.rawToken, this.solution)
+      this.modelManager.createSolution(this.user?.rawToken, this.solution)
         .pipe(
           catchError(err => {
             this.submitting = false;
             return of('');
           })
         ).subscribe(runId => {
-        this.solution.runId = runId;
         this.submitting = false;
         this.dialogRef.close();
       });
@@ -138,29 +117,62 @@ export class GettingStartedComponent {
     this.submitting = false;
   }
 
+  retrievePipelineStatus(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.intervalID = setInterval(() => {
+        if (this.databag.databagId === undefined) {
+          return;
+        }
+        this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
+          this.databag = databag;
+          switch (this.shortStatus.transform(this.databag.status)) {
+            case PipelineStatus.error:
+              this.clearIntervalSafe();
+              reject();
+              break;
+            case PipelineStatus.done:
+              clearInterval(this.intervalID);
+              resolve();
+              break;
+          }
+        });
+      }, 2000);
+    });
+  }
 
   back(stepper: MatStepper): void {
-    if (this.stepperStep === 1) {
-      this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken);
-      this.uuid = uuidv4();
-      this.solution = {};
-      this.solvers = [];
+    this.clearIntervalSafe();
+    if (this.stepperStep === 1 && this.databag.databagId !== undefined) {
+      this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken).subscribe(() => {
+        this.solution = {};
+        this.solvers = [];
+        stepper.previous();
+        this.stepperStep -= 1;
+      });
+    } else {
+      stepper.previous();
+      this.stepperStep -= 1;
     }
-    stepper.previous();
-    this.stepperStep -= 1;
   }
 
   close(): void {
-    this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken).subscribe(() => {
+    this.clearProgress().subscribe(() => {
       this.dialogRef.close();
     });
   }
 
-  clearProgress(): Observable<void> {
+  clearIntervalSafe(): void {
     if (this.intervalID > 0) {
       clearInterval(this.intervalID);
     }
-    return this.objectstoreService.deleteDatabag(this.uuid, this.user?.rawToken);
+  }
+
+  clearProgress(): Observable<void> {
+    this.clearIntervalSafe();
+    if (this.databag.databagId === undefined) {
+      return of(undefined);
+    }
+    return this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken);
   }
 
   selectPrediction(columnName: string | undefined) {
@@ -180,52 +192,8 @@ export class GettingStartedComponent {
     this.solution.outputFields = outputFields;
   }
 
-  selectSolver(solver: PipelineTemplate) {
+  selectSolver(solver: Solver) {
     this.solution.solver = solver.name;
-  }
-
-  retrievePipelineStatus(runId: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      this.intervalID = setInterval(() => {
-        this.jobmanagerService.getRun(runId, this.user?.rawToken).pipe().subscribe(run => {
-          switch (run.status) {
-            case PipelineStatus.running:
-              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
-                .pipe(
-                  catchError(err => of({} as Databag)
-                  )
-                )
-                .subscribe((databag) => {
-                  if (databag.status) {
-                    this.pipelineStatus = databag.status;
-                  }
-                });
-              break;
-            case PipelineStatus.failed:
-              clearInterval(this.intervalID);
-              this.objectstoreService.getDatabagByRunId(runId, this.user?.rawToken)
-                .pipe(
-                  catchError(err => of({} as Databag)),
-                  map(databag => {
-                    if (!databag.errorMsgKey) {
-                      return 'message.pipeline.error.default';
-                    }
-                    return `message.pipeline.error.${databag.errorMsgKey}`;
-                  }),
-                  mergeMap((toTranslate) => this.translate.get(toTranslate))
-                )
-                .subscribe((rejectMsg) => {
-                  reject(rejectMsg);
-                });
-              break;
-            case PipelineStatus.succeeded:
-              clearInterval(this.intervalID);
-              resolve(run.status);
-              break;
-          }
-        });
-      }, 2000);
-    });
   }
 
   isDisabled(
@@ -238,7 +206,7 @@ export class GettingStartedComponent {
     }
     if (this.stepperStep === 0) {
       if (file.name && ((dbUrl?.valid && dbUrl?.value?.length > 0))) {
-        this.pipelineStatus = 'Url is ignored!';
+        this.databag.status = 'message.pipeline.running.url_is_ignored';
         return false;
       } else {
         return !(this.databagName !== '' && (file.name || ((dbUrl?.valid && dbUrl?.value?.length > 0))));

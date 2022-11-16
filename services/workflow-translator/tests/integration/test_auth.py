@@ -1,11 +1,13 @@
 from pathlib import PosixPath
 
-from conftest import user_header
 from pytest_mock import MockerFixture
 
 
 def test_get_pipeline_template_by_name_with_user(
-    client, pipeline_template: str, mocker: MockerFixture
+    client,
+    pipeline_template: str,
+    mocker: MockerFixture,
+    user_header: dict[str, str],
 ):
     open_patch = mocker.patch(
         "builtins.open", mocker.mock_open(read_data=pipeline_template)

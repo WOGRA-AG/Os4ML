@@ -1,9 +1,10 @@
 import contextlib
-from typing import Callable, Protocol, runtime_checkable
+from typing import Callable
 
-from model.error_msg_key import ErrorMsgKey
+from exceptions.interface import HasErrorStatus
+from models.status_message import StatusMessage
 
-ErrorMsgKeyHandler = Callable[[ErrorMsgKey], None]
+ErrorStatusHandler = Callable[[StatusMessage], None]
 
 
 class ExceptionHandlerException(Exception):
@@ -14,14 +15,9 @@ class ExceptionHandlerException(Exception):
         )
 
 
-@runtime_checkable
-class ErrorWithMsgKey(Protocol):
-    error_msg_key: ErrorMsgKey
-
-
 @contextlib.contextmanager
 def exception_handler(
-    error_handler: ErrorMsgKeyHandler, default_error_msg_key: ErrorMsgKey
+    error_handler: ErrorStatusHandler, default_error_status: StatusMessage
 ):
     """
     Contextmanager that calls the error_handler if an error is risen during the execution.
@@ -34,10 +30,10 @@ def exception_handler(
     except ExceptionHandlerException:
         raise
     except Exception as e:
-        error_msg_key = (
-            e.error_msg_key
-            if isinstance(e, ErrorWithMsgKey)
-            else default_error_msg_key
+        error_status = (
+            e.error_status
+            if isinstance(e, HasErrorStatus)
+            else default_error_status
         )
-        error_handler(error_msg_key)
+        error_handler(error_status)
         raise ExceptionHandlerException()

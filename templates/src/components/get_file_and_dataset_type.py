@@ -4,26 +4,28 @@ from collections import namedtuple
 from typing import NamedTuple
 
 from exceptions.file_type_unknown import FileTypeUnknownException
-from model.databag_type import DatasetType
-from model.error_msg_key import ErrorMsgKey
-from model.file_type import FileType
-from objectstore.objectstore import error_databag_status_update
+from model_manager.databags import update_databag_status
+from models.databag_type import DatasetType
+from models.file_type import FileType
+from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 from util.uri import is_uri
 
 
 def get_file_and_dataset_type(
-    file_name: str, databag_id: str, os4ml_namespace: str
+    databag_id: str,
 ) -> NamedTuple("Types", [("file_type", str), ("dataset_type", str)]):
     handler = functools.partial(
-        error_databag_status_update,
+        update_databag_status,
         databag_id,
-        os4ml_namespace=os4ml_namespace,
     )
-    with exception_handler(handler, ErrorMsgKey.FILE_TYPE_UNKNOWN):
+    with exception_handler(handler, StatusMessage.FILE_TYPE_UNKNOWN):
+        databag = update_databag_status(
+            databag_id, StatusMessage.UPLOADING_DATA
+        )
         types = namedtuple("Types", ["file_type", "dataset_type"])
-        file_type = file_type_from_file_name(file_name)
-        dataset_type = dataset_type_from_file_name(file_name)
+        file_type = file_type_from_file_name(databag.file_name)
+        dataset_type = dataset_type_from_file_name(databag.file_name)
         return types(file_type.value, dataset_type.value)
 
 

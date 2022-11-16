@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Solution} from '../../../../../../build/openapi/jobmanager';
 import {
   DialogDynamicComponent
 } from '../../../dialog-dynamic/dialog-dynamic.component';
@@ -7,8 +6,8 @@ import {
   SettingSolutionComponent
 } from '../setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
 import {UserFacade} from '../../../../user/services/user-facade.service';
+import {Solution} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-shared-solutions-list',

@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
 import {UserFacade} from '../services/user-facade.service';
-import {User} from '../../../../build/openapi/jobmanager';
+import {User} from '../../../../build/openapi/modelmanager';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

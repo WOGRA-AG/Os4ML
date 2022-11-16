@@ -1,6 +1,0 @@
-{
-  "name": "databag",
-  "description": "Transforms the input to a pandas dataframe and analyses the datatypes of the columns",
-  "type": "pipeline",
-  "pipeline_step": "prepare"
-}

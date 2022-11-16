@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-manager
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app: os4ml
+      name: model-manager
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: os4ml
+        name: model-manager
+    spec:
+      containers:
+        - name: model-manager
+          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/model-manager"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+          env:
+            - name: OS4ML_NAMESPACE
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: os4mlNS
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /docs
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+      serviceAccountName: service-account
+      imagePullSecrets:
+          - name: registry-credentials

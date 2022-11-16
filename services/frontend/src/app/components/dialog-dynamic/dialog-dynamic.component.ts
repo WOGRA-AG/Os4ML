@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Databag} from '../../../../build/openapi/objectstore';
-import {Solution} from '../../../../build/openapi/jobmanager';
+import {Databag, Solution} from '../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-dialog-dynamic',

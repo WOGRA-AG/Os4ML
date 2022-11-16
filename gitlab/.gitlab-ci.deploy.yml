@@ -125,4 +125,5 @@ deploy-testing:
     - .deploy
   variables:
     LABEL: 'testing'
+  resource_group: testing
   when: manual

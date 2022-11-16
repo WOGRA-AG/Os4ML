@@ -1,7 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
-import {Databag, ObjectstoreService} from '../../../../build/openapi/objectstore';
 import {interval, Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {
   DialogDynamicComponent
@@ -10,7 +9,7 @@ import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {UserFacade} from '../../user/services/user-facade.service';
-import {User} from '../../../../build/openapi/jobmanager';
+import {Databag, ModelmanagerService, User} from '../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-databags-page',
@@ -26,7 +25,7 @@ export class DatabagsPageComponent implements OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private objectstore: ObjectstoreService,
+    private modelManger: ModelmanagerService,
     public dialog: MatDialog,
     private userFacade: UserFacade,
   ) {
@@ -35,7 +34,7 @@ export class DatabagsPageComponent implements OnDestroy {
     });
     this.userSub = this.userFacade.currentUser$.pipe().subscribe(currentUser => {
         this.user = currentUser;
-        this.objectstore.getAllDatabags(currentUser?.rawToken).subscribe(
+        this.modelManger.getDatabags(currentUser?.rawToken).subscribe(
           databags => this.databags = databags
         );
       }
