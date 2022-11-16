@@ -51,7 +51,7 @@ describe('Databags', () => {
     cy.get('#define-solver-name-input').type('Solution Test Ludwig Solver');
     cy.get('#define-solver-list > .mat-list-item-content').click();
     cy.get('#define-solver-next-button > .mat-button-wrapper').click();
-    cy.get('[id=\'solution-status\']', { timeout: 600000 }).contains('Done', { timeout: 600000 });
+    cy.get('.status-column > .done', { timeout: 600000});
   });
   it('download model', () => {
     cy.visit('/dashboard');
