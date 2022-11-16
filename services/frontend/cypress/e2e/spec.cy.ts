@@ -31,7 +31,7 @@ describe('Databags', () => {
     }
     cy.visit('/databag');
     waitUntilElementExists('#add-databag-button-empty');
-    cy.wait(600000);
+    cy.wait(60000);
     cy.get('[id=\'add-databag-button-empty\']', { timeout: 600000 }).click();
     cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
     cy.get('[id=\'add-databag-main-button\']').click();
