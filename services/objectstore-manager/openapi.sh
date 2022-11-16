@@ -1,8 +1,8 @@
 #!/bin/sh
 
-sudo rm -r src/build
+rm -r src/build
 
-docker run --rm \
+docker run --rm -u $(id -u):$(id -g) \
   -v $PWD:/local/ openapitools/openapi-generator-cli:v5.4.0 generate \
   -i /local/oas/objectstore-manager-oas.yaml \
   -t /local/oas/templates \
