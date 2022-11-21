@@ -1,0 +1,39 @@
+plugins {
+    id 'java-library'
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+task k8sConfigMap {
+    dependsOn tasks.jar
+
+    outputs.file("$buildDir/k8s/configmap.yaml")
+
+    doLast {
+        def base64String = tasks.jar.archiveFile.get().asFile.bytes.encodeBase64().toString()
+
+        def configMapFile = file("$buildDir/k8s/configmap.yaml")
+        configMapFile.getParentFile().mkdirs()
+        configMapFile.text = """apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-theme
+binaryData:
+  keycloak-themes.jar: $base64String
+"""
+    }
+}
+
+task k8sConfigMapSha {
+    dependsOn tasks.k8sConfigMap
+
+    outputs.file("$buildDir/k8s/configmap.yaml.sum")
+
+    doLast {
+        def digest = file("$buildDir/k8s/configmap.yaml").text.digest('SHA-256')
+        file("$buildDir/k8s/configmap.yaml.sum").text = digest
+    }
+}

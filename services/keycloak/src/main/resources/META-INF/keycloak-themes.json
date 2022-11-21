@@ -1,0 +1,6 @@
+{
+  "themes": [{
+    "name" : "os4ml-theme",
+    "types": [ "login", "email" ]
+  }]
+}
