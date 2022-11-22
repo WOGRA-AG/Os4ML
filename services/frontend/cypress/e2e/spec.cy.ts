@@ -2,12 +2,13 @@ describe('Databags', () => {
 
   beforeEach('login', () => {
     cy.visit('/');
+    cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear('us');
-    cy.get('#username').type('user@example.com');
+    cy.get('#username').type(Cypress.env('TEST_USER'));
+    cy.get(':nth-child(2) > .pure-material-textfield-outlined > span').click();
     cy.get('#password').clear();
-    cy.get('#password').type('12341234');
-    cy.get('#kc-login').click();
-    cy.wait(1000);
+    cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
+    cy.get('#kc-login > span').click();
   });
   afterEach('logout', () => {
     cy.visit('/logout');
@@ -71,13 +72,50 @@ describe('Databags', () => {
     cy.get('.mat-dialog-actions > .mat-raised-button > .mat-button-wrapper').click();
     cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'renamed-titanic.xls');
   });
-    it('rename solution', () => {
-      cy.visit('/dashboard');
-      cy.get('.mat-subheading-2').click();
-      cy.get(':nth-child(2) > .mat-body-2').click();
-      cy.get('#mat-input-0').clear('R');
-      cy.get('#mat-input-0').type('Rename Solution');
-      cy.get('[type="submit"] > .mat-button-wrapper').click();
-      cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
-    });
+  it('rename solution', () => {
+    cy.visit('/dashboard');
+    cy.get('.mat-subheading-2').click();
+    cy.get(':nth-child(2) > .mat-body-2').click();
+    cy.get('#mat-input-0').clear('R');
+    cy.get('#mat-input-0').type('Rename Solution');
+    cy.get('[type="submit"] > .mat-button-wrapper').click();
+    cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
+  });
+  it('delete solution', () => {
+    cy.visit('/dashboard');
+    cy.get('.mat-subheading-2').click();
+    cy.get(':nth-child(1) > .mat-body-2').click();
+    cy.get('.delete-button > .mat-button-wrapper').click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
+  });
+  it('delete databags', () => {
+    cy.visit('/dashboard');
+    cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
+    cy.get(':nth-child(1) > .mat-body-2').click();
+    cy.get('.mat-stroked-button > .mat-button-wrapper').click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
+    cy.get('.page-wrapper').click();
+    cy.get('.placeholder').click();
+    cy.get('h5').click();
+    cy.get('h5').click();
+    cy.get('h5').click();
+    cy.get('h5').should('have.text', 'Get started with Machine Learning');
+  });
+  it('fastlane', () => {
+    cy.visit('/dashboard');
+    cy.get('.support-card > .mat-focus-indicator > .mat-button-wrapper').click();
+    cy.get('#mat-input-0').clear('F');
+    cy.get('#mat-input-0').type('Fastlane Databag');
+    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
+    cy.get('[id=\'add-databag-main-button\']').click();
+    cy.get('#cdk-step-content-0-1 > .mat-dialog-content > app-shared-dialog-section > .dialog-element > .dialog-element-content > .mat-list > :nth-child(1) > .mat-list-item-content', { timeout: 600000}).click();
+    cy.get('.mat-button-wrapper > .ng-star-inserted').click();
+    cy.get('#mat-input-2').clear('F');
+    cy.get('#mat-input-2').type('Fastlane Solution');
+    cy.get('.mat-button-wrapper > .ng-star-inserted').click();
+    cy.get('#define-solver-list > .mat-list-item-content', { timeout: 600000}).click();
+    cy.get('.active > .mat-list-item-content > .nav-caption').click();
+    cy.get('.mat-overline').click();
+    cy.get('.status-column > .done', { timeout: 600000});
+  });
 });
