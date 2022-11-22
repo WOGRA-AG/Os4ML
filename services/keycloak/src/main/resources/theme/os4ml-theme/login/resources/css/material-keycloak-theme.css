@@ -471,6 +471,7 @@ h5 {
     line-height: 24px;
     transition: background-color .3s;
     letter-spacing: 1.25px;
+    cursor: pointer;
 }
 
 .btn:hover, .btn:focus {

@@ -10,12 +10,12 @@ tasks.withType(AbstractArchiveTask).configureEach {
 task k8sConfigMap {
     dependsOn tasks.jar
 
-    outputs.file("$buildDir/k8s/configmap.yaml")
+    outputs.file("$buildDir/k8s/keycloak-theme.yaml")
 
     doLast {
         def base64String = tasks.jar.archiveFile.get().asFile.bytes.encodeBase64().toString()
 
-        def configMapFile = file("$buildDir/k8s/configmap.yaml")
+        def configMapFile = file("$buildDir/k8s/keycloak-theme.yaml")
         configMapFile.getParentFile().mkdirs()
         configMapFile.text = """apiVersion: v1
 kind: ConfigMap
@@ -30,10 +30,10 @@ binaryData:
 task k8sConfigMapSha {
     dependsOn tasks.k8sConfigMap
 
-    outputs.file("$buildDir/k8s/configmap.yaml.sum")
+    outputs.file("$buildDir/k8s/keycloak-theme.yaml.sum")
 
     doLast {
-        def digest = file("$buildDir/k8s/configmap.yaml").text.digest('SHA-256')
-        file("$buildDir/k8s/configmap.yaml.sum").text = digest
+        def digest = file("$buildDir/k8s/keycloak-theme.yaml").text.digest('SHA-256')
+        file("$buildDir/k8s/keycloak-theme.yaml.sum").text = digest
     }
 }
