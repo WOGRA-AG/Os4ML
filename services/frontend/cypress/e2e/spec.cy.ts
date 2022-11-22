@@ -85,14 +85,18 @@ describe('Databags', () => {
     cy.visit('/dashboard');
     cy.get('.mat-subheading-2').click();
     cy.get(':nth-child(1) > .mat-body-2').click();
+    cy.wait(5);
     cy.get('.delete-button > .mat-button-wrapper').click();
+    cy.wait(5);
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
   });
   it('delete databags', () => {
     cy.visit('/dashboard');
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get(':nth-child(1) > .mat-body-2').click();
+    cy.wait(5);
     cy.get('.mat-stroked-button > .mat-button-wrapper').click();
+    cy.wait(5);
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
     cy.get('.page-wrapper').click();
     cy.get('.placeholder').click();
