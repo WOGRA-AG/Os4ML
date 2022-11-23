@@ -12,6 +12,7 @@ import {
 } from '../../components/shared/organisms/create-solution/create-solution.component';
 import {UserFacade} from '../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, User} from '../../../../build/openapi/modelmanager';
+import {DatabagFacade} from '../../facades/databag-facade.service';
 
 @Component({
   selector: 'app-main-page',
@@ -30,7 +31,11 @@ export class DashboardPageComponent implements OnDestroy {
     public dialog: MatDialog,
     public userFacade: UserFacade,
     public modelManager: ModelmanagerService,
+    public databagFacade: DatabagFacade,
   ) {
+    this.databagFacade.connect().subscribe(msg => {
+      console.log(msg);
+    });
     this.intervalSub = interval(10000).subscribe(x => {
       this.userFacade.refresh();
     });
