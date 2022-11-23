@@ -3,7 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import exceptions.handler  # Needed to initialize exception handlers
 from build.openapi_server.main import app
+from websocket_router import router as ws_router
 
+app.include_router(ws_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
