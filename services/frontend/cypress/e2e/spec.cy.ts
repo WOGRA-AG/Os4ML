@@ -1,6 +1,7 @@
 describe('Databags', () => {
 
   beforeEach('login', () => {
+    cy.viewport(1280, 720)
     cy.visit('/');
     cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear('us');
@@ -86,9 +87,9 @@ describe('Databags', () => {
     cy.get('.mat-subheading-2').click();
     cy.get(':nth-child(1) > .mat-body-2').click();
     cy.wait(5);
-    cy.get('.delete-button > .mat-button-wrapper').click();
+    cy.get('.mat-stroked-button > .mat-button-wrapper').click();
     cy.wait(5);
-    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
   });
   it('delete databags', () => {
     cy.visit('/dashboard');
@@ -98,11 +99,6 @@ describe('Databags', () => {
     cy.get('.mat-stroked-button > .mat-button-wrapper').click();
     cy.wait(5);
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
-    cy.get('.page-wrapper').click();
-    cy.get('.placeholder').click();
-    cy.get('h5').click();
-    cy.get('h5').click();
-    cy.get('h5').click();
     cy.get('h5').should('have.text', 'Get started with Machine Learning');
   });
   it('fastlane', () => {
