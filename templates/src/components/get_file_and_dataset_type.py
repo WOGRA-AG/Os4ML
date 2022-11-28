@@ -45,6 +45,6 @@ def file_type_from_file_name(file_name: str) -> FileType:
 
 def dataset_type_from_file_name(file_name: str) -> DatasetType:
     if is_uri(file_name):
-        return DatasetType.file_url
+        return DatasetType.FILE_URL
     else:
-        return DatasetType.local_file
+        return DatasetType.LOCAL_FILE

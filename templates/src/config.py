@@ -7,3 +7,7 @@ USER_TOKEN = os.getenv("OS4ML_ACCESS_TOKEN", default="")
 OS4ML_NAMESPACE = os.getenv("OS4ML_NAMESPACE", default="os4ml")
 
 DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"
+
+# for zip files
+IMAGE_COL_NAME = "image_path"
+CATEGORY_COL_NAME = "category"

@@ -2,5 +2,5 @@ import enum
 
 
 class DatasetType(str, enum.Enum):
-    local_file = "local_file"
-    file_url = "file_url"
+    LOCAL_FILE = "local_file"
+    FILE_URL = "file_url"

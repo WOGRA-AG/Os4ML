@@ -26,7 +26,7 @@ def get_dataset(
     )
     with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_LOADED):
         databag = get_databag_by_id(databag_id)
-        if dataset_type == DatasetType.file_url:
+        if dataset_type == DatasetType.FILE_URL:
             if not resource_exists(databag.file_name):
                 raise ResourceNotFoundException(databag.file_name)
             download_url = databag.file_name

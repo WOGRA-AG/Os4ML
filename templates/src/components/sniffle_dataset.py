@@ -7,6 +7,7 @@ from kfp.v2.dsl import Dataset, Input
 
 from build.model_manager_client.model.column import Column
 from build.model_manager_client.model.databag import Databag
+from config import IMAGE_COL_NAME
 from load.dataframe import load_dataframe
 from model_manager.databags import (
     get_databag_by_id,
@@ -14,6 +15,7 @@ from model_manager.databags import (
     update_databag_status,
     upload_dataframe,
 )
+from models.databag_type import DatasetType
 from models.status_message import StatusMessage
 from sniffle.sniffle import (
     get_num_rows,
@@ -56,14 +58,14 @@ def sniffle_dataset(
 def create_columns(
     df: pd.DataFrame, dataset_type: str, max_categories=10
 ) -> List[Column]:
-    if dataset_type == "local_file" or dataset_type == "file_url":
-        return sniff_column_datatypes(df, max_categories=max_categories)
-    elif dataset_type == "zip_file":
+    if IMAGE_COL_NAME in df:
         return sniff_zip_types(df)
-    elif dataset_type == "shepard_url":
-        return []
-    else:
-        raise NotImplementedError()
+    if (
+        dataset_type == DatasetType.LOCAL_FILE.value
+        or dataset_type == DatasetType.FILE_URL.value
+    ):
+        return sniff_column_datatypes(df, max_categories=max_categories)
+    raise NotImplementedError()
 
 
 def upload_dataframe_to_databag(df: pd.DataFrame, databag: Databag) -> None:
