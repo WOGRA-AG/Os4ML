@@ -6,7 +6,7 @@ e2e:
   needs:
     - reset
   script:
-    - cd services/frontend && npm ci && npx cypress run
+    - cd services/frontend && npm ci && npx cypress run --browser chrome
   artifacts:
     when: always
     paths:
