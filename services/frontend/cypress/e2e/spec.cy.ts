@@ -85,6 +85,7 @@ describe('Databags', () => {
   it('delete solution', () => {
     cy.visit('/dashboard');
     cy.get('.mat-subheading-2').click();
+    cy.wait(5);
     cy.get(':nth-child(1) > .mat-body-2').click();
     cy.wait(5);
     cy.get('.mat-stroked-button > .mat-button-wrapper').click();
@@ -94,6 +95,7 @@ describe('Databags', () => {
   it('delete databags', () => {
     cy.visit('/dashboard');
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
+    cy.wait(5);
     cy.get(':nth-child(1) > .mat-body-2').click();
     cy.wait(5);
     cy.get('.mat-stroked-button > .mat-button-wrapper').click();
