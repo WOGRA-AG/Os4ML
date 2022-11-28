@@ -3,10 +3,9 @@ from unittest.mock import Mock
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from pytest_mock import MockerFixture
 
-import repository.init_repository
 from repository import MinioRepository
+from repository.init_repository import init_repository
 from src.main import app as application
 
 
@@ -28,12 +27,8 @@ def route_prefix() -> str:
 
 
 @pytest.fixture
-def existing_objects_repository(
-    existing_objects_mock: Mock, mocker: MockerFixture
-) -> Mock:
-    mocker.patch.object(
-        repository.init_repository,
-        "init_repository",
-        return_value=MinioRepository(existing_objects_mock),
+def existing_objects_repository(existing_objects_mock: Mock, app) -> Mock:
+    app.dependency_overrides[init_repository] = lambda: MinioRepository(
+        existing_objects_mock
     )
     return existing_objects_mock
