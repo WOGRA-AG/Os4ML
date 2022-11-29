@@ -90,7 +90,7 @@ describe('Databags', () => {
     /* ==== Generated with Cypress Studio ==== */
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(1)').click();
-    cy.get('.mat-stroked-button > .mat-button-wrapper').click();
+    cy.get('[type="button"] > ').get('.mat-stroked-button > .mat-button-wrapper').click();
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
     /* ==== End Cypress Studio ==== */
   });
