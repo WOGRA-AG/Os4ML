@@ -1,13 +1,15 @@
 describe('Databags', () => {
 
   beforeEach('login', () => {
+    cy.viewport(1280, 720)
     cy.visit('/');
+    cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear('us');
-    cy.get('#username').type('user@example.com');
+    cy.get('#username').type(Cypress.env('TEST_USER'));
+    cy.get(':nth-child(2) > .pure-material-textfield-outlined > span').click();
     cy.get('#password').clear();
-    cy.get('#password').type('12341234');
-    cy.get('#kc-login').click();
-    cy.wait(1000);
+    cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
+    cy.get('#kc-login > span').click();
   });
   afterEach('logout', () => {
     cy.visit('/logout');
@@ -71,13 +73,13 @@ describe('Databags', () => {
     cy.get('.mat-dialog-actions > .mat-raised-button > .mat-button-wrapper').click();
     cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'renamed-titanic.xls');
   });
-    it('rename solution', () => {
-      cy.visit('/dashboard');
-      cy.get('.mat-subheading-2').click();
-      cy.get(':nth-child(2) > .mat-body-2').click();
-      cy.get('#mat-input-0').clear('R');
-      cy.get('#mat-input-0').type('Rename Solution');
-      cy.get('[type="submit"] > .mat-button-wrapper').click();
-      cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
-    });
+  it('rename solution', () => {
+    cy.visit('/dashboard');
+    cy.get('.mat-subheading-2').click();
+    cy.get(':nth-child(2) > .mat-body-2').click();
+    cy.get('#mat-input-0').clear('R');
+    cy.get('#mat-input-0').type('Rename Solution');
+    cy.get('[type="submit"] > .mat-button-wrapper').click();
+    cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
+  });
 });
