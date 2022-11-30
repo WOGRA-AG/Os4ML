@@ -1,25 +1,18 @@
 import json
-from collections.abc import Iterable
 from datetime import timedelta
 from io import BytesIO
 
-from google.cloud.storage import Blob, Bucket, Client
+from google.cloud.storage import Blob, Bucket
 
 from exceptions import BucketNotFoundException, ObjectNotFoundException
-from lib.singleton_decorator import singleton
-
-
-@singleton
-def init_gcs_client() -> Iterable[Client]:
-    yield Client()
+from repository.clients.gcs_client import get_gcs_client
 
 
 class GcsRepository:
     def __init__(
         self,
-        client: Client = init_gcs_client,
     ):
-        self.client = client
+        self.client = get_gcs_client()
         self.gcs_timeout = 1
         self.url_expiration_hours = 1
 

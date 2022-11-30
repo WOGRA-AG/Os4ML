@@ -14,13 +14,7 @@ def test_delete_objects_with_prefix(
     client: TestClient,
     route_prefix: str,
     user_header: dict[str, str],
-    mocker: MockerFixture,
 ):
-    mocker.patch.object(
-        repository.init_repository,
-        "init_repository",
-        return_value=MinioRepository(client=existing_objects_mock),
-    )
     response = client.get(
         route_prefix + "objects/prefix",
         headers=user_header,
