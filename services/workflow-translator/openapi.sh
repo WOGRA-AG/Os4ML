@@ -1,8 +1,8 @@
 #!/bin/sh
 
-sudo rm -r src/build
+rm -r src/build
 
-docker run --rm \
+docker run --rm -u $(id -u):$(id -g) \
   -v $PWD:/local/ openapitools/openapi-generator-cli:v6.2.0 generate \
   -i /local/oas/workflow-translator-oas.yaml \
   -t /local/oas/templates \

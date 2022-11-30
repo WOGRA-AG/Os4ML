@@ -2,8 +2,10 @@ import base64
 import json
 import logging
 import uuid
+from collections import defaultdict
 from datetime import datetime
 from io import BytesIO, StringIO
+from typing import AsyncIterable
 
 from fastapi import Depends
 
@@ -15,12 +17,33 @@ from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
 from exceptions import DatabagNotFoundException
+from lib.subscriber_event import SubscriberEvent
 from services import (
     DATABAG_CONFIG_FILE_NAME,
     DATAFRAME_FILE_NAME,
     DATE_FORMAT_STR,
 )
+from services.auth_service import get_parsed_token
 from services.init_api_clients import init_jobmanager_api, init_objectstore_api
+
+databag_change_events_per_user: dict[
+    str, SubscriberEvent[uuid.UUID]
+] = defaultdict(SubscriberEvent)
+
+
+def _notify_databag_update(usertoken: str) -> None:
+    user = get_parsed_token(usertoken)
+    event = databag_change_events_per_user[user.id]
+    event.set()
+    event.clear()
+
+
+def terminate_databags_stream(usertoken: str, client_id: uuid.UUID) -> None:
+    user = get_parsed_token(usertoken)
+    event = databag_change_events_per_user[user.id]
+    event.unsubscribe(client_id)
+    if not event.has_subscribers():
+        del databag_change_events_per_user[user.id]
 
 
 class DatabagService:
@@ -37,7 +60,7 @@ class DatabagService:
     def _get_databag_object_name(self, databag_id: str) -> str:
         return f"{databag_id}/{self.databag_config_file_name}"
 
-    def list_databags(self, usertoken: str) -> list[Databag]:
+    def get_databags(self, usertoken: str) -> list[Databag]:
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
             path_prefix="", usertoken=usertoken
         )
@@ -48,6 +71,14 @@ class DatabagService:
             for object_name in object_names
             if self.databag_config_file_name in object_name
         ]
+
+    async def stream_databags(
+        self, usertoken: str, client_id: uuid.UUID
+    ) -> AsyncIterable[list[Databag]]:
+        user = get_parsed_token(usertoken)
+        while True:
+            await databag_change_events_per_user[user.id].wait(client_id)
+            yield self.get_databags(usertoken)
 
     def _load_databag_from_object_name(
         self, object_name: str, usertoken: str
@@ -85,10 +116,12 @@ class DatabagService:
         )
         databag.run_id = run_id
         self._save_databag_file(databag, usertoken)
+        _notify_databag_update(usertoken)
         return databag
 
     def update_databag(self, databag: Databag, usertoken: str) -> None:
         self._save_databag_file(databag, usertoken)
+        _notify_databag_update(usertoken)
 
     def _save_databag_file(self, databag: Databag, usertoken: str) -> None:
         object_name = self._get_databag_object_name(databag.databag_id)
@@ -120,6 +153,7 @@ class DatabagService:
         self.objectstore.delete_objects_with_prefix(
             path_prefix=databag_id, usertoken=usertoken
         )
+        _notify_databag_update(usertoken)
 
     def download_dataset(self, databag_id: str, usertoken: str) -> str:
         databag = self.get_databag_by_id(databag_id, usertoken)

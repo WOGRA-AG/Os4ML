@@ -32,7 +32,7 @@ class ModelmanagerApiController:
     def get_databags(self, usertoken: str = "") -> list[Databag]:
         if usertoken is None:
             usertoken = ""
-        return self.databag_service.list_databags(usertoken)  # type: ignore
+        return self.databag_service.get_databags(usertoken)  # type: ignore
 
     def get_databag_by_id(
         self, databag_id: str, usertoken: str = ""

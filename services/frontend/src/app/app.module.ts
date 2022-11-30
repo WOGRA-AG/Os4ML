@@ -45,6 +45,7 @@ import {DatabagListItemComponent} from './components/shared/molecules/databag-li
 import {ListItemComponent} from './components/shared/atoms/list-item/list-item.component';
 import {GettingStartedComponent} from './components/shared/organisms/getting-started/getting-started.component';
 import {UserModule} from './user/user.module';
+import {FacadesModule} from './facades/facades.module';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -104,6 +105,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     )),
     MaterialModule,
     UserModule,
+    FacadesModule,
     FormsModule,
     ReactiveFormsModule
   ],
