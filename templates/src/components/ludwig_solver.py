@@ -20,7 +20,6 @@ from model_manager.solutions import (
 )
 from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
-from util.paths import path_to_absolute
 
 
 def ludwig_solver(
@@ -50,9 +49,9 @@ def ludwig_solver(
         )
         dataframe = load_dataframe(dataset_file.path)
         if IMAGE_COL_NAME in dataframe:
-            load_image_file(databag)
+            image_file_path = load_image_file(databag)
             dataframe[IMAGE_COL_NAME] = dataframe[IMAGE_COL_NAME].map(
-                path_to_absolute
+                functools.partial(os.path.join, image_file_path)
             )
         df_train, df_validate, df_test = train_validate_test_split(
             dataframe, test_split, validation_split

@@ -1,3 +1,5 @@
+import tempfile
+import uuid
 import zipfile
 
 import pandas as pd
@@ -12,10 +14,13 @@ def load_dataframe(dataframe_file_path) -> pd.DataFrame:
         return pd.read_csv(input_file)
 
 
-def load_image_file(databag: Databag) -> None:
+def load_image_file(databag: Databag) -> str:
     download_url = get_dataset_download_url(databag)
-    zip_file_name = "dataset.zip"
-    with open(zip_file_name, "wb") as file:
-        download_file(download_url, file)
-    with zipfile.ZipFile(zip_file_name) as zip_file:
-        zip_file.extractall()
+    with tempfile.NamedTemporaryFile() as zip_file_name:
+        with open(zip_file_name.name, "wb") as file:
+            download_file(download_url, file)
+        dataset_id = uuid.uuid4()
+        extract_to = f"/data/{dataset_id}"
+        with zipfile.ZipFile(zip_file_name.name) as zip_file:
+            zip_file.extractall(path=extract_to)
+    return extract_to
