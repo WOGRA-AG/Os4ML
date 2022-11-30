@@ -3,10 +3,8 @@ from unittest.mock import Mock
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from pytest_mock import MockerFixture
 
-import repository.init_repository
-from repository import MinioRepository
+import repository.impl.minio_repository
 from src.main import app as application
 
 
@@ -28,12 +26,11 @@ def route_prefix() -> str:
 
 
 @pytest.fixture
-def existing_objects_repository(
-    existing_objects_mock: Mock, mocker: MockerFixture
-) -> Mock:
+def existing_objects_repository(existing_objects_mock: Mock, mocker) -> Mock:
+
     mocker.patch.object(
-        repository.init_repository,
-        "init_repository",
-        return_value=MinioRepository(existing_objects_mock),
+        repository.impl.minio_repository,
+        "get_minio_client",
+        return_value=existing_objects_mock,
     )
     return existing_objects_mock

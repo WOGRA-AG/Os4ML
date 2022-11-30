@@ -2,28 +2,17 @@ import contextlib
 import json
 from io import BytesIO
 
-from minio import Minio
 from minio.deleteobjects import DeleteObject
 from minio.error import S3Error
 from urllib3 import HTTPResponse
 
-from decorators.singleton_metaclass import Singleton
 from exceptions import BucketNotFoundException, ObjectNotFoundException
-from services import STORAGE_KEY, STORAGE_SECRET, STORAGE_SECURE, STORAGE_URL
+from repository.clients.minio_client import get_minio_client
 
 
-class MinioRepository(metaclass=Singleton):
-    def __init__(self, client: Minio = None):
-        self.client: Minio = (
-            client
-            if client
-            else Minio(
-                endpoint=STORAGE_URL,
-                access_key=STORAGE_KEY,
-                secret_key=STORAGE_SECRET,
-                secure=STORAGE_SECURE,
-            )
-        )
+class MinioRepository:
+    def __init__(self):
+        self.client = get_minio_client()
 
     def _check_if_bucket_exists(self, bucket_name: str) -> None:
         if not self.client.bucket_exists(bucket_name):

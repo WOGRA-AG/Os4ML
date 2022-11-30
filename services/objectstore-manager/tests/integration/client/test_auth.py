@@ -1,9 +1,11 @@
+from unittest.mock import Mock
+
 from fastapi.testclient import TestClient
 
 
 def test_get_presigned_get_url_with_user(
     client: TestClient,
-    existing_objects_repository,
+    existing_objects_repository: Mock,
     user_header: dict[str, str],
     route_prefix: str,
 ):
