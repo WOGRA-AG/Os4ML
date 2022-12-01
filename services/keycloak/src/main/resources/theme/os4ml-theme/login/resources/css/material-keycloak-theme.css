@@ -65,6 +65,20 @@ h5 {
     justify-content: center;
     flex-wrap: wrap;
 }
+.alert {
+    margin-bottom: 16px;
+}
+.alert-error {
+    color: #ff0000;
+}
+.alert-info {
+}
+.alert-warning {
+    color: #ffa500;
+}
+.alert-success {
+    color: #008000;
+}
 .row {
     width: auto;
 }
