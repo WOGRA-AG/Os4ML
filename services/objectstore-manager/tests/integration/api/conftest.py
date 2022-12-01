@@ -24,9 +24,9 @@ def minio_repository_mock(
 
 @pytest.fixture
 def storage_service_mock(
-    minio_repository_mock: MinioRepository,
+    minio_repository_mock: MinioRepository, bucket_name: str
 ) -> StorageService:
-    return StorageService(minio_repository_mock)
+    return StorageService(minio_repository_mock, bucket_name=bucket_name)
 
 
 @pytest.fixture
@@ -41,5 +41,4 @@ def api_controller_mock(
     return ObjectstoreApiController(
         storage_service=storage_service_mock,
         user=default_user,
-        bucket_name=bucket_name,
     )
