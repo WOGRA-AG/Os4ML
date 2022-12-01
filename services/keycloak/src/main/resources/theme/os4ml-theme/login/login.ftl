@@ -31,6 +31,16 @@
                                             ${msg("welcome")}
                                         </h5>
                                     </div>
+                                    <#if message?has_content>
+                                        <div class="${properties.kcFeedbackAreaClass!}">
+                                            <div class="alert alert-${message.type}">
+                                                <#if message.type = 'success'><span class="${properties.kcFeedbackSuccessIcon!}">${message.summary}</span></#if>
+                                                <#if message.type = 'warning'><span class="${properties.kcFeedbackWarningIcon!}">${message.summary}</span></#if>
+                                                <#if message.type = 'error'><span class="${properties.kcFeedbackErrorIcon!}">${message.summary}</span></#if>
+                                                <#if message.type = 'info'><span class="${properties.kcFeedbackInfoIcon!}">${message.summary}</span></#if>
+                                            </div>
+                                        </div>
+                                    </#if>
                                     <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                                         <div class="flex-item padding-15">
                                             <label class="pure-material-textfield-outlined width-full">
