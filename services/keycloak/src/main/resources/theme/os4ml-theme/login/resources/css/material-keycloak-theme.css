@@ -6,6 +6,27 @@
     font-family: "Avenir Black";
     src: url('../fonts/AvenirLTPro-Black.ttf') format('truetype');
 }
+
+@media (max-width: 1200px) {
+    .login-container-left {
+        display: none;
+    }
+    .login-container-right {
+        border-radius: 24px 24px 24px 24px !important;
+    }
+}
+@media (max-width: 992px) {
+    #login-container-items {
+        width: 70vw !important;
+    }
+}
+@media (max-width: 768px) {
+    .login-container-right {
+        width: 90vw !important;
+        padding: 0 !important;
+    }
+}
+
 html, body {
     height: 100%;
     background-color: #F4F9FD;
@@ -54,17 +75,17 @@ h5 {
 }
 .login-container-left {
     border-radius: 24px 0 0 24px;
-    padding: 65px;
+    padding: 5vh 3vw 5vh 3vw;
     background-color: #2EAADC;
-    height: 705px;
-    width: 615px;
+    height: 70vh;
+    width: 40vw;
 }
 .login-container-right {
     border-radius: 0 24px 24px 0;
-    padding: 65px;
+    padding: 5vh 3vw 5vh 3vw;
     background-color: #FFFFFF;
-    height: 705px;
-    width: 615px;
+    height: 70vh;
+    width: 40vw;
 }
 .login-center {
     display: flex;
