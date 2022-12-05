@@ -82,19 +82,17 @@ describe('Databags', () => {
     cy.get('[type="submit"] > .mat-button-wrapper').click();
     cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
   });
-  it('fastlane', () => {
+  it('delete solution and databag', () => {
     cy.visit('/dashboard');
     /* ==== Generated with Cypress Studio ==== */
-    cy.get('.support-card > .mat-focus-indicator > .mat-button-wrapper').click();
-    cy.get('app-shared-close-button > .mat-focus-indicator > .mat-button-wrapper > .mat-icon').click();
+    cy.get('.mat-subheading-2').click();
+    cy.get('.solution-list-item > :nth-child(2)').click();
+    cy.get('.delete-button > .mat-button-wrapper').click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
-    cy.get(':nth-child(1) > .mat-body-2').click();
-    cy.get('.mat-stroked-button > .mat-button-wrapper').click();
-    cy.get('#mat-dialog-2 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
-    cy.get('h5').click();
-    cy.get('h5').click();
-    cy.get('h5').click();
-    cy.get('h5').should('have.text', 'Get started with Machine Learning');
+    cy.get('.databag-list-item > :nth-child(2)').click();
+    cy.get('.mat-stroked-button').click();
+    cy.get('#mat-dialog-3 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
     /* ==== End Cypress Studio ==== */
   });
 });
