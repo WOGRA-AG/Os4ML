@@ -13,7 +13,7 @@
     mat-stroked-button
     color="warn"
     type="button"
-    (click)="onSubmit()"
+    (mouseup)="onSubmit()"
     [disabled]="deleting || invalidResource()"
     [tabIndex]="-1"
   >

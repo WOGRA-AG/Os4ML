@@ -87,12 +87,12 @@ describe('Databags', () => {
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(2)').click();
-    cy.get('#solution-delete').scrollIntoView().click({ force:true });
-    cy.get('#confirm-delete').scrollIntoView().click({ force:true });
+    cy.get('#solution-delete').scrollIntoView().trigger('mouseup');
+    cy.get('#confirm-delete').scrollIntoView().trigger('mouseup');
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(2)').click();
-    cy.get('#databag-delete').scrollIntoView().click({ force:true });
-    cy.get('#confirm-delete').scrollIntoView().click({ force:true });
+    cy.get('#databag-delete').scrollIntoView().trigger('mouseup');
+    cy.get('#confirm-delete').scrollIntoView().trigger('mouseup');
     /* ==== End Cypress Studio ==== */
   });
 });
