@@ -6,7 +6,6 @@ from fastapi.responses import RedirectResponse
 
 from build.openapi_server.models.json_response import JsonResponse
 from build.openapi_server.models.user import User
-from services import BUCKET_NAME
 from services.auth_service import get_parsed_token
 from services.storage_service import StorageService
 
@@ -16,12 +15,10 @@ class ObjectstoreApiController:
         self,
         storage_service: StorageService = Depends(),
         user: User = Depends(get_parsed_token),
-        bucket_name: str = BUCKET_NAME,
     ):
 
         self.storage_service = storage_service
         self.user = user
-        self.bucket_name = bucket_name
 
     def _add_user_prefix(self, path_name: str) -> str:
         return f"{self.user.id}/{path_name}"
@@ -33,7 +30,6 @@ class ObjectstoreApiController:
         self, object_name: str, usertoken: str = ""
     ) -> RedirectResponse:
         get_url = self.storage_service.get_presigned_get_url(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
         )
         return RedirectResponse(get_url)
@@ -43,7 +39,6 @@ class ObjectstoreApiController:
     ) -> str:
         file = BytesIO(body)
         return self.storage_service.create_object_by_name(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
             file=file,
             size=len(body),
@@ -53,7 +48,6 @@ class ObjectstoreApiController:
         self, object_name: str, usertoken: str = ""
     ) -> None:
         return self.storage_service.delete_object_by_name(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
         )
 
@@ -64,7 +58,6 @@ class ObjectstoreApiController:
         if path_prefix is None:
             path_prefix = ""
         objects = self.storage_service.list_objects(
-            bucket_name=self.bucket_name,
             path_prefix=self._add_user_prefix(path_prefix),
         )
         return [
@@ -78,7 +71,6 @@ class ObjectstoreApiController:
         if path_prefix is None:
             path_prefix = ""
         return self.storage_service.delete_objects(
-            bucket_name=self.bucket_name,
             path_prefix=self._add_user_prefix(path_prefix),
         )
 
@@ -86,7 +78,6 @@ class ObjectstoreApiController:
         self, object_name: str, usertoken: str = ""
     ) -> JsonResponse:
         json_str: str = self.storage_service.get_json_object_by_name(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
         )
         encoded_json_str = base64.encodebytes(json_str.encode()).decode()
@@ -96,7 +87,6 @@ class ObjectstoreApiController:
         self, object_name: str, usertoken: str = ""
     ) -> str:
         return self.storage_service.get_presigned_get_url(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
         )
 
@@ -104,6 +94,5 @@ class ObjectstoreApiController:
         self, object_name: str, usertoken: str = ""
     ) -> str:
         return self.storage_service.get_presigned_put_url(
-            bucket_name=self.bucket_name,
             object_name=self._add_user_prefix(object_name),
         )

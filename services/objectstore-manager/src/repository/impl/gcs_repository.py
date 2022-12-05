@@ -78,7 +78,7 @@ class GcsRepository:
 
     def get_presigned_put_url(self, bucket_name: str, object_name: str) -> str:
         bucket = self._get_gcp_bucket(bucket_name)
-        blob = self._get_blob_from_bucket(bucket, object_name)
+        blob = Blob(bucket=bucket, name=object_name)
         return blob.generate_signed_url(
             expiration=timedelta(hours=self.url_expiration_hours), method="PUT"
         )

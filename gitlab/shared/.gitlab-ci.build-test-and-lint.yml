@@ -23,6 +23,7 @@
       --target test
       --cache-from $CACHE_REGISTRY/$IMG_NAME:test
       --build-arg BUILDKIT_INLINE_CACHE=1
+      --build-arg GOOGLE_APPLICATION_CREDENTIALS_BASE64="${GOOGLE_APPLICATION_CREDENTIALS_BASE64}"
       --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
       $BUILD_CONTEXT
     - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
