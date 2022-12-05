@@ -87,6 +87,8 @@ describe('Databags', () => {
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(2)').click();
+    cy.get('#mat-input-0').clear('R');
+    cy.get('#mat-input-0').type('Rename Solution');
     cy.get('.delete-button > .mat-button-wrapper').click();
     cy.get('#mat-dialog-1').should('be.visible');
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
