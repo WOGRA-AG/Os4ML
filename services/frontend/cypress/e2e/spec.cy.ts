@@ -87,12 +87,14 @@ describe('Databags', () => {
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(2)').click();
-    cy.get('#solution-delete').scrollIntoView().trigger('mouseup');
-    cy.get('#confirm-delete').scrollIntoView().trigger('mouseup');
+    cy.get('.delete-button > .mat-button-wrapper').click();
+    cy.get('#mat-dialog-1').should('be.visible');
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(2)').click();
-    cy.get('#databag-delete').scrollIntoView().trigger('mouseup');
-    cy.get('#confirm-delete').scrollIntoView().trigger('mouseup');
+    cy.get('.mat-stroked-button').click();
+    cy.get('#mat-dialog-3').should('be.visible');
+    cy.get('#mat-dialog-3 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
     /* ==== End Cypress Studio ==== */
   });
 });
