@@ -94,6 +94,9 @@ describe('Databags', () => {
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(2)').click();
+    cy.get('#mat-input-0').click();
+    cy.get('#mat-input-0').clear();
+    cy.get('#mat-input-0').type('renamed-titanic.xls');
     cy.get('.mat-stroked-button').click();
     cy.get('#mat-dialog-3').should('be.visible');
     cy.get('#mat-dialog-3 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
