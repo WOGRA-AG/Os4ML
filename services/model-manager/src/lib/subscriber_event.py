@@ -1,12 +1,13 @@
-import asyncio
 from typing import Generic, TypeVar
+
+from lib.threadsafe_event import ThreadSafeEvent
 
 T = TypeVar("T")
 
 
 class SubscriberEvent(Generic[T]):
     def __init__(self) -> None:
-        self._event = asyncio.Event()
+        self._event = ThreadSafeEvent()
         self._subscribers: set[T] = set()
 
     def set(self) -> None:
