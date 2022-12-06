@@ -74,8 +74,12 @@ CMD ["tail", "-f", "/dev/null"]
 
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
+ARG GOOGLE_APPLICATION_CREDENTIALS_BASE64
+ENV GOOGLE_APPLICATION_CREDENTIALS "/app/gcs_creds.json"
+RUN echo "$GOOGLE_APPLICATION_CREDENTIALS_BASE64" | base64 -d > $GOOGLE_APPLICATION_CREDENTIALS
+
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 75
+RUN coverage report -m --fail-under 90
 
 
 FROM python-base as production
