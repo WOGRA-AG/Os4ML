@@ -84,12 +84,18 @@ describe('Databags', () => {
   });
   it('delete solution', () => {
     cy.visit('/dashboard');
-    /* ==== Generated with Cypress Studio ==== */
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('#mat-dialog-title-0').should('be.visible');
     cy.get('.delete-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
     cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
-    /* ==== End Cypress Studio ==== */
+  });
+  it('delete databag', () => {
+    cy.visit('/dashboard');
+    cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
+    cy.get('.databag-list-item > :nth-child(1)').click();
+    cy.get('#mat-dialog-title-0').should('be.visible');
+    cy.get('.mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
   });
 });
