@@ -82,24 +82,14 @@ describe('Databags', () => {
     cy.get('[type="submit"] > .mat-button-wrapper').click();
     cy.get(':nth-child(1) > .mat-body-2').should('have.text', 'Rename Solution');
   });
-  it('delete solution and databag', () => {
+  it('delete solution', () => {
     cy.visit('/dashboard');
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.mat-subheading-2').click();
-    cy.get('.solution-list-item > :nth-child(2)').click();
-    cy.get('#mat-input-0').clear('R');
-    cy.get('#mat-input-0').type('Rename Solution');
-    cy.get('.delete-button > .mat-button-wrapper').click();
-    cy.get('#mat-dialog-1').should('be.visible');
-    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button').click();
-    cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
-    cy.get('.databag-list-item > :nth-child(2)').click();
-    cy.get('#mat-input-0').click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('renamed-titanic.xls');
-    cy.get('.mat-stroked-button').click();
-    cy.get('#mat-dialog-3').should('be.visible');
-    cy.get('#mat-dialog-3 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').click();
+    cy.get('.solution-list-item > :nth-child(1)').click();
+    cy.get('#mat-dialog-title-0').should('be.visible');
+    cy.get('.delete-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
     /* ==== End Cypress Studio ==== */
   });
 });
