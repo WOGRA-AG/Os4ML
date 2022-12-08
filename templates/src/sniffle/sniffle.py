@@ -4,6 +4,7 @@ from typing import List
 import pandas as pd
 
 from build.model_manager_client.model.column import Column
+from config import CATEGORY_COL_NAME, IMAGE_COL_NAME
 from models.column_data_type import ColumnDataType
 
 
@@ -28,30 +29,30 @@ def sniff_series(series: pd.Series, max_categories=10) -> ColumnDataType:
     column_type = ColumnDataType.TEXT
     datatype = str(series.dtype)
     if "int" in datatype or "float" in datatype:
-        column_type = ColumnDataType.NUMERICAL
+        column_type = ColumnDataType.NUMERICAL.value
     if "date" in datatype:
-        column_type = ColumnDataType.DATE
+        column_type = ColumnDataType.DATE.value
     if series.nunique() <= max_categories:
-        column_type = ColumnDataType.CATEGORY
+        column_type = ColumnDataType.CATEGORY.value
     return column_type
 
 
 def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
-    example_file = df["file"][0]
-    num_files = len(df["file"])
+    example_file = df[IMAGE_COL_NAME][0]
+    num_files = len(df[IMAGE_COL_NAME])
     suffix = pathlib.Path(example_file).suffix.lower()
     if suffix in (".jpg", ".jpeg", ".png", ".tiff"):
         file_column = Column(
-            name="file",
-            type=ColumnDataType.IMAGE,
-            num_entires=num_files,
+            name=IMAGE_COL_NAME,
+            type=ColumnDataType.IMAGE.value,
+            num_entries=num_files,
         )
     else:
         raise NotImplementedError()
-    num_labels = len(df["label"])
+    num_labels = len(df[CATEGORY_COL_NAME])
     label_column = Column(
-        name="label",
-        type=ColumnDataType.CATEGORY,
+        name=CATEGORY_COL_NAME,
+        type=ColumnDataType.CATEGORY.value,
         num_entries=num_labels,
     )
     return [file_column, label_column]

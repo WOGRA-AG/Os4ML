@@ -32,7 +32,6 @@
       --cache-from $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --build-arg IMAGE_TAG=$LABEL
       '.'
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
 

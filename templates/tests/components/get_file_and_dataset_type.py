@@ -30,9 +30,9 @@ def test_file_type_from_file_name(file_name: str, file_type: FileType):
 @pytest.mark.parametrize(
     ("file_name", "dataset_type"),
     (
-        ("https://www.wogra.com/csvs/data.csv", DatasetType.file_url),
-        ("https://www.wogra.com/data.zip", DatasetType.file_url),
-        ("data.csv", DatasetType.local_file),
+        ("https://www.wogra.com/csvs/data.csv", DatasetType.FILE_URL),
+        ("https://www.wogra.com/data.zip", DatasetType.FILE_URL),
+        ("data.csv", DatasetType.LOCAL_FILE),
     ),
 )
 def test_from_uri(file_name: str, dataset_type: DatasetType):

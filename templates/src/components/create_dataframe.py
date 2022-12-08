@@ -1,10 +1,12 @@
 import functools
+import pathlib
 import zipfile
 from typing import Generator, Tuple
 
 import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output
 
+from config import CATEGORY_COL_NAME, IMAGE_COL_NAME
 from exceptions.file_type_unknown import FileTypeUnknownException
 from model_manager.databags import update_databag_status
 from models.file_type import FileType
@@ -30,7 +32,7 @@ def create_dataframe(
         elif file_type == FileType.ZIP:
             df = pd.DataFrame(
                 iter_dirs_of_zip_with_labels(dataset.path),
-                columns=["file", "label"],
+                columns=[IMAGE_COL_NAME, CATEGORY_COL_NAME],
             )
         else:
             raise FileTypeUnknownException()
@@ -46,7 +48,9 @@ def iter_dirs_of_zip_with_labels(
         for label_dir in unpacked_root_dir.iterdir():
             label = label_dir.name
             for file in label_dir.iterdir():
-                file_name = file.filename.resolve().relative_to(
-                    unpacked_root_dir.parent.filename.resolve()
-                )
-                yield str(file_name), label
+                abs_file_name = pathlib.Path(str(file)).resolve()
+                abs_root_dir_name = pathlib.Path(
+                    str(unpacked_root_dir.parent)
+                ).resolve()
+                rel_file_name = abs_file_name.relative_to(abs_root_dir_name)
+                yield str(rel_file_name), label
