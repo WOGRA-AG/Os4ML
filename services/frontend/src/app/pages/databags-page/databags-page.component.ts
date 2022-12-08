@@ -10,7 +10,6 @@ import {
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {UserFacade} from '../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, User} from '../../../../build/openapi/modelmanager';
-import {DatabagFacade} from '../../facades/databag-facade.service';
 
 @Component({
   selector: 'app-databags-page',
@@ -29,7 +28,6 @@ export class DatabagsPageComponent implements OnDestroy {
     private modelManger: ModelmanagerService,
     public dialog: MatDialog,
     private userFacade: UserFacade,
-    private databagFacade: DatabagFacade,
   ) {
     this.intervalSub = interval(10000).subscribe(x => {
       this.userFacade.refresh();
@@ -54,9 +52,5 @@ export class DatabagsPageComponent implements OnDestroy {
   ngOnDestroy() {
     this.intervalSub.unsubscribe();
     this.userSub.unsubscribe();
-  }
-
-  test() {
-    this.databagFacade.connect().subscribe(x => console.log(x));
   }
 }
