@@ -25,6 +25,12 @@ export class DatabagChooseComponent {
               private userFacade: UserFacade) {
   }
 
+  sortDatabagsByCreationTimeRecentFirst(databags: Databag[]) {
+    databags.sort((a, b) => new Date(b.creationTime!).getTime() - new Date(a.creationTime!).getTime());
+    this.databags = databags;
+    return databags;
+  }
+
   changeSelectedDatabag(databag: Databag) {
     this.selectedDatabag = databag;
     this.selectedDatabagChange.emit(this.selectedDatabag);

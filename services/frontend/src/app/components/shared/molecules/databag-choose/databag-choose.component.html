@@ -10,7 +10,7 @@
   <mat-nav-list class="bag-list" id="bag-list">
     <mat-list-item
       [ngClass]="isSameDatabag(selectedDatabag, databag)? 'active': ''"
-      *ngFor="let databag of databags"
+      *ngFor="let databag of sortDatabagsByCreationTimeRecentFirst(databags)"
       (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">
         <span class="mat-overline on-surface-disabled">{{formatTimestamp(databag.creationTime)}}</span>
