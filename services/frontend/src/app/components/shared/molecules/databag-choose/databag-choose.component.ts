@@ -26,6 +26,7 @@ export class DatabagChooseComponent {
   }
 
   sortDatabagsByCreationTimeRecentFirst(databags: Databag[]) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     databags.sort((a, b) => new Date(b.creationTime!).getTime() - new Date(a.creationTime!).getTime());
     this.databags = databags;
     return databags;
