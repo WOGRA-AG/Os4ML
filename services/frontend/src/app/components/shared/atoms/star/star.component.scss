@@ -1,0 +1,18 @@
+@import "src/app/material/essentials/color";
+
+.star-container {
+  position: relative;
+  display: inline-block;
+}
+
+.star {
+  color: $primary-color;
+}
+
+.star-filled {
+  color: $primary-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+  clip-path: inset(0 calc(100% - var(--percentage) * 100%) 0 0);
+}
