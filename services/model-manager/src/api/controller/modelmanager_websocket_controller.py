@@ -3,11 +3,8 @@ import uuid
 
 from fastapi import Depends, WebSocket, WebSocketDisconnect
 
-from services.databag_service import DatabagService, terminate_databags_stream
-from services.solution_service import (
-    SolutionService,
-    terminate_solutions_stream,
-)
+from services.databag_service import DatabagService
+from services.solution_service import SolutionService
 
 
 class WebsocketController:
@@ -32,7 +29,7 @@ class WebsocketController:
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
-            terminate_databags_stream(usertoken, client_id)
+            self.databag_service.terminate_databags_stream(client_id)
 
     async def _stream_databags(
         self, websocket: WebSocket, usertoken: str, client_id: uuid.UUID
@@ -56,7 +53,7 @@ class WebsocketController:
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
-            terminate_solutions_stream(usertoken, client_id)
+            self.solution_service.terminate_solutions_stream(client_id)
 
     async def _stream_solutions(
         self, websocket: WebSocket, usertoken: str, client_id: uuid.UUID

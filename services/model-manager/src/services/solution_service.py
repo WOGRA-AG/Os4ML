@@ -2,7 +2,6 @@ import base64
 import json
 import logging
 import uuid
-from collections import defaultdict
 from datetime import datetime
 from io import BytesIO
 from typing import AsyncIterator
@@ -17,15 +16,16 @@ from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
 from exceptions import SolutionNotFoundException
-from lib.subscriber_event import SubscriberEvent
 from services import (
     DATE_FORMAT_STR,
     MODEL_FILE_NAME,
     SOLUTION_CONFIG_FILE_NAME,
+    SOLUTION_MESSAGE_CHANNEL,
 )
 from services.auth_service import get_parsed_token
 from services.databag_service import DatabagService
 from services.init_api_clients import init_jobmanager_api, init_objectstore_api
+from services.messaging_service import MessagingService
 
 
 def _solution_file_name(solution: Solution) -> str:
@@ -40,27 +40,9 @@ def _get_solution_id(solution_name: str) -> str:
     return solution_name.split("_").pop(0)
 
 
-solution_change_events_per_user: dict[
-    str, SubscriberEvent[uuid.UUID]
-] = defaultdict(SubscriberEvent)
-
-
-def _notifiy_solution_update(usertoken: str) -> None:
-    user = get_parsed_token(usertoken)
-    event = solution_change_events_per_user[user.id]
-    event.set()
-    event.clear()
-
-
-def terminate_solutions_stream(usertoken: str, client_id: uuid.UUID) -> None:
-    user = get_parsed_token(usertoken)
-    event = solution_change_events_per_user[user.id]
-    event.unsubscribe(client_id)
-    if not event.has_subscribers():
-        del solution_change_events_per_user[user.id]
-
-
 class SolutionService:
+    messaging_service = MessagingService(SOLUTION_MESSAGE_CHANNEL)
+
     def __init__(
         self,
         objectstore: ObjectstoreApi = Depends(init_objectstore_api),
@@ -88,8 +70,15 @@ class SolutionService:
     ) -> AsyncIterator[list[Solution]]:
         user = get_parsed_token(usertoken)
         while True:
-            await solution_change_events_per_user[user.id].wait(client_id)
+            await self.messaging_service.wait(user.id, client_id)
             yield self.get_solutions(usertoken)
+
+    def _notify_solution_update(self, usertoken: str) -> None:
+        user = get_parsed_token(usertoken)
+        self.messaging_service.publish(user.id)
+
+    def terminate_solutions_stream(self, client_id: uuid.UUID) -> None:
+        self.messaging_service.unsubscribe(client_id)
 
     def _load_solution_from_object(self, obj: str, usertoken: str) -> Solution:
         json_response: JsonResponse = self.objectstore.get_json_object_by_name(
@@ -129,7 +118,7 @@ class SolutionService:
         )
         solution.run_id = run_id
         self._persist_solution(solution, usertoken=usertoken)
-        _notifiy_solution_update(usertoken)
+        self._notify_solution_update(usertoken)
         return solution
 
     def _persist_solution(self, solution: Solution, usertoken: str) -> None:
@@ -146,7 +135,7 @@ class SolutionService:
         if _get_solution_id(solution_name) != _get_solution_id(solution.name):
             raise NotImplementedError()
         self._persist_solution(solution, usertoken=usertoken)
-        _notifiy_solution_update(usertoken)
+        self._notify_solution_update(usertoken)
         return solution
 
     def delete_solution_by_name(
@@ -176,7 +165,7 @@ class SolutionService:
             path_prefix=_get_solution_prefix(solution),
             usertoken=usertoken,
         )
-        _notifiy_solution_update(usertoken)
+        self._notify_solution_update(usertoken)
 
     def download_model(self, solution_name: str, usertoken: str) -> str:
         return self._get_presigned_get_url_for_solution_file(
