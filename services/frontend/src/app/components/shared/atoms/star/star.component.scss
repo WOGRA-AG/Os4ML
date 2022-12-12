@@ -1,16 +1,9 @@
-@import "src/app/material/essentials/color";
-
 .star-container {
   position: relative;
   display: inline-block;
 }
 
-.star {
-  color: $primary-color;
-}
-
 .star-filled {
-  color: $primary-color;
   position: absolute;
   top: 0;
   left: 0;
