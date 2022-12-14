@@ -15,7 +15,7 @@
           <ng-container *ngFor="let column of databag.columns">
             <mat-list-item
               class="bg-primary"
-              *ngIf="column.type==='category'"
+              *ngIf="column.type==='category' || column.type==='numerical'"
               [ngClass]="solution?.outputFields?.includes(column?.name || '') ? 'active' : ''"
               (click)="selectDatabag(column.name)">
               <app-shared-list-item>
