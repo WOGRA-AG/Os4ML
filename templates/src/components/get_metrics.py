@@ -27,9 +27,12 @@ def get_metrics(
         solution = get_solution_by_name(solution_name)
         solution.status = StatusMessage.SOLVER_DONE.value
         solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
+        if solution.metrics is None:
+            solution.metrics = SolutionMetrics()
         if "accuracy" in metrics.metadata:
             accuracy = metrics.metadata["accuracy"]
-            if solution.metrics is None:
-                solution.metrics = SolutionMetrics()
             solution.metrics.accuracy = float(accuracy)
+        elif "r2_score" in metrics.metadata:
+            r2_score = metrics.metadata["r2_score"]
+            solution.metrics.accuracy = float(r2_score)
         update_solution(solution, solution_name)

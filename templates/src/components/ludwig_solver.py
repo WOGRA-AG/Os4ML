@@ -71,13 +71,21 @@ def evaluate_model(
 
     stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
 
-    accuracy = float(stats[label_name]["accuracy"])
-    metrics.log_metric("accuracy", accuracy)
+    y_true = df_test[label_name].dropna()
+    y_pred = pred[pred.columns[0]]
 
-    conf_matrix = calculate_conf_matrix(
-        pred, label_name, df_test, label_values
-    )
-    cls_metrics.log_confusion_matrix(label_values, conf_matrix)
+    label_stats = stats[label_name]
+    if "accuracy" in label_stats:
+        metric_name = "accuracy"
+        metric = label_stats["accuracy"]
+
+        conf_matrix = calculate_conf_matrix(y_true, y_pred, label_values)
+        cls_metrics.log_confusion_matrix(label_values, conf_matrix)
+    else:
+        metric_name = "r2_score"
+        metric = max(0, label_stats["r2"])
+
+    metrics.log_metric(metric_name, float(metric))
 
 
 def upload_model_to_solution(
