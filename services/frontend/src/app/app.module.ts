@@ -46,6 +46,9 @@ import {ListItemComponent} from './components/shared/atoms/list-item/list-item.c
 import {GettingStartedComponent} from './components/shared/organisms/getting-started/getting-started.component';
 import {UserModule} from './user/user.module';
 import {FacadesModule} from './facades/facades.module';
+import {StarRatingComponent} from './components/shared/molecules/star-rating/star-rating.component';
+import {StarComponent} from './components/shared/atoms/star/star.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -84,31 +87,34 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DatabagsListComponent,
     DatabagListItemComponent,
     ListItemComponent,
-    GettingStartedComponent
+    GettingStartedComponent,
+    StarRatingComponent,
+    StarComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
-      {
-        basePath: ''
-      }
-    )),
-    MaterialModule,
-    UserModule,
-    FacadesModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: httpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
+            {
+                basePath: ''
+            }
+        )),
+        MaterialModule,
+        UserModule,
+        FacadesModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTooltipModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ShortStatusPipe,

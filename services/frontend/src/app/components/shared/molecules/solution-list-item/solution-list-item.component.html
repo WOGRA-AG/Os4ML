@@ -4,9 +4,7 @@
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{"solution.detail.accuracy" | translate}}</span>
-  <span class="mat-body-2 on-surface-high">
-        {{formatAccuracy(solution?.metrics?.accuracy? solution?.metrics?.accuracy! : 0)}}%
-      </span>
+  <app-star-rating [rating]="solution?.metrics?.accuracy? solution?.metrics?.accuracy! : 0" [numberStars]="5"></app-star-rating>
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{"solution.detail.runtime" | translate}}</span>
