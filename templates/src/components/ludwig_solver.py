@@ -76,16 +76,14 @@ def evaluate_model(
 
     label_stats = stats[label_name]
     if "accuracy" in label_stats:
-        metric_name = "accuracy"
-        metric = label_stats["accuracy"]
+        accuracy = float(label_stats["accuracy"])
+        metrics.log_metric("accuracy", accuracy)
 
         conf_matrix = calculate_conf_matrix(y_true, y_pred, label_values)
         cls_metrics.log_confusion_matrix(label_values, conf_matrix)
-    else:
-        metric_name = "r2_score"
-        metric = max(0, label_stats["r2"])
-
-    metrics.log_metric(metric_name, float(metric))
+    if "r2" in label_stats:
+        r2_score = float(max(0, label_stats["r2"]))
+        metrics.log_metric("r2_score", r2_score)
 
 
 def upload_model_to_solution(

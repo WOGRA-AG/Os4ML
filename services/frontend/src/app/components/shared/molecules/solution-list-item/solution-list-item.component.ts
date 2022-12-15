@@ -80,4 +80,13 @@ export class SolutionListItemComponent implements OnDestroy {
         return 'error';
     }
   }
+
+  getModelQualityRating(): number {
+    const metrics = this.solution.metrics;
+    if (!metrics || !metrics[0] || !metrics[0].value) {
+      return 0;
+    }
+    return metrics[0].value;
+  }
+
 }
