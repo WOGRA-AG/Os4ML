@@ -4,7 +4,7 @@
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{"solution.detail.accuracy" | translate}}</span>
-  <app-star-rating [rating]="getModelQualityRating()" [numberStars]="5"></app-star-rating>
+  <app-star-rating [rating]="getModelQualityMetric()?.value || 0" [ratingName]="getModelQualityMetric()?.name" [numberStars]="5"></app-star-rating>
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{"solution.detail.runtime" | translate}}</span>

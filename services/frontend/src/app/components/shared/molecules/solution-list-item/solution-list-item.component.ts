@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {Subscription, timer} from 'rxjs';
-import {Solution} from '../../../../../../build/openapi/modelmanager';
+import {Metric, Solution} from '../../../../../../build/openapi/modelmanager';
 import {PipelineStatus} from '../../../../models/pipeline-status';
 import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
 
@@ -63,10 +63,6 @@ export class SolutionListItemComponent implements OnDestroy {
     return creationDate.toLocaleDateString('de-DE');
   }
 
-  formatAccuracy(solutionAccuracy: number): number {
-    return Math.round(solutionAccuracy * 100);
-  }
-
   getCssClassForStatus(status: string | undefined | null): string {
     if (!status) {
       return 'running';
@@ -81,12 +77,11 @@ export class SolutionListItemComponent implements OnDestroy {
     }
   }
 
-  getModelQualityRating(): number {
+  getModelQualityMetric(): Metric | undefined {
     const metrics = this.solution.metrics;
-    if (!metrics || !metrics[0] || !metrics[0].value) {
-      return 0;
+    if (!metrics) {
+      return undefined;
     }
-    return metrics[0].value;
+    return metrics[0];
   }
-
 }
