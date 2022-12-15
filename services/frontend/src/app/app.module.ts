@@ -120,7 +120,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ShortStatusPipe,
-    FormatNumberPipe,
   ],
   bootstrap: [AppComponent]
 })

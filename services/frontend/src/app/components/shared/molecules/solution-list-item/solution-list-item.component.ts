@@ -55,14 +55,6 @@ export class SolutionListItemComponent implements OnDestroy {
     return name.substring(uuidIndex + 1);
   }
 
-  formatTimestamp(creationTime: string | undefined): string {
-    if (!creationTime) {
-      return '';
-    }
-    const creationDate = new Date(creationTime);
-    return creationDate.toLocaleDateString('de-DE');
-  }
-
   getCssClassForStatus(status: string | undefined | null): string {
     if (!status) {
       return 'running';
