@@ -33,6 +33,12 @@
   right: 50px;
 }
 
+.add-solution-button {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
+
 .content-container {
   margin-top: 100px;
   min-width: 265px;
@@ -45,4 +51,8 @@
 .actions {
   display: flex;
   justify-content: flex-end;
+}
+
+.scroll-space {
+  height: 13%;
 }
