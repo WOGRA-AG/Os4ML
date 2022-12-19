@@ -101,6 +101,7 @@ export class GettingStartedComponent {
       this.solution.status = 'Created';
       this.solution.databagId = this.databag.databagId;
       this.solution.databagName = this.databag.databagName;
+      this.solution.metrics = [];
       this.modelManager.createSolution(this.user?.rawToken, this.solution)
         .pipe(
           catchError(err => {
