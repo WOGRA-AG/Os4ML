@@ -10,7 +10,11 @@
             completed="{{stepperStep>0}}" >
     <mat-dialog-content>
       <app-shared-dialog-section>
-        <div description>{{"dialog.section.problem.description" | translate}}</div>
+        <div description>
+          <div>
+            {{ isFieldWithCategoryAvailable ? "dialog.section.problem.description" : "dialog.section.problem.missing_category" | translate }} <a href="https://wogra-ag.github.io/os4ml-docs">{{ isFieldWithCategoryAvailable ? "" : "dialog.section.problem.documentation" | translate }}</a>
+          </div>
+        </div>
         <mat-list id="define-output-list">
           <ng-container *ngFor="let column of databag.columns">
             <mat-list-item

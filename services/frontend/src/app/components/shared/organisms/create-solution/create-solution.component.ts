@@ -19,6 +19,7 @@ export class CreateSolutionComponent {
   submitting = false;
   stepperStep = 0;
   user: User = {id: '', email: '', rawToken: ''};
+  isFieldWithCategoryAvailable = false;
 
   constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>,
               private modelManager: ModelmanagerService,
@@ -27,6 +28,7 @@ export class CreateSolutionComponent {
       currentUser => this.user = currentUser
     );
     this.databag = dialogRef.componentInstance.data.databag;
+    this.isFieldWithCategoryAvailable = !!this.databag.columns?.find(d => d.type === 'category');
     this.solution = dialogRef.componentInstance.data.solution ? dialogRef.componentInstance.data.solution : {};
     this.modelManager.getSolvers(this.user?.rawToken).subscribe((templates: Solver[]) => {
         this.solvers = templates.filter(template => template.pipelineStep === PipelineStep.solver);
