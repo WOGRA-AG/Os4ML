@@ -50,16 +50,6 @@ export class DatabagChooseComponent {
     return isSameDatabagId && isSameFileName && isSameCreationTime;
   }
 
-  formatTimestamp(creationTime: string | null | undefined): string {
-    if (!creationTime) {
-      return '';
-    }
-    const creationDate = new Date(creationTime);
-    return creationDate.toLocaleDateString('de-DE')
-      + ' - '
-      + creationDate.toLocaleTimeString('de-DE');
-  }
-
   openAddDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
       data: {component: CreateDatabagComponent}

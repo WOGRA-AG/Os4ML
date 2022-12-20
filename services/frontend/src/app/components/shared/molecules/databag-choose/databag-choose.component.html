@@ -13,7 +13,7 @@
       *ngFor="let databag of sortDatabagsByCreationTimeRecentFirst(databags)"
       (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">
-        <span class="mat-overline on-surface-disabled">{{formatTimestamp(databag.creationTime)}}</span>
+        <span class="mat-overline on-surface-disabled">{{databag?.creationTime | localizedDate: 'dd.MM.YYYY - hh:mm aa'}}</span>
         <span class="mat-subheading-2">{{databag.databagName}}</span>
       </div>
     </mat-list-item>
