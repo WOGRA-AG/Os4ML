@@ -69,11 +69,15 @@ components:
           type: string
           nullable: true
         metrics:
-          type: object
-          nullable: true
-          properties:
-            accuracy:
-              type: number
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
+    Metric:
+      properties:
+        name:
+          type: string
+        value:
+          type: number
     Column:
       properties:
         name:

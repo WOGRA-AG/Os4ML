@@ -49,6 +49,7 @@ import {FacadesModule} from './facades/facades.module';
 import {StarRatingComponent} from './components/shared/molecules/star-rating/star-rating.component';
 import {StarComponent} from './components/shared/atoms/star/star.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {FormatNumberPipe} from './pipes/format-number.pipe';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -77,6 +78,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     SettingDatabagComponent,
     LocalizedDatePipe,
     ShortStatusPipe,
+    FormatNumberPipe,
     PopupDeleteComponent,
     SettingSolutionComponent,
     CloseButtonComponent,

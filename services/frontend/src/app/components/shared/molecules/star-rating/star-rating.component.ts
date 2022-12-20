@@ -7,6 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class StarRatingComponent implements OnInit {
   @Input() rating = 0; // value between 0 and 1
+  @Input() ratingName: string | undefined;
   @Input() numberStars = 5;
   percentages: number[] = [];
 
