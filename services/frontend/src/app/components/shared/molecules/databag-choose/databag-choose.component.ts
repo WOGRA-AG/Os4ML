@@ -26,9 +26,15 @@ export class DatabagChooseComponent {
   }
 
   sortDatabagsByCreationTimeRecentFirst(databags: Databag[]) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.databags = databags;
-    console.log(this.databags);
+    this.databags.sort(
+      (objA, objB) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const date1 = new Date(objA.creationTime!);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const date2 = new Date(objB.creationTime!);
+        return date2.getTime() - date1.getTime();
+      },
+    );
     return databags;
   }
 
@@ -49,7 +55,9 @@ export class DatabagChooseComponent {
       return '';
     }
     const creationDate = new Date(creationTime);
-    return creationDate.toLocaleDateString('de-DE');
+    return creationDate.toLocaleDateString('de-DE')
+      + ' - '
+      + creationDate.toLocaleTimeString('de-DE');
   }
 
   openAddDialog() {
