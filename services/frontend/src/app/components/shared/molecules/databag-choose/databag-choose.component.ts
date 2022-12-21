@@ -25,6 +25,19 @@ export class DatabagChooseComponent {
               private userFacade: UserFacade) {
   }
 
+  sortDatabagsByCreationTimeRecentFirst(databags: Databag[]) {
+    this.databags.sort(
+      (objA, objB) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const date1 = new Date(objA.creationTime!);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const date2 = new Date(objB.creationTime!);
+        return date2.getTime() - date1.getTime();
+      },
+    );
+    return databags;
+  }
+
   changeSelectedDatabag(databag: Databag) {
     this.selectedDatabag = databag;
     this.selectedDatabagChange.emit(this.selectedDatabag);
@@ -35,14 +48,6 @@ export class DatabagChooseComponent {
     const isSameFileName = databag1.fileName === databag2.fileName;
     const isSameCreationTime = databag1.creationTime === databag2.creationTime;
     return isSameDatabagId && isSameFileName && isSameCreationTime;
-  }
-
-  formatTimestamp(creationTime: string | null | undefined): string {
-    if (!creationTime) {
-      return '';
-    }
-    const creationDate = new Date(creationTime);
-    return creationDate.toLocaleDateString('de-DE');
   }
 
   openAddDialog() {
