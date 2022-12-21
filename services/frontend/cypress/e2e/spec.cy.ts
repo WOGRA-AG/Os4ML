@@ -90,7 +90,7 @@ describe('Databags', () => {
     cy.get('.solution-list-item > :nth-child(3)').click();
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type('Renamed Solution');
-    cy.get('[type="submit"] > .mat-button-wrapper').click();
+    cy.get('.mat-dialog-actions > [type="submit"] > .mat-button-wrapper').click();
     cy.get('.solution-list-item > :nth-child(1) > .mat-body-2').should('have.text', 'Renamed Solution');
   });
 
@@ -132,6 +132,24 @@ describe('Databags', () => {
     cy.get('.mat-button-wrapper > .ng-star-inserted').wait(5000).click();
     cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended').click();
     cy.get('.status-column > .done', { timeout: 600000});
+  });
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('dataframe script', () => {
+    cy.get(':nth-child(2) > .mat-list-item-content > .nav-item-extended').click();
+    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/dataframe_script.py');
+    cy.get('.upload-file').click();
+    cy.get('#add-databag-main-button > .mat-button-wrapper').click();
+    cy.wait(1000);
+    cy.get('#mat-select-value-1').should('have.text', 'numerical');
+    cy.get('#define-databag-button > .mat-button-wrapper').click();
+    cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended > .mat-subheading-2').should('have.text', 'dataframe_script.py');
+    cy.wait(1000);
+    cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended').click();
+    cy.wait(1000);
+    cy.get('#add-solution-button-empty > .mat-button-wrapper').click();
+    cy.wait(1000);
+    cy.get('#define-output-list > :nth-child(1) > .mat-list-item-content').should('have.text', ' PassengerId  numerical');
   });
 
 });
