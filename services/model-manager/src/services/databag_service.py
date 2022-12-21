@@ -15,7 +15,10 @@ from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
-from exceptions import DatabagNotFoundException
+from exceptions import (
+    DatabagIdUpdateNotAllowedException,
+    DatabagNotFoundException,
+)
 from services import (
     DATABAG_CONFIG_FILE_NAME,
     DATABAG_MESSAGE_CHANNEL,
@@ -109,7 +112,11 @@ class DatabagService:
         self._notify_databag_update(usertoken)
         return databag
 
-    def update_databag(self, databag: Databag, usertoken: str) -> None:
+    def update_databag(
+        self, databag_id: str, databag: Databag, usertoken: str
+    ) -> None:
+        if databag_id != databag.databag_id:
+            raise DatabagIdUpdateNotAllowedException()
         self._save_databag_file(databag, usertoken)
         self._notify_databag_update(usertoken)
 
