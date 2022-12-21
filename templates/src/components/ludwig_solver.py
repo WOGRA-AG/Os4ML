@@ -27,7 +27,7 @@ def ludwig_solver(
     databag_file: Input[Dataset],
     cls_metrics: Output[ClassificationMetrics],
     metrics: Output[Metrics],
-    solution_name: str,
+    solution_id: str,
     batch_size: int,
     epochs: int,
     early_stop: int,
@@ -37,12 +37,12 @@ def ludwig_solver(
     """Train a ludwig model for the dataset."""
     handler = functools.partial(
         update_solution_error_status,
-        solution_name,
+        solution_id,
     )
     with exception_handler(handler, StatusMessage.TRAINING_FAILED):
         databag = load_databag(databag_file.path)
         solution = update_solution_status(
-            solution_name, StatusMessage.SOLVER_RUNNING
+            solution_id, StatusMessage.SOLVER_RUNNING
         )
         model, model_definition = build_model(
             solution, databag.columns, batch_size, epochs, early_stop
@@ -60,7 +60,7 @@ def ludwig_solver(
         evaluate_model(
             model, model_definition, dataframe, df_test, metrics, cls_metrics
         )
-        upload_model_to_solution(model, solution_name)
+        upload_model_to_solution(model, solution_id)
 
 
 def evaluate_model(
@@ -88,14 +88,14 @@ def evaluate_model(
 
 def upload_model_to_solution(
     model: LudwigModel,
-    solution_name: str,
+    solution_id: str,
 ) -> None:
     with tempfile.TemporaryDirectory() as temp:
         model.save(temp)
         with tempfile.NamedTemporaryFile() as zip_file:
             zip_dir(temp, zip_file.name)
             with open(zip_file.name, "rb") as binary_zip:
-                upload_model(binary_zip, solution_name)
+                upload_model(binary_zip, solution_id)
 
 
 def zip_dir(dir_: str, zip_file: str) -> None:

@@ -7,7 +7,7 @@ from kfp.v2.dsl import Input, Metrics
 from build.model_manager_client.model.metric import Metric
 from config import DATE_FORMAT_STR
 from model_manager.solutions import (
-    get_solution_by_name,
+    get_solution_by_id,
     update_solution,
     update_solution_error_status,
 )
@@ -17,15 +17,15 @@ from util.exception_handler import exception_handler
 
 def get_metrics(
     metrics: Input[Metrics],
-    solution_name: str,
+    solution_id: str,
 ) -> None:
     """Get the metrics from kubeflow and add them to the solution."""
     handler = functools.partial(
         update_solution_error_status,
-        solution_name,
+        solution_id,
     )
     with exception_handler(handler, StatusMessage.METRICS_NOT_RETRIEVABLE):
-        solution = get_solution_by_name(solution_name)
+        solution = get_solution_by_id(solution_id)
         solution.status = StatusMessage.SOLVER_DONE.value
         solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         solution.metrics = [
@@ -34,4 +34,4 @@ def get_metrics(
             if name != "display_name"
         ]
         logging.info(f"Updating the solution: {solution}")
-        update_solution(solution, solution_name)
+        update_solution(solution)
