@@ -20,14 +20,14 @@ def load_databag_and_dataframe(
     dataframe_output: Output[Dataset],
     databag_output: Output[Artifact],
     databag_id: str,
-    solution_name: str,
+    solution_id: str,
 ):
     handler = functools.partial(
         update_solution_error_status,
-        solution_name,
+        solution_id,
     )
     with exception_handler(handler, StatusMessage.DATABAG_NOT_ACCESSIBLE):
-        update_solution_status(solution_name, StatusMessage.SOLUTION_CREATED)
+        update_solution_status(solution_id, StatusMessage.SOLUTION_CREATED)
         databag = get_databag_by_id(databag_id)
         with open(databag_output.path, "w") as databag_file:
             json.dump(databag.to_dict(), databag_file)

@@ -12,7 +12,7 @@ sniffle_op = load_component("sniffle_dataset")
 @pipeline(name="databag")
 def databag(
     databag_id: str,
-    solution_name: str,
+    solution_id: str,
     max_categories: int = 10,
 ):
     types = get_file_and_dataset_type_op(

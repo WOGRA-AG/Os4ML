@@ -13,7 +13,6 @@ import {PipelineStatus} from '../../../../models/pipeline-status';
 })
 export class SettingSolutionComponent {
   solution: Solution;
-  solutionName: string;
   deleting = false;
   user: User = {id: '', email: '', rawToken: ''};
   readonly pipelineStatus = PipelineStatus;
@@ -25,18 +24,9 @@ export class SettingSolutionComponent {
     private userFacade: UserFacade,
     ) {
     this.solution = dialogRef.componentInstance.data.solution;
-    this.solutionName = this.trimSolutionName(this.solution.name);
     this.userFacade.currentUser$.pipe().subscribe(
       currentUser => this.user = currentUser
     );
-  }
-
-  trimSolutionName(name: string | undefined): string {
-    if (!name) {
-      return '';
-    }
-    const uuidIndex = name.indexOf('_');
-    return name.substring(uuidIndex + 1);
   }
 
   close(): void {
@@ -44,9 +34,11 @@ export class SettingSolutionComponent {
   }
 
   update() {
-    const oldName: string = this.solution.name || '';
-    this.solution.name = oldName.replace(this.trimSolutionName(oldName), this.solutionName);
-    this.modelManager.updateSolutionByName(oldName, this.user?.rawToken, this.solution).subscribe(() => {
+    if (!this.solution.id) {
+      this.dialogRef.close('aborted');
+      return;
+    }
+    this.modelManager.updateSolutionById(this.solution.id, this.user?.rawToken, this.solution).subscribe(() => {
       this.dialogRef.close('updated');
     });
   }
@@ -63,8 +55,8 @@ export class SettingSolutionComponent {
   }
 
   download() {
-    if (this.solution.name) {
-      this.modelManager.downloadModel(this.solution.name, this.user?.rawToken).subscribe(url => {
+    if (this.solution.id) {
+      this.modelManager.downloadModel(this.solution.id, this.user?.rawToken).subscribe(url => {
         const link = document.createElement('a');
         link.href = url;
         link.toggleAttribute('download');

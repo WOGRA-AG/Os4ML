@@ -15,7 +15,10 @@ from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
-from exceptions import SolutionNotFoundException
+from exceptions import (
+    SolutionIdUpdateNotAllowedException,
+    SolutionNotFoundException,
+)
 from services import (
     DATE_FORMAT_STR,
     MODEL_FILE_NAME,
@@ -28,16 +31,14 @@ from services.init_api_clients import init_jobmanager_api, init_objectstore_api
 from services.messaging_service import MessagingService
 
 
-def _solution_file_name(solution: Solution) -> str:
-    return f"{_get_solution_prefix(solution)}{SOLUTION_CONFIG_FILE_NAME}"
+def _get_file_name_for_solution(
+    solution: Solution, file_name: str = SOLUTION_CONFIG_FILE_NAME
+) -> str:
+    return f"{_get_solution_prefix(solution)}/{file_name}"
 
 
 def _get_solution_prefix(solution: Solution) -> str:
-    return f"{solution.databag_id}/{_get_solution_id(solution.name)}/"
-
-
-def _get_solution_id(solution_name: str) -> str:
-    return solution_name.split("_").pop(0)
+    return f"{solution.databag_id}/{solution.id}"
 
 
 class SolutionService:
@@ -89,34 +90,27 @@ class SolutionService:
         json_dict = json.loads(json_str)
         return Solution(**json_dict)
 
-    def get_solution_by_name(
-        self, solution_name: str, usertoken: str
-    ) -> Solution:
-        solutions_with_name = [
+    def get_solution_by_id(self, id_: str, usertoken: str) -> Solution:
+        solutions_with_id = [
             solution
             for solution in self.get_solutions(usertoken=usertoken)
-            if solution.name == solution_name
+            if solution.id == id_
         ]
-        if not solutions_with_name:
-            raise SolutionNotFoundException(solution_name)
-        return solutions_with_name.pop()
+        if not solutions_with_id:
+            raise SolutionNotFoundException(id_)
+        return solutions_with_id.pop()
 
     def create_solution(self, solution: Solution, usertoken: str) -> Solution:
-        uuid_: uuid.UUID = uuid.uuid4()
-        solution.name = f"{uuid_}_{solution.name}"
+        solution.id = str(uuid.uuid4())
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
-        databag = self.databag_service.get_databag_by_id(
-            solution.databag_id, usertoken=usertoken
-        )
         run_params = RunParams(
-            databag_id=databag.databag_id,
-            solution_name=solution.name,
+            databag_id=solution.databag_id,
+            solution_id=solution.id,
         )
         self._persist_solution(solution, usertoken=usertoken)
-        run_id: str = self.jobmanager.create_run_by_solver_name(
+        solution.run_id = self.jobmanager.create_run_by_solver_name(
             solution.solver, run_params=run_params, usertoken=usertoken
         )
-        solution.run_id = run_id
         self._persist_solution(solution, usertoken=usertoken)
         self._notify_solution_update(usertoken)
         return solution
@@ -124,26 +118,24 @@ class SolutionService:
     def _persist_solution(self, solution: Solution, usertoken: str) -> None:
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
         self.objectstore.put_object_by_name(
-            object_name=_solution_file_name(solution),
+            object_name=_get_file_name_for_solution(solution),
             body=encoded_solution,
             usertoken=usertoken,
         )
 
-    def update_solution_by_name(
-        self, solution_name: str, solution: Solution, usertoken: str
+    def update_solution_by_id(
+        self, id_: str, solution: Solution, usertoken: str
     ) -> Solution:
-        if _get_solution_id(solution_name) != _get_solution_id(solution.name):
-            raise NotImplementedError()
+        if id_ != solution.id:
+            raise SolutionIdUpdateNotAllowedException()
         self._persist_solution(solution, usertoken=usertoken)
         self._notify_solution_update(usertoken)
         return solution
 
-    def delete_solution_by_name(
-        self, solution_name: str, usertoken: str
-    ) -> None:
+    def delete_solution_by_id(self, id_: str, usertoken: str) -> None:
         try:
-            solution = self.get_solution_by_name(
-                solution_name=solution_name,
+            solution = self.get_solution_by_id(
+                id_=id_,
                 usertoken=usertoken,
             )
         except SolutionNotFoundException:
@@ -167,40 +159,40 @@ class SolutionService:
         )
         self._notify_solution_update(usertoken)
 
-    def download_model(self, solution_name: str, usertoken: str) -> str:
+    def download_model(self, solution_id: str, usertoken: str) -> str:
         return self._get_presigned_get_url_for_solution_file(
-            solution_name, self.model_file_name, usertoken
+            solution_id, self.model_file_name, usertoken
         )
 
     def upload_model(
-        self, solution_name: str, body: bytes, usertoken: str
+        self, solution_id: str, body: bytes, usertoken: str
     ) -> None:
         self._upload_file_to_solution(
-            solution_name, body, self.model_file_name, usertoken
+            solution_id, body, self.model_file_name, usertoken
         )
 
     def _get_presigned_get_url_for_solution_file(
-        self, solution_name: str, file_name: str, usertoken: str
+        self, solution_id: str, file_name: str, usertoken: str
     ) -> str:
-        solution = self.get_solution_by_name(
-            solution_name=solution_name,
+        solution = self.get_solution_by_id(
+            id_=solution_id,
             usertoken=usertoken,
         )
-        object_name = f"{_get_solution_prefix(solution)}{file_name}"
+        object_name = _get_file_name_for_solution(solution, file_name)
         return self.objectstore.get_presigned_get_url(  # type: ignore
             object_name, usertoken=usertoken
         )
 
     def _upload_file_to_solution(
-        self, solution_name: str, body: bytes, file_name: str, usertoken: str
+        self, solution_id: str, body: bytes, file_name: str, usertoken: str
     ) -> None:
-        solution = self.get_solution_by_name(
-            solution_name=solution_name,
+        solution = self.get_solution_by_id(
+            id_=solution_id,
             usertoken=usertoken,
         )
         bytes_io = BytesIO(body)
         bytes_io.seek(0)
-        object_name = f"{_get_solution_prefix(solution)}{file_name}"
+        object_name = _get_file_name_for_solution(solution, file_name)
         self.objectstore.put_object_by_name(
             object_name, body=bytes_io, usertoken=usertoken
         )
