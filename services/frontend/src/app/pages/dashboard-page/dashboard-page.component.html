@@ -11,23 +11,12 @@
           <h6>Solutions</h6>
         </div>
       </div>
-      <div *ngIf="getSolutionsInDatabag().length > 0; then solutionsTemplate else solutionsPlaceholder"></div>
 
-      <ng-template #solutionsTemplate>
-        <div class="list-container">
-          <app-shared-solutions-list [solutions]="getSolutionsInDatabag()">
-          </app-shared-solutions-list>
-        </div>
-        <div class="actions">
-          <button mat-raised-button actions
-                  class="fab-button mat-raised-button"
-                  color="primary"
-                  (click)="addSolution()">
-            <mat-icon>add</mat-icon>
-            {{ "solution.create" | translate }}
-          </button>
-        </div>
-      </ng-template>
+      <div class="list-container" *ngIf="getSolutionsInDatabag().length > 0; else solutionsPlaceholder">
+        <app-shared-solutions-list [solutions]="getSolutionsInDatabag()" class="solution-list">
+        </app-shared-solutions-list>
+        <app-add-button (click)="addSolution()" class="add-solution-button" color="primary" type="submit">{{"solution.create" | translate}}</app-add-button>
+      </div>
 
       <ng-template #solutionsPlaceholder>
         <app-shared-solution-placeholder (mainButton)="addSolution()">
