@@ -90,7 +90,7 @@ describe('Databags', () => {
     cy.get('.solution-list-item > :nth-child(3)').click();
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type('Renamed Solution');
-    cy.get('[type="submit"] > .mat-button-wrapper').click();
+    cy.get('.mat-dialog-actions > [type="submit"] > .mat-button-wrapper').click();
     cy.get('.solution-list-item > :nth-child(1) > .mat-body-2').should('have.text', 'Renamed Solution');
   });
 
