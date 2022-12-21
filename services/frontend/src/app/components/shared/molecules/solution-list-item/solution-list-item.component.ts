@@ -47,14 +47,6 @@ export class SolutionListItemComponent implements OnDestroy {
     return SolutionListItemComponent.msToHMS(timeDiff);
   }
 
-  trimSolutionName(name: string | undefined): string {
-    if (!name) {
-      return '';
-    }
-    const uuidIndex = name.indexOf('_');
-    return name.substring(uuidIndex + 1);
-  }
-
   getCssClassForStatus(status: string | undefined | null): string {
     if (!status) {
       return 'running';

@@ -39,7 +39,7 @@ export class PopupDeleteComponent {
       return;
     }
     if (this.solution) {
-      this.deleteSolution(this.solution.name);
+      this.deleteSolution(this.solution.id);
     } else {
       this.deleteDatabag(this.databag.databagId);
     }
@@ -51,12 +51,12 @@ export class PopupDeleteComponent {
     return !(isNotSolution || isNotDatabag);
   }
 
-  private deleteSolution(solutionName: string | undefined) {
-    if (!solutionName) {
+  private deleteSolution(solutionId: string | undefined) {
+    if (!solutionId) {
       this.deleting = false;
       return;
     }
-    this.modelManager.deleteSolutionByName(solutionName, this.user?.rawToken).pipe(
+    this.modelManager.deleteSolutionById(solutionId, this.user?.rawToken).pipe(
       catchError(err => {
         this.deleting = false;
         return of({});
