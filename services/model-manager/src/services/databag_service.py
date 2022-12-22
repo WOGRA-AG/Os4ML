@@ -62,6 +62,7 @@ class DatabagService:
         self, usertoken: str, client_id: uuid.UUID
     ) -> AsyncIterable[list[Databag]]:
         user = get_parsed_token(usertoken)
+        yield self.get_databags(usertoken)
         while True:
             await self.messaging_service.wait(user.id, client_id)
             yield self.get_databags(usertoken)
