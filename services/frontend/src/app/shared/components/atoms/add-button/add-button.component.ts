@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ButtonType, UIThemePalette} from '../../../types';
+import {ButtonType, UIThemePalette} from '../../../../core/types/button-types';
 
 @Component({
   selector: 'app-add-button',

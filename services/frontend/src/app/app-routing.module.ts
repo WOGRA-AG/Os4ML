@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DatabagsPageComponent} from './pages/databags-page/databags-page.component';
 import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.component';
 import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
 import {UserPageComponent} from './pages/user-page/user-page.component';
 import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
+import {DatabagTemplateComponent} from './templates/databag-template/databag-template.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'databag',
-    component: DatabagsPageComponent,
+    component: DatabagTemplateComponent,
     runGuardsAndResolvers: 'always',
   },
   {

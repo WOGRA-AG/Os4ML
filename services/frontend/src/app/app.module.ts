@@ -51,6 +51,9 @@ import {StarComponent} from './components/shared/atoms/star/star.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AddButtonComponent } from './components/shared/atoms/add-button/add-button.component';
 import {FormatNumberPipe} from './pipes/format-number.pipe';
+import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
+import {DatabagsModule} from './databags/databags.module';
+import {SharedModule} from './shared/shared.module';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -94,34 +97,40 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     StarRatingComponent,
     StarComponent,
     AddButtonComponent,
+    DatabagTemplateComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: httpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
-        ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
-            {
-                basePath: ''
-            }
-        )),
-        MaterialModule,
-        UserModule,
-        FacadesModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatTooltipModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    ModelmanagerApi.forRoot(() => new ModelmanagerApiConfig(
+      {
+        basePath: ''
+      }
+    )),
+    MaterialModule,
+    UserModule,
+    FacadesModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    DatabagsModule,
+    SharedModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ShortStatusPipe,
+  ],
+  exports: [
+    DragAndDropDirective
   ],
   bootstrap: [AppComponent]
 })

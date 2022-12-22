@@ -1,0 +1,20 @@
+.page-wrapper {
+  flex-direction: column;
+}
+
+.databag-list {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.placeholder-container {
+  display: flex;
+  min-height: 366px;
+  max-width: 483px;
+  align-self: center;
+  margin: auto;
+}
