@@ -54,6 +54,7 @@ import {FormatNumberPipe} from './pipes/format-number.pipe';
 import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
 import {DatabagsModule} from './databags/databags.module';
 import {SharedModule} from './shared/shared.module';
+import { NotFoundTemplateComponent } from './templates/not-found-template/not-found-template.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -98,6 +99,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     StarComponent,
     AddButtonComponent,
     DatabagTemplateComponent,
+    NotFoundTemplateComponent,
   ],
   imports: [
     BrowserModule,

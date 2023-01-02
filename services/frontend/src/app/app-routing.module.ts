@@ -3,8 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.component';
 import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
 import {UserPageComponent} from './pages/user-page/user-page.component';
-import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
 import {DatabagTemplateComponent} from './templates/databag-template/databag-template.component';
+import {NotFoundTemplateComponent} from './templates/not-found-template/not-found-template.component';
 
 const routes: Routes = [
   {
@@ -34,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: PageNotFoundPageComponent
+    component: NotFoundTemplateComponent
   }
 ];
 
