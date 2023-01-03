@@ -5,6 +5,7 @@ import {SharedModule} from '../shared/shared.module';
 import { NoDatabagsPlaceholderComponent } from './components/no-databags-placeholder/no-databags-placeholder.component';
 import { DatabagSettingComponent } from './components/databag-setting/databag-setting.component';
 import { DatabagFieldsComponent } from './components/databag-fields/databag-fields.component';
+import { ChooseDatabagComponent } from './components/choose-databag/choose-databag.component';
 
 
 
@@ -16,6 +17,7 @@ import { DatabagFieldsComponent } from './components/databag-fields/databag-fiel
     NoDatabagsPlaceholderComponent,
     DatabagListComponent,
     DatabagFieldsComponent,
+    ChooseDatabagComponent
   ],
   declarations: [
     DatabagListComponent,
@@ -23,6 +25,7 @@ import { DatabagFieldsComponent } from './components/databag-fields/databag-fiel
     NoDatabagsPlaceholderComponent,
     DatabagSettingComponent,
     DatabagFieldsComponent,
+    ChooseDatabagComponent,
   ]
 })
 export class DatabagsModule { }

@@ -1,0 +1,23 @@
+.placeholder-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 483px;
+  height: 366px;
+}
+
+.placeholder-image {
+  margin: auto;
+}
+
+.main-button {
+  margin: auto;
+}

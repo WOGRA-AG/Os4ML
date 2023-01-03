@@ -80,6 +80,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     TranslateModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    ShortStatusPipe
   ]
 })
 export class SharedModule { }

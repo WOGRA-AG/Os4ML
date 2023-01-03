@@ -26,7 +26,7 @@ export class DatabagService {
         return of([]);
       }),
       map(data => data as Databag[]),
-      tap(bags => console.dir(bags)),
+      tap(bags => console.log('databags', bags)),
     );
   }
 

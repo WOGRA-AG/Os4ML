@@ -1,0 +1,20 @@
+.nav-item-extended {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex: auto
+}
+
+.bag-list {
+  margin-top: 10px;
+}
+
+.databag-list-mat-panel-title-icon {
+  position: absolute;
+  left: 15px;
+}
+
+.databag-list-mat-expansion-panel-add-button {
+  pointer-events: none;
+}

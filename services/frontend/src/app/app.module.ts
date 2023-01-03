@@ -31,8 +31,6 @@ import {ToggleItemComponent} from './components/shared/molecules/toggle-item/tog
 import {ApiModule as ModelmanagerApi, Configuration as ModelmanagerApiConfig} from '../../build/openapi/modelmanager';
 import {SolutionListItemComponent} from './components/shared/molecules/solution-list-item/solution-list-item.component';
 import {SettingDatabagComponent} from './components/shared/organisms/setting-databag/setting-databag.component';
-import {LocalizedDatePipe} from './pipes/localized-date.pipe';
-import {ShortStatusPipe} from './pipes/short-status.pipe';
 import {PopupDeleteComponent} from './components/shared/organisms/popup-delete/popup-delete.component';
 import {SettingSolutionComponent} from './components/shared/organisms/setting-solution/setting-solution.component';
 import {CloseButtonComponent} from './components/shared/atoms/close-button/close-button.component';
@@ -46,15 +44,13 @@ import {ListItemComponent} from './components/shared/atoms/list-item/list-item.c
 import {GettingStartedComponent} from './components/shared/organisms/getting-started/getting-started.component';
 import {UserModule} from './user/user.module';
 import {FacadesModule} from './facades/facades.module';
-import {StarRatingComponent} from './components/shared/molecules/star-rating/star-rating.component';
-import {StarComponent} from './components/shared/atoms/star/star.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import { AddButtonComponent } from './components/shared/atoms/add-button/add-button.component';
-import {FormatNumberPipe} from './pipes/format-number.pipe';
 import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
 import {DatabagsModule} from './databags/databags.module';
 import {SharedModule} from './shared/shared.module';
 import { NotFoundTemplateComponent } from './templates/not-found-template/not-found-template.component';
+import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
+import {SolutionsModule} from './solutions/solutions.module';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -81,9 +77,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ToggleItemComponent,
     SolutionListItemComponent,
     SettingDatabagComponent,
-    LocalizedDatePipe,
-    ShortStatusPipe,
-    FormatNumberPipe,
     PopupDeleteComponent,
     SettingSolutionComponent,
     CloseButtonComponent,
@@ -95,11 +88,9 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DatabagListItemComponent,
     ListItemComponent,
     GettingStartedComponent,
-    StarRatingComponent,
-    StarComponent,
-    AddButtonComponent,
     DatabagTemplateComponent,
     NotFoundTemplateComponent,
+    DashboardTemplateComponent,
   ],
   imports: [
     BrowserModule,
@@ -125,11 +116,11 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ReactiveFormsModule,
     MatTooltipModule,
     DatabagsModule,
+    SolutionsModule,
     SharedModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    ShortStatusPipe,
   ],
   exports: [
     DragAndDropDirective
