@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DatabagsPageComponent} from './pages/databags-page/databags-page.component';
-import {UploadFieldComponent} from './components/shared/molecules/upload-field/upload-field.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -50,6 +49,7 @@ import {SharedModule} from './shared/shared.module';
 import { NotFoundTemplateComponent } from './templates/not-found-template/not-found-template.component';
 import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
 import {SolutionsModule} from './solutions/solutions.module';
+import {CoreModule} from './core/core.module';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -57,7 +57,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
   declarations: [
     AppComponent,
     DatabagsPageComponent,
-    UploadFieldComponent,
     DashboardPageComponent,
     ToolbarComponent,
     SidenavComponent,
@@ -115,7 +114,8 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     MatTooltipModule,
     DatabagsModule,
     SolutionsModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

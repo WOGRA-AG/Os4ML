@@ -21,6 +21,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { ListItemComponent } from './components/atoms/list-item/list-item.component';
+import { NavBarComponent } from './components/nav/nav-bar/nav-bar.component';
+import {RouterModule} from '@angular/router';
+import { SupportComponent } from './components/nav/support/support.component';
+import { GettingStartedComponent } from './components/nav/getting-started/getting-started.component';
 
 
 
@@ -41,6 +45,8 @@ import { ListItemComponent } from './components/atoms/list-item/list-item.compon
     PopupDeleteComponent,
     //dialogs
     DialogDynamicComponent,
+    // nav
+    NavBarComponent,
     // directives
     DragAndDropDirective,
     // pipes
@@ -49,6 +55,8 @@ import { ListItemComponent } from './components/atoms/list-item/list-item.compon
     ShortStatusPipe,
     HasElementsPipe,
     ListItemComponent,
+    SupportComponent,
+    GettingStartedComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +65,7 @@ import { ListItemComponent } from './components/atoms/list-item/list-item.compon
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   exports: [
     // atoms
@@ -85,7 +94,8 @@ import { ListItemComponent } from './components/atoms/list-item/list-item.compon
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
-    ListItemComponent
+    ListItemComponent,
+    NavBarComponent
   ],
   providers: [
     ShortStatusPipe
