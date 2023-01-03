@@ -4,6 +4,7 @@ import { SolutionListComponent } from './components/solution-list/solution-list.
 import { NoSolutionsPlaceholderComponent } from './components/no-solutions-placeholder/no-solutions-placeholder.component';
 import { SolutionListItemComponent } from './components/solution-list-item/solution-list-item.component';
 import { FormatTimeDiffPipe } from './pipes/format-time-diff.pipe';
+import { SolutionSettingComponent } from './components/solution-setting/solution-setting.component';
 
 
 @NgModule({
@@ -15,10 +16,13 @@ import { FormatTimeDiffPipe } from './pipes/format-time-diff.pipe';
     NoSolutionsPlaceholderComponent
   ],
   declarations: [
+    // pipes
+    FormatTimeDiffPipe,
+    // components
     SolutionListComponent,
     NoSolutionsPlaceholderComponent,
     SolutionListItemComponent,
-    FormatTimeDiffPipe
+    SolutionSettingComponent
   ]
 })
 export class SolutionsModule {

@@ -47,4 +47,10 @@ export class SolutionService {
       switchMap(token => this.modelManager.updateSolutionById(id, token, solution))
     );
   }
+
+  downloadModel(id: string): Observable<string> {
+    return this.userService.currentUserToken$.pipe(
+      switchMap(token => this.modelManager.downloadModel(id, token))
+    );
+  }
 }
