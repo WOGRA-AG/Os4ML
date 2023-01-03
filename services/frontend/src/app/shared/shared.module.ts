@@ -20,6 +20,7 @@ import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialog-dynamic.component';
+import { ListItemComponent } from './components/atoms/list-item/list-item.component';
 
 
 
@@ -47,6 +48,7 @@ import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialo
     LocalizedDatePipe,
     ShortStatusPipe,
     HasElementsPipe,
+    ListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -82,7 +84,8 @@ import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialo
     MaterialModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ListItemComponent
   ],
   providers: [
     ShortStatusPipe

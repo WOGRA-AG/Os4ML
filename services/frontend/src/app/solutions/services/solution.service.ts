@@ -30,6 +30,12 @@ export class SolutionService {
     );
   }
 
+  createSolution(solution: Solution): Observable<Solution> {
+    return this.userService.currentUserToken$.pipe(
+      switchMap(token => this.modelManager.createSolution(token, solution))
+    );
+  }
+
   getSolutionById(id: string): Observable<Solution> {
     return this.userService.currentUserToken$.pipe(
       switchMap(token => this.modelManager.getSolutionById(id, token))

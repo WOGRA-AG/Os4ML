@@ -8,9 +8,9 @@ import {HttpClient} from '@angular/common/http';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
-import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
 import {PipelineStatus} from '../../../../models/pipeline-status';
 import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {ShortStatusPipe} from '../../../../shared/pipes/short-status.pipe';
 
 @Component({
   selector: 'app-shared-popup-upload',
@@ -104,11 +104,11 @@ export class GettingStartedComponent {
       this.solution.metrics = [];
       this.modelManager.createSolution(this.user?.rawToken, this.solution)
         .pipe(
-          catchError(err => {
+          catchError(() => {
             this.submitting = false;
             return of('');
           })
-        ).subscribe(runId => {
+        ).subscribe(() => {
         this.submitting = false;
         this.dialogRef.close();
       });

@@ -30,6 +30,12 @@ export class DatabagService {
     );
   }
 
+  createDatabag(databag: Databag): Observable<Databag> {
+    return this.userService.currentUserToken$.pipe(
+      switchMap(token => this.modelManager.createDatabag(token, databag))
+    );
+  }
+
   getDatabagById(id: string): Observable<Databag> {
     return this.userService.currentUserToken$.pipe(
       switchMap(token => this.modelManager.getDatabagById(id, token))
@@ -45,6 +51,12 @@ export class DatabagService {
   updateDatabagById(id: string, databag: Databag): Observable<Databag> {
     return this.userService.currentUserToken$.pipe(
       switchMap(token => this.modelManager.updateDatabagById(id, token, databag))
+    );
+  }
+
+  uploadDataset(id: string, file: Blob): Observable<void> {
+    return this.userService.currentUserToken$.pipe(
+      switchMap(token => this.modelManager.uploadDataset(id, token, file))
     );
   }
 

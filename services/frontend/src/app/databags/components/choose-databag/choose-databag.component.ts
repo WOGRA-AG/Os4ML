@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Databag} from '../../../../../build/openapi/modelmanager';
-import {CreateDatabagComponent} from '../../../components/shared/organisms/create-databag/create-databag.component';
 import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {CreateDatabagComponent} from '../create-databag/create-databag.component';
 
 @Component({
   selector: 'app-choose-databag',

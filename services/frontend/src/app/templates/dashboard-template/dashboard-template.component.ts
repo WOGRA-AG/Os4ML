@@ -4,14 +4,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
-import {
-  CreateSolutionComponent
-} from '../../components/shared/organisms/create-solution/create-solution.component';
-import {UserFacade} from '../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
 import {DatabagService} from '../../databags/services/databag.service';
 import {SolutionService} from '../../solutions/services/solution.service';
 import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {CreateSolutionComponent} from '../../solutions/components/create-solution/create-solution.component';
 
 @Component({
   selector: 'app-dashboard-template',
@@ -28,7 +25,6 @@ export class DashboardTemplateComponent {
     private databagService: DatabagService,
     private solutionService: SolutionService,
     public dialog: MatDialog,
-    public userFacade: UserFacade,
     public modelManager: ModelmanagerService,
   ) {
     this.databags$ = this.databagService.databags$;

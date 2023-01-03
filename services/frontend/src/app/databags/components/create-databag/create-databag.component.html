@@ -1,0 +1,99 @@
+<app-dialog-header (closeDialog)="close()">
+  {{"databag.create" | translate}}
+</app-dialog-header>
+
+<mat-horizontal-stepper #stepper>
+  <ng-template matStepperIcon="edit">
+    <mat-icon>check</mat-icon>
+  </ng-template>
+  <mat-step label="{{'dialog.create_databag.step_one' | translate}}"
+            completed="{{stepperStep>0}}" >
+    <mat-dialog-content>
+      <app-dialog-section>
+        <mat-form-field appearance="outline">
+          <mat-label>{{"dialog.section.upload.connect_placeholder" | translate}}</mat-label>
+          <input
+            #dbUrl="ngModel"
+            matInput
+            type="url"
+            placeholder="{{'dialog.section.upload.connect_placeholder' | translate}}"
+            [(ngModel)]="fileUrl"
+            [pattern]="urlRgex"
+          >
+          <mat-icon matSuffix>link</mat-icon>
+        </mat-form-field>
+
+        <div class="upload-container">
+          <div class="or-container">
+            <mat-divider class="or-line"></mat-divider>
+            <span class="on-surface-disabled or-text">or</span>
+            <mat-divider class="or-line"></mat-divider>
+          </div>
+
+          <div class="upload-container">
+            <app-upload-field class="upload-field" [(file)]="file"></app-upload-field>
+          </div>
+        </div>
+
+      </app-dialog-section>
+    </mat-dialog-content>
+  </mat-step>
+
+  <mat-step completed="false" label="{{'settings.name' | translate}}">
+    <mat-dialog-content>
+      <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+        <app-dialog-section>
+          <mat-form-field appearance="outline">
+            <mat-label>{{"databag.placeholder" | translate}}</mat-label>
+            <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
+                   name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
+                   [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+          </mat-form-field>
+        </app-dialog-section>
+
+        <app-dialog-section>
+          <app-databag-fields [databag]=databag>
+          </app-databag-fields>
+        </app-dialog-section>
+
+      </form>
+    </mat-dialog-content>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<div *ngIf="stepperStep === 0; then nextButton else createButton"></div>
+
+<ng-template #nextButton>
+  <mat-dialog-actions align="end">
+    <div *ngIf="running" class="on-surface-disabled spinner-status">
+      {{ (this.databag.status || 'message.pipeline.default') | translate}}
+    </div>
+    <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
+    <button
+      id="add-databag-main-button"
+      mat-raised-button
+      color="primary"
+      class="main-button"
+      type="submit"
+      (click)="nextClick(stepper)"
+      [disabled]="running || !(file.name || (dbUrl?.valid && dbUrl?.value?.length > 0))"
+    >
+      {{"action.next_step" | translate}}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #createButton>
+  <mat-dialog-actions align="end">
+    <button mat-icon-button class="back-button"
+            [disableRipple]="true"
+            (click)="back(stepper)">
+      <mat-icon>arrow_back_ios</mat-icon>
+      {{"action.previous_step" | translate}}
+    </button>
+    <div class="button-spacer"></div>
+    <button id="define-databag-button" mat-raised-button form="ngForm" class="main-button" color="primary" type="submit" [disabled]="f.invalid">
+      {{"action.last_step" | translate}}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

@@ -6,6 +6,7 @@ import { NoDatabagsPlaceholderComponent } from './components/no-databags-placeho
 import { DatabagSettingComponent } from './components/databag-setting/databag-setting.component';
 import { DatabagFieldsComponent } from './components/databag-fields/databag-fields.component';
 import { ChooseDatabagComponent } from './components/choose-databag/choose-databag.component';
+import { CreateDatabagComponent } from './components/create-databag/create-databag.component';
 
 
 
@@ -26,6 +27,7 @@ import { ChooseDatabagComponent } from './components/choose-databag/choose-datab
     DatabagSettingComponent,
     DatabagFieldsComponent,
     ChooseDatabagComponent,
+    CreateDatabagComponent,
   ]
 })
 export class DatabagsModule { }

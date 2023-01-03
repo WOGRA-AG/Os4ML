@@ -4,14 +4,14 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
-import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
-import {PipelineStatus} from '../../../../models/pipeline-status';
-import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import {ShortStatusPipe} from '../../../../shared/pipes/short-status.pipe';
+import {Databag} from '../../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
+import {DatabagService} from '../../services/databag.service';
+import {PipelineStatus} from '../../../models/pipeline-status';
 
 @Component({
-  selector: 'app-shared-popup-upload',
+  selector: 'app-create-databag',
   templateUrl: './create-databag.component.html',
   styleUrls: ['./create-databag.component.scss']
 })
@@ -20,21 +20,15 @@ export class CreateDatabagComponent {
   file: File = new File([], '');
   fileUrl = '';
   running = false;
-  runId = '';
   intervalID = 0;
   stepperStep = 0;
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
-  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
               private shortStatus: ShortStatusPipe,
               private translate: TranslateService,
-              private modelManager: ModelmanagerService,
-              private userFacade: UserFacade) {
-    userFacade.currentUser$.pipe().subscribe(
-      currentUser => this.user = currentUser
-    );
+              private databagService: DatabagService) {
   }
 
   async nextClick(stepper: MatStepper): Promise<void> {
@@ -53,17 +47,15 @@ export class CreateDatabagComponent {
         fileName: this.file.name ? this.file.name : this.fileUrl,
         databagName: this.file.name ? this.file.name : this.fileUrl,
       };
-      this.databag = await firstValueFrom(this.modelManager.createDatabag(this.user?.rawToken, databagToCreate));
+      this.databag = await firstValueFrom(this.databagService.createDatabag(databagToCreate));
       if (this.file.name && this.databag.databagId) {
-        await firstValueFrom(
-          this.modelManager.uploadDataset(this.databag.databagId, this.user?.rawToken, this.file)
-        );
+        await firstValueFrom(this.databagService.uploadDataset(this.databag.databagId, this.file));
       }
       await this.retrievePipelineStatus();
     } catch (err: any) {
       this.matSnackBar.open(err, '', {duration: 3000});
       if (this.databag.databagId) {
-        await firstValueFrom(this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken));
+        await firstValueFrom(this.databagService.deleteDatabagById(this.databag.databagId));
       }
     } finally {
       this.running = false;
@@ -78,7 +70,7 @@ export class CreateDatabagComponent {
         if (this.databag.databagId === undefined) {
           return;
         }
-        this.modelManager.getDatabagById(this.databag.databagId, this.user?.rawToken).pipe().subscribe(databag => {
+        this.databagService.getDatabagById(this.databag.databagId).subscribe(databag => {
           this.databag = databag;
           switch (this.shortStatus.transform(this.databag.status)) {
             case PipelineStatus.error:
@@ -100,7 +92,7 @@ export class CreateDatabagComponent {
       return;
     }
     this.clearIntervalSafe();
-    this.modelManager.updateDatabagById(this.databag.databagId, this.user?.rawToken, this.databag).subscribe(() => {
+    this.databagService.updateDatabagById(this.databag.databagId, this.databag).subscribe(() => {
       this.dialogRef.close();
     });
   }
@@ -116,7 +108,7 @@ export class CreateDatabagComponent {
     if (this.databag.databagId === undefined) {
       return of(undefined);
     }
-    return this.modelManager.deleteDatabagById(this.databag.databagId, this.user?.rawToken);
+    return this.databagService.deleteDatabagById(this.databag.databagId);
   }
 
   back(stepper: MatStepper): void {
