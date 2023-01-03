@@ -5,12 +5,12 @@ import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {Databag, Solution, Solver} from '../../../../../../build/openapi/modelmanager';
-import {PipelineStatus} from '../../../../models/pipeline-status';
 import {ShortStatusPipe} from '../../../pipes/short-status.pipe';
 import {DialogDynamicComponent} from '../../dialog/dialog-dynamic/dialog-dynamic.component';
 import {DatabagService} from '../../../../databags/services/databag.service';
 import {SolutionService} from '../../../../solutions/services/solution.service';
 import {SolverService} from '../../../../solutions/services/solver.service';
+import {PipelineStatus} from '../../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-getting-started',

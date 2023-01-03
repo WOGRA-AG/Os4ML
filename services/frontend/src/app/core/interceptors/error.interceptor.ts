@@ -7,15 +7,15 @@ import {
 } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
+import {ErrorService} from '../services/error.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private matSnackBar: MatSnackBar,
+    private errorService: ErrorService,
     private translate: TranslateService,
   ) {}
 
@@ -28,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       } else if(err.status === 404 && err.url.includes('/run/')) {
       } else if (err.status >= 400 && err.status <= 499) {
         this.translate.get('action.confirm').subscribe((res: string) => {
-          this.matSnackBar.open(errorMsg, res, {duration: 3000});
+          this.errorService.reportError(errorMsg, res);
         });
       }
       return throwError(() => errorMsg);

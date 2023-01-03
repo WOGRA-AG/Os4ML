@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import {DatabagService} from '../../databags/services/databag.service';
 import {Observable} from 'rxjs';
 import {Databag} from '../../../../build/openapi/modelmanager';
-import {CreateDatabagComponent} from '../../components/shared/organisms/create-databag/create-databag.component';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {CreateDatabagComponent} from '../../databags/components/create-databag/create-databag.component';
 
 @Component({
   selector: 'app-databag-template',

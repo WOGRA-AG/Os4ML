@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {PipelineStatus} from '../../models/pipeline-status';
+import {PipelineStatus} from '../../core/models/pipeline-status';
 
 @Pipe({
   name: 'shortStatus'

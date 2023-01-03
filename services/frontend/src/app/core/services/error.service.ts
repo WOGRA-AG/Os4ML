@@ -6,11 +6,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class ErrorService {
 
-  duration = 2000;
+  private readonly duration = 2000;
 
   constructor(private matSnackBar: MatSnackBar) { }
 
-  reportError(msg: string) {
-    this.matSnackBar.open(msg, '', {duration: this.duration });
+  reportError(msg: string, res: string = '') {
+    this.matSnackBar.open(msg, res, {duration: this.duration });
   }
 }

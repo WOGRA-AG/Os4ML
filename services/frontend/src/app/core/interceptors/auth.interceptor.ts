@@ -5,37 +5,32 @@ import {
   HttpEvent,
   HttpInterceptor, HttpResponse
 } from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
-import {UserFacade} from '../services/user-facade.service';
-import {User} from '../../../../build/openapi/modelmanager';
+import {combineLatest, map, Observable} from 'rxjs';
+import {UserService} from '../services/user.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  user: User = {id: '', email: '', rawToken: ''};
-
-  constructor(private userFacade: UserFacade) {
-    this.userFacade.currentUser$.pipe().subscribe(
-      currentUser => this.user = currentUser
-    );
+  constructor(private userService: UserService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      tap((httpEvent: HttpEvent<any>) => {
+    return combineLatest([next.handle(request), this.userService.currentUser$]).pipe(
+      map(([httpEvent, user]) => {
         if (httpEvent.type === 0) {
-          return;
+          return httpEvent;
         }
         let token: string;
         if (httpEvent instanceof HttpResponse) {
           if (httpEvent.headers.has('x-auth-request-access-token')) {
             token = httpEvent.headers.get('x-auth-request-access-token') || '';
-            if (token === this.user?.rawToken) {
-              return;
+            if (token === user?.rawToken) {
+              return httpEvent;
             }
-            this.userFacade.updateUser(token);
+            this.userService.updateUser(token);
           }
         }
+        return httpEvent;
       })
     );
   }

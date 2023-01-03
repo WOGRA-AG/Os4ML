@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import { catchError, of } from 'rxjs';
-import {UserFacade} from '../../../../user/services/user-facade.service';
-import {Databag, ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
+import {Databag, Solution} from '../../../../../../build/openapi/modelmanager';
 import {DialogDynamicComponent} from '../../dialog/dialog-dynamic/dialog-dynamic.component';
+import {DatabagService} from '../../../../databags/services/databag.service';
+import {SolutionService} from '../../../../solutions/services/solution.service';
 
 @Component({
   selector: 'app-popup-delete',
@@ -14,18 +15,14 @@ export class PopupDeleteComponent {
   solution: Solution;
   databag: Databag;
   deleting = false;
-  user: User = {id: '', email: '', rawToken: ''};
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
-    private modelManager: ModelmanagerService,
-    private userFacade: UserFacade,
+    private databagService: DatabagService,
+    private solutionService: SolutionService,
   ) {
     this.solution = dialogRef.componentInstance.data.solution;
     this.databag = dialogRef.componentInstance.data.databag;
-    this.userFacade.currentUser$.pipe().subscribe(
-      currentUser => this.user = currentUser
-    );
   }
 
   close(): void {
@@ -56,7 +53,7 @@ export class PopupDeleteComponent {
       this.deleting = false;
       return;
     }
-    this.modelManager.deleteSolutionById(solutionId, this.user?.rawToken).pipe(
+    this.solutionService.deleteSolutionById(solutionId).pipe(
       catchError(() => {
         this.deleting = false;
         return of({});
@@ -72,7 +69,7 @@ export class PopupDeleteComponent {
       this.deleting = false;
       return;
     }
-    this.modelManager.deleteDatabagById(databagId, this.user?.rawToken).pipe(
+    this.databagService.deleteDatabagById(databagId).pipe(
       catchError(() => {
         this.deleting = false;
         return of({});

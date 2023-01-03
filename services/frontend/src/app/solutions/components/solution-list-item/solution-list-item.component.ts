@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {map, Observable, startWith, takeWhile, timer} from 'rxjs';
 import {Metric, Solution} from '../../../../../build/openapi/modelmanager';
 import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
-import {PipelineStatus} from '../../../models/pipeline-status';
+import {PipelineStatus} from '../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-solution-list-item',

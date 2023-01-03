@@ -8,7 +8,7 @@ import {Databag} from '../../../../../build/openapi/modelmanager';
 import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
 import {DatabagService} from '../../services/databag.service';
-import {PipelineStatus} from '../../../models/pipeline-status';
+import {PipelineStatus} from '../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-create-databag',

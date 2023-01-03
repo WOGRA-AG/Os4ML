@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
 export class UserService {
 
   currentUser$: Observable<User>;
-
   currentUserToken$: Observable<string>;
 
   private jwtToken$: BehaviorSubject<string> = new BehaviorSubject<string>('');

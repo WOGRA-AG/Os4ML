@@ -3,7 +3,7 @@ import {UserService} from '../../core/services/user.service';
 import {ErrorService} from '../../core/services/error.service';
 import {ModelmanagerService, Solver} from '../../../../build/openapi/modelmanager';
 import {map, Observable, switchMap} from 'rxjs';
-import {PipelineStep} from '../../models/pipeline-step';
+import {PipelineStep} from '../../core/models/pipeline-step';
 
 @Injectable({
   providedIn: 'root'

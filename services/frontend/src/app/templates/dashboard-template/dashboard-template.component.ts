@@ -1,14 +1,12 @@
 import {Component} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {
-  CreateDatabagComponent
-} from '../../components/shared/organisms/create-databag/create-databag.component';
 import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
 import {DatabagService} from '../../databags/services/databag.service';
 import {SolutionService} from '../../solutions/services/solution.service';
 import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {CreateSolutionComponent} from '../../solutions/components/create-solution/create-solution.component';
+import {CreateDatabagComponent} from '../../databags/components/create-databag/create-databag.component';
 
 @Component({
   selector: 'app-dashboard-template',
