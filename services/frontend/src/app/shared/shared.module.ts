@@ -4,7 +4,7 @@ import {FormatNumberPipe} from './pipes/format-number.pipe';
 import {LocalizedDatePipe} from './pipes/localized-date.pipe';
 import {ShortStatusPipe} from './pipes/short-status.pipe';
 import {MaterialModule} from '../material/material.module';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HasElementsPipe} from './pipes/has-elements.pipe';
 import {AddButtonComponent} from './components/atoms/add-button/add-button.component';
 import {CloseButtonComponent} from './components/atoms/close-button/close-button.component';
@@ -25,7 +25,10 @@ import {NavBarComponent} from './components/nav/nav-bar/nav-bar.component';
 import {RouterModule} from '@angular/router';
 import {SupportComponent} from './components/nav/support/support.component';
 import {GettingStartedComponent} from './components/nav/getting-started/getting-started.component';
+import {HttpClient} from '@angular/common/http';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
+export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
   declarations: [
@@ -60,7 +63,13 @@ import {GettingStartedComponent} from './components/nav/getting-started/getting-
   imports: [
     CommonModule,
     MaterialModule,
-    TranslateModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
