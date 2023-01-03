@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {
-  DialogDynamicComponent
-} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {PopupDeleteComponent} from '../popup-delete/popup-delete.component';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, User} from '../../../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-shared-setting-databag',

@@ -1,13 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {
-  DialogDynamicComponent
-} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {
   SettingDatabagComponent
 } from '../setting-databag/setting-databag.component';
 import {MatDialog} from '@angular/material/dialog';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag} from '../../../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-shared-databags-list',

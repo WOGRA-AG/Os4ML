@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {PipelineStep} from '../../../../models/pipeline-step';
 import { catchError, of } from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-shared-popup-predictions',
@@ -90,7 +90,7 @@ export class CreateSolutionComponent {
     this.solution.metrics = [];
     this.modelManager.createSolution(this.user?.rawToken, this.solution)
       .pipe(
-        catchError(err => {
+        catchError(() => {
           this.submitting = false;
           return of({runId: ''});
         })

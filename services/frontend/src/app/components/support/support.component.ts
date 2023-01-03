@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../dialog-dynamic/dialog-dynamic.component';
 import {
   GettingStartedComponent
 } from '../shared/organisms/getting-started/getting-started.component';
+import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-support',

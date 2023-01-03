@@ -3,14 +3,12 @@ import {interval, Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {
-  DialogDynamicComponent
-} from '../../components/dialog-dynamic/dialog-dynamic.component';
-import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {UserFacade} from '../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, User} from '../../../../build/openapi/modelmanager';
 import {DatabagService} from '../../databags/services/databag.service';
+import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databags-page',

@@ -1,13 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {
-  DialogDynamicComponent
-} from '../../../dialog-dynamic/dialog-dynamic.component';
-import {
   SettingSolutionComponent
 } from '../setting-solution/setting-solution.component';
 import {MatDialog} from '@angular/material/dialog';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Solution} from '../../../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-shared-solutions-list',

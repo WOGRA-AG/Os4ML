@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Databag, ModelmanagerService} from '../../../../../build/openapi/modelmanager';
-import {DialogDynamicComponent} from '../../../components/dialog-dynamic/dialog-dynamic.component'; // TODO move
+import {Databag} from '../../../../../build/openapi/modelmanager';
 import {PopupDeleteComponent} from '../../../shared/components/organisms/popup-delete/popup-delete.component';
 import {DatabagService} from '../../services/databag.service';
+import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databag-setting',

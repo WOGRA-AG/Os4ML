@@ -23,7 +23,6 @@ import {DatabagPlaceholderComponent} from './components/shared/molecules/databag
 import {CreateDatabagComponent} from './components/shared/organisms/create-databag/create-databag.component';
 import {DragAndDropDirective} from './directives/drag-and-drop.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {DialogDynamicComponent} from './components/dialog-dynamic/dialog-dynamic.component';
 import {SolutionPlaceholderComponent} from './components/shared/molecules/solution-placeholder/solution-placeholder.component';
 import {SolutionsListComponent} from './components/shared/organisms/solutions-list/solutions-list.component';
 import {CreateSolutionComponent} from './components/shared/organisms/create-solution/create-solution.component';
@@ -70,7 +69,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     DatabagPlaceholderComponent,
     CreateDatabagComponent,
     DragAndDropDirective,
-    DialogDynamicComponent,
     SolutionPlaceholderComponent,
     SolutionsListComponent,
     CreateSolutionComponent,

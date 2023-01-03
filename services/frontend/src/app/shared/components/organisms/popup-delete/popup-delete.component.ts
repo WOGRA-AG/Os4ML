@@ -3,7 +3,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import { catchError, of } from 'rxjs';
 import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, User} from '../../../../../../build/openapi/modelmanager';
-import {DialogDynamicComponent} from '../../../../components/dialog-dynamic/dialog-dynamic.component'; // TODO move
+import {DialogDynamicComponent} from '../../dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-popup-delete',
@@ -57,7 +57,7 @@ export class PopupDeleteComponent {
       return;
     }
     this.modelManager.deleteSolutionById(solutionId, this.user?.rawToken).pipe(
-      catchError(err => {
+      catchError(() => {
         this.deleting = false;
         return of({});
       })
@@ -73,7 +73,7 @@ export class PopupDeleteComponent {
       return;
     }
     this.modelManager.deleteDatabagById(databagId, this.user?.rawToken).pipe(
-      catchError(err => {
+      catchError(() => {
         this.deleting = false;
         return of({});
       })

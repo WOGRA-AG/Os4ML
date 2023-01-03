@@ -2,9 +2,9 @@ import {Component, Renderer2} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Solution} from '../../../../../build/openapi/modelmanager';
 import {PipelineStatus} from '../../../models/pipeline-status';
-import {DialogDynamicComponent} from '../../../components/dialog-dynamic/dialog-dynamic.component';
 import {PopupDeleteComponent} from '../../../shared/components/organisms/popup-delete/popup-delete.component';
 import {SolutionService} from '../../services/solution.service';
+import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-solution-setting',

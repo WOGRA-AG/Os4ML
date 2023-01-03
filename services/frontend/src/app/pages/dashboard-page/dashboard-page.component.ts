@@ -2,9 +2,6 @@ import {Component, OnDestroy} from '@angular/core';
 import {interval, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {
-  DialogDynamicComponent
-} from '../../components/dialog-dynamic/dialog-dynamic.component';
-import {
   CreateDatabagComponent
 } from '../../components/shared/organisms/create-databag/create-databag.component';
 import {
@@ -12,6 +9,7 @@ import {
 } from '../../components/shared/organisms/create-solution/create-solution.component';
 import {UserFacade} from '../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, User} from '../../../../build/openapi/modelmanager';
+import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-main-page',
@@ -31,7 +29,7 @@ export class DashboardPageComponent implements OnDestroy {
     public userFacade: UserFacade,
     public modelManager: ModelmanagerService,
   ) {
-    this.intervalSub = interval(10000).subscribe(x => {
+    this.intervalSub = interval(10000).subscribe(() => {
       this.userFacade.refresh();
     });
     this.userSub = this.userFacade.currentUser$.pipe().subscribe(currentUser => {

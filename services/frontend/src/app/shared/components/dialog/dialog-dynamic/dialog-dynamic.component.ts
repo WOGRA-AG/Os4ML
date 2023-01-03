@@ -1,11 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Databag, Solution} from '../../../../build/openapi/modelmanager';
+import {Databag, Solution} from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-dialog-dynamic',
   templateUrl: './dialog-dynamic.component.html',
-  styleUrls: ['./dialog-dynamic.component.scss']
 })
 export class DialogDynamicComponent {
 

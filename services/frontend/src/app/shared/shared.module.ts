@@ -19,6 +19,7 @@ import { PopupDeleteComponent } from './components/organisms/popup-delete/popup-
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 
 
@@ -37,6 +38,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     UploadFieldComponent,
     // organisms
     PopupDeleteComponent,
+    //dialogs
+    DialogDynamicComponent,
     // directives
     DragAndDropDirective,
     // pipes

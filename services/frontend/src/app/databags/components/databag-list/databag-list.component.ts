@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {Databag} from '../../../../../build/openapi/modelmanager';
 import {MatDialog} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../../../components/dialog-dynamic/dialog-dynamic.component';
 import {DatabagSettingComponent} from '../databag-setting/databag-setting.component';
+import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databag-list',

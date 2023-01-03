@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../../../dialog-dynamic/dialog-dynamic.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {catchError, firstValueFrom, Observable, of} from 'rxjs';
@@ -11,6 +10,7 @@ import {UserFacade} from '../../../../user/services/user-facade.service';
 import {Databag, ModelmanagerService, Solution, Solver, User} from '../../../../../../build/openapi/modelmanager';
 import {ShortStatusPipe} from '../../../../pipes/short-status.pipe';
 import {PipelineStatus} from '../../../../models/pipeline-status';
+import {DialogDynamicComponent} from '../../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-shared-popup-upload',
