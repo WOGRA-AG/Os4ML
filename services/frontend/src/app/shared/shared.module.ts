@@ -27,6 +27,7 @@ import {SupportComponent} from './components/nav/support/support.component';
 import {GettingStartedComponent} from './components/nav/getting-started/getting-started.component';
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
 
 export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -59,6 +60,7 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ListItemComponent,
     SupportComponent,
     GettingStartedComponent,
+    StatusSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -75,36 +77,37 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ReactiveFormsModule,
     RouterModule,
   ],
-  exports: [
-    // atoms
-    AddButtonComponent,
-    CloseButtonComponent,
-    ElementDividerComponent,
-    StarComponent,
-    // molecules
-    DialogHeaderComponent,
-    DialogSectionComponent,
-    StarRatingComponent,
-    ToggleItemComponent,
-    UploadFieldComponent,
-    // organisms
-    PopupDeleteComponent,
-    // directives
-    DragAndDropDirective,
-    // pipes
-    FormatNumberPipe,
-    LocalizedDatePipe,
-    ShortStatusPipe,
-    HasElementsPipe,
-    // modules
-    CommonModule,
-    MaterialModule,
-    TranslateModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ListItemComponent,
-    NavBarComponent
-  ],
+    exports: [
+        // atoms
+        AddButtonComponent,
+        CloseButtonComponent,
+        ElementDividerComponent,
+        StarComponent,
+        // molecules
+        DialogHeaderComponent,
+        DialogSectionComponent,
+        StarRatingComponent,
+        ToggleItemComponent,
+        UploadFieldComponent,
+        // organisms
+        PopupDeleteComponent,
+        // directives
+        DragAndDropDirective,
+        // pipes
+        FormatNumberPipe,
+        LocalizedDatePipe,
+        ShortStatusPipe,
+        HasElementsPipe,
+        // modules
+        CommonModule,
+        MaterialModule,
+        TranslateModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ListItemComponent,
+        NavBarComponent,
+        StatusSpinnerComponent
+    ],
   providers: [
     ShortStatusPipe
   ]

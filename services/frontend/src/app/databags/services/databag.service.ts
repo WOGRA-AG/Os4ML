@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserService} from '../../core/services/user.service';
-import {catchError, map, Observable, of, switchMap, tap} from 'rxjs';
+import {catchError, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 import {Databag, ModelmanagerService} from '../../../../build/openapi/modelmanager';
 import {webSocket} from 'rxjs/webSocket';
 import {ErrorService} from '../../core/services/error.service';
@@ -20,13 +20,13 @@ export class DatabagService {
       map(token => `${this.url}?usertoken=${token}`),
       tap(() => console.log('connecting')),
       switchMap(url => webSocket(url)),
-      tap(() => console.log('connected')),
       catchError(() => {
         this.errorService.reportError('Couldn\'t connect to the websocket');
         return of([]);
       }),
       map(data => data as Databag[]),
       tap(bags => console.log('databags', bags)),
+      shareReplay(1),
     );
   }
 

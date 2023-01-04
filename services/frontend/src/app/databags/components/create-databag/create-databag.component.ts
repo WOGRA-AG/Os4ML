@@ -1,14 +1,14 @@
 import {Component,} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {firstValueFrom, Observable, of} from 'rxjs';
+import {filter, firstValueFrom, last, map, Observable, of, share, startWith, takeWhile, tap} from 'rxjs';
 import {MatStepper} from '@angular/material/stepper';
 import {Databag} from '../../../../../build/openapi/modelmanager';
 import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
 import {DatabagService} from '../../services/databag.service';
 import {PipelineStatus} from '../../../core/models/pipeline-status';
+import {ErrorService} from '../../../core/services/error.service';
 
 @Component({
   selector: 'app-create-databag',
@@ -25,7 +25,10 @@ export class CreateDatabagComponent {
   urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
 
-  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>, private matSnackBar: MatSnackBar,
+  creationStatus$: Observable<string> | undefined;
+
+  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>,
+              private errorService: ErrorService,
               private shortStatus: ShortStatusPipe,
               private translate: TranslateService,
               private databagService: DatabagService) {
@@ -35,7 +38,7 @@ export class CreateDatabagComponent {
     if (!(this.file.name || this.fileUrl)) {
       this.translate.get('message.no_dataset').subscribe((res: string) => {
         this.translate.get('action.confirm').subscribe((conf: string) => {
-          this.matSnackBar.open(res, conf, {duration: 3000});
+          this.errorService.reportError(res, conf);
         });
       });
       return;
@@ -48,12 +51,13 @@ export class CreateDatabagComponent {
         databagName: this.file.name ? this.file.name : this.fileUrl,
       };
       this.databag = await firstValueFrom(this.databagService.createDatabag(databagToCreate));
+      this.creationStatus$ = this.retrievePipelineStatus();
       if (this.file.name && this.databag.databagId) {
         await firstValueFrom(this.databagService.uploadDataset(this.databag.databagId, this.file));
       }
-      await this.retrievePipelineStatus();
+      await firstValueFrom(this.creationStatus$.pipe(last()));
     } catch (err: any) {
-      this.matSnackBar.open(err, '', {duration: 3000});
+      this.errorService.reportError(err);
       if (this.databag.databagId) {
         await firstValueFrom(this.databagService.deleteDatabagById(this.databag.databagId));
       }
@@ -64,64 +68,41 @@ export class CreateDatabagComponent {
     }
   }
 
-  retrievePipelineStatus(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.intervalID = setInterval(() => {
-        if (this.databag.databagId === undefined) {
-          return;
-        }
-        this.databagService.getDatabagById(this.databag.databagId).subscribe(databag => {
-          this.databag = databag;
-          switch (this.shortStatus.transform(this.databag.status)) {
-            case PipelineStatus.error:
-              this.clearIntervalSafe();
-              reject();
-              break;
-            case PipelineStatus.done:
-              this.clearIntervalSafe();
-              resolve();
-              break;
-          }
-        });
-      }, 2000);
-    });
+  retrievePipelineStatus(): Observable<string> {
+    return this.databagService.databags$.pipe(
+      map(databags => databags.filter(databag => databag.databagId === this.databag.databagId)),
+      filter(databags => databags.length > 0),
+      tap(databags => this.databag = databags[0]),
+      map(databags => databags[0].status || ''),
+      takeWhile(status => this.shortStatus.transform(status) === PipelineStatus.running),
+      startWith('message.pipeline.default'),
+      share(),
+    );
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.databag.databagId === undefined) {
       return;
     }
-    this.clearIntervalSafe();
-    this.databagService.updateDatabagById(this.databag.databagId, this.databag).subscribe(() => {
-      this.dialogRef.close();
-    });
+    await firstValueFrom(this.databagService.updateDatabagById(this.databag.databagId, this.databag));
+    this.dialogRef.close();
   }
 
-  clearIntervalSafe(): void {
-    if (this.intervalID > 0) {
-      clearInterval(this.intervalID);
+  async clearProgress(): Promise<void> {
+    if (this.databag.databagId) {
+      await firstValueFrom(this.databagService.deleteDatabagById(this.databag.databagId));
     }
+    this.running = false;
   }
 
-  clearProgress(): Observable<void> {
-    this.clearIntervalSafe();
-    if (this.databag.databagId === undefined) {
-      return of(undefined);
-    }
-    return this.databagService.deleteDatabagById(this.databag.databagId);
+  async back(stepper: MatStepper): Promise<void> {
+    await this.clearProgress();
+    stepper.previous();
+    this.stepperStep -= 1;
   }
 
-  back(stepper: MatStepper): void {
-    this.clearProgress().subscribe(() => {
-      stepper.previous();
-      this.stepperStep -= 1;
-    });
-  }
-
-
-  close(): void {
-    this.clearProgress().subscribe(() => {
-      this.dialogRef.close();
-    });
+  async close(): Promise<void> {
+    await this.clearProgress();
+    this.dialogRef.close();
   }
 }

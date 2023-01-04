@@ -65,10 +65,7 @@
 
 <ng-template #nextButton>
   <mat-dialog-actions align="end">
-    <div *ngIf="running" class="on-surface-disabled spinner-status">
-      {{ (this.databag.status || 'message.pipeline.default') | translate}}
-    </div>
-    <mat-spinner *ngIf="running" [diameter]="48" mode="indeterminate"></mat-spinner>
+    <app-status-spinner *ngIf="!!creationStatus$" [status]="(creationStatus$ | async) || '' | translate"></app-status-spinner>
     <button
       id="add-databag-main-button"
       mat-raised-button
