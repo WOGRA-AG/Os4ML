@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserService} from '../../core/services/user.service';
-import {catchError, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
+import {catchError, filter, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 import {Databag, ModelmanagerService} from '../../../../build/openapi/modelmanager';
 import {webSocket} from 'rxjs/webSocket';
 import {ErrorService} from '../../core/services/error.service';
@@ -30,15 +30,17 @@ export class DatabagService {
     );
   }
 
-  createDatabag(databag: Databag): Observable<Databag> {
-    return this.userService.currentUserToken$.pipe(
-      switchMap(token => this.modelManager.createDatabag(token, databag))
+  getDatabagById(id: string): Observable<Databag> {
+    return this.databags$.pipe(
+      map(databags => databags.filter(databag => databag.databagId === id)),
+      filter(databags => databags.length > 0),
+      map(databags => databags[0]),
     );
   }
 
-  getDatabagById(id: string): Observable<Databag> {
+  createDatabag(databag: Databag): Observable<Databag> {
     return this.userService.currentUserToken$.pipe(
-      switchMap(token => this.modelManager.getDatabagById(id, token))
+      switchMap(token => this.modelManager.createDatabag(token, databag))
     );
   }
 
@@ -59,5 +61,4 @@ export class DatabagService {
       switchMap(token => this.modelManager.uploadDataset(id, token, file))
     );
   }
-
 }

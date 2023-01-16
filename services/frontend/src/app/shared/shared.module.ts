@@ -21,10 +21,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogDynamicComponent} from './components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {ListItemComponent} from './components/atoms/list-item/list-item.component';
-import {NavBarComponent} from './components/nav/nav-bar/nav-bar.component';
 import {RouterModule} from '@angular/router';
-import {SupportComponent} from './components/nav/support/support.component';
-import {GettingStartedComponent} from './components/nav/getting-started/getting-started.component';
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
@@ -38,18 +35,18 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     CloseButtonComponent,
     ElementDividerComponent,
     StarComponent,
+    ListItemComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,
     StarRatingComponent,
     ToggleItemComponent,
     UploadFieldComponent,
+    StatusSpinnerComponent,
     // organisms
     PopupDeleteComponent,
     //dialogs
     DialogDynamicComponent,
-    // nav
-    NavBarComponent,
     // directives
     DragAndDropDirective,
     // pipes
@@ -57,10 +54,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     LocalizedDatePipe,
     ShortStatusPipe,
     HasElementsPipe,
-    ListItemComponent,
-    SupportComponent,
-    GettingStartedComponent,
-    StatusSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -83,12 +76,14 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
         CloseButtonComponent,
         ElementDividerComponent,
         StarComponent,
+        ListItemComponent,
         // molecules
         DialogHeaderComponent,
         DialogSectionComponent,
         StarRatingComponent,
         ToggleItemComponent,
         UploadFieldComponent,
+        StatusSpinnerComponent,
         // organisms
         PopupDeleteComponent,
         // directives
@@ -104,9 +99,6 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
         TranslateModule,
         FormsModule,
         ReactiveFormsModule,
-        ListItemComponent,
-        NavBarComponent,
-        StatusSpinnerComponent
     ],
   providers: [
     ShortStatusPipe

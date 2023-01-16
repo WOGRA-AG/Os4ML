@@ -1,14 +1,18 @@
-import {Component,} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {filter, firstValueFrom, last, map, Observable, of, share, startWith, takeWhile, tap} from 'rxjs';
-import {MatStepper} from '@angular/material/stepper';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Databag} from '../../../../../build/openapi/modelmanager';
+import {
+  firstValueFrom,
+  last, Observable,
+  takeWhile,
+  tap
+} from 'rxjs';
+import {MatDialogRef} from '@angular/material/dialog';
 import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import {ErrorService} from '../../../core/services/error.service';
 import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
+import {TranslateService} from '@ngx-translate/core';
 import {DatabagService} from '../../services/databag.service';
 import {PipelineStatus} from '../../../core/models/pipeline-status';
-import {ErrorService} from '../../../core/services/error.service';
 
 @Component({
   selector: 'app-create-databag',
@@ -17,15 +21,13 @@ import {ErrorService} from '../../../core/services/error.service';
 })
 export class CreateDatabagComponent {
 
+  @Output() databagUpdates = new EventEmitter<Databag>();
+
   file: File = new File([], '');
   fileUrl = '';
-  running = false;
-  intervalID = 0;
-  stepperStep = 0;
-  urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  urlRegex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
 
-  creationStatus$: Observable<string> | undefined;
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>,
               private errorService: ErrorService,
@@ -34,7 +36,7 @@ export class CreateDatabagComponent {
               private databagService: DatabagService) {
   }
 
-  async nextClick(stepper: MatStepper): Promise<void> {
+  async createDatabag(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
       this.translate.get('message.no_dataset').subscribe((res: string) => {
         this.translate.get('action.confirm').subscribe((conf: string) => {
@@ -44,65 +46,34 @@ export class CreateDatabagComponent {
       return;
     }
 
-    this.running = true;
     try {
-      const databagToCreate: Databag = {
-        fileName: this.file.name ? this.file.name : this.fileUrl,
-        databagName: this.file.name ? this.file.name : this.fileUrl,
-      };
-      this.databag = await firstValueFrom(this.databagService.createDatabag(databagToCreate));
-      this.creationStatus$ = this.retrievePipelineStatus();
+      this.databag.fileName = this.file.name || this.fileUrl;
+      this.databag = await firstValueFrom(this.databagService.createDatabag(this.databag));
+      this.databagUpdates.next(this.databag);
       if (this.file.name && this.databag.databagId) {
         await firstValueFrom(this.databagService.uploadDataset(this.databag.databagId, this.file));
+        await firstValueFrom(this.outputDatabagUpdates(this.databag.databagId));
       }
-      await firstValueFrom(this.creationStatus$.pipe(last()));
     } catch (err: any) {
       this.errorService.reportError(err);
-      if (this.databag.databagId) {
-        await firstValueFrom(this.databagService.deleteDatabagById(this.databag.databagId));
-      }
-    } finally {
-      this.running = false;
-      this.stepperStep = 1;
-      stepper.next();
     }
   }
 
-  retrievePipelineStatus(): Observable<string> {
-    return this.databagService.databags$.pipe(
-      map(databags => databags.filter(databag => databag.databagId === this.databag.databagId)),
-      filter(databags => databags.length > 0),
-      tap(databags => this.databag = databags[0]),
-      map(databags => databags[0].status || ''),
-      takeWhile(status => this.shortStatus.transform(status) === PipelineStatus.running),
-      startWith('message.pipeline.default'),
-      share(),
+  outputDatabagUpdates(databagId: string): Observable<Databag> {
+    return this.databagService.getDatabagById(databagId).pipe(
+      tap(databag => this.databagUpdates.next(databag)),
+      takeWhile(databag => this.shortStatus.transform(databag.status) === PipelineStatus.running),
+      last(),
     );
   }
 
-  async onSubmit(): Promise<void> {
-    if (this.databag.databagId === undefined) {
-      return;
+  valid() {
+    if (!this.databag.databagName || this.databag.databagName.length === 0) {
+      return false;
     }
-    await firstValueFrom(this.databagService.updateDatabagById(this.databag.databagId, this.databag));
-    this.dialogRef.close();
-  }
-
-  async clearProgress(): Promise<void> {
-    if (this.databag.databagId) {
-      await firstValueFrom(this.databagService.deleteDatabagById(this.databag.databagId));
+    if (this.fileUrl) {
+      return this.fileUrl.match(this.urlRegex);
     }
-    this.running = false;
-  }
-
-  async back(stepper: MatStepper): Promise<void> {
-    await this.clearProgress();
-    stepper.previous();
-    this.stepperStep -= 1;
-  }
-
-  async close(): Promise<void> {
-    await this.clearProgress();
-    this.dialogRef.close();
+    return this.file.name;
   }
 }

@@ -6,7 +6,9 @@ import {DatabagService} from '../../databags/services/databag.service';
 import {SolutionService} from '../../solutions/services/solution.service';
 import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {CreateSolutionComponent} from '../../solutions/components/create-solution/create-solution.component';
-import {CreateDatabagComponent} from '../../databags/components/create-databag/create-databag.component';
+import {
+  CreateDatabagStepperComponent
+} from '../../databags/components/create-databag-stepper/create-databag-stepper.component';
 
 @Component({
   selector: 'app-dashboard-template',
@@ -34,7 +36,7 @@ export class DashboardTemplateComponent {
 
   addDatabag() {
     this.dialog.open(DialogDynamicComponent, {
-      data: {component: CreateDatabagComponent}
+      data: {component: CreateDatabagStepperComponent}
     });
   }
 

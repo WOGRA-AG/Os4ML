@@ -129,7 +129,7 @@
     class="main-button"
     type="submit"
     (click)="next(stepper)"
-    [disabled]="isDisabled(file, db_url,  databag_name.valid, solution_name.valid)"
+    [disabled]="isDisabled(file, db_url, solution_name.valid)"
   >
     <div *ngIf="stepperStep>=2">{{"action.last_step" | translate}}</div>
     <div *ngIf="stepperStep<2">{{"action.next_step" | translate}}</div>

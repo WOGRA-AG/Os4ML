@@ -10,7 +10,7 @@ import {ErrorInterceptor} from './interceptors/error.interceptor';
     PageNotFoundComponent
   ],
   exports: [
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     SharedModule,

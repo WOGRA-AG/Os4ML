@@ -6,8 +6,5 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./status-spinner.component.scss']
 })
 export class StatusSpinnerComponent {
-
-  @Input()
-  status: string = '';
-
+  @Input() status = '';
 }

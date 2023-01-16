@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {DialogDynamicComponent} from '../../dialog/dialog-dynamic/dialog-dynamic.component';
+import { DialogDynamicComponent } from 'src/app/shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import {GettingStartedComponent} from '../getting-started/getting-started.component';
 
 @Component({

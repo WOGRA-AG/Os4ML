@@ -4,8 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {MaterialModule} from './material/material.module';
 import {ApiModule as ModelmanagerApi, Configuration as ModelmanagerApiConfig} from '../../build/openapi/modelmanager';
 import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
@@ -15,6 +14,7 @@ import { NotFoundTemplateComponent } from './templates/not-found-template/not-fo
 import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
 import {SolutionsModule} from './solutions/solutions.module';
 import {CoreModule} from './core/core.module';
+import { NavModule } from './nav/nav.module';
 
 
 @NgModule({
@@ -38,7 +38,8 @@ import {CoreModule} from './core/core.module';
     DatabagsModule,
     SolutionsModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    NavModule,
   ],
   bootstrap: [AppComponent]
 })
