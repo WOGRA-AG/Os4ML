@@ -18,7 +18,8 @@ import { CreateDatabagComponent } from './components/create-databag/create-datab
     NoDatabagsPlaceholderComponent,
     DatabagListComponent,
     DatabagFieldsComponent,
-    ChooseDatabagComponent
+    ChooseDatabagComponent,
+    CreateDatabagComponent,
   ],
   declarations: [
     DatabagListComponent,

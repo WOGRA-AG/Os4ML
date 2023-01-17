@@ -18,18 +18,13 @@ export class GettingStartedStepperComponent {
 
   solvers$: Observable<Solver[]>;
 
-  file: File = new File([], '');
-  fileUrl = '';
-  running = false;
-  runId = '';
-  databagName = '';
-  intervalID = 0;
-  stepperStep = 0;
-  urlRgex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   databag: Databag = {};
   solution: Solution = {};
-  solvers: Solver[] = [];
-  submitting = false;
+
+  running = false;
+  submitting = false; // TODO are submitting and running needed or is one sufficient
+  intervalID = 0;
+  stepperStep = 0;
 
   constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>,
               private databagService: DatabagService,
@@ -38,39 +33,38 @@ export class GettingStartedStepperComponent {
     this.solvers$ = this.solverService.solvers$;
   }
 
-  async next(stepper: MatStepper): Promise<void> {
+  async next(stepper: MatStepper, createDatabagComponent: CreateDatabagComponent): Promise<void> {
     this.submitting = true;
 
-    // TODO make switch case statement
-    if (this.stepperStep === 0) {
-      this.running = true; // TODO are submitting and running needed or is one sufficient
-      // await createDatabagComponent.createDatabag();
-      this.running = false;
-    }
-
-    if (this.stepperStep === 1) {
-      this.solution.inputFields = this.getInputFields();
-    }
-
-    if (this.stepperStep === 2) {
-      if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
-        return;
-      }
-      this.submitting = true;
-      this.solution.status = 'Created';
-      this.solution.databagId = this.databag.databagId;
-      this.solution.databagName = this.databag.databagName;
-      this.solution.metrics = [];
-      this.solutionService.createSolution(this.solution)
-        .pipe(
-          catchError(() => {
-            this.submitting = false;
-            return of('');
-          })
-        ).subscribe(() => {
-        this.submitting = false;
-        this.dialogRef.close();
-      });
+    switch(this.stepperStep) {
+      case 0:
+        this.running = true;
+        await createDatabagComponent.createDatabag();
+        this.running = false;
+        break;
+      case 1:
+        this.solution.inputFields = this.getInputFields();
+        break;
+      case 2:
+        if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
+          return;
+        }
+        this.submitting = true;
+        this.solution.status = 'Created';
+        this.solution.databagId = this.databag.databagId;
+        this.solution.databagName = this.databag.databagName;
+        this.solution.metrics = [];
+        this.solutionService.createSolution(this.solution)
+          .pipe(
+            catchError(() => {
+              this.submitting = false;
+              return of('');
+            })
+          ).subscribe(() => {
+          this.submitting = false;
+          this.dialogRef.close();
+        });
+        break;
     }
     stepper.next();
     this.stepperStep += 1;
@@ -82,7 +76,6 @@ export class GettingStartedStepperComponent {
     if (this.stepperStep === 1 && this.databag.databagId !== undefined) {
       this.databagService.deleteDatabagById(this.databag.databagId).subscribe(() => {
         this.solution = {};
-        this.solvers = [];
         stepper.previous();
         this.stepperStep -= 1;
       });
@@ -134,19 +127,14 @@ export class GettingStartedStepperComponent {
   }
 
   isDisabled(
-    file: any,
-    dbUrl: any,
+    createDatabagComponent: CreateDatabagComponent,
     validSolutionName: any) {
+    console.log('called');
     if (this.submitting) {
-      return false;
+      return true;
     }
     if (this.stepperStep === 0) {
-      if (file.name && ((dbUrl?.valid && dbUrl?.value?.length > 0))) {
-        this.databag.status = 'message.pipeline.running.url_is_ignored';
-        return false;
-      } else {
-        return !(this.databagName !== '' && (file.name || ((dbUrl?.valid && dbUrl?.value?.length > 0))));
-      }
+      return createDatabagComponent.valid;
     }
     if (this.stepperStep === 1) {
       return !(this.solution.outputFields);
@@ -166,5 +154,4 @@ export class GettingStartedStepperComponent {
       .filter((colName): colName is string => !!colName)
       .filter(columnName => columnName && !this.solution.outputFields?.includes(columnName));
   }
-
 }

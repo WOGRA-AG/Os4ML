@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogDynamicComponent } from 'src/app/shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import {GettingStartedComponent} from '../getting-started/getting-started.component';
+import { GettingStartedStepperComponent } from '../getting-started-stepper/getting-started-stepper.component';
 
 @Component({
   selector: 'app-support',
@@ -16,7 +16,7 @@ export class SupportComponent {
 
   openGettingStartedDialog() {
     const dialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: GettingStartedComponent},
+      data: {component: GettingStartedStepperComponent},
       panelClass: 'getting-started-dialog'
     });
     dialogRef.afterClosed().subscribe();

@@ -9,42 +9,7 @@
   <mat-step label="{{'databag.name' | translate}}"
             completed="{{stepperStep>0}}" >
     <mat-dialog-content>
-      <app-dialog-section>
-        <mat-form-field appearance="outline">
-          <mat-label>{{"databag.placeholder" | translate}}</mat-label>
-          <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
-                 name="databag_name" [(ngModel)]="databagName" #databag_name="ngModel"
-                 [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
-        </mat-form-field>
-      </app-dialog-section>
-      <app-dialog-section>
-        <div description>{{"dialog.section.upload.description" | translate}}</div>
-        <mat-form-field appearance="outline">
-          <mat-label>{{'dialog.section.upload.connect_placeholder' | translate}}</mat-label>
-          <input
-            #db_url="ngModel"
-            matInput
-            type="url"
-            placeholder="{{'dialog.section.upload.connect_placeholder' | translate}}"
-            [(ngModel)]="fileUrl"
-            [pattern]="urlRgex"
-          >
-          <mat-icon matSuffix>link</mat-icon>
-        </mat-form-field>
-
-        <div class="upload-container">
-          <div class="or-container">
-            <mat-divider class="or-line"></mat-divider>
-            <span class="on-surface-disabled or-text">or</span>
-            <mat-divider class="or-line"></mat-divider>
-          </div>
-
-          <div class="upload-container">
-            <app-upload-field class="upload-field" [(file)]="file"></app-upload-field>
-          </div>
-        </div>
-
-      </app-dialog-section>
+      <app-create-databag (databagUpdates)="databagUpdate($event)" #createDatabagComponent></app-create-databag>
     </mat-dialog-content>
   </mat-step>
 
@@ -92,7 +57,7 @@
         <mat-list>
           <mat-list-item
             id="define-solver-list"
-            *ngFor="let solver of solvers"
+            *ngFor="let solver of solvers$ | async"
             class="pointer bg-primary"
             [ngClass]="solution.solver === solver.name ? 'active' : ''"
             (click)="selectSolver(solver)"
@@ -128,9 +93,10 @@
     color="primary"
     class="main-button"
     type="submit"
-    (click)="next(stepper)"
-    [disabled]="isDisabled(file, db_url, solution_name.valid)"
+    (click)="next(stepper, createDatabagComponent)"
+    [disabled]="submitting"
   >
+    <!-- [disabled]="isDisabled(createDatabagComponent, solution_name.valid)" -->
     <div *ngIf="stepperStep>=2">{{"action.last_step" | translate}}</div>
     <div *ngIf="stepperStep<2">{{"action.next_step" | translate}}</div>
   </button>
