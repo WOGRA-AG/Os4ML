@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {catchError, map, Observable, of, switchMap, tap} from 'rxjs';
+import {catchError, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
 import {UserService} from '../../core/services/user.service';
 import {ErrorService} from '../../core/services/error.service';
@@ -18,15 +18,29 @@ export class SolutionService {
   constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
     this.solutions$ = this.userService.currentUserToken$.pipe(
       map(token => `${this.url}?usertoken=${token}`),
-      tap(() => console.log('connecting')),
       switchMap(url => webSocket(url)),
-      tap(() => console.log('connected')),
       catchError(() => {
         this.errorService.reportError('Couldn\'t connect to the websocket');
         return of([]);
       }),
       map(data => data as Solution[]),
       tap(solutions => console.log('solutions', solutions)),
+      shareReplay(1),
+    );
+  }
+
+  getSolutionsByDatabagIdSortByCreationTime(databagId: string | undefined): Observable<Solution[]> {
+     const sortByCreationTime = (solution1: Solution, solution2: Solution) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const date1 = new Date(solution1.creationTime!);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const date2 = new Date(solution2.creationTime!);
+      return date2.getTime() - date1.getTime();
+    };
+
+    return this.solutions$.pipe(
+      map(solutions => solutions.filter(solution => solution.databagId === databagId)),
+      map(solutions => solutions.sort(sortByCreationTime)),
     );
   }
 

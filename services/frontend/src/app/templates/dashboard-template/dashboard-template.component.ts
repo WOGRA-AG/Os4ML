@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, switchMap} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
+import {Databag, Solution} from '../../../../build/openapi/modelmanager';
 import {DatabagService} from '../../databags/services/databag.service';
 import {SolutionService} from '../../solutions/services/solution.service';
 import {DialogDynamicComponent} from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
@@ -17,20 +17,17 @@ import { CreateSolutionStepperComponent } from 'src/app/solutions/components/cre
 })
 export class DashboardTemplateComponent {
   databags$: Observable<Databag[]>;
-  solutions$: Observable<Solution[]>;
   selectedDatabag$: BehaviorSubject<Databag> = new BehaviorSubject({});
   solutionsInDatabag$: Observable<Solution[]>;
 
   constructor(
     private databagService: DatabagService,
     private solutionService: SolutionService,
-    public dialog: MatDialog,
-    public modelManager: ModelmanagerService,
+    private dialog: MatDialog,
   ) {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
-    this.solutions$ = this.solutionService.solutions$;
-    this.solutionsInDatabag$ = combineLatest([this.selectedDatabag$, this.solutions$]).pipe(
-      map(([selectedDatabag, solutions]) => solutions.filter(solution => solution.databagId === selectedDatabag.databagId))
+    this.solutionsInDatabag$ = this.selectedDatabag$.pipe(
+      switchMap(databag => this.solutionService.getSolutionsByDatabagIdSortByCreationTime(databag.databagId))
     );
   }
 

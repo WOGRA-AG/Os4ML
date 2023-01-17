@@ -9,7 +9,7 @@ import { Databag } from 'build/openapi/modelmanager';
 export class ChooseDatabagColumnComponent {
   @Input() databag: Databag = {};
   @Output() selectedColumn = new EventEmitter<string>();
-  lastSelectedColumn = "";
+  lastSelectedColumn = '';
   allowedColumnTypes = ['category', 'numerical'];
 
   selectColumn(column: string | undefined): void {
