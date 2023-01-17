@@ -6,6 +6,9 @@ import { SolutionListItemComponent } from './components/solution-list-item/solut
 import { FormatTimeDiffPipe } from './pipes/format-time-diff.pipe';
 import { SolutionSettingComponent } from './components/solution-setting/solution-setting.component';
 import { CreateSolutionComponent } from './components/create-solution/create-solution.component';
+import { CreateSolutionStepperComponent } from './components/create-solution-stepper/create-solution-stepper.component';
+import { ChooseDatabagColumnComponent } from './components/choose-databag-column/choose-databag-column.component';
+import { ChooseSolverComponent } from './components/choose-solver/choose-solver.component';
 
 
 @NgModule({
@@ -14,7 +17,9 @@ import { CreateSolutionComponent } from './components/create-solution/create-sol
   ],
   exports: [
     SolutionListComponent,
-    NoSolutionsPlaceholderComponent
+    NoSolutionsPlaceholderComponent,
+    ChooseDatabagColumnComponent,
+    ChooseSolverComponent
   ],
   declarations: [
     // pipes
@@ -24,7 +29,10 @@ import { CreateSolutionComponent } from './components/create-solution/create-sol
     NoSolutionsPlaceholderComponent,
     SolutionListItemComponent,
     SolutionSettingComponent,
-    CreateSolutionComponent
+    CreateSolutionComponent,
+    CreateSolutionStepperComponent,
+    ChooseDatabagColumnComponent,
+    ChooseSolverComponent
   ]
 })
 export class SolutionsModule {

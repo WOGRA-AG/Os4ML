@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DatabagsModule } from '../databags/databags.module';
 import { SolutionsModule } from '../solutions/solutions.module';
-import { GettingStartedComponent } from './getting-started/getting-started.component';
 import { GettingStartedStepperComponent } from './getting-started-stepper/getting-started-stepper.component';
 import { SupportComponent } from './support/support.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -15,7 +14,6 @@ import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    GettingStartedComponent,
     GettingStartedStepperComponent,
     SupportComponent,
     NavBarComponent,

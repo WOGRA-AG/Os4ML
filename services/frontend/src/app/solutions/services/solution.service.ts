@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {catchError, map, Observable, of, switchMap, tap} from 'rxjs';
-import {ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
+import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
 import {UserService} from '../../core/services/user.service';
 import {ErrorService} from '../../core/services/error.service';
 import {webSocket} from 'rxjs/webSocket';
@@ -30,9 +30,17 @@ export class SolutionService {
     );
   }
 
-  createSolution(solution: Solution): Observable<Solution> {
+  createSolution(solution: Solution, databag: Databag): Observable<Solution> {
+    solution.status = 'Created';
+    solution.metrics = [];
+    solution.databagId = databag.databagId;
+    solution.databagName = databag.databagName;
+    if (!solution.inputFields || solution.inputFields.length <= 0) {
+      solution.inputFields = this.getInputFields(solution, databag);
+    }
     return this.userService.currentUserToken$.pipe(
-      switchMap(token => this.modelManager.createSolution(token, solution))
+      switchMap(token => this.modelManager.createSolution(token, solution)),
+      catchError(() => of({runId: ''})),
     );
   }
 
@@ -58,5 +66,11 @@ export class SolutionService {
     return this.userService.currentUserToken$.pipe(
       switchMap(token => this.modelManager.downloadModel(id, token))
     );
+  }
+
+  private getInputFields(solution: Solution, databag: Databag): string[] | undefined {
+    return databag.columns?.map(column => column.name)
+      .filter((colName): colName is string => !!colName)
+      .filter(colName => colName && !solution.outputFields?.includes(colName));
   }
 }

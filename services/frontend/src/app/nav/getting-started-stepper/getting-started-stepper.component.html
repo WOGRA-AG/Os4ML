@@ -13,26 +13,11 @@
     </mat-dialog-content>
   </mat-step>
 
-  <mat-step label="{{'problem.name' | translate}}"
-            completed="{{stepperStep>1}}"
-  >
+  <mat-step label="{{'problem.name' | translate}}" completed="{{stepperStep>1}}">
     <mat-dialog-content>
       <app-dialog-section>
         <div description>{{"dialog.section.problem.description" | translate}}</div>
-        <mat-list>
-          <ng-container *ngFor="let column of databag.columns">
-            <mat-list-item
-              class="bg-primary"
-              *ngIf="column.type==='category' || column.type ==='numerical'"
-              [ngClass]="solution.outputFields?.includes(column?.name || '') ? 'active' : ''"
-              (click)="selectPrediction(column.name)">
-              <app-list-item>
-                {{column.name}}
-                <ng-container description> {{column.type}}</ng-container>
-              </app-list-item>
-            </mat-list-item>
-          </ng-container>
-        </mat-list>
+        <app-choose-databag-column [databag]="databag" (selectedColumn)="selectOutputColumn($event)"></app-choose-databag-column>
       </app-dialog-section>
     </mat-dialog-content>
   </mat-step>
@@ -54,20 +39,7 @@
 
       <app-dialog-section>
         <div description>{{"dialog.section.solver.description" | translate}}</div>
-        <mat-list>
-          <mat-list-item
-            id="define-solver-list"
-            *ngFor="let solver of solvers$ | async"
-            class="pointer bg-primary"
-            [ngClass]="solution.solver === solver.name ? 'active' : ''"
-            (click)="selectSolver(solver)"
-          >
-            <app-list-item>
-              {{solver.name}}
-              <ng-container description>{{solver.description}}</ng-container>
-            </app-list-item>
-          </mat-list-item>
-        </mat-list>
+        <app-choose-solver (selectedSolver)="selectSolver($event)"></app-choose-solver>
       </app-dialog-section>
     </mat-dialog-content>
   </mat-step>
@@ -91,9 +63,8 @@
     class="main-button"
     type="submit"
     (click)="next(stepper, createDatabagComponent)"
-    [disabled]="submitting"
+    [disabled]="isDisabled(createDatabagComponent, solution_name.valid)"
   >
-    <!-- [disabled]="isDisabled(createDatabagComponent, solution_name.valid)" -->
     <div *ngIf="stepperStep>=2">{{"action.last_step" | translate}}</div>
     <div *ngIf="stepperStep<2">{{"action.next_step" | translate}}</div>
   </button>
