@@ -19,22 +19,9 @@ export class ChooseDatabagComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.databags = this.sortDatabagsByCreationTimeRecentFirst(this.databags);
     if (this.databags.length > 0) {
       this.changeSelectedDatabag(this.databags[0]);
     }
-  }
-
-  sortDatabagsByCreationTimeRecentFirst(databags: Databag[]): Databag[] {
-    return databags.sort(
-      (objA, objB) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const date1 = new Date(objA.creationTime!);
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const date2 = new Date(objB.creationTime!);
-        return date2.getTime() - date1.getTime();
-      },
-    );
   }
 
   changeSelectedDatabag(databag: Databag) {

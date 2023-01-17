@@ -30,6 +30,20 @@ export class DatabagService {
     );
   }
 
+  getDatabagsSortByCreationTime(): Observable<Databag[]> {
+     const sortByCreationTime = (databag1: Databag, databag2: Databag) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const date1 = new Date(databag1.creationTime!);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const date2 = new Date(databag2.creationTime!);
+      return date2.getTime() - date1.getTime();
+    };
+
+    return this.databags$.pipe(
+      map(databags => databags.sort(sortByCreationTime))
+    );
+  }
+
   getDatabagById(id: string): Observable<Databag> {
     return this.databags$.pipe(
       map(databags => databags.filter(databag => databag.databagId === id)),

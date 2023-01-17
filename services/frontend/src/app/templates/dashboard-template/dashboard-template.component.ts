@@ -27,7 +27,7 @@ export class DashboardTemplateComponent {
     public dialog: MatDialog,
     public modelManager: ModelmanagerService,
   ) {
-    this.databags$ = this.databagService.databags$;
+    this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.solutions$ = this.solutionService.solutions$;
     this.solutionsInDatabag$ = combineLatest([this.selectedDatabag$, this.solutions$]).pipe(
       map(([selectedDatabag, solutions]) => solutions.filter(solution => solution.databagId === selectedDatabag.databagId))
