@@ -21,8 +21,8 @@ export class GettingStartedStepperComponent {
   databag: Databag = {};
   solution: Solution = {};
 
-  running = false;
-  submitting = false; // TODO are submitting and running needed or is one sufficient
+  runningSpinner = false;
+  submitting = false;
   intervalID = 0;
   stepperStep = 0;
 
@@ -38,9 +38,9 @@ export class GettingStartedStepperComponent {
 
     switch(this.stepperStep) {
       case 0:
-        this.running = true;
+        this.runningSpinner = true;
         await createDatabagComponent.createDatabag();
-        this.running = false;
+        this.runningSpinner = false;
         break;
       case 1:
         this.solution.inputFields = this.getInputFields();
