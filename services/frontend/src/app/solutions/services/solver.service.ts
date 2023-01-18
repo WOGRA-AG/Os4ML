@@ -12,7 +12,7 @@ export class SolverService {
   solvers$: Observable<Solver[]>;
 
   constructor(private userService: UserService, private modelManager: ModelmanagerService) {
-    this.solvers$ = this.userService.currentUserToken$.pipe(
+    this.solvers$ = this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolvers(token)),
       map(solvers => solvers.filter(solver => solver.pipelineStep === PipelineStep.solver))
     );

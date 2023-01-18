@@ -16,9 +16,8 @@ export class DatabagService {
   private url = `ws://${this.basePath}/apis/v1beta1/model-manager/databags`;
 
   constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
-    this.databags$ = this.userService.currentUserToken$.pipe(
+    this.databags$ = this.userService.currentToken$.pipe(
       map(token => `${this.url}?usertoken=${token}`),
-      tap(() => console.log('connecting')),
       switchMap(url => webSocket(url)),
       catchError(() => {
         this.errorService.reportError('Couldn\'t connect to the websocket');
@@ -53,25 +52,25 @@ export class DatabagService {
   }
 
   createDatabag(databag: Databag): Observable<Databag> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.createDatabag(token, databag))
     );
   }
 
   deleteDatabagById(id: string): Observable<void> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.deleteDatabagById(id, token))
     );
   }
 
   updateDatabagById(id: string, databag: Databag): Observable<Databag> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.updateDatabagById(id, token, databag))
     );
   }
 
   uploadDataset(id: string, file: Blob): Observable<void> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.uploadDataset(id, token, file))
     );
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, filter, map, Observable, startWith, switchMap} from 'rxjs';
+import {BehaviorSubject, filter, map, Observable, startWith} from 'rxjs';
 import {User} from '../../../../build/openapi/modelmanager';
 import {Router} from '@angular/router';
 
@@ -9,14 +9,12 @@ import {Router} from '@angular/router';
 export class UserService {
 
   currentUser$: Observable<User>;
-  currentUserToken$: Observable<string>;
-
-  private jwtToken$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private readonly currentTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private readonly jwtTokenStorage = 'JWT_TOKEN';
 
 
   constructor(private router: Router) {
-    this.currentUser$ = this.jwtToken$.pipe(
+    this.currentUser$ = this.currentTokenSubject.pipe(
       filter(token => !!token),
       map(token => {
         const encodedPayload = token.split('.')[1];
@@ -32,23 +30,20 @@ export class UserService {
       }),
       startWith({email: '', id: '', rawToken: ''}),
     );
+  }
 
-    this.currentUserToken$ = this.currentUser$.pipe(
-      map(user => user.rawToken));
+  get currentToken$(): Observable<string> {
+    return this.currentTokenSubject.asObservable();
   }
 
   updateUser(jwtTokenString: string): void {
     localStorage.setItem(this.jwtTokenStorage, jwtTokenString);
-    this.jwtToken$.next(jwtTokenString);
+    this.currentTokenSubject.next(jwtTokenString);
   }
 
   logout(): void {
     localStorage.removeItem(this.jwtTokenStorage);
-    this.jwtToken$.next('');
+    this.currentTokenSubject.next('');
     this.router.navigateByUrl('/logout');
-  }
-
-  refresh(): void {
-    this.jwtToken$.next(this.jwtToken$.getValue());
   }
 }

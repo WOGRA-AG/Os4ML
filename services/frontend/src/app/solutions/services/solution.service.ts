@@ -16,7 +16,7 @@ export class SolutionService {
   private url = `ws://${this.basePath}/apis/v1beta1/model-manager/solutions`;
 
   constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
-    this.solutions$ = this.userService.currentUserToken$.pipe(
+    this.solutions$ = this.userService.currentToken$.pipe(
       map(token => `${this.url}?usertoken=${token}`),
       switchMap(url => webSocket(url)),
       catchError(() => {
@@ -52,32 +52,32 @@ export class SolutionService {
     if (!solution.inputFields || solution.inputFields.length <= 0) {
       solution.inputFields = this.getInputFields(solution, databag);
     }
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.createSolution(token, solution)),
       catchError(() => of({runId: ''})),
     );
   }
 
   getSolutionById(id: string): Observable<Solution> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolutionById(id, token))
     );
   }
 
   deleteSolutionById(id: string): Observable<void> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.deleteSolutionById(id, token))
     );
   }
 
   updateSolutionById(id: string, solution: Solution): Observable<Solution> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.updateSolutionById(id, token, solution))
     );
   }
 
   downloadModel(id: string): Observable<string> {
-    return this.userService.currentUserToken$.pipe(
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.downloadModel(id, token))
     );
   }
