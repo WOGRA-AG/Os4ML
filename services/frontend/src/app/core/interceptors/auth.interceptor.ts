@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor, HttpResponse
 } from '@angular/common/http';
-import {combineLatest, map, Observable} from 'rxjs';
+import {combineLatest, map, Observable, tap} from 'rxjs';
 import {UserService} from '../services/user.service';
 
 @Injectable()
@@ -15,23 +15,17 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return combineLatest([next.handle(request), this.userService.currentUser$]).pipe(
-      map(([httpEvent, user]) => {
-        if (httpEvent.type === 0) {
-          return httpEvent;
+    return combineLatest([next.handle(request), this.userService.currentToken$]).pipe(
+      tap(([httpEvent, currentToken]) => {
+        if (httpEvent.type === 0 || !(httpEvent instanceof HttpResponse) || !httpEvent.headers.has('x-auth-request-access-token')){
+          return;
         }
-        let token: string;
-        if (httpEvent instanceof HttpResponse) {
-          if (httpEvent.headers.has('x-auth-request-access-token')) {
-            token = httpEvent.headers.get('x-auth-request-access-token') || '';
-            if (token === user?.rawToken) {
-              return httpEvent;
-            }
-            this.userService.updateUser(token);
-          }
+        const token = httpEvent.headers.get('x-auth-request-access-token') || '';
+        if (token !== currentToken) {
+          this.userService.updateUser(token);
         }
-        return httpEvent;
-      })
+      }),
+      map(([httpEvent, _]) => httpEvent)
     );
   }
 }
