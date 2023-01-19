@@ -1,9 +1,8 @@
-import {Injectable} from '@angular/core';
-import {UserService} from '../../core/services/user.service';
-import {catchError, filter, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
-import {Databag, ModelmanagerService} from '../../../../build/openapi/modelmanager';
-import {webSocket} from 'rxjs/webSocket';
-import {ErrorService} from '../../core/services/error.service';
+import { Injectable } from '@angular/core';
+import { UserService } from '../../core/services/user.service';
+import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { Databag, ModelmanagerService } from '../../../../build/openapi/modelmanager';
+import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +11,19 @@ export class DatabagService {
 
   databags$: Observable<Databag[]>;
 
-  private webSocketProtocol = location.protocol === 'http:' ? 'ws' : 'wss';
-  private url = `${this.webSocketProtocol}://${location.host}/apis/v1beta1/model-manager/databags`;
-
-  constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
-    this.databags$ = this.userService.currentToken$.pipe(
-      map(token => `${this.url}?usertoken=${token}`),
-      switchMap(url => webSocket(url)),
-      catchError(() => {
-        this.errorService.reportError('Couldn\'t connect to the websocket');
-        return of([]);
-      }),
+  constructor(
+    private userService: UserService,
+    private modelManager: ModelmanagerService,
+    private webSocketConnectionService: WebSocketConnectionService) {
+    const path = '/apis/v1beta1/model-manager/databags';
+    this.databags$ = this.webSocketConnectionService.connect(path).pipe(
       map(data => data as Databag[]),
       tap(bags => console.log('databags', bags)),
-      shareReplay(1),
     );
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
-     const sortByCreationTime = (databag1: Databag, databag2: Databag) => {
+    const sortByCreationTime = (databag1: Databag, databag2: Databag) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const date1 = new Date(databag1.creationTime!);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

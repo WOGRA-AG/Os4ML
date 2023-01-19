@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {catchError, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
-import {Databag, ModelmanagerService, Solution} from '../../../../build/openapi/modelmanager';
-import {UserService} from '../../core/services/user.service';
-import {ErrorService} from '../../core/services/error.service';
-import {webSocket} from 'rxjs/webSocket';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { Databag, ModelmanagerService, Solution } from '../../../../build/openapi/modelmanager';
+import { UserService } from '../../core/services/user.service';
+import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +11,19 @@ export class SolutionService {
 
   solutions$: Observable<Solution[]>;
 
-  private webSocketProtocol = location.protocol === 'http:' ? 'ws' : 'wss';
-  private url = `${this.webSocketProtocol}://${location.host}/apis/v1beta1/model-manager/solutions`;
-
-  constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
-    this.solutions$ = this.userService.currentToken$.pipe(
-      map(token => `${this.url}?usertoken=${token}`),
-      switchMap(url => webSocket(url)),
-      catchError(() => {
-        this.errorService.reportError('Couldn\'t connect to the websocket');
-        return of([]);
-      }),
+  constructor(
+    private userService: UserService,
+    private modelManager: ModelmanagerService,
+    private webSocketConnectionService: WebSocketConnectionService) {
+    const path = '/apis/v1beta1/model-manager/solutions';
+    this.solutions$ = this.webSocketConnectionService.connect(path).pipe(
       map(data => data as Solution[]),
       tap(solutions => console.log('solutions', solutions)),
-      shareReplay(1),
     );
   }
 
   getSolutionsByDatabagIdSortByCreationTime(databagId: string | undefined): Observable<Solution[]> {
-     const sortByCreationTime = (solution1: Solution, solution2: Solution) => {
+    const sortByCreationTime = (solution1: Solution, solution2: Solution) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const date1 = new Date(solution1.creationTime!);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -54,7 +47,7 @@ export class SolutionService {
     }
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.createSolution(token, solution)),
-      catchError(() => of({runId: ''})),
+      catchError(() => of({ runId: '' })),
     );
   }
 
