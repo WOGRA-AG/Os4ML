@@ -9,7 +9,7 @@
   </mat-expansion-panel-header>
   <mat-nav-list class="bag-list" id="bag-list">
     <mat-list-item
-      [ngClass]="isSameDatabag(selectedDatabag, databag)? 'active': ''"
+      [ngClass]="{'active': selectedDatabag.databagId === databag.databagId}"
       *ngFor="let databag of databags"
       (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">

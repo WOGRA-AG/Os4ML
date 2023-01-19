@@ -67,4 +67,8 @@ export class DatabagService {
       switchMap(token => this.modelManager.uploadDataset(id, token, file))
     );
   }
+
+  isSameDatabag(databag1: Databag, databag2: Databag): boolean {
+    return JSON.stringify(databag1) === JSON.stringify(databag2);
+  }
 }
