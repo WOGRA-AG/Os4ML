@@ -12,8 +12,8 @@ export class DatabagService {
 
   databags$: Observable<Databag[]>;
 
-  private basePath = 'model-manager.os4ml.svc.cluster.local:8000';
-  private url = `ws://${this.basePath}/apis/v1beta1/model-manager/databags`;
+  private webSocketProtocol = location.protocol === 'http:' ? 'ws' : 'wss';
+  private url = `${this.webSocketProtocol}://${location.host}/apis/v1beta1/model-manager/databags`;
 
   constructor(private userService: UserService, private errorService: ErrorService, private modelManager: ModelmanagerService) {
     this.databags$ = this.userService.currentToken$.pipe(
