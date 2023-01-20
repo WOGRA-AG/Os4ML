@@ -3,6 +3,7 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {SharedModule} from '../shared/shared.module';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {ErrorInterceptor} from './interceptors/error.interceptor';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
 })
 export class CoreModule {
