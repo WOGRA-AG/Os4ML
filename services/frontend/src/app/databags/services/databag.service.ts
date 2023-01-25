@@ -9,16 +9,20 @@ import { WebSocketConnectionService } from 'src/app/core/services/web-socket-con
 })
 export class DatabagService {
 
-  databags$: Observable<Databag[]>;
+  private readonly databags: Observable<Databag[]>;
 
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService) {
     const path = '/apis/v1beta1/model-manager/databags';
-    this.databags$ = this.webSocketConnectionService.connect(path).pipe(
+    this.databags = this.webSocketConnectionService.connect(path).pipe(
       map(data => data as Databag[]),
     );
+  }
+
+  get databags$(): Observable<Databag[]> {
+    return this.databags;
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
