@@ -16,9 +16,7 @@ export class DatabagService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService) {
     const path = '/apis/v1beta1/model-manager/databags';
-    this.databags = this.webSocketConnectionService.connect(path).pipe(
-      map(data => data as Databag[]),
-    );
+    this.databags = this.webSocketConnectionService.connect(path);
   }
 
   get databags$(): Observable<Databag[]> {

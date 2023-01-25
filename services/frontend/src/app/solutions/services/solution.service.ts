@@ -16,9 +16,7 @@ export class SolutionService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService) {
     const path = '/apis/v1beta1/model-manager/solutions';
-    this.solutions = this.webSocketConnectionService.connect(path).pipe(
-      map(data => data as Solution[]),
-    );
+    this.solutions = this.webSocketConnectionService.connect(path);
   }
 
   get solutions$(): Observable<Solution[]> {
