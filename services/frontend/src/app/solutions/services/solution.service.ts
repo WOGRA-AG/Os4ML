@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Databag, ModelmanagerService, Solution } from '../../../../build/openapi/modelmanager';
 import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
@@ -18,7 +18,6 @@ export class SolutionService {
     const path = '/apis/v1beta1/model-manager/solutions';
     this.solutions$ = this.webSocketConnectionService.connect(path).pipe(
       map(data => data as Solution[]),
-      tap(solutions => console.log('solutions', solutions)),
     );
   }
 

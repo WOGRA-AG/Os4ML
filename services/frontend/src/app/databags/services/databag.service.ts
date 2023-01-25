@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { filter, map, Observable, switchMap } from 'rxjs';
 import { Databag, ModelmanagerService } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 
@@ -18,7 +18,6 @@ export class DatabagService {
     const path = '/apis/v1beta1/model-manager/databags';
     this.databags$ = this.webSocketConnectionService.connect(path).pipe(
       map(data => data as Databag[]),
-      tap(bags => console.log('databags', bags)),
     );
   }
 
