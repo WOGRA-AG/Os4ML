@@ -9,10 +9,10 @@ import {PipelineStep} from '../../core/models/pipeline-step';
 })
 export class SolverService {
 
-  solvers$: Observable<Solver[]>;
+  constructor(private userService: UserService, private modelManager: ModelmanagerService) {}
 
-  constructor(private userService: UserService, private modelManager: ModelmanagerService) {
-    this.solvers$ = this.userService.currentToken$.pipe(
+  get solvers$(): Observable<Solver[]> {
+    return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolvers(token)),
       map(solvers => solvers.filter(solver => solver.pipelineStep === PipelineStep.solver))
     );
