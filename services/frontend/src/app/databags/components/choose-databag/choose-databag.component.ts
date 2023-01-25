@@ -16,7 +16,7 @@ export class ChooseDatabagComponent implements OnInit, OnChanges {
   @Output() selectedDatabagChange: EventEmitter<Databag> = new EventEmitter<Databag>();
   selectedDatabag: Databag = {};
 
-  constructor(private dialog: MatDialog, private databagService: DatabagService) {
+  constructor(private dialog: MatDialog, public databagService: DatabagService) {
   }
 
   ngOnInit(): void {
