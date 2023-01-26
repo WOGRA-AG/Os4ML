@@ -12,12 +12,10 @@ export class WebSocketConnectionService {
   constructor(private userService: UserService) { }
 
   connect(path: string): Observable<any> {
-    const exponentialBackoff = (_: any, retryCount: number, base = 2) => timer(Math.pow(base, retryCount));
-
     return this.userService.currentToken$.pipe(
       map(token => `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`),
       switchMap(url => webSocket(url)),
-      retry({delay: exponentialBackoff}),
+      retry(),
       shareReplay(1),
     );
   }
