@@ -3,6 +3,7 @@ import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Databag, ModelmanagerService, Solution } from '../../../../build/openapi/modelmanager';
 import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
+import { SolutionStatus } from '../models/solution-status';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,7 @@ export class SolutionService {
   }
 
   createSolution(solution: Solution, databag: Databag): Observable<Solution> {
-    solution.status = 'Created';
+    solution.status = SolutionStatus.created;
     solution.metrics = [];
     solution.databagId = databag.databagId;
     solution.databagName = databag.databagName;
