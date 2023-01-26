@@ -2,7 +2,6 @@
   <ng-container *ngFor="let column of databag.columns">
     <mat-list-item
       class="bg-primary pointer"
-      *ngIf="column.type && allowedColumnTypes.includes(column.type)"
       [ngClass]="{'active': column?.name === lastSelectedColumn}"
       (click)="selectColumn(column.name)">
       <app-list-item>
