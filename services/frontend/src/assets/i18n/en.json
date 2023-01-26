@@ -91,7 +91,9 @@
         "connect_placeholder": "Url"
       },
       "problem": {
-        "description": "What do you want to predict?"
+        "description": "What do you want to predict?",
+        "documentation": "(documentation)",
+        "missing_category": "The databag contains no categorical or numerical columns. Please define one in the databag settings. For more information please read the"
       },
       "solver" : {
         "description": "Which solver do you want to use?"
