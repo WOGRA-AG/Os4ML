@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import { GettingStartedStepperComponent } from 'src/app/fast-lane/components/getting-started-stepper/getting-started-stepper.component';
 import { DialogDynamicComponent } from 'src/app/shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { GettingStartedStepperComponent } from '../getting-started-stepper/getting-started-stepper.component';
 
 @Component({
   selector: 'app-support',

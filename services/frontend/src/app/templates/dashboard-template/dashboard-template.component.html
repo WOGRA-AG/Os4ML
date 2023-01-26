@@ -2,9 +2,9 @@
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
       <div class="content-container">
-        <app-choose-databag [databags]="databags" (selectedDatabagChange)="selectedDatabagChanged($event)"></app-choose-databag>
-        <ng-container *ngIf="selectedDatabag$ | async as selectedDatabag">
-          <div *ngIf="selectedDatabag.databagName" class="solutions-template">
+        <app-choose-databag [databags]="databags" (selectedDatabagId)="selectedDatabagChanged($event)"></app-choose-databag>
+        <ng-container *ngIf="selectedDatabagId$ | async as selectedDatabagId">
+          <div class="solutions-template">
             <div class="solutions-taskbar">
               <div class="solutions-headline">
                 <h6>Solutions</h6>

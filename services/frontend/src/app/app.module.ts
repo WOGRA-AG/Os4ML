@@ -14,7 +14,7 @@ import { NotFoundTemplateComponent } from './templates/not-found-template/not-fo
 import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
 import {SolutionsModule} from './solutions/solutions.module';
 import {CoreModule} from './core/core.module';
-import { NavModule } from './nav/nav.module';
+import { FastLaneModule } from './fast-lane/fast-lane.module';
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { NavModule } from './nav/nav.module';
     SolutionsModule,
     SharedModule,
     CoreModule,
-    NavModule,
+    FastLaneModule,
   ],
   bootstrap: [AppComponent]
 })

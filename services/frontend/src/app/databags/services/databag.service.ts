@@ -70,6 +70,6 @@ export class DatabagService {
   }
 
   isSameDatabag(databag1: Databag, databag2: Databag): boolean {
-    return JSON.stringify(databag1) === JSON.stringify(databag2);
+    return databag1.databagId === databag2.databagId;
   }
 }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {BehaviorSubject, Observable, switchMap} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable, switchMap} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {Databag, Solution} from '../../../../build/openapi/modelmanager';
 import {DatabagService} from '../../databags/services/databag.service';
@@ -17,7 +17,7 @@ import { CreateSolutionStepperComponent } from 'src/app/solutions/components/cre
 })
 export class DashboardTemplateComponent {
   databags$: Observable<Databag[]>;
-  selectedDatabag$: BehaviorSubject<Databag> = new BehaviorSubject({});
+  selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
   solutionsInDatabag$: Observable<Solution[]>;
 
   constructor(
@@ -26,8 +26,8 @@ export class DashboardTemplateComponent {
     private dialog: MatDialog,
   ) {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
-    this.solutionsInDatabag$ = this.selectedDatabag$.pipe(
-      switchMap(databag => this.solutionService.getSolutionsByDatabagIdSortByCreationTime(databag.databagId))
+    this.solutionsInDatabag$ = this.selectedDatabagId$.pipe(
+      switchMap(databagId => this.solutionService.getSolutionsByDatabagIdSortByCreationTime(databagId))
     );
   }
 
@@ -37,13 +37,14 @@ export class DashboardTemplateComponent {
     });
   }
 
-  addSolution() {
+  async addSolution(): Promise<void> {
+    const databag = await firstValueFrom(this.databagService.getDatabagById(this.selectedDatabagId$.getValue()));
     this.dialog.open(DialogDynamicComponent, {
-      data: {component: CreateSolutionStepperComponent, databag: this.selectedDatabag$.getValue()}
+      data: {component: CreateSolutionStepperComponent, databag}
     });
   }
 
-  selectedDatabagChanged(databag: Databag): void {
-    this.selectedDatabag$.next(databag);
+  selectedDatabagChanged(databagId: string): void {
+    this.selectedDatabagId$.next(databagId);
   }
 }

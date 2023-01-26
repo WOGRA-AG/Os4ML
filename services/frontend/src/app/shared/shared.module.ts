@@ -70,36 +70,38 @@ export const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(h
     ReactiveFormsModule,
     RouterModule,
   ],
-    exports: [
-        // atoms
-        AddButtonComponent,
-        CloseButtonComponent,
-        ElementDividerComponent,
-        StarComponent,
-        ListItemComponent,
-        // molecules
-        DialogHeaderComponent,
-        DialogSectionComponent,
-        StarRatingComponent,
-        ToggleItemComponent,
-        UploadFieldComponent,
-        StatusSpinnerComponent,
-        // organisms
-        PopupDeleteComponent,
-        // directives
-        DragAndDropDirective,
-        // pipes
-        FormatNumberPipe,
-        LocalizedDatePipe,
-        ShortStatusPipe,
-        HasElementsPipe,
-        // modules
-        CommonModule,
-        MaterialModule,
-        TranslateModule,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
+  exports: [
+    // atoms
+    AddButtonComponent,
+    CloseButtonComponent,
+    ElementDividerComponent,
+    StarComponent,
+    ListItemComponent,
+    // molecules
+    DialogHeaderComponent,
+    DialogSectionComponent,
+    StarRatingComponent,
+    ToggleItemComponent,
+    UploadFieldComponent,
+    StatusSpinnerComponent,
+    // organisms
+    PopupDeleteComponent,
+    // directives
+    DragAndDropDirective,
+    // pipes
+    FormatNumberPipe,
+    LocalizedDatePipe,
+    ShortStatusPipe,
+    HasElementsPipe,
+    // modules
+    CommonModule,
+    MaterialModule,
+    TranslateModule,
+    MatTooltipModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   providers: [
     ShortStatusPipe
   ]
