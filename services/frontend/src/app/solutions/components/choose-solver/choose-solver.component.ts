@@ -15,12 +15,12 @@ export class ChooseSolverComponent {
 
   solvers$: Observable<Solver[]>;
 
-  constructor(private solverService: SolverService) {
+  constructor(public solverService: SolverService) {
     this.solvers$ = this.solverService.solvers$;
   }
 
   selectSolver(solver: Solver) {
     this.lastSelectedSolver = solver;
-    this.selectedSolver.next(solver);
+    this.selectedSolver.emit(solver);
   }
 }

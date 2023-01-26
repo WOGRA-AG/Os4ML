@@ -17,6 +17,6 @@ export class ChooseDatabagColumnComponent {
       return;
     }
     this.lastSelectedColumn = column;
-    this.selectedColumn.next(column);
+    this.selectedColumn.emit(column);
   }
 }
