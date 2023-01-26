@@ -1,0 +1,29 @@
+<mat-expansion-panel expanded disabled>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon class="databag-list-mat-panel-title-icon">folder_open</mat-icon>
+      <span>{{"databag.plural" | translate}}</span>
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-nav-list class="bag-list" id="bag-list">
+    <mat-list-item
+      [ngClass]="{'active': databagService.isSameDatabag(databag, selectedDatabag)}"
+      *ngFor="let databag of databags"
+      (click)="changeSelectedDatabag(databag)">
+      <div class="nav-item-extended">
+        <span class="mat-overline on-surface-disabled">{{databag?.creationTime | localizedDate: 'dd.MM.YYYY - HH:mm'}}</span>
+        <span class="mat-subheading-2">{{databag.databagName}}</span>
+      </div>
+    </mat-list-item>
+    <mat-list-item (click)="openAddDialog()">
+      <div class="nav-item-extended">
+        <button mat-button class="databag-list-mat-expansion-panel-add-button">
+          <mat-icon>add</mat-icon>
+          {{"databag.create" | translate}}
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-expansion-panel>

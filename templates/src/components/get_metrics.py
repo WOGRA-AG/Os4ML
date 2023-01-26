@@ -1,12 +1,13 @@
 import functools
+import logging
 from datetime import datetime
 
 from kfp.v2.dsl import Input, Metrics
 
-from build.model_manager_client.model.solution_metrics import SolutionMetrics
+from build.model_manager_client.model.metric import Metric
 from config import DATE_FORMAT_STR
 from model_manager.solutions import (
-    get_solution_by_name,
+    get_solution_by_id,
     update_solution,
     update_solution_error_status,
 )
@@ -16,20 +17,21 @@ from util.exception_handler import exception_handler
 
 def get_metrics(
     metrics: Input[Metrics],
-    solution_name: str,
+    solution_id: str,
 ) -> None:
     """Get the metrics from kubeflow and add them to the solution."""
     handler = functools.partial(
         update_solution_error_status,
-        solution_name,
+        solution_id,
     )
     with exception_handler(handler, StatusMessage.METRICS_NOT_RETRIEVABLE):
-        solution = get_solution_by_name(solution_name)
+        solution = get_solution_by_id(solution_id)
         solution.status = StatusMessage.SOLVER_DONE.value
         solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
-        if "accuracy" in metrics.metadata:
-            accuracy = metrics.metadata["accuracy"]
-            if solution.metrics is None:
-                solution.metrics = SolutionMetrics()
-            solution.metrics.accuracy = float(accuracy)
-        update_solution(solution, solution_name)
+        solution.metrics = [
+            Metric(name=name, value=float(value))
+            for name, value in metrics.metadata.items()
+            if name != "display_name"
+        ]
+        logging.info(f"Updating the solution: {solution}")
+        update_solution(solution)

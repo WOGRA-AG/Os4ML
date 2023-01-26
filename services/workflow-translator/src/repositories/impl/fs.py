@@ -3,7 +3,7 @@ from pathlib import Path
 from decorators.singleton_metaclass import Singleton
 from exceptions.file_not_readable import FileNotReadableException
 from exceptions.template_not_found import TemplateNotFoundException
-from src.services import PIPELINE_FILE_NAME, PIPELINE_TEMPLATES_DIR
+from services import PIPELINE_FILE_NAME, PIPELINE_TEMPLATES_DIR
 
 
 class FS(metaclass=Singleton):

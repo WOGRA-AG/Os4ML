@@ -2,7 +2,6 @@ import base64
 import json
 import logging
 import uuid
-from collections import defaultdict
 from datetime import datetime
 from io import BytesIO, StringIO
 from typing import AsyncIterable
@@ -16,37 +15,24 @@ from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
-from exceptions import DatabagNotFoundException
-from lib.subscriber_event import SubscriberEvent
+from exceptions import (
+    DatabagIdUpdateNotAllowedException,
+    DatabagNotFoundException,
+)
 from services import (
     DATABAG_CONFIG_FILE_NAME,
+    DATABAG_MESSAGE_CHANNEL,
     DATAFRAME_FILE_NAME,
     DATE_FORMAT_STR,
 )
 from services.auth_service import get_parsed_token
 from services.init_api_clients import init_jobmanager_api, init_objectstore_api
-
-databag_change_events_per_user: dict[
-    str, SubscriberEvent[uuid.UUID]
-] = defaultdict(SubscriberEvent)
-
-
-def _notify_databag_update(usertoken: str) -> None:
-    user = get_parsed_token(usertoken)
-    event = databag_change_events_per_user[user.id]
-    event.set()
-    event.clear()
-
-
-def terminate_databags_stream(usertoken: str, client_id: uuid.UUID) -> None:
-    user = get_parsed_token(usertoken)
-    event = databag_change_events_per_user[user.id]
-    event.unsubscribe(client_id)
-    if not event.has_subscribers():
-        del databag_change_events_per_user[user.id]
+from services.messaging_service import MessagingService
 
 
 class DatabagService:
+    messaging_service = MessagingService(DATABAG_MESSAGE_CHANNEL)
+
     def __init__(
         self,
         objectstore: ObjectstoreApi = Depends(init_objectstore_api),
@@ -76,9 +62,17 @@ class DatabagService:
         self, usertoken: str, client_id: uuid.UUID
     ) -> AsyncIterable[list[Databag]]:
         user = get_parsed_token(usertoken)
+        yield self.get_databags(usertoken)
         while True:
-            await databag_change_events_per_user[user.id].wait(client_id)
+            await self.messaging_service.wait(user.id, client_id)
             yield self.get_databags(usertoken)
+
+    def _notify_databag_update(self, usertoken: str) -> None:
+        user = get_parsed_token(usertoken)
+        self.messaging_service.publish(user.id)
+
+    def terminate_databags_stream(self, client_id: uuid.UUID) -> None:
+        self.messaging_service.unsubscribe(client_id)
 
     def _load_databag_from_object_name(
         self, object_name: str, usertoken: str
@@ -116,12 +110,16 @@ class DatabagService:
         )
         databag.run_id = run_id
         self._save_databag_file(databag, usertoken)
-        _notify_databag_update(usertoken)
+        self._notify_databag_update(usertoken)
         return databag
 
-    def update_databag(self, databag: Databag, usertoken: str) -> None:
+    def update_databag(
+        self, databag_id: str, databag: Databag, usertoken: str
+    ) -> None:
+        if databag_id != databag.databag_id:
+            raise DatabagIdUpdateNotAllowedException()
         self._save_databag_file(databag, usertoken)
-        _notify_databag_update(usertoken)
+        self._notify_databag_update(usertoken)
 
     def _save_databag_file(self, databag: Databag, usertoken: str) -> None:
         object_name = self._get_databag_object_name(databag.databag_id)
@@ -153,7 +151,7 @@ class DatabagService:
         self.objectstore.delete_objects_with_prefix(
             path_prefix=databag_id, usertoken=usertoken
         )
-        _notify_databag_update(usertoken)
+        self._notify_databag_update(usertoken)
 
     def download_dataset(self, databag_id: str, usertoken: str) -> str:
         databag = self.get_databag_by_id(databag_id, usertoken)

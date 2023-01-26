@@ -1,0 +1,21 @@
+<mat-list *ngIf="outputColumnAvailable; else helpMessage">
+  <ng-container *ngFor="let column of databag.columns">
+    <mat-list-item
+      class="bg-primary pointer"
+      *ngIf="column.type && allowedColumnTypes.includes(column.type)"
+      [ngClass]="{'active': column?.name === lastSelectedColumn}"
+      (click)="selectColumn(column.name)">
+      <app-list-item>
+        {{column.name}}
+        <ng-container description>{{column.type}}</ng-container>
+      </app-list-item>
+    </mat-list-item>
+  </ng-container>
+</mat-list>
+
+<ng-template #helpMessage>
+  <div>
+    {{"dialog.section.problem.missing_category" | translate}}
+    <a href="https://wogra-ag.github.io/os4ml-docs">{{"dialog.section.problem.documentation" | translate }}</a>
+  </div>
+</ng-template>

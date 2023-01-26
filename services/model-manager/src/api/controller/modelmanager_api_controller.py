@@ -45,9 +45,7 @@ class ModelmanagerApiController:
     def update_databag_by_id(
         self, databag_id: str, databag: Databag, usertoken: str = ""
     ) -> None:
-        if databag_id != databag.databag_id:
-            raise NotImplementedError()
-        return self.databag_service.update_databag(databag, usertoken)  # type: ignore
+        return self.databag_service.update_databag(databag_id, databag, usertoken)  # type: ignore
 
     def delete_databag_by_id(
         self, databag_id: str, usertoken: str = ""
@@ -81,33 +79,31 @@ class ModelmanagerApiController:
     ) -> Solution:
         return self.solution_service.create_solution(solution, usertoken)
 
-    def get_solution_by_name(
-        self, solution_name: str, usertoken: str = ""
+    def get_solution_by_id(
+        self, solution_id: str, usertoken: str = ""
     ) -> Solution:
-        return self.solution_service.get_solution_by_name(
-            solution_name, usertoken
-        )
+        return self.solution_service.get_solution_by_id(solution_id, usertoken)
 
-    def delete_solution_by_name(
-        self, solution_name: str, usertoken: str = ""
+    def delete_solution_by_id(
+        self, solution_id: str, usertoken: str = ""
     ) -> None:
-        return self.solution_service.delete_solution_by_name(  # type: ignore
-            solution_name, usertoken
+        return self.solution_service.delete_solution_by_id(  # type: ignore
+            solution_id, usertoken
         )
 
-    def update_solution_by_name(
-        self, solution_name: str, solution: Solution, usertoken: str = ""
+    def update_solution_by_id(
+        self, solution_id: str, solution: Solution, usertoken: str = ""
     ) -> Solution:
-        return self.solution_service.update_solution_by_name(
-            solution_name, solution, usertoken
+        return self.solution_service.update_solution_by_id(
+            solution_id, solution, usertoken
         )
 
-    def download_model(self, solution_name: str, usertoken: str = "") -> str:
-        return self.solution_service.download_model(solution_name, usertoken)  # type: ignore
+    def download_model(self, solution_id: str, usertoken: str = "") -> str:
+        return self.solution_service.download_model(solution_id, usertoken)  # type: ignore
 
     def upload_model(
-        self, solution_name: str, body: bytes, usertoken: str = ""
+        self, solution_id: str, body: bytes, usertoken: str = ""
     ) -> None:
         return self.solution_service.upload_model(  # type: ignore
-            solution_name, body, usertoken
+            solution_id, body, usertoken
         )

@@ -229,12 +229,12 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
 
-  "/apis/v1beta1/model-manager/solutions/{solutionName}":
+  "/apis/v1beta1/model-manager/solutions/{solutionId}":
     get:
-      summary: "Get a solution"
-      operationId: getSolutionByName
+      summary: "get a solution by id"
+      operationId: getSolutionById
       parameters:
-        - $ref: '#/components/parameters/SolutionName'
+        - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - modelmanager
@@ -248,10 +248,10 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
     put:
-      summary: "Update a Solution"
-      operationId: updateSolutionByName
+      summary: "update a solution by id"
+      operationId: updateSolutionById
       parameters:
-        - $ref: '#/components/parameters/SolutionName'
+        - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - modelmanager
@@ -268,10 +268,10 @@ paths:
               schema:
                 $ref: './shared-oas.yaml#/components/schemas/Solution'
     delete:
-      summary: "Delete a Solution"
-      operationId: deleteSolutionByName
+      summary: "delete a solution by id"
+      operationId: deleteSolutionById
       parameters:
-        - $ref: '#/components/parameters/SolutionName'
+        - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - modelmanager
@@ -279,14 +279,14 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/solutions/{solutionName}/files/model":
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/files/model":
     get:
       summary: "download model from solution"
       operationId: downloadModel
       tags:
         - modelmanager
       parameters:
-        - $ref: '#/components/parameters/SolutionName'
+        - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
@@ -299,7 +299,7 @@ paths:
       tags:
         - modelmanager
       parameters:
-        - $ref: '#/components/parameters/SolutionName'
+        - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
         content:
@@ -332,17 +332,17 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/DatabagId'
+    SolutionId:
+      name: solutionId
+      in: path
+      description: Id of the Solution
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/SolutionId'
     SolverName:
       name: solverName
       in: path
       description: name of the solver
-      required: true
-      schema:
-        type: string
-    SolutionName:
-      name: solutionName
-      in: path
-      description: Name of the Solution
       required: true
       schema:
         type: string

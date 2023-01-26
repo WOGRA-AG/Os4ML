@@ -4,7 +4,7 @@ WORKFLOW_ENGINE: str = os.getenv("ENGINE", default="kubeflow")
 
 PIPELINE_TEMPLATES_DIR = "/pipelines"
 # PIPELINE_TEMPLATES_DIR = (
-#     "../../../templates/pipelines"  # for local development
+#     "../../templates/pipelines"  # for local development
 # )
 PIPELINE_FILE_NAME = "pipeline.yaml"
 USER_TOKEN_ANNOTATION = "os4ml.com/access_token"

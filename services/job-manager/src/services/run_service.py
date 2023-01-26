@@ -11,7 +11,6 @@ from build.translator_client.api.workflowtranslator_api import (
     WorkflowtranslatorApi,
 )
 from executor.kfp_executor import KfpExecutor
-from services import OS4ML_NAMESPACE
 
 
 class RunService:

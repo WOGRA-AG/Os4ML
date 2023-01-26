@@ -1,0 +1,35 @@
+<div class="page-wrapper">
+  <ng-container *ngIf="databags$ | async as databags">
+    <ng-container *ngIf="databags | hasElements; else placeholder">
+      <div class="content-container">
+        <app-choose-databag [databags]="databags" (selectedDatabagId)="selectedDatabagChanged($event)"></app-choose-databag>
+        <ng-container *ngIf="selectedDatabagId$ | async as selectedDatabagId">
+          <div class="solutions-template">
+            <div class="solutions-taskbar">
+              <div class="solutions-headline">
+                <h6>Solutions</h6>
+              </div>
+            </div>
+
+            <ng-container *ngIf="solutionsInDatabag$ | async as solutionsInDatabag">
+              <div class="list-container" *ngIf="solutionsInDatabag | hasElements; else solutionsPlaceholder">
+                <app-solution-list [solutions]="solutionsInDatabag" class="solution-list"></app-solution-list>
+                <app-add-button (click)="addSolution()" class="add-solution-button" color="primary" type="submit">{{"solution.create" | translate}}</app-add-button>
+              </div>
+            </ng-container>
+
+            <ng-template #solutionsPlaceholder>
+              <app-no-solutions-placeholder (addSolutionButton)="addSolution()"></app-no-solutions-placeholder>
+            </ng-template>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-no-databags-placeholder (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
+  </div>
+</ng-template>

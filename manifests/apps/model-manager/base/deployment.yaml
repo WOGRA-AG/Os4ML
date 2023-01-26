@@ -36,6 +36,31 @@ spec:
                 configMapKeyRef:
                   name: model-manager-config
                   key: os4mlNS
+            - name: MESSAGE_BROKER_PUBLISH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: messageBrokerPublishUrl
+            - name: MESSAGE_BROKER_SUBSCRIBE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: messageBrokerSubscribeUrl
+            - name: MESSAGE_BROKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: messageBrokerPort
+            - name: DATABAG_MESSAGE_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: databagMessageChannel
+            - name: SOLUTION_MESSAGE_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: solutionMessageChannel
           resources:
             limits:
               cpu: 500m

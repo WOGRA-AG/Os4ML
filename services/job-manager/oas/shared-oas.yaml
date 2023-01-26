@@ -40,8 +40,13 @@ components:
           type: string
         fileUrl:
           type: string
+    SolutionId:
+      type: string
     Solution:
       properties:
+        id:
+          $ref: '#/components/schemas/SolutionId'
+          nullable: true
         name:
           type: string
         status:
@@ -61,19 +66,23 @@ components:
           type: array
           items:
             type: string
-        runId:
-          $ref: '#/components/schemas/RunId'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
         creationTime:
           type: string
         completionTime:
           type: string
           nullable: true
-        metrics:
-          type: object
-          nullable: true
-          properties:
-            accuracy:
-              type: number
+        runId:
+          $ref: '#/components/schemas/RunId'
+    Metric:
+      properties:
+        name:
+          type: string
+        value:
+          type: number
     Column:
       properties:
         name:
@@ -84,16 +93,19 @@ components:
           type: integer
     Databag:
       properties:
+        databagId:
+          $ref: "#/components/schemas/DatabagId"
+          nullable: true
+        databagName:
+          type: string
+        status:
+          type: string
+          nullable: true
         datasetType:
           type: string
           nullable: true
         fileName:
           type: string
-          nullable: true
-        databagName:
-          type: string
-        databagId:
-          $ref: "#/components/schemas/DatabagId"
           nullable: true
         numberRows:
           type: integer
@@ -107,9 +119,6 @@ components:
           items:
             $ref: "#/components/schemas/Column"
         creationTime:
-          type: string
-          nullable: true
-        status:
           type: string
           nullable: true
         runId:

@@ -3,11 +3,9 @@ import uuid
 
 from fastapi import Depends, WebSocket, WebSocketDisconnect
 
-from services.databag_service import DatabagService, terminate_databags_stream
-from services.solution_service import (
-    SolutionService,
-    terminate_solutions_stream,
-)
+from lib.camel_case import convert_to_camel_case
+from services.databag_service import DatabagService
+from services.solution_service import SolutionService
 
 
 class WebsocketController:
@@ -32,7 +30,7 @@ class WebsocketController:
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
-            terminate_databags_stream(usertoken, client_id)
+            self.databag_service.terminate_databags_stream(client_id)
 
     async def _stream_databags(
         self, websocket: WebSocket, usertoken: str, client_id: uuid.UUID
@@ -41,7 +39,8 @@ class WebsocketController:
             usertoken, client_id
         ):
             databag_dicts = [databag.dict() for databag in databags]
-            await websocket.send_json(databag_dicts)
+            camel_case_databag_dicts = convert_to_camel_case(databag_dicts)
+            await websocket.send_json(camel_case_databag_dicts)
 
     async def stream_solutions(
         self, websocket: WebSocket, usertoken: str
@@ -56,7 +55,7 @@ class WebsocketController:
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
-            terminate_solutions_stream(usertoken, client_id)
+            self.solution_service.terminate_solutions_stream(client_id)
 
     async def _stream_solutions(
         self, websocket: WebSocket, usertoken: str, client_id: uuid.UUID
@@ -65,4 +64,5 @@ class WebsocketController:
             usertoken, client_id
         ):
             solution_dicts = [solution.dict() for solution in solutions]
-            await websocket.send_json(solution_dicts)
+            camel_case_solution_dicts = convert_to_camel_case(solution_dicts)
+            await websocket.send_json(camel_case_solution_dicts)

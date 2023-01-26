@@ -1,0 +1,3 @@
+<div matTooltip="{{ratingName || 'Rating'}}: {{rating | formatNumber}}" matTooltipPosition="after">
+  <app-star *ngFor="let percentage of percentages" [percentage]="percentage"></app-star>
+</div>

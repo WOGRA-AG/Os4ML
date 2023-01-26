@@ -4,12 +4,12 @@ from components.build import build_component
 from components.images import python_image
 
 
-def get_metrics(metrics: Input[Metrics], solution_name: str):
+def get_metrics(metrics: Input[Metrics], solution_id: str):
     from components.get_metrics import get_metrics
 
     return get_metrics(
         metrics=metrics,
-        solution_name=solution_name,
+        solution_id=solution_id,
     )
 
 

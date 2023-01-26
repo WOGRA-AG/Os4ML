@@ -1,31 +1,14 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DatabagsPageComponent} from './pages/databags-page/databags-page.component';
-import {DashboardPageComponent} from './pages/dashboard-page/dashboard-page.component';
-import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
-import {UserPageComponent} from './pages/user-page/user-page.component';
-import {PageNotFoundPageComponent} from './pages/page-not-found-page/page-not-found-page.component';
+import {DatabagTemplateComponent} from './templates/databag-template/databag-template.component';
+import {NotFoundTemplateComponent} from './templates/not-found-template/not-found-template.component';
+import {DashboardTemplateComponent} from './templates/dashboard-template/dashboard-template.component';
 
 const routes: Routes = [
   {
     path: 'dashboard',
-    component: DashboardPageComponent,
+    component: DashboardTemplateComponent,
     runGuardsAndResolvers: 'always',
-  },
-  {
-    path: 'databag',
-    component: DatabagsPageComponent,
-    runGuardsAndResolvers: 'always',
-  },
-  {
-    path: 'settings',
-    component: SettingsPageComponent,
-    runGuardsAndResolvers: 'always'
-  },
-  {
-    path: 'user',
-    component: UserPageComponent,
-    runGuardsAndResolvers: 'always'
   },
   {
     path: '',
@@ -33,8 +16,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'databag',
+    component: DatabagTemplateComponent,
+    runGuardsAndResolvers: 'always',
+  },
+  {
     path: '**',
-    component: PageNotFoundPageComponent
+    component: NotFoundTemplateComponent
   }
 ];
 
