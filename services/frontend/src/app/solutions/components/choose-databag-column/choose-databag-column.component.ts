@@ -11,6 +11,7 @@ export class ChooseDatabagColumnComponent {
   @Output() selectedColumn = new EventEmitter<string>();
   lastSelectedColumn = '';
   allowedColumnTypes = ['category', 'numerical'];
+  outputColumnAvailable = !!this.databag.columns?.find(column => column.type && this.allowedColumnTypes.includes(column.type));
 
   selectColumn(column: string | undefined): void {
     if (!column) {
