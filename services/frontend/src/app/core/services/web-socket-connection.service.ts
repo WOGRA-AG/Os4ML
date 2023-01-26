@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, timer, map, switchMap, retry, shareReplay } from 'rxjs';
+import { Observable, map, switchMap, retry, shareReplay, debounceTime } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 import { UserService } from './user.service';
 
@@ -13,6 +13,7 @@ export class WebSocketConnectionService {
 
   connect(path: string): Observable<any> {
     return this.userService.currentToken$.pipe(
+      debounceTime(100),
       map(token => `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`),
       switchMap(url => webSocket(url)),
       retry(),
