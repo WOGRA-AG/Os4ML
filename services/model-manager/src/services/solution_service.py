@@ -70,6 +70,7 @@ class SolutionService:
         self, usertoken: str, client_id: uuid.UUID
     ) -> AsyncIterator[list[Solution]]:
         user = get_parsed_token(usertoken)
+        yield self.get_solutions(usertoken)
         while True:
             await self.messaging_service.wait(user.id, client_id)
             yield self.get_solutions(usertoken)

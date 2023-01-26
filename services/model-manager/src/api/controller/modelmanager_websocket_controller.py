@@ -3,6 +3,7 @@ import uuid
 
 from fastapi import Depends, WebSocket, WebSocketDisconnect
 
+from lib.camel_case import convert_to_camel_case
 from services.databag_service import DatabagService
 from services.solution_service import SolutionService
 
@@ -38,7 +39,8 @@ class WebsocketController:
             usertoken, client_id
         ):
             databag_dicts = [databag.dict() for databag in databags]
-            await websocket.send_json(databag_dicts)
+            camel_case_databag_dicts = convert_to_camel_case(databag_dicts)
+            await websocket.send_json(camel_case_databag_dicts)
 
     async def stream_solutions(
         self, websocket: WebSocket, usertoken: str
@@ -62,4 +64,5 @@ class WebsocketController:
             usertoken, client_id
         ):
             solution_dicts = [solution.dict() for solution in solutions]
-            await websocket.send_json(solution_dicts)
+            camel_case_solution_dicts = convert_to_camel_case(solution_dicts)
+            await websocket.send_json(camel_case_solution_dicts)
