@@ -2,13 +2,9 @@ from typing import Any
 
 import yaml
 
-from src.repositories import FS
-from src.repositories.interfaces.template_repository import TemplateRepository
-from src.services import (
-    OS4ML_NAMESPACE_ENV,
-    USER_TOKEN_ANNOTATION,
-    USER_TOKEN_ENV,
-)
+from repositories import FS
+from repositories.interfaces.template_repository import TemplateRepository
+from services import OS4ML_NAMESPACE_ENV, USER_TOKEN_ANNOTATION, USER_TOKEN_ENV
 
 
 class KubeflowParser:

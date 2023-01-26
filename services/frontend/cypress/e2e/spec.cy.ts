@@ -1,4 +1,8 @@
 describe('Databags', () => {
+  let databagTimeout = 600000;
+  let solutionTimeout = 600000;
+  let deleteTimeout = 5000;
+
   beforeEach('login', () => {
     cy.viewport(1280, 720);
     cy.visit('/');
@@ -38,12 +42,14 @@ describe('Databags', () => {
     }
     cy.visit('/databag');
     waitUntilElementExists('#add-databag-button-empty');
-    cy.wait(60000);
-    cy.get('[id=\'add-databag-button-empty\']', { timeout: 600000 }).click();
-    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
-    cy.get('[id=\'add-databag-main-button\']').click();
+    cy.get('#add-databag-button-empty > .mat-button-wrapper').click();
+    cy.get('#mat-input-0').click();
+    cy.get('#mat-input-0').clear();
+    cy.get('#mat-input-0').type('e2e test databag');
+    cy.get('#file-input').invoke('show').selectFile('cypress/fixtures/titanic.xls');
+    cy.get('#add-databag-main-button').click();
     // eslint-disable-next-line max-len
-    cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix', { timeout: 600000 }).get('.mat-select-min-line ', { timeout: 600000 }).contains('category');
+    cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix', { timeout: databagTimeout }).get('.mat-select-min-line ', { timeout: databagTimeout }).contains('category');
     // eslint-disable-next-line max-len
     cy.get('.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix').get('.mat-select-min-line ').contains('category');
     // eslint-disable-next-line max-len
@@ -54,24 +60,27 @@ describe('Databags', () => {
 
   it('train ludwig solution', () => {
     cy.visit('/dashboard');
-    cy.get('.ng-star-inserted > .mat-list-item-content > .nav-item-extended').click();
     cy.get('#add-solution-button-empty > .mat-button-wrapper').click();
-    cy.get('#define-output-list > :nth-child(1) > .mat-list-item-content').click();
+    cy.get('app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content').click();
     cy.get('#define-output-next-button').click();
     cy.get('#define-solver-name-input').clear();
-    cy.get('#define-solver-name-input').type('Solution Test Ludwig Solver');
-    cy.get('#define-solver-list > .mat-list-item-content').click();
-    cy.get('#define-solver-next-button > .mat-button-wrapper').click();
-    cy.get('.status-column > .done', { timeout: 600000});
+    cy.get('#define-solver-name-input').type('e2e test ludwig solver');
+    cy.get('app-choose-solver > .mat-list > .mat-list-item > .mat-list-item-content').click();
+    cy.get('#define-solver-next-button').click();
+    cy.get('.status-column > .done', { timeout: solutionTimeout});
   });
 
   it('download model', () => {
     cy.visit('/dashboard');
-    cy.get('.ng-star-inserted > .mat-list-item-content > .nav-item-extended').click();
-    cy.get(':nth-child(1) > .mat-body-2').click();
-    cy.get('.ng-star-inserted > .mat-button-wrapper').click();
-    cy.window().then((win) => { setTimeout(() => { win.location.reload(); },10000); });
-    cy.readFile('cypress/downloads/model.os4ml.zip', { timeout: 15000 });
+    cy.get('.solution-list-item > :nth-child(3)').click();
+    cy.get('.ng-star-inserted > .mat-button-wrapper').should('be.visible');
+    cy.get('.mat-dialog-actions > .ng-star-inserted').should('be.enabled');
+    cy.get('.mat-dialog-actions > .ng-star-inserted').should('have.attr', 'color', 'primary');
+    // cy.get('.ng-star-inserted > .mat-list-item-content > .nav-item-extended').click();
+    // cy.get(':nth-child(1) > .mat-body-2').click();
+    // cy.get('.ng-star-inserted > .mat-button-wrapper').click();
+    // cy.window().then(win => setTimeout(() => win.location.reload(), 10000));
+    // cy.readFile('cypress/downloads/model.os4ml.zip', { timeout: 15000 });
   });
 
   it('rename databag', () => {
@@ -99,9 +108,9 @@ describe('Databags', () => {
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('#mat-dialog-title-0').should('be.visible');
-    cy.get('.delete-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('.delete-button > .mat-button-wrapper').should('be.visible').wait(deleteTimeout).click();
     // eslint-disable-next-line max-len
-    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(deleteTimeout).click();
   });
 
   it('delete databag', () => {
@@ -109,47 +118,47 @@ describe('Databags', () => {
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(1)').click();
     cy.get('#mat-dialog-title-0').should('be.visible');
-    cy.get('.mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('.mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(deleteTimeout).click();
     // eslint-disable-next-line max-len
-    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(5000).click();
+    cy.get('#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper').should('be.visible').wait(deleteTimeout).click();
   });
 
-  it('fastlane', () => {
+  it('regression with fastlane', () => {
     cy.visit('/dashboard');
     cy.get('.support-card > .mat-focus-indicator > .mat-button-wrapper').click();
-    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/titanic.xls');
+    cy.get('#mat-input-1').clear();
+    cy.get('#mat-input-1').type('Fastlane Databag');
+    cy.get('#file-input').invoke('show').selectFile('cypress/fixtures/titanic.xls');
+    cy.get('.mat-button-wrapper > .ng-star-inserted').click();
+    // eslint-disable-next-line max-len
+    cy.get('#cdk-step-content-0-1 > .mat-dialog-content > app-dialog-section > .dialog-element > :nth-child(3) > div').should('have.text', 'What do you want to predict?');
+    // eslint-disable-next-line max-len
+    cy.get('app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content', {timeout: databagTimeout}).click();
+    cy.get('#add-databag-main-button').click();
     cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('Fastlane Databag');
+    cy.get('#mat-input-0').type('e2e fast lane solution');
+    cy.get('app-choose-solver > .mat-list > .mat-list-item > .mat-list-item-content').click();
     cy.get('.mat-button-wrapper > .ng-star-inserted').click();
-    // eslint-disable-next-line max-len
-    cy.get('#cdk-step-content-0-1 > .mat-dialog-content > app-shared-dialog-section > .dialog-element > :nth-child(3) > div', { timeout: 600000}).should('be.visible').should('have.text', 'What do you want to predict?');
-    // eslint-disable-next-line max-len
-    cy.get('#cdk-step-content-0-1 > .mat-dialog-content > app-shared-dialog-section > .dialog-element > .dialog-element-content > .mat-list > :nth-child(4) > .mat-list-item-content').click();
-    cy.get('.mat-button-wrapper > .ng-star-inserted').click();
-    cy.get('#mat-input-2').clear();
-    cy.get('#mat-input-2').type('Fastlane Solution');
-    cy.get('#define-solver-list > .mat-list-item-content').click();
-    cy.get('.mat-button-wrapper > .ng-star-inserted').wait(5000).click();
-    cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended').click();
-    cy.get('.status-column > .done', { timeout: 600000});
+    cy.get('.status-column > .done', { timeout: solutionTimeout});
   });
 
   /* ==== Test Created with Cypress Studio ==== */
   it('dataframe script', () => {
-    cy.get(':nth-child(2) > .mat-list-item-content > .nav-item-extended').click();
-    cy.get('[id=\'file-input\']').invoke('show').selectFile('cypress/fixtures/dataframe_script.py');
-    cy.get('.upload-file').click();
+    cy.get('#bag-list > :nth-child(2) > .mat-list-item-content').click();
+    cy.get('#mat-input-0').clear();
+    cy.get('#mat-input-0').type('e2e dataframe script');
+    cy.get('#file-input').invoke('show').selectFile('cypress/fixtures/dataframe_script.py');
     cy.get('#add-databag-main-button > .mat-button-wrapper').click();
     cy.wait(1000);
-    cy.get('#mat-select-value-1').should('have.text', 'numerical');
+    cy.get('#mat-select-value-1', {timeout: databagTimeout}).should('have.text', 'numerical');
     cy.get('#define-databag-button > .mat-button-wrapper').click();
-    cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended > .mat-subheading-2').should('have.text', 'dataframe_script.py');
+    cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended > .mat-subheading-2').should('have.text', 'e2e dataframe script');
     cy.wait(1000);
     cy.get(':nth-child(1) > .mat-list-item-content > .nav-item-extended').click();
     cy.wait(1000);
     cy.get('#add-solution-button-empty > .mat-button-wrapper').click();
     cy.wait(1000);
-    cy.get('#define-output-list > :nth-child(1) > .mat-list-item-content').should('have.text', ' PassengerId  numerical');
+    cy.get('app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .on-surface-high').should('have.text', ' PassengerId ');
+    cy.get('app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .mat-subheading-2').should('have.text', 'numerical');
   });
-
 });

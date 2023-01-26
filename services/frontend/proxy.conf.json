@@ -3,6 +3,7 @@
     "target": "http://model-manager.os4ml.svc.cluster.local:8000",
     "secure": false,
     "logLevel": "debug",
-    "changeOrigin": true
+    "changeOrigin": true,
+    "ws": true
   }
 }

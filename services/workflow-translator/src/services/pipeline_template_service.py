@@ -1,9 +1,9 @@
 from parser.init_parser import init_parser
+from parser.interfaces.parser import Parser
 
 from yaml.parser import ParserError
 
 from exceptions import MalformedTemplateException
-from src.parser.interfaces.parser import Parser
 
 
 class PipelineTemplateService:

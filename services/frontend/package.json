@@ -7,7 +7,7 @@
     "generate:modelmanager": "npm run generate:base -- -i ../oas/model-manager-oas.yaml -o build/openapi/modelmanager",
     "prestart": "npm run generate:modelmanager",
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --disable-host-check true",
+    "start": "ng serve --host 0.0.0.0 --disable-host-check true --proxy-config proxy.conf.json",
     "prebuild": "npm run generate:modelmanager",
     "build": "ng build --output-hashing=all --base-href .",
     "watch": "ng build --base-href . --watch --configuration development",
