@@ -14,3 +14,6 @@ e2e:
       - services/frontend/cypress/screenshots/**/*.png
     expire_in: 1 day
   resource_group: testing
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
