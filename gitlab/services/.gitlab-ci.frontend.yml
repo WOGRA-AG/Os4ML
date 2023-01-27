@@ -10,6 +10,9 @@ include:
     - npm ci --cache .npm_cache
     - npm run lint
     - npm run build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
 
 build-frontend:
   extends:
