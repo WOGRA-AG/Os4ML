@@ -7,6 +7,7 @@ distribute-oas:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
+    - if: $CI_PIPELINE_SOURCE
 
 .validate-oas:
   stage: prepare
@@ -18,3 +19,4 @@ distribute-oas:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
+    - if: $CI_PIPELINE_SOURCE
