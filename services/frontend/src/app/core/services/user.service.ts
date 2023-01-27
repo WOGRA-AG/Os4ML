@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, filter, map, Observable, startWith} from 'rxjs';
+import {concatWith, distinctUntilChanged, filter, map, Observable, of, shareReplay, startWith, Subject, switchMap, takeUntil, timer} from 'rxjs';
 import {User} from '../../../../build/openapi/modelmanager';
 import {Router} from '@angular/router';
 
@@ -7,14 +7,33 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
-
-  private readonly currentTokenSubject$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private readonly jwtTokenStorage = 'JWT_TOKEN';
 
-  constructor(private router: Router) {}
+  private readonly rawJwtToken$: Subject<string> = new Subject<string>();
+  private readonly currentTokenPrivate$: Observable<string>;
+
+  constructor(private router: Router) {
+    const jwtToken = this.rawJwtToken$.pipe(
+      shareReplay(1)
+    );
+    const defaultToken$ = timer(500).pipe(
+      switchMap(() => of('')),
+      takeUntil(jwtToken),
+    );
+    this.currentTokenPrivate$ = defaultToken$.pipe(
+      concatWith(jwtToken),
+      distinctUntilChanged(),
+      shareReplay(1),
+    );
+    this.currentToken$.subscribe(token => localStorage.setItem(this.jwtTokenStorage, token));
+  }
+
+  get currentToken$(): Observable<string> {
+    return this.currentTokenPrivate$;
+  }
 
   get currentUser$(): Observable<User> {
-    return this.currentTokenSubject$.pipe(
+    return this.currentToken$.pipe(
       filter(token => !!token),
       map(token => {
         const encodedPayload = token.split('.')[1];
@@ -32,18 +51,13 @@ export class UserService {
     );
   }
 
-  get currentToken$(): Observable<string> {
-    return this.currentTokenSubject$.asObservable();
-  }
-
-  updateUser(jwtTokenString: string): void {
-    localStorage.setItem(this.jwtTokenStorage, jwtTokenString);
-    this.currentTokenSubject$.next(jwtTokenString);
+  addToken(jwtToken: string): void {
+    this.rawJwtToken$.next(jwtToken);
   }
 
   logout(): void {
     localStorage.removeItem(this.jwtTokenStorage);
-    this.currentTokenSubject$.next('');
+    this.rawJwtToken$.next('');
     this.router.navigateByUrl('/logout');
   }
 }
