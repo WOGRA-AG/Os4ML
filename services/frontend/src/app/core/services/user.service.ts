@@ -1,5 +1,18 @@
 import { Injectable } from '@angular/core';
-import {concatWith, distinctUntilChanged, filter, map, Observable, of, shareReplay, startWith, Subject, switchMap, takeUntil, timer} from 'rxjs';
+import {
+  concatWith,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+  timer
+} from 'rxjs';
 import {User} from '../../../../build/openapi/modelmanager';
 import {Router} from '@angular/router';
 
