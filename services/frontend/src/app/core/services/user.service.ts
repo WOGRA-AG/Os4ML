@@ -9,9 +9,7 @@ import {
   shareReplay,
   startWith,
   Subject,
-  switchMap,
-  takeUntil,
-  timer
+  timeout,
 } from 'rxjs';
 import {User} from '../../../../build/openapi/modelmanager';
 import {Router} from '@angular/router';
@@ -26,15 +24,9 @@ export class UserService {
   private readonly currentTokenPrivate$: Observable<string>;
 
   constructor(private router: Router) {
-    const jwtToken = this.rawJwtToken$.pipe(
-      shareReplay(1)
-    );
-    const defaultToken$ = timer(500).pipe(
-      switchMap(() => of('')),
-      takeUntil(jwtToken),
-    );
-    this.currentTokenPrivate$ = defaultToken$.pipe(
-      concatWith(jwtToken),
+    const defaultToken$ = of('').pipe(concatWith(this.rawJwtToken$));
+    this.currentTokenPrivate$ = this.rawJwtToken$.pipe(
+      timeout({first: 500, with: () => defaultToken$}),
       distinctUntilChanged(),
       shareReplay(1),
     );
