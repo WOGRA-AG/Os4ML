@@ -1,7 +1,8 @@
 describe('Databags', () => {
-  let databagTimeout = 600000;
-  let solutionTimeout = 600000;
-  let deleteTimeout = 5000;
+  const databagTimeout = 600000;
+  const solutionTimeout = 600000;
+  const deleteTimeout = 5000;
+  const downloadTimeout = 15000;
 
   beforeEach('login', () => {
     cy.viewport(1280, 720);
@@ -76,11 +77,10 @@ describe('Databags', () => {
     cy.get('.ng-star-inserted > .mat-button-wrapper').should('be.visible');
     cy.get('.mat-dialog-actions > .ng-star-inserted').should('be.enabled');
     cy.get('.mat-dialog-actions > .ng-star-inserted').should('have.attr', 'color', 'primary');
-    // cy.get('.ng-star-inserted > .mat-list-item-content > .nav-item-extended').click();
-    // cy.get(':nth-child(1) > .mat-body-2').click();
-    // cy.get('.ng-star-inserted > .mat-button-wrapper').click();
-    // cy.window().then(win => setTimeout(() => win.location.reload(), 10000));
-    // cy.readFile('cypress/downloads/model.os4ml.zip', { timeout: 15000 });
+    // do not use electron for local testing, as it can't open a new tab for download
+    cy.get('.ng-star-inserted > .mat-button-wrapper').click();
+    const downloadedFile = `${Cypress.config('downloadsFolder')}/model.os4ml.zip`;
+    cy.readFile(downloadedFile, 'binary', { timeout: downloadTimeout }).should(buffer => expect(buffer.length).to.be.gt(1000));
   });
 
   it('rename databag', () => {
