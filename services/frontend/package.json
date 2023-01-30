@@ -9,12 +9,15 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check true --proxy-config proxy.conf.json",
     "prebuild": "npm run generate:modelmanager",
+    "prepare": "cd ../.. && husky install ./services/frontend/.husky",
     "build": "ng build --output-hashing=all --base-href .",
     "watch": "ng build --base-href . --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
-    "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open"
+    "lint-staged": "prettier --write .",
+    "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open",
+    "config-prettier": "eslint-config-prettier src/main.ts"
   },
   "private": true,
   "dependencies": {
@@ -50,16 +53,19 @@
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
     "cypress": "^10.10.0",
-    "eslint": "^8.2.0",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsdoc": "^37.9.7",
     "eslint-plugin-prefer-arrow": "^1.2.3",
+    "husky": "^8.0.2",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "prettier": "^2.8.0",
     "typescript": "~4.4.3"
   }
 }
