@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Solver } from 'build/openapi/modelmanager';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { SolverService } from '../../services/solver.service';
+import { ListItem } from '../../../shared/models/list-item';
 
 @Component({
   selector: 'app-choose-solver',
@@ -10,16 +11,24 @@ import { SolverService } from '../../services/solver.service';
 })
 export class ChooseSolverComponent {
   @Output() selectedSolver = new EventEmitter<Solver>();
-  lastSelectedSolver: Solver | null = null;
 
-  solvers$: Observable<Solver[]>;
+  listItems$: Observable<ListItem[]>;
 
   constructor(public solverService: SolverService) {
-    this.solvers$ = this.solverService.solvers$;
+    this.listItems$ = this.solverService.solvers$.pipe(
+      map(solvers =>
+        solvers.map(solver => ({
+          key: solver.name || '',
+          label: solver.name || '',
+          description: solver.description || '',
+        }))
+      )
+    );
   }
 
-  selectSolver(solver: Solver) {
-    this.lastSelectedSolver = solver;
-    this.selectedSolver.emit(solver);
+  selectSolver(key: string) {
+    this.solverService
+      .getSolverByName(key)
+      .subscribe(solver => this.selectedSolver.emit(solver));
   }
 }

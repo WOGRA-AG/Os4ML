@@ -4,7 +4,7 @@ import {
   ModelmanagerService,
   Solver,
 } from '../../../../build/openapi/modelmanager';
-import { map, Observable, switchMap } from 'rxjs';
+import { filter, map, Observable, switchMap, take } from 'rxjs';
 import { PipelineStep } from '../../core/models/pipeline-step';
 
 @Injectable({
@@ -22,6 +22,15 @@ export class SolverService {
       map(solvers =>
         solvers.filter(solver => solver.pipelineStep === PipelineStep.solver)
       )
+    );
+  }
+
+  getSolverByName(name: string): Observable<Solver> {
+    return this.solvers$.pipe(
+      map(solvers => solvers.filter(solver => solver?.name === name)),
+      filter(solvers => solvers.length > 0),
+      map(solvers => solvers[0]),
+      take(1)
     );
   }
 
