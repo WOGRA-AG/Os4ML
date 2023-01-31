@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {Column} from '../../../../../../build/openapi/modelmanager';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { Column } from '../../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-toggle-item',
   templateUrl: './toggle-item.component.html',
-  styleUrls: ['./toggle-item.component.scss']
+  styleUrls: ['./toggle-item.component.scss'],
 })
 export class ToggleItemComponent {
   @Input() column: Column = {};

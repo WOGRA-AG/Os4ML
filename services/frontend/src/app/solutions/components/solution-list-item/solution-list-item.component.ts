@@ -1,16 +1,15 @@
-import {Component, Input} from '@angular/core';
-import {map, Observable, startWith, takeWhile, timer} from 'rxjs';
-import {Metric, Solution} from '../../../../../build/openapi/modelmanager';
-import {ShortStatusPipe} from '../../../shared/pipes/short-status.pipe';
-import {PipelineStatus} from '../../../core/models/pipeline-status';
+import { Component, Input } from '@angular/core';
+import { map, Observable, startWith, takeWhile, timer } from 'rxjs';
+import { Metric, Solution } from '../../../../../build/openapi/modelmanager';
+import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
+import { PipelineStatus } from '../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-solution-list-item',
   templateUrl: './solution-list-item.component.html',
-  styleUrls: ['./solution-list-item.component.scss']
+  styleUrls: ['./solution-list-item.component.scss'],
 })
 export class SolutionListItemComponent {
-
   @Input() solution: Solution = {};
   runtime$: Observable<number>;
 
@@ -19,18 +18,24 @@ export class SolutionListItemComponent {
       takeWhile(() => !this.solution.completionTime),
       startWith(null),
       map(() => {
-        const completionTime = this.solution.completionTime || new Date().toISOString();
+        const completionTime =
+          this.solution.completionTime || new Date().toISOString();
         return this.getRuntime(this.solution.creationTime, completionTime);
-      }),
+      })
     );
   }
 
-  getRuntime(creationTime: string | undefined, completionTime: string | undefined): number {
+  getRuntime(
+    creationTime: string | undefined,
+    completionTime: string | undefined
+  ): number {
     if (!creationTime) {
       return 0;
     }
     const creationDate = new Date(creationTime);
-    const completionDate = completionTime ? new Date(completionTime) : new Date();
+    const completionDate = completionTime
+      ? new Date(completionTime)
+      : new Date();
     return completionDate.getTime() - creationDate.getTime();
   }
 
@@ -38,7 +43,7 @@ export class SolutionListItemComponent {
     if (!status) {
       return 'running';
     }
-    switch(this.shortStatus.transform(status)) {
+    switch (this.shortStatus.transform(status)) {
       case PipelineStatus.running:
         return 'running';
       case PipelineStatus.done:

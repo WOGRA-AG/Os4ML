@@ -1,15 +1,15 @@
-import {Component, Renderer2} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Solution} from '../../../../../build/openapi/modelmanager';
-import {PopupDeleteComponent} from '../../../shared/components/organisms/popup-delete/popup-delete.component';
-import {SolutionService} from '../../services/solution.service';
-import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import {PipelineStatus} from '../../../core/models/pipeline-status';
+import { Component, Renderer2 } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Solution } from '../../../../../build/openapi/modelmanager';
+import { PopupDeleteComponent } from '../../../shared/components/organisms/popup-delete/popup-delete.component';
+import { SolutionService } from '../../services/solution.service';
+import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import { PipelineStatus } from '../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-solution-setting',
   templateUrl: './solution-setting.component.html',
-  styleUrls: ['./solution-setting.component.scss']
+  styleUrls: ['./solution-setting.component.scss'],
 })
 export class SolutionSettingComponent {
   solution: Solution;
@@ -34,16 +34,18 @@ export class SolutionSettingComponent {
       this.dialogRef.close('aborted');
       return;
     }
-    this.solutionService.updateSolutionById(this.solution.id, this.solution).subscribe(() => {
-      this.dialogRef.close('updated');
-    });
+    this.solutionService
+      .updateSolutionById(this.solution.id, this.solution)
+      .subscribe(() => {
+        this.dialogRef.close('updated');
+      });
   }
 
   delete() {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: PopupDeleteComponent, solution: this.solution}
+      data: { component: PopupDeleteComponent, solution: this.solution },
     });
-    deleteDialogRef.afterClosed().subscribe((msg) => {
+    deleteDialogRef.afterClosed().subscribe(msg => {
       if (msg === 'deleted') {
         this.dialogRef.close();
       }

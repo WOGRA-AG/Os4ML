@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { filter, map, Observable, switchMap } from 'rxjs';
-import { Databag, ModelmanagerService } from '../../../../build/openapi/modelmanager';
+import {
+  Databag,
+  ModelmanagerService,
+} from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DatabagService {
-
   private readonly databags: Observable<Databag[]>;
 
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
-    private webSocketConnectionService: WebSocketConnectionService) {
+    private webSocketConnectionService: WebSocketConnectionService
+  ) {
     const path = '/apis/v1beta1/model-manager/databags';
     this.databags = this.webSocketConnectionService.connect(path);
   }
@@ -41,7 +44,7 @@ export class DatabagService {
     return this.databags$.pipe(
       map(databags => databags.filter(databag => databag.databagId === id)),
       filter(databags => databags.length > 0),
-      map(databags => databags[0]),
+      map(databags => databags[0])
     );
   }
 
@@ -59,7 +62,9 @@ export class DatabagService {
 
   updateDatabagById(id: string, databag: Databag): Observable<Databag> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.updateDatabagById(id, token, databag))
+      switchMap(token =>
+        this.modelManager.updateDatabagById(id, token, databag)
+      )
     );
   }
 

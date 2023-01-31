@@ -8,13 +8,13 @@
   $on-surface: mat.get-color-from-palette($primary-palette, '50-contrast');
 
   .mat-list-item {
-    color: rgba($on-surface, .60);
+    color: rgba($on-surface, 0.6);
     &:hover {
       span {
         color: $primary-color;
       }
 
-      background: rgba($primary-color, .1);
+      background: rgba($primary-color, 0.1);
     }
   }
 
@@ -51,7 +51,8 @@
       }
     }
 
-    .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
+    .mat-list-base .mat-list-item.mat-list-item-with-avatar,
+    .mat-list-base .mat-list-option.mat-list-item-with-avatar {
       height: 44px;
     }
   }

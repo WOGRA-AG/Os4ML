@@ -1,18 +1,18 @@
-import {Component} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Databag} from '../../../../../build/openapi/modelmanager';
-import {PopupDeleteComponent} from '../../../shared/components/organisms/popup-delete/popup-delete.component';
-import {DatabagService} from '../../services/databag.service';
-import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import { Component } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Databag } from '../../../../../build/openapi/modelmanager';
+import { PopupDeleteComponent } from '../../../shared/components/organisms/popup-delete/popup-delete.component';
+import { DatabagService } from '../../services/databag.service';
+import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databag-setting',
   templateUrl: './databag-setting.component.html',
-  styleUrls: ['./databag-setting.component.scss']
+  styleUrls: ['./databag-setting.component.scss'],
 })
 export class DatabagSettingComponent {
   databag: Databag = {};
-  obj: any = {databagId: 123};
+  obj: any = { databagId: 123 };
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
@@ -23,7 +23,9 @@ export class DatabagSettingComponent {
   }
 
   onSubmit(): void {
-    this.databagService.updateDatabagById(String(this.databag.databagId), this.databag).subscribe(() => this.close());
+    this.databagService
+      .updateDatabagById(String(this.databag.databagId), this.databag)
+      .subscribe(() => this.close());
   }
 
   close(): void {
@@ -32,9 +34,9 @@ export class DatabagSettingComponent {
 
   delete(): void {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: PopupDeleteComponent, databag: this.databag}
+      data: { component: PopupDeleteComponent, databag: this.databag },
     });
-    deleteDialogRef.afterClosed().subscribe((msg) => {
+    deleteDialogRef.afterClosed().subscribe(msg => {
       if (msg === 'deleted') {
         this.dialogRef.close();
       }

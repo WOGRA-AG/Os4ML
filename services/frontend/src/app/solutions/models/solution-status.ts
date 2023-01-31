@@ -1,3 +1,3 @@
 export enum SolutionStatus {
-  created = 'Created'
+  created = 'Created',
 }

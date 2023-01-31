@@ -4,19 +4,9 @@ import { SharedModule } from '../shared/shared.module';
 import { DatabagsModule } from '../databags/databags.module';
 import { SolutionsModule } from '../solutions/solutions.module';
 
-
-
 @NgModule({
-  declarations: [
-    GettingStartedStepperComponent,
-  ],
-  exports: [
-    GettingStartedStepperComponent,
-  ],
-  imports: [
-    SharedModule,
-    DatabagsModule,
-    SolutionsModule,
-  ]
+  declarations: [GettingStartedStepperComponent],
+  exports: [GettingStartedStepperComponent],
+  imports: [SharedModule, DatabagsModule, SolutionsModule],
 })
-export class FastLaneModule { }
+export class FastLaneModule {}

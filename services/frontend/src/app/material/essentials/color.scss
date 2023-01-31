@@ -1,102 +1,102 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
 $md-os4ml-colors-primary: (
-  50 : #e6f5fb,
-  100 : #c0e6f5,
-  200 : #97d5ee,
-  300 : #6dc4e7,
-  400 : #4db7e1,
-  500 : #2eaadc,
-  600 : #29a3d8,
-  700 : #2399d3,
-  800 : #1d90ce,
-  900 : #127fc5,
-  A100 : #f4f9fd,
-  A200 : #c1e5ff,
-  A400 : #8ed0ff,
-  A700 : #74c5ff,
+  50: #e6f5fb,
+  100: #c0e6f5,
+  200: #97d5ee,
+  300: #6dc4e7,
+  400: #4db7e1,
+  500: #2eaadc,
+  600: #29a3d8,
+  700: #2399d3,
+  800: #1d90ce,
+  900: #127fc5,
+  A100: #f4f9fd,
+  A200: #c1e5ff,
+  A400: #8ed0ff,
+  A700: #74c5ff,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
 );
 
 $md-os4ml-colors-accent: (
-  50 : #c8fff4,
-  100 : #70efde,
-  200 : #03dac5,
-  300 : #00c4b4,
-  400 : #00b3a6,
-  500 : #01a299,
-  600 : #019592,
-  700 : #018786,
-  800 : #017374,
-  900 : #005457,
-  A100 : #ebfffb,
-  A200 : #b8fff2,
-  A400 : #85ffe9,
-  A700 : #6bffe4,
+  50: #c8fff4,
+  100: #70efde,
+  200: #03dac5,
+  300: #00c4b4,
+  400: #00b3a6,
+  500: #01a299,
+  600: #019592,
+  700: #018786,
+  800: #017374,
+  900: #005457,
+  A100: #ebfffb,
+  A200: #b8fff2,
+  A400: #85ffe9,
+  A700: #6bffe4,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
 );
 
 $md-os4ml-colors-warn: (
-  50 : #fce9e3,
-  100 : #f8c9ba,
-  200 : #f3a58c,
-  300 : #ee805e,
-  400 : #ea653c,
-  500 : #e64a19,
-  600 : #e34316,
-  700 : #df3a12,
-  800 : #db320e,
-  900 : #d52208,
-  A100 : #fffefe,
-  A200 : #ffd0cb,
-  A400 : #ffa298,
-  A700 : #ff8b7f,
+  50: #fce9e3,
+  100: #f8c9ba,
+  200: #f3a58c,
+  300: #ee805e,
+  400: #ea653c,
+  500: #e64a19,
+  600: #e34316,
+  700: #df3a12,
+  800: #db320e,
+  900: #d52208,
+  A100: #fffefe,
+  A200: #ffd0cb,
+  A400: #ffa298,
+  A700: #ff8b7f,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
 );
 
 $os4ml-primary: mat.define-palette($md-os4ml-colors-primary);
@@ -112,21 +112,21 @@ $accent-color-100: mat.get-color-from-palette($os4ml-accent, 100);
 $warn-color: mat.get-color-from-palette($os4ml-warn, default);
 $warn-color-100: mat.get-color-from-palette($os4ml-warn, 100);
 $background: #f4f9fd;
-$surface: #FFFFFF;
-$error: #B00020;
-$on-primary: #FFFFFF;
+$surface: #ffffff;
+$error: #b00020;
+$on-primary: #ffffff;
 $on-secondary: #000000;
 $on-background: #000000;
 $on-surface: #000000;
-$on-error: #FFFFFF;
+$on-error: #ffffff;
 $on-primary-high: rgba($on-primary, 1);
-$on-primary-medium: rgba($on-primary, .74);
-$on-primary-disabled: rgba($on-primary, .38);
-$on-surface-high: rgba($on-surface, .87);
-$on-surface-medium: rgba($on-surface, .60);
-$on-surface-disabled: rgba($on-surface, .38);
-$border-color: rgba($on-surface, .12);
-$overlay: rgba($primary-color-900, .16);
+$on-primary-medium: rgba($on-primary, 0.74);
+$on-primary-disabled: rgba($on-primary, 0.38);
+$on-surface-high: rgba($on-surface, 0.87);
+$on-surface-medium: rgba($on-surface, 0.6);
+$on-surface-disabled: rgba($on-surface, 0.38);
+$border-color: rgba($on-surface, 0.12);
+$overlay: rgba($primary-color-900, 0.16);
 
 .primary {
   color: $primary-color;
@@ -157,7 +157,7 @@ $overlay: rgba($primary-color-900, .16);
 }
 
 .border-color {
-  border-color: rgb(0, 0, 0, .12);
+  border-color: rgb(0, 0, 0, 0.12);
 }
 
 .on-surface-disabled {

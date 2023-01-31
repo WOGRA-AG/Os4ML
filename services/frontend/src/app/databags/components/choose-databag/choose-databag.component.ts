@@ -8,16 +8,18 @@ import { CreateDatabagStepperComponent } from '../create-databag-stepper/create-
 @Component({
   selector: 'app-choose-databag',
   templateUrl: './choose-databag.component.html',
-  styleUrls: ['./choose-databag.component.scss']
+  styleUrls: ['./choose-databag.component.scss'],
 })
 export class ChooseDatabagComponent implements OnInit {
-
   @Input() databags: Databag[] = [];
-  @Output() selectedDatabagId: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedDatabagId: EventEmitter<string> =
+    new EventEmitter<string>();
   selectedDatabag: Databag = {};
 
-  constructor(private dialog: MatDialog, public databagService: DatabagService) {
-  }
+  constructor(
+    private dialog: MatDialog,
+    public databagService: DatabagService
+  ) {}
 
   ngOnInit() {
     if (this.databags.length > 0) {
@@ -36,7 +38,7 @@ export class ChooseDatabagComponent implements OnInit {
 
   openAddDialog() {
     this.dialog.open(DialogDynamicComponent, {
-      data: { component: CreateDatabagStepperComponent }
+      data: { component: CreateDatabagStepperComponent },
     });
   }
 }

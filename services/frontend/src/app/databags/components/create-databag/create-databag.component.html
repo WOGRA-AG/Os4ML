@@ -1,20 +1,28 @@
 <app-dialog-section>
   <mat-form-field appearance="outline">
-    <mat-label>{{"databag.placeholder" | translate}}</mat-label>
-    <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
-           name="databag_name" [(ngModel)]="databag.databagName">
+    <mat-label>{{ 'databag.placeholder' | translate }}</mat-label>
+    <input
+      matInput
+      type="string"
+      placeholder="{{ 'databag.placeholder' | translate }}"
+      required
+      name="databag_name"
+      [(ngModel)]="databag.databagName" />
   </mat-form-field>
 </app-dialog-section>
 <app-dialog-section>
   <mat-form-field appearance="outline">
-    <mat-label>{{"dialog.section.upload.connect_placeholder" | translate}}</mat-label>
+    <mat-label>{{
+      'dialog.section.upload.connect_placeholder' | translate
+    }}</mat-label>
     <input
       matInput
       type="url"
-      placeholder="{{'dialog.section.upload.connect_placeholder' | translate}}"
+      placeholder="{{
+        'dialog.section.upload.connect_placeholder' | translate
+      }}"
       [(ngModel)]="fileUrl"
-      [pattern]="urlRegex"
-    >
+      [pattern]="urlRegex" />
     <mat-icon matSuffix>link</mat-icon>
   </mat-form-field>
 
@@ -30,4 +38,3 @@
     </div>
   </div>
 </app-dialog-section>
-
