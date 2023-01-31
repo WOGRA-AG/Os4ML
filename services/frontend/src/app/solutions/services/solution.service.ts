@@ -13,7 +13,7 @@ import { SolutionStatus } from '../models/solution-status';
   providedIn: 'root',
 })
 export class SolutionService {
-  private readonly solutions: Observable<Solution[]>;
+  private readonly _solutions$: Observable<Solution[]>;
 
   constructor(
     private userService: UserService,
@@ -21,11 +21,11 @@ export class SolutionService {
     private webSocketConnectionService: WebSocketConnectionService
   ) {
     const path = '/apis/v1beta1/model-manager/solutions';
-    this.solutions = this.webSocketConnectionService.connect(path);
+    this._solutions$ = this.webSocketConnectionService.connect(path);
   }
 
   get solutions$(): Observable<Solution[]> {
-    return this.solutions;
+    return this._solutions$;
   }
 
   getSolutionsByDatabagIdSortByCreationTime(

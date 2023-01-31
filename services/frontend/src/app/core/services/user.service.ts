@@ -21,11 +21,11 @@ export class UserService {
   private readonly jwtTokenStorage = 'JWT_TOKEN';
 
   private readonly rawJwtToken$: Subject<string> = new Subject<string>();
-  private readonly currentTokenPrivate$: Observable<string>;
+  private readonly _currentToken$: Observable<string>;
 
   constructor(private router: Router) {
     const defaultToken$ = of('').pipe(concatWith(this.rawJwtToken$));
-    this.currentTokenPrivate$ = this.rawJwtToken$.pipe(
+    this._currentToken$ = this.rawJwtToken$.pipe(
       timeout({ first: 500, with: () => defaultToken$ }),
       distinctUntilChanged(),
       shareReplay(1)
@@ -36,7 +36,7 @@ export class UserService {
   }
 
   get currentToken$(): Observable<string> {
-    return this.currentTokenPrivate$;
+    return this._currentToken$;
   }
 
   get currentUser$(): Observable<User> {
