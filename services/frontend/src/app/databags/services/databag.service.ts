@@ -31,10 +31,8 @@ export class DatabagService {
       databag1: Databag,
       databag2: Databag
     ): number => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date1 = new Date(databag1.creationTime!);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date2 = new Date(databag2.creationTime!);
+      const date1 = new Date(databag1.creationTime || 0);
+      const date2 = new Date(databag2.creationTime || 0);
       return date2.getTime() - date1.getTime();
     };
 

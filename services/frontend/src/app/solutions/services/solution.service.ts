@@ -35,10 +35,8 @@ export class SolutionService {
       solution1: Solution,
       solution2: Solution
     ): number => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date1 = new Date(solution1.creationTime!);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date2 = new Date(solution2.creationTime!);
+      const date1 = new Date(solution1.creationTime || 0);
+      const date2 = new Date(solution2.creationTime || 0);
       return date2.getTime() - date1.getTime();
     };
 
