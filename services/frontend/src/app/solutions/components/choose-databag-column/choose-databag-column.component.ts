@@ -26,11 +26,15 @@ export class ChooseDatabagColumnComponent implements OnInit {
       return;
     }
     this.listItems$ = of(
-      this.databag.columns.map(column => ({
-        key: column.name || '',
-        label: column.name || '',
-        description: column.type || '',
-      }))
+      this.databag.columns
+        .filter(
+          column => column.type && this.allowedColumnTypes.includes(column.type)
+        )
+        .map(column => ({
+          key: column.name || '',
+          label: column.name || '',
+          description: column.type || '',
+        }))
     );
   }
 }
