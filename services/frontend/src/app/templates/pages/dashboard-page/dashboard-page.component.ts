@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { Databag, Solution } from '../../../../build/openapi/modelmanager';
-import { DatabagService } from '../../databags/services/databag.service';
-import { SolutionService } from '../../solutions/services/solution.service';
-import { DialogDynamicComponent } from '../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { CreateDatabagStepperComponent } from '../../databags/components/create-databag-stepper/create-databag-stepper.component';
+import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
+import { DatabagService } from '../../../databags/services/databag.service';
+import { SolutionService } from '../../../solutions/services/solution.service';
+import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import { CreateDatabagStepperComponent } from '../../../databags/components/create-databag-stepper/create-databag-stepper.component';
 import { CreateSolutionStepperComponent } from 'src/app/solutions/components/create-solution-stepper/create-solution-stepper.component';
 
 @Component({
-  selector: 'app-dashboard-template',
-  templateUrl: './dashboard-template.component.html',
-  styleUrls: ['./dashboard-template.component.scss'],
+  selector: 'app-dashboard-page',
+  templateUrl: './dashboard-page.component.html',
+  styleUrls: ['./dashboard-page.component.scss'],
 })
-export class DashboardTemplateComponent {
+export class DashboardPageComponent {
   databags$: Observable<Databag[]>;
   selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
   solutionsInDatabag$: Observable<Solution[]>;

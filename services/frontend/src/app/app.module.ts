@@ -10,21 +10,21 @@ import {
   ApiModule as ModelmanagerApi,
   Configuration as ModelmanagerApiConfig,
 } from '../../build/openapi/modelmanager';
-import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
 import { DatabagsModule } from './databags/databags.module';
 import { SharedModule } from './shared/shared.module';
-import { NotFoundTemplateComponent } from './templates/not-found-template/not-found-template.component';
-import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
 import { SolutionsModule } from './solutions/solutions.module';
 import { CoreModule } from './core/core.module';
 import { FastLaneModule } from './fast-lane/fast-lane.module';
+import { DatabagPageComponent } from './templates/pages/databag-page/databag-page.component';
+import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
+import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboard-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DatabagTemplateComponent,
-    NotFoundTemplateComponent,
-    DashboardTemplateComponent,
+    DatabagPageComponent,
+    NotFoundPageComponent,
+    DashboardPageComponent,
   ],
   imports: [
     BrowserModule,
