@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { CreateDatabagStepperComponent } from '../../../databags/components/create-databag-stepper/create-databag-stepper.component';
+import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-stepper/create-databag-stepper.component';
 
 @Component({
   selector: 'app-databag-page',
@@ -21,10 +21,9 @@ export class DatabagPageComponent {
     this.databags$ = this.databagService.databags$;
   }
 
-  addDatabag() {
-    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+  addDatabag(): void {
+    this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });
-    dialogRef.afterClosed().subscribe(() => {});
   }
 }

@@ -6,7 +6,6 @@ import { NoDatabagsPlaceholderComponent } from './components/no-databags-placeho
 import { DatabagSettingComponent } from './components/databag-setting/databag-setting.component';
 import { DatabagFieldsComponent } from './components/databag-fields/databag-fields.component';
 import { ChooseDatabagComponent } from './components/choose-databag/choose-databag.component';
-import { CreateDatabagStepperComponent } from './components/create-databag-stepper/create-databag-stepper.component';
 import { CreateDatabagComponent } from './components/create-databag/create-databag.component';
 
 @NgModule({
@@ -25,7 +24,6 @@ import { CreateDatabagComponent } from './components/create-databag/create-datab
     DatabagSettingComponent,
     DatabagFieldsComponent,
     ChooseDatabagComponent,
-    CreateDatabagStepperComponent,
     CreateDatabagComponent,
   ],
 })

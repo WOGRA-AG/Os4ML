@@ -5,8 +5,8 @@ import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../databags/services/databag.service';
 import { SolutionService } from '../../../solutions/services/solution.service';
 import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { CreateDatabagStepperComponent } from '../../../databags/components/create-databag-stepper/create-databag-stepper.component';
-import { CreateSolutionStepperComponent } from 'src/app/solutions/components/create-solution-stepper/create-solution-stepper.component';
+import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-stepper/create-databag-stepper.component';
+import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
 
 @Component({
   selector: 'app-dashboard-page',

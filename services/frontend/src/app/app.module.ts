@@ -14,17 +14,24 @@ import { DatabagsModule } from './databags/databags.module';
 import { SharedModule } from './shared/shared.module';
 import { SolutionsModule } from './solutions/solutions.module';
 import { CoreModule } from './core/core.module';
-import { FastLaneModule } from './fast-lane/fast-lane.module';
 import { DatabagPageComponent } from './templates/pages/databag-page/databag-page.component';
 import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
 import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboard-page.component';
+import { CreateDatabagStepperComponent } from './templates/dialogs/create-databag-stepper/create-databag-stepper.component';
+import { CreateSolutionStepperComponent } from './templates/dialogs/create-solution-stepper/create-solution-stepper.component';
+import { GettingStartedStepperComponent } from './templates/dialogs/getting-started-stepper/getting-started-stepper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    // pages
     DatabagPageComponent,
     NotFoundPageComponent,
     DashboardPageComponent,
+    // dialogs
+    CreateDatabagStepperComponent,
+    CreateSolutionStepperComponent,
+    GettingStartedStepperComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +49,6 @@ import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboa
     SolutionsModule,
     SharedModule,
     CoreModule,
-    FastLaneModule,
   ],
   bootstrap: [AppComponent],
 })

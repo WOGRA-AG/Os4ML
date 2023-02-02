@@ -3,9 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { DatabagService } from '../../services/databag.service';
-import { CreateDatabagComponent } from '../create-databag/create-databag.component';
 import { firstValueFrom } from 'rxjs';
+import { DatabagService } from 'src/app/databags/services/databag.service';
+import { CreateDatabagComponent } from 'src/app/databags/components/create-databag/create-databag.component';
 
 @Component({
   selector: 'app-create-databag-stepper',
