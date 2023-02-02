@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Databag } from '../../../../../build/openapi/modelmanager';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { firstValueFrom } from 'rxjs';
 import { DatabagService } from 'src/app/databags/services/databag.service';
 import { CreateDatabagComponent } from 'src/app/databags/components/create-databag/create-databag.component';
@@ -18,9 +17,11 @@ export class CreateDatabagStepperComponent {
   databag: Databag = {};
 
   constructor(
-    public dialogRef: MatDialogRef<DialogDynamicComponent>,
+    public dialogRef: MatDialogRef<CreateDatabagStepperComponent>,
     private databagService: DatabagService
-  ) {}
+  ) {
+    this.dialogRef.disableClose = true;
+  }
 
   async nextClick(
     stepper: MatStepper,

@@ -15,17 +15,16 @@ import { DialogSectionComponent } from './components/molecules/dialog-section/di
 import { StarRatingComponent } from './components/molecules/star-rating/star-rating.component';
 import { ToggleItemComponent } from './components/molecules/toggle-item/toggle-item.component';
 import { UploadFieldComponent } from './components/molecules/upload-field/upload-field.component';
-import { PopupDeleteComponent } from './components/organisms/popup-delete/popup-delete.component';
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
 import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
 import { ListItemComponent } from './components/molecules/list-item/list-item.component';
+import { PopupConfirmComponent } from './components/organisms/popup-confirm/popup-confirm.component';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -46,10 +45,8 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     StatusSpinnerComponent,
     ListItemComponent,
     // organisms
-    PopupDeleteComponent,
+    PopupConfirmComponent,
     SelectableListComponent,
-    //dialogs
-    DialogDynamicComponent,
     // directives
     DragAndDropDirective,
     // pipes
@@ -88,7 +85,6 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     UploadFieldComponent,
     StatusSpinnerComponent,
     // organisms
-    PopupDeleteComponent,
     SelectableListComponent,
     // directives
     DragAndDropDirective,

@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnDestroy, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Subject, takeUntil } from 'rxjs';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
@@ -8,7 +8,6 @@ import {
   Solution,
   Solver,
 } from '../../../../../build/openapi/modelmanager';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-create-solution-stepper',
@@ -24,13 +23,15 @@ export class CreateSolutionStepperComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private dialogRef: MatDialogRef<DialogDynamicComponent>,
-    private solutionService: SolutionService
+    private dialogRef: MatDialogRef<CreateSolutionStepperComponent>,
+    private solutionService: SolutionService,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      databag: Databag;
+    }
   ) {
-    this.databag = dialogRef.componentInstance.data.databag;
-    this.solution = dialogRef.componentInstance.data.solution
-      ? dialogRef.componentInstance.data.solution
-      : {};
+    this.dialogRef.disableClose = true;
+    this.databag = data.databag;
   }
 
   onSubmit(): void {
@@ -49,7 +50,6 @@ export class CreateSolutionStepperComponent implements OnDestroy {
   }
 
   nextPageClick(stepper: MatStepper): void {
-    this.dialogRef.componentInstance.data.solution = this.solution;
     this.stepperStep = 1;
     stepper.next();
   }

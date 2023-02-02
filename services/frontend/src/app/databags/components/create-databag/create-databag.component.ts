@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { firstValueFrom, last, Observable, takeWhile, tap } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { ErrorService } from '../../../core/services/error.service';
 import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,7 +21,6 @@ export class CreateDatabagComponent {
   databag: Databag = {};
 
   constructor(
-    public dialogRef: MatDialogRef<DialogDynamicComponent>,
     private errorService: ErrorService,
     private shortStatus: ShortStatusPipe,
     private translate: TranslateService,
@@ -60,7 +57,8 @@ export class CreateDatabagComponent {
       tap(databag => this.databagChange.next(databag)),
       takeWhile(
         databag =>
-          this.shortStatus.transform(databag.status) === PipelineStatus.running
+          this.shortStatus.transform(databag.status) === PipelineStatus.running,
+        true
       ),
       last()
     );

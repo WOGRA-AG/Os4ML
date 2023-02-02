@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
 import { SolutionSettingComponent } from '../solution-setting/solution-setting.component';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-solution-list',
@@ -11,11 +10,11 @@ import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog
 })
 export class SolutionListComponent {
   @Input() solutions: Solution[] = [];
-  constructor(public dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {}
 
   openSolutionSettingDialog(solution: Solution): void {
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: SolutionSettingComponent, solution },
+    this.dialog.open(SolutionSettingComponent, {
+      data: { solution },
       panelClass: 'setting-dialog',
       height: '100%',
       position: {

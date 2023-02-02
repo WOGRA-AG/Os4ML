@@ -4,7 +4,6 @@ import { firstValueFrom, Observable, of, Subject, takeUntil } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
 import { CreateDatabagComponent } from 'src/app/databags/components/create-databag/create-databag.component';
 import { Databag, Solution, Solver } from 'build/openapi/modelmanager';
-import { DialogDynamicComponent } from 'src/app/shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { DatabagService } from 'src/app/databags/services/databag.service';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 
@@ -24,10 +23,12 @@ export class GettingStartedStepperComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    public dialogRef: MatDialogRef<DialogDynamicComponent>,
+    public dialogRef: MatDialogRef<GettingStartedStepperComponent, void>,
     private databagService: DatabagService,
     private solutionService: SolutionService
-  ) {}
+  ) {
+    this.dialogRef.disableClose = true;
+  }
 
   async next(
     stepper: MatStepper,

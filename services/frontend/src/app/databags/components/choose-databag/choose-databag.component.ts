@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateDatabagStepperComponent } from 'src/app/templates/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { Databag } from '../../../../../build/openapi/modelmanager';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { DatabagService } from '../../services/databag.service';
 
 @Component({
@@ -37,8 +36,6 @@ export class ChooseDatabagComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: CreateDatabagStepperComponent },
-    });
+    this.dialog.open(CreateDatabagStepperComponent);
   }
 }

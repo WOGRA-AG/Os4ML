@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
 import { DatabagSettingComponent } from '../databag-setting/databag-setting.component';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 
 @Component({
   selector: 'app-databag-list',
@@ -15,8 +14,8 @@ export class DatabagListComponent {
   constructor(private dialog: MatDialog) {}
 
   openDatabagSettingDialog(databag: Databag): void {
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: DatabagSettingComponent, databag },
+    this.dialog.open(DatabagSettingComponent, {
+      data: { databag },
       panelClass: 'setting-dialog',
       height: '100%',
       position: {
