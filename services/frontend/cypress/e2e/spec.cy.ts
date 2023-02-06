@@ -26,9 +26,7 @@ describe('Databags', () => {
 
   it('add initial databag', () => {
     let remainingAttempts = 1000;
-    // @ts-ignore
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    function waitUntilElementExists(el: string) {
+    function waitUntilElementExists(el: string): any {
       const $element = Cypress.$(el);
       if ($element.length) {
         return $element;
@@ -53,20 +51,17 @@ describe('Databags', () => {
       .invoke('show')
       .selectFile('cypress/fixtures/titanic.xls');
     cy.get('#add-databag-main-button').click();
-    // eslint-disable-next-line max-len
     cy.get(
       '.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix',
       { timeout: databagTimeout }
     )
       .get('.mat-select-min-line ', { timeout: databagTimeout })
       .contains('category');
-    // eslint-disable-next-line max-len
     cy.get(
       '.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix'
     )
       .get('.mat-select-min-line ')
       .contains('category');
-    // eslint-disable-next-line max-len
     cy.get(
       '.mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix'
     )
@@ -155,7 +150,6 @@ describe('Databags', () => {
       .should('be.visible')
       .wait(deleteTimeout)
       .click();
-    // eslint-disable-next-line max-len
     cy.get(
       '#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
     )
@@ -173,7 +167,6 @@ describe('Databags', () => {
       .should('be.visible')
       .wait(deleteTimeout)
       .click();
-    // eslint-disable-next-line max-len
     cy.get(
       '#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
     )
@@ -193,11 +186,9 @@ describe('Databags', () => {
       .invoke('show')
       .selectFile('cypress/fixtures/titanic.xls');
     cy.get('.mat-button-wrapper > .ng-star-inserted').click();
-    // eslint-disable-next-line max-len
     cy.get(
       '#cdk-step-content-0-1 > .mat-dialog-content > app-dialog-section > .dialog-element > :nth-child(3) > div'
     ).should('have.text', 'What do you want to predict?');
-    // eslint-disable-next-line max-len
     cy.get(
       'app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content',
       { timeout: databagTimeout }
