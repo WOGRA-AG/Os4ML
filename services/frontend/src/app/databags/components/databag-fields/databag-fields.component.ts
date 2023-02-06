@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {Databag} from '../../../../../build/openapi/modelmanager';
-import {MlTypes} from '../../../core/models/ml-types';
+import { Component, Input } from '@angular/core';
+import { Databag } from '../../../../../build/openapi/modelmanager';
+import { MlTypes } from '../../../core/models/ml-types';
 
 @Component({
   selector: 'app-databag-fields',

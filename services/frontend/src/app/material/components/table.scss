@@ -3,13 +3,13 @@
 
 @mixin layout() {
   .mat-table {
-      border-radius: 14px;
-      overflow:hidden !important;
+    border-radius: 14px;
+    overflow: hidden !important;
   }
 
   .mat-paginator {
-      border-radius: 14px;
-      overflow:hidden !important;
+    border-radius: 14px;
+    overflow: hidden !important;
   }
 }
 

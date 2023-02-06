@@ -1,25 +1,30 @@
-import {Component} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import { catchError, of } from 'rxjs';
-import {Databag, Solution} from '../../../../../../build/openapi/modelmanager';
-import {DialogDynamicComponent} from '../../dialog/dialog-dynamic/dialog-dynamic.component';
-import {DatabagService} from '../../../../databags/services/databag.service';
-import {SolutionService} from '../../../../solutions/services/solution.service';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { catchError, of, Subject, takeUntil } from 'rxjs';
+import {
+  Databag,
+  Solution,
+} from '../../../../../../build/openapi/modelmanager';
+import { DialogDynamicComponent } from '../../dialog/dialog-dynamic/dialog-dynamic.component';
+import { DatabagService } from '../../../../databags/services/databag.service';
+import { SolutionService } from '../../../../solutions/services/solution.service';
 
 @Component({
   selector: 'app-popup-delete',
   templateUrl: './popup-delete.component.html',
-  styleUrls: ['./popup-delete.component.scss']
+  styleUrls: ['./popup-delete.component.scss'],
 })
-export class PopupDeleteComponent {
+export class PopupDeleteComponent implements OnDestroy {
   solution: Solution;
   databag: Databag;
   deleting = false;
 
+  destroy$ = new Subject<void>();
+
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
     private databagService: DatabagService,
-    private solutionService: SolutionService,
+    private solutionService: SolutionService
   ) {
     this.solution = dialogRef.componentInstance.data.solution;
     this.databag = dialogRef.componentInstance.data.databag;
@@ -48,20 +53,29 @@ export class PopupDeleteComponent {
     return !(isNotSolution || isNotDatabag);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
+  }
+
   private deleteSolution(solutionId: string | undefined) {
     if (!solutionId) {
       this.deleting = false;
       return;
     }
-    this.solutionService.deleteSolutionById(solutionId).pipe(
-      catchError(() => {
+    this.solutionService
+      .deleteSolutionById(solutionId)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(() => {
+          this.deleting = false;
+          return of({});
+        })
+      )
+      .subscribe(() => {
         this.deleting = false;
-        return of({});
-      })
-    ).subscribe(() => {
-      this.deleting = false;
-      this.dialogRef.close('deleted');
-    });
+        this.dialogRef.close('deleted');
+      });
   }
 
   private deleteDatabag(databagId: string | undefined) {
@@ -69,14 +83,18 @@ export class PopupDeleteComponent {
       this.deleting = false;
       return;
     }
-    this.databagService.deleteDatabagById(databagId).pipe(
-      catchError(() => {
+    this.databagService
+      .deleteDatabagById(databagId)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(() => {
+          this.deleting = false;
+          return of({});
+        })
+      )
+      .subscribe(() => {
         this.deleting = false;
-        return of({});
-      })
-    ).subscribe(() => {
-      this.deleting = false;
-      this.dialogRef.close('deleted');
-    });
+        this.dialogRef.close('deleted');
+      });
   }
 }

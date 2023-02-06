@@ -4,7 +4,7 @@ import { Databag } from 'build/openapi/modelmanager';
 @Component({
   selector: 'app-choose-databag-column',
   templateUrl: './choose-databag-column.component.html',
-  styleUrls: ['./choose-databag-column.component.scss']
+  styleUrls: ['./choose-databag-column.component.scss'],
 })
 export class ChooseDatabagColumnComponent {
   @Input() databag: Databag = {};
@@ -13,7 +13,9 @@ export class ChooseDatabagColumnComponent {
   allowedColumnTypes = ['category', 'numerical'];
 
   public get outputColumnAvailable(): boolean {
-    return !!this.databag.columns?.find(column => column.type && this.allowedColumnTypes.includes(column.type));
+    return !!this.databag.columns?.find(
+      column => column.type && this.allowedColumnTypes.includes(column.type)
+    );
   }
 
   public selectColumn(column: string | undefined): void {

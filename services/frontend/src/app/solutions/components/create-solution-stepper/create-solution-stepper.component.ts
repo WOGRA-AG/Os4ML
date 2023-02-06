@@ -1,27 +1,36 @@
-import {Component} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {MatStepper} from '@angular/material/stepper';
-import {Databag, Solution, Solver} from '../../../../../build/openapi/modelmanager';
-import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import {SolutionService} from '../../services/solution.service';
-
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { Subject, takeUntil } from 'rxjs';
+import {
+  Databag,
+  Solution,
+  Solver,
+} from '../../../../../build/openapi/modelmanager';
+import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
+import { SolutionService } from '../../services/solution.service';
 
 @Component({
   selector: 'app-create-solution-stepper',
   templateUrl: './create-solution-stepper.component.html',
-  styleUrls: ['./create-solution-stepper.component.scss']
+  styleUrls: ['./create-solution-stepper.component.scss'],
 })
-export class CreateSolutionStepperComponent {
-
+export class CreateSolutionStepperComponent implements OnDestroy {
   databag: Databag = {};
   solution: Solution = {};
   submitting = false;
   stepperStep = 0;
 
-  constructor(private dialogRef: MatDialogRef<DialogDynamicComponent>,
-              private solutionService: SolutionService) {
+  destroy$ = new Subject<void>();
+
+  constructor(
+    private dialogRef: MatDialogRef<DialogDynamicComponent>,
+    private solutionService: SolutionService
+  ) {
     this.databag = dialogRef.componentInstance.data.databag;
-    this.solution = dialogRef.componentInstance.data.solution ? dialogRef.componentInstance.data.solution : {};
+    this.solution = dialogRef.componentInstance.data.solution
+      ? dialogRef.componentInstance.data.solution
+      : {};
   }
 
   onSubmit(): void {
@@ -30,10 +39,13 @@ export class CreateSolutionStepperComponent {
       return;
     }
     this.submitting = true;
-    this.solutionService.createSolution(this.solution, this.databag).subscribe(solution => {
-      this.submitting = false;
-      this.dialogRef.close(solution);
-    });
+    this.solutionService
+      .createSolution(this.solution, this.databag)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(solution => {
+        this.submitting = false;
+        this.dialogRef.close(solution);
+      });
   }
 
   nextPageClick(stepper: MatStepper) {
@@ -57,5 +69,10 @@ export class CreateSolutionStepperComponent {
 
   selectSolver(solver: Solver) {
     this.solution.solver = solver.name;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

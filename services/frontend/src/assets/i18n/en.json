@@ -57,7 +57,7 @@
     },
     "empty": "Get started with Machine Learning"
   },
-  "solution":{
+  "solution": {
     "name": "Solution",
     "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
     "settings": "Solution Settings",
@@ -73,7 +73,7 @@
     },
     "empty": "Analyze your Data with Machine Learning"
   },
-  "problem":{
+  "problem": {
     "name": "Problem"
   },
   "solver": {
@@ -95,7 +95,7 @@
         "documentation": "(documentation)",
         "missing_category": "The databag contains no categorical or numerical columns. Please define one in the databag settings. For more information please read the"
       },
-      "solver" : {
+      "solver": {
         "description": "Which solver do you want to use?"
       }
     },

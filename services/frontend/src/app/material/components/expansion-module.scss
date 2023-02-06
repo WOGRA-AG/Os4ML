@@ -5,8 +5,9 @@
   $primary-palette: map.get($theme, 'primary');
   $primary-color: mat.get-color-from-palette($primary-palette, 500);
 
-  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled="true"]) {
-    background-color: rgba($primary-color, .1);
+  .mat-expansion-panel:not(.mat-expanded)
+    .mat-expansion-panel-header:hover:not([aria-disabled='true']) {
+    background-color: rgba($primary-color, 0.1);
   }
 
   .mat-expansion-panel-header.mat-expanded {

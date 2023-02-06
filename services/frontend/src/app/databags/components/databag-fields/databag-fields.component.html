@@ -1,7 +1,13 @@
 <mat-form-field *ngFor="let column of databag.columns" appearance="outline">
-  <mat-label>{{column.name}}</mat-label>
-  <mat-select [(ngModel)]="column.type" name="{{column.name}}" required #column_name="ngModel"
-              [ngClass]="{'is-invalid': column_name.invalid}">
-    <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{type}}</mat-option>
+  <mat-label>{{ column.name }}</mat-label>
+  <mat-select
+    [(ngModel)]="column.type"
+    name="{{ column.name }}"
+    required
+    #column_name="ngModel"
+    [ngClass]="{ 'is-invalid': column_name.invalid }">
+    <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{
+      type
+    }}</mat-option>
   </mat-select>
 </mat-form-field>

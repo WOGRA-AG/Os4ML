@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {firstValueFrom, Observable, of} from 'rxjs';
-import {MatStepper} from '@angular/material/stepper';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { firstValueFrom, Observable, of, Subject, takeUntil } from 'rxjs';
+import { MatStepper } from '@angular/material/stepper';
 import { CreateDatabagComponent } from 'src/app/databags/components/create-databag/create-databag.component';
 import { Databag, Solution, Solver } from 'build/openapi/modelmanager';
 import { DialogDynamicComponent } from 'src/app/shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
@@ -11,10 +11,9 @@ import { SolutionService } from 'src/app/solutions/services/solution.service';
 @Component({
   selector: 'app-getting-started-stepper',
   templateUrl: './getting-started-stepper.component.html',
-  styleUrls: ['./getting-started-stepper.component.scss']
+  styleUrls: ['./getting-started-stepper.component.scss'],
 })
-export class GettingStartedStepperComponent {
-
+export class GettingStartedStepperComponent implements OnDestroy {
   databag: Databag = {};
   solution: Solution = {};
 
@@ -22,15 +21,21 @@ export class GettingStartedStepperComponent {
   submitting = false;
   stepperStep = 0;
 
-  constructor(public dialogRef: MatDialogRef<DialogDynamicComponent>,
-              private databagService: DatabagService,
-              private solutionService: SolutionService) {
-  }
+  destroy$ = new Subject<void>();
 
-  async next(stepper: MatStepper, createDatabagComponent: CreateDatabagComponent): Promise<void> {
+  constructor(
+    public dialogRef: MatDialogRef<DialogDynamicComponent>,
+    private databagService: DatabagService,
+    private solutionService: SolutionService
+  ) {}
+
+  async next(
+    stepper: MatStepper,
+    createDatabagComponent: CreateDatabagComponent
+  ): Promise<void> {
     this.submitting = true;
 
-    switch(this.stepperStep) {
+    switch (this.stepperStep) {
       case 0:
         this.runningSpinner = true;
         await createDatabagComponent.createDatabag();
@@ -39,11 +44,17 @@ export class GettingStartedStepperComponent {
       case 1:
         break;
       case 2:
-        if (!this.databag || !this.databag.databagId || !this.databag.databagName) {
+        if (
+          !this.databag ||
+          !this.databag.databagId ||
+          !this.databag.databagName
+        ) {
           this.dialogRef.close();
           return;
         }
-        await firstValueFrom(this.solutionService.createSolution(this.solution, this.databag));
+        await firstValueFrom(
+          this.solutionService.createSolution(this.solution, this.databag)
+        );
         this.dialogRef.close();
         break;
     }
@@ -54,11 +65,12 @@ export class GettingStartedStepperComponent {
 
   isDisabled(
     createDatabagComponent: CreateDatabagComponent,
-    validSolutionName: boolean | null) {
+    validSolutionName: boolean | null
+  ) {
     if (this.submitting) {
       return true;
     }
-    switch(this.stepperStep) {
+    switch (this.stepperStep) {
       case 0:
         return !createDatabagComponent.valid();
       case 1:
@@ -80,9 +92,11 @@ export class GettingStartedStepperComponent {
   }
 
   close(): void {
-    this.deleteDatabag().subscribe(() => {
-      this.dialogRef.close();
-    });
+    this.deleteDatabag()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.dialogRef.close();
+      });
   }
 
   deleteDatabag(): Observable<void> {
@@ -102,5 +116,10 @@ export class GettingStartedStepperComponent {
 
   databagUpdate(databag: Databag) {
     this.databag = databag;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

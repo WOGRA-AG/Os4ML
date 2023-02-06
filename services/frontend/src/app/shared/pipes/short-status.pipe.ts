@@ -1,11 +1,10 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {PipelineStatus} from '../../core/models/pipeline-status';
+import { Pipe, PipeTransform } from '@angular/core';
+import { PipelineStatus } from '../../core/models/pipeline-status';
 
 @Pipe({
-  name: 'shortStatus'
+  name: 'shortStatus',
 })
 export class ShortStatusPipe implements PipeTransform {
-
   transform(status: string | undefined | null): PipelineStatus {
     if (!status) {
       return PipelineStatus.running;
@@ -18,5 +17,4 @@ export class ShortStatusPipe implements PipeTransform {
     }
     return PipelineStatus.running;
   }
-
 }

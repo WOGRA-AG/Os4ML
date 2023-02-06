@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'formatTimeDiff'
+  name: 'formatTimeDiff',
 })
 export class FormatTimeDiffPipe implements PipeTransform {
-
   transform(timeDiffInMs: number | null): string {
     if (!timeDiffInMs) {
       return '';
@@ -18,5 +17,4 @@ export class FormatTimeDiffPipe implements PipeTransform {
 
     return `${hours}h ${minutes}m ${seconds}s`;
   }
-
 }

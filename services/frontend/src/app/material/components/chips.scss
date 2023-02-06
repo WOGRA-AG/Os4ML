@@ -4,7 +4,7 @@
 @mixin color($theme, $background) {
   $primary-palette: map.get($theme, 'primary');
 
-  .mat-chip{
+  .mat-chip {
     background-color: $background;
   }
 }

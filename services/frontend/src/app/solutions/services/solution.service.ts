@@ -1,30 +1,36 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
-import { Databag, ModelmanagerService, Solution } from '../../../../build/openapi/modelmanager';
+import {
+  Databag,
+  ModelmanagerService,
+  Solution,
+} from '../../../../build/openapi/modelmanager';
 import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { SolutionStatus } from '../models/solution-status';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SolutionService {
-
-  private readonly solutions: Observable<Solution[]>;
+  private readonly _solutions$: Observable<Solution[]>;
 
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
-    private webSocketConnectionService: WebSocketConnectionService) {
+    private webSocketConnectionService: WebSocketConnectionService
+  ) {
     const path = '/apis/v1beta1/model-manager/solutions';
-    this.solutions = this.webSocketConnectionService.connect(path);
+    this._solutions$ = this.webSocketConnectionService.connect(path);
   }
 
   get solutions$(): Observable<Solution[]> {
-    return this.solutions;
+    return this._solutions$;
   }
 
-  getSolutionsByDatabagIdSortByCreationTime(databagId: string | undefined): Observable<Solution[]> {
+  getSolutionsByDatabagIdSortByCreationTime(
+    databagId: string | undefined
+  ): Observable<Solution[]> {
     const sortByCreationTime = (solution1: Solution, solution2: Solution) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const date1 = new Date(solution1.creationTime!);
@@ -34,8 +40,10 @@ export class SolutionService {
     };
 
     return this.solutions$.pipe(
-      map(solutions => solutions.filter(solution => solution.databagId === databagId)),
-      map(solutions => solutions.sort(sortByCreationTime)),
+      map(solutions =>
+        solutions.filter(solution => solution.databagId === databagId)
+      ),
+      map(solutions => solutions.sort(sortByCreationTime))
     );
   }
 
@@ -49,7 +57,7 @@ export class SolutionService {
     }
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.createSolution(token, solution)),
-      catchError(() => of({ runId: '' })),
+      catchError(() => of({ runId: '' }))
     );
   }
 
@@ -67,7 +75,9 @@ export class SolutionService {
 
   updateSolutionById(id: string, solution: Solution): Observable<Solution> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.updateSolutionById(id, token, solution))
+      switchMap(token =>
+        this.modelManager.updateSolutionById(id, token, solution)
+      )
     );
   }
 
@@ -77,8 +87,12 @@ export class SolutionService {
     );
   }
 
-  private getInputFields(solution: Solution, databag: Databag): string[] | undefined {
-    return databag.columns?.map(column => column.name)
+  private getInputFields(
+    solution: Solution,
+    databag: Databag
+  ): string[] | undefined {
+    return databag.columns
+      ?.map(column => column.name)
       .filter((colName): colName is string => !!colName)
       .filter(colName => colName && !solution.outputFields?.includes(colName));
   }

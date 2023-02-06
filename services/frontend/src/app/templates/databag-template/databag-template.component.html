@@ -1,22 +1,25 @@
 <div class="page-wrapper">
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
-        <app-databag-list [databags]=databags class="databag-list">
-        </app-databag-list>
-        <div class="actions">
-          <button mat-raised-button class="fab-button mat-raised-button"
-                  color="primary"
-                  (click)="addDatabag()">
-            <mat-icon>add</mat-icon>
-            {{ "databag.create" | translate }}
-          </button>
-        </div>
+      <app-databag-list [databags]="databags" class="databag-list">
+      </app-databag-list>
+      <div class="actions">
+        <button
+          mat-raised-button
+          class="fab-button mat-raised-button"
+          color="primary"
+          (click)="addDatabag()">
+          <mat-icon>add</mat-icon>
+          {{ 'databag.create' | translate }}
+        </button>
+      </div>
     </ng-container>
   </ng-container>
 </div>
 
 <ng-template #placeholder>
   <div class="placeholder-container">
-    <app-no-databags-placeholder (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
+    <app-no-databags-placeholder
+      (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
   </div>
 </ng-template>

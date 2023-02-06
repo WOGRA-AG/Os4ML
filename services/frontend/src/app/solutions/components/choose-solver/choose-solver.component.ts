@@ -6,10 +6,9 @@ import { SolverService } from '../../services/solver.service';
 @Component({
   selector: 'app-choose-solver',
   templateUrl: './choose-solver.component.html',
-  styleUrls: ['./choose-solver.component.scss']
+  styleUrls: ['./choose-solver.component.scss'],
 })
 export class ChooseSolverComponent {
-
   @Output() selectedSolver = new EventEmitter<Solver>();
   lastSelectedSolver: Solver | null = null;
 
