@@ -75,13 +75,17 @@ describe('Databags', () => {
     cy.visit('/dashboard');
     cy.get('#add-solution-button-empty > .mat-button-wrapper').click();
     cy.get(
-      'app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content'
+      'app-selectable-list.ng-star-inserted > .mat-list > :nth-child(2) > .mat-list-item-content > app-list-item > div > .mat-subheading-2',
+      { timeout: databagTimeout }
+    ).should('have.text', ' category ');
+    cy.get(
+      'app-selectable-list.ng-star-inserted > .mat-list > :nth-child(2) > .mat-list-item-content'
     ).click();
     cy.get('#define-output-next-button').click();
     cy.get('#define-solver-name-input').clear();
     cy.get('#define-solver-name-input').type('e2e test ludwig solver');
     cy.get(
-      'app-choose-solver > .mat-list > .mat-list-item > .mat-list-item-content'
+      'app-choose-solver > app-selectable-list > .mat-list > .mat-list-item > .mat-list-item-content'
     ).click();
     cy.get('#define-solver-next-button').click();
     cy.get('.status-column > .done', { timeout: solutionTimeout });
@@ -188,26 +192,30 @@ describe('Databags', () => {
     cy.get('.mat-button-wrapper > .ng-star-inserted').click();
     cy.get(
       '#cdk-step-content-0-1 > .mat-dialog-content > app-dialog-section > .dialog-element > :nth-child(3) > div'
-    ).should('have.text', 'What do you want to predict?');
+    ).should('have.text', ' What do you want to predict? ');
     cy.get(
-      'app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content',
+      'app-selectable-list.ng-star-inserted > .mat-list > :nth-child(4) > .mat-list-item-content > app-list-item > div > .mat-subheading-2',
       { timeout: databagTimeout }
+    ).should('have.text', ' numerical ');
+    cy.get(
+      'app-selectable-list.ng-star-inserted > .mat-list > :nth-child(4) > .mat-list-item-content > app-list-item > div > .mat-subheading-2'
     ).click();
     cy.get('#add-databag-main-button').click();
     cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('e2e fast lane solution');
+    cy.get('#mat-input-0').type('fast solution');
+    cy.wait(1000);
     cy.get(
-      'app-choose-solver > .mat-list > .mat-list-item > .mat-list-item-content'
+      'app-choose-solver > app-selectable-list > .mat-list > .mat-list-item > .mat-list-item-content'
     ).click();
+    cy.wait(1000);
     cy.get('.mat-button-wrapper > .ng-star-inserted').click();
     cy.get('.status-column > .done', { timeout: solutionTimeout });
   });
 
-  /* ==== Test Created with Cypress Studio ==== */
   it('dataframe script', () => {
     cy.get('#bag-list > :nth-child(2) > .mat-list-item-content').click();
     cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('e2e dataframe script');
+    cy.get('#mat-input-0').type('script');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/dataframe_script.py');
@@ -220,7 +228,7 @@ describe('Databags', () => {
     cy.get('#define-databag-button > .mat-button-wrapper').click();
     cy.get(
       ':nth-child(1) > .mat-list-item-content > .nav-item-extended > .mat-subheading-2'
-    ).should('have.text', 'e2e dataframe script');
+    ).should('have.text', 'script');
     cy.wait(1000);
     cy.get(
       ':nth-child(1) > .mat-list-item-content > .nav-item-extended'
@@ -229,10 +237,10 @@ describe('Databags', () => {
     cy.get('#add-solution-button-empty > .mat-button-wrapper').click();
     cy.wait(1000);
     cy.get(
-      'app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .on-surface-high'
+      'app-choose-databag-column > app-selectable-list > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .on-surface-high'
     ).should('have.text', ' PassengerId ');
     cy.get(
-      'app-choose-databag-column > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .mat-subheading-2'
-    ).should('have.text', 'numerical');
+      'app-choose-databag-column > app-selectable-list > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .mat-subheading-2'
+    ).should('have.text', ' numerical ');
   });
 });

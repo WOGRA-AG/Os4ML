@@ -25,6 +25,7 @@
           {{ 'dialog.section.problem.description' | translate }}
         </div>
         <app-choose-databag-column
+          *ngIf="!!databag.columns"
           [databag]="databag"
           (selectedColumn)="
             selectOutputColumn($event)
