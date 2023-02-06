@@ -22,9 +22,8 @@ export class DatabagTemplateComponent {
   }
 
   addDatabag() {
-    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+    this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });
-    dialogRef.afterClosed().subscribe(() => {});
   }
 }

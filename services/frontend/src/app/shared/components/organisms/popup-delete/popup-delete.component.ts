@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Subject, takeUntil } from 'rxjs';
 import {
   Databag,
   Solution,
@@ -14,10 +14,12 @@ import { SolutionService } from '../../../../solutions/services/solution.service
   templateUrl: './popup-delete.component.html',
   styleUrls: ['./popup-delete.component.scss'],
 })
-export class PopupDeleteComponent {
+export class PopupDeleteComponent implements OnDestroy {
   solution: Solution;
   databag: Databag;
   deleting = false;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
@@ -51,6 +53,11 @@ export class PopupDeleteComponent {
     return !(isNotSolution || isNotDatabag);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
+  }
+
   private deleteSolution(solutionId: string | undefined) {
     if (!solutionId) {
       this.deleting = false;
@@ -59,6 +66,7 @@ export class PopupDeleteComponent {
     this.solutionService
       .deleteSolutionById(solutionId)
       .pipe(
+        takeUntil(this.destroy$),
         catchError(() => {
           this.deleting = false;
           return of({});
@@ -78,6 +86,7 @@ export class PopupDeleteComponent {
     this.databagService
       .deleteDatabagById(databagId)
       .pipe(
+        takeUntil(this.destroy$),
         catchError(() => {
           this.deleting = false;
           return of({});

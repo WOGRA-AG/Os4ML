@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { Subject, takeUntil } from 'rxjs';
 import {
   Databag,
   Solution,
@@ -14,11 +15,13 @@ import { SolutionService } from '../../services/solution.service';
   templateUrl: './create-solution-stepper.component.html',
   styleUrls: ['./create-solution-stepper.component.scss'],
 })
-export class CreateSolutionStepperComponent {
+export class CreateSolutionStepperComponent implements OnDestroy {
   databag: Databag = {};
   solution: Solution = {};
   submitting = false;
   stepperStep = 0;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
@@ -38,6 +41,7 @@ export class CreateSolutionStepperComponent {
     this.submitting = true;
     this.solutionService
       .createSolution(this.solution, this.databag)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(solution => {
         this.submitting = false;
         this.dialogRef.close(solution);
@@ -65,5 +69,10 @@ export class CreateSolutionStepperComponent {
 
   selectSolver(solver: Solver) {
     this.solution.solver = solver.name;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

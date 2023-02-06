@@ -32,11 +32,9 @@ export class CreateDatabagComponent {
 
   async createDatabag(): Promise<void> {
     if (!(this.file.name || this.fileUrl)) {
-      this.translate.get('message.no_dataset').subscribe((res: string) => {
-        this.translate.get('action.confirm').subscribe((conf: string) => {
-          this.errorService.reportError(res, conf);
-        });
-      });
+      const res = this.translate.instant('message_no_dataset');
+      const conf = this.translate.instant('action.confirm');
+      this.errorService.reportError(res, conf);
       return;
     }
 

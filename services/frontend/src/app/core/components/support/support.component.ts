@@ -16,10 +16,9 @@ export class SupportComponent {
       'src/app/fast-lane/components/getting-started-stepper/getting-started-stepper.component'
     );
 
-    const dialogRef = this.dialog.open(DialogDynamicComponent, {
+    this.dialog.open(DialogDynamicComponent, {
       data: { component: GettingStartedStepperComponent },
       panelClass: 'getting-started-dialog',
     });
-    dialogRef.afterClosed().subscribe();
   }
 }

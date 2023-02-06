@@ -1,20 +1,23 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { PopupDeleteComponent } from '../../../shared/components/organisms/popup-delete/popup-delete.component';
 import { SolutionService } from '../../services/solution.service';
 import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-solution-setting',
   templateUrl: './solution-setting.component.html',
   styleUrls: ['./solution-setting.component.scss'],
 })
-export class SolutionSettingComponent {
+export class SolutionSettingComponent implements OnDestroy {
   solution: Solution;
   deleting = false;
   readonly pipelineStatus = PipelineStatus;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
@@ -36,6 +39,7 @@ export class SolutionSettingComponent {
     }
     this.solutionService
       .updateSolutionById(this.solution.id, this.solution)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.dialogRef.close('updated');
       });
@@ -45,23 +49,34 @@ export class SolutionSettingComponent {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
       data: { component: PopupDeleteComponent, solution: this.solution },
     });
-    deleteDialogRef.afterClosed().subscribe(msg => {
-      if (msg === 'deleted') {
-        this.dialogRef.close();
-      }
-    });
+    deleteDialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(msg => {
+        if (msg === 'deleted') {
+          this.dialogRef.close();
+        }
+      });
   }
 
   download() {
     if (this.solution.id) {
-      this.solutionService.downloadModel(this.solution.id).subscribe(url => {
-        const link = this.renderer.createElement('a');
-        link.target = '_blank';
-        link.href = url;
-        link.dowload = 'model.zip';
-        link.click();
-        link.remove();
-      });
+      this.solutionService
+        .downloadModel(this.solution.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(url => {
+          const link = this.renderer.createElement('a');
+          link.target = '_blank';
+          link.href = url;
+          link.dowload = 'model.zip';
+          link.click();
+          link.remove();
+        });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

@@ -2,6 +2,7 @@
   "root": true,
   "ignorePatterns": ["projects/**/*", "build/**", "dist/**", "cypress/**"],
   "extends": ["prettier"],
+  "plugins": ["rxjs-angular"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -63,6 +64,15 @@
             "type": "element",
             "prefix": "app",
             "style": "kebab-case"
+          }
+        ],
+        "rxjs-angular/prefer-takeuntil": [
+          "error",
+          {
+            "alias": ["untilDestroyed", "take"],
+            "checkComplete": true,
+            "checkDecorators": ["Component"],
+            "checkDestroy": true
           }
         ]
       }
