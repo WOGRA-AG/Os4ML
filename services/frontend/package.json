@@ -14,8 +14,8 @@
     "watch": "ng build --base-href . --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
-    "lint": "ng lint",
-    "lint-staged": "prettier --write .",
+    "lint": "ng lint && prettier --check .",
+    "format": "prettier --write . && ng lint --fix",
     "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open",
     "config-prettier": "eslint-config-prettier src/main.ts"
   },

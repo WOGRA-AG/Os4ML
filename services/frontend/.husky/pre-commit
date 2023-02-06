@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd ./services/frontend && npm run lint-staged && npm run lint -- --fix
+cd ./services/frontend
+if ! npm run lint; then
+  npm run format
+  exit 1
+fi
