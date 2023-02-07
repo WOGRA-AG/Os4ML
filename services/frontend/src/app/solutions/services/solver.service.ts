@@ -33,14 +33,4 @@ export class SolverService {
       take(1)
     );
   }
-
-  isSameSolver(
-    solver1: Solver | null | undefined,
-    solver2: Solver | null | undefined
-  ): boolean {
-    if (!solver1 || !solver2) {
-      return false;
-    }
-    return solver1.name === solver2.name;
-  }
 }
