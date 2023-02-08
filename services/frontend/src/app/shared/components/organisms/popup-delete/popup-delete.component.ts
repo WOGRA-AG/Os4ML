@@ -58,7 +58,7 @@ export class PopupDeleteComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  private deleteSolution(solutionId: string | undefined) {
+  private deleteSolution(solutionId: string | undefined): void {
     if (!solutionId) {
       this.deleting = false;
       return;
@@ -78,7 +78,7 @@ export class PopupDeleteComponent implements OnDestroy {
       });
   }
 
-  private deleteDatabag(databagId: string | undefined) {
+  private deleteDatabag(databagId: string | undefined): void {
     if (!databagId) {
       this.deleting = false;
       return;

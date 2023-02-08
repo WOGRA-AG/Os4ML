@@ -32,7 +32,7 @@ export class SolutionSettingComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
-  update() {
+  update(): void {
     if (!this.solution.id) {
       this.dialogRef.close('aborted');
       return;
@@ -45,7 +45,7 @@ export class SolutionSettingComponent implements OnDestroy {
       });
   }
 
-  delete() {
+  delete(): void {
     const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
       data: { component: PopupDeleteComponent, solution: this.solution },
     });
@@ -59,7 +59,7 @@ export class SolutionSettingComponent implements OnDestroy {
       });
   }
 
-  download() {
+  download(): void {
     if (this.solution.id) {
       this.solutionService
         .downloadModel(this.solution.id)

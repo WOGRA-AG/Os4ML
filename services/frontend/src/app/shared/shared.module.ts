@@ -27,7 +27,7 @@ import { StatusSpinnerComponent } from './components/molecules/status-spinner/st
 import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
 import { ListItemComponent } from './components/molecules/list-item/list-item.component';
 
-export const httpLoaderFactory = (http: HttpClient) =>
+export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({

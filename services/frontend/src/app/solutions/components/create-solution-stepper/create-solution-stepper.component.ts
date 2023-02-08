@@ -48,7 +48,7 @@ export class CreateSolutionStepperComponent implements OnDestroy {
       });
   }
 
-  nextPageClick(stepper: MatStepper) {
+  nextPageClick(stepper: MatStepper): void {
     this.dialogRef.componentInstance.data.solution = this.solution;
     this.stepperStep = 1;
     stepper.next();
@@ -67,7 +67,7 @@ export class CreateSolutionStepperComponent implements OnDestroy {
     this.stepperStep -= 1;
   }
 
-  selectSolver(solver: Solver) {
+  selectSolver(solver: Solver): void {
     this.solution.solver = solver.name;
   }
 

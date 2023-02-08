@@ -14,7 +14,7 @@ export class SelectableListComponent {
 
   currentSelectedItem: ListItem | null = null;
 
-  selectItem(item: ListItem) {
+  selectItem(item: ListItem): void {
     this.selectedItem.emit(item.key);
     this.currentSelectedItem = item;
   }

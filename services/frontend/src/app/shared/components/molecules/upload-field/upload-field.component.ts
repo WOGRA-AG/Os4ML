@@ -11,7 +11,7 @@ export class UploadFieldComponent {
   @Output() fileChange: EventEmitter<File> = new EventEmitter<File>();
   @Output() cancelUpload: EventEmitter<null> = new EventEmitter<null>();
 
-  uploadFile(event: Event) {
+  uploadFile(event: Event): void {
     const element = event.currentTarget as HTMLInputElement;
     const fileList: FileList | null = element.files;
     if (!fileList) {
@@ -21,7 +21,7 @@ export class UploadFieldComponent {
     this.fileChange.emit(this.file);
   }
 
-  uploadDroppedFile(files: File[]) {
+  uploadDroppedFile(files: File[]): void {
     if (!files) {
       return;
     }

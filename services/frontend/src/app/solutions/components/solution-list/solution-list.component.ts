@@ -13,7 +13,7 @@ export class SolutionListComponent {
   @Input() solutions: Solution[] = [];
   constructor(public dialog: MatDialog) {}
 
-  openSolutionSettingDialog(solution: Solution) {
+  openSolutionSettingDialog(solution: Solution): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: SolutionSettingComponent, solution },
       panelClass: 'setting-dialog',

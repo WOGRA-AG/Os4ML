@@ -31,7 +31,10 @@ export class SolutionService {
   getSolutionsByDatabagIdSortByCreationTime(
     databagId: string | undefined
   ): Observable<Solution[]> {
-    const sortByCreationTime = (solution1: Solution, solution2: Solution) => {
+    const sortByCreationTime = (
+      solution1: Solution,
+      solution2: Solution
+    ): number => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const date1 = new Date(solution1.creationTime!);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

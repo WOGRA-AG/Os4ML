@@ -21,13 +21,13 @@ export class ChooseDatabagComponent implements OnInit {
     public databagService: DatabagService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.databags.length > 0) {
       this.changeSelectedDatabag(this.databags[0]);
     }
   }
 
-  changeSelectedDatabag(databag: Databag) {
+  changeSelectedDatabag(databag: Databag): void {
     const id = databag.databagId;
     if (!id) {
       return;
@@ -36,7 +36,7 @@ export class ChooseDatabagComponent implements OnInit {
     this.selectedDatabagId.emit(id);
   }
 
-  openAddDialog() {
+  openAddDialog(): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });

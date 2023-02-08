@@ -66,13 +66,13 @@ export class CreateDatabagComponent {
     );
   }
 
-  valid() {
+  valid(): boolean {
     if (!this.databag.databagName || this.databag.databagName.length === 0) {
       return false;
     }
     if (this.fileUrl) {
-      return this.fileUrl.match(this.urlRegex);
+      return !!this.fileUrl.match(this.urlRegex);
     }
-    return this.file.name;
+    return !!this.file.name;
   }
 }

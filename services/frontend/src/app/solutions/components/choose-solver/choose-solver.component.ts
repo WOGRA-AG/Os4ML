@@ -28,7 +28,7 @@ export class ChooseSolverComponent implements OnDestroy {
     );
   }
 
-  selectSolver(key: string) {
+  selectSolver(key: string): void {
     this.solverService
       .getSolverByName(key)
       .pipe(takeUntil(this.destroy$))

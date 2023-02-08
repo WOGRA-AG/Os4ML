@@ -66,7 +66,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
   isDisabled(
     createDatabagComponent: CreateDatabagComponent,
     validSolutionName: boolean | null
-  ) {
+  ): boolean {
     if (this.submitting) {
       return true;
     }
@@ -110,11 +110,11 @@ export class GettingStartedStepperComponent implements OnDestroy {
     this.solution.outputFields = [columnName];
   }
 
-  selectSolver(solver: Solver) {
+  selectSolver(solver: Solver): void {
     this.solution.solver = solver.name;
   }
 
-  databagUpdate(databag: Databag) {
+  databagUpdate(databag: Databag): void {
     this.databag = databag;
   }
 

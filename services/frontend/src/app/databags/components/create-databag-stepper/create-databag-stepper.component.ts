@@ -66,7 +66,7 @@ export class CreateDatabagStepperComponent {
     this.dialogRef.close();
   }
 
-  databagUpdate(databag: Databag) {
+  databagUpdate(databag: Databag): void {
     this.databag = databag;
   }
 }

@@ -21,7 +21,7 @@ export class DatabagTemplateComponent {
     this.databags$ = this.databagService.databags$;
   }
 
-  addDatabag() {
+  addDatabag(): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });
