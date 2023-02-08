@@ -25,7 +25,9 @@
             "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"
           }
         ],
+        "no-empty-function": ["error", { "allow": ["constructors"] }],
         "no-underscore-dangle": 0,
+        "no-unused-vars": "error",
         "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/member-ordering": [
           "error",

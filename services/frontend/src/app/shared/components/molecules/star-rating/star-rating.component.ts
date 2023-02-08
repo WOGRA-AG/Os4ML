@@ -10,8 +10,6 @@ export class StarRatingComponent implements OnInit {
   @Input() numberStars = 5;
   percentages: number[] = [];
 
-  constructor() {}
-
   ngOnInit(): void {
     this.percentages = Array.from(Array(this.numberStars), (_, index) =>
       Math.max(0, Math.min(1, this.rating * this.numberStars - index))

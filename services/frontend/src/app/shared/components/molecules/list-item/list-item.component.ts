@@ -11,6 +11,4 @@ export class ListItemComponent {
     label: '',
     description: '',
   };
-
-  constructor() {}
 }
