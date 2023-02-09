@@ -4,7 +4,7 @@
       <div class="content-container">
         <app-choose-databag
           [databags]="databags"
-          (selectedDatabagId)="
+          (selectedDatabagIdChange)="
             selectedDatabagChanged($event)
           "></app-choose-databag>
         <ng-container *ngIf="selectedDatabagId$ | async as selectedDatabagId">

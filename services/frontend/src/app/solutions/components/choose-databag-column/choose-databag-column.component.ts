@@ -16,7 +16,7 @@ import { ListItem } from 'src/app/shared/models/list-item';
 })
 export class ChooseDatabagColumnComponent implements OnChanges {
   @Input() databag: Databag = {};
-  @Output() selectedColumn = new EventEmitter<string>();
+  @Output() selectedColumnChange = new EventEmitter<string>();
   listItems$: Observable<ListItem[]> | undefined;
 
   allowedColumnTypes = ['category', 'numerical'];

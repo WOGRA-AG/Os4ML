@@ -10,12 +10,13 @@ import { ListItem } from 'src/app/shared/models/list-item';
 export class SelectableListComponent {
   @Input() listItems$: Observable<ListItem[]> | null = null;
 
-  @Output() selectedItemKey: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedItemKeyChange: EventEmitter<string> =
+    new EventEmitter<string>();
 
   currentSelectedItem: ListItem | null = null;
 
   selectItem(item: ListItem): void {
-    this.selectedItemKey.emit(item.key);
+    this.selectedItemKeyChange.emit(item.key);
     this.currentSelectedItem = item;
   }
 }

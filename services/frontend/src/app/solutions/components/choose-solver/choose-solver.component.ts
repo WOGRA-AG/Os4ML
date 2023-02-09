@@ -10,7 +10,8 @@ import { ListItem } from '../../../shared/models/list-item';
   styleUrls: ['./choose-solver.component.scss'],
 })
 export class ChooseSolverComponent implements OnDestroy {
-  @Output() selectedSolver: EventEmitter<Solver> = new EventEmitter<Solver>();
+  @Output() selectedSolverChange: EventEmitter<Solver> =
+    new EventEmitter<Solver>();
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -36,7 +37,7 @@ export class ChooseSolverComponent implements OnDestroy {
         filter(solver => !!solver),
         map(solver => solver!)
       )
-      .subscribe(solver => this.selectedSolver.emit(solver));
+      .subscribe(solver => this.selectedSolverChange.emit(solver));
   }
 
   ngOnDestroy(): void {

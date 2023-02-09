@@ -12,7 +12,7 @@ import { CreateDatabagStepperComponent } from '../create-databag-stepper/create-
 })
 export class ChooseDatabagComponent implements OnInit {
   @Input() databags: Databag[] = [];
-  @Output() selectedDatabagId: EventEmitter<string> =
+  @Output() selectedDatabagIdChange: EventEmitter<string> =
     new EventEmitter<string>();
   selectedDatabag: Databag = {};
 
@@ -33,7 +33,7 @@ export class ChooseDatabagComponent implements OnInit {
       return;
     }
     this.selectedDatabag = databag;
-    this.selectedDatabagId.emit(id);
+    this.selectedDatabagIdChange.emit(id);
   }
 
   openAddDialog(): void {

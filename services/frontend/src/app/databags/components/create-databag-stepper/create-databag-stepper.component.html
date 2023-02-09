@@ -11,7 +11,7 @@
     completed="{{ stepperStep > 0 }}">
     <mat-dialog-content>
       <app-create-databag
-        (databagUpdates)="databagUpdate($event)"
+        (databagChange)="databagUpdate($event)"
         #createDatabagComponent></app-create-databag>
     </mat-dialog-content>
   </mat-step>
