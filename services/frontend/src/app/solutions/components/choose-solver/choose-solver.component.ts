@@ -13,12 +13,12 @@ export class ChooseSolverComponent implements OnDestroy {
   @Output() selectedSolverChange: EventEmitter<Solver> =
     new EventEmitter<Solver>();
 
+  listItems$: Observable<ListItem[]>;
+
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private solverService: SolverService) {}
-
-  get listItems$(): Observable<ListItem[]> {
-    return this.solverService.solvers$.pipe(
+  constructor(private solverService: SolverService) {
+    this.listItems$ = this.solverService.solvers$.pipe(
       map(solvers =>
         solvers.map(solver => ({
           key: solver.name || '',
