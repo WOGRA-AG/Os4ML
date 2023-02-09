@@ -4,7 +4,7 @@ import {
   ModelmanagerService,
   Solver,
 } from '../../../../build/openapi/modelmanager';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap, take } from 'rxjs';
 import { PipelineStep } from '../../core/models/pipeline-step';
 
 @Injectable({
@@ -25,13 +25,10 @@ export class SolverService {
     );
   }
 
-  isSameSolver(
-    solver1: Solver | null | undefined,
-    solver2: Solver | null | undefined
-  ): boolean {
-    if (!solver1 || !solver2) {
-      return false;
-    }
-    return solver1.name === solver2.name;
+  getSolverByName(name: string): Observable<Solver | undefined> {
+    return this.solvers$.pipe(
+      map(solvers => solvers.find(solver => solver?.name === name)),
+      take(1)
+    );
   }
 }

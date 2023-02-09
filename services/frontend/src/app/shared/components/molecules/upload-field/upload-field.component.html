@@ -7,7 +7,7 @@
 <div
   class="upload-file bg-primary border-color mat-body-1 on-surface-medium"
   appDragAndDrop
-  (filesDropped)="uploadDroppedFile($event)"
+  (filesDroppedChange)="uploadDroppedFile($event)"
   (click)="fileUpload.click()">
   <div *ngIf="file.name; else templateName">{{ file.name }}</div>
   <ng-template #templateName>

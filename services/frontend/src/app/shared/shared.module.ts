@@ -20,13 +20,14 @@ import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogDynamicComponent } from './components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { ListItemComponent } from './components/atoms/list-item/list-item.component';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
+import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
+import { ListItemComponent } from './components/molecules/list-item/list-item.component';
 
-export const httpLoaderFactory = (http: HttpClient) =>
+export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
@@ -36,7 +37,6 @@ export const httpLoaderFactory = (http: HttpClient) =>
     CloseButtonComponent,
     ElementDividerComponent,
     StarComponent,
-    ListItemComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,
@@ -44,8 +44,10 @@ export const httpLoaderFactory = (http: HttpClient) =>
     ToggleItemComponent,
     UploadFieldComponent,
     StatusSpinnerComponent,
+    ListItemComponent,
     // organisms
     PopupDeleteComponent,
+    SelectableListComponent,
     //dialogs
     DialogDynamicComponent,
     // directives
@@ -87,6 +89,7 @@ export const httpLoaderFactory = (http: HttpClient) =>
     StatusSpinnerComponent,
     // organisms
     PopupDeleteComponent,
+    SelectableListComponent,
     // directives
     DragAndDropDirective,
     // pipes

@@ -15,7 +15,7 @@ import { PipelineStatus } from '../../../core/models/pipeline-status';
   styleUrls: ['./create-databag.component.scss'],
 })
 export class CreateDatabagComponent {
-  @Output() databagUpdates = new EventEmitter<Databag>();
+  @Output() databagChange = new EventEmitter<Databag>();
 
   file: File = new File([], '');
   fileUrl = '';
@@ -43,7 +43,7 @@ export class CreateDatabagComponent {
       this.databag = await firstValueFrom(
         this.databagService.createDatabag(this.databag)
       );
-      this.databagUpdates.next(this.databag);
+      this.databagChange.next(this.databag);
       if (this.file.name && this.databag.databagId) {
         await firstValueFrom(
           this.databagService.uploadDataset(this.databag.databagId, this.file)
@@ -57,7 +57,7 @@ export class CreateDatabagComponent {
 
   outputDatabagUpdates(databagId: string): Observable<Databag> {
     return this.databagService.getDatabagById(databagId).pipe(
-      tap(databag => this.databagUpdates.next(databag)),
+      tap(databag => this.databagChange.next(databag)),
       takeWhile(
         databag =>
           this.shortStatus.transform(databag.status) === PipelineStatus.running
@@ -66,13 +66,13 @@ export class CreateDatabagComponent {
     );
   }
 
-  valid() {
+  valid(): boolean {
     if (!this.databag.databagName || this.databag.databagName.length === 0) {
       return false;
     }
     if (this.fileUrl) {
-      return this.fileUrl.match(this.urlRegex);
+      return !!this.fileUrl.match(this.urlRegex);
     }
-    return this.file.name;
+    return !!this.file.name;
   }
 }

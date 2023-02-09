@@ -14,7 +14,7 @@ export class DatabagListComponent {
 
   constructor(private dialog: MatDialog) {}
 
-  openDatabagSettingDialog(databag: Databag) {
+  openDatabagSettingDialog(databag: Databag): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: DatabagSettingComponent, databag },
       panelClass: 'setting-dialog',

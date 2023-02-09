@@ -1,0 +1,11 @@
+<mat-list *ngIf="listItems$">
+  <mat-list-item
+    *ngFor="let item of listItems$ | async"
+    class="pointer bg-primary"
+    [ngClass]="{
+      active: item.key === currentSelectedItem?.key
+    }"
+    (click)="selectItem(item)">
+    <app-list-item [item]="item"></app-list-item>
+  </mat-list-item>
+</mat-list>

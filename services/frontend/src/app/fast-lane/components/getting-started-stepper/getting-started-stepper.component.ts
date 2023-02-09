@@ -21,7 +21,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
   submitting = false;
   stepperStep = 0;
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<DialogDynamicComponent>,
@@ -66,7 +66,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
   isDisabled(
     createDatabagComponent: CreateDatabagComponent,
     validSolutionName: boolean | null
-  ) {
+  ): boolean {
     if (this.submitting) {
       return true;
     }
@@ -110,11 +110,11 @@ export class GettingStartedStepperComponent implements OnDestroy {
     this.solution.outputFields = [columnName];
   }
 
-  selectSolver(solver: Solver) {
+  selectSolver(solver: Solver): void {
     this.solution.solver = solver.name;
   }
 
-  databagUpdate(databag: Databag) {
+  databagUpdate(databag: Databag): void {
     this.databag = databag;
   }
 

@@ -9,7 +9,7 @@ export class ErrorService {
 
   constructor(private matSnackBar: MatSnackBar) {}
 
-  reportError(msg: string, res: string = '') {
+  reportError(msg: string, res: string = ''): void {
     this.matSnackBar.open(msg, res, { duration: this.duration });
   }
 }

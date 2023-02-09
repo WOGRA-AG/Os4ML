@@ -8,9 +8,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 export class StarComponent {
   @Input() percentage = 0; // value between 0 and 1
 
-  constructor() {}
-
-  @HostBinding('style.--percentage') get getPercentage() {
+  @HostBinding('style.--percentage') get getPercentage(): number {
     return this.percentage;
   }
 }

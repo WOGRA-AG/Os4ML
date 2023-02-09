@@ -1,8 +1,9 @@
 <div>
   <h6 class="on-surface-high">
+    {{ item.label }}
     <ng-content></ng-content>
   </h6>
   <p class="mat-subheading-2 on-surface-medium">
-    <ng-content select="[description]"></ng-content>
+    {{ item.description }}
   </p>
 </div>

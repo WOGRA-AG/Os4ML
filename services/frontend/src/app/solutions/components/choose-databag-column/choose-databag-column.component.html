@@ -1,16 +1,8 @@
-<mat-list *ngIf="outputColumnAvailable; else helpMessage">
-  <ng-container *ngFor="let column of databag.columns">
-    <mat-list-item
-      class="bg-primary pointer"
-      [ngClass]="{ active: column?.name === lastSelectedColumn }"
-      (click)="selectColumn(column.name)">
-      <app-list-item>
-        {{ column.name }}
-        <ng-container description>{{ column.type }}</ng-container>
-      </app-list-item>
-    </mat-list-item>
-  </ng-container>
-</mat-list>
+<app-selectable-list
+  *ngIf="outputColumnAvailable && !!listItems$; else helpMessage"
+  [listItems$]="listItems$"
+  (selectedItemKeyChange)="selectedColumnChange.emit($event)">
+</app-selectable-list>
 
 <ng-template #helpMessage>
   <div>

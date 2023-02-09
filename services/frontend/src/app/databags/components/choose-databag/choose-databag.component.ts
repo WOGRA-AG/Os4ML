@@ -12,7 +12,7 @@ import { CreateDatabagStepperComponent } from '../create-databag-stepper/create-
 })
 export class ChooseDatabagComponent implements OnInit {
   @Input() databags: Databag[] = [];
-  @Output() selectedDatabagId: EventEmitter<string> =
+  @Output() selectedDatabagIdChange: EventEmitter<string> =
     new EventEmitter<string>();
   selectedDatabag: Databag = {};
 
@@ -21,22 +21,22 @@ export class ChooseDatabagComponent implements OnInit {
     public databagService: DatabagService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.databags.length > 0) {
       this.changeSelectedDatabag(this.databags[0]);
     }
   }
 
-  changeSelectedDatabag(databag: Databag) {
+  changeSelectedDatabag(databag: Databag): void {
     const id = databag.databagId;
     if (!id) {
       return;
     }
     this.selectedDatabag = databag;
-    this.selectedDatabagId.emit(id);
+    this.selectedDatabagIdChange.emit(id);
   }
 
-  openAddDialog() {
+  openAddDialog(): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });

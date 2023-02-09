@@ -27,7 +27,10 @@ export class DatabagService {
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
-    const sortByCreationTime = (databag1: Databag, databag2: Databag) => {
+    const sortByCreationTime = (
+      databag1: Databag,
+      databag2: Databag
+    ): number => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const date1 = new Date(databag1.creationTime!);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

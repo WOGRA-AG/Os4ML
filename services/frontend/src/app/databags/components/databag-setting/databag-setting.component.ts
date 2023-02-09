@@ -15,7 +15,7 @@ export class DatabagSettingComponent implements OnDestroy {
   databag: Databag = {};
   obj: any = { databagId: 123 };
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,

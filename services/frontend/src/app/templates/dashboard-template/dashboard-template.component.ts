@@ -33,7 +33,7 @@ export class DashboardTemplateComponent {
     );
   }
 
-  addDatabag() {
+  addDatabag(): void {
     this.dialog.open(DialogDynamicComponent, {
       data: { component: CreateDatabagStepperComponent },
     });

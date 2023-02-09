@@ -16,7 +16,7 @@
         </div>
         <app-choose-databag-column
           [databag]="databag"
-          (selectedColumn)="
+          (selectedColumnChange)="
             selectOutputColumn($event)
           "></app-choose-databag-column>
       </app-dialog-section>
@@ -53,7 +53,7 @@
       <app-dialog-section>
         <div title>{{ 'dialog.section.solver.description' | translate }}</div>
         <app-choose-solver
-          (selectedSolver)="selectSolver($event)"></app-choose-solver>
+          (selectedSolverChange)="selectSolver($event)"></app-choose-solver>
       </app-dialog-section>
     </mat-dialog-content>
   </mat-step>

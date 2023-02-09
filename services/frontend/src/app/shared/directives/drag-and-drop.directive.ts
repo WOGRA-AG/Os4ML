@@ -4,24 +4,24 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
   selector: '[appDragAndDrop]',
 })
 export class DragAndDropDirective {
-  @Output() filesDropped = new EventEmitter<File[]>();
+  @Output() filesDroppedChange = new EventEmitter<File[]>();
 
   // Dragover Event
-  @HostListener('dragover', ['$event']) dragOver(event: DragEvent) {
+  @HostListener('dragover', ['$event']) dragOver(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
   }
 
   // Dragleave Event
   @HostListener('dragleave', ['$event'])
-  public dragLeave(event: DragEvent) {
+  public dragLeave(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
   }
 
   // Drop Event
   @HostListener('drop', ['$event'])
-  public drop(event: DragEvent) {
+  public drop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
     if (!event.dataTransfer) {
@@ -29,7 +29,7 @@ export class DragAndDropDirective {
     }
     const files = event.dataTransfer.files;
     if (files.length > 0) {
-      this.filesDropped.emit(Array.from(files));
+      this.filesDroppedChange.emit(Array.from(files));
     }
   }
 }

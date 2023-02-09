@@ -1,15 +1,24 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { Databag } from 'build/openapi/modelmanager';
+import { of, Observable, map } from 'rxjs';
+import { ListItem } from 'src/app/shared/models/list-item';
 
 @Component({
   selector: 'app-choose-databag-column',
   templateUrl: './choose-databag-column.component.html',
   styleUrls: ['./choose-databag-column.component.scss'],
 })
-export class ChooseDatabagColumnComponent {
+export class ChooseDatabagColumnComponent implements OnChanges {
   @Input() databag: Databag = {};
-  @Output() selectedColumn = new EventEmitter<string>();
-  lastSelectedColumn = '';
+  @Output() selectedColumnChange = new EventEmitter<string>();
+  listItems$: Observable<ListItem[]> | undefined;
+
   allowedColumnTypes = ['category', 'numerical'];
 
   public get outputColumnAvailable(): boolean {
@@ -18,11 +27,23 @@ export class ChooseDatabagColumnComponent {
     );
   }
 
-  public selectColumn(column: string | undefined): void {
-    if (!column) {
+  ngOnChanges(): void {
+    if (!this.databag.columns) {
       return;
     }
-    this.lastSelectedColumn = column;
-    this.selectedColumn.emit(column);
+    this.listItems$ = of(this.databag.columns).pipe(
+      map(columns =>
+        columns.filter(
+          column => column.type && this.allowedColumnTypes.includes(column.type)
+        )
+      ),
+      map(columns =>
+        columns.map(column => ({
+          key: column.name || '',
+          label: column.name || '',
+          description: column.type || '',
+        }))
+      )
+    );
   }
 }

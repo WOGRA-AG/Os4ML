@@ -1,25 +1,47 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Solver } from 'build/openapi/modelmanager';
-import { Observable } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { SolverService } from '../../services/solver.service';
+import { ListItem } from '../../../shared/models/list-item';
 
 @Component({
   selector: 'app-choose-solver',
   templateUrl: './choose-solver.component.html',
   styleUrls: ['./choose-solver.component.scss'],
 })
-export class ChooseSolverComponent {
-  @Output() selectedSolver = new EventEmitter<Solver>();
-  lastSelectedSolver: Solver | null = null;
+export class ChooseSolverComponent implements OnDestroy {
+  @Output() selectedSolverChange: EventEmitter<Solver> =
+    new EventEmitter<Solver>();
 
-  solvers$: Observable<Solver[]>;
+  listItems$: Observable<ListItem[]>;
 
-  constructor(public solverService: SolverService) {
-    this.solvers$ = this.solverService.solvers$;
+  private destroy$: Subject<void> = new Subject<void>();
+
+  constructor(private solverService: SolverService) {
+    this.listItems$ = this.solverService.solvers$.pipe(
+      map(solvers =>
+        solvers.map(solver => ({
+          key: solver.name || '',
+          label: solver.name || '',
+          description: solver.description || '',
+        }))
+      )
+    );
   }
 
-  selectSolver(solver: Solver) {
-    this.lastSelectedSolver = solver;
-    this.selectedSolver.emit(solver);
+  selectSolver(key: string): void {
+    this.solverService
+      .getSolverByName(key)
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(solver => !!solver),
+        map(solver => solver!)
+      )
+      .subscribe(solver => this.selectedSolverChange.emit(solver));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }
