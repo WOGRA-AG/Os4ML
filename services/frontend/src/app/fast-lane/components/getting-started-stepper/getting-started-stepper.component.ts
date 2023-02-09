@@ -21,7 +21,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
   submitting = false;
   stepperStep = 0;
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<DialogDynamicComponent>,

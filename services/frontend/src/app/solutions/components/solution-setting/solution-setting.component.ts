@@ -17,7 +17,7 @@ export class SolutionSettingComponent implements OnDestroy {
   deleting = false;
   readonly pipelineStatus = PipelineStatus;
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,

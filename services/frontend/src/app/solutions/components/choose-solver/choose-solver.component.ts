@@ -14,7 +14,7 @@ export class ChooseSolverComponent implements OnDestroy {
 
   listItems$: Observable<ListItem[]>;
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(public solverService: SolverService) {
     this.listItems$ = this.solverService.solvers$.pipe(

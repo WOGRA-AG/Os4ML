@@ -19,7 +19,7 @@ export class PopupDeleteComponent implements OnDestroy {
   databag: Databag;
   deleting = false;
 
-  destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<DialogDynamicComponent>,
