@@ -1,7 +1,7 @@
 <app-selectable-list
   *ngIf="outputColumnAvailable && !!listItems$; else helpMessage"
   [listItems$]="listItems$"
-  (selectedItem)="selectedColumn.emit($event)">
+  (selectedItemKey)="selectedColumn.emit($event)">
 </app-selectable-list>
 
 <ng-template #helpMessage>
