@@ -26,6 +26,8 @@
           }
         ],
         "no-empty-function": ["error", { "allow": ["constructors"] }],
+        "no-useless-constructor": "off",
+        "@typescript-eslint/no-useless-constructor": "error",
         "no-underscore-dangle": 0,
         "no-unused-vars": "error",
         "@typescript-eslint/explicit-function-return-type": "error",

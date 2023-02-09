@@ -8,6 +8,4 @@ import { Databag } from '../../../../../build/openapi/modelmanager';
 })
 export class DatabagListItemComponent {
   @Input() databag: Databag = {};
-
-  constructor() {}
 }
