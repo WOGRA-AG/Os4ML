@@ -8,6 +8,7 @@ import {
 import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { SolutionStatus } from '../models/solution-status';
+import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
 
 @Injectable({
   providedIn: 'root',
@@ -31,17 +32,6 @@ export class SolutionService {
   getSolutionsByDatabagIdSortByCreationTime(
     databagId: string | undefined
   ): Observable<Solution[]> {
-    const sortByCreationTime = (
-      solution1: Solution,
-      solution2: Solution
-    ): number => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date1 = new Date(solution1.creationTime!);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date2 = new Date(solution2.creationTime!);
-      return date2.getTime() - date1.getTime();
-    };
-
     return this.solutions$.pipe(
       map(solutions =>
         solutions.filter(solution => solution.databagId === databagId)

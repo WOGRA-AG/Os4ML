@@ -6,6 +6,7 @@ import {
   ModelmanagerService,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
+import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
 
 @Injectable({
   providedIn: 'root',
@@ -27,17 +28,6 @@ export class DatabagService {
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
-    const sortByCreationTime = (
-      databag1: Databag,
-      databag2: Databag
-    ): number => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date1 = new Date(databag1.creationTime!);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date2 = new Date(databag2.creationTime!);
-      return date2.getTime() - date1.getTime();
-    };
-
     return this.databags$.pipe(
       map(databags => databags.sort(sortByCreationTime))
     );
