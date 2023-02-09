@@ -1,6 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { Databag } from 'build/openapi/modelmanager';
-import { of, Observable } from 'rxjs';
+import { of, Observable, map } from 'rxjs';
 import { ListItem } from 'src/app/shared/models/list-item';
 
 @Component({
@@ -8,7 +14,7 @@ import { ListItem } from 'src/app/shared/models/list-item';
   templateUrl: './choose-databag-column.component.html',
   styleUrls: ['./choose-databag-column.component.scss'],
 })
-export class ChooseDatabagColumnComponent implements OnInit {
+export class ChooseDatabagColumnComponent implements OnChanges {
   @Input() databag: Databag = {};
   @Output() selectedColumn = new EventEmitter<string>();
   listItems$: Observable<ListItem[]> | undefined;
@@ -21,20 +27,23 @@ export class ChooseDatabagColumnComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     if (!this.databag.columns) {
       return;
     }
-    this.listItems$ = of(
-      this.databag.columns
-        .filter(
+    this.listItems$ = of(this.databag.columns).pipe(
+      map(columns =>
+        columns.filter(
           column => column.type && this.allowedColumnTypes.includes(column.type)
         )
-        .map(column => ({
+      ),
+      map(columns =>
+        columns.map(column => ({
           key: column.name || '',
           label: column.name || '',
           description: column.type || '',
         }))
+      )
     );
   }
 }
