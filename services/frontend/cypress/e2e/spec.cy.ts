@@ -149,34 +149,40 @@ describe('Databags', () => {
     cy.visit('/dashboard');
     cy.get('.mat-subheading-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
-    cy.get('#mat-dialog-title-0').should('be.visible');
-    cy.get('.delete-button > .mat-button-wrapper')
-      .should('be.visible')
-      .wait(deleteTimeout)
-      .click();
+    cy.get('.delete-button > .mat-button-wrapper').click();
     cy.get(
-      '#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
+      '.ng-star-inserted > app-dialog-section > .dialog-element > .dialog-element-content'
+    ).should(
+      'have.text',
+      ' Are you sure you want to delete this solution? All data will be lost!\n'
+    );
+    cy.get(
+      '#mat-dialog-1 > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
     )
-      .should('be.visible')
       .wait(deleteTimeout)
       .click();
+    cy.wait(deleteTimeout);
+    cy.get('h5').should('have.text', 'Analyze your Data with Machine Learning');
   });
 
   it('delete databag', () => {
     cy.visit('/dashboard');
     cy.get(':nth-child(2) > .mat-list-item-content > .nav-caption').click();
     cy.get('.databag-list-item > :nth-child(1)').click();
-    cy.get('#mat-dialog-title-0').should('be.visible');
-    cy.get('.mat-stroked-button > .mat-button-wrapper')
-      .should('be.visible')
-      .wait(deleteTimeout)
-      .click();
+    cy.get('.mat-stroked-button > .mat-button-wrapper').click();
     cy.get(
-      '#mat-dialog-1 > app-dialog-dynamic.ng-star-inserted > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
+      '.ng-star-inserted > app-dialog-section > .dialog-element > .dialog-element-content'
+    ).should(
+      'have.text',
+      ' Are you sure you want to delete this databag? All data will be lost!\n'
+    );
+    cy.get(
+      '#mat-dialog-1 > .ng-star-inserted > .mat-dialog-actions > .mat-stroked-button > .mat-button-wrapper'
     )
-      .should('be.visible')
       .wait(deleteTimeout)
       .click();
+    cy.wait(deleteTimeout);
+    cy.get('h5').should('have.text', 'Get started with Machine Learning');
   });
 
   it('regression with fastlane', () => {
