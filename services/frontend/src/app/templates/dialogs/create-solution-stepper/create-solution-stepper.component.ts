@@ -2,13 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Subject, takeUntil } from 'rxjs';
+import { SolutionService } from 'src/app/solutions/services/solution.service';
 import {
   Databag,
   Solution,
   Solver,
 } from '../../../../../build/openapi/modelmanager';
 import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import { SolutionService } from '../../services/solution.service';
 
 @Component({
   selector: 'app-create-solution-stepper',

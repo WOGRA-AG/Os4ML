@@ -13,7 +13,7 @@ export class SupportComponent {
   async openGettingStartedDialog(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { GettingStartedStepperComponent } = await import(
-      'src/app/fast-lane/components/getting-started-stepper/getting-started-stepper.component'
+      'src/app/templates/dialogs/getting-started-stepper/getting-started-stepper.component'
     );
 
     this.dialog.open(DialogDynamicComponent, {

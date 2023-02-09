@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DatabagTemplateComponent } from './templates/databag-template/databag-template.component';
-import { NotFoundTemplateComponent } from './templates/not-found-template/not-found-template.component';
-import { DashboardTemplateComponent } from './templates/dashboard-template/dashboard-template.component';
+import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboard-page.component';
+import { DatabagPageComponent } from './templates/pages/databag-page/databag-page.component';
+import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   {
     path: 'dashboard',
-    component: DashboardTemplateComponent,
+    component: DashboardPageComponent,
     runGuardsAndResolvers: 'always',
   },
   {
@@ -17,12 +17,12 @@ const routes: Routes = [
   },
   {
     path: 'databag',
-    component: DatabagTemplateComponent,
+    component: DatabagPageComponent,
     runGuardsAndResolvers: 'always',
   },
   {
     path: '**',
-    component: NotFoundTemplateComponent,
+    component: NotFoundPageComponent,
   },
 ];
 
