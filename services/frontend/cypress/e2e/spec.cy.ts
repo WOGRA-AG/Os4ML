@@ -249,4 +249,30 @@ describe('Databags', () => {
       'app-choose-databag-column > app-selectable-list > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div > .mat-subheading-2'
     ).should('have.text', ' numerical ');
   });
+
+  it('mnist', function () {
+    cy.get(
+      ':nth-child(3) > .mat-list-item-content > .nav-item-extended'
+    ).click();
+    cy.get('#mat-input-0').clear();
+    cy.get('#mat-input-0').type('mnist');
+    cy.get('#file-input')
+      .invoke('show')
+      .selectFile('cypress/fixtures/mnist_test_dataset.zip');
+    cy.get('#add-databag-main-button').click();
+    cy.wait(1000);
+
+    cy.get(
+      '#mat-select-value-1 > .mat-select-value-text > .mat-select-min-line',
+      { timeout: databagTimeout }
+    ).should('have.text', 'image');
+    cy.get(
+      '#mat-select-value-3 > .mat-select-value-text > .mat-select-min-line',
+      { timeout: databagTimeout }
+    ).should('have.text', 'category');
+    cy.get('#mat-dialog-0').click();
+    cy.get(
+      ':nth-child(1) > .mat-list-item-content > .nav-item-extended > .mat-subheading-2'
+    ).should('have.text', 'mnist');
+  });
 });
