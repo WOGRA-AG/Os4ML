@@ -36,17 +36,25 @@ export class CreateDatabagComponent {
     }
 
     try {
-      this.databag.fileName = this.file.name || this.fileUrl;
+      if (this.file.name) {
+        this.databag.fileName = this.file.name;
+        this.databag.status = 'Uploading file';
+        this.databagChange.next(this.databag);
+        this.databag = await firstValueFrom(
+          this.databagService.uploadDataset(this.file, this.databag)
+        );
+      } else {
+        this.databag.fileName = this.fileUrl;
+      }
+
+      this.databag.status = 'Starting Pipeline';
+      this.databagChange.next(this.databag);
+
       this.databag = await firstValueFrom(
         this.databagService.createDatabag(this.databag)
       );
       this.databagChange.next(this.databag);
-      if (this.file.name && this.databag.databagId) {
-        await firstValueFrom(
-          this.databagService.uploadDataset(this.databag.databagId, this.file)
-        );
-        await firstValueFrom(this.outputDatabagUpdates(this.databag.databagId));
-      }
+      await firstValueFrom(this.outputDatabagUpdates(this.databag.databagId!));
     } catch (err: any) {
       this.errorService.reportError(err);
     }

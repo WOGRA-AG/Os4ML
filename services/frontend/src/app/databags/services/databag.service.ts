@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { filter, map, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  Observable,
+  switchMap,
+  throwError,
+  of,
+} from 'rxjs';
 import {
   Databag,
+  DatasetPutUrl,
   ModelmanagerService,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ErrorService } from 'src/app/core/services/error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +28,9 @@ export class DatabagService {
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
-    private webSocketConnectionService: WebSocketConnectionService
+    private webSocketConnectionService: WebSocketConnectionService,
+    private http: HttpClient,
+    private errorService: ErrorService
   ) {
     const path = '/apis/v1beta1/model-manager/databags';
     this._databags$ = this.webSocketConnectionService.connect(path);
@@ -64,9 +77,27 @@ export class DatabagService {
     );
   }
 
-  uploadDataset(id: string, file: Blob): Observable<void> {
+  getDatasetPutUrl(fileName: string): Observable<DatasetPutUrl> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.uploadDataset(id, token, file))
+      switchMap(token => this.modelManager.getDatasetPutUrl(fileName, token))
+    );
+  }
+
+  uploadDataset(file: File, databag: Databag): Observable<Databag> {
+    return this.getDatasetPutUrl(file.name).pipe(
+      switchMap(({ url, databagId }) => {
+        databag.databagId = databagId;
+        if (!url) {
+          return throwError(() => new Error('Invalid put url for dataset'));
+        }
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const headers = new HttpHeaders({ 'Content-Type': file.type });
+        return this.http.put(url, file, { headers }).pipe(map(() => databag));
+      }),
+      catchError(err => {
+        this.errorService.reportError(err);
+        return throwError(() => err);
+      })
     );
   }
 
