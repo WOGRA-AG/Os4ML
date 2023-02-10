@@ -44,13 +44,18 @@ def iter_dirs_of_zip_with_labels(
     zip_file: str,
 ) -> Generator[Tuple[str, str], None, None]:
     with zipfile.ZipFile(zip_file) as root:
-        unpacked_root_dir = next(zipfile.Path(root).iterdir())
-        for label_dir in unpacked_root_dir.iterdir():
+        root_dir = zipfile.Path(root)
+        if sum(1 for _ in root_dir.iterdir()) == 1:
+            sub_dir = next(root_dir.iterdir())
+            sub_sub_dir = next(root_dir.iterdir())
+            if sub_sub_dir.is_dir():
+                root_dir = sub_dir
+        for label_dir in root_dir.iterdir():
             label = label_dir.name
             for file in label_dir.iterdir():
                 abs_file_name = pathlib.Path(str(file)).resolve()
                 abs_root_dir_name = pathlib.Path(
-                    str(unpacked_root_dir.parent)
+                    str(root_dir.parent)
                 ).resolve()
                 rel_file_name = abs_file_name.relative_to(abs_root_dir_name)
                 yield str(rel_file_name), label
