@@ -7,7 +7,7 @@ class StatusMessage(str, enum.Enum):
     DATABAG_DONE = "message.pipeline.done.databag_done"
 
     # running
-    UPLOADING_DATA = "message.pipeline.running.uploading_data"
+    LOADING_DATA = "message.pipeline.running.loading_data"
     INSPECTING_DATATYPES = "message.pipeline.running.inspecting_datatypes"
     SOLUTION_CREATED = "message.pipeline.running.Solution_created"
     SOLVER_RUNNING = "message.pipeline.running.solver_running"
