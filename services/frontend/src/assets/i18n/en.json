@@ -5,6 +5,7 @@
     "pipeline": {
       "default": "Starting",
       "running": {
+        "uploading_file": "Uploading_file",
         "loading_data": "Loading data",
         "inspecting_datatypes": "Inspecting datatypes of data",
         "creating_databag": "Creating databag",

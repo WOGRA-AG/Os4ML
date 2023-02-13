@@ -38,7 +38,7 @@ export class CreateDatabagComponent {
     try {
       if (this.file.name) {
         this.databag.fileName = this.file.name;
-        this.databag.status = 'Uploading file';
+        this.databag.status = 'message.pipeline.running.uploading_file';
         this.databagChange.next(this.databag);
         this.databag = await firstValueFrom(
           this.databagService.uploadDataset(this.file, this.databag)
