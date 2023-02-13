@@ -62,7 +62,7 @@ export class SolutionSettingComponent implements OnDestroy {
       data: {
         titleKey: 'solution.delete.title',
         messageKey: 'solution.delete.confirmation',
-        callback: deleteSolution,
+        onConfirm: deleteSolution,
       },
     });
     deleteDialogRef

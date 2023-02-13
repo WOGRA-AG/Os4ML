@@ -53,7 +53,7 @@ export class DatabagSettingComponent implements OnDestroy {
       data: {
         titleKey: 'databag.delete.title',
         messageKey: 'databag.delete.confirmation',
-        callback: deleteDatabag,
+        onConfirm: deleteDatabag,
       },
     });
     deleteDialogRef

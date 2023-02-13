@@ -18,7 +18,7 @@ export class PopupConfirmComponent implements OnDestroy {
     public data: {
       titleKey: string;
       messageKey: string;
-      callback: () => Observable<void>;
+      onConfirm: () => Observable<void>;
     }
   ) {
     this.dialog.disableClose = true;
@@ -31,7 +31,7 @@ export class PopupConfirmComponent implements OnDestroy {
   submit(): void {
     this.submitting = true;
     this.data
-      .callback()
+      .onConfirm()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.submitting = false;
