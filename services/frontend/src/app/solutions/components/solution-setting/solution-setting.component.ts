@@ -1,11 +1,15 @@
-import { Component, OnDestroy, Renderer2 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnDestroy, Renderer2, Inject } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
-import { PopupDeleteComponent } from '../../../shared/components/organisms/popup-delete/popup-delete.component';
 import { SolutionService } from '../../services/solution.service';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-solution-setting',
@@ -20,12 +24,17 @@ export class SolutionSettingComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private dialogRef: MatDialogRef<DialogDynamicComponent>,
+    private dialogRef: MatDialogRef<SolutionSettingComponent>,
     private dialog: MatDialog,
     private solutionService: SolutionService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      solution: Solution;
+    }
   ) {
-    this.solution = dialogRef.componentInstance.data.solution;
+    this.dialogRef.disableClose = true;
+    this.solution = this.data.solution;
   }
 
   close(): void {
@@ -46,17 +55,23 @@ export class SolutionSettingComponent implements OnDestroy {
   }
 
   delete(): void {
-    const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: { component: PopupDeleteComponent, solution: this.solution },
+    const deleteSolution = (): Promise<void> =>
+      firstValueFrom(this.solutionService.deleteSolutionById(this.solution.id));
+
+    const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      data: {
+        titleKey: 'solution.delete.title',
+        messageKey: 'solution.delete.confirmation',
+        onConfirm: deleteSolution,
+      },
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(msg => {
-        if (msg === 'deleted') {
-          this.dialogRef.close();
-        }
-      });
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(confirm => !!confirm)
+      )
+      .subscribe(() => this.dialogRef.close());
   }
 
   download(): void {

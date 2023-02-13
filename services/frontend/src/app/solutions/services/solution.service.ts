@@ -60,7 +60,10 @@ export class SolutionService {
     );
   }
 
-  deleteSolutionById(id: string): Observable<void> {
+  deleteSolutionById(id: string | undefined): Observable<void> {
+    if (!id) {
+      return of(undefined);
+    }
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.deleteSolutionById(id, token))
     );

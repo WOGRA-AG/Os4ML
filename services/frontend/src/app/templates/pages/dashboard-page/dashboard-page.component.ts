@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../databags/services/databag.service';
 import { SolutionService } from '../../../solutions/services/solution.service';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
 
@@ -34,17 +33,15 @@ export class DashboardPageComponent {
   }
 
   addDatabag(): void {
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: CreateDatabagStepperComponent },
-    });
+    this.dialog.open(CreateDatabagStepperComponent);
   }
 
   async addSolution(): Promise<void> {
     const databag = await firstValueFrom(
       this.databagService.getDatabagById(this.selectedDatabagId$.getValue())
     );
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: CreateSolutionStepperComponent, databag },
+    this.dialog.open(CreateSolutionStepperComponent, {
+      data: { databag },
     });
   }
 

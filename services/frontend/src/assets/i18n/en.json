@@ -55,7 +55,11 @@
       "number_of_samples": "Samples",
       "creation": "Creation"
     },
-    "empty": "Get started with Machine Learning"
+    "empty": "Get started with Machine Learning",
+    "delete": {
+      "title": "Delete Databag",
+      "confirmation": "Are you sure you want to delete this databag? All data will be lost!"
+    }
   },
   "solution": {
     "name": "Solution",
@@ -71,7 +75,11 @@
       "creation": "Creation",
       "status": "Status"
     },
-    "empty": "Analyze your Data with Machine Learning"
+    "empty": "Analyze your Data with Machine Learning",
+    "delete": {
+      "title": "Delete Solution",
+      "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    }
   },
   "problem": {
     "name": "Problem"
@@ -104,10 +112,6 @@
     },
     "create_databag": {
       "step_one": "Data"
-    },
-    "delete": {
-      "title": "Confirm Delete",
-      "description": "Are you sure you want to delete? All data will be lost!"
     }
   },
   "page": {

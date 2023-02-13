@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { filter, map, Observable, switchMap } from 'rxjs';
+import { filter, map, Observable, of, switchMap } from 'rxjs';
 import {
   Databag,
   ModelmanagerService,
@@ -47,7 +47,10 @@ export class DatabagService {
     );
   }
 
-  deleteDatabagById(id: string): Observable<void> {
+  deleteDatabagById(id: string | undefined): Observable<void> {
+    if (!id) {
+      return of(undefined);
+    }
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.deleteDatabagById(id, token))
     );
