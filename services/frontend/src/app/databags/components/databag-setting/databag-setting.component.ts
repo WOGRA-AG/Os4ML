@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../services/databag.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 
@@ -46,8 +46,10 @@ export class DatabagSettingComponent implements OnDestroy {
   }
 
   delete(): void {
-    const deleteDatabag = (): Observable<void> =>
-      this.databagService.deleteDatabagById(this.databag.databagId);
+    const deleteDatabag = (): Promise<void> =>
+      firstValueFrom(
+        this.databagService.deleteDatabagById(this.databag.databagId)
+      );
 
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
       data: {

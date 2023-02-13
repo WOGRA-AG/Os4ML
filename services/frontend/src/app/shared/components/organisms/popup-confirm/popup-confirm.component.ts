@@ -1,16 +1,13 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-popup-confirm',
   templateUrl: './popup-confirm.component.html',
   styleUrls: ['./popup-confirm.component.scss'],
 })
-export class PopupConfirmComponent implements OnDestroy {
+export class PopupConfirmComponent {
   submitting = false;
-
-  private destroy$ = new Subject<void>();
 
   constructor(
     private dialog: MatDialogRef<PopupConfirmComponent, boolean>,
@@ -18,7 +15,7 @@ export class PopupConfirmComponent implements OnDestroy {
     public data: {
       titleKey: string;
       messageKey: string;
-      onConfirm: () => Observable<void>;
+      onConfirm: () => Promise<void>;
     }
   ) {
     this.dialog.disableClose = true;
@@ -30,17 +27,9 @@ export class PopupConfirmComponent implements OnDestroy {
 
   submit(): void {
     this.submitting = true;
-    this.data
-      .onConfirm()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.submitting = false;
-        this.dialog.close(true);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
+    this.data.onConfirm().then(() => {
+      this.submitting = false;
+      this.dialog.close(true);
+    });
   }
 }
