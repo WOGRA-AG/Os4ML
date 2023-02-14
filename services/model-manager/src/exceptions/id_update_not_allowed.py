@@ -11,3 +11,15 @@ class SolutionIdUpdateNotAllowedException(IdUpdateNotAllowedException):
 class DatabagIdUpdateNotAllowedException(IdUpdateNotAllowedException):
     def __init__(self) -> None:
         super().__init__("An update of the id of a databag is not allowed.")
+
+
+class PredictionIdUpdateNotAllowedExeption(IdUpdateNotAllowedException):
+    def __init__(self) -> None:
+        super().__init__("An update of the id of a prediction is not allowed.")
+
+
+class ModelIdUpdateNotAllowedException(IdUpdateNotAllowedException):
+    def __init__(self, model_name: str):
+        super().__init__(
+            f"An update of the id of a {model_name} is not allowed."
+        )
