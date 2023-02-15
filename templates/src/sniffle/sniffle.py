@@ -41,7 +41,7 @@ def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
     example_file = df[IMAGE_COL_NAME][0]
     num_files = len(df[IMAGE_COL_NAME])
     suffix = pathlib.Path(example_file).suffix.lower()
-    if suffix in (".jpg", ".jpeg", ".png", ".tiff"):
+    if suffix in (".jpg", ".jpeg", ".png", ".tif", ".tiff"):
         file_column = Column(
             name=IMAGE_COL_NAME,
             type=ColumnDataType.IMAGE.value,

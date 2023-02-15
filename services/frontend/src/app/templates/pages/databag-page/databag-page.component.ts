@@ -17,7 +17,7 @@ export class DatabagPageComponent {
     private databagService: DatabagService,
     private dialog: MatDialog
   ) {
-    this.databags$ = this.databagService.databags$;
+    this.databags$ = this.databagService.getDatabagsSortByCreationTime();
   }
 
   addDatabag(): void {

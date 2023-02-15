@@ -5,8 +5,9 @@
     "pipeline": {
       "default": "Starting",
       "running": {
-        "uploading_data": "Uploading data",
-        "inspecting_datatypes": "inspecting datatypes of columns",
+        "uploading_file": "Uploading_file",
+        "loading_data": "Loading data",
+        "inspecting_datatypes": "Inspecting datatypes of data",
         "creating_databag": "Creating databag",
         "Solution_created": "Solution created",
         "solver_running": "Solver running",

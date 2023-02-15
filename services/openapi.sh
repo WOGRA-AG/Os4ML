@@ -3,6 +3,9 @@
 cd oas && ./distribute_oas.sh
 cd ..
 
+cd frontend && npm run generate:modelmanager
+cd ..
+
 cd job-manager && ./openapi.sh
 cd ..
 

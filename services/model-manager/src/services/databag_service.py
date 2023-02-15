@@ -15,6 +15,7 @@ from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
+from build.openapi_server.models.dataset_put_url import DatasetPutUrl
 from exceptions import (
     DatabagIdUpdateNotAllowedException,
     DatabagNotFoundException,
@@ -43,8 +44,12 @@ class DatabagService:
         self.databag_config_file_name = DATABAG_CONFIG_FILE_NAME
         self.dataframe_file_name = DATAFRAME_FILE_NAME
 
-    def _get_databag_object_name(self, databag_id: str) -> str:
-        return f"{databag_id}/{self.databag_config_file_name}"
+    def _get_databag_object_name(
+        self, databag_id: str, object_name: str | None = None
+    ) -> str:
+        if object_name is None:
+            object_name = self.databag_config_file_name
+        return f"{databag_id}/{object_name}"
 
     def get_databags(self, usertoken: str) -> list[Databag]:
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
@@ -101,7 +106,8 @@ class DatabagService:
             raise DatabagNotFoundException(databag_id)
 
     def create_databag(self, databag: Databag, usertoken: str) -> Databag:
-        databag.databag_id = str(uuid.uuid4())
+        if not databag.databag_id:
+            databag.databag_id = str(uuid.uuid4())
         databag.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._save_databag_file(databag, usertoken)
         run_params = RunParams(databag_id=databag.databag_id, solution_name="")
@@ -112,6 +118,16 @@ class DatabagService:
         self._save_databag_file(databag, usertoken)
         self._notify_databag_update(usertoken)
         return databag
+
+    def get_dataset_put_url(
+        self, file_name: str, usertoken: str
+    ) -> DatasetPutUrl:
+        databag_id = str(uuid.uuid4())
+        object_name = self._get_databag_object_name(databag_id, file_name)
+        put_url = self.objectstore.get_presigned_put_url(
+            object_name, usertoken=usertoken
+        )
+        return DatasetPutUrl(databag_id=databag_id, url=put_url)
 
     def update_databag(
         self, databag_id: str, databag: Databag, usertoken: str
@@ -167,17 +183,9 @@ class DatabagService:
     def _get_presigned_get_url_for_databag_file(
         self, databag_id: str, file_name: str, usertoken: str
     ) -> str:
-        object_name = f"{databag_id}/{file_name}"
+        object_name = self._get_databag_object_name(databag_id, file_name)
         return self.objectstore.get_presigned_get_url(  # type: ignore
             object_name, usertoken=usertoken
-        )
-
-    def upload_dataset(
-        self, databag_id: str, body: bytes, usertoken: str
-    ) -> None:
-        databag = self.get_databag_by_id(databag_id, usertoken)
-        self._upload_file_to_databag(
-            databag, body, databag.file_name, usertoken
         )
 
     def upload_dataframe(
@@ -198,7 +206,9 @@ class DatabagService:
     ) -> None:
         bytes_io = BytesIO(body)
         bytes_io.seek(0)
-        object_name = f"{databag.databag_id}/{file_name}"
+        object_name = self._get_databag_object_name(
+            databag.databag_id, file_name
+        )
         self.objectstore.put_object_by_name(
             object_name, body=bytes_io, usertoken=usertoken
         )
