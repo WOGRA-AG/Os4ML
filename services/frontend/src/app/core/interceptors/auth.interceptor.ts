@@ -3,26 +3,33 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpResponse
+  HttpInterceptor,
+  HttpResponse,
 } from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
-import {UserService} from '../services/user.service';
+import { Observable, tap } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  constructor(private userService: UserService) {}
 
-  constructor(private userService: UserService) {
-  }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       tap(httpEvent => {
-        if (httpEvent.type === 0 || !(httpEvent instanceof HttpResponse) || !httpEvent.headers.has('x-auth-request-access-token')){
+        if (
+          httpEvent.type === 0 ||
+          !(httpEvent instanceof HttpResponse) ||
+          !httpEvent.headers.has('x-auth-request-access-token')
+        ) {
           return;
         }
-        const token = httpEvent.headers.get('x-auth-request-access-token') || '';
+        const token =
+          httpEvent.headers.get('x-auth-request-access-token') || '';
         this.userService.addToken(token);
-      }),
+      })
     );
   }
 }

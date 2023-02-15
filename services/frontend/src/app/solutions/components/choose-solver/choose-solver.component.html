@@ -1,13 +1,3 @@
-<mat-list>
-  <mat-list-item
-    *ngFor="let solver of solvers$ | async"
-    class="pointer bg-primary"
-    [ngClass]="{'active': solverService.isSameSolver(solver, lastSelectedSolver)}"
-    (click)="selectSolver(solver)"
-  >
-    <app-list-item>
-      {{solver.name}}
-      <ng-container description>{{solver.description}}</ng-container>
-    </app-list-item>
-  </mat-list-item>
-</mat-list>
+<app-selectable-list
+  [listItems$]="listItems$"
+  (selectedItemKeyChange)="selectSolver($event)"></app-selectable-list>

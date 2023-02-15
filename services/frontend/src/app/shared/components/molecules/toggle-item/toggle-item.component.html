@@ -1,13 +1,14 @@
-<ng-container *ngIf="disabled; then ItemDisabled; else ItemEnabled"></ng-container>
+<ng-container
+  *ngIf="disabled; then ItemDisabled; else ItemEnabled"></ng-container>
 
 <ng-template #ItemDisabled>
   <div class="item-container disabled">
     <div class="item-description">
       <h6 class="on-surface-high">
-        {{column.name}}
+        {{ column.name }}
       </h6>
       <div class="mat-subheading-2 on-surface-medium">
-        {{column.type}} {{"dialog.solution_list.field" | translate}}
+        {{ column.type }} {{ 'dialog.solution_list.field' | translate }}
       </div>
     </div>
   </div>
@@ -17,13 +18,17 @@
   <div class="item-container" (click)="toggleChange(toggle)">
     <div class="item-description">
       <h6 class="on-surface-high">
-        {{column.name}}
+        {{ column.name }}
       </h6>
       <div class="mat-subheading-2 on-surface-medium">
-        {{column.type}} {{"dialog.solution_list.field" | translate}}
+        {{ column.type }} {{ 'dialog.solution_list.field' | translate }}
       </div>
     </div>
-    <mat-slide-toggle #toggle color="primary" (click)="toggleClick($event)" [checked]="selected">
+    <mat-slide-toggle
+      #toggle
+      color="primary"
+      (click)="toggleClick($event)"
+      [checked]="selected">
     </mat-slide-toggle>
   </div>
 </ng-template>

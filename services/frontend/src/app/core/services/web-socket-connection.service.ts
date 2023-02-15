@@ -4,19 +4,22 @@ import { webSocket } from 'rxjs/webSocket';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebSocketConnectionService {
   private webSocketProtocol = location.protocol === 'http:' ? 'ws' : 'wss';
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   connect(path: string): Observable<any> {
     return this.userService.currentToken$.pipe(
-      map(token => `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`),
+      map(
+        token =>
+          `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`
+      ),
       switchMap(url => webSocket(url)),
       retry(),
-      shareReplay(1),
+      shareReplay(1)
     );
   }
 }

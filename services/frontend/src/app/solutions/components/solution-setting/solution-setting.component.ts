@@ -1,65 +1,97 @@
-import {Component, Renderer2} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Solution} from '../../../../../build/openapi/modelmanager';
-import {PopupDeleteComponent} from '../../../shared/components/organisms/popup-delete/popup-delete.component';
-import {SolutionService} from '../../services/solution.service';
-import {DialogDynamicComponent} from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
-import {PipelineStatus} from '../../../core/models/pipeline-status';
+import { Component, OnDestroy, Renderer2, Inject } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { Solution } from '../../../../../build/openapi/modelmanager';
+import { SolutionService } from '../../services/solution.service';
+import { PipelineStatus } from '../../../core/models/pipeline-status';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-solution-setting',
   templateUrl: './solution-setting.component.html',
-  styleUrls: ['./solution-setting.component.scss']
+  styleUrls: ['./solution-setting.component.scss'],
 })
-export class SolutionSettingComponent {
+export class SolutionSettingComponent implements OnDestroy {
   solution: Solution;
   deleting = false;
   readonly pipelineStatus = PipelineStatus;
 
+  private destroy$: Subject<void> = new Subject<void>();
+
   constructor(
-    private dialogRef: MatDialogRef<DialogDynamicComponent>,
+    private dialogRef: MatDialogRef<SolutionSettingComponent>,
     private dialog: MatDialog,
     private solutionService: SolutionService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      solution: Solution;
+    }
   ) {
-    this.solution = dialogRef.componentInstance.data.solution;
+    this.dialogRef.disableClose = true;
+    this.solution = this.data.solution;
   }
 
   close(): void {
     this.dialogRef.close();
   }
 
-  update() {
+  update(): void {
     if (!this.solution.id) {
       this.dialogRef.close('aborted');
       return;
     }
-    this.solutionService.updateSolutionById(this.solution.id, this.solution).subscribe(() => {
-      this.dialogRef.close('updated');
-    });
-  }
-
-  delete() {
-    const deleteDialogRef = this.dialog.open(DialogDynamicComponent, {
-      data: {component: PopupDeleteComponent, solution: this.solution}
-    });
-    deleteDialogRef.afterClosed().subscribe((msg) => {
-      if (msg === 'deleted') {
-        this.dialogRef.close();
-      }
-    });
-  }
-
-  download() {
-    if (this.solution.id) {
-      this.solutionService.downloadModel(this.solution.id).subscribe(url => {
-        const link = this.renderer.createElement('a');
-        link.target = '_blank';
-        link.href = url;
-        link.dowload = 'model.zip';
-        link.click();
-        link.remove();
+    this.solutionService
+      .updateSolutionById(this.solution.id, this.solution)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.dialogRef.close('updated');
       });
+  }
+
+  delete(): void {
+    const deleteSolution = (): Promise<void> =>
+      firstValueFrom(this.solutionService.deleteSolutionById(this.solution.id));
+
+    const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      data: {
+        titleKey: 'solution.delete.title',
+        messageKey: 'solution.delete.confirmation',
+        onConfirm: deleteSolution,
+      },
+    });
+    deleteDialogRef
+      .afterClosed()
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(confirm => !!confirm)
+      )
+      .subscribe(() => this.dialogRef.close());
+  }
+
+  download(): void {
+    if (this.solution.id) {
+      this.solutionService
+        .downloadModel(this.solution.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(url => {
+          const link = this.renderer.createElement('a');
+          link.target = '_blank';
+          link.href = url;
+          link.dowload = 'model.zip';
+          link.click();
+          link.remove();
+        });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

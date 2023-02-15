@@ -12,13 +12,15 @@
 @use './components/chips.scss' as chips;
 @use './components/stepper.scss' as stepper;
 
-$os4ml-theme: mat.define-light-theme((
-  color: (
-    primary: colors.$os4ml-primary,
-    accent: colors.$os4ml-accent,
-    warn: colors.$os4ml-warn,
+$os4ml-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: colors.$os4ml-primary,
+      accent: colors.$os4ml-accent,
+      warn: colors.$os4ml-warn,
+    ),
   )
-));
+);
 
 @include mat.core();
 @include mat.core(typography.$custom-typography);

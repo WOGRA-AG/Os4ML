@@ -5,8 +5,9 @@
     "pipeline": {
       "default": "Starting",
       "running": {
-        "uploading_data": "Uploading data",
-        "inspecting_datatypes": "inspecting datatypes of columns",
+        "uploading_file": "Uploading_file",
+        "loading_data": "Loading data",
+        "inspecting_datatypes": "Inspecting datatypes of data",
         "creating_databag": "Creating databag",
         "Solution_created": "Solution created",
         "solver_running": "Solver running",
@@ -55,9 +56,13 @@
       "number_of_samples": "Samples",
       "creation": "Creation"
     },
-    "empty": "Get started with Machine Learning"
+    "empty": "Get started with Machine Learning",
+    "delete": {
+      "title": "Delete Databag",
+      "confirmation": "Are you sure you want to delete this databag? All data will be lost!"
+    }
   },
-  "solution":{
+  "solution": {
     "name": "Solution",
     "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
     "settings": "Solution Settings",
@@ -71,9 +76,13 @@
       "creation": "Creation",
       "status": "Status"
     },
-    "empty": "Analyze your Data with Machine Learning"
+    "empty": "Analyze your Data with Machine Learning",
+    "delete": {
+      "title": "Delete Solution",
+      "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    }
   },
-  "problem":{
+  "problem": {
     "name": "Problem"
   },
   "solver": {
@@ -95,7 +104,7 @@
         "documentation": "(documentation)",
         "missing_category": "The databag contains no categorical or numerical columns. Please define one in the databag settings. For more information please read the"
       },
-      "solver" : {
+      "solver": {
         "description": "Which solver do you want to use?"
       }
     },
@@ -104,10 +113,6 @@
     },
     "create_databag": {
       "step_one": "Data"
-    },
-    "delete": {
-      "title": "Confirm Delete",
-      "description": "Are you sure you want to delete? All data will be lost!"
     }
   },
   "page": {

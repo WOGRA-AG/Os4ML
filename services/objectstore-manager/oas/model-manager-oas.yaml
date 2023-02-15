@@ -91,6 +91,23 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
+  "/apis/v1beta1/model-manager/databags/dataset/{fileName}":
+    get:
+      summary: "get put url for dataset and get databagId for the databag"
+      operationId: getDatasetPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/FileName'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetPutUrl'
+
   "/apis/v1beta1/model-manager/databags/{databagId}/files/dataset":
     get:
       summary: "download dataset from databag"
@@ -105,23 +122,6 @@ paths:
           $ref: '#/components/responses/DownloadLink'
         404:
           $ref: '#/components/responses/NotFound'
-    put:
-      summary: "upload dataset to databag"
-      operationId: uploadDataset
-      tags:
-        - modelmanager
-      parameters:
-        - $ref: '#/components/parameters/DatabagId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          $ref: '#/components/responses/Uploaded'
 
   "/apis/v1beta1/model-manager/databags/{databagId}/files/dataframe":
     get:
@@ -324,6 +324,12 @@ components:
       $ref: './shared-oas.yaml#/components/schemas/User'
     OIDCUser:
       $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
+    DatasetPutUrl:
+      properties:
+        url:
+          type: string
+        databagId:
+          $ref: './shared-oas.yaml#/components/schemas/DatabagId'
   parameters:
     DatabagId:
       name: databagId
@@ -343,6 +349,13 @@ components:
       name: solverName
       in: path
       description: name of the solver
+      required: true
+      schema:
+        type: string
+    FileName:
+      name: fileName
+      in: path
+      description: name of a file
       required: true
       schema:
         type: string

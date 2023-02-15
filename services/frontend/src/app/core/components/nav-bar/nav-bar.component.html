@@ -2,21 +2,33 @@
   <mat-sidenav class="bg-surface" mode="side" position="start" opened>
     <div class="sidenav-container">
       <div>
-        <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo">
+        <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo" />
         <mat-nav-list class="nav-list">
-          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/dashboard']">
+          <mat-list-item
+            [routerLinkActive]="['active']"
+            [routerLink]="['/dashboard']">
             <mat-icon matListIcon>apps</mat-icon>
-            <span class="nav-caption">{{'page.dashboard.title' | translate}}</span>
+            <span class="nav-caption">{{
+              'page.dashboard.title' | translate
+            }}</span>
           </mat-list-item>
-          <mat-list-item [routerLinkActive]="['active']" [routerLink]="['/databag']">
+          <mat-list-item
+            [routerLinkActive]="['active']"
+            [routerLink]="['/databag']">
             <mat-icon matListIcon>folder_open</mat-icon>
-            <span class="nav-caption">{{'databag.plural' | translate}}</span>
+            <span class="nav-caption">{{ 'databag.plural' | translate }}</span>
           </mat-list-item>
-          <mat-list-item style="display: none" [routerLinkActive]="['active']" [routerLink]="['/settings']">
+          <mat-list-item
+            style="display: none"
+            [routerLinkActive]="['active']"
+            [routerLink]="['/settings']">
             <mat-icon matListIcon>settings</mat-icon>
             <span class="nav-caption">Settings</span>
           </mat-list-item>
-          <mat-list-item style="display: none" [routerLinkActive]="['active']" [routerLink]="['/user']">
+          <mat-list-item
+            style="display: none"
+            [routerLinkActive]="['active']"
+            [routerLink]="['/user']">
             <mat-icon matListIcon>perm_identity</mat-icon>
             <span class="nav-caption">User</span>
           </mat-list-item>

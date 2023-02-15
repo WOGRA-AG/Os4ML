@@ -1,14 +1,33 @@
-<input id="file-input" type="file" class="file-input" (change)="uploadFile($event)" #fileUpload>
-<div class="upload-file bg-primary border-color mat-body-1 on-surface-medium" appDragAndDrop
-     (filesDropped)="uploadDroppedFile($event)" (click)="fileUpload.click()">
-  <div *ngIf="file.name; else templateName">{{file.name}}</div>
+<input
+  id="file-input"
+  type="file"
+  class="file-input"
+  (change)="uploadFile($event)"
+  #fileUpload />
+<div
+  class="upload-file bg-primary border-color mat-body-1 on-surface-medium"
+  appDragAndDrop
+  (filesDroppedChange)="uploadDroppedFile($event)"
+  (click)="fileUpload.click()">
+  <div *ngIf="file.name; else templateName">{{ file.name }}</div>
   <ng-template #templateName>
-    {{"dialog.section.upload.upper_field_placeholder" | translate}} <br>{{"dialog.section.upload.lower_field_placeholder" | translate}}
+    {{ 'dialog.section.upload.upper_field_placeholder' | translate }} <br />{{
+      'dialog.section.upload.lower_field_placeholder' | translate
+    }}
   </ng-template>
 </div>
 
 <div class="progress">
-  <mat-progress-bar *ngIf="uploadProgress > 0" class="progress-bar" mode="determinate" [value]="uploadProgress">
+  <mat-progress-bar
+    *ngIf="uploadProgress > 0"
+    class="progress-bar"
+    mode="determinate"
+    [value]="uploadProgress">
   </mat-progress-bar>
-  <mat-icon *ngIf="uploadProgress > 0" class="cancel-upload" (click)="cancelUpload.emit()">delete_forever</mat-icon>
+  <mat-icon
+    *ngIf="uploadProgress > 0"
+    class="cancel-upload"
+    (click)="cancelUpload.emit()"
+    >delete_forever</mat-icon
+  >
 </div>

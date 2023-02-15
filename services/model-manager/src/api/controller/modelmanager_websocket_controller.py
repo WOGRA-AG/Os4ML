@@ -22,14 +22,17 @@ class WebsocketController:
     ) -> None:
         await websocket.accept()
         client_id = uuid.uuid4()
+        task = None
         try:
             # see issue https://github.com/tiangolo/fastapi/issues/3934
-            asyncio.create_task(
+            task = asyncio.create_task(
                 self._stream_databags(websocket, usertoken, client_id)
             )
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
+            if task:
+                task.cancel()
             self.databag_service.terminate_databags_stream(client_id)
 
     async def _stream_databags(
@@ -47,14 +50,17 @@ class WebsocketController:
     ) -> None:
         await websocket.accept()
         client_id = uuid.uuid4()
+        task = None
         try:
             # see issue https://github.com/tiangolo/fastapi/issues/3934
-            asyncio.create_task(
+            task = asyncio.create_task(
                 self._stream_solutions(websocket, usertoken, client_id)
             )
             while True:
                 await websocket.receive_text()
         except WebSocketDisconnect:
+            if task:
+                task.cancel()
             self.solution_service.terminate_solutions_stream(client_id)
 
     async def _stream_solutions(

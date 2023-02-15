@@ -1,47 +1,44 @@
 <app-dialog-header (closeDialog)="close()">
-  {{"databag.settings" | translate}}
+  {{ 'databag.settings' | translate }}
 </app-dialog-header>
 
 <mat-dialog-content>
-  <form id="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+  <form
+    id="ngForm"
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm">
     <app-dialog-section>
-      <div title>{{"databag.placeholder" | translate}}</div>
+      <div title>{{ 'databag.placeholder' | translate }}</div>
       <div>
         <mat-form-field appearance="outline">
-          <input matInput type="string" placeholder="{{'databag.placeholder' | translate}}" required
-            name="databag_name" [(ngModel)]="databag.databagName" #databag_name="ngModel"
-            [ngClass]="{'is-invalid': f.submitted && databag_name.invalid}">
+          <input
+            matInput
+            type="string"
+            placeholder="{{ 'databag.placeholder' | translate }}"
+            required
+            name="databag_name"
+            [(ngModel)]="databag.databagName"
+            #databag_name="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && databag_name.invalid }" />
         </mat-form-field>
       </div>
     </app-dialog-section>
 
     <app-dialog-section>
-      <div title>{{"databag.features" | translate}}</div>
+      <div title>{{ 'databag.features' | translate }}</div>
       <div>
-        <app-databag-fields [databag]=databag>
-        </app-databag-fields>
+        <app-databag-fields [databag]="databag"> </app-databag-fields>
       </div>
     </app-dialog-section>
-
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button
-    mat-stroked-button
-    color="warn"
-    type="button"
-    (click)="delete()"
-  >
-    {{"action.delete" | translate}}
+  <button mat-stroked-button color="warn" type="button" (click)="delete()">
+    {{ 'action.delete' | translate }}
   </button>
-  <button
-    mat-raised-button
-    form="ngForm"
-    color="primary"
-    type="submit"
-  >
-    {{"action.update" | translate}}
+  <button mat-raised-button form="ngForm" color="primary" type="submit">
+    {{ 'action.update' | translate }}
   </button>
 </mat-dialog-actions>
-

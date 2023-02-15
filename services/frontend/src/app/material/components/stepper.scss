@@ -2,11 +2,11 @@
 @use '@angular/material' as mat;
 
 @mixin layout() {
-  .mat-horizontal-stepper-header{
+  .mat-horizontal-stepper-header {
     pointer-events: none !important;
   }
   .mat-horizontal-content-container {
-    padding:0 !important;
+    padding: 0 !important;
   }
 }
 

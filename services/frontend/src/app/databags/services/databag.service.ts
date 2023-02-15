@@ -1,37 +1,46 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { filter, map, Observable, switchMap } from 'rxjs';
-import { Databag, ModelmanagerService } from '../../../../build/openapi/modelmanager';
+import {
+  catchError,
+  filter,
+  map,
+  Observable,
+  switchMap,
+  throwError,
+  of,
+} from 'rxjs';
+import {
+  Databag,
+  DatasetPutUrl,
+  ModelmanagerService,
+} from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
+import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ErrorService } from 'src/app/core/services/error.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DatabagService {
-
-  private readonly databags: Observable<Databag[]>;
+  private readonly _databags$: Observable<Databag[]>;
 
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
-    private webSocketConnectionService: WebSocketConnectionService) {
+    private webSocketConnectionService: WebSocketConnectionService,
+    private http: HttpClient,
+    private errorService: ErrorService
+  ) {
     const path = '/apis/v1beta1/model-manager/databags';
-    this.databags = this.webSocketConnectionService.connect(path);
+    this._databags$ = this.webSocketConnectionService.connect(path);
   }
 
   get databags$(): Observable<Databag[]> {
-    return this.databags;
+    return this._databags$;
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
-    const sortByCreationTime = (databag1: Databag, databag2: Databag) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date1 = new Date(databag1.creationTime!);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const date2 = new Date(databag2.creationTime!);
-      return date2.getTime() - date1.getTime();
-    };
-
     return this.databags$.pipe(
       map(databags => databags.sort(sortByCreationTime))
     );
@@ -41,7 +50,7 @@ export class DatabagService {
     return this.databags$.pipe(
       map(databags => databags.filter(databag => databag.databagId === id)),
       filter(databags => databags.length > 0),
-      map(databags => databags[0]),
+      map(databags => databags[0])
     );
   }
 
@@ -51,7 +60,10 @@ export class DatabagService {
     );
   }
 
-  deleteDatabagById(id: string): Observable<void> {
+  deleteDatabagById(id: string | undefined): Observable<void> {
+    if (!id) {
+      return of(undefined);
+    }
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.deleteDatabagById(id, token))
     );
@@ -59,13 +71,33 @@ export class DatabagService {
 
   updateDatabagById(id: string, databag: Databag): Observable<Databag> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.updateDatabagById(id, token, databag))
+      switchMap(token =>
+        this.modelManager.updateDatabagById(id, token, databag)
+      )
     );
   }
 
-  uploadDataset(id: string, file: Blob): Observable<void> {
+  getDatasetPutUrl(fileName: string): Observable<DatasetPutUrl> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.uploadDataset(id, token, file))
+      switchMap(token => this.modelManager.getDatasetPutUrl(fileName, token))
+    );
+  }
+
+  uploadDataset(file: File, databag: Databag): Observable<Databag> {
+    return this.getDatasetPutUrl(file.name).pipe(
+      switchMap(({ url, databagId }) => {
+        databag.databagId = databagId;
+        if (!url) {
+          return throwError(() => new Error('Invalid put url for dataset'));
+        }
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const headers = new HttpHeaders({ 'Content-Type': file.type });
+        return this.http.put(url, file, { headers }).pipe(map(() => databag));
+      }),
+      catchError(err => {
+        this.errorService.reportError(err);
+        return throwError(() => err);
+      })
     );
   }
 

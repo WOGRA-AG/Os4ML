@@ -1,0 +1,29 @@
+<app-dialog-header (closeDialog)="close()">
+  {{ data.titleKey | translate }}
+</app-dialog-header>
+
+<app-dialog-section>
+  {{ data.messageKey | translate }}
+</app-dialog-section>
+
+<mat-dialog-actions align="end">
+  <app-status-spinner *ngIf="submitting"></app-status-spinner>
+  <button
+    mat-stroked-button
+    color="warn"
+    type="button"
+    (click)="submit()"
+    [disabled]="submitting"
+    [tabIndex]="-1">
+    {{ 'action.delete' | translate }}
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="main-button"
+    [disabled]="submitting"
+    [tabIndex]="-1"
+    (click)="close()">
+    {{ 'action.cancel' | translate }}
+  </button>
+</mat-dialog-actions>

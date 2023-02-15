@@ -11,7 +11,6 @@ import localeEnExtra from '@angular/common/locales/extra/en';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-
   constructor(translate: TranslateService) {
     registerLocaleData(localeDe, 'de', localeDeExtra);
     registerLocaleData(localeEn, 'en', localeEnExtra);

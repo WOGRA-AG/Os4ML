@@ -1,6 +1,7 @@
 from fastapi import Depends
 
 from build.openapi_server.models.databag import Databag
+from build.openapi_server.models.dataset_put_url import DatasetPutUrl
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.solver import Solver
 from services.databag_service import DatabagService
@@ -34,6 +35,11 @@ class ModelmanagerApiController:
             usertoken = ""
         return self.databag_service.get_databags(usertoken)  # type: ignore
 
+    def get_dataset_put_url(
+        self, file_name: str, usertoken: str = ""
+    ) -> DatasetPutUrl:
+        return self.databag_service.get_dataset_put_url(file_name, usertoken)
+
     def get_databag_by_id(
         self, databag_id: str, usertoken: str = ""
     ) -> Databag:
@@ -57,11 +63,6 @@ class ModelmanagerApiController:
 
     def download_dataframe(self, databag_id: str, usertoken: str = "") -> str:
         return self.databag_service.download_dataframe(databag_id, usertoken)  # type: ignore
-
-    def upload_dataset(
-        self, databag_id: str, body: bytes, usertoken: str = ""
-    ) -> None:
-        return self.databag_service.upload_dataset(databag_id, body, usertoken)  # type: ignore
 
     def upload_dataframe(
         self, databag_id: str, body: bytes, usertoken: str = ""

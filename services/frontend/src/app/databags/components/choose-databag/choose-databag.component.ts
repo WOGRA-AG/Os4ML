@@ -1,42 +1,41 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateDatabagStepperComponent } from 'src/app/templates/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { Databag } from '../../../../../build/openapi/modelmanager';
-import { DialogDynamicComponent } from '../../../shared/components/dialog/dialog-dynamic/dialog-dynamic.component';
 import { DatabagService } from '../../services/databag.service';
-import { CreateDatabagStepperComponent } from '../create-databag-stepper/create-databag-stepper.component';
 
 @Component({
   selector: 'app-choose-databag',
   templateUrl: './choose-databag.component.html',
-  styleUrls: ['./choose-databag.component.scss']
+  styleUrls: ['./choose-databag.component.scss'],
 })
 export class ChooseDatabagComponent implements OnInit {
-
   @Input() databags: Databag[] = [];
-  @Output() selectedDatabagId: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedDatabagIdChange: EventEmitter<string> =
+    new EventEmitter<string>();
   selectedDatabag: Databag = {};
 
-  constructor(private dialog: MatDialog, public databagService: DatabagService) {
-  }
+  constructor(
+    private dialog: MatDialog,
+    public databagService: DatabagService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.databags.length > 0) {
       this.changeSelectedDatabag(this.databags[0]);
     }
   }
 
-  changeSelectedDatabag(databag: Databag) {
+  changeSelectedDatabag(databag: Databag): void {
     const id = databag.databagId;
     if (!id) {
       return;
     }
     this.selectedDatabag = databag;
-    this.selectedDatabagId.emit(id);
+    this.selectedDatabagIdChange.emit(id);
   }
 
-  openAddDialog() {
-    this.dialog.open(DialogDynamicComponent, {
-      data: { component: CreateDatabagStepperComponent }
-    });
+  openAddDialog(): void {
+    this.dialog.open(CreateDatabagStepperComponent);
   }
 }

@@ -20,9 +20,7 @@ def get_file_and_dataset_type(
         databag_id,
     )
     with exception_handler(handler, StatusMessage.FILE_TYPE_UNKNOWN):
-        databag = update_databag_status(
-            databag_id, StatusMessage.UPLOADING_DATA
-        )
+        databag = update_databag_status(databag_id, StatusMessage.LOADING_DATA)
         types = namedtuple("Types", ["file_type", "dataset_type"])
         file_type = file_type_from_file_name(databag.file_name)
         dataset_type = dataset_type_from_file_name(databag.file_name)
