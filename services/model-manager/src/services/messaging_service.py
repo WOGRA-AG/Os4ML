@@ -1,5 +1,6 @@
 import asyncio
 import functools
+import logging
 import uuid
 from collections import defaultdict
 from collections.abc import AsyncIterator
@@ -7,6 +8,7 @@ from threading import Thread
 
 from redis import Redis
 from redis.asyncio import Redis as AsyncRedis
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from lib.subscriber_event import SubscriberEvent
 from services import (
@@ -48,18 +50,22 @@ class MessagingService:
 
     async def _listen_to_channel(self) -> None:
         """Listens to the messages of the channel and notifies the clients waiting for the messages."""
-        async for message in self._iter_channel():
-            event = self._messageToEvent[message]
-            event.set()
-            event.clear()
+        while not self.terminate:
+            try:
+                async for message in self._iter_channel():
+                    event = self._messageToEvent[message]
+                    event.set()
+                    event.clear()
+            except RedisConnectionError:
+                logging.warn(
+                    "Lost connection to the redis server. Trying to reconnect..."
+                )
 
     async def _iter_channel(self) -> AsyncIterator[str]:
         """Iterates over the messages of the channel"""
         pubsub = self.subscribe_client.pubsub()
         await pubsub.subscribe(self.channel)
-        while True:
-            if self.terminate:
-                break
+        while not self.terminate:
             message = await pubsub.get_message(
                 ignore_subscribe_messages=True, timeout=1
             )
