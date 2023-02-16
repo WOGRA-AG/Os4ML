@@ -8,6 +8,7 @@ from threading import Thread
 
 from redis import Redis
 from redis.asyncio import Redis as AsyncRedis
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from lib.subscriber_event import SubscriberEvent
 from services import (
@@ -33,7 +34,6 @@ class MessagingService:
         MessagingService.terminate = True
 
     def __init__(self, channel: str):
-        logging.debug(f"Create MessagingService for {channel=}")
         self.channel = channel
         self._messageToEvent: dict[
             str, SubscriberEvent[uuid.UUID]
@@ -50,22 +50,22 @@ class MessagingService:
 
     async def _listen_to_channel(self) -> None:
         """Listens to the messages of the channel and notifies the clients waiting for the messages."""
-        logging.debug("Listen to channel")
-        async for message in self._iter_channel():
-            logging.debug(f"Received new {message}")
-            event = self._messageToEvent[message]
-            event.set()
-            event.clear()
+        while not self.terminate:
+            try:
+                async for message in self._iter_channel():
+                    event = self._messageToEvent[message]
+                    event.set()
+                    event.clear()
+            except RedisConnectionError:
+                logging.warn(
+                    "Lost connection to the redis server. Trying to reconnect..."
+                )
 
     async def _iter_channel(self) -> AsyncIterator[str]:
         """Iterates over the messages of the channel"""
         pubsub = self.subscribe_client.pubsub()
         await pubsub.subscribe(self.channel)
-        logging.debug(f"Subscribes to the {self.channel=}")
-        while True:
-            if self.terminate:
-                logging.debug("Terminate _iter_channel")
-                break
+        while not self.terminate:
             message = await pubsub.get_message(
                 ignore_subscribe_messages=True, timeout=1
             )
@@ -79,11 +79,9 @@ class MessagingService:
 
     def unsubscribe(self, client_id: uuid.UUID) -> None:
         """Unsubscribes the client with client_id."""
-        logging.debug(f"Unsubscribe for {client_id=}")
         message = self._clientToMessage[client_id]
         event = self._messageToEvent[message]
         event.unsubscribe(client_id)
         if not event.has_subscribers():
-            logging.debug("Delete message event")
             del self._messageToEvent[message]
         del self._clientToMessage[client_id]
