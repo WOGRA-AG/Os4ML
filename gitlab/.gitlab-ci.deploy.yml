@@ -101,6 +101,7 @@ deploy-staging:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: $CI_COMMIT_REF_NAME =~ /^hotfix/
     - if: '$CI_COMMIT_TAG'
+    - if: $CI_PIPELINE_SOURCE
 
 deploy-release:
   extends:
