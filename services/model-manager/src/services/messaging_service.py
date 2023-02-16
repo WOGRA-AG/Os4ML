@@ -1,6 +1,5 @@
 import asyncio
 import functools
-import logging
 import uuid
 from collections import defaultdict
 from collections.abc import AsyncIterator
@@ -33,7 +32,6 @@ class MessagingService:
         MessagingService.terminate = True
 
     def __init__(self, channel: str):
-        logging.debug(f"Create MessagingService for {channel=}")
         self.channel = channel
         self._messageToEvent: dict[
             str, SubscriberEvent[uuid.UUID]
@@ -50,9 +48,7 @@ class MessagingService:
 
     async def _listen_to_channel(self) -> None:
         """Listens to the messages of the channel and notifies the clients waiting for the messages."""
-        logging.debug("Listen to channel")
         async for message in self._iter_channel():
-            logging.debug(f"Received new {message}")
             event = self._messageToEvent[message]
             event.set()
             event.clear()
@@ -61,10 +57,8 @@ class MessagingService:
         """Iterates over the messages of the channel"""
         pubsub = self.subscribe_client.pubsub()
         await pubsub.subscribe(self.channel)
-        logging.debug(f"Subscribes to the {self.channel=}")
         while True:
             if self.terminate:
-                logging.debug("Terminate _iter_channel")
                 break
             message = await pubsub.get_message(
                 ignore_subscribe_messages=True, timeout=1
@@ -79,11 +73,9 @@ class MessagingService:
 
     def unsubscribe(self, client_id: uuid.UUID) -> None:
         """Unsubscribes the client with client_id."""
-        logging.debug(f"Unsubscribe for {client_id=}")
         message = self._clientToMessage[client_id]
         event = self._messageToEvent[message]
         event.unsubscribe(client_id)
         if not event.has_subscribers():
-            logging.debug("Delete message event")
             del self._messageToEvent[message]
         del self._clientToMessage[client_id]
