@@ -90,8 +90,10 @@ export class DatabagService {
         if (!url) {
           return throwError(() => new Error('Invalid put url for dataset'));
         }
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const headers = new HttpHeaders({ 'Content-Type': file.type });
+        const headers = new HttpHeaders({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          'Content-Type': 'application/octet-stream',
+        });
         return this.http.put(url, file, { headers }).pipe(map(() => databag));
       }),
       catchError(err => {
