@@ -98,5 +98,6 @@ def test_get_presigned_put_url(storage_service: StorageService):
     file = io.BytesIO()
     file.write(b"Uploaded with put url.")
     file.seek(0)
-    requests.put(url, data=file)
+    headers = {"content-type": "application/octet-stream"}
+    requests.put(url, data=file, headers=headers)
     assert len(storage_service.list_objects("")) == 1
