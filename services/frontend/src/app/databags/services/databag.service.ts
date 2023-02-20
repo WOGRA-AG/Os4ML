@@ -48,7 +48,7 @@ export class DatabagService {
 
   getDatabagById(id: string): Observable<Databag> {
     return this.databags$.pipe(
-      map(databags => databags.filter(databag => databag.databagId === id)),
+      map(databags => databags.filter(databag => databag.id === id)),
       filter(databags => databags.length > 0),
       map(databags => databags[0])
     );
@@ -86,7 +86,7 @@ export class DatabagService {
   uploadDataset(file: File, databag: Databag): Observable<Databag> {
     return this.getDatasetPutUrl(file.name).pipe(
       switchMap(({ url, databagId }) => {
-        databag.databagId = databagId;
+        databag.id = databagId;
         if (!url) {
           return throwError(() => new Error('Invalid put url for dataset'));
         }
@@ -104,6 +104,6 @@ export class DatabagService {
   }
 
   isSameDatabag(databag1: Databag, databag2: Databag): boolean {
-    return databag1.databagId === databag2.databagId;
+    return databag1.id === databag2.id;
   }
 }

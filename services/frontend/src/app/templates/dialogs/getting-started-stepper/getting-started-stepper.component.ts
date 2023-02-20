@@ -45,11 +45,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
       case 1:
         break;
       case 2:
-        if (
-          !this.databag ||
-          !this.databag.databagId ||
-          !this.databag.databagName
-        ) {
+        if (!this.databag || !this.databag.id || !this.databag.databagName) {
           this.dialogRef.close();
           return;
         }
@@ -101,10 +97,10 @@ export class GettingStartedStepperComponent implements OnDestroy {
   }
 
   deleteDatabag(): Observable<void> {
-    if (this.databag.databagId === undefined) {
+    if (this.databag.id === undefined) {
       return of(undefined);
     }
-    return this.databagService.deleteDatabagById(this.databag.databagId);
+    return this.databagService.deleteDatabagById(this.databag.id);
   }
 
   selectOutputColumn(columnName: string): void {

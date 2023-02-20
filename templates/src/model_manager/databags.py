@@ -14,7 +14,7 @@ def get_databag_by_id(databag_id: str) -> Databag:
 def update_databag(databag: Databag) -> None:
     model_manager = init_model_manager_client()
     model_manager.update_databag_by_id(
-        databag.databag_id, databag=databag, usertoken=USER_TOKEN
+        databag.id, databag=databag, usertoken=USER_TOKEN
     )
 
 
