@@ -206,9 +206,7 @@ class DatabagService:
     ) -> None:
         bytes_io = BytesIO(body)
         bytes_io.seek(0)
-        object_name = self._get_databag_object_name(
-            databag.id, file_name
-        )
+        object_name = self._get_databag_object_name(databag.id, file_name)
         self.objectstore.put_object_by_name(
             object_name, body=bytes_io, usertoken=usertoken
         )

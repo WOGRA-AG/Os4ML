@@ -20,6 +20,8 @@ components:
       type: string
     SolutionId:
       type: string
+    PredictionId:
+      type: string
     Databag:
       properties:
         id:
@@ -86,6 +88,25 @@ components:
         completionTime:
           type: string
           nullable: true
+        runId:
+          $ref: '#/components/schemas/RunId'
+    Prediction:
+      properties:
+        id:
+          $ref: '#/components/schemas/PredictionId'
+          nullable: true
+        name:
+          type: string
+        status:
+          type: string
+          nullable: true
+        creationTime:
+          type: string
+        completionTime:
+          type: string
+          nullable: true
+        solutionId:
+          $ref: '#/components/schemas/SolutionId'
         runId:
           $ref: '#/components/schemas/RunId'
     Solver:

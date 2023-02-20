@@ -5,7 +5,7 @@ import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
 from io import BytesIO
-from typing import AsyncIterator, Generic, Protocol, TypeVar
+from typing import Any, AsyncIterator, Generic, Protocol, TypeVar
 
 from fastapi import Depends
 
@@ -18,7 +18,6 @@ from build.objectstore_client.model.json_response import JsonResponse
 from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
 from services import DATE_FORMAT_STR
 from services.auth_service import get_parsed_token
-from services.init_api_clients import init_jobmanager_api, init_objectstore_api
 from services.messaging_service import MessagingService
 
 
@@ -27,6 +26,9 @@ class Model(Protocol):
     run_id: str
     creation_time: str
 
+    def dict(self) -> dict[str, Any]:
+        pass
+
 
 T = TypeVar("T", bound=Model)
 
@@ -34,19 +36,19 @@ T = TypeVar("T", bound=Model)
 class ModelService(Generic[T], ABC):
     def __init__(
         self,
-        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
-        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
+        objectstore: ObjectstoreApi,
+        jobmanager: JobmanagerApi,
     ):
         self.objectstore = objectstore
-        self.jomanager = jobmanager
+        self.jobmanager = jobmanager
 
-    @abstractmethod
     @property
+    @abstractmethod
     def config_file_name(self) -> str:
         raise NotImplementedError
 
-    @abstractmethod
     @property
+    @abstractmethod
     def messaging_service(self) -> MessagingService:
         raise NotImplementedError
 
@@ -56,6 +58,15 @@ class ModelService(Generic[T], ABC):
     ) -> str:
         raise NotImplementedError
 
+    @abstractmethod
+    def build_model(self, dict_: dict[str, Any]) -> T:
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def model_name(self) -> str:
+        raise NotImplementedError
+
     def create_model(
         self, model: T, solver_name: str, run_params: RunParams, usertoken: str
     ) -> T:
@@ -63,7 +74,7 @@ class ModelService(Generic[T], ABC):
             model.id = str(uuid.uuid4())
         model.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._persist_model(model, usertoken=usertoken)
-        model.run_id = self.jomanager.create_run_by_solver_name(
+        model.run_id = self.jobmanager.create_run_by_solver_name(
             solver_name, run_params=run_params, usertoken=usertoken
         )
         self._persist_model(model, usertoken=usertoken)
@@ -87,12 +98,12 @@ class ModelService(Generic[T], ABC):
             if model.id == id_
         ]
         if not models_with_id:
-            raise ModelNotFoundException(type(T).__name__)
+            raise ModelNotFoundException(self.model_name)
         return models_with_id.pop()
 
     def update_model_by_id(self, id_: str, model: T, usertoken: str) -> T:
         if id_ != model.id:
-            raise ModelIdUpdateNotAllowedException(type(T).__name__)
+            raise ModelIdUpdateNotAllowedException(self.model_name)
         self._persist_model(model, usertoken=usertoken)
         self._notify_model_update(usertoken)
         return model
@@ -102,9 +113,9 @@ class ModelService(Generic[T], ABC):
             model = self.get_model_by_id(id_, usertoken=usertoken)
         except ModelNotFoundException:
             return
-        self.terminate_run_for_model(model)
+        self.terminate_run_for_model(model, usertoken=usertoken)
         self.objectstore.delete_objects_with_prefix(
-            path_prefix=self._get_file_name(
+            path_prefix=self.get_file_name(
                 model, file_name="", usertoken=usertoken
             ),
             usertoken=usertoken,
@@ -146,7 +157,7 @@ class ModelService(Generic[T], ABC):
     def _persist_model(self, model: T, usertoken: str) -> None:
         encoded_model = BytesIO(json.dumps(model.dict()).encode())
         self.objectstore.put_object_by_name(
-            object_name=self._get_file_name(
+            object_name=self.get_file_name(
                 model, self.config_file_name, usertoken
             ),
             body=encoded_model,
@@ -155,11 +166,11 @@ class ModelService(Generic[T], ABC):
 
     def _load_model_from_object_name(
         self, object_name: str, usertoken: str
-    ) -> Model:
+    ) -> T:
         json_response: JsonResponse = self.objectstore.get_json_object_by_name(
             object_name, usertoken=usertoken
         )
         json_content_bytes = json_response.json_content.encode()
         json_str = base64.decodebytes(json_content_bytes)
         json_dict = json.loads(json_str)
-        return Model(**json_dict)
+        return self.build_model(json_dict)
