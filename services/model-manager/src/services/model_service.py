@@ -15,7 +15,11 @@ from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.model.json_response import JsonResponse
-from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
+from exceptions import (
+    ModelIdUpdateNotAllowedException,
+    ModelNotFoundException,
+    ResourceNotFoundException,
+)
 from services import DATE_FORMAT_STR
 from services.auth_service import get_parsed_token
 from services.messaging_service import MessagingService
@@ -98,7 +102,7 @@ class ModelService(Generic[T], ABC):
             if model.id == id_
         ]
         if not models_with_id:
-            raise ModelNotFoundException(self.model_name)
+            raise ModelNotFoundException(self.model_name, id_)
         return models_with_id.pop()
 
     def update_model_by_id(self, id_: str, model: T, usertoken: str) -> T:

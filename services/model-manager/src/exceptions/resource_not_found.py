@@ -25,4 +25,4 @@ class PredictionNotFoundException(ResourceNotFoundException):
 
 class ModelNotFoundException(ResourceNotFoundException):
     def __init__(self, model_name: str, id_: str):
-        super().__init__
+        super().__init__(f"{model_name} with id {id_} not found")

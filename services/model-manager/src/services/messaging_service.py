@@ -57,7 +57,7 @@ class MessagingService:
                     event.set()
                     event.clear()
             except RedisConnectionError:
-                logging.warn(
+                logging.warning(
                     "Lost connection to the redis server. Trying to reconnect..."
                 )
 
