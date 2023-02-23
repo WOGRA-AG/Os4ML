@@ -111,7 +111,7 @@ FROM development AS test
 RUN mypy src
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
 # RUN coverage report --fail-under 95
-RUN coverage report --fail-under 40
+RUN coverage report --fail-under 55
 
 # 'production' stage uses the clean 'python-base' stage and copyies
 # in only our runtime deps that were installed in the 'builder-base'
