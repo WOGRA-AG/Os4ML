@@ -1,10 +1,13 @@
 import functools
 import pathlib
+import tempfile
 import zipfile
 from typing import Generator, Tuple
 
+import numpy as np
 import pandas as pd
 from kfp.v2.dsl import Dataset, Input, Output
+from PIL import Image
 
 from config import CATEGORY_COL_NAME, IMAGE_COL_NAME
 from exceptions.file_type_unknown import FileTypeUnknownException
@@ -30,32 +33,59 @@ def create_dataframe(
         elif file_type == FileType.EXCEL:
             df = pd.read_excel(dataset.path, sheet_name=0)
         elif file_type == FileType.ZIP:
-            df = pd.DataFrame(
-                iter_dirs_of_zip_with_labels(dataset.path),
-                columns=[IMAGE_COL_NAME, CATEGORY_COL_NAME],
-            )
+            df = create_dataframe_for_zipped_images(dataset.path)
         else:
             raise FileTypeUnknownException()
         with open(dataframe.path, "wb") as dataframe_file:
             df.to_csv(dataframe_file, index=False)
 
 
-def iter_dirs_of_zip_with_labels(
-    zip_file: str,
-) -> Generator[Tuple[str, str], None, None]:
-    with zipfile.ZipFile(zip_file) as root:
-        root_dir = zipfile.Path(root)
-        if sum(1 for _ in root_dir.iterdir()) == 1:
-            sub_dir = next(root_dir.iterdir())
-            sub_sub_dir = next(root_dir.iterdir())
+def create_dataframe_for_zipped_images(zip_file_name: str) -> pd.DataFrame:
+    with tempfile.TemporaryDirectory() as tmp_dir_name:
+        extract_zip(zip_file_name, tmp_dir_name)
+        root_dir = get_root_dir(tmp_dir_name)
+        image_paths_and_labels = iter_image_paths_and_labels(root_dir)
+        images_and_labels = (
+            (load_image(image_path), label)
+            for image_path, label in image_paths_and_labels
+        )
+        return pd.DataFrame(
+            images_and_labels,
+            columns=[IMAGE_COL_NAME, CATEGORY_COL_NAME],
+        )
+
+
+def extract_zip(zip_file_name: str, extract_to: str) -> pathlib.Path:
+    with zipfile.ZipFile(zip_file_name) as zip_file:
+        zip_file.extractall(extract_to)
+
+
+def get_root_dir(root_dir: str) -> pathlib.Path:
+    root_dir = pathlib.Path(root_dir)
+    if sum(1 for _ in root_dir.iterdir()) == 1:
+        sub_dir = next(root_dir.iterdir())
+        if sub_dir.is_dir():
+            sub_sub_dir = next(sub_dir.iterdir())
             if sub_sub_dir.is_dir():
                 root_dir = sub_dir
-        for label_dir in root_dir.iterdir():
-            label = label_dir.name
-            for file in label_dir.iterdir():
-                abs_file_name = pathlib.Path(str(file)).resolve()
-                abs_root_dir_name = pathlib.Path(
-                    str(root_dir.parent)
-                ).resolve()
-                rel_file_name = abs_file_name.relative_to(abs_root_dir_name)
-                yield str(rel_file_name), label
+    return root_dir
+
+
+def iter_image_paths_and_labels(
+    root_dir: pathlib.Path,
+) -> Generator[Tuple[pathlib.Path, str], None, None]:
+    for label_dir in root_dir.iterdir():
+        label = label_dir.name
+        for file in label_dir.iterdir():
+            yield file, label
+
+
+def load_image(path: pathlib.Path) -> np.ndarray:
+    img = Image.open(path)
+    img = np.asarray(img)
+    if img.dtype == "uint16":
+        # fix for tif files, this will change with ludwig version 0.7
+        img = img.astype("int64")
+    if len(img.shape) == 2:
+        img = np.expand_dims(img, axis=2)
+    return img
