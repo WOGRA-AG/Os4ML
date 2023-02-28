@@ -35,22 +35,19 @@ export class CreateDatabagStepperComponent {
   }
 
   async onSubmit(): Promise<void> {
-    if (this.databag.databagId === undefined) {
+    if (this.databag.id === undefined) {
       return;
     }
     await firstValueFrom(
-      this.databagService.updateDatabagById(
-        this.databag.databagId,
-        this.databag
-      )
+      this.databagService.updateDatabagById(this.databag.id, this.databag)
     );
     this.dialogRef.close();
   }
 
   async clearProgress(): Promise<void> {
-    if (this.databag.databagId) {
+    if (this.databag.id) {
       await firstValueFrom(
-        this.databagService.deleteDatabagById(this.databag.databagId)
+        this.databagService.deleteDatabagById(this.databag.id)
       );
     }
     this.running = false;

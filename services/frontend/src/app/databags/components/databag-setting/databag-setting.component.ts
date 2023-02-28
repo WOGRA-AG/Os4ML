@@ -36,7 +36,7 @@ export class DatabagSettingComponent implements OnDestroy {
 
   onSubmit(): void {
     this.databagService
-      .updateDatabagById(String(this.databag.databagId), this.databag)
+      .updateDatabagById(this.databag.id, this.databag)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.close());
   }
@@ -47,9 +47,7 @@ export class DatabagSettingComponent implements OnDestroy {
 
   delete(): void {
     const deleteDatabag = (): Promise<void> =>
-      firstValueFrom(
-        this.databagService.deleteDatabagById(this.databag.databagId)
-      );
+      firstValueFrom(this.databagService.deleteDatabagById(this.databag.id));
 
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
       data: {

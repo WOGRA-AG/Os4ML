@@ -14,7 +14,7 @@ def get_databag_by_id(databag_id: str) -> Databag:
 def update_databag(databag: Databag) -> None:
     model_manager = init_model_manager_client()
     model_manager.update_databag_by_id(
-        databag.databag_id, databag=databag, usertoken=USER_TOKEN
+        databag.id, databag=databag, usertoken=USER_TOKEN
     )
 
 
@@ -30,20 +30,16 @@ def update_databag_status(databag_id: str, status: StatusMessage) -> Databag:
 
 def get_dataset_download_url(databag: Databag) -> str:
     model_manager = init_model_manager_client()
-    return model_manager.download_dataset(
-        databag.databag_id, usertoken=USER_TOKEN
-    )
+    return model_manager.download_dataset(databag.id, usertoken=USER_TOKEN)
 
 
 def get_dataframe_download_url(databag: Databag) -> str:
     model_manager = init_model_manager_client()
-    return model_manager.download_dataframe(
-        databag.databag_id, usertoken=USER_TOKEN
-    )
+    return model_manager.download_dataframe(databag.id, usertoken=USER_TOKEN)
 
 
 def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
     model_manager = init_model_manager_client()
     model_manager.upload_dataframe(
-        databag.databag_id, body=dataframe, usertoken=USER_TOKEN
+        databag.id, body=dataframe, usertoken=USER_TOKEN
     )

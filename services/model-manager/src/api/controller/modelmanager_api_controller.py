@@ -2,9 +2,11 @@ from fastapi import Depends
 
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.dataset_put_url import DatasetPutUrl
+from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.solver import Solver
 from services.databag_service import DatabagService
+from services.prediction_service import PredictionSerivce
 from services.solution_service import SolutionService
 from services.solver_service import SolverService
 
@@ -15,10 +17,12 @@ class ModelmanagerApiController:
         solver_service: SolverService = Depends(),
         databag_service: DatabagService = Depends(),
         solution_service: SolutionService = Depends(),
+        prediction_service: PredictionSerivce = Depends(),
     ):
         self.solver_service = solver_service
         self.databag_service = databag_service
         self.solution_service = solution_service
+        self.prediction_service = prediction_service
 
     # ----- solvers -----
     def get_solvers(self, usertoken: str = "") -> list[Solver]:
@@ -107,4 +111,34 @@ class ModelmanagerApiController:
     ) -> None:
         return self.solution_service.upload_model(  # type: ignore
             solution_id, body, usertoken
+        )
+
+    # ----- predictions -----
+    def get_predictions(self, usertoken: str = "") -> list[Prediction]:
+        return self.prediction_service.get_predictions(usertoken)  # type: ignore
+
+    def create_prediction(
+        self, prediction: Prediction, usertoken: str = ""
+    ) -> Prediction:
+        return self.prediction_service.create_prediction(prediction, usertoken)
+
+    def get_prediction_by_id(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> Prediction:
+        return self.prediction_service.get_prediction_by_id(
+            prediction_id, usertoken
+        )
+
+    def delete_prediction_by_id(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> None:
+        return self.prediction_service.delete_prediction_by_id(  # type: ignore
+            prediction_id, usertoken
+        )
+
+    def update_prediction_by_id(
+        self, prediction_id: str, prediction: Prediction, usertoken: str = ""
+    ) -> Prediction:
+        return self.prediction_service.update_prediction_by_id(
+            prediction_id, prediction, usertoken
         )
