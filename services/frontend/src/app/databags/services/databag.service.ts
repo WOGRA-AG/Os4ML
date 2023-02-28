@@ -48,9 +48,9 @@ export class DatabagService {
 
   getDatabagById(id: string): Observable<Databag> {
     return this.databags$.pipe(
-      map(databags => databags.filter(databag => databag.id === id)),
-      filter(databags => databags.length > 0),
-      map(databags => databags[0])
+      map(databags => databags.find(databag => databag.id === id)),
+      filter(databag => !!databag),
+      map(databag => databag!)
     );
   }
 
@@ -69,7 +69,13 @@ export class DatabagService {
     );
   }
 
-  updateDatabagById(id: string, databag: Databag): Observable<Databag> {
+  updateDatabagById(
+    id: string | undefined,
+    databag: Databag
+  ): Observable<Databag> {
+    if (!id) {
+      return of(databag);
+    }
     return this.userService.currentToken$.pipe(
       switchMap(token =>
         this.modelManager.updateDatabagById(id, token, databag)

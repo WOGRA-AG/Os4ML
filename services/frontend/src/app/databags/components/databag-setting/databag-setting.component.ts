@@ -36,7 +36,7 @@ export class DatabagSettingComponent implements OnDestroy {
 
   onSubmit(): void {
     this.databagService
-      .updateDatabagById(String(this.databag.id), this.databag)
+      .updateDatabagById(this.databag.id, this.databag)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.close());
   }
