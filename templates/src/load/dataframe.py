@@ -1,6 +1,9 @@
 import pandas as pd
 
 
-def load_dataframe(dataframe_file_path) -> pd.DataFrame:
-    with open(dataframe_file_path) as input_file:
-        return pd.read_csv(input_file)
+def load_dataframe(path: str) -> pd.DataFrame:
+    return pd.read_pickle(path)
+
+
+def save_dataframe(df: pd.DataFrame, path: str) -> None:
+    df.to_pickle(path)

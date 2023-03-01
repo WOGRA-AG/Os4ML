@@ -11,6 +11,7 @@ from PIL import Image
 
 from config import CATEGORY_COL_NAME, IMAGE_COL_NAME
 from exceptions.file_type_unknown import FileTypeUnknownException
+from load.dataframe import save_dataframe
 from model_manager.databags import update_databag_status
 from models.file_type import FileType
 from models.status_message import StatusMessage
@@ -36,8 +37,7 @@ def create_dataframe(
             df = create_dataframe_for_zipped_images(dataset.path)
         else:
             raise FileTypeUnknownException()
-        with open(dataframe.path, "wb") as dataframe_file:
-            df.to_csv(dataframe_file, index=False)
+        save_dataframe(df, dataframe.path)
 
 
 def create_dataframe_for_zipped_images(zip_file_name: str) -> pd.DataFrame:
