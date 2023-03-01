@@ -6,9 +6,9 @@ import zipfile
 from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
 from ludwig.api import LudwigModel
 
-from config import IMAGE_COL_NAME, MODEL_DIR_NAME
+from config import MODEL_DIR_NAME
 from load.databag import load_databag
-from load.dataframe import load_dataframe, load_image_file
+from load.dataframe import load_dataframe
 from ludwig_model.dataset import train_validate_test_split
 from ludwig_model.labels import get_all_label_values, get_label_name
 from ludwig_model.metrics import calculate_conf_matrix
@@ -48,11 +48,6 @@ def ludwig_solver(
             solution, databag.columns, batch_size, epochs, early_stop
         )
         dataframe = load_dataframe(dataset_file.path)
-        if IMAGE_COL_NAME in dataframe:
-            image_file_path = load_image_file(databag)
-            dataframe[IMAGE_COL_NAME] = dataframe[IMAGE_COL_NAME].map(
-                functools.partial(os.path.join, image_file_path)
-            )
         df_train, df_validate, df_test = train_validate_test_split(
             dataframe, test_split, validation_split
         )

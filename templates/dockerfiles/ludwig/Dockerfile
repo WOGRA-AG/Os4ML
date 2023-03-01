@@ -10,7 +10,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-FROM gitlab-registry.wogra.com/developer/images/ludwig-gpu:latest as production
+FROM wogra/ludwig-gpu:latest as production
 
 COPY dockerfiles/ludwig/requirements.txt /requirements.txt
 
