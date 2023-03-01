@@ -38,24 +38,19 @@ def sniff_series(series: pd.Series, max_categories=10) -> ColumnDataType:
 
 
 def sniff_zip_types(df: pd.DataFrame) -> List[Column]:
-    example_file = df[IMAGE_COL_NAME][0]
-    num_files = len(df[IMAGE_COL_NAME])
-    suffix = pathlib.Path(example_file).suffix.lower()
-    if suffix in (".jpg", ".jpeg", ".png", ".tif", ".tiff"):
-        file_column = Column(
-            name=IMAGE_COL_NAME,
-            type=ColumnDataType.IMAGE.value,
-            num_entries=num_files,
-        )
-    else:
-        raise NotImplementedError()
+    num_images = len(df[IMAGE_COL_NAME])
+    image_column = Column(
+        name=IMAGE_COL_NAME,
+        type=ColumnDataType.IMAGE.value,
+        num_entries=num_images,
+    )
     num_labels = len(df[CATEGORY_COL_NAME])
     label_column = Column(
         name=CATEGORY_COL_NAME,
         type=ColumnDataType.CATEGORY.value,
         num_entries=num_labels,
     )
-    return [file_column, label_column]
+    return [image_column, label_column]
 
 
 def get_num_rows(columns: List[Column]) -> int:

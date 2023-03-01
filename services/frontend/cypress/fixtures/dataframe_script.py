@@ -7,5 +7,4 @@ args = parser.parse_args()
 
 url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
 df = pd.read_csv(url)
-with open(args.output, 'w') as file:
-    df.to_csv(file, index=False)
+df.to_pickle(args.output)

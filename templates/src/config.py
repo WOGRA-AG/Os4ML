@@ -9,5 +9,5 @@ OS4ML_NAMESPACE = os.getenv("OS4ML_NAMESPACE", default="os4ml")
 DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"
 
 # for zip files
-IMAGE_COL_NAME = "image_path"
+IMAGE_COL_NAME = "image"
 CATEGORY_COL_NAME = "category"
