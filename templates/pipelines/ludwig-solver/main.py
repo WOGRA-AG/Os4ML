@@ -22,8 +22,8 @@ def ludwig_solver_pipeline(
         solution_id=solution_id,
     )
     ludwig_solver = ludwig_solver_op(
-        dataset_file=databag_and_dataframe.outputs["dataframe"],
-        databag_file=databag_and_dataframe.outputs["databag"],
+        dataframe=databag_and_dataframe.outputs["dataframe"],
+        databag=databag_and_dataframe.outputs["databag"],
         solution_id=solution_id,
         batch_size=batch_size,
         epochs=epochs,

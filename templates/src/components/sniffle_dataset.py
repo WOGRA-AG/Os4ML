@@ -26,7 +26,7 @@ from util.exception_handler import exception_handler
 
 
 def sniffle_dataset(
-    dataset: Input[Dataset],
+    dataframe: Input[Dataset],
     dataset_type: str,
     max_categories: int,
     databag_id: str,
@@ -42,7 +42,7 @@ def sniffle_dataset(
     )
     with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
         update_databag_status(databag_id, StatusMessage.INSPECTING_DATATYPES)
-        df = load_dataframe(dataset.path)
+        df = load_dataframe(dataframe.path)
         columns = create_columns(df, dataset_type, max_categories)
 
         databag = get_databag_by_id(databag_id)

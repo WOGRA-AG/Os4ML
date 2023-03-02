@@ -25,7 +25,7 @@ def databag(
         )
 
         sniffle_op(
-            dataset=dataframe.output,
+            dataframe=dataframe.output,
             dataset_type=types.outputs["dataset_type"],
             max_categories=max_categories,
             databag_id=databag_id,
@@ -43,7 +43,7 @@ def databag(
         )
 
         sniffle_op(
-            dataset=dataframe.output,
+            dataframe=dataframe.output,
             dataset_type=types.outputs["dataset_type"],
             max_categories=max_categories,
             databag_id=databag_id,
