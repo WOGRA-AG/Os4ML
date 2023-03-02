@@ -62,10 +62,15 @@ class SolutionService:
         objects: list[str] = self.objectstore.get_objects_with_prefix(
             path_prefix="", usertoken=usertoken
         )
-        return [
+        solutions = (
             self._load_solution_from_object(obj, usertoken)
             for obj in objects
             if self.solution_config_file_name in obj
+        )
+
+        return [
+            self.update_presigned_urls(solution, usertoken=usertoken)
+            for solution in solutions
         ]
 
     async def stream_solutions(
@@ -174,12 +179,19 @@ class SolutionService:
             solution_id, body, self.model_file_name, usertoken
         )
 
-    def download_prediction_template(
-        self, solution_id: str, usertoken: str
-    ) -> str:
-        return self._get_presigned_get_url_for_solution_file(
-            solution_id, self.prediction_template_file_name, usertoken
+    def update_presigned_urls(
+        self, solution: Solution, usertoken: str
+    ) -> Solution:
+        if solution.prediction_template_url is None:
+            return solution
+        solution.prediction_template_url = (
+            self._get_presigned_get_url_for_solution_file(
+                solution.id,
+                self.prediction_template_file_name,
+                usertoken=usertoken,
+            )
         )
+        return solution
 
     def upload_prediction_template(
         self, solution_id: str, body: bytes, usertoken: str
@@ -187,6 +199,15 @@ class SolutionService:
         self._upload_file_to_solution(
             solution_id, body, self.prediction_template_file_name, usertoken
         )
+        solution = self.get_solution_by_id(solution_id, usertoken=usertoken)
+        solution.prediction_template_url = (
+            self._get_presigned_get_url_for_solution_file(
+                solution.id,
+                self.prediction_template_file_name,
+                usertoken=usertoken,
+            )
+        )
+        self.update_solution_by_id(solution_id, solution, usertoken=usertoken)
 
     def _get_presigned_get_url_for_solution_file(
         self, solution_id: str, file_name: str, usertoken: str

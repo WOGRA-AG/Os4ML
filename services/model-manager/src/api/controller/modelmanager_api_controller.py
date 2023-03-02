@@ -113,11 +113,6 @@ class ModelmanagerApiController:
             solution_id, body, usertoken
         )
 
-    def download_prediction_template(
-        self, solution_id: str, usertoken: str = ""
-    ) -> str:
-        return self.solution_service.download_prediction_template(solution_id, usertoken)  # type: ignore
-
     def upload_prediction_template(
         self, solution_id: str, body: bytes, usertoken: str = ""
     ) -> None:

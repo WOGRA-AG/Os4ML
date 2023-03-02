@@ -90,6 +90,9 @@ components:
           nullable: true
         runId:
           $ref: '#/components/schemas/RunId'
+        predictionTemplateUrl:
+          type: string
+          nullable: true
     Prediction:
       properties:
         id:
