@@ -27,7 +27,7 @@ export class ChooseDatabagComponent implements OnInit {
   }
 
   changeSelectedDatabag(databag: Databag): void {
-    const id = databag.databagId;
+    const id = databag.id;
     if (!id) {
       return;
     }

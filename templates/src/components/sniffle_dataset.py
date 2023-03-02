@@ -8,7 +8,7 @@ from kfp.v2.dsl import Dataset, Input
 from build.model_manager_client.model.column import Column
 from build.model_manager_client.model.databag import Databag
 from config import IMAGE_COL_NAME
-from load.dataframe import load_dataframe
+from load.dataframe import load_dataframe, save_dataframe
 from model_manager.databags import (
     get_databag_by_id,
     update_databag,
@@ -70,7 +70,6 @@ def create_columns(
 
 def upload_dataframe_to_databag(df: pd.DataFrame, databag: Databag) -> None:
     with tempfile.NamedTemporaryFile() as file:
-        with open(file.name, "wb") as output_file:
-            df.to_csv(output_file, index=False)
+        save_dataframe(df, file.name)
         with open(file.name, "rb") as upload_file:
             upload_dataframe(upload_file, databag)

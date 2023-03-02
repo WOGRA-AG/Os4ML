@@ -18,30 +18,43 @@ components:
       type: string
     DatabagId:
       type: string
-    Solver:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-    PipelineTemplate:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        pipelineStep:
-          type: string
-        fileUrl:
-          type: string
     SolutionId:
       type: string
+    PredictionId:
+      type: string
+    Databag:
+      properties:
+        id:
+          $ref: "#/components/schemas/DatabagId"
+          nullable: true
+        databagName:
+          type: string
+        status:
+          type: string
+          nullable: true
+        datasetType:
+          type: string
+          nullable: true
+        fileName:
+          type: string
+          nullable: true
+        numberRows:
+          type: integer
+          nullable: true
+        numberColumns:
+          type: integer
+          nullable: true
+        columns:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/Column"
+        creationTime:
+          type: string
+          nullable: true
+        runId:
+          type: string
+          nullable: true
     Solution:
       properties:
         id:
@@ -77,6 +90,35 @@ components:
           nullable: true
         runId:
           $ref: '#/components/schemas/RunId'
+    Prediction:
+      properties:
+        id:
+          $ref: '#/components/schemas/PredictionId'
+          nullable: true
+        name:
+          type: string
+        status:
+          type: string
+          nullable: true
+        creationTime:
+          type: string
+        completionTime:
+          type: string
+          nullable: true
+        solutionId:
+          $ref: '#/components/schemas/SolutionId'
+        runId:
+          $ref: '#/components/schemas/RunId'
+    Solver:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        pipelineStep:
+          type: string
     Metric:
       properties:
         name:
@@ -91,39 +133,6 @@ components:
           type: string
         numEntries:
           type: integer
-    Databag:
-      properties:
-        databagId:
-          $ref: "#/components/schemas/DatabagId"
-          nullable: true
-        databagName:
-          type: string
-        status:
-          type: string
-          nullable: true
-        datasetType:
-          type: string
-          nullable: true
-        fileName:
-          type: string
-          nullable: true
-        numberRows:
-          type: integer
-          nullable: true
-        numberColumns:
-          type: integer
-          nullable: true
-        columns:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/Column"
-        creationTime:
-          type: string
-          nullable: true
-        runId:
-          type: string
-          nullable: true
     JsonResponse:
       properties:
         jsonContent:

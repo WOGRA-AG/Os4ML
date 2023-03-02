@@ -106,11 +106,11 @@ class DatabagService:
             raise DatabagNotFoundException(databag_id)
 
     def create_databag(self, databag: Databag, usertoken: str) -> Databag:
-        if not databag.databag_id:
-            databag.databag_id = str(uuid.uuid4())
+        if not databag.id:
+            databag.id = str(uuid.uuid4())
         databag.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._save_databag_file(databag, usertoken)
-        run_params = RunParams(databag_id=databag.databag_id, solution_name="")
+        run_params = RunParams(databag_id=databag.id, solution_name="")
         run_id: str = self.jobmanager.create_run_by_solver_name(
             "databag", run_params=run_params, usertoken=usertoken
         )
@@ -132,13 +132,13 @@ class DatabagService:
     def update_databag(
         self, databag_id: str, databag: Databag, usertoken: str
     ) -> None:
-        if databag_id != databag.databag_id:
+        if databag_id != databag.id:
             raise DatabagIdUpdateNotAllowedException()
         self._save_databag_file(databag, usertoken)
         self._notify_databag_update(usertoken)
 
     def _save_databag_file(self, databag: Databag, usertoken: str) -> None:
-        object_name = self._get_databag_object_name(databag.databag_id)
+        object_name = self._get_databag_object_name(databag.id)
         json_str = json.dumps(databag.dict())
         data = StringIO(json_str)
         data.seek(0)
@@ -206,9 +206,7 @@ class DatabagService:
     ) -> None:
         bytes_io = BytesIO(body)
         bytes_io.seek(0)
-        object_name = self._get_databag_object_name(
-            databag.databag_id, file_name
-        )
+        object_name = self._get_databag_object_name(databag.id, file_name)
         self.objectstore.put_object_by_name(
             object_name, body=bytes_io, usertoken=usertoken
         )

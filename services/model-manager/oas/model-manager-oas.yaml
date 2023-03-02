@@ -311,6 +311,93 @@ paths:
         200:
           $ref: '#/components/responses/Uploaded'
 
+  "/apis/v1beta1/model-manager/predictions":
+    get:
+      summary: "get predictions"
+      operationId: getPredictions
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared-oas.yaml#/components/schemas/Prediction'
+    post:
+      summary: "create prediction"
+      operationId: createPrediction
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Prediction'
+      responses:
+        201:
+          description: "Resource created"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Prediction'
+
+  "/apis/v1beta1/model-manager/predictions/{predictionId}":
+    get:
+      summary: "get prediction by id"
+      operationId: getPredictionById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/PredictionId'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "update prediction"
+      operationId: updatePredictionById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './shared-oas.yaml#/components/schemas/Prediction'
+      responses:
+        200:
+          description: "Prediction updated"
+          content:
+            application/json:
+              schema:
+                $ref: './shared-oas.yaml#/components/schemas/Prediction'
+    delete:
+      summary: "delete Prediction"
+      operationId: deletePredictionById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
 components:
   schemas:
     Error:
@@ -345,6 +432,13 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/SolutionId'
+    PredictionId:
+      name: predictionId
+      in: path
+      description: Id of the Prediction
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/PredictionId'
     SolverName:
       name: solverName
       in: path

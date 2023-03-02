@@ -74,5 +74,5 @@ def create_label_description(label: Column) -> dict:
     )
     return {
         "name": label.name,
-        "type": label_type,
+        "type": label_type.value,
     }

@@ -16,3 +16,13 @@ class SolutionNotFoundException(ResourceNotFoundException):
 class SolverNotFoundException(ResourceNotFoundException):
     def __init__(self, solver_name: str):
         super().__init__(f"Solver with name {solver_name} not found")
+
+
+class PredictionNotFoundException(ResourceNotFoundException):
+    def __init__(self, prediction_id: str):
+        super().__init__(f"Prediction with id {prediction_id} not found")
+
+
+class ModelNotFoundException(ResourceNotFoundException):
+    def __init__(self, model_name: str, id_: str):
+        super().__init__(f"{model_name} with id {id_} not found")

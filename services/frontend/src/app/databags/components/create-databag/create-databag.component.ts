@@ -54,7 +54,7 @@ export class CreateDatabagComponent {
         this.databagService.createDatabag(this.databag)
       );
       this.databagChange.next(this.databag);
-      await firstValueFrom(this.outputDatabagUpdates(this.databag.databagId!));
+      await firstValueFrom(this.outputDatabagUpdates(this.databag.id!));
     } catch (err: any) {
       this.errorService.reportError(err);
     }
