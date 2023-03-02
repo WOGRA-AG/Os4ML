@@ -5,6 +5,7 @@ from pipelines.build import compile_pipeline, load_component
 load_databag_and_dataframe_op = load_component("load_databag_and_dataframe")
 ludwig_solver_op = load_component("ludwig_solver")
 get_metrics_op = load_component("get_metrics")
+create_prediction_template = load_component("create_prediction_template")
 
 
 @pipeline(name="ludwig-solver")
@@ -30,6 +31,10 @@ def ludwig_solver_pipeline(
         early_stop=early_stop,
         test_split=test_split,
         validation_split=validation_split,
+    )
+    create_prediction_template(
+        dataframe=databag_and_dataframe.outputs["dataframe"],
+        solution_id=solution_id,
     )
     get_metrics_op(
         metrics=ludwig_solver.outputs["metrics"],

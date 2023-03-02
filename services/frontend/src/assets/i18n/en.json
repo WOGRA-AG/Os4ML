@@ -28,7 +28,8 @@
         "metrics_not_retrievable": "Metrics not retrievable",
         "training_failed": "Training failed",
         "file_type_unknown": "File type unknown",
-        "resource_not_found": "Resource not found"
+        "resource_not_found": "Resource not found",
+        "prediction_template_could_not_be_created": "Prediction template could not be created"
       }
     }
   },
