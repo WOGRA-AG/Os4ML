@@ -22,6 +22,7 @@ from exceptions import (
 from services import (
     DATE_FORMAT_STR,
     MODEL_FILE_NAME,
+    PREDICTION_TEMPLATE_FILE_NAME,
     SOLUTION_CONFIG_FILE_NAME,
     SOLUTION_MESSAGE_CHANNEL,
 )
@@ -55,6 +56,7 @@ class SolutionService:
         self.databag_service = databag_service
         self.solution_config_file_name = SOLUTION_CONFIG_FILE_NAME
         self.model_file_name = MODEL_FILE_NAME
+        self.prediction_template_file_name = PREDICTION_TEMPLATE_FILE_NAME
 
     def get_solutions(self, usertoken: str) -> list[Solution]:
         objects: list[str] = self.objectstore.get_objects_with_prefix(
@@ -170,6 +172,20 @@ class SolutionService:
     ) -> None:
         self._upload_file_to_solution(
             solution_id, body, self.model_file_name, usertoken
+        )
+
+    def download_prediction_template(
+        self, solution_id: str, usertoken: str
+    ) -> str:
+        return self._get_presigned_get_url_for_solution_file(
+            solution_id, self.prediction_template_file_name, usertoken
+        )
+
+    def upload_prediction_template(
+        self, solution_id: str, body: bytes, usertoken: str
+    ) -> None:
+        self._upload_file_to_solution(
+            solution_id, body, self.prediction_template_file_name, usertoken
         )
 
     def _get_presigned_get_url_for_solution_file(

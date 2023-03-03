@@ -30,3 +30,6 @@ class StatusMessage(str, enum.Enum):
     TRAINING_FAILED = "message.pipeline.error.training_failed"
     FILE_TYPE_UNKNOWN = "message.pipeline.error.file_type_unknown"
     RESOURCE_NOT_FOUND = "message.pipeline.error.resource_not_found"
+    PREDICTION_TEMPLATE_COULD_NOT_BE_CREATED = (
+        "message.pipeline.error.prediction_template_could_not_be_created"
+    )

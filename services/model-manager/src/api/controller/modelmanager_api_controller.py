@@ -113,6 +113,18 @@ class ModelmanagerApiController:
             solution_id, body, usertoken
         )
 
+    def download_prediction_template(
+        self, solution_id: str, usertoken: str = ""
+    ) -> str:
+        return self.solution_service.download_prediction_template(solution_id, usertoken)  # type: ignore
+
+    def upload_prediction_template(
+        self, solution_id: str, body: bytes, usertoken: str = ""
+    ) -> None:
+        return self.solution_service.upload_prediction_template(  # type: ignore
+            solution_id, body, usertoken
+        )
+
     # ----- predictions -----
     def get_predictions(self, usertoken: str = "") -> list[Prediction]:
         return self.prediction_service.get_predictions(usertoken)  # type: ignore

@@ -311,6 +311,38 @@ paths:
         200:
           $ref: '#/components/responses/Uploaded'
 
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/files/prediction-template":
+    get:
+      summary: "download the prediction template for the solution"
+      operationId: downloadPredictionTemplate
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/DownloadLink'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: "upload prediction template to solution"
+      operationId: uploadPredictionTemplate
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          $ref: '#/components/responses/Uploaded'
+
   "/apis/v1beta1/model-manager/predictions":
     get:
       summary: "get predictions"

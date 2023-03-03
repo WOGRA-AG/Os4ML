@@ -16,5 +16,4 @@ headers = {'x-api-key': api_key}
 res = requests.get(url, headers=headers)
 content = io.BytesIO(res.content)
 df = pd.read_csv(content)
-with open(args.output, 'w') as file:
-    df.to_csv(file, index=False)
+df.to_pickle(args.output)

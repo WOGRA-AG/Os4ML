@@ -17,8 +17,8 @@ from util.exception_handler import exception_handler
 
 
 def load_databag_and_dataframe(
-    dataframe_output: Output[Dataset],
-    databag_output: Output[Artifact],
+    dataframe: Output[Dataset],
+    databag: Output[Artifact],
     databag_id: str,
     solution_id: str,
 ):
@@ -28,9 +28,9 @@ def load_databag_and_dataframe(
     )
     with exception_handler(handler, StatusMessage.DATABAG_NOT_ACCESSIBLE):
         update_solution_status(solution_id, StatusMessage.SOLUTION_CREATED)
-        databag = get_databag_by_id(databag_id)
-        with open(databag_output.path, "w") as databag_file:
-            json.dump(databag.to_dict(), databag_file)
-        dataframe_url = get_dataframe_download_url(databag)
-        with open(dataframe_output.path, "wb") as dataframe_file:
+        databag_model = get_databag_by_id(databag_id)
+        with open(databag.path, "w") as databag_file:
+            json.dump(databag_model.to_dict(), databag_file)
+        dataframe_url = get_dataframe_download_url(databag_model)
+        with open(dataframe.path, "wb") as dataframe_file:
             download_file(dataframe_url, dataframe_file)

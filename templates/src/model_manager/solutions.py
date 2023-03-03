@@ -50,3 +50,10 @@ def update_solution_error_status(
 def upload_model(model: IO[bytes], solution_id: str) -> None:
     model_manager = init_model_manager_client()
     model_manager.upload_model(solution_id, body=model, usertoken=USER_TOKEN)
+
+
+def upload_prediction_template(template: IO[bytes], solution_id: str) -> None:
+    model_manager = init_model_manager_client()
+    model_manager.upload_prediction_template(
+        solution_id, body=template, usertoken=USER_TOKEN
+    )

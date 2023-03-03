@@ -14,6 +14,9 @@ PREDICTION_CONFIG_FILE_NAME = os.getenv(
     "PREDICTION_CONFIG_FILE_NAME", default="prediction.json"
 )
 
+PREDICTION_TEMPLATE_FILE_NAME = os.getenv(
+    "PREDICTION_TEMPLATE_FILE_NAME", default="prediction_template.csv"
+)
 MODEL_FILE_NAME = "model.os4ml.zip"
 DATAFRAME_FILE_NAME = "dataframe"
 DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"
