@@ -13,6 +13,7 @@ from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.dataset_put_url import DatasetPutUrl
@@ -169,23 +170,22 @@ class DatabagService:
             dataset_file = self._get_databag_object_name(
                 databag.id, databag.file_name
             )
-            if self.objectstore.get_objects_with_prefix(
-                path_prefix=dataset_file, usertoken=usertoken
-            ):
+            try:
                 databag.dataset_url = self.objectstore.get_presigned_get_url(
                     dataset_file, usertoken=usertoken
                 )
+            except NotFoundException:
+                pass
 
         daraframe_file = self._get_databag_object_name(
             databag.id, self.dataframe_file_name
         )
-        if self.objectstore.get_objects_with_prefix(
-            path_prefix=daraframe_file, usertoken=usertoken
-        ):
+        try:
             databag.dataframe_url = self.objectstore.get_presigned_get_url(
                 daraframe_file, usertoken=usertoken
             )
-
+        except NotFoundException:
+            pass
         return databag
 
     def get_dataset_put_url(

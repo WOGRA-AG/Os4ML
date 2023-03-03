@@ -13,6 +13,7 @@ from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
 from exceptions import (
@@ -169,22 +170,22 @@ class SolutionService:
         prediction_template_file = self._get_file_name(
             solution, self.prediction_template_file_name
         )
-        if self.objectstore.get_objects_with_prefix(
-            path_prefix=prediction_template_file, usertoken=usertoken
-        ):
+        try:
             solution.prediction_template_url = (
                 self.objectstore.get_presigned_get_url(
                     prediction_template_file, usertoken=usertoken
                 )
             )
+        except NotFoundException:
+            pass
 
-        model_file = self._get_file_name(solution, self.model_file_name)
-        if self.objectstore.get_objects_with_prefix(
-            path_prefix=model_file, usertoken=usertoken
-        ):
+        model_url_file = self._get_file_name(solution, self.model_file_name)
+        try:
             solution.model_url = self.objectstore.get_presigned_get_url(
-                model_file, usertoken=usertoken
+                model_url_file, usertoken=usertoken
             )
+        except NotFoundException:
+            pass
 
         return solution
 

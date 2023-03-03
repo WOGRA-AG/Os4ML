@@ -71,9 +71,16 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <a *ngIf="solution.modelUrl" href="solution.modelUrl" color="primary">
-    {{ 'action.download' | translate }}
-  </a>
+  <button
+    *ngIf="solution.modelUrl"
+    mat-raised-button
+    color="primary"
+    type="button">
+    <a [href]="solution.modelUrl" class="link">
+      {{ 'action.download' | translate }}
+    </a>
+  </button>
+
   <button
     mat-stroked-button
     class="delete-button"
