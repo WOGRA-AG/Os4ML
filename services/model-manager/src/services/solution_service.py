@@ -32,16 +32,6 @@ from services.init_api_clients import init_jobmanager_api, init_objectstore_api
 from services.messaging_service import MessagingService
 
 
-def _get_file_name_for_solution(
-    solution: Solution, file_name: str = SOLUTION_CONFIG_FILE_NAME
-) -> str:
-    return f"{_get_solution_prefix(solution)}/{file_name}"
-
-
-def _get_solution_prefix(solution: Solution) -> str:
-    return f"{solution.databag_id}/{solution.id}"
-
-
 class SolutionService:
     messaging_service = MessagingService(SOLUTION_MESSAGE_CHANNEL)
 
@@ -57,6 +47,9 @@ class SolutionService:
         self.solution_config_file_name = SOLUTION_CONFIG_FILE_NAME
         self.model_file_name = MODEL_FILE_NAME
         self.prediction_template_file_name = PREDICTION_TEMPLATE_FILE_NAME
+
+    def _get_file_name(self, solution: Solution, file_name: str) -> str:
+        return f"{solution.databag_id}/{solution.id}/{file_name}"
 
     def get_solutions(self, usertoken: str) -> list[Solution]:
         objects: list[str] = self.objectstore.get_objects_with_prefix(
@@ -125,8 +118,11 @@ class SolutionService:
 
     def _persist_solution(self, solution: Solution, usertoken: str) -> None:
         encoded_solution = BytesIO(json.dumps(solution.dict()).encode())
+        object_name = self._get_file_name(
+            solution, self.solution_config_file_name
+        )
         self.objectstore.put_object_by_name(
-            object_name=_get_file_name_for_solution(solution),
+            object_name=object_name,
             body=encoded_solution,
             usertoken=usertoken,
         )
@@ -138,7 +134,7 @@ class SolutionService:
             raise SolutionIdUpdateNotAllowedException()
         self._persist_solution(solution, usertoken=usertoken)
         self._notify_solution_update(usertoken)
-        return solution
+        return self.update_presigned_urls(solution, usertoken=usertoken)
 
     def delete_solution_by_id(self, id_: str, usertoken: str) -> None:
         try:
@@ -162,75 +158,58 @@ class SolutionService:
             except ApiTypeError as e:
                 logging.error(e)
         self.objectstore.delete_objects_with_prefix(
-            path_prefix=_get_solution_prefix(solution),
+            path_prefix=self._get_file_name(solution, ""),
             usertoken=usertoken,
         )
         self._notify_solution_update(usertoken)
 
-    def download_model(self, solution_id: str, usertoken: str) -> str:
-        return self._get_presigned_get_url_for_solution_file(
-            solution_id, self.model_file_name, usertoken
-        )
-
-    def upload_model(
-        self, solution_id: str, body: bytes, usertoken: str
-    ) -> None:
-        self._upload_file_to_solution(
-            solution_id, body, self.model_file_name, usertoken
-        )
-
     def update_presigned_urls(
         self, solution: Solution, usertoken: str
     ) -> Solution:
-        if solution.prediction_template_url is None:
-            return solution
-        solution.prediction_template_url = (
-            self._get_presigned_get_url_for_solution_file(
-                solution.id,
-                self.prediction_template_file_name,
-                usertoken=usertoken,
-            )
+        prediction_template_file = self._get_file_name(
+            solution, self.prediction_template_file_name
         )
+        if self.objectstore.get_objects_with_prefix(
+            path_prefix=prediction_template_file, usertoken=usertoken
+        ):
+            solution.prediction_template_url = (
+                self.objectstore.get_presigned_get_url(
+                    prediction_template_file, usertoken=usertoken
+                )
+            )
+
+        model_file = self._get_file_name(solution, self.model_file_name)
+        if self.objectstore.get_objects_with_prefix(
+            path_prefix=model_file, usertoken=usertoken
+        ):
+            solution.model_url = self.objectstore.get_presigned_get_url(
+                model_file, usertoken=usertoken
+            )
+
         return solution
 
-    def upload_prediction_template(
-        self, solution_id: str, body: bytes, usertoken: str
-    ) -> None:
-        self._upload_file_to_solution(
-            solution_id, body, self.prediction_template_file_name, usertoken
+    def get_model_put_url(self, solution_id: str, usertoken: str) -> str:
+        return self._get_presigned_put_url_for_solution_file(
+            solution_id, self.model_file_name, usertoken=usertoken
         )
-        solution = self.get_solution_by_id(solution_id, usertoken=usertoken)
-        solution.prediction_template_url = (
-            self._get_presigned_get_url_for_solution_file(
-                solution.id,
-                self.prediction_template_file_name,
-                usertoken=usertoken,
-            )
-        )
-        self.update_solution_by_id(solution_id, solution, usertoken=usertoken)
 
-    def _get_presigned_get_url_for_solution_file(
+    def get_prediction_template_put_url(
+        self, solution_id: str, usertoken: str
+    ) -> str:
+        return self._get_presigned_put_url_for_solution_file(
+            solution_id,
+            self.prediction_template_file_name,
+            usertoken=usertoken,
+        )
+
+    def _get_presigned_put_url_for_solution_file(
         self, solution_id: str, file_name: str, usertoken: str
     ) -> str:
         solution = self.get_solution_by_id(
             id_=solution_id,
             usertoken=usertoken,
         )
-        object_name = _get_file_name_for_solution(solution, file_name)
-        return self.objectstore.get_presigned_get_url(  # type: ignore
+        object_name = self._get_file_name(solution, file_name)
+        return self.objectstore.get_presigned_put_url(  # type: ignore
             object_name, usertoken=usertoken
-        )
-
-    def _upload_file_to_solution(
-        self, solution_id: str, body: bytes, file_name: str, usertoken: str
-    ) -> None:
-        solution = self.get_solution_by_id(
-            id_=solution_id,
-            usertoken=usertoken,
-        )
-        bytes_io = BytesIO(body)
-        bytes_io.seek(0)
-        object_name = _get_file_name_for_solution(solution, file_name)
-        self.objectstore.put_object_by_name(
-            object_name, body=bytes_io, usertoken=usertoken
         )

@@ -1,30 +1,34 @@
 import functools
 import pathlib
-from collections import namedtuple
-from typing import NamedTuple
 
 from exceptions.file_type_unknown import FileTypeUnknownException
 from model_manager.databags import update_databag_status
-from models.databag_type import DatasetType
+from models.databag_type import DatabagType
 from models.file_type import FileType
 from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
-from util.uri import is_uri
 
 
-def get_file_and_dataset_type(
+def get_file_type(
     databag_id: str,
-) -> NamedTuple("Types", [("file_type", str), ("dataset_type", str)]):
+) -> str:
     handler = functools.partial(
         update_databag_status,
         databag_id,
     )
     with exception_handler(handler, StatusMessage.FILE_TYPE_UNKNOWN):
         databag = update_databag_status(databag_id, StatusMessage.LOADING_DATA)
-        types = namedtuple("Types", ["file_type", "dataset_type"])
-        file_type = file_type_from_file_name(databag.file_name)
-        dataset_type = dataset_type_from_file_name(databag.file_name)
-        return types(file_type.value, dataset_type.value)
+        file_name = databag.file_name
+        if databag.databag_type == DatabagType.FILE_URL:
+            file_name = get_file_name_from_url(databag.datasetUrl)
+        return file_type_from_file_name(file_name).value
+
+
+def get_file_name_from_url(url: str) -> str:
+    url, _, _ = url.partition("?")
+    *_, file_name = url.split("/")
+    print(file_name)
+    return file_name
 
 
 def file_type_from_file_name(file_name: str) -> FileType:
@@ -39,10 +43,3 @@ def file_type_from_file_name(file_name: str) -> FileType:
         return FileType.SCRIPT
     else:
         raise FileTypeUnknownException(f"Unknown file type: {suffix}")
-
-
-def dataset_type_from_file_name(file_name: str) -> DatasetType:
-    if is_uri(file_name):
-        return DatasetType.FILE_URL
-    else:
-        return DatasetType.LOCAL_FILE

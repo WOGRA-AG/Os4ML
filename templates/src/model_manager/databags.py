@@ -1,5 +1,7 @@
 from typing import IO
 
+import requests
+
 from build.model_manager_client.model.databag import Databag
 from config import USER_TOKEN
 from model_manager.init_api_client import init_model_manager_client
@@ -28,18 +30,7 @@ def update_databag_status(databag_id: str, status: StatusMessage) -> Databag:
     return databag
 
 
-def get_dataset_download_url(databag: Databag) -> str:
-    model_manager = init_model_manager_client()
-    return model_manager.download_dataset(databag.id, usertoken=USER_TOKEN)
-
-
-def get_dataframe_download_url(databag: Databag) -> str:
-    model_manager = init_model_manager_client()
-    return model_manager.download_dataframe(databag.id, usertoken=USER_TOKEN)
-
-
 def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
     model_manager = init_model_manager_client()
-    model_manager.upload_dataframe(
-        databag.id, body=dataframe, usertoken=USER_TOKEN
-    )
+    url = model_manager.get_dataframe_put_url(databag.id, usertoken=USER_TOKEN)
+    requests.put(url, data=dataframe)

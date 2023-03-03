@@ -3,7 +3,7 @@ import json
 import logging
 import uuid
 from datetime import datetime
-from io import BytesIO, StringIO
+from io import StringIO
 from typing import AsyncIterable
 
 from fastapi import Depends
@@ -20,6 +20,7 @@ from exceptions import (
     DatabagIdUpdateNotAllowedException,
     DatabagNotFoundException,
 )
+from models.dataset_type import DatasetType
 from services import (
     DATABAG_CONFIG_FILE_NAME,
     DATABAG_MESSAGE_CHANNEL,
@@ -45,22 +46,24 @@ class DatabagService:
         self.dataframe_file_name = DATAFRAME_FILE_NAME
 
     def _get_databag_object_name(
-        self, databag_id: str, object_name: str | None = None
+        self, databag_id: str, object_name: str
     ) -> str:
-        if object_name is None:
-            object_name = self.databag_config_file_name
         return f"{databag_id}/{object_name}"
 
     def get_databags(self, usertoken: str) -> list[Databag]:
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
             path_prefix="", usertoken=usertoken
         )
-        return [
+        databags = (
             self._load_databag_from_object_name(
                 object_name, usertoken=usertoken
             )
             for object_name in object_names
             if self.databag_config_file_name in object_name
+        )
+        return [
+            self.update_presigned_urls(databag, usertoken=usertoken)
+            for databag in databags
         ]
 
     async def stream_databags(
@@ -92,18 +95,15 @@ class DatabagService:
 
     def get_databag_by_id(self, databag_id: str, usertoken: str) -> Databag:
         try:
-            json_response: JsonResponse = (
-                self.objectstore.get_json_object_by_name(
-                    self._get_databag_object_name(databag_id),
-                    usertoken=usertoken,
-                )
+            object_name = self._get_databag_object_name(
+                databag_id, self.databag_config_file_name
             )
-            json_content_bytes = json_response.json_content.encode()
-            json_str = base64.decodebytes(json_content_bytes)
-            json_dict = json.loads(json_str)
-            return Databag(**json_dict)
         except Exception:
             raise DatabagNotFoundException(databag_id)
+        databag = self._load_databag_from_object_name(
+            object_name, usertoken=usertoken
+        )
+        return self.update_presigned_urls(databag, usertoken=usertoken)
 
     def create_databag(self, databag: Databag, usertoken: str) -> Databag:
         if not databag.id:
@@ -117,28 +117,21 @@ class DatabagService:
         databag.run_id = run_id
         self._save_databag_file(databag, usertoken)
         self._notify_databag_update(usertoken)
-        return databag
-
-    def get_dataset_put_url(
-        self, file_name: str, usertoken: str
-    ) -> DatasetPutUrl:
-        databag_id = str(uuid.uuid4())
-        object_name = self._get_databag_object_name(databag_id, file_name)
-        put_url = self.objectstore.get_presigned_put_url(
-            object_name, usertoken=usertoken
-        )
-        return DatasetPutUrl(databag_id=databag_id, url=put_url)
+        return self.update_presigned_urls(databag, usertoken=usertoken)
 
     def update_databag(
         self, databag_id: str, databag: Databag, usertoken: str
-    ) -> None:
+    ) -> Databag:
         if databag_id != databag.id:
             raise DatabagIdUpdateNotAllowedException()
         self._save_databag_file(databag, usertoken)
         self._notify_databag_update(usertoken)
+        return self.update_presigned_urls(databag, usertoken=usertoken)
 
     def _save_databag_file(self, databag: Databag, usertoken: str) -> None:
-        object_name = self._get_databag_object_name(databag.id)
+        object_name = self._get_databag_object_name(
+            databag.id, self.databag_config_file_name
+        )
         json_str = json.dumps(databag.dict())
         data = StringIO(json_str)
         data.seek(0)
@@ -169,44 +162,50 @@ class DatabagService:
         )
         self._notify_databag_update(usertoken)
 
-    def download_dataset(self, databag_id: str, usertoken: str) -> str:
-        databag = self.get_databag_by_id(databag_id, usertoken)
-        return self._get_presigned_get_url_for_databag_file(
-            databag_id, databag.file_name, usertoken
+    def update_presigned_urls(
+        self, databag: Databag, usertoken: str
+    ) -> Databag:
+        if databag.databag_type == DatasetType.LOCAL_FILE:
+            dataset_file = self._get_databag_object_name(
+                databag.id, databag.file_name
+            )
+            if self.objectstore.get_objects_with_prefix(
+                path_prefix=dataset_file, usertoken=usertoken
+            ):
+                databag.dataset_url = self.objectstore.get_presigned_get_url(
+                    dataset_file, usertoken=usertoken
+                )
+
+        daraframe_file = self._get_databag_object_name(
+            databag.id, self.dataframe_file_name
+        )
+        if self.objectstore.get_objects_with_prefix(
+            path_prefix=daraframe_file, usertoken=usertoken
+        ):
+            databag.dataframe_url = self.objectstore.get_presigned_get_url(
+                daraframe_file, usertoken=usertoken
+            )
+
+        return databag
+
+    def get_dataset_put_url(
+        self, file_name: str, usertoken: str
+    ) -> DatasetPutUrl:
+        databag_id = str(uuid.uuid4())
+        put_url = self._get_presigned_put_url_for_databag_file(
+            databag_id, file_name, usertoken=usertoken
+        )
+        return DatasetPutUrl(databag_id=databag_id, url=put_url)
+
+    def get_dataframe_put_url(self, databag_id: str, usertoken: str) -> str:
+        return self._get_presigned_put_url_for_databag_file(
+            databag_id, self.dataframe_file_name, usertoken=usertoken
         )
 
-    def download_dataframe(self, databag_id: str, usertoken: str) -> str:
-        return self._get_presigned_get_url_for_databag_file(
-            databag_id, self.dataframe_file_name, usertoken
-        )
-
-    def _get_presigned_get_url_for_databag_file(
+    def _get_presigned_put_url_for_databag_file(
         self, databag_id: str, file_name: str, usertoken: str
     ) -> str:
         object_name = self._get_databag_object_name(databag_id, file_name)
-        return self.objectstore.get_presigned_get_url(  # type: ignore
+        return self.objectstore.get_presigned_put_url(  # type: ignore
             object_name, usertoken=usertoken
-        )
-
-    def upload_dataframe(
-        self, databag_id: str, body: bytes, usertoken: str
-    ) -> None:
-        self.upload_file_to_databag(
-            databag_id, body, self.dataframe_file_name, usertoken
-        )
-
-    def upload_file_to_databag(
-        self, databag_id: str, body: bytes, file_name: str, usertoken: str
-    ) -> None:
-        databag = self.get_databag_by_id(databag_id, usertoken)
-        self._upload_file_to_databag(databag, body, file_name, usertoken)
-
-    def _upload_file_to_databag(
-        self, databag: Databag, body: bytes, file_name: str, usertoken: str
-    ) -> None:
-        bytes_io = BytesIO(body)
-        bytes_io.seek(0)
-        object_name = self._get_databag_object_name(databag.id, file_name)
-        self.objectstore.put_object_by_name(
-            object_name, body=bytes_io, usertoken=usertoken
         )

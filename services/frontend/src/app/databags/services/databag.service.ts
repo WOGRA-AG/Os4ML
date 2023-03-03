@@ -100,8 +100,9 @@ export class DatabagService {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           'Content-Type': 'application/octet-stream',
         });
-        return this.http.put(url, file, { headers }).pipe(map(() => databag));
+        return this.http.put(url, file, { headers });
       }),
+      map(() => databag),
       catchError(err => {
         this.errorService.reportError(err);
         return throwError(() => err);
