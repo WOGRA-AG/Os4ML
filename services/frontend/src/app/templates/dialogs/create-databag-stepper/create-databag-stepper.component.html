@@ -2,7 +2,7 @@
   {{ 'databag.create' | translate }}
 </app-dialog-header>
 
-<mat-horizontal-stepper #stepper>
+<mat-stepper [linear]="false" orientation="horizontal" #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
@@ -25,7 +25,7 @@
       </form>
     </mat-dialog-content>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-stepper>
 
 <ng-container
   *ngIf="stepperStep === 0; then nextButton; else createButton"></ng-container>
