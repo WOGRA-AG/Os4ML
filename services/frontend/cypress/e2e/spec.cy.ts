@@ -101,8 +101,7 @@ describe('Databags', () => {
       'color',
       'primary'
     );
-    // do not use electron for local testing, as it can't open a new tab for download
-    cy.get('.ng-star-inserted > .mat-button-wrapper').click();
+    cy.get('.link').click();
     const downloadedFile = `${Cypress.config(
       'downloadsFolder'
     )}/model.os4ml.zip`;
@@ -314,5 +313,31 @@ describe('Databags', () => {
     cy.get('.list-container').click();
     cy.get('.status-column > .done', { timeout: solutionTimeout });
     cy.get('#solution-status').should('have.text', ' Done ');
+  });
+
+  it('url', function () {
+    cy.get(
+      ':nth-child(5) > .mat-list-item-content > .nav-item-extended'
+    ).click();
+    cy.get('#mat-input-0', { timeout: 1000 }).clear();
+    cy.get('#mat-input-0').type('url');
+    cy.get('#mat-input-1', { timeout: 1000 }).clear();
+    cy.get('#mat-input-1').type(
+      'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv',
+      { timeout: 1000 }
+    );
+    cy.get('#add-databag-main-button > .mat-button-wrapper').click();
+    cy.get(
+      '#mat-select-value-1 > .mat-select-value-text > .mat-select-min-line',
+      { timeout: databagTimeout }
+    ).should('have.text', 'numerical');
+    cy.get('#define-databag-button > .mat-button-wrapper').click();
+    cy.get(
+      ':nth-child(1) > .mat-list-item-content > .nav-item-extended'
+    ).click();
+    cy.get('#add-solution-button-empty').click();
+    cy.get(
+      'app-selectable-list.ng-star-inserted > .mat-list > :nth-child(1) > .mat-list-item-content > app-list-item > div'
+    ).should('have.text', ' PassengerId  numerical ');
   });
 });
