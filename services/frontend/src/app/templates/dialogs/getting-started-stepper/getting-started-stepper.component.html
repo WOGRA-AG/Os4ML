@@ -2,7 +2,7 @@
   {{ 'dialog.get_started.title' | translate }}
 </app-dialog-header>
 
-<mat-horizontal-stepper #stepper>
+<mat-stepper [linear]="false" orientation="horizontal" #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
@@ -69,7 +69,7 @@
       </app-dialog-section>
     </mat-dialog-content>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-stepper>
 
 <mat-dialog-actions align="end">
   <div *ngIf="stepperStep > 0">
