@@ -3,6 +3,8 @@
 @use './essentials/typography' as typography;
 @use './essentials/color.scss' as colors;
 
+@include mat.core();
+
 $os4ml-light-theme: mat.define-light-theme(
   (
     color: (
@@ -11,6 +13,7 @@ $os4ml-light-theme: mat.define-light-theme(
       warn: colors.$os4ml-light-warn,
     ),
     typography: typography.$custom-typography,
+    density: 0,
   )
 );
 
@@ -20,7 +23,6 @@ $os4ml-light-variants: (
   info: colors.$os4ml-light-info,
 );
 
-@include mat.core();
 @include mat.all-component-typographies(typography.$custom-typography);
 
 .os4ml-light-theme {

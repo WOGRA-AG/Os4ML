@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 @mixin layout() {
   .mat-raised-button {
     border-radius: 14px;
