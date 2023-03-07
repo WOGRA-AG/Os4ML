@@ -99,18 +99,21 @@ $md-os4ml-colors-warn: (
   ),
 );
 
-$os4ml-primary: mat.define-palette($md-os4ml-colors-primary);
-$os4ml-warn: mat.define-palette($md-os4ml-colors-warn);
-$os4ml-accent: mat.define-palette($md-os4ml-colors-accent);
+$os4ml-light-primary: mat.define-palette($md-os4ml-colors-primary);
+$os4ml-light-warn: mat.define-palette($md-os4ml-colors-warn);
+$os4ml-light-accent: mat.define-palette($md-os4ml-colors-accent);
+$os4ml-light-tertiary: mat.define-palette(mat.$gray-palette);
+$os4ml-light-success: mat.define-palette(mat.$green-palette);
+$os4ml-light-info: mat.define-palette(mat.$blue-palette);
 
-$primary-color: mat.get-color-from-palette($os4ml-primary, 500);
-$primary-color-100: mat.get-color-from-palette($os4ml-primary, 100);
-$primary-color-900: mat.get-color-from-palette($os4ml-primary, 900);
-$primary-variant: mat.get-color-from-palette($os4ml-primary, 700);
-$accent-color: mat.get-color-from-palette($os4ml-accent, 500);
-$accent-color-100: mat.get-color-from-palette($os4ml-accent, 100);
-$warn-color: mat.get-color-from-palette($os4ml-warn, default);
-$warn-color-100: mat.get-color-from-palette($os4ml-warn, 100);
+$primary-color: mat.get-color-from-palette($os4ml-light-primary, 500);
+$primary-color-100: mat.get-color-from-palette($os4ml-light-primary, 100);
+$primary-color-900: mat.get-color-from-palette($os4ml-light-primary, 900);
+$primary-variant: mat.get-color-from-palette($os4ml-light-primary, 700);
+$accent-color: mat.get-color-from-palette($os4ml-light-accent, 500);
+$accent-color-100: mat.get-color-from-palette($os4ml-light-accent, 100);
+$warn-color: mat.get-color-from-palette($os4ml-light-warn, default);
+$warn-color-100: mat.get-color-from-palette($os4ml-light-warn, 100);
 $background: #f4f9fd;
 $surface: #ffffff;
 $error: #b00020;

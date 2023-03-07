@@ -16,7 +16,7 @@ import { StarRatingComponent } from './components/molecules/star-rating/star-rat
 import { ToggleItemComponent } from './components/molecules/toggle-item/toggle-item.component';
 import { UploadFieldComponent } from './components/molecules/upload-field/upload-field.component';
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

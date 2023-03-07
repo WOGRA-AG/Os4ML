@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, switchMap } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../databags/services/databag.service';
 import { SolutionService } from '../../../solutions/services/solution.service';

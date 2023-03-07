@@ -1,41 +1,34 @@
 @use '@angular/material' as mat;
+@use './components' as components;
 @use './essentials/typography' as typography;
 @use './essentials/color.scss' as colors;
-@use './components/sidenav.scss' as sidenav;
-@use './components/toolbar.scss' as toolbar;
-@use './components/navlist.scss' as navlist;
-@use './components/button.scss' as button;
-@use './components/expansion-module.scss' as expansionModule;
-@use './components/dialog.scss' as dialog;
-@use './components/list.scss' as list;
-@use './components/table.scss' as table;
-@use './components/chips.scss' as chips;
-@use './components/stepper.scss' as stepper;
 
-$os4ml-theme: mat.define-light-theme(
+$os4ml-light-theme: mat.define-light-theme(
   (
     color: (
-      primary: colors.$os4ml-primary,
-      accent: colors.$os4ml-accent,
-      warn: colors.$os4ml-warn,
+      primary: colors.$os4ml-light-primary,
+      accent: colors.$os4ml-light-accent,
+      warn: colors.$os4ml-light-warn,
     ),
+    typography: typography.$custom-typography,
   )
 );
 
-@include mat.core();
-@include mat.core(typography.$custom-typography);
-@include mat.all-component-themes($os4ml-theme);
+$os4ml-light-variants: (
+  success: colors.$os4ml-light-success,
+  tertiary: colors.$os4ml-light-tertiary,
+  info: colors.$os4ml-light-info,
+);
 
-.os4ml-theme {
+@include mat.core();
+@include mat.all-component-typographies(typography.$custom-typography);
+
+.os4ml-light-theme {
+  @include mat.all-component-themes($os4ml-light-theme);
   @include typography.additional-typography-settings;
-  @include sidenav.theme($os4ml-theme);
-  @include toolbar.theme($os4ml-theme);
-  @include navlist.theme($os4ml-theme);
-  @include button.theme($os4ml-theme);
-  @include stepper.theme($os4ml-theme);
-  @include expansionModule.theme($os4ml-theme, colors.$border-color);
-  @include dialog.theme($os4ml-theme, colors.$overlay, colors.$background);
-  @include list.theme($os4ml-theme, colors.$background);
-  @include table.theme($os4ml-theme, colors.$background);
-  @include chips.theme($os4ml-theme, colors.$background);
+  @include components.theme(
+    $os4ml-light-theme,
+    typography.$custom-typography,
+    $os4ml-light-variants
+  );
 }

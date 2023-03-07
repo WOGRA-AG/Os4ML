@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DatabagSettingComponent } from '../databag-setting/databag-setting.component';
 
 @Component({
