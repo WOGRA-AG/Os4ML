@@ -22,7 +22,7 @@ def ludwig_solver(
     early_stop: int = 3,
     test_split: float = 0.1,
     validation_split: float = 0.1,
-) -> None:
+):
     from components.ludwig_solver import ludwig_solver
 
     ludwig_solver(

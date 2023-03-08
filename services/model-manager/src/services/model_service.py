@@ -71,13 +71,16 @@ class ModelService(Generic[T], ABC):
     def model_name(self) -> str:
         raise NotImplementedError
 
-    def create_model(
-        self, model: T, solver_name: str, run_params: RunParams, usertoken: str
-    ) -> T:
+    @abstractmethod
+    def create_run_params(self, model: T) -> RunParams:
+        raise NotImplementedError
+
+    def create_model(self, model: T, solver_name: str, usertoken: str) -> T:
         if model.id is None:
             model.id = str(uuid.uuid4())
         model.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._persist_model(model, usertoken=usertoken)
+        run_params = self.create_run_params(model)
         model.run_id = self.jobmanager.create_run_by_solver_name(
             solver_name, run_params=run_params, usertoken=usertoken
         )

@@ -12,6 +12,7 @@ create_prediction_template = load_component("create_prediction_template")
 def ludwig_solver_pipeline(
     databag_id: str,
     solution_id: str,
+    prediction_id: str,
     batch_size: int = 8,
     epochs: int = 50,
     early_stop: int = 3,

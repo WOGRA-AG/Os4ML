@@ -106,7 +106,6 @@ class SolutionService:
         solution.id = str(uuid.uuid4())
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         run_params = RunParams(
-            databag_id=solution.databag_id,
             solution_id=solution.id,
         )
         self._persist_solution(solution, usertoken=usertoken)

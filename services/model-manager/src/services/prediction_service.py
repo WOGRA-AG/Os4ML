@@ -50,19 +50,15 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     def build_model(self, dict_: dict[str, Any]) -> Prediction:
         return Prediction(**dict_)
 
+    def create_run_params(self, prediction: Prediction) -> RunParams:
+        return RunParams(prediction_id=prediction.id)
+
     def create_prediction(
         self, prediction: Prediction, usertoken: str = ""
     ) -> Prediction:
-        solution = self.solution_service.get_solution_by_id(
-            prediction.solution_id, usertoken=usertoken
-        )
-        run_params = RunParams(
-            databag_id=solution.databag_id, solution_id=prediction.solution_id
-        )
         return self.create_model(
             prediction,
             self.prediction_pipeline,
-            run_params,
             usertoken=usertoken,
         )
 

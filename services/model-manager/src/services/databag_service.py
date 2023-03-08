@@ -111,7 +111,7 @@ class DatabagService:
             databag.id = str(uuid.uuid4())
         databag.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._save_databag_file(databag, usertoken)
-        run_params = RunParams(databag_id=databag.id, solution_name="")
+        run_params = RunParams(databag_id=databag.id)
         run_id: str = self.jobmanager.create_run_by_solver_name(
             "databag", run_params=run_params, usertoken=usertoken
         )

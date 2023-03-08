@@ -8,7 +8,7 @@ def sniffle_dataset(
     dataframe: Input[Dataset],
     max_categories: int,
     databag_id: str,
-) -> Dataset:
+):
     from components.sniffle_dataset import sniffle_dataset
 
     return sniffle_dataset(
