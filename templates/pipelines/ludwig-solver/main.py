@@ -20,7 +20,6 @@ def ludwig_solver_pipeline(
     validation_split: float = 0.1,
 ):
     databag_and_dataframe = load_databag_and_dataframe_op(
-        databag_id=databag_id,
         solution_id=solution_id,
     )
     ludwig_solver = ludwig_solver_op(

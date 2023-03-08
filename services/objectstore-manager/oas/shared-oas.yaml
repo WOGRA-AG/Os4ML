@@ -127,6 +127,12 @@ components:
           $ref: '#/components/schemas/SolutionId'
         runId:
           $ref: '#/components/schemas/RunId'
+        dataUrl:
+          $ref: '#/components/schemas/Url'
+          nullable: true
+        resultUrl:
+          $ref: '#/components/schemas/Url'
+          nullable: true
     Solver:
       properties:
         name:

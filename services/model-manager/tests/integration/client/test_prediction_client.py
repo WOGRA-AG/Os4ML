@@ -1,3 +1,4 @@
+import uuid
 from unittest.mock import Mock
 
 import pytest
@@ -6,6 +7,9 @@ from pytest_mock import MockerFixture
 
 import build.openapi_server.apis.modelmanager_api
 from build.openapi_server.models.prediction import Prediction
+from build.openapi_server.models.url_and_prediction_id import (
+    UrlAndPredictionId,
+)
 from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
 
 
@@ -156,3 +160,34 @@ async def test_delete_prediction_by_id_assert_200(
     prediction_service.delete_prediction_by_id.return_value = None
     resp = client.delete(route_prefix + "predictions/prediction_id")
     assert resp.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_get_prediction_data_put_url(
+    client: TestClient, route_prefix: str, prediction_service: Mock
+):
+    prediction_service.get_prediction_data_put_url.return_value = (
+        UrlAndPredictionId(
+            url="http://minio.wogra.com/put/data/here.csv",
+            prediction_id="prediction_id",
+        )
+    )
+    resp = client.get(route_prefix + "solutions/solution_id/prediction-data")
+    assert resp.status_code == 200
+    print(resp.json())
+    assert resp.json()["predictionId"] == "prediction_id"
+    assert resp.json()["url"].startswith("http")
+
+
+@pytest.mark.asyncio
+async def test_get_prediction_result_put_url(
+    client: TestClient, route_prefix: str, prediction_service: Mock
+):
+    prediction_service.get_prediction_result_put_url.return_value = (
+        "http://minio.wogra.com/put/result/here.csv"
+    )
+    resp = client.get(
+        route_prefix + "predictions/prediction_id/prediction-result"
+    )
+    assert resp.status_code == 200
+    assert resp.json().startswith("http")

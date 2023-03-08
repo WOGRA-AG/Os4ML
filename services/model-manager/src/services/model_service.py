@@ -7,19 +7,14 @@ from datetime import datetime
 from io import BytesIO
 from typing import Any, AsyncIterator, Generic, Protocol, TypeVar
 
-from fastapi import Depends
-
 from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
-from exceptions import (
-    ModelIdUpdateNotAllowedException,
-    ModelNotFoundException,
-    ResourceNotFoundException,
-)
+from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
 from services import DATE_FORMAT_STR
 from services.auth_service import get_parsed_token
 from services.messaging_service import MessagingService
@@ -57,13 +52,15 @@ class ModelService(Generic[T], ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_file_name(
-        self, model: T, file_name: str, usertoken: str = ""
-    ) -> str:
+    def get_file_name(self, model: T, file_name: str, usertoken: str) -> str:
         raise NotImplementedError
 
     @abstractmethod
     def build_model(self, dict_: dict[str, Any]) -> T:
+        raise NotImplementedError
+
+    @abstractmethod
+    def update_get_urls(self, model: T, usertoken: str) -> T:
         raise NotImplementedError
 
     @property
@@ -86,7 +83,7 @@ class ModelService(Generic[T], ABC):
         )
         self._persist_model(model, usertoken=usertoken)
         self._notify_model_update(usertoken)
-        return model
+        return self.update_get_urls(model, usertoken=usertoken)
 
     def get_models(self, usertoken: str) -> list[T]:
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
@@ -113,7 +110,7 @@ class ModelService(Generic[T], ABC):
             raise ModelIdUpdateNotAllowedException(self.model_name)
         self._persist_model(model, usertoken=usertoken)
         self._notify_model_update(usertoken)
-        return model
+        return self.update_get_urls(model, usertoken=usertoken)
 
     def delete_model_by_id(self, id_: str, usertoken: str) -> None:
         try:
@@ -144,6 +141,26 @@ class ModelService(Generic[T], ABC):
             logging.warning(e)
         except ApiTypeError as e:
             logging.error(e)
+
+    def get_presigned_get_url(
+        self, model: T, file_name: str, usertoken: str
+    ) -> str | None:
+        full_name = self.get_file_name(model, file_name, usertoken=usertoken)
+        try:
+            return self.objectstore.get_presigned_get_url(  # type: ignore
+                full_name, usertoken=usertoken
+            )
+        except NotFoundException:
+            return None
+
+    def get_presigned_put_url(
+        self, id_: str, file_name: str, usertoken: str
+    ) -> str:
+        model = self.get_model_by_id(id_, usertoken=usertoken)
+        full_name = self.get_file_name(model, file_name, usertoken=usertoken)
+        return self.objectstore.get_presigned_put_url(  # type: ignore
+            full_name, usertoken=usertoken
+        )
 
     async def stream_models(
         self, usertoken: str, client_id: uuid.UUID
@@ -180,4 +197,5 @@ class ModelService(Generic[T], ABC):
         json_content_bytes = json_response.json_content.encode()
         json_str = base64.decodebytes(json_content_bytes)
         json_dict = json.loads(json_str)
-        return self.build_model(json_dict)
+        model = self.build_model(json_dict)
+        return self.update_get_urls(model, usertoken=usertoken)

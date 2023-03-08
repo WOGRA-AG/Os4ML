@@ -7,7 +7,6 @@ from components.images import pandas_image
 def load_databag_and_dataframe(
     dataframe: Output[Dataset],
     databag: Output[Artifact],
-    databag_id: str,
     solution_id: str,
 ):
     from components.load_databag_and_dataframe import (
@@ -17,7 +16,6 @@ def load_databag_and_dataframe(
     return load_databag_and_dataframe(
         dataframe=dataframe,
         databag=databag,
-        databag_id=databag_id,
         solution_id=solution_id,
     )
 

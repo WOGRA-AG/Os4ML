@@ -2,6 +2,7 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
+from pytest_mock import MockerFixture
 
 import services.databag_service
 import services.prediction_service
@@ -110,3 +111,10 @@ def prediction_dict() -> dict[str, Any]:
         "solution_id": "solution_id",
         "run_id": "run_id",
     }
+
+
+@pytest.fixture
+def equal_mock(mocker: MockerFixture) -> Mock:
+    mock = mocker.Mock()
+    mock.__eq__ = mocker.Mock(return_value=True)
+    return mock
