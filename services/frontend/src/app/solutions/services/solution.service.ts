@@ -3,6 +3,7 @@ import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import {
   Databag,
   ModelmanagerService,
+  Prediction,
   Solution,
 } from '../../../../build/openapi/modelmanager';
 import { UserService } from '../../core/services/user.service';
@@ -74,6 +75,12 @@ export class SolutionService {
       switchMap(token =>
         this.modelManager.updateSolutionById(id, token, solution)
       )
+    );
+  }
+
+  createPrediction(prediction: Prediction): Observable<Prediction> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.createPrediction(token, prediction))
     );
   }
 
