@@ -4,7 +4,7 @@ include:
 .build-frontend:
   stage: build
   needs: [ ]
-  image: $CI_REGISTRY/developer/images/node-java:node-16-jre-11
+  image: $CI_REGISTRY/developer/images/node-java:node-18-jre-16
   script:
     - cd $DIR
     - npm ci --cache .npm_cache
