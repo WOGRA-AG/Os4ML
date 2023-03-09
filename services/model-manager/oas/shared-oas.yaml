@@ -22,6 +22,14 @@ components:
       type: string
     PredictionId:
       type: string
+    Url:
+      type: string
+      nullable: true
+    DatabagType:
+      type: string
+      enum:
+        - local_file
+        - file_url
     Databag:
       properties:
         id:
@@ -32,7 +40,7 @@ components:
         status:
           type: string
           nullable: true
-        datasetType:
+        databagType:
           type: string
           nullable: true
         fileName:
@@ -55,6 +63,10 @@ components:
         runId:
           type: string
           nullable: true
+        datasetUrl:
+          $ref: '#/components/schemas/Url'
+        dataframeUrl:
+          $ref: '#/components/schemas/Url'
     Solution:
       properties:
         id:
@@ -90,6 +102,12 @@ components:
           nullable: true
         runId:
           $ref: '#/components/schemas/RunId'
+        predictionTemplateUrl:
+          $ref: '#/components/schemas/Url'
+          nullable: true
+        modelUrl:
+          $ref: '#/components/schemas/Url'
+          nullable: true
     Prediction:
       properties:
         id:

@@ -72,14 +72,15 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button
-    *ngIf="(solution.status | shortStatus) === pipelineStatus.done"
+  <a
+    [href]="solution.modelUrl"
+    target="_blank"
     mat-raised-button
     color="primary"
-    type="button"
-    (click)="download()">
+    id="download-model-link">
     {{ 'action.download' | translate }}
-  </button>
+  </a>
+
   <button
     mat-stroked-button
     class="delete-button"

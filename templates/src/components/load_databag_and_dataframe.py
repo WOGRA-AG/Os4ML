@@ -3,10 +3,7 @@ import json
 
 from kfp.v2.dsl import Artifact, Dataset, Output
 
-from model_manager.databags import (
-    get_databag_by_id,
-    get_dataframe_download_url,
-)
+from model_manager.databags import get_databag_by_id
 from model_manager.solutions import (
     update_solution_error_status,
     update_solution_status,
@@ -31,6 +28,5 @@ def load_databag_and_dataframe(
         databag_model = get_databag_by_id(databag_id)
         with open(databag.path, "w") as databag_file:
             json.dump(databag_model.to_dict(), databag_file)
-        dataframe_url = get_dataframe_download_url(databag_model)
         with open(dataframe.path, "wb") as dataframe_file:
-            download_file(dataframe_url, dataframe_file)
+            download_file(databag_model.dataframe_url, dataframe_file)

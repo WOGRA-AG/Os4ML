@@ -10,3 +10,6 @@ def init_model_manager_client() -> ModelmanagerApi:
     default_config.host = ".".join(url_arr)
     api_client = ApiClient(configuration=default_config)
     return ModelmanagerApi(api_client=api_client)
+
+
+model_manager = init_model_manager_client()

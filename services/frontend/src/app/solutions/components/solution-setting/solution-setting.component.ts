@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Renderer2, Inject } from '@angular/core';
+import { Component, OnDestroy, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -27,7 +27,6 @@ export class SolutionSettingComponent implements OnDestroy {
     private dialogRef: MatDialogRef<SolutionSettingComponent>,
     private dialog: MatDialog,
     private solutionService: SolutionService,
-    private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       solution: Solution;
@@ -72,22 +71,6 @@ export class SolutionSettingComponent implements OnDestroy {
         filter(confirm => !!confirm)
       )
       .subscribe(() => this.dialogRef.close());
-  }
-
-  download(): void {
-    if (this.solution.id) {
-      this.solutionService
-        .downloadModel(this.solution.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(url => {
-          const link = this.renderer.createElement('a');
-          link.target = '_blank';
-          link.href = url;
-          link.dowload = 'model.zip';
-          link.click();
-          link.remove();
-        });
-    }
   }
 
   ngOnDestroy(): void {
