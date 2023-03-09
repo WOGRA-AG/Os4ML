@@ -94,14 +94,7 @@ describe('Databags', () => {
   it('download model', () => {
     cy.visit('/dashboard');
     cy.get('.solution-list-item > :nth-child(3)').click();
-    cy.get('.ng-star-inserted > .mat-button-wrapper').should('be.visible');
-    cy.get('.mat-dialog-actions > .ng-star-inserted').should('be.enabled');
-    cy.get('.mat-dialog-actions > .ng-star-inserted').should(
-      'have.attr',
-      'color',
-      'primary'
-    );
-    cy.get('.link').click();
+    cy.get('#download-model-link').click();
     const downloadedFile = `${Cypress.config(
       'downloadsFolder'
     )}/model.os4ml.zip`;
@@ -326,7 +319,7 @@ describe('Databags', () => {
       'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv',
       { timeout: 1000 }
     );
-    cy.get('#add-databag-main-button > .mat-button-wrapper').click();
+    cy.get('#add-databag-main-button').click();
     cy.get(
       '#mat-select-value-1 > .mat-select-value-text > .mat-select-min-line',
       { timeout: databagTimeout }

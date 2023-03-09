@@ -1,5 +1,6 @@
 import functools
 import pathlib
+from urllib.parse import urlparse
 
 from exceptions.file_type_unknown import FileTypeUnknownException
 from model_manager.databags import update_databag_status
@@ -25,10 +26,9 @@ def get_file_type(
 
 
 def get_file_name_from_url(url: str) -> str:
-    url, _, _ = url.partition("?")
-    *_, file_name = url.split("/")
-    print(file_name)
-    return file_name
+    url_path = urlparse(url).path
+    path = pathlib.Path(url_path)
+    return path.name
 
 
 def file_type_from_file_name(file_name: str) -> FileType:
