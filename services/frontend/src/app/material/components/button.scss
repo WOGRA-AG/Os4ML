@@ -1,34 +1,91 @@
 @use '@angular/material' as mat;
+@use 'sass:map';
+
+@mixin color($theme) {
+  $accent-palette: map.get($theme, 'accent');
+  $warn-palette: map.get($theme, 'warn');
+  $primary-palette: map.get($theme, 'primary');
+  $primary-contrast-500: mat.get-contrast-color-from-palette(
+    $primary-palette,
+    500
+  );
+  $accent-contrast-500: mat.get-contrast-color-from-palette(
+    $accent-palette,
+    500
+  );
+  $warn-contrast-500: mat.get-contrast-color-from-palette($warn-palette, 500);
+  $background: mat.get-color-from-palette($primary-palette, A100);
+
+  .mat-mdc-icon-button {
+    &.mat-mdc-button-base {
+      background-color: $background;
+    }
+  }
+
+  //TODO: Contrast color does not work properly with mdc as of Angular Material 15.2. So this is a temporary workaround and should be removed as soon as possible
+  .mat-mdc-unelevated-button.mat-primary:not(.mdc-button:disabled) {
+    color: $primary-contrast-500;
+  }
+
+  .mat-mdc-unelevated-button.mat-accent:not(.mdc-button:disabled) {
+    color: $accent-contrast-500;
+  }
+
+  .mat-mdc-raised-button.mat-primary:not(.mdc-button:disabled) {
+    color: $accent-contrast-500;
+  }
+
+  .mat-mdc-raised-button.mat-accent:not(.mdc-button:disabled) {
+    color: $accent-contrast-500;
+  }
+
+  .mat-mdc-raised-button.mat-warn:not(.mdc-button:disabled) {
+    color: $warn-contrast-500;
+  }
+
+  .mat-mdc-raised-button.mat-warn:not(.mdc-button:disabled) {
+    color: $warn-contrast-500;
+  }
+}
 
 @mixin layout() {
-  .mat-raised-button {
+  .mat-mdc-raised-button {
     border-radius: 14px;
-    height: 48px;
-    padding: 0 24px 0 24px;
 
     .mat-icon {
       margin-right: 5px;
     }
-  }
-  .mat-stroked-button {
-    border-radius: 14px;
-    height: 48px;
-    padding: 0 24px 0 24px;
+
+    &.mat-mdc-button-base {
+      padding: 24px;
+    }
   }
 
-  .mat-mini-fab {
+  .mat-mdc-outlined-button {
     border-radius: 14px;
-    width: 48px;
-    height: 48px;
+    &.mat-mdc-button-base {
+      padding: 24px;
+    }
   }
 
-  .mat-icon-button {
+  .mat-mdc-mini-fab {
     border-radius: 14px;
-    height: 48px;
-    width: 48px;
+    &.mat-mdc-button-base {
+      padding: 24px;
+    }
+  }
+
+  .mat-mdc-icon-button {
+    .mat-mdc-button-persistent-ripple {
+      border-radius: 14px;
+    }
+    &.mat-mdc-button-base {
+      border-radius: 14px;
+    }
   }
 }
 
 @mixin theme($theme) {
+  @include color($theme);
   @include layout();
 }

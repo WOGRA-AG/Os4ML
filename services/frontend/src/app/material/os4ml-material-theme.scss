@@ -1,11 +1,30 @@
 @use '@angular/material' as mat;
+@use 'sass:map';
 @use './components' as components;
 @use './essentials/typography' as typography;
 @use './essentials/color.scss' as colors;
 
 @include mat.core();
 
-$os4ml-light-theme: mat.define-light-theme(
+@function define-light-theme($config, $foreground, $background) {
+  $theme: mat.define-light-theme($config);
+  $color: mat.get-color-config($theme);
+  $color: map.merge(
+    $color,
+    (
+      foreground: $foreground,
+      background: $background,
+    )
+  );
+  @return map.merge(
+    $theme,
+    (
+      color: $color,
+    )
+  );
+}
+
+$os4ml-light-theme: define-light-theme(
   (
     color: (
       primary: colors.$os4ml-light-primary,
@@ -14,7 +33,9 @@ $os4ml-light-theme: mat.define-light-theme(
     ),
     typography: typography.$custom-typography,
     density: 0,
-  )
+  ),
+  colors.$os4ml-light-foreground,
+  colors.$os4ml-light-background
 );
 
 $os4ml-light-variants: (

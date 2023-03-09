@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Solution } from '../../../../../build/openapi/modelmanager';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SolutionSettingComponent } from '../solution-setting/solution-setting.component';
 
 @Component({

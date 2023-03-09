@@ -3,6 +3,7 @@
 @use 'toolbar.scss' as toolbar;
 @use 'navlist.scss' as navlist;
 @use 'button.scss' as button;
+@use 'button_variants.scss' as buttonVariants;
 @use 'expansion-module.scss' as expansionModule;
 @use 'dialog.scss' as dialog;
 @use 'list.scss' as list;
@@ -13,12 +14,13 @@
 @mixin theme($theme, $typography-config, $variants) {
   @include sidenav.theme($theme);
   @include toolbar.theme($theme);
-  @include navlist.theme($theme);
+  @include navlist.theme($theme, $typography-config, $variants);
   @include button.theme($theme);
+  @include buttonVariants.theme($theme, $variants);
   @include stepper.theme($theme);
-  @include expansionModule.theme($theme, colors.$border-color);
-  @include dialog.theme($theme, colors.$overlay, colors.$background);
+  @include expansionModule.theme($theme);
+  @include dialog.theme($theme);
   @include list.theme($theme, colors.$background);
   @include table.theme($theme, colors.$background);
-  @include chips.theme($theme, colors.$background);
+  @include chips.theme($theme);
 }
