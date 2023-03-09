@@ -77,12 +77,6 @@ export class SolutionService {
     );
   }
 
-  downloadModel(id: string): Observable<string> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.downloadModel(id, token))
-    );
-  }
-
   private getInputFields(
     solution: Solution,
     databag: Databag

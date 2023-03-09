@@ -6,7 +6,6 @@ from components.images import pandas_image
 
 def sniffle_dataset(
     dataframe: Input[Dataset],
-    dataset_type: str,
     max_categories: int,
     databag_id: str,
 ) -> Dataset:
@@ -14,7 +13,6 @@ def sniffle_dataset(
 
     return sniffle_dataset(
         dataframe=dataframe,
-        dataset_type=dataset_type,
         max_categories=max_categories,
         databag_id=databag_id,
     )
