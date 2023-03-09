@@ -4,10 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import {
-  Solution,
-  Prediction,
-} from '../../../../../build/openapi/modelmanager';
+import { Solution } from '../../../../../build/openapi/modelmanager';
 import { SolutionService } from '../../services/solution.service';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
@@ -74,17 +71,6 @@ export class SolutionSettingComponent implements OnDestroy {
         filter(confirm => !!confirm)
       )
       .subscribe(() => this.dialogRef.close());
-  }
-
-  createPrediction(): void {
-    const prediction: Prediction = {
-      name: 'test-prediction',
-      solutionId: this.solution.id,
-    };
-    this.solutionService
-      .createPrediction(prediction)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(console.log);
   }
 
   ngOnDestroy(): void {
