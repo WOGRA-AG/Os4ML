@@ -1,45 +1,56 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin color($theme) {
+@mixin color($theme, $variants) {
   $primary-palette: map.get($theme, 'primary');
+  $secondary-palette: map.get($theme, 'accent');
   $primary-color: mat.get-color-from-palette($primary-palette, 500);
   $primary-color-100: mat.get-color-from-palette($primary-palette, 100);
   $on-surface: mat.get-color-from-palette($primary-palette, '50-contrast');
+  $secondary-900: mat.get-color-from-palette($secondary-palette, 900);
 
-  .mat-list-item {
-    color: rgba($on-surface, 0.6);
+  .mat-mdc-list-item {
     &:hover {
-      span {
+      span,
+      .mat-icon {
         color: $primary-color;
       }
-
       background: rgba($primary-color, 0.1);
     }
   }
 
-  .mat-list-item.active {
-    background: $primary-color-100;
-    color: $primary-color;
+  .mat-mdc-nav-list {
+    .mat-mdc-list-item.active {
+      background: $primary-color-100;
+      span,
+      .mat-icon {
+        color: $primary-color;
+      }
+    }
+
+    .mat-mdc-list-item .mat-mdc-list-item-unscoped-content {
+      .mat-caption {
+        color: rgba($on-surface, 0.38);
+      }
+      .mat-subtitle-2 {
+        color: $secondary-900;
+      }
+    }
   }
 }
 
-@mixin layout() {
-  .mat-nav-list {
+@mixin layout($typography-config) {
+  .mat-mdc-nav-list {
     padding: 0;
     margin: 0;
     width: 100%;
 
-    .mat-list-item {
+    .mat-mdc-list-item {
       display: flex;
       flex-direction: row;
       align-items: center;
       border-radius: 10px;
       overflow: hidden;
-
-      .mat-list-item-content {
-        width: 100%;
-      }
 
       .mat-icon {
         flex: none;
@@ -51,14 +62,14 @@
       }
     }
 
-    .mat-list-base .mat-list-item.mat-list-item-with-avatar,
+    .mat-mdc-list-base .mat-mdc-list-item.mat-list-item-with-avatar,
     .mat-list-base .mat-list-option.mat-list-item-with-avatar {
       height: 44px;
     }
   }
 }
 
-@mixin theme($theme) {
-  @include color($theme);
-  @include layout();
+@mixin theme($theme, $typography-config, $variants) {
+  @include color($theme, $variants);
+  @include layout($typography-config);
 }

@@ -4,6 +4,7 @@ import { ListItem } from 'src/app/shared/models/list-item';
 @Component({
   selector: 'app-list-item',
   templateUrl: './list-item.component.html',
+  styleUrls: ['./list-item.component.scss'],
 })
 export class ListItemComponent {
   @Input() item: ListItem = {

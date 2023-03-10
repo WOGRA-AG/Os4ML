@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 $md-os4ml-colors-primary: (
@@ -34,20 +35,20 @@ $md-os4ml-colors-primary: (
 );
 
 $md-os4ml-colors-accent: (
-  50: #c8fff4,
-  100: #70efde,
-  200: #03dac5,
-  300: #00c4b4,
-  400: #00b3a6,
-  500: #01a299,
-  600: #019592,
-  700: #018786,
-  800: #017374,
-  900: #005457,
-  A100: #ebfffb,
-  A200: #b8fff2,
-  A400: #85ffe9,
-  A700: #6bffe4,
+  50: #ededed,
+  100: #d1d1d1,
+  200: #b3b3b3,
+  300: #949494,
+  400: #7d7d7d,
+  500: #666666,
+  600: #5e5e5e,
+  700: #535353,
+  800: #494949,
+  900: #383838,
+  A100: #f49c9c,
+  A200: #ef6e6e,
+  A400: #ff2a2a,
+  A700: #ff1111,
   contrast: (
     50: #000000,
     100: #000000,
@@ -61,8 +62,8 @@ $md-os4ml-colors-accent: (
     900: #ffffff,
     A100: #000000,
     A200: #000000,
-    A400: #000000,
-    A700: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
   ),
 );
 
@@ -99,18 +100,92 @@ $md-os4ml-colors-warn: (
   ),
 );
 
-$os4ml-primary: mat.define-palette($md-os4ml-colors-primary);
-$os4ml-warn: mat.define-palette($md-os4ml-colors-warn);
-$os4ml-accent: mat.define-palette($md-os4ml-colors-accent);
+$md-os4ml-colors-success: (
+  50: #c8fff4,
+  100: #70efde,
+  200: #03dac5,
+  300: #00c4b4,
+  400: #00b3a6,
+  500: #01a299,
+  600: #019592,
+  700: #018786,
+  800: #017374,
+  900: #005457,
+  A100: #ebfffb,
+  A200: #b8fff2,
+  A400: #85ffe9,
+  A700: #6bffe4,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
 
-$primary-color: mat.get-color-from-palette($os4ml-primary, 500);
-$primary-color-100: mat.get-color-from-palette($os4ml-primary, 100);
-$primary-color-900: mat.get-color-from-palette($os4ml-primary, 900);
-$primary-variant: mat.get-color-from-palette($os4ml-primary, 700);
-$accent-color: mat.get-color-from-palette($os4ml-accent, 500);
-$accent-color-100: mat.get-color-from-palette($os4ml-accent, 100);
-$warn-color: mat.get-color-from-palette($os4ml-warn, default);
-$warn-color-100: mat.get-color-from-palette($os4ml-warn, 100);
+$os4ml-light-foreground: (
+  base: black,
+  divider: rgba(black, 0.12),
+  dividers: rgba(black, 0.12),
+  disabled: rgba(white, 0.5),
+  disabled-button: rgba(black, 0.12),
+  disabled-text: rgba(white, 0.5),
+  elevation: black,
+  hint-text: rgba(white, 0.5),
+  secondary-text: rgba(black, 0.54),
+  icon: rgba(black, 0.54),
+  icons: rgba(black, 0.54),
+  text: rgba(black, 0.87),
+  slider-min: rgba(black, 0.87),
+  slider-off: rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
+
+$os4ml-light-background: (
+  status-bar: map.get(mat.$grey-palette, 300),
+  app-bar: map.get(mat.$grey-palette, 100),
+  background: map.get(mat.$grey-palette, 50),
+  hover: rgba(black, 0.04),
+  card: white,
+  dialog: white,
+  disabled-button: rgba(black, 0.12),
+  raised-button: white,
+  focused-button: rgba(black, 0.12),
+  selected-button: map.get(mat.$grey-palette, 300),
+  selected-disabled-button: map.get(mat.$grey-palette, 400),
+  disabled-button-toggle: map.get(mat.$grey-palette, 200),
+  unselected-chip: map.get(mat.$grey-palette, 300),
+  disabled-list-option: map.get(mat.$grey-palette, 200),
+  tooltip: map.get(mat.$grey-palette, 700),
+);
+
+$os4ml-light-primary: mat.define-palette($md-os4ml-colors-primary);
+$os4ml-light-warn: mat.define-palette($md-os4ml-colors-warn);
+$os4ml-light-accent: mat.define-palette($md-os4ml-colors-accent);
+$os4ml-light-tertiary: mat.define-palette(mat.$gray-palette);
+$os4ml-light-success: mat.define-palette($md-os4ml-colors-success);
+$os4ml-light-info: mat.define-palette(mat.$blue-palette);
+
+$primary-color: mat.get-color-from-palette($os4ml-light-primary, 500);
+$primary-color-100: mat.get-color-from-palette($os4ml-light-primary, 100);
+$primary-color-900: mat.get-color-from-palette($os4ml-light-primary, 900);
+$primary-variant: mat.get-color-from-palette($os4ml-light-primary, 700);
+$accent-color: mat.get-color-from-palette($os4ml-light-accent, 500);
+$accent-color-100: mat.get-color-from-palette($os4ml-light-accent, 100);
+$warn-color: mat.get-color-from-palette($os4ml-light-warn, default);
+$warn-color-100: mat.get-color-from-palette($os4ml-light-warn, 100);
+$success-color: mat.get-color-from-palette($os4ml-light-success, default);
+$success-color-100: mat.get-color-from-palette($os4ml-light-success, 100);
 $background: #f4f9fd;
 $surface: #ffffff;
 $error: #b00020;
@@ -122,7 +197,7 @@ $on-error: #ffffff;
 $on-primary-high: rgba($on-primary, 1);
 $on-primary-medium: rgba($on-primary, 0.74);
 $on-primary-disabled: rgba($on-primary, 0.38);
-$on-surface-high: rgba($on-surface, 0.87);
+$on-surface-high: #383838;
 $on-surface-medium: rgba($on-surface, 0.6);
 $on-surface-disabled: rgba($on-surface, 0.38);
 $border-color: rgba($on-surface, 0.12);

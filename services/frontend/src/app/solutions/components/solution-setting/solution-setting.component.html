@@ -27,22 +27,23 @@
     <app-dialog-section>
       <div title>{{ 'solution.detail.input_fields' | translate }}</div>
       <div>
-        <mat-chip-list>
-          <mat-chip *ngFor="let input_fields of solution.inputFields">{{
+        <mat-chip-listbox>
+          <mat-chip-option *ngFor="let input_fields of solution.inputFields">{{
             input_fields
-          }}</mat-chip>
-        </mat-chip-list>
+          }}</mat-chip-option>
+        </mat-chip-listbox>
       </div>
     </app-dialog-section>
 
     <app-dialog-section>
       <div title>{{ 'solution.detail.output_fields' | translate }}</div>
       <div>
-        <mat-chip-list>
-          <mat-chip *ngFor="let output_fields of solution.outputFields">{{
-            output_fields
-          }}</mat-chip>
-        </mat-chip-list>
+        <mat-chip-listbox>
+          <mat-chip-option
+            *ngFor="let output_fields of solution.outputFields"
+            >{{ output_fields }}</mat-chip-option
+          >
+        </mat-chip-listbox>
       </div>
     </app-dialog-section>
 
