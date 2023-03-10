@@ -10,11 +10,11 @@ describe('Databags', () => {
     cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear();
     // add username to run locally
-    cy.get('#username').type('tim');
+    cy.get('#username').type(Cypress.env('TEST_USER'));
     cy.get(':nth-child(2) > .pure-material-textfield-outlined > span').click();
     cy.get('#password').clear();
     // add password to run locally
-    cy.get('#password').type('1Qay2Wsx');
+    cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
     cy.get('#kc-login > span').click();
   });
 

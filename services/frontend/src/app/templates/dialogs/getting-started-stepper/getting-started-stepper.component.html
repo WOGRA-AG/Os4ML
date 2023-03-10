@@ -71,9 +71,13 @@
   </mat-step>
 </mat-stepper>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions>
   <div *ngIf="stepperStep > 0">
-    <button mat-flat-button [disableRipple]="true" (click)="back(stepper)">
+    <button
+      mat-flat-button
+      [disableRipple]="true"
+      (click)="back(stepper)"
+      [disabled]="runningSpinner">
       <mat-icon>arrow_back_ios</mat-icon>
       {{ 'action.previous_step' | translate }}
     </button>

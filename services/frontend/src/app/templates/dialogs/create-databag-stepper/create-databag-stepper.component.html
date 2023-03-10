@@ -52,11 +52,7 @@
 
 <ng-template #createButton>
   <mat-dialog-actions align="end">
-    <button
-      mat-icon-button
-      class="back-button"
-      [disableRipple]="true"
-      (click)="back(stepper)">
+    <button mat-flat-button [disableRipple]="true" (click)="back(stepper)">
       <mat-icon>arrow_back_ios</mat-icon>
       {{ 'action.previous_step' | translate }}
     </button>
