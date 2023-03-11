@@ -20,6 +20,8 @@ import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboa
 import { CreateDatabagStepperComponent } from './templates/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { CreateSolutionStepperComponent } from './templates/dialogs/create-solution-stepper/create-solution-stepper.component';
 import { GettingStartedStepperComponent } from './templates/dialogs/getting-started-stepper/getting-started-stepper.component';
+import { CreatePredictionStepperComponent } from './templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { PredictionsModule } from './predictions/predictions.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { GettingStartedStepperComponent } from './templates/dialogs/getting-star
     CreateDatabagStepperComponent,
     CreateSolutionStepperComponent,
     GettingStartedStepperComponent,
+    CreatePredictionStepperComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { GettingStartedStepperComponent } from './templates/dialogs/getting-star
     SolutionsModule,
     SharedModule,
     CoreModule,
+    PredictionsModule,
   ],
   bootstrap: [AppComponent],
 })

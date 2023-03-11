@@ -1,0 +1,41 @@
+<app-dialog-section>
+  <mat-form-field appearance="outline">
+    <mat-label>{{
+      'dialog.create_prediction.name_input' | translate
+    }}</mat-label>
+    <input
+      matInput
+      type="string"
+      placeholder="{{ 'dialog.create_prediction.name_input' | translate }}"
+      required
+      [(ngModel)]="prediction.name" />
+  </mat-form-field>
+</app-dialog-section>
+<app-dialog-section>
+  <mat-form-field appearance="outline">
+    <mat-label>{{
+      'dialog.section.upload.connect_placeholder' | translate
+    }}</mat-label>
+    <input
+      matInput
+      type="url"
+      placeholder="{{
+        'dialog.section.upload.connect_placeholder' | translate
+      }}"
+      [(ngModel)]="url"
+      [pattern]="urlRegex" />
+    <mat-icon matSuffix>link</mat-icon>
+  </mat-form-field>
+
+  <div class="upload-container">
+    <div class="or-container">
+      <mat-divider class="or-line"></mat-divider>
+      <span class="on-surface-disabled or-text">or</span>
+      <mat-divider class="or-line"></mat-divider>
+    </div>
+
+    <div class="upload-container">
+      <app-upload-field class="upload-field" [(file)]="file"></app-upload-field>
+    </div>
+  </div>
+</app-dialog-section>
