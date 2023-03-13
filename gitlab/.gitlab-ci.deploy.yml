@@ -60,9 +60,9 @@
     - docker tag $TEMPLATE_REGISTRY/os4ml-python:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-python:$LABEL
     - docker push $TEMPLATE_REGISTRY/os4ml-python:$LABEL
 
-    - docker pull $TEMPLATE_REGISTRY/pandas:$CI_COMMIT_SHA
-    - docker tag $TEMPLATE_REGISTRY/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
-    - docker push $TEMPLATE_REGISTRY/pandas:$LABEL
+    - docker pull $TEMPLATE_REGISTRY/os4ml-pandas:$CI_COMMIT_SHA
+    - docker tag $TEMPLATE_REGISTRY/os4ml-pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
+    - docker push $TEMPLATE_REGISTRY/os4ml-pandas:$LABEL
 
     - docker pull $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA
     - docker tag $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-ludwig:$LABEL
