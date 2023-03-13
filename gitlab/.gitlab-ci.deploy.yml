@@ -27,14 +27,8 @@
     - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA || true
-    - docker build
-      -f 'services/job-manager/Dockerfile'
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      '.'
+    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
 
     - docker pull $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA || true
@@ -55,18 +49,6 @@
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
     - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
-
-#    - docker pull $TEMPLATE_REGISTRY/os4ml-python:$CI_COMMIT_SHA
-#    - docker tag $TEMPLATE_REGISTRY/os4ml-python:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-python:$LABEL
-#    - docker push $TEMPLATE_REGISTRY/os4ml-python:$LABEL
-#
-#    - docker pull $TEMPLATE_REGISTRY/os4ml-pandas:$CI_COMMIT_SHA
-#    - docker tag $TEMPLATE_REGISTRY/os4ml-pandas:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-pandas:$LABEL
-#    - docker push $TEMPLATE_REGISTRY/os4ml-pandas:$LABEL
-#
-#    - docker pull $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA
-#    - docker tag $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-ludwig:$LABEL
-#    - docker push $TEMPLATE_REGISTRY/os4ml-ludwig:$LABEL
   rules:
 
 deploy-tag:
