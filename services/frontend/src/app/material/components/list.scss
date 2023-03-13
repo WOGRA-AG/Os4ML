@@ -4,12 +4,31 @@
 @mixin color($theme, $background) {
   $primary-palette: map.get($theme, 'primary');
   $primary-color: mat.get-color-from-palette($primary-palette, 500);
+  $primary-color-100: mat.get-color-from-palette($primary-palette, 100);
+  $primary-color-50: mat.get-color-from-palette($primary-palette, 50);
+  $primary-bg-color: mat.get-color-from-palette($primary-palette, A100);
+  $background-color: mat.get-color-from-palette(
+    $primary-palette,
+    '900-contrast'
+  );
 
-  .mat-list {
-    .mat-list-item {
-      border-color: $background;
+  .mat-mdc-list {
+    .mat-mdc-list-item {
+      border-color: $background-color;
+      background-color: $background-color;
+
+      &.bg-primary {
+        border-color: $primary-bg-color;
+        background-color: $primary-bg-color;
+      }
+
+      &:hover {
+        border-color: $primary-color-50;
+        background-color: $primary-color-50;
+      }
 
       &.active {
+        background-color: $primary-color-50;
         border-color: $primary-color;
       }
     }
@@ -17,22 +36,18 @@
 }
 
 @mixin layout() {
-  .mat-list {
+  .mat-mdc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     overflow: auto;
-    .mat-list-item {
+    .mat-mdc-list-item {
       width: auto;
-      height: 82px;
-      margin-top: 8px;
-      margin-bottom: 8px;
       border-radius: 14px;
       border-width: 2px;
       border-style: solid;
-
-      .mat-list-item-content {
-        justify-content: space-between;
-        width: 100%;
-      }
+      height: fit-content;
     }
   }
 }

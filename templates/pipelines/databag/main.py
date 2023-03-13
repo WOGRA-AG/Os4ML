@@ -2,7 +2,7 @@ from kfp.v2.dsl import Condition, pipeline
 
 from pipelines.build import compile_pipeline, load_component
 
-get_file_and_dataset_type_op = load_component("get_file_and_dataset_type")
+get_file_type_op = load_component("get_file_type")
 execute_dataframe_script_op = load_component("execute_dataframe_script")
 get_dataset_op = load_component("get_dataset")
 create_dataframe_op = load_component("create_dataframe")
@@ -15,36 +15,33 @@ def databag(
     solution_id: str,
     max_categories: int = 10,
 ):
-    types = get_file_and_dataset_type_op(
+    file_type = get_file_type_op(
         databag_id=databag_id,
     )
 
-    with Condition(types.outputs["file_type"] == "script", name="script"):
+    with Condition(file_type.output == "script", name="script"):
         dataframe = execute_dataframe_script_op(
             databag_id=databag_id,
         )
 
         sniffle_op(
-            dataset=dataframe.output,
-            dataset_type=types.outputs["dataset_type"],
+            dataframe=dataframe.output,
             max_categories=max_categories,
             databag_id=databag_id,
         )
 
-    with Condition(types.outputs["file_type"] != "script", name="no-script"):
+    with Condition(file_type.output != "script", name="no-script"):
         dataset = get_dataset_op(
-            dataset_type=types.outputs["dataset_type"],
             databag_id=databag_id,
         )
         dataframe = create_dataframe_op(
             dataset=dataset.output,
-            file_type=types.outputs["file_type"],
+            file_type=file_type.output,
             databag_id=databag_id,
         )
 
         sniffle_op(
-            dataset=dataframe.output,
-            dataset_type=types.outputs["dataset_type"],
+            dataframe=dataframe.output,
             max_categories=max_categories,
             databag_id=databag_id,
         )

@@ -14,15 +14,18 @@
       *ngFor="let databag of databags"
       (click)="changeSelectedDatabag(databag)">
       <div class="nav-item-extended">
-        <span class="mat-overline on-surface-disabled">{{
+        <span class="mat-caption">{{
           databag?.creationTime | localizedDate : 'dd.MM.YYYY - HH:mm'
         }}</span>
-        <span class="mat-subheading-2">{{ databag.databagName }}</span>
+        <span class="mat-subtitle-2">{{ databag.databagName }}</span>
       </div>
     </mat-list-item>
     <mat-list-item (click)="openAddDialog()">
       <div class="nav-item-extended">
-        <button mat-button class="databag-list-mat-expansion-panel-add-button">
+        <button
+          mat-button
+          class="databag-list-mat-expansion-panel-add-button"
+          color="accent">
           <mat-icon>add</mat-icon>
           {{ 'databag.create' | translate }}
         </button>

@@ -1,89 +1,75 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin color($theme, $overlay, $background) {
+@mixin color($theme) {
   $primary-palette: map.get($theme, 'primary');
-  $primary-color: mat.get-color-from-palette($primary-palette, 500);
-  $on-surface: mat.get-color-from-palette($primary-palette, '50-contrast');
-  $on-surface-high: rgba($on-surface, 0.87);
+  $primary-color-900: mat.get-color-from-palette($primary-palette, 900);
+  $overlay-backdrop-color: rgba($primary-color-900, 0.16);
 
   .cdk-overlay-dark-backdrop {
-    background: $overlay;
-  }
-
-  .mat-dialog-container {
-    .mat-dialog-header {
-      .mat-icon-button {
-        background: $background;
-        color: $on-surface-high;
-      }
-    }
+    background: $overlay-backdrop-color;
   }
 }
 
 @mixin layout() {
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     border-radius: 24px;
-    padding: 0px;
     width: 384px;
     min-height: 192px;
     overflow: hidden;
+
+    .mat-dialog-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 42px 30px 16px 0;
+    }
+
+    .mat-mdc-dialog-content {
+      padding: 0;
+      .mat-mdc-form-field {
+        margin-bottom: -0.5em;
+        width: 100%;
+      }
+    }
+
+    .mat-mdc-dialog-actions {
+      height: 12%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin: 16px 30px 35px 30px;
+      align-items: center;
+      gap: 2px;
+    }
   }
 
-  .setting-dialog .mat-dialog-container {
+  .setting-dialog .mat-mdc-dialog-container {
     margin-top: 16px;
     margin-bottom: 16px;
     width: 384px;
     height: auto;
+
+    .mat-mdc-dialog-actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 0 5px 0 5px;
+      align-items: center;
+      gap: 2px;
+    }
   }
 
-  .getting-started-dialog .mat-dialog-container {
+  .getting-started-dialog .mat-mdc-dialog-container {
     margin-top: 16px;
     margin-bottom: 16px;
     width: 444px;
     height: auto;
   }
-
-  .mat-dialog-title {
-    margin-bottom: 0px;
-  }
-
-  .mat-dialog-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 42px;
-    padding-bottom: 16px;
-  }
-
-  .mat-dialog-actions {
-    margin-bottom: 35px;
-    margin-top: 16px;
-    margin-left: 30px;
-    margin-right: 30px;
-  }
-
-  .mat-dialog-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    flex: auto;
-    overflow: auto;
-    padding: 0px 0px 0px 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    .mat-form-field {
-      margin-bottom: -1.25em;
-      width: 100%;
-    }
-  }
 }
 
-@mixin theme($theme, $overlay, $background) {
-  @include color($theme, $overlay, $background);
+@mixin theme($theme) {
+  @include color($theme);
   @include layout();
 }

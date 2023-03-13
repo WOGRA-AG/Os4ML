@@ -1,14 +1,16 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin color($theme, $background) {
+@mixin color($theme) {
   $primary-palette: map.get($theme, 'primary');
+  $background: mat.get-color-from-palette($primary-palette, A100);
 
-  .mat-chip {
-    background-color: $background;
+  .mat-mdc-standard-chip {
+    // TODO(Max): Chip background Contrast is too low, so we have to force mdc to set it to the specified value
+    background-color: $background !important;
   }
 }
 
-@mixin theme($theme, $background) {
-  @include color($theme, $background);
+@mixin theme($theme) {
+  @include color($theme);
 }

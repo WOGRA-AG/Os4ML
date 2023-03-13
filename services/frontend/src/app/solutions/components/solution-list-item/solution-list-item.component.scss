@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 2rem;
   flex-grow: 1;
   width: 20%;
 }
@@ -34,6 +35,6 @@
 }
 
 .done {
-  color: $accent-color;
-  background-color: $accent-color-100;
+  color: $success-color;
+  background-color: $success-color-100;
 }

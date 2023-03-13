@@ -15,7 +15,6 @@ from model_manager.databags import (
     update_databag_status,
     upload_dataframe,
 )
-from models.databag_type import DatasetType
 from models.status_message import StatusMessage
 from sniffle.sniffle import (
     get_num_rows,
@@ -26,8 +25,7 @@ from util.exception_handler import exception_handler
 
 
 def sniffle_dataset(
-    dataset: Input[Dataset],
-    dataset_type: str,
+    dataframe: Input[Dataset],
     max_categories: int,
     databag_id: str,
 ) -> None:
@@ -42,11 +40,10 @@ def sniffle_dataset(
     )
     with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
         update_databag_status(databag_id, StatusMessage.INSPECTING_DATATYPES)
-        df = load_dataframe(dataset.path)
-        columns = create_columns(df, dataset_type, max_categories)
+        df = load_dataframe(dataframe.path)
+        columns = create_columns(df, max_categories)
 
         databag = get_databag_by_id(databag_id)
-        databag.dataset_type = dataset_type
         databag.number_rows = get_num_rows(columns)
         databag.number_columns = len(columns)
         databag.columns = columns
@@ -55,17 +52,10 @@ def sniffle_dataset(
         upload_dataframe_to_databag(df, databag)
 
 
-def create_columns(
-    df: pd.DataFrame, dataset_type: str, max_categories=10
-) -> List[Column]:
+def create_columns(df: pd.DataFrame, max_categories=10) -> List[Column]:
     if IMAGE_COL_NAME in df:
         return sniff_zip_types(df)
-    if (
-        dataset_type == DatasetType.LOCAL_FILE.value
-        or dataset_type == DatasetType.FILE_URL.value
-    ):
-        return sniff_column_datatypes(df, max_categories=max_categories)
-    raise NotImplementedError()
+    return sniff_column_datatypes(df, max_categories=max_categories)
 
 
 def upload_dataframe_to_databag(df: pd.DataFrame, databag: Databag) -> None:

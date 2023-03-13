@@ -79,7 +79,11 @@ class MessagingService:
 
     def unsubscribe(self, client_id: uuid.UUID) -> None:
         """Unsubscribes the client with client_id."""
+        if client_id not in self._clientToMessage:
+            return
         message = self._clientToMessage[client_id]
+        if message not in self._messageToEvent:
+            return
         event = self._messageToEvent[message]
         event.unsubscribe(client_id)
         if not event.has_subscribers():
