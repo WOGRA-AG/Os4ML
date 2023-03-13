@@ -10,6 +10,7 @@
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
     CACHE_REGISTRY: developer/wogra/os4ml
+    TEMPLATE_REGISTRY: wogra
   needs:
     - build-frontend
     - build-frontend-image
@@ -54,17 +55,17 @@
     - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/python:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/python:$LABEL
+    - docker pull $TEMPLATE_REGISTRY/os4ml-python:$CI_COMMIT_SHA
+    - docker tag $TEMPLATE_REGISTRY/os4ml-python:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-python:$LABEL
+    - docker push $TEMPLATE_REGISTRY/os4ml-python:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/pandas:$LABEL
+    - docker pull $TEMPLATE_REGISTRY/pandas:$CI_COMMIT_SHA
+    - docker tag $TEMPLATE_REGISTRY/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
+    - docker push $TEMPLATE_REGISTRY/pandas:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/ludwig:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/ludwig:$LABEL
+    - docker pull $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA
+    - docker tag $TEMPLATE_REGISTRY/os4ml-ludwig:$CI_COMMIT_SHA $TEMPLATE_REGISTRY/os4ml-ludwig:$LABEL
+    - docker push $TEMPLATE_REGISTRY/os4ml-ludwig:$LABEL
   rules:
 
 deploy-tag:

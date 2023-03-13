@@ -14,9 +14,9 @@
       --target lint
       --cache-from $CACHE_REGISTRY/$IMG_NAME:lint
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+      --tag $IMAGE_REGISTRY/$IMG_NAME:lint
       $BUILD_CONTEXT
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:lint
+    - docker push $IMAGE_REGISTRY/$IMG_NAME:lint
     - docker pull $CACHE_REGISTRY/$IMG_NAME:test || true
     - docker build
       -f $DOCKERFILE
@@ -24,15 +24,16 @@
       --cache-from $CACHE_REGISTRY/$IMG_NAME:test
       --build-arg BUILDKIT_INLINE_CACHE=1
       --build-arg GOOGLE_APPLICATION_CREDENTIALS_BASE64="${GOOGLE_APPLICATION_CREDENTIALS_BASE64}"
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:test
+      --tag $IMAGE_REGISTRY/$IMG_NAME:test
       $BUILD_CONTEXT
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:test
+    - docker push $IMAGE_REGISTRY/$IMG_NAME:test
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
     CACHE_REGISTRY: developer/wogra/os4ml
+    IMAGE_REGISTRY: $CI_REGISTRY_IMAGE
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
