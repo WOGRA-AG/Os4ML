@@ -7,6 +7,7 @@ e2e:
     - reset
   script:
     - cd services/frontend && npm ci && npx cypress run --browser chrome
+  timeout: 10 minutes
   artifacts:
     when: always
     paths:
