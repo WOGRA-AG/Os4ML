@@ -7,6 +7,7 @@
     - aime
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $WOGRA_DOCKER_USERNAME -p $WOGRA_DOCKER_PASSWORD docker.io
   script:
     - docker pull $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME || true
     - docker pull $CACHE_REGISTRY/$IMG_NAME:dev || true
