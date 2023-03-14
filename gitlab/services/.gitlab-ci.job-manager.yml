@@ -14,7 +14,7 @@ job-manager-test-and-lint:
     - .build-test-and-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
-    IMG_NAME: 'job-manager'
+    IMG_NAME: 'os4ml-job-manager'
     BUILD_CONTEXT: '.'
 
 job-manager-build:
@@ -24,5 +24,6 @@ job-manager-build:
     - job-manager-test-and-lint
   variables:
     DOCKERFILE: 'services/job-manager/Dockerfile'
-    IMG_NAME: 'job-manager'
+    IMG_NAME: 'os4ml-job-manager'
     BUILD_CONTEXT: '.'
+    IMAGE_REGISTRY: 'wogra'

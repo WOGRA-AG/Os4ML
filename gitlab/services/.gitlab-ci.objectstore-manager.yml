@@ -14,7 +14,7 @@ os-manager-test-and-lint:
     - .build-test-and-lint
   variables:
     DOCKERFILE: 'services/objectstore-manager/Dockerfile'
-    IMG_NAME: 'objectstore-manager'
+    IMG_NAME: 'os4ml-objectstore-manager'
     BUILD_CONTEXT: 'services/objectstore-manager'
 
 os-manager-build:
@@ -24,5 +24,6 @@ os-manager-build:
     - os-manager-test-and-lint
   variables:
     DOCKERFILE: 'services/objectstore-manager/Dockerfile'
-    IMG_NAME: 'objectstore-manager'
+    IMG_NAME: 'os4ml-objectstore-manager'
     BUILD_CONTEXT: 'services/objectstore-manager'
+    IMAGE_REGISTRY: 'wogra'

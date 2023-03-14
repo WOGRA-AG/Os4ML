@@ -10,7 +10,7 @@
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
     CACHE_REGISTRY: developer/wogra/os4ml
-    TEMPLATE_REGISTRY: wogra
+    IMAGE_REGISTRY: $CI_REGISTRY_IMAGE
   needs:
     - build-frontend
     - build-frontend-image
@@ -23,32 +23,32 @@
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker login -u $WOGRA_DOCKER_USERNAME -p $WOGRA_DOCKER_PASSWORD docker.io
   script:
-    - docker pull $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
+    - docker pull $IMAGE_REGISTRY/os4ml-objectstore-manager:$CI_COMMIT_SHA
+    - docker tag $IMAGE_REGISTRY/os4ml-objectstore-manager:$CI_COMMIT_SHA $IMAGE_REGISTRY/os4ml-objectstore-manager:$LABEL
+    - docker push $IMAGE_REGISTRY/os4ml-objectstore-manager:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/job-manager:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
+    - docker pull $IMAGE_REGISTRY/os4ml-job-manager:$CI_COMMIT_SHA
+    - docker tag $IMAGE_REGISTRY/os4ml-job-manager:$CI_COMMIT_SHA $IMAGE_REGISTRY/os4ml-job-manager:$LABEL
+    - docker push $IMAGE_REGISTRY/os4ml-job-manager:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA || true
+    - docker pull $IMAGE_REGISTRY/os4ml-workflow-translator:$CI_COMMIT_SHA || true
     - docker build
       -f 'services/workflow-translator/Dockerfile'
       --target production
-      --cache-from $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA
-      --tag $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
+      --cache-from $IMAGE_REGISTRY/os4ml-workflow-translator:$CI_COMMIT_SHA
+      --tag $IMAGE_REGISTRY/os4ml-workflow-translator:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
       --build-arg IMAGE_TAG=$CI_COMMIT_SHA
       '.'
-    - docker push $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
+    - docker push $IMAGE_REGISTRY/os4ml-workflow-translator:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/model-manager:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/model-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/model-manager:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/model-manager:$LABEL
+    - docker pull $IMAGE_REGISTRY/model-manager:$CI_COMMIT_SHA
+    - docker tag $IMAGE_REGISTRY/os4ml-model-manager:$CI_COMMIT_SHA $IMAGE_REGISTRY/os4ml-model-manager:$LABEL
+    - docker push $IMAGE_REGISTRY/os4ml-model-manager:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
+    - docker pull $IMAGE_REGISTRY/os4ml-frontend:$CI_COMMIT_SHA
+    - docker tag $IMAGE_REGISTRY/os4ml-frontend:$CI_COMMIT_SHA $IMAGE_REGISTRY/os4ml-frontend:$LABEL
+    - docker push $IMAGE_REGISTRY/os4ml-frontend:$LABEL
   rules:
 
 deploy-tag:
@@ -56,6 +56,7 @@ deploy-tag:
     - .deploy
   variables:
     LABEL: $CI_COMMIT_TAG
+    IMAGE_REGISTRY: wogra
   when: always
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -67,6 +68,7 @@ deploy-prod:
     - .deploy
   variables:
     LABEL: 'latest'
+    IMAGE_REGISTRY: wogra
   when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -78,6 +80,7 @@ deploy-staging:
     - .deploy
   variables:
     LABEL: 'stage'
+    IMAGE_REGISTRY: wogra
   when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -91,6 +94,7 @@ deploy-release:
     - .deploy
   variables:
     LABEL: 'rc'
+    IMAGE_REGISTRY: wogra
   when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -103,6 +107,7 @@ deploy-dev:
     - .deploy
   variables:
     LABEL: 'dev'
+    IMAGE_REGISTRY: wogra
   when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -114,6 +119,7 @@ deploy-feature:
     - .deploy
   variables:
     LABEL: 'feature'
+    IMAGE_REGISTRY: wogra
   when: manual
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -125,6 +131,7 @@ deploy-testing:
     - .deploy
   variables:
     LABEL: 'testing'
+    IMAGE_REGISTRY: wogra
   resource_group: testing
   when: manual
   rules:
