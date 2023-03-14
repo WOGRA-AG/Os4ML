@@ -71,6 +71,7 @@
   },
   "solution": {
     "name": "Solution",
+    "plural": "Solutions",
     "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
     "settings": "Solution Settings",
     "placeholder": "Solution Name",

@@ -8,11 +8,11 @@ import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-step
 import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
 
 @Component({
-  selector: 'app-dashboard-page',
-  templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.scss'],
+  selector: 'app-solutions-page',
+  templateUrl: './solutions-page.component.html',
+  styleUrls: ['./solutions-page.component.scss'],
 })
-export class DashboardPageComponent {
+export class SolutionsPageComponent {
   databags$: Observable<Databag[]>;
   selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
   solutionsInDatabag$: Observable<Solution[]>;

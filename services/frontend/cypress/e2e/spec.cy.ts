@@ -41,7 +41,7 @@ describe('Databags', () => {
       }
       throw Error('Element was not found.');
     }
-    cy.visit('/databag');
+    cy.visit('/solutions');
     waitUntilElementExists('#add-databag-button-empty');
     cy.get('#add-databag-button-empty').click();
     cy.get('#mat-input-0').click();
@@ -72,7 +72,7 @@ describe('Databags', () => {
   });
 
   it('train ludwig solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('#add-solution-button-empty').click();
     cy.get(
       'app-selectable-list.ng-star-inserted > .mat-mdc-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .mat-subtitle-2',
@@ -92,7 +92,7 @@ describe('Databags', () => {
   });
 
   it('download model', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.solution-list-item > :nth-child(3)').click();
     cy.get('#download-model-link').click();
     const downloadedFile = `${Cypress.config(
@@ -119,7 +119,7 @@ describe('Databags', () => {
   });
 
   it('rename solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get(
       '#bag-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
@@ -134,7 +134,7 @@ describe('Databags', () => {
   });
 
   it('delete solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.mat-subtitle-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('.delete-button').click();
@@ -157,7 +157,7 @@ describe('Databags', () => {
   });
 
   it('delete databag', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.mat-mdc-nav-list > :nth-child(2)').click();
     cy.get('.databag-list-item > :nth-child(1)').click();
     cy.get('.mdc-button--outlined').click();
@@ -180,7 +180,7 @@ describe('Databags', () => {
   });
 
   it('regression with fastlane', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.support-card > .mdc-button').click();
     cy.get('#mat-input-1').clear();
     cy.get('#mat-input-1').type('Fastlane Databag');
