@@ -95,15 +95,15 @@ class DatabagService:
         return Databag(**json_dict)
 
     def get_databag_by_id(self, databag_id: str, usertoken: str) -> Databag:
-        try:
-            object_name = self._get_databag_object_name(
-                databag_id, self.databag_config_file_name
-            )
-        except Exception:
-            raise DatabagNotFoundException(databag_id)
-        databag = self._load_databag_from_object_name(
-            object_name, usertoken=usertoken
+        object_name = self._get_databag_object_name(
+            databag_id, self.databag_config_file_name
         )
+        try:
+            databag = self._load_databag_from_object_name(
+                object_name, usertoken=usertoken
+            )
+        except NotFoundException:
+            raise DatabagNotFoundException(databag_id)
         return self.update_presigned_urls(databag, usertoken=usertoken)
 
     def create_databag(self, databag: Databag, usertoken: str) -> Databag:
