@@ -39,5 +39,6 @@ build-frontend-image:
     - build-frontend
   variables:
     DOCKERFILE: 'services/frontend/Dockerfile'
-    IMG_NAME: 'frontend'
+    IMG_NAME: 'os4ml-frontend'
     BUILD_CONTEXT: 'services/frontend'
+    IMAGE_REGISTRY: 'wogra'
