@@ -86,9 +86,17 @@
     mat-raised-button
     color="primary"
     type="submit"
-    (click)="createPrediction()"
-    [disabled]="">
+    (click)="createPrediction()">
     {{ 'prediction.action' | translate }}
+  </button>
+  <button
+    *ngIf="solution.id"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [routerLink]="['predictions', solution.id]"
+    (click)="close()">
+    {{ 'prediction.plural' | translate }}
   </button>
   <button
     mat-stroked-button

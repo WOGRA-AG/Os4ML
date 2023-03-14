@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { firstValueFrom, last, Subject, takeUntil, tap } from 'rxjs';
@@ -10,7 +16,7 @@ import { PredictionService } from '../../services/prediction.service';
   templateUrl: './create-prediction.component.html',
   styleUrls: ['./create-prediction.component.scss'],
 })
-export class CreatePredictionComponent {
+export class CreatePredictionComponent implements OnDestroy {
   @Input() solution: Solution = {};
   @Output() predictionChange = new EventEmitter<Prediction>();
 
@@ -19,7 +25,7 @@ export class CreatePredictionComponent {
   urlRegex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   prediction: Prediction = {};
 
-  _destroy$ = new Subject();
+  readonly _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private errorService: ErrorService,
@@ -67,5 +73,10 @@ export class CreatePredictionComponent {
       return !!this.url.match(this.urlRegex);
     }
     return !!this.file.name;
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next(undefined);
+    this._destroy$.complete();
   }
 }

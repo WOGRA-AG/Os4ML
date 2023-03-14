@@ -1,0 +1,18 @@
+<div class="page-wrapper">
+  <h2>{{ 'prediction.plural' | translate }}</h2>
+  <app-predictions-list
+    *ngIf="predictions$ | async as predictions"
+    [predictions]="predictions"
+    class="prediction-list">
+  </app-predictions-list>
+  <div class="actions">
+    <button
+      mat-raised-button
+      class="fab-button mat-raised-button"
+      color="primary"
+      (click)="createPrediction()">
+      <mat-icon>add</mat-icon>
+      {{ 'prediction.create' | translate }}
+    </button>
+  </div>
+</div>

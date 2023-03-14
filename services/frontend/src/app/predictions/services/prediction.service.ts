@@ -45,6 +45,18 @@ export class PredictionService {
     return this._predictions$;
   }
 
+  getPredictionsBySolutionIdSortByCreationTime(
+    solutionId: string | undefined
+  ): Observable<Prediction[]> {
+    return this._predictions$.pipe(
+      map(predictions =>
+        predictions.filter(prediction => prediction.solutionId === solutionId)
+      ),
+      filter(predictions => predictions.length > 0),
+      map(predictions => predictions.sort(sortByCreationTime))
+    );
+  }
+
   getPredictionsSortByCreationTime(): Observable<Prediction[]> {
     return this._predictions$.pipe(
       map(predictions => predictions.sort(sortByCreationTime))

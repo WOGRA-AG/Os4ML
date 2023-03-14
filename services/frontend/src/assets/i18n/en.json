@@ -92,7 +92,14 @@
   },
   "prediction": {
     "action": "Predict",
-    "create": "Create Prediction"
+    "create": "Create Prediction",
+    "plural": "Predictions",
+    "detail": {
+      "name": "Prediction Name",
+      "runtime": "Runtime",
+      "creation": "Creation",
+      "download": "Download"
+    }
   },
   "problem": {
     "name": "Problem"

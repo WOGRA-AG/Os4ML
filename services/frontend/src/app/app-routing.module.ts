@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SolutionsPageComponent } from './templates/pages/solutions-page/solutions-page.component';
 import { DatabagsPageComponent } from './templates/pages/databags-page/databags-page.component';
 import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
+import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: 'databags',
     component: DatabagsPageComponent,
     runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'predictions/:solutionId',
+    component: PredictionsPageComponent,
   },
   {
     path: '**',
