@@ -7,6 +7,7 @@
     - aime
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $WOGRA_DOCKER_USERNAME -p $WOGRA_DOCKER_PASSWORD docker.io
   script:
     - docker pull $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME || true
     - docker pull $CACHE_REGISTRY/$IMG_NAME:dev || true
@@ -16,16 +17,17 @@
       --cache-from $CACHE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME
       --cache-from $CACHE_REGISTRY/$IMG_NAME:dev
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
-      --tag $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+      --tag $IMAGE_REGISTRY/$IMG_NAME:$CI_COMMIT_SHA
+      --tag $IMAGE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME
       $BUILD_CONTEXT
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE/$IMG_NAME:$CI_COMMIT_REF_NAME
+    - docker push $IMAGE_REGISTRY/$IMG_NAME:$CI_COMMIT_SHA
+    - docker push $IMAGE_REGISTRY/$IMG_NAME:$CI_COMMIT_REF_NAME
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
     CACHE_REGISTRY: developer/wogra/os4ml
+    IMAGE_REGISTRY: $CI_REGISTRY_IMAGE
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never

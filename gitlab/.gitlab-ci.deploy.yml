@@ -10,6 +10,7 @@
     DOCKER_BUILDKIT: 1
     DOCKER_TLS_CERTDIR: ""
     CACHE_REGISTRY: developer/wogra/os4ml
+    TEMPLATE_REGISTRY: wogra
   needs:
     - build-frontend
     - build-frontend-image
@@ -20,19 +21,14 @@
     - build-ludwig
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $WOGRA_DOCKER_USERNAME -p $WOGRA_DOCKER_PASSWORD docker.io
   script:
     - docker pull $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA
     - docker tag $CI_REGISTRY_IMAGE/objectstore-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/objectstore-manager:$LABEL
 
-    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA || true
-    - docker build
-      -f 'services/job-manager/Dockerfile'
-      --target production
-      --cache-from $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
-      --tag $CI_REGISTRY_IMAGE/job-manager:$LABEL
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      '.'
+    - docker pull $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/job-manager:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/job-manager:$LABEL
     - docker push $CI_REGISTRY_IMAGE/job-manager:$LABEL
 
     - docker pull $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA || true
@@ -42,7 +38,7 @@
       --cache-from $CI_REGISTRY_IMAGE/workflow-translator:$CI_COMMIT_SHA
       --tag $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
       --build-arg BUILDKIT_INLINE_CACHE=1
-      --build-arg IMAGE_TAG=$LABEL
+      --build-arg IMAGE_TAG=$CI_COMMIT_SHA
       '.'
     - docker push $CI_REGISTRY_IMAGE/workflow-translator:$LABEL
 
@@ -53,18 +49,6 @@
     - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
     - docker tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/frontend:$LABEL
     - docker push $CI_REGISTRY_IMAGE/frontend:$LABEL
-
-    - docker pull $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/python:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/python:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/python:$LABEL
-
-    - docker pull $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/pandas:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/pandas:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/pandas:$LABEL
-
-    - docker pull $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE/ludwig:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/ludwig:$LABEL
-    - docker push $CI_REGISTRY_IMAGE/ludwig:$LABEL
   rules:
 
 deploy-tag:
