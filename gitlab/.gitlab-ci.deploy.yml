@@ -42,7 +42,7 @@
       '.'
     - docker push $IMAGE_REGISTRY/os4ml-workflow-translator:$LABEL
 
-    - docker pull $IMAGE_REGISTRY/model-manager:$CI_COMMIT_SHA
+    - docker pull $IMAGE_REGISTRY/os4ml-model-manager:$CI_COMMIT_SHA
     - docker tag $IMAGE_REGISTRY/os4ml-model-manager:$CI_COMMIT_SHA $IMAGE_REGISTRY/os4ml-model-manager:$LABEL
     - docker push $IMAGE_REGISTRY/os4ml-model-manager:$LABEL
 
