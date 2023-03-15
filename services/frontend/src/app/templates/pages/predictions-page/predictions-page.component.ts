@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { Observable, Subject, switchMap, takeUntil, map, of } from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
+import { Breadcrumb } from 'src/app/shared/components/molecules/breadcrumbs/breadcrumbs.component';
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
@@ -15,8 +16,8 @@ import { CreatePredictionStepperComponent } from '../../dialogs/create-predictio
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
   predictions$: Observable<Prediction[]> = of([]);
+  breadcrumbs: Breadcrumb[] = [];
   private solution: Solution = {};
-
   private readonly _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -42,6 +43,10 @@ export class PredictionsPageComponent implements OnInit, OnDestroy {
           this.predictionService.getPredictionsBySolutionIdSortByCreationTime(
             solution.id
           );
+        this.breadcrumbs = [
+          { label: 'Solutions', link: '/solutions' },
+          { label: this.solution.name! },
+        ];
       });
   }
 

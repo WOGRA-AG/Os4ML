@@ -25,6 +25,7 @@ import { SelectableListComponent } from './components/organisms/selectable-list/
 import { ListItemComponent } from './components/molecules/list-item/list-item.component';
 import { PopupConfirmComponent } from './components/organisms/popup-confirm/popup-confirm.component';
 import { FormatTimeDiffPipe } from './pipes/format-time-diff';
+import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +45,7 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     UploadFieldComponent,
     StatusSpinnerComponent,
     ListItemComponent,
+    BreadcrumbsComponent,
     // organisms
     PopupConfirmComponent,
     SelectableListComponent,
@@ -84,6 +86,7 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     ToggleItemComponent,
     UploadFieldComponent,
     StatusSpinnerComponent,
+    BreadcrumbsComponent,
     // organisms
     SelectableListComponent,
     // directives

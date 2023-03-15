@@ -1,5 +1,6 @@
 <div class="page-wrapper">
   <h2>{{ 'prediction.plural' | translate }}</h2>
+  <app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
   <app-predictions-list
     *ngIf="predictions$ | async as predictions"
     [predictions]="predictions"
