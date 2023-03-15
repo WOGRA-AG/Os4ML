@@ -273,6 +273,23 @@ paths:
         200:
           $ref: '#/components/responses/PutUrlResponse'
 
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-data":
+    get:
+      summary: "get put url for prediction data"
+      operationId: getPredictionDataPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlAndPredictionId'
+
   "/apis/v1beta1/model-manager/predictions":
     get:
       summary: "get predictions"
@@ -325,7 +342,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './shared-oas.yaml#/components/schemas/PredictionId'
+                $ref: './shared-oas.yaml#/components/schemas/Prediction'
         404:
           $ref: '#/components/responses/NotFound'
     put:
@@ -360,6 +377,19 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
+  "/apis/v1beta1/model-manager/predictions/{predictionId}/prediction-result":
+    get:
+      summary: "get put url for prediction result"
+      operationId: getPredictionResultPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/PutUrlResponse'
+
 components:
   schemas:
     Error:
@@ -383,6 +413,12 @@ components:
           $ref: '#/components/schemas/PutUrl'
         databagId:
           $ref: './shared-oas.yaml#/components/schemas/DatabagId'
+    UrlAndPredictionId:
+      properties:
+        url:
+          $ref: '#/components/schemas/PutUrl'
+        predictionId:
+          $ref: './shared-oas.yaml#/components/schemas/PredictionId'
   parameters:
     DatabagId:
       name: databagId

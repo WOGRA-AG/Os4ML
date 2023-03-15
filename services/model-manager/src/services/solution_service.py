@@ -105,10 +105,7 @@ class SolutionService:
     def create_solution(self, solution: Solution, usertoken: str) -> Solution:
         solution.id = str(uuid.uuid4())
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
-        run_params = RunParams(
-            databag_id=solution.databag_id,
-            solution_id=solution.id,
-        )
+        run_params = RunParams(solution_id=solution.id)
         self._persist_solution(solution, usertoken=usertoken)
         solution.run_id = self.jobmanager.create_run_by_solver_name(
             solution.solver, run_params=run_params, usertoken=usertoken

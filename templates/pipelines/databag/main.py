@@ -13,6 +13,7 @@ sniffle_op = load_component("sniffle_dataset")
 def databag(
     databag_id: str,
     solution_id: str,
+    prediction_id: str,
     max_categories: int = 10,
 ):
     file_type = get_file_type_op(

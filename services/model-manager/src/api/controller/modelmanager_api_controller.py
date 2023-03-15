@@ -5,6 +5,9 @@ from build.openapi_server.models.dataset_put_url import DatasetPutUrl
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.solver import Solver
+from build.openapi_server.models.url_and_prediction_id import (
+    UrlAndPredictionId,
+)
 from services.databag_service import DatabagService
 from services.prediction_service import PredictionSerivce
 from services.solution_service import SolutionService
@@ -139,4 +142,18 @@ class ModelmanagerApiController:
     ) -> Prediction:
         return self.prediction_service.update_prediction_by_id(
             prediction_id, prediction, usertoken
+        )
+
+    def get_prediction_data_put_url(
+        self, solution_id: str, usertoken: str = ""
+    ) -> UrlAndPredictionId:
+        return self.prediction_service.get_prediction_data_put_url(
+            solution_id, usertoken
+        )
+
+    def get_prediction_result_put_url(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> str:
+        return self.prediction_service.get_prediction_result_put_url(  # type: ignore
+            prediction_id, usertoken
         )
