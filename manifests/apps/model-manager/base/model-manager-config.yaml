@@ -9,3 +9,4 @@ data:
   messageBrokerPort: '6379'
   databagMessageChannel: 'databag-os4ml'
   solutionMessageChannel: 'solution-os4ml'
+  predictionMessageChannel: 'prediction-os4ml'
