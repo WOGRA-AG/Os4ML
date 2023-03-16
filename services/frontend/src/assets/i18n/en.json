@@ -99,6 +99,9 @@
       "runtime": "Runtime",
       "creation": "Creation",
       "download": "Download"
+    },
+    "error": {
+      "invalid_put_url": "Invalid put url for prediction data"
     }
   },
   "problem": {
@@ -134,11 +137,14 @@
       "step_one": "Data"
     },
     "create_prediction": {
-      "step_one": "Data",
-      "step_two": "Download",
+      "step_data": "Data",
+      "step_download": "Download",
       "download_template": "Download Template csv",
       "download_result": "Download Result",
       "name_input": "Prediction Name"
+    },
+    "dataset_upload": {
+      "url_label": "Url"
     }
   },
   "page": {

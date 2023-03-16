@@ -7,5 +7,5 @@ import { Prediction } from 'build/openapi/modelmanager';
   styleUrls: ['./predictions-list.component.scss'],
 })
 export class PredictionsListComponent {
-  @Input() predictions: Prediction[] = [];
+  @Input() public predictions: Prediction[] = [];
 }

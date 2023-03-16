@@ -13,9 +13,9 @@ import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-st
   styleUrls: ['./solutions-page.component.scss'],
 })
 export class SolutionsPageComponent {
-  databags$: Observable<Databag[]>;
-  selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
-  solutionsInDatabag$: Observable<Solution[]>;
+  public databags$: Observable<Databag[]>;
+  public selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
+  public solutionsInDatabag$: Observable<Solution[]>;
 
   constructor(
     private databagService: DatabagService,

@@ -15,8 +15,8 @@ import { CreatePredictionStepperComponent } from '../../dialogs/create-predictio
   styleUrls: ['./predictions-page.component.scss'],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
-  predictions$: Observable<Prediction[]> = of([]);
-  breadcrumbs: Breadcrumb[] = [];
+  public predictions$: Observable<Prediction[]> = of([]);
+  public breadcrumbs: Breadcrumb[] = [];
   private solution: Solution = {};
   private readonly _destroy$: Subject<void> = new Subject<void>();
 

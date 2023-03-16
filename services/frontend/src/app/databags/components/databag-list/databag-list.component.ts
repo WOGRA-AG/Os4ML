@@ -9,7 +9,7 @@ import { DatabagSettingComponent } from '../databag-setting/databag-setting.comp
   styleUrls: ['./databag-list.component.scss'],
 })
 export class DatabagListComponent {
-  @Input() databags: Databag[] = [];
+  @Input() public databags: Databag[] = [];
 
   constructor(private dialog: MatDialog) {}
 

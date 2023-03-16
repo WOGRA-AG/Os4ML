@@ -6,7 +6,7 @@ import { Component, HostBinding, Input } from '@angular/core';
   styleUrls: ['./star.component.scss'],
 })
 export class StarComponent {
-  @Input() percentage = 0; // value between 0 and 1
+  @Input() public percentage = 0; // value between 0 and 1
 
   @HostBinding('style.--percentage') get getPercentage(): number {
     return this.percentage;

@@ -18,6 +18,7 @@ import { WebSocketConnectionService } from 'src/app/core/services/web-socket-con
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ErrorService } from 'src/app/core/services/error.service';
+import { databagsWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -32,8 +33,9 @@ export class DatabagService {
     private http: HttpClient,
     private errorService: ErrorService
   ) {
-    const path = '/apis/v1beta1/model-manager/databags';
-    this._databags$ = this.webSocketConnectionService.connect(path);
+    this._databags$ = this.webSocketConnectionService.connect(
+      databagsWebsocketPath
+    );
   }
 
   get databags$(): Observable<Databag[]> {

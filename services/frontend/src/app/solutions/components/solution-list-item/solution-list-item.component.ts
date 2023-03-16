@@ -10,8 +10,8 @@ import { getCssClassForStatus } from 'src/app/shared/lib/status/status';
   styleUrls: ['./solution-list-item.component.scss'],
 })
 export class SolutionListItemComponent {
-  @Input() solution: Solution = {};
-  runtime$: Observable<number>;
+  @Input() public solution: Solution = {};
+  public runtime$: Observable<number>;
 
   constructor() {
     this.runtime$ = timer(0, 1000).pipe(

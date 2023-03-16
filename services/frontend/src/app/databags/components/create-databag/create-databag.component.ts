@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatabagService } from '../../services/databag.service';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { DatabagType } from 'build/openapi/modelmanager/model/databagType';
+import { urlRegex } from 'src/app/shared/lib/regex/regex';
 
 @Component({
   selector: 'app-create-databag',
@@ -14,12 +15,12 @@ import { DatabagType } from 'build/openapi/modelmanager/model/databagType';
   styleUrls: ['./create-databag.component.scss'],
 })
 export class CreateDatabagComponent {
-  @Output() databagChange = new EventEmitter<Databag>();
+  @Output() public databagChange = new EventEmitter<Databag>();
 
-  file: File = new File([], '');
-  fileUrl = '';
-  urlRegex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-  databag: Databag = {};
+  public file: File = new File([], '');
+  public fileUrl = '';
+  public urlRegex = urlRegex;
+  public databag: Databag = {};
 
   constructor(
     private errorService: ErrorService,

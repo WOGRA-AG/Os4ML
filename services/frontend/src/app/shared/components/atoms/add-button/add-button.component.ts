@@ -9,6 +9,6 @@ import {
   templateUrl: './add-button.component.html',
 })
 export class AddButtonComponent {
-  @Input() color: UIThemePalette = 'primary';
-  @Input() type: ButtonType = 'submit';
+  @Input() public color: UIThemePalette = 'primary';
+  @Input() public type: ButtonType = 'submit';
 }

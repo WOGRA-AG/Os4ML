@@ -16,8 +16,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./databag-setting.component.scss'],
 })
 export class DatabagSettingComponent implements OnDestroy {
-  databag: Databag = {};
-  obj: any = { databagId: 123 };
+  public databag: Databag = {};
 
   private destroy$: Subject<void> = new Subject<void>();
 

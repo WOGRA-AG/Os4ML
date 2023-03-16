@@ -10,9 +10,9 @@ import { getCssClassForStatus } from 'src/app/shared/lib/status/status';
   styleUrls: ['./predictions-list-item.component.scss'],
 })
 export class PredictionsListItemComponent {
-  @Input() prediction: Prediction = {};
+  @Input() public prediction: Prediction = {};
 
-  runtime$: Observable<number>;
+  public runtime$: Observable<number>;
 
   constructor() {
     this.runtime$ = timer(0, 1000).pipe(

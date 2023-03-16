@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent {
-  @Input() breadcrumbs: Breadcrumb[] = [];
+  @Input() public breadcrumbs: Breadcrumb[] = [];
 }
 
 export interface Breadcrumb {

@@ -26,6 +26,7 @@ import { ListItemComponent } from './components/molecules/list-item/list-item.co
 import { PopupConfirmComponent } from './components/organisms/popup-confirm/popup-confirm.component';
 import { FormatTimeDiffPipe } from './pipes/format-time-diff';
 import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
+import { DatasetUploadComponent } from './components/organisms/dataset-upload/dataset-upload.component';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +50,7 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     // organisms
     PopupConfirmComponent,
     SelectableListComponent,
+    DatasetUploadComponent,
     // directives
     DragAndDropDirective,
     // pipes
@@ -89,6 +91,7 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     BreadcrumbsComponent,
     // organisms
     SelectableListComponent,
+    DatasetUploadComponent,
     // directives
     DragAndDropDirective,
     // pipes

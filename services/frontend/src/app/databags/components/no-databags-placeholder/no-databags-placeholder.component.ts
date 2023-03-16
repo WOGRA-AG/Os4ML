@@ -6,6 +6,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./no-databags-placeholder.component.scss'],
 })
 export class NoDatabagsPlaceholderComponent {
-  @Output() addDatabagButton: EventEmitter<MouseEvent> =
+  @Output() public addDatabagButton: EventEmitter<MouseEvent> =
     new EventEmitter<MouseEvent>();
 }

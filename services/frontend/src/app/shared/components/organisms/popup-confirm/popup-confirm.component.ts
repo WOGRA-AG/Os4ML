@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./popup-confirm.component.scss'],
 })
 export class PopupConfirmComponent {
-  submitting = false;
+  public submitting = false;
 
   constructor(
     private dialog: MatDialogRef<PopupConfirmComponent, boolean>,
