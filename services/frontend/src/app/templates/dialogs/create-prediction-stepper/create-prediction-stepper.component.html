@@ -6,22 +6,22 @@
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-dialog-content>
-    <mat-step
-      label="{{ 'dialog.create_prediction.step_data' | translate }}"
-      completed="{{ stepperStep > 0 }}">
+  <mat-step
+    label="{{ 'dialog.create_prediction.step_data' | translate }}"
+    completed="{{ stepperStep > 0 }}">
+    <mat-dialog-content>
       <app-create-prediction
         [solution]="solution"
         (predictionChange)="updatePrediction($event)"
         #createPrediction>
       </app-create-prediction>
-    </mat-step>
+    </mat-dialog-content>
+  </mat-step>
 
-    <mat-step
-      completed="false"
-      label="{{ 'dialog.create_prediction.step_download' | translate }}">
-    </mat-step>
-  </mat-dialog-content>
+  <mat-step
+    completed="false"
+    label="{{ 'dialog.create_prediction.step_download' | translate }}">
+  </mat-step>
 </mat-stepper>
 
 <mat-dialog-actions align="end">
