@@ -102,7 +102,7 @@
     mat-raised-button
     color="primary"
     type="submit"
-    [routerLink]="['predictions', solution.id]"
+    [routerLink]="['solution', solution.id, 'predictions']"
     (click)="close()">
     {{ 'prediction.plural' | translate }}
   </button>

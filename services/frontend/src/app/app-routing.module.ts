@@ -22,7 +22,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
   },
   {
-    path: 'predictions/:solutionId',
+    path: 'solution/:solutionId/predictions',
     component: PredictionsPageComponent,
   },
   {
