@@ -126,7 +126,7 @@ describe('Databags', () => {
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type('Renamed Solution');
-    cy.get('.mat-mdc-dialog-actions > [type="submit"]').click();
+    cy.get('#solution-update-button').click();
     cy.get('.solution-list-item > :nth-child(1) > :nth-child(2)').should(
       'have.text',
       'Renamed Solution'

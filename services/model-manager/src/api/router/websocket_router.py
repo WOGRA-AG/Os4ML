@@ -23,3 +23,12 @@ async def stream_solutions(
     _controller: WebsocketController = Depends(),
 ) -> None:
     await _controller.stream_solutions(websocket, usertoken=usertoken)
+
+
+@router.websocket("/apis/v1beta1/model-manager/predictions")
+async def stream_predictions(
+    websocket: WebSocket,
+    usertoken: str = Query(None, description=""),
+    _controller: WebsocketController = Depends(),
+) -> None:
+    await _controller.stream_predictions(websocket, usertoken=usertoken)

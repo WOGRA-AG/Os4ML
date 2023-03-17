@@ -73,6 +73,7 @@
 
 <mat-dialog-actions align="end">
   <a
+    *ngIf="solution.modelUrl"
     [href]="solution.modelUrl"
     target="_blank"
     mat-raised-button
@@ -80,7 +81,15 @@
     id="download-model-link">
     {{ 'action.download' | translate }}
   </a>
-
+  <button
+    *ngIf="solution.predictionTemplateUrl"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="createPrediction()"
+    [disabled]="">
+    {{ 'prediction.action' | translate }}
+  </button>
   <button
     mat-stroked-button
     class="delete-button"
@@ -90,6 +99,7 @@
     {{ 'action.delete' | translate }}
   </button>
   <button
+    id="solution-update-button"
     mat-raised-button
     color="primary"
     type="submit"

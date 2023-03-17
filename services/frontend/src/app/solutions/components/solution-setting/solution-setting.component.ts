@@ -10,6 +10,7 @@ import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
+import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 
 @Component({
   selector: 'app-solution-setting',
@@ -71,6 +72,14 @@ export class SolutionSettingComponent implements OnDestroy {
         filter(confirm => !!confirm)
       )
       .subscribe(() => this.dialogRef.close());
+  }
+
+  createPrediction(): void {
+    this.dialog.open(CreatePredictionStepperComponent, {
+      data: {
+        solution: this.solution,
+      },
+    });
   }
 
   ngOnDestroy(): void {

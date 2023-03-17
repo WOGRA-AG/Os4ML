@@ -13,7 +13,7 @@
         "solver_running": "Solver running",
         "url_is_ignored": "Url is ignored",
         "loading_model": "Loading model",
-        "prediction": "Predicting"
+        "predicting": "Predicting"
       },
       "done": {
         "solver_done": "Solver finished",
@@ -89,6 +89,10 @@
       "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
     }
   },
+  "prediction": {
+    "action": "Predict",
+    "create": "Create Prediction"
+  },
   "problem": {
     "name": "Problem"
   },
@@ -120,6 +124,13 @@
     },
     "create_databag": {
       "step_one": "Data"
+    },
+    "create_prediction": {
+      "step_one": "Data",
+      "step_two": "Download",
+      "download_template": "Download Template csv",
+      "download_result": "Download Result",
+      "name_input": "Prediction Name"
     }
   },
   "page": {
