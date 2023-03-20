@@ -139,6 +139,8 @@ components:
           type: string
         solutionId:
           type: string
+        predictionId:
+          type: string
     CreateRun:
       description: Create Run Object
       type: object

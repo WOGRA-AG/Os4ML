@@ -23,8 +23,8 @@ from util.exception_handler import exception_handler
 
 
 def ludwig_solver(
-    dataset_file: Input[Dataset],
-    databag_file: Input[Dataset],
+    dataframe: Input[Dataset],
+    databag: Input[Dataset],
     cls_metrics: Output[ClassificationMetrics],
     metrics: Output[Metrics],
     solution_id: str,
@@ -40,20 +40,20 @@ def ludwig_solver(
         solution_id,
     )
     with exception_handler(handler, StatusMessage.TRAINING_FAILED):
-        databag = load_databag(databag_file.path)
+        databag_model = load_databag(databag.path)
         solution = update_solution_status(
             solution_id, StatusMessage.SOLVER_RUNNING
         )
         model, model_definition = build_model(
-            solution, databag.columns, batch_size, epochs, early_stop
+            solution, databag_model.columns, batch_size, epochs, early_stop
         )
-        dataframe = load_dataframe(dataset_file.path)
+        df_full = load_dataframe(dataframe.path)
         df_train, df_validate, df_test = train_validate_test_split(
-            dataframe, test_split, validation_split
+            df_full, test_split, validation_split
         )
         train_model(model, df_train, df_validate, df_test)
         evaluate_model(
-            model, model_definition, dataframe, df_test, metrics, cls_metrics
+            model, model_definition, df_full, df_test, metrics, cls_metrics
         )
         upload_model_to_solution(model, solution_id)
 

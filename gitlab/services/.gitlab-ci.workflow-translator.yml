@@ -14,7 +14,7 @@ workflow-translator-test-and-lint:
     - .build-test-and-lint
   variables:
     DOCKERFILE: 'services/workflow-translator/Dockerfile'
-    IMG_NAME: 'workflow-translator'
+    IMG_NAME: 'os4ml-workflow-translator'
     BUILD_CONTEXT: '.'
 
 workflow-translator-build:
@@ -24,5 +24,6 @@ workflow-translator-build:
     - workflow-translator-test-and-lint
   variables:
     DOCKERFILE: 'services/workflow-translator/Dockerfile'
-    IMG_NAME: 'workflow-translator'
+    IMG_NAME: 'os4ml-workflow-translator'
     BUILD_CONTEXT: '.'
+    IMAGE_REGISTRY: 'wogra'

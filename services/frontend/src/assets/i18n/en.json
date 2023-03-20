@@ -11,11 +11,14 @@
         "creating_databag": "Creating databag",
         "Solution_created": "Solution created",
         "solver_running": "Solver running",
-        "url_is_ignored": "Url is ignored"
+        "url_is_ignored": "Url is ignored",
+        "loading_model": "Loading model",
+        "prediction": "Predicting"
       },
       "done": {
         "solver_done": "Solver finished",
-        "databag_done": "Databag created"
+        "databag_done": "Databag created",
+        "prediction_done": "Prediction finished"
       },
       "error": {
         "default": "Pipeline Run Failed",
@@ -28,7 +31,11 @@
         "metrics_not_retrievable": "Metrics not retrievable",
         "training_failed": "Training failed",
         "file_type_unknown": "File type unknown",
-        "resource_not_found": "Resource not found"
+        "resource_not_found": "Resource not found",
+        "prediction_template_could_not_be_created": "Prediction template could not be created",
+        "loading_model_failed": "loading of the trained model failed",
+        "loading_prediction_data_failed": "failed to load the prediction data",
+        "predicting_failed": "predicting failed"
       }
     }
   },

@@ -35,7 +35,7 @@ def compile_pipeline(
     credentials = V1LocalObjectReference("registry-credentials")
     conf = PipelineConf()
     conf.set_image_pull_secrets([credentials])
-    conf.set_image_pull_policy("Always")
+    conf.set_image_pull_policy("IfNotPresent")
     if node_pool and node_pool in NODE_POOL_TO_SELECTOR:
         node_selector = NODE_POOL_TO_SELECTOR[node_pool]
         conf.set_default_pod_node_selector(

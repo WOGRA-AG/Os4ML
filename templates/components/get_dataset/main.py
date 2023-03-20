@@ -5,14 +5,12 @@ from components.images import python_image
 
 
 def get_dataset(
-    dataset_type: str,
     databag_id: str,
     dataset: Output[Dataset],
 ):
     from components.get_dataset import get_dataset
 
     return get_dataset(
-        dataset_type=dataset_type,
         databag_id=databag_id,
         dataset=dataset,
     )

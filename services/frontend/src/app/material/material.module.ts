@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export const MATERIAL_MODULES: (typeof MatInputModule)[] = [
   MatButtonModule,
@@ -42,6 +43,7 @@ export const MATERIAL_MODULES: (typeof MatInputModule)[] = [
   MatSortModule,
   MatPaginatorModule,
   MatStepperModule,
+  MatTooltipModule,
 ];
 
 @NgModule({

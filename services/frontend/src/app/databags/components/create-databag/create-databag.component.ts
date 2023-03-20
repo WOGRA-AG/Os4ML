@@ -6,6 +6,7 @@ import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { DatabagService } from '../../services/databag.service';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
+import { DatabagType } from 'build/openapi/modelmanager/model/databagType';
 
 @Component({
   selector: 'app-create-databag',
@@ -38,13 +39,15 @@ export class CreateDatabagComponent {
     try {
       if (this.file.name) {
         this.databag.fileName = this.file.name;
+        this.databag.databagType = DatabagType.LocalFile;
         this.databag.status = 'message.pipeline.running.uploading_file';
         this.databagChange.next(this.databag);
         this.databag = await firstValueFrom(
           this.databagService.uploadDataset(this.file, this.databag)
         );
       } else {
-        this.databag.fileName = this.fileUrl;
+        this.databag.datasetUrl = this.fileUrl;
+        this.databag.databagType = DatabagType.FileUrl;
       }
 
       this.databag.status = 'Starting Pipeline';

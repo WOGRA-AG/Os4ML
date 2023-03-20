@@ -2,7 +2,7 @@
   <span class="mat-caption on-surface-medium">{{
     'solution.placeholder' | translate
   }}</span>
-  <span class="mat-body-2 on-surface-high">{{ solution?.name }}</span>
+  <span>{{ solution.name }}</span>
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{
@@ -17,23 +17,19 @@
   <span class="mat-caption on-surface-medium">{{
     'solution.detail.runtime' | translate
   }}</span>
-  <span class="mat-body-2 on-surface-high">{{
-    runtime$ | async | formatTimeDiff
-  }}</span>
+  <span>{{ runtime$ | async | formatTimeDiff }}</span>
 </div>
 <div class="list-item-column">
   <span class="mat-caption on-surface-medium">{{
     'solution.detail.creation' | translate
   }}</span>
-  <span class="mat-body-2 on-surface-high">{{
-    solution?.creationTime | localizedDate : 'dd.MM.yyyy'
-  }}</span>
+  <span>{{ solution.creationTime | localizedDate : 'dd.MM.yyyy' }}</span>
 </div>
 <div class="status-column">
   <div
     id="solution-status"
     class="status mat-button"
-    [ngClass]="getCssClassForStatus(solution?.status)">
-    {{ solution?.status | shortStatus }}
+    [ngClass]="getCssClassForStatus(solution.status)">
+    {{ solution.status | shortStatus }}
   </div>
 </div>

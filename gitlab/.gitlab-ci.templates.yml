@@ -17,8 +17,9 @@ build-python:
     - templates-test-and-lint
   variables:
     BUILD_CONTEXT: 'templates'
-    IMG_NAME: 'python'
+    IMG_NAME: 'os4ml-python'
     DOCKERFILE: 'templates/dockerfiles/python/Dockerfile'
+    IMAGE_REGISTRY: 'wogra'
 
 build-pandas:
   extends:
@@ -27,8 +28,9 @@ build-pandas:
     - templates-test-and-lint
   variables:
     BUILD_CONTEXT: 'templates'
-    IMG_NAME: 'pandas'
+    IMG_NAME: 'os4ml-pandas'
     DOCKERFILE: 'templates/dockerfiles/pandas/Dockerfile'
+    IMAGE_REGISTRY: 'wogra'
 
 build-ludwig:
   extends:
@@ -37,5 +39,6 @@ build-ludwig:
     - templates-test-and-lint
   variables:
     BUILD_CONTEXT: 'templates'
-    IMG_NAME: 'ludwig'
+    IMG_NAME: 'os4ml-ludwig'
     DOCKERFILE: 'templates/dockerfiles/ludwig/Dockerfile'
+    IMAGE_REGISTRY: 'wogra'

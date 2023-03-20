@@ -1,6 +1,6 @@
 import enum
 
 
-class DatasetType(str, enum.Enum):
+class DatabagType(str, enum.Enum):
     LOCAL_FILE = "local_file"
     FILE_URL = "file_url"

@@ -4,150 +4,69 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext,cyrillic-ext,cyrillic,greek-ext,greek,vietnamese);
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,latin-ext,greek-ext,greek,vietnamese,cyrillic,cyrillic-ext);
 
+@font-face {
+  font-family: 'Avenir Roman';
+  src: local('Avenir Roman'),
+    url('/assets/fonts/AvenirLTPro-Roman.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Avenir Black';
+  src: local('Avenir Black'),
+    url('/assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
+}
+
+//TODO: Get values from Design Tokens when done
 $custom-typography: mat.define-typography-config(
-  $font-family: 'Roboto, monospace',
-  $display-1: mat.define-typography-level(60px, 60px, 700),
-  $display-2: mat.define-typography-level(44px, 44px, 700),
-  $display-3: mat.define-typography-level(33px, 33px, 700),
-  $display-4: mat.define-typography-level(30px, 30px, 700),
-  $headline: mat.define-typography-level(60px, 60px, 700),
-  $title: mat.define-typography-level(44px, 72px, 700),
-  $subheading-2: mat.define-typography-level(33px, 33px, 700),
-  $subheading-1: mat.define-typography-level(16px, 28px, 400),
-  $body-1: mat.define-typography-level(16px, 24px, 400),
-  $body-2: mat.define-typography-level(14px, 20px, 400),
-  $caption: mat.define-typography-level(12px, 14px, 400),
-  $button: mat.define-typography-level(14px, 16px, 500),
+  $font-family: 'Avenir Roman',
+  $headline-1:
+    mat.define-typography-level(60px, 112px, 800, 'Avenir Black', 0px),
+  $headline-2:
+    mat.define-typography-level(44px, 72px, 800, 'Avenir Black', 2.5px),
+  $headline-3: mat.define-typography-level(33px, 48px, 800, 'Avenir Black', 0),
+  $headline-4: mat.define-typography-level(30px, 43px, 800, 'Avenir Black', 0),
+  $headline-5:
+    mat.define-typography-level(24px, 33px, 800, 'Avenir Black', 0.18px),
+  $headline-6:
+    mat.define-typography-level(20px, 24px, 800, 'Avenir Black', 0.15px),
+  $subtitle-1:
+    mat.define-typography-level(18px, 24px, 800, 'Avenir Black', 0.15px),
+  $subtitle-2:
+    mat.define-typography-level(14px, 21px, 800, 'Avenir Black', 0.1px),
+  $body-1: mat.define-typography-level(16px, 24px, 350, null, 0.5px),
+  $body-2: mat.define-typography-level(14px, 20px, 350, null, 0.25px),
+  $caption:
+    mat.define-typography-level(12px, 16px, 400, 'Roboto, monospace', 0.4px),
+  $button: mat.define-typography-level(14px, 20px, 800, 'Avenir Black', 1.25px),
+  $overline:
+    mat.define-typography-level(10px, 16px, 500, 'Roboto, monospace', 1.5px),
 );
 
-@include mat.all-component-typographies($custom-typography);
-
 @mixin additional-typography-settings {
-  .mat-h1,
-  h1 {
-    font-weight: 300;
-    font-style: normal;
-    line-height: 112px;
-    letter-spacing: -1.5px;
-    font-size: 96px;
-  }
+  .mat-mdc-button {
+    &.medium {
+      line-height: 24px;
+      font-size: 18px;
+    }
 
-  .mat-h2,
-  h2 {
-    font-size: 60px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 72px;
-    letter-spacing: -0.5px;
-    text-align: left;
-  }
-
-  .mat-h3,
-  h3 {
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 56px;
-    letter-spacing: 0;
-    text-align: left;
-  }
-
-  .mat-h4,
-  h4 {
-    font-size: 34px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 36px;
-    letter-spacing: 0;
-    text-align: left;
-  }
-
-  .mat-h5,
-  h5 {
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.18px;
-    text-align: left;
-  }
-
-  .mat-h6,
-  h6 {
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0.15px;
-    text-align: left;
-  }
-
-  .mat-subheading-1 {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.15px;
-    text-align: left;
-  }
-
-  .mat-subheading-2 {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0.1px;
-    text-align: left;
-    margin: 0;
-  }
-
-  .mat-body-1 {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.5px;
-    text-align: left;
-  }
-
-  .mat-body-2 {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    letter-spacing: 0.25px;
-    text-align: left;
-  }
-
-  .mat-button {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 1.25px;
-    text-align: left;
+    &.large {
+      line-height: 24px;
+      font-size: 21px;
+      letter-spacing: 1.96px;
+    }
   }
 
   .mat-caption {
-    font-size: 12px;
     font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.4px;
     text-align: left;
   }
 
   .mat-overline {
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 1.5px;
     text-align: left;
     text-transform: uppercase;
   }
 
-  .mat-list-item {
+  .mat-mdc-list-item {
     font-size: 16px;
     font-style: normal;
     font-weight: 500;

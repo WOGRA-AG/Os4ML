@@ -7,7 +7,7 @@
           <mat-list-item
             [routerLinkActive]="['active']"
             [routerLink]="['/dashboard']">
-            <mat-icon matListIcon>apps</mat-icon>
+            <mat-icon matListItemIcon>apps</mat-icon>
             <span class="nav-caption">{{
               'page.dashboard.title' | translate
             }}</span>
@@ -15,21 +15,21 @@
           <mat-list-item
             [routerLinkActive]="['active']"
             [routerLink]="['/databag']">
-            <mat-icon matListIcon>folder_open</mat-icon>
+            <mat-icon matListItemIcon>folder_open</mat-icon>
             <span class="nav-caption">{{ 'databag.plural' | translate }}</span>
           </mat-list-item>
           <mat-list-item
             style="display: none"
             [routerLinkActive]="['active']"
             [routerLink]="['/settings']">
-            <mat-icon matListIcon>settings</mat-icon>
+            <mat-icon matListItemIcon>settings</mat-icon>
             <span class="nav-caption">Settings</span>
           </mat-list-item>
           <mat-list-item
             style="display: none"
             [routerLinkActive]="['active']"
             [routerLink]="['/user']">
-            <mat-icon matListIcon>perm_identity</mat-icon>
+            <mat-icon matListItemIcon>perm_identity</mat-icon>
             <span class="nav-caption">User</span>
           </mat-list-item>
         </mat-nav-list>

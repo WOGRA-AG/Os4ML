@@ -1,18 +1,14 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 
-@mixin color($theme, $border-color) {
+@mixin color($theme) {
   $primary-palette: map.get($theme, 'primary');
   $primary-color: mat.get-color-from-palette($primary-palette, 500);
 
-  .mat-expansion-panel:not(.mat-expanded)
+  .mat-expansion-panel:not(.mat-expanded) {
     .mat-expansion-panel-header:hover:not([aria-disabled='true']) {
-    background-color: rgba($primary-color, 0.1);
-  }
-
-  .mat-expansion-panel-header.mat-expanded {
-    border-radius: 0;
-    border-color: $border-color;
+      background-color: rgba($primary-color, 0.1);
+    }
   }
 }
 
@@ -27,11 +23,12 @@
   }
 
   .mat-expansion-panel-header {
-    height: 48px;
+    max-height: 48px;
     padding: 0 16px 0 16px;
   }
 
   .mat-expansion-panel-header.mat-expanded {
+    max-height: 48px;
     border-radius: 0;
     border-width: 1px;
     border-style: solid;
@@ -58,7 +55,7 @@
   }
 }
 
-@mixin theme($theme, $border-color) {
-  @include color($theme, $border-color);
+@mixin theme($theme) {
+  @include color($theme);
   @include layout();
 }
