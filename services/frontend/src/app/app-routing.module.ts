@@ -8,8 +8,17 @@ import { PredictionsPageComponent } from './templates/pages/predictions-page/pre
 const routes: Routes = [
   {
     path: 'solutions',
-    component: SolutionsPageComponent,
     runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        component: SolutionsPageComponent,
+      },
+      {
+        path: ':solutionId/predictions',
+        component: PredictionsPageComponent,
+      },
+    ],
   },
   {
     path: '',
@@ -22,10 +31,6 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
   },
   {
-    path: 'solution/:solutionId/predictions',
-    component: PredictionsPageComponent,
-  },
-  {
     path: '**',
     component: NotFoundPageComponent,
   },
@@ -35,6 +40,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       onSameUrlNavigation: 'reload',
+      useHash: true,
     }),
   ],
   exports: [RouterModule],
