@@ -1,0 +1,62 @@
+<ng-container [ngSwitch]="variant">
+  <ng-container *ngSwitchDefault>
+    <button
+      mat-button
+      [color]="color"
+      [class]="size"
+      [disabled]="disabled"
+      [disableRipple]="disableRipple"
+      [type]="type">
+      <mat-icon [class]="size" [color]="color" *ngIf="icon">{{
+        icon
+      }}</mat-icon>
+      <ng-container [ngTemplateOutlet]="content"> </ng-container>
+    </button>
+  </ng-container>
+  <ng-container *ngSwitchCase="'raised'">
+    <button
+      mat-raised-button
+      [color]="color"
+      [class]="size"
+      [disabled]="disabled"
+      [disableRipple]="disableRipple"
+      [type]="type">
+      <mat-icon [class]="size" [color]="undefined" *ngIf="icon">{{
+        icon
+      }}</mat-icon>
+      <ng-container [ngTemplateOutlet]="content"> </ng-container>
+    </button>
+  </ng-container>
+  <ng-container *ngSwitchCase="'flat'">
+    <button
+      mat-flat-button
+      [color]="color"
+      [class]="size"
+      [disabled]="disabled"
+      [disableRipple]="disableRipple"
+      [type]="type">
+      <mat-icon [class]="size" [color]="undefined" *ngIf="icon">{{
+        icon
+      }}</mat-icon>
+      <ng-container [ngTemplateOutlet]="content"> </ng-container>
+    </button>
+  </ng-container>
+  <ng-container *ngSwitchCase="'stroked'">
+    <button
+      mat-stroked-button
+      [color]="color"
+      [class]="size"
+      [disabled]="disabled"
+      [disableRipple]="disableRipple"
+      [type]="type">
+      <mat-icon [class]="size" [color]="color" *ngIf="icon">{{
+        icon
+      }}</mat-icon>
+      <ng-container [ngTemplateOutlet]="content"> </ng-container>
+    </button>
+  </ng-container>
+</ng-container>
+
+<ng-template #content>
+  <ng-content> </ng-content>
+</ng-template>

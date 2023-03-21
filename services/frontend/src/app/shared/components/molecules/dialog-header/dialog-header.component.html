@@ -2,5 +2,8 @@
   <h6 mat-dialog-title>
     <ng-content></ng-content>
   </h6>
-  <app-close-button (click)="closeDialog.emit(true)"> </app-close-button>
+  <app-icon-button
+    (click)="closeDialog.emit(true)"
+    icon="close"
+    [color]="undefined"></app-icon-button>
 </div>
