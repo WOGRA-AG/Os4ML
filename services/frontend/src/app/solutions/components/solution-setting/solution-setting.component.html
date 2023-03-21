@@ -90,7 +90,7 @@
     <mat-icon>download</mat-icon>
   </a>
   <button
-    *ngIf="solution.predictionTemplateUrl"
+    *ngIf="solution.predictionTemplateUrl && solution.modelUrl"
     mat-raised-button
     color="primary"
     type="submit"
@@ -98,7 +98,7 @@
     {{ 'prediction.action' | translate }}
   </button>
   <button
-    *ngIf="solution.id"
+    *ngIf="solution.id && solution.modelUrl"
     mat-raised-button
     color="primary"
     type="submit"
