@@ -22,7 +22,7 @@ import { ErrorService } from 'src/app/core/services/error.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import { ShortStatusPipe } from 'src/app/shared/pipes/short-status.pipe';
+import { getShortStatus } from 'src/app/shared/lib/status/status';
 import { predictionsWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
@@ -35,7 +35,6 @@ export class PredictionService {
     private userService: UserService,
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService,
-    private shortStatus: ShortStatusPipe,
     private http: HttpClient,
     private translateService: TranslateService,
     private errorService: ErrorService
@@ -56,7 +55,6 @@ export class PredictionService {
       map(predictions =>
         predictions.filter(prediction => prediction.solutionId === solutionId)
       ),
-      filter(predictions => predictions.length > 0),
       map(predictions => predictions.sort(sortByCreationTime))
     );
   }
@@ -92,8 +90,7 @@ export class PredictionService {
         of(pred).pipe(concatWith(this.getPredictionById(pred.id)))
       ),
       takeWhile(
-        pred =>
-          this.shortStatus.transform(pred?.status) === PipelineStatus.running,
+        pred => getShortStatus(pred?.status) === PipelineStatus.running,
         true
       ),
       filter(pred => !!pred),

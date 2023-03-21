@@ -2,12 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { firstValueFrom, last, Observable, takeWhile, tap } from 'rxjs';
 import { ErrorService } from '../../../core/services/error.service';
-import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { DatabagService } from '../../services/databag.service';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { DatabagType } from 'build/openapi/modelmanager/model/databagType';
 import { urlRegex } from 'src/app/shared/lib/regex/regex';
+import { getShortStatus } from 'src/app/shared/lib/status/status';
 
 @Component({
   selector: 'app-create-databag',
@@ -24,7 +24,6 @@ export class CreateDatabagComponent {
 
   constructor(
     private errorService: ErrorService,
-    private shortStatus: ShortStatusPipe,
     private translate: TranslateService,
     private databagService: DatabagService
   ) {}
@@ -68,8 +67,7 @@ export class CreateDatabagComponent {
     return this.databagService.getDatabagById(databagId).pipe(
       tap(databag => this.databagChange.next(databag)),
       takeWhile(
-        databag =>
-          this.shortStatus.transform(databag.status) === PipelineStatus.running,
+        databag => getShortStatus(databag.status) === PipelineStatus.running,
         true
       ),
       last()
