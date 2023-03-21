@@ -1,12 +1,15 @@
-.page-wrapper {
-  flex-direction: column;
-}
-
 .prediction-list {
   width: 100%;
 }
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: end;
+}
+
+.placeholder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20vh;
 }

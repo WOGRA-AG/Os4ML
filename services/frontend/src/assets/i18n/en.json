@@ -100,6 +100,10 @@
       "creation": "Creation",
       "download": "Download"
     },
+    "empty": "Make predictions with your trained model",
+    "placeholder": {
+      "description": "Predictions allow you to evaluate your model on unseen data"
+    },
     "error": {
       "invalid_put_url": "Invalid put url for prediction data"
     }
