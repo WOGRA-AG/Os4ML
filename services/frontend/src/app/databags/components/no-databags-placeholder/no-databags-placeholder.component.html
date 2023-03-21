@@ -2,12 +2,12 @@
   <img src="./assets/illustrations/no_data.svg" alt="Databag Illustration" />
   <h1 class="primary">{{ 'databag.empty' | translate }}</h1>
   <span class="mat-body-1">{{ 'databag.description' | translate }}</span>
-  <button
+  <app-button
     id="add-databag-button-empty"
-    mat-raised-button
+    variant="raised"
     color="primary"
+    icon="add"
     (click)="addDatabagButton.emit($event)">
-    <mat-icon>add</mat-icon>
     {{ 'databag.create' | translate }}
-  </button>
+  </app-button>
 </div>

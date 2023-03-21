@@ -22,13 +22,15 @@
     </mat-list-item>
     <mat-list-item (click)="openAddDialog()">
       <div class="nav-item-extended">
-        <button
-          mat-button
+        <app-button
+          variant="basic"
+          icon="add"
+          size="small"
+          t
           class="databag-list-mat-expansion-panel-add-button"
           color="accent">
-          <mat-icon>add</mat-icon>
           {{ 'databag.create' | translate }}
-        </button>
+        </app-button>
       </div>
     </mat-list-item>
   </mat-nav-list>

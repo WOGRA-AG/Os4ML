@@ -42,31 +42,35 @@
     [status]="
       databag.status || 'message.pipeline.default' | translate
     "></app-status-spinner>
-  <button
+  <app-button
     id="add-databag-main-button"
-    mat-raised-button
+    variant="raised"
     color="primary"
     class="main-button"
     type="submit"
     (click)="nextClick(stepper, createDatabagComponent)"
     [disabled]="running || !createDatabagComponent.valid()">
     {{ 'action.next_step' | translate }}
-  </button>
+  </app-button>
 </ng-template>
 
 <ng-template #createButton>
-  <button mat-flat-button [disableRipple]="true" (click)="back(stepper)">
-    <mat-icon>arrow_back_ios</mat-icon>
+  <app-button
+    variant="stroked"
+    color="accent"
+    icon="arrow_back_ios"
+    [disableRipple]="true"
+    (click)="back(stepper)">
     {{ 'action.previous_step' | translate }}
-  </button>
+  </app-button>
   <div class="button-spacer"></div>
-  <button
+  <app-button
     id="define-databag-button"
-    mat-raised-button
+    variant="raised"
     form="ngForm"
     class="main-button"
     color="primary"
     type="submit">
     {{ 'action.last_step' | translate }}
-  </button>
+  </app-button>
 </ng-template>

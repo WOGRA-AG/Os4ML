@@ -35,10 +35,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-stroked-button color="warn" type="button" (click)="delete()">
+  <app-button variant="stroked" color="warn" type="button" (click)="delete()">
     {{ 'action.delete' | translate }}
-  </button>
-  <button mat-raised-button form="ngForm" color="primary" type="submit">
+  </app-button>
+  <app-button variant="raised" form="ngForm" color="primary" type="submit">
     {{ 'action.update' | translate }}
-  </button>
+  </app-button>
 </mat-dialog-actions>

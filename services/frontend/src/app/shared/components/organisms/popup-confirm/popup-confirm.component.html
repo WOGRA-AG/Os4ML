@@ -8,22 +8,22 @@
 
 <mat-dialog-actions align="end">
   <app-status-spinner *ngIf="submitting"></app-status-spinner>
-  <button
-    mat-stroked-button
+  <app-button
+    variant="stroked"
     color="warn"
     type="button"
     (click)="submit()"
     [disabled]="submitting"
     [tabIndex]="-1">
     {{ 'action.delete' | translate }}
-  </button>
-  <button
-    mat-raised-button
+  </app-button>
+  <app-button
+    variant="raised"
     color="primary"
     class="main-button"
     [disabled]="submitting"
     [tabIndex]="-1"
     (click)="close()">
     {{ 'action.cancel' | translate }}
-  </button>
+  </app-button>
 </mat-dialog-actions>

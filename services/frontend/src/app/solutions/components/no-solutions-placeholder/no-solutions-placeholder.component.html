@@ -6,14 +6,14 @@
       alt="Databag Illustration" />
     <h1 class="primary">{{ 'solution.empty' | translate }}</h1>
     <span class="mat-body-1">{{ 'solution.description' | translate }}</span>
-    <button
-      mat-raised-button
+    <app-button
+      variant="raised"
       class="main-button"
       id="add-solution-button-empty"
       color="primary"
+      icon="lightbulb_outline"
       (click)="addSolutionButton.emit($event)">
-      <mat-icon>lightbulb_outline</mat-icon>
       {{ 'solution.create' | translate }}
-    </button>
+    </app-button>
   </div>
 </div>

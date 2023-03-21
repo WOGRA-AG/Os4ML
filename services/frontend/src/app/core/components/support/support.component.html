@@ -3,11 +3,11 @@
     class="support-illustration"
     src="assets/illustrations/support.svg"
     alt="Support Illustration" />
-  <button
-    mat-raised-button
+  <app-button
+    variant="raised"
     color="primary"
+    icon="chat_bubble_outlined"
     (click)="openGettingStartedDialog()">
-    <mat-icon>chat_bubble_outlined</mat-icon>
-    Get Started
-  </button>
+    {{ 'dialog.get_started.title' | translate }}
+  </app-button>
 </div>
