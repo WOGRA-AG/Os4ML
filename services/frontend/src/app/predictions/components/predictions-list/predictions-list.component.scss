@@ -1,0 +1,15 @@
+.prediction-list-item {
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  height: 100%;
+  cursor: pointer;
+}
+
+.item-padding {
+  padding: 28px 16px 28px 16px;
+}
+
+.border-radius-24 {
+  border-radius: 24px;
+}

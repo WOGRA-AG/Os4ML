@@ -11,7 +11,7 @@ import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-step
   styleUrls: ['./databags-page.component.scss'],
 })
 export class DatabagsPageComponent {
-  readonly databags$: Observable<Databag[]>;
+  public readonly databags$: Observable<Databag[]>;
 
   constructor(
     private databagService: DatabagService,

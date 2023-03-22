@@ -8,7 +8,7 @@
   </ng-template>
   <mat-dialog-content>
     <mat-step
-      label="{{ 'dialog.create_prediction.step_one' | translate }}"
+      label="{{ 'dialog.create_prediction.step_data' | translate }}"
       completed="{{ stepperStep > 0 }}">
       <app-create-prediction
         [solution]="solution"
@@ -19,7 +19,7 @@
 
     <mat-step
       completed="false"
-      label="{{ 'dialog.create_prediction.step_two' | translate }}">
+      label="{{ 'dialog.create_prediction.step_download' | translate }}">
     </mat-step>
   </mat-dialog-content>
 </mat-stepper>
@@ -28,12 +28,12 @@
   <ng-container
     *ngIf="
       stepperStep === 0;
-      then stepOneActions;
-      else stepTwoActions
+      then stepDataActions;
+      else stepDownloadActions
     "></ng-container>
 </mat-dialog-actions>
 
-<ng-template #stepOneActions>
+<ng-template #stepDataActions>
   <a
     id="download-prediction-template-link"
     *ngIf="solution.predictionTemplateUrl"
@@ -59,7 +59,7 @@
   </button>
 </ng-template>
 
-<ng-template #stepTwoActions>
+<ng-template #stepDownloadActions>
   <button mat-flat-button (click)="back(stepper)">
     <mat-icon>arrow_back_ios</mat-icon>
     {{ 'action.previous_step' | translate }}

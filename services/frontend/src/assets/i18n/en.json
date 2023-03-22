@@ -92,7 +92,21 @@
   },
   "prediction": {
     "action": "Predict",
-    "create": "Create Prediction"
+    "create": "Create Prediction",
+    "plural": "Predictions",
+    "detail": {
+      "name": "Prediction Name",
+      "runtime": "Runtime",
+      "creation": "Creation",
+      "download": "Download"
+    },
+    "empty": "Make predictions with your trained model",
+    "placeholder": {
+      "description": "Predictions allow you to evaluate your model on unseen data"
+    },
+    "error": {
+      "invalid_put_url": "Invalid put url for prediction data"
+    }
   },
   "problem": {
     "name": "Problem"
@@ -127,11 +141,14 @@
       "step_one": "Data"
     },
     "create_prediction": {
-      "step_one": "Data",
-      "step_two": "Download",
+      "step_data": "Data",
+      "step_download": "Download",
       "download_template": "Download Template csv",
       "download_result": "Download Result",
       "name_input": "Prediction Name"
+    },
+    "dataset_upload": {
+      "url_label": "Url"
     }
   },
   "page": {

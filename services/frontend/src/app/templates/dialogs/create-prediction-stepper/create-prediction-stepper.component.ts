@@ -12,10 +12,10 @@ import { PredictionService } from 'src/app/predictions/services/prediction.servi
   styleUrls: ['./create-prediction-stepper.component.scss'],
 })
 export class CreatePredictionStepperComponent {
-  stepperStep = 0;
-  solution: Solution;
-  prediction: Prediction = {};
-  running = false;
+  public stepperStep = 0;
+  public solution: Solution;
+  public prediction: Prediction = {};
+  public running = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreatePredictionStepperComponent>,

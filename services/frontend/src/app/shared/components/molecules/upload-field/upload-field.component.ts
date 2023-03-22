@@ -6,10 +6,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./upload-field.component.scss'],
 })
 export class UploadFieldComponent {
-  @Input() file: File = new File([], '');
-  @Input() uploadProgress = 0;
-  @Output() fileChange: EventEmitter<File> = new EventEmitter<File>();
-  @Output() cancelUpload: EventEmitter<null> = new EventEmitter<null>();
+  @Input() public file: File = new File([], '');
+  @Input() public uploadProgress = 0;
+  @Output() public fileChange: EventEmitter<File> = new EventEmitter<File>();
+  @Output() public cancelUpload: EventEmitter<null> = new EventEmitter<null>();
 
   uploadFile(event: Event): void {
     const element = event.currentTarget as HTMLInputElement;

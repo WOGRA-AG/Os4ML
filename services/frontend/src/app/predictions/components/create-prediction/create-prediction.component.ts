@@ -1,8 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { firstValueFrom, last, Subject, takeUntil, tap } from 'rxjs';
 import { ErrorService } from 'src/app/core/services/error.service';
+import { urlRegex } from 'src/app/shared/lib/regex/regex';
 import { PredictionService } from '../../services/prediction.service';
 
 @Component({
@@ -10,16 +17,16 @@ import { PredictionService } from '../../services/prediction.service';
   templateUrl: './create-prediction.component.html',
   styleUrls: ['./create-prediction.component.scss'],
 })
-export class CreatePredictionComponent {
-  @Input() solution: Solution = {};
-  @Output() predictionChange = new EventEmitter<Prediction>();
+export class CreatePredictionComponent implements OnDestroy {
+  @Input() public solution: Solution = {};
+  @Output() public predictionChange = new EventEmitter<Prediction>();
 
-  file: File = new File([], '');
-  url = '';
-  urlRegex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-  prediction: Prediction = {};
+  public file: File = new File([], '');
+  public url = '';
+  public urlRegex = urlRegex;
+  public prediction: Prediction = {};
 
-  _destroy$ = new Subject();
+  private readonly destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private errorService: ErrorService,
@@ -51,7 +58,7 @@ export class CreatePredictionComponent {
     await firstValueFrom(
       this.predictionService
         .createPrediction(this.prediction)
-        .pipe(takeUntil(this._destroy$))
+        .pipe(takeUntil(this.destroy$))
         .pipe(
           tap(pred => this.predictionChange.next(pred)),
           last()
@@ -67,5 +74,10 @@ export class CreatePredictionComponent {
       return !!this.url.match(this.urlRegex);
     }
     return !!this.file.name;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(undefined);
+    this.destroy$.complete();
   }
 }

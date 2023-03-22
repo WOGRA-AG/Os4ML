@@ -41,4 +41,6 @@ def predict(
             combined_df.to_csv(file.name, index=False)
             with open(file.name, "rb") as result_file:
                 upload_prediction_result(result_file, prediction_id)
-        update_prediction_status(prediction_id, StatusMessage.PREDICTION_DONE)
+        update_prediction_status(
+            prediction_id, StatusMessage.PREDICTION_DONE, completed=True
+        )

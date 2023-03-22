@@ -22,6 +22,7 @@ import { CreateSolutionStepperComponent } from './templates/dialogs/create-solut
 import { GettingStartedStepperComponent } from './templates/dialogs/getting-started-stepper/getting-started-stepper.component';
 import { CreatePredictionStepperComponent } from './templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { PredictionsModule } from './predictions/predictions.module';
+import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { PredictionsModule } from './predictions/predictions.module';
     CreateSolutionStepperComponent,
     GettingStartedStepperComponent,
     CreatePredictionStepperComponent,
+    PredictionsPageComponent,
   ],
   imports: [
     BrowserModule,

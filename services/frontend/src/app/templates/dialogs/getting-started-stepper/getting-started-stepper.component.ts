@@ -13,12 +13,12 @@ import { SolutionService } from 'src/app/solutions/services/solution.service';
   styleUrls: ['./getting-started-stepper.component.scss'],
 })
 export class GettingStartedStepperComponent implements OnDestroy {
-  databag: Databag = {};
-  solution: Solution = {};
+  public databag: Databag = {};
+  public solution: Solution = {};
 
-  runningSpinner = false;
-  submitting = false;
-  stepperStep = 0;
+  public runningSpinner = false;
+  public submitting = false;
+  public stepperStep = 0;
 
   private destroy$: Subject<void> = new Subject<void>();
 

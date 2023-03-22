@@ -9,7 +9,7 @@ import { SolutionSettingComponent } from '../solution-setting/solution-setting.c
   styleUrls: ['./solution-list.component.scss'],
 })
 export class SolutionListComponent {
-  @Input() solutions: Solution[] = [];
+  @Input() public solutions: Solution[] = [];
   constructor(private dialog: MatDialog) {}
 
   openSolutionSettingDialog(solution: Solution): void {

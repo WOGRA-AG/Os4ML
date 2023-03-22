@@ -30,6 +30,16 @@
         "@typescript-eslint/no-useless-constructor": "error",
         "no-underscore-dangle": 0,
         "no-unused-vars": "error",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error",
+          {
+            "overrides": {
+              "accessors": "off",
+              "constructors": "off",
+              "methods": "off"
+            }
+          }
+        ],
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/no-inferrable-types": "error",
         "@typescript-eslint/no-unnecessary-type-arguments": "error",

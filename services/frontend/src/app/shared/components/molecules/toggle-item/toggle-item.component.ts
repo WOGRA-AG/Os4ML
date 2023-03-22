@@ -8,10 +8,11 @@ import { Column } from '../../../../../../build/openapi/modelmanager';
   styleUrls: ['./toggle-item.component.scss'],
 })
 export class ToggleItemComponent {
-  @Input() column: Column = {};
-  @Input() disabled = false;
-  @Input() selected = false;
-  @Output() selectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public column: Column = {};
+  @Input() public disabled = false;
+  @Input() public selected = false;
+  @Output() public selectedChange: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
   toggleClick(e: MouseEvent): void {
     e.preventDefault();

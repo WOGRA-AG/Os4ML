@@ -15,11 +15,11 @@ import { ListItem } from 'src/app/shared/models/list-item';
   styleUrls: ['./choose-databag-column.component.scss'],
 })
 export class ChooseDatabagColumnComponent implements OnChanges {
-  @Input() databag: Databag = {};
-  @Output() selectedColumnChange = new EventEmitter<string>();
-  listItems$: Observable<ListItem[]> | undefined;
+  @Input() public databag: Databag = {};
+  @Output() public selectedColumnChange = new EventEmitter<string>();
+  public listItems$: Observable<ListItem[]> | undefined;
 
-  allowedColumnTypes = ['category', 'numerical'];
+  private allowedColumnTypes = ['category', 'numerical'];
 
   public get outputColumnAvailable(): boolean {
     return !!this.databag.columns?.find(

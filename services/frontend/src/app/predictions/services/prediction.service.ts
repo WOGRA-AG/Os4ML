@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import {
   ModelmanagerService,
   Prediction,
@@ -21,7 +22,8 @@ import { ErrorService } from 'src/app/core/services/error.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import { ShortStatusPipe } from 'src/app/shared/pipes/short-status.pipe';
+import { getShortStatus } from 'src/app/shared/lib/status/status';
+import { predictionsWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +35,28 @@ export class PredictionService {
     private userService: UserService,
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService,
-    private shortStatus: ShortStatusPipe,
     private http: HttpClient,
+    private translateService: TranslateService,
     private errorService: ErrorService
   ) {
-    const path = '/apis/v1beta1/model-manager/predictions';
-    this._predictions$ = this.webSocketConnectionService.connect(path);
+    this._predictions$ = this.webSocketConnectionService.connect(
+      predictionsWebsocketPath
+    );
   }
 
   get predictions$(): Observable<Prediction[]> {
     return this._predictions$;
+  }
+
+  getPredictionsBySolutionIdSortByCreationTime(
+    solutionId: string | undefined
+  ): Observable<Prediction[]> {
+    return this._predictions$.pipe(
+      map(predictions =>
+        predictions.filter(prediction => prediction.solutionId === solutionId)
+      ),
+      map(predictions => predictions.sort(sortByCreationTime))
+    );
   }
 
   getPredictionsSortByCreationTime(): Observable<Prediction[]> {
@@ -76,8 +90,7 @@ export class PredictionService {
         of(pred).pipe(concatWith(this.getPredictionById(pred.id)))
       ),
       takeWhile(
-        pred =>
-          this.shortStatus.transform(pred?.status) === PipelineStatus.running,
+        pred => getShortStatus(pred?.status) === PipelineStatus.running,
         true
       ),
       filter(pred => !!pred),
@@ -99,7 +112,12 @@ export class PredictionService {
         prediciton.id = predictionId;
         if (!url) {
           return throwError(
-            () => new Error('Invalid put url for prediction data')
+            () =>
+              new Error(
+                this.translateService.instant(
+                  'prediction.error.invalid_put_url'
+                )
+              )
           );
         }
         const headers = new HttpHeaders({

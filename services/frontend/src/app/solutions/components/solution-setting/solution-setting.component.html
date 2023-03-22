@@ -72,31 +72,39 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
+  <button
+    mat-icon-button
+    class="delete-button"
+    color="primary"
+    type="button"
+    (click)="delete()">
+    <mat-icon>delete_forever</mat-icon>
+  </button>
   <a
     *ngIf="solution.modelUrl"
     [href]="solution.modelUrl"
     target="_blank"
-    mat-raised-button
+    mat-icon-button
     color="primary"
     id="download-model-link">
-    {{ 'action.download' | translate }}
+    <mat-icon>download</mat-icon>
   </a>
   <button
-    *ngIf="solution.predictionTemplateUrl"
+    *ngIf="solution.predictionTemplateUrl && solution.modelUrl"
     mat-raised-button
     color="primary"
     type="submit"
-    (click)="createPrediction()"
-    [disabled]="">
+    (click)="createPrediction()">
     {{ 'prediction.action' | translate }}
   </button>
   <button
-    mat-stroked-button
-    class="delete-button"
-    color="warn"
-    type="button"
-    (click)="delete()">
-    {{ 'action.delete' | translate }}
+    *ngIf="solution.id && solution.modelUrl"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [routerLink]="['solutions', solution.id, 'predictions']"
+    (click)="close()">
+    {{ 'prediction.plural' | translate }}
   </button>
   <button
     id="solution-update-button"

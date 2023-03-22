@@ -5,10 +5,10 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './star-rating.component.html',
 })
 export class StarRatingComponent implements OnInit {
-  @Input() rating = 0; // value between 0 and 1
-  @Input() ratingName: string | undefined;
-  @Input() numberStars = 5;
-  percentages: number[] = [];
+  @Input() public rating = 0; // value between 0 and 1
+  @Input() public ratingName: string | undefined;
+  @Input() public numberStars = 5;
+  public percentages: number[] = [];
 
   ngOnInit(): void {
     this.percentages = Array.from(Array(this.numberStars), (_, index) =>
