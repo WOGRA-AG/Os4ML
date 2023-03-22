@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
 import {
   ApiModule as ModelmanagerApi,
@@ -23,6 +23,11 @@ import { GettingStartedStepperComponent } from './templates/dialogs/getting-star
 import { CreatePredictionStepperComponent } from './templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { PredictionsModule } from './predictions/predictions.module';
 import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
+  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
   declarations: [
@@ -49,6 +54,13 @@ import { PredictionsPageComponent } from './templates/pages/predictions-page/pre
           basePath: '',
         })
     ),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
     MaterialModule,
     DatabagsModule,
     SolutionsModule,
@@ -56,6 +68,7 @@ import { PredictionsPageComponent } from './templates/pages/predictions-page/pre
     CoreModule,
     PredictionsModule,
   ],
+  exports: [TranslateModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

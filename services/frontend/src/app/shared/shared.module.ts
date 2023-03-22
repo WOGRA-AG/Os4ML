@@ -4,7 +4,6 @@ import { FormatNumberPipe } from './pipes/format-number.pipe';
 import { LocalizedDatePipe } from './pipes/localized-date.pipe';
 import { ShortStatusPipe } from './pipes/short-status.pipe';
 import { MaterialModule } from '../material/material.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HasElementsPipe } from './pipes/has-elements.pipe';
 import { ElementDividerComponent } from './components/atoms/element-divider/element-divider.component';
 import { StarComponent } from './components/atoms/star/star.component';
@@ -16,8 +15,6 @@ import { UploadFieldComponent } from './components/molecules/upload-field/upload
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
 import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
 import { ListItemComponent } from './components/molecules/list-item/list-item.component';
@@ -28,9 +25,7 @@ import { DatasetUploadComponent } from './components/organisms/dataset-upload/da
 import { PlaceholderComponent } from './components/molecules/placeholder/placeholder.component';
 import { ButtonComponent } from './components/atoms/button/button.component';
 import { IconButtonComponent } from './components/atoms/icon-button/icon-button.component';
-
-export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
-  new TranslateHttpLoader(http, './assets/i18n/', '.json');
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -65,16 +60,10 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   imports: [
     CommonModule,
     MaterialModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    TranslateModule,
   ],
   exports: [
     // atoms
@@ -106,10 +95,10 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     // modules
     CommonModule,
     MaterialModule,
-    TranslateModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    TranslateModule,
   ],
   providers: [ShortStatusPipe],
 })
