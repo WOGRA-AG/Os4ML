@@ -2,12 +2,6 @@ import { enableProdMode, importProvidersFrom } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
-import { PredictionsModule } from './app/predictions/predictions.module';
-import { CoreModule } from './app/core/core.module';
-import { SharedModule } from './app/shared/shared.module';
-import { SolutionsModule } from './app/solutions/solutions.module';
-import { DatabagsModule } from './app/databags/databags.module';
-import { DesignModule } from './app/design/design.module';
 import { MaterialModule } from './app/material/material.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {
@@ -18,11 +12,15 @@ import {
   withInterceptorsFromDi,
   provideHttpClient,
   HttpClient,
+  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app/app-routing.module';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { RouterModule } from '@angular/router';
+import { ROUTES } from './app/routes';
+import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
+import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -33,9 +31,10 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
 
 bootstrapApplication(AppComponent, {
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     importProvidersFrom(
       BrowserModule,
-      AppRoutingModule,
       ModelmanagerApi.forRoot(
         () =>
           new ModelmanagerApiConfig({
@@ -49,13 +48,11 @@ bootstrapApplication(AppComponent, {
           deps: [HttpClient],
         },
       }),
-      MaterialModule,
-      DesignModule,
-      DatabagsModule,
-      SolutionsModule,
-      SharedModule,
-      CoreModule,
-      PredictionsModule
+      RouterModule.forRoot(ROUTES, {
+        onSameUrlNavigation: 'reload',
+        useHash: true,
+      }),
+      MaterialModule
     ),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
