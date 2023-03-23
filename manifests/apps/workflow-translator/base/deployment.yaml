@@ -7,8 +7,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: os4ml
-      name: workflow-translator
+      app.kubernetes.io/name: os4ml
+      app.kubernetes.io/component: workflow-translator
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,15 +16,13 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/inject: "false"
       labels:
-        app: os4ml
-        name: workflow-translator
+        app.kubernetes.io/name: os4ml
+        app.kubernetes.io/component: workflow-translator
     spec:
       containers:
         - name: workflow-translator
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/workflow-translator"
+          image: "wogra/os4ml-workflow-translator"
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -44,16 +42,33 @@ spec:
           resources:
             limits:
               cpu: 500m
+              memory: 200Mi
             requests:
               cpu: 100m
-              memory: 200Mi
-          readinessProbe:
+              memory: 100Mi
+          startupProbe:
             httpGet:
               port: http
               path: /docs
               scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /docs
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 4
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /docs
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 4
           securityContext:
             allowPrivilegeEscalation: false
       serviceAccountName: service-account

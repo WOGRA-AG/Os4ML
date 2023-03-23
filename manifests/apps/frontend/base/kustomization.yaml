@@ -5,4 +5,4 @@ resources:
   - deployment.yaml
 namespace: os4ml
 commonLabels:
-  app: os4ml
+  app.kubernetes.io/name: os4ml
