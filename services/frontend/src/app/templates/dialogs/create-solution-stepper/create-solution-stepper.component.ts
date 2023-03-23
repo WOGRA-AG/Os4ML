@@ -1,6 +1,10 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+} from '@angular/material/dialog';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { Subject, takeUntil } from 'rxjs';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import {
@@ -8,11 +12,41 @@ import {
   Solution,
   Solver,
 } from '../../../../../build/openapi/modelmanager';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { ChooseSolverComponent } from '../../../solutions/components/choose-solver/choose-solver.component';
+import { NgClass, NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { ChooseDatabagColumnComponent } from '../../../solutions/components/choose-databag-column/choose-databag-column.component';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 
 @Component({
   selector: 'app-create-solution-stepper',
   templateUrl: './create-solution-stepper.component.html',
   styleUrls: ['./create-solution-stepper.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    MatStepperModule,
+    MatIconModule,
+    MatDialogModule,
+    DialogSectionComponent,
+    ChooseDatabagColumnComponent,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgClass,
+    ChooseSolverComponent,
+    NgIf,
+    ButtonComponent,
+    MatProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class CreateSolutionStepperComponent implements OnDestroy {
   public databag: Databag = {};

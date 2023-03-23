@@ -8,19 +8,19 @@ import { ChooseDatabagColumnComponent } from './components/choose-databag-column
 import { ChooseSolverComponent } from './components/choose-solver/choose-solver.component';
 
 @NgModule({
-  imports: [SharedModule],
-  exports: [
-    SolutionListComponent,
-    NoSolutionsPlaceholderComponent,
-    ChooseDatabagColumnComponent,
-    ChooseSolverComponent,
-  ],
-  declarations: [
+  imports: [
+    SharedModule,
     // components
     SolutionListComponent,
     NoSolutionsPlaceholderComponent,
     SolutionListItemComponent,
     SolutionSettingComponent,
+    ChooseDatabagColumnComponent,
+    ChooseSolverComponent,
+  ],
+  exports: [
+    SolutionListComponent,
+    NoSolutionsPlaceholderComponent,
     ChooseDatabagColumnComponent,
     ChooseSolverComponent,
   ],

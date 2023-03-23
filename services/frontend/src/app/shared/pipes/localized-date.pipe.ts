@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 
 @Pipe({
   name: 'localizedDate',
+  standalone: true,
 })
 export class LocalizedDatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

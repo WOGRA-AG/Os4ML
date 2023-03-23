@@ -2,11 +2,16 @@ import { Component, Input } from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
 import { DatabagSettingComponent } from '../databag-setting/databag-setting.component';
+import { DatabagListItemComponent } from '../databag-list-item/databag-list-item.component';
+import { NgFor } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-databag-list',
   templateUrl: './databag-list.component.html',
   styleUrls: ['./databag-list.component.scss'],
+  standalone: true,
+  imports: [MatListModule, NgFor, DatabagListItemComponent],
 })
 export class DatabagListComponent {
   @Input() public databags: Databag[] = [];

@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'formatTimeDiff',
+  standalone: true,
 })
 export class FormatTimeDiffPipe implements PipeTransform {
   transform(timeDiffInMs: number | null): string {

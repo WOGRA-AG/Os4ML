@@ -7,13 +7,14 @@ import { PredictionsListItemComponent } from './components/predictions-list-item
 import { NoPredictionPlaceholderComponent } from './components/no-prediction-placeholder/no-prediction-placeholder.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    SharedModule,
     CreatePredictionComponent,
     PredictionsListComponent,
     PredictionsListItemComponent,
     NoPredictionPlaceholderComponent,
   ],
-  imports: [CommonModule, SharedModule],
   exports: [
     CreatePredictionComponent,
     PredictionsListComponent,

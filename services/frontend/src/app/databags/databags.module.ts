@@ -9,19 +9,19 @@ import { ChooseDatabagComponent } from './components/choose-databag/choose-datab
 import { CreateDatabagComponent } from './components/create-databag/create-databag.component';
 
 @NgModule({
-  imports: [SharedModule],
-  exports: [
-    NoDatabagsPlaceholderComponent,
-    DatabagListComponent,
-    DatabagFieldsComponent,
-    ChooseDatabagComponent,
-    CreateDatabagComponent,
-  ],
-  declarations: [
+  imports: [
+    SharedModule,
     DatabagListComponent,
     DatabagListItemComponent,
     NoDatabagsPlaceholderComponent,
     DatabagSettingComponent,
+    DatabagFieldsComponent,
+    ChooseDatabagComponent,
+    CreateDatabagComponent,
+  ],
+  exports: [
+    NoDatabagsPlaceholderComponent,
+    DatabagListComponent,
     DatabagFieldsComponent,
     ChooseDatabagComponent,
     CreateDatabagComponent,

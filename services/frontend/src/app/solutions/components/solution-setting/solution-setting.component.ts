@@ -3,6 +3,7 @@ import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { SolutionService } from '../../services/solution.service';
@@ -10,11 +11,42 @@ import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
+import { NgFor, NgIf } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { FormsModule } from '@angular/forms';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 
 @Component({
   selector: 'app-solution-setting',
   templateUrl: './solution-setting.component.html',
   styleUrls: ['./solution-setting.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    MatDialogModule,
+    FormsModule,
+    DialogSectionComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatChipsModule,
+    NgFor,
+    NgIf,
+    IconButtonComponent,
+    MatButtonModule,
+    MatIconModule,
+    ButtonComponent,
+    RouterLink,
+    TranslateModule,
+  ],
 })
 export class SolutionSettingComponent implements OnDestroy {
   public solution: Solution;

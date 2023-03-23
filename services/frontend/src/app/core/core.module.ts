@@ -7,8 +7,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SupportComponent } from './components/support/support.component';
 
 @NgModule({
-  imports: [SharedModule],
-  declarations: [NavBarComponent, SupportComponent],
+  imports: [SharedModule, NavBarComponent, SupportComponent],
   exports: [NavBarComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

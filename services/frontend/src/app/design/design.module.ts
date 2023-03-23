@@ -16,8 +16,6 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-  ],
-  declarations: [
     ButtonComponent,
     IconButtonComponent,
     BreadcrumbsComponent,

@@ -8,11 +8,27 @@ import { PredictionService } from 'src/app/predictions/services/prediction.servi
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NoPredictionPlaceholderComponent } from '../../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { PredictionsListComponent } from '../../../predictions/components/predictions-list/predictions-list.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { BreadcrumbsComponent } from '../../../design/components/molecules/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
   styleUrls: ['./predictions-page.component.scss'],
+  standalone: true,
+  imports: [
+    BreadcrumbsComponent,
+    NgIf,
+    PredictionsListComponent,
+    ButtonComponent,
+    NoPredictionPlaceholderComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
   public predictions$: Observable<Prediction[]> = of([]);

@@ -24,7 +24,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DesignModule } from '../design/design.module';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+    DesignModule,
     // atoms
     ElementDividerComponent,
     StarComponent,
@@ -47,15 +54,6 @@ import { DesignModule } from '../design/design.module';
     LocalizedDatePipe,
     ShortStatusPipe,
     HasElementsPipe,
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    TranslateModule,
-    DesignModule,
   ],
   exports: [
     // atoms
