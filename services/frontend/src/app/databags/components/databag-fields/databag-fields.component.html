@@ -1,4 +1,4 @@
-<mat-form-field *ngFor="let column of databag.columns" appearance="outline">
+<mat-form-field *ngFor="let column of databag.columns">
   <mat-label>{{ column.name }}</mat-label>
   <mat-select
     [(ngModel)]="column.type"
