@@ -105,10 +105,10 @@ describe('Databags', () => {
 
   it('predict', function () {
     cy.visit('/solutions');
-    cy.get('.solution-list-item > :nth-child(3)').click();
+    cy.get('.solution-list-item').click();
     cy.get(':nth-child(3) > .mdc-button__label').click();
-    cy.get('#dataset-name-input').clear();
-    cy.get('#dataset-name-input').type('pred');
+    cy.get('#dataset-name-input').clear({ force: true });
+    cy.get('#dataset-name-input').type('pred', { force: true });
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/titanic_predict.csv');
