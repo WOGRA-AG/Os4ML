@@ -19,4 +19,5 @@ export class ButtonComponent {
   @Input() public icon = '';
   @Input() public disabled = false;
   @Input() public disableRipple = false;
+  @Input() public form: string | undefined = undefined;
 }
