@@ -7,6 +7,6 @@ import { MlTypes } from '../../../core/models/ml-types';
   templateUrl: './databag-fields.component.html',
 })
 export class DatabagFieldsComponent {
-  @Input() databag: Databag = {};
-  mlTypesArray = Object.keys(MlTypes);
+  @Input() public databag: Databag = {};
+  public mlTypesArray = Object.keys(MlTypes);
 }

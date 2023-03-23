@@ -6,10 +6,10 @@ import {
 } from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { SolutionService } from '../../services/solution.service';
-import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
+import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 
 @Component({
   selector: 'app-solution-setting',
@@ -17,9 +17,8 @@ import { filter } from 'rxjs';
   styleUrls: ['./solution-setting.component.scss'],
 })
 export class SolutionSettingComponent implements OnDestroy {
-  solution: Solution;
-  deleting = false;
-  readonly pipelineStatus = PipelineStatus;
+  public solution: Solution;
+  public deleting = false;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -71,6 +70,14 @@ export class SolutionSettingComponent implements OnDestroy {
         filter(confirm => !!confirm)
       )
       .subscribe(() => this.dialogRef.close());
+  }
+
+  createPrediction(): void {
+    this.dialog.open(CreatePredictionStepperComponent, {
+      data: {
+        solution: this.solution,
+      },
+    });
   }
 
   ngOnDestroy(): void {

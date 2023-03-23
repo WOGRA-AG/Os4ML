@@ -9,6 +9,7 @@ import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { SolutionStatus } from '../models/solution-status';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
+import { solutionWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,9 @@ export class SolutionService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
-    const path = '/apis/v1beta1/model-manager/solutions';
-    this._solutions$ = this.webSocketConnectionService.connect(path);
+    this._solutions$ = this.webSocketConnectionService.connect(
+      solutionWebsocketPath
+    );
   }
 
   get solutions$(): Observable<Solution[]> {

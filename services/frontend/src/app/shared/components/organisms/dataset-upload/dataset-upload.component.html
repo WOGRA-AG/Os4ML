@@ -1,0 +1,42 @@
+<app-dialog-section>
+  <mat-form-field appearance="outline" class="string-input">
+    <mat-label>{{ nameLabel }}</mat-label>
+    <input
+      id="dataset-name-input"
+      matInput
+      type="string"
+      [placeholder]="nameLabel"
+      required
+      [ngModel]="name"
+      (ngModelChange)="onNameChange($event)" />
+  </mat-form-field>
+</app-dialog-section>
+<app-dialog-section>
+  <mat-form-field appearance="outline" class="string-input">
+    <mat-label>{{ 'dialog.dataset_upload.url_label' | translate }}</mat-label>
+    <input
+      id="dataset-url-input"
+      matInput
+      type="url"
+      [pattern]="urlRegex"
+      placeholder="{{ 'dialog.dataset_upload.url_label' | translate }}"
+      [ngModel]="url"
+      (ngModelChange)="onUrlChange($event)" />
+    <mat-icon matSuffix>link</mat-icon>
+  </mat-form-field>
+
+  <div class="upload-container">
+    <div class="or-container">
+      <mat-divider class="or-line"></mat-divider>
+      <span class="on-surface-disabled or-text">or</span>
+      <mat-divider class="or-line"></mat-divider>
+    </div>
+
+    <div class="upload-container">
+      <app-upload-field
+        class="upload-field"
+        [file]="file"
+        (fileChange)="onFileChange($event)"></app-upload-field>
+    </div>
+  </div>
+</app-dialog-section>

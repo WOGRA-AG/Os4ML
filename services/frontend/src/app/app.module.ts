@@ -14,24 +14,29 @@ import { DatabagsModule } from './databags/databags.module';
 import { SharedModule } from './shared/shared.module';
 import { SolutionsModule } from './solutions/solutions.module';
 import { CoreModule } from './core/core.module';
-import { DatabagPageComponent } from './templates/pages/databag-page/databag-page.component';
+import { DatabagsPageComponent } from './templates/pages/databags-page/databags-page.component';
 import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
-import { DashboardPageComponent } from './templates/pages/dashboard-page/dashboard-page.component';
+import { SolutionsPageComponent } from './templates/pages/solutions-page/solutions-page.component';
 import { CreateDatabagStepperComponent } from './templates/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { CreateSolutionStepperComponent } from './templates/dialogs/create-solution-stepper/create-solution-stepper.component';
 import { GettingStartedStepperComponent } from './templates/dialogs/getting-started-stepper/getting-started-stepper.component';
+import { CreatePredictionStepperComponent } from './templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { PredictionsModule } from './predictions/predictions.module';
+import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     // pages
-    DatabagPageComponent,
+    DatabagsPageComponent,
+    SolutionsPageComponent,
     NotFoundPageComponent,
-    DashboardPageComponent,
     // dialogs
     CreateDatabagStepperComponent,
     CreateSolutionStepperComponent,
     GettingStartedStepperComponent,
+    CreatePredictionStepperComponent,
+    PredictionsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import { GettingStartedStepperComponent } from './templates/dialogs/getting-star
     SolutionsModule,
     SharedModule,
     CoreModule,
+    PredictionsModule,
   ],
   bootstrap: [AppComponent],
 })

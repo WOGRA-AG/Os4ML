@@ -1,0 +1,27 @@
+<h2>{{ 'prediction.plural' | translate }}</h2>
+<app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
+<ng-container *ngIf="predictions$ | async as predictions">
+  <ng-container *ngIf="predictions.length > 0; else placeholder">
+    <app-predictions-list [predictions]="predictions" class="prediction-list">
+    </app-predictions-list>
+    <div class="actions">
+      <button
+        mat-raised-button
+        class="fab-button mat-raised-button"
+        color="primary"
+        (click)="createPrediction()">
+        <mat-icon>add</mat-icon>
+        {{ 'prediction.create' | translate }}
+      </button>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-no-prediction-placeholder
+      (addPredictionChange)="
+        createPrediction()
+      "></app-no-prediction-placeholder>
+  </div>
+</ng-template>

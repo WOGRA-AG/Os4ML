@@ -5,5 +5,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './dialog-header.component.html',
 })
 export class DialogHeaderComponent {
-  @Output() closeDialog = new EventEmitter<boolean>();
+  @Output() public closeDialog = new EventEmitter<boolean>();
 }

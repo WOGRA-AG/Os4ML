@@ -7,5 +7,5 @@ import { Databag } from '../../../../../build/openapi/modelmanager';
   styleUrls: ['./databag-list-item.component.scss'],
 })
 export class DatabagListItemComponent {
-  @Input() databag: Databag = {};
+  @Input() public databag: Databag = {};
 }

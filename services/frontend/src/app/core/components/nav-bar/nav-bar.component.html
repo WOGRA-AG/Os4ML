@@ -1,10 +1,11 @@
 <mat-sidenav-container autosize>
-  <mat-sidenav class="bg-surface" mode="side" position="start" opened>
+  <mat-sidenav mode="side" position="start" opened>
     <div class="sidenav-container">
       <div>
         <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo" />
         <mat-nav-list class="nav-list">
           <mat-list-item
+            style="display: none"
             [routerLinkActive]="['active']"
             [routerLink]="['/dashboard']">
             <mat-icon matListItemIcon>apps</mat-icon>
@@ -14,9 +15,15 @@
           </mat-list-item>
           <mat-list-item
             [routerLinkActive]="['active']"
-            [routerLink]="['/databag']">
+            [routerLink]="['/databags']">
             <mat-icon matListItemIcon>folder_open</mat-icon>
             <span class="nav-caption">{{ 'databag.plural' | translate }}</span>
+          </mat-list-item>
+          <mat-list-item
+            [routerLinkActive]="['active']"
+            [routerLink]="['/solutions']">
+            <mat-icon matListItemIcon>lightbulb</mat-icon>
+            <span class="nav-caption">{{ 'solution.plural' | translate }}</span>
           </mat-list-item>
           <mat-list-item
             style="display: none"
@@ -41,7 +48,7 @@
       </div>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content class="content-container">
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>

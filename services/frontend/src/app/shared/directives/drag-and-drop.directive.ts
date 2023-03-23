@@ -4,7 +4,7 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
   selector: '[appDragAndDrop]',
 })
 export class DragAndDropDirective {
-  @Output() filesDroppedChange = new EventEmitter<File[]>();
+  @Output() public filesDroppedChange = new EventEmitter<File[]>();
 
   // Dragover Event
   @HostListener('dragover', ['$event']) dragOver(event: DragEvent): void {

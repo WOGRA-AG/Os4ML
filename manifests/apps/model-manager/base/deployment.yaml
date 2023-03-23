@@ -61,6 +61,11 @@ spec:
                 configMapKeyRef:
                   name: model-manager-config
                   key: solutionMessageChannel
+            - name: PREDICTION_MESSAGE_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: predictionMessageChannel
           resources:
             limits:
               cpu: 500m

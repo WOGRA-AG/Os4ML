@@ -6,6 +6,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./no-solutions-placeholder.component.scss'],
 })
 export class NoSolutionsPlaceholderComponent {
-  @Output() addSolutionButton: EventEmitter<MouseEvent> =
+  @Output() public addSolutionButton: EventEmitter<MouseEvent> =
     new EventEmitter<MouseEvent>();
 }

@@ -12,9 +12,9 @@ import { CreateDatabagComponent } from 'src/app/databags/components/create-datab
   styleUrls: ['./create-databag-stepper.component.scss'],
 })
 export class CreateDatabagStepperComponent {
-  running = false;
-  stepperStep = 0;
-  databag: Databag = {};
+  public running = false;
+  public stepperStep = 0;
+  public databag: Databag = {};
 
   constructor(
     public dialogRef: MatDialogRef<CreateDatabagStepperComponent>,

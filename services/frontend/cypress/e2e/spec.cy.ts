@@ -1,6 +1,7 @@
 describe('Databags', () => {
   const databagTimeout = 600000;
   const solutionTimeout = 600000;
+  const predictionTimeout = 300000;
   const deleteTimeout = 5000;
   const downloadTimeout = 15000;
 
@@ -41,12 +42,11 @@ describe('Databags', () => {
       }
       throw Error('Element was not found.');
     }
-    cy.visit('/databag');
+    cy.visit('/solutions');
     waitUntilElementExists('#add-databag-button-empty');
     cy.get('#add-databag-button-empty').click();
-    cy.get('#mat-input-0').click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('e2e test databag');
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('e2e test databag');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/titanic.xls');
@@ -72,7 +72,7 @@ describe('Databags', () => {
   });
 
   it('train ludwig solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('#add-solution-button-empty').click();
     cy.get(
       'app-selectable-list.ng-star-inserted > .mat-mdc-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .mat-subtitle-2',
@@ -92,7 +92,7 @@ describe('Databags', () => {
   });
 
   it('download model', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.solution-list-item > :nth-child(3)').click();
     cy.get('#download-model-link').click();
     const downloadedFile = `${Cypress.config(
@@ -101,6 +101,38 @@ describe('Databags', () => {
     cy.readFile(downloadedFile, 'binary', { timeout: downloadTimeout }).should(
       buffer => expect(buffer.length).to.be.gt(1000)
     );
+  });
+
+  it('predict', function () {
+    cy.visit('/solutions');
+    cy.get('.solution-list-item > :nth-child(3)').click();
+    cy.get(':nth-child(3) > .mdc-button__label').click();
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('pred');
+    cy.get('#file-input')
+      .invoke('show')
+      .selectFile('cypress/fixtures/titanic_predict.csv');
+    cy.get('#predict-dialog-button').click();
+
+    cy.get('#download-prediction-result-link', {
+      timeout: predictionTimeout,
+    }).should('have.text', ' Download Result ');
+    cy.get('#download-prediction-result-link').click();
+    const downloadedFile = `${Cypress.config(
+      'downloadsFolder'
+    )}/prediction_result.csv`;
+    cy.readFile(downloadedFile, 'binary', { timeout: downloadTimeout }).should(
+      buffer => expect(buffer.length).to.be.gt(100)
+    );
+    cy.get(
+      'app-create-prediction-stepper.ng-star-inserted > .mat-mdc-dialog-actions > button.mdc-button--raised > .mdc-button__label'
+    ).click();
+    cy.get('[tabindex="0"] > .mdc-button__label').click();
+    cy.get('.prediction-list-item > :nth-child(1) > :nth-child(2)').should(
+      'have.text',
+      'pred'
+    );
+    cy.get('.status').should('have.text', ' Done ');
   });
 
   it('rename databag', () => {
@@ -119,14 +151,14 @@ describe('Databags', () => {
   });
 
   it('rename solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get(
       '#bag-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type('Renamed Solution');
-    cy.get('.mat-mdc-dialog-actions > [type="submit"]').click();
+    cy.get('#solution-update-button').click();
     cy.get('.solution-list-item > :nth-child(1) > :nth-child(2)').should(
       'have.text',
       'Renamed Solution'
@@ -134,7 +166,7 @@ describe('Databags', () => {
   });
 
   it('delete solution', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.mat-subtitle-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
     cy.get('.delete-button').click();
@@ -157,7 +189,7 @@ describe('Databags', () => {
   });
 
   it('delete databag', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.mat-mdc-nav-list > :nth-child(2)').click();
     cy.get('.databag-list-item > :nth-child(1)').click();
     cy.get('.mdc-button--outlined').click();
@@ -180,10 +212,10 @@ describe('Databags', () => {
   });
 
   it('regression with fastlane', () => {
-    cy.visit('/dashboard');
+    cy.visit('/solutions');
     cy.get('.support-card > .mdc-button').click();
-    cy.get('#mat-input-1').clear();
-    cy.get('#mat-input-1').type('Fastlane Databag');
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('Fastlane Databag');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/titanic.xls');
@@ -214,8 +246,8 @@ describe('Databags', () => {
     cy.get(
       '#bag-list > :last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('script');
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('script');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/dataframe_script.py');
@@ -248,8 +280,8 @@ describe('Databags', () => {
     cy.get(
       ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('mnist');
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('mnist');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/mnist_test_dataset.zip');
@@ -274,8 +306,8 @@ describe('Databags', () => {
     cy.get(
       ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('tif');
+    cy.get('#dataset-name-input').clear();
+    cy.get('#dataset-name-input').type('tif');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/raw_data_small.zip');
@@ -314,10 +346,10 @@ describe('Databags', () => {
     cy.get(
       ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
-    cy.get('#mat-input-0', { timeout: 1000 }).clear();
-    cy.get('#mat-input-0').type('url');
-    cy.get('#mat-input-1', { timeout: 1000 }).clear();
-    cy.get('#mat-input-1').type(
+    cy.get('#dataset-name-input', { timeout: 1000 }).clear();
+    cy.get('#dataset-name-input').type('url');
+    cy.get('#dataset-url-input', { timeout: 1000 }).clear();
+    cy.get('#dataset-url-input').type(
       'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv',
       { timeout: 1000 }
     );

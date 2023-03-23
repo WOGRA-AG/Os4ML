@@ -1,0 +1,10 @@
+<mat-list>
+  <mat-list-item
+    class="border-radius-24 item-padding"
+    *ngFor="let prediction of predictions">
+    <app-predictions-list-item
+      class="prediction-list-item"
+      [prediction]="prediction">
+    </app-predictions-list-item>
+  </mat-list-item>
+</mat-list>

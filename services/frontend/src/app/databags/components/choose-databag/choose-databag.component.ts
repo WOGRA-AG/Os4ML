@@ -10,10 +10,10 @@ import { DatabagService } from '../../services/databag.service';
   styleUrls: ['./choose-databag.component.scss'],
 })
 export class ChooseDatabagComponent implements OnInit {
-  @Input() databags: Databag[] = [];
-  @Output() selectedDatabagIdChange: EventEmitter<string> =
+  @Input() public databags: Databag[] = [];
+  @Output() public selectedDatabagIdChange: EventEmitter<string> =
     new EventEmitter<string>();
-  selectedDatabag: Databag = {};
+  public selectedDatabag: Databag = {};
 
   constructor(
     private dialog: MatDialog,

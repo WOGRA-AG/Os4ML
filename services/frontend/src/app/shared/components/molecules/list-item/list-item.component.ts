@@ -7,7 +7,7 @@ import { ListItem } from 'src/app/shared/models/list-item';
   styleUrls: ['./list-item.component.scss'],
 })
 export class ListItemComponent {
-  @Input() item: ListItem = {
+  @Input() public item: ListItem = {
     key: '',
     label: '',
     description: '',

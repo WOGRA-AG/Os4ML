@@ -15,10 +15,10 @@ import {
   styleUrls: ['./create-solution-stepper.component.scss'],
 })
 export class CreateSolutionStepperComponent implements OnDestroy {
-  databag: Databag = {};
-  solution: Solution = {};
-  submitting = false;
-  stepperStep = 0;
+  public databag: Databag = {};
+  public solution: Solution = {};
+  public submitting = false;
+  public stepperStep = 0;
 
   private destroy$: Subject<void> = new Subject<void>();
 

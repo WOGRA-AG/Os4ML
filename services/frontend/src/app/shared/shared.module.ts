@@ -24,6 +24,10 @@ import { StatusSpinnerComponent } from './components/molecules/status-spinner/st
 import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
 import { ListItemComponent } from './components/molecules/list-item/list-item.component';
 import { PopupConfirmComponent } from './components/organisms/popup-confirm/popup-confirm.component';
+import { FormatTimeDiffPipe } from './pipes/format-time-diff';
+import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
+import { DatasetUploadComponent } from './components/organisms/dataset-upload/dataset-upload.component';
+import { PlaceholderComponent } from './components/molecules/placeholder/placeholder.component';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,12 +47,16 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     UploadFieldComponent,
     StatusSpinnerComponent,
     ListItemComponent,
+    BreadcrumbsComponent,
+    PlaceholderComponent,
     // organisms
     PopupConfirmComponent,
     SelectableListComponent,
+    DatasetUploadComponent,
     // directives
     DragAndDropDirective,
     // pipes
+    FormatTimeDiffPipe,
     FormatNumberPipe,
     LocalizedDatePipe,
     ShortStatusPipe,
@@ -82,11 +90,15 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
     ToggleItemComponent,
     UploadFieldComponent,
     StatusSpinnerComponent,
+    BreadcrumbsComponent,
+    PlaceholderComponent,
     // organisms
     SelectableListComponent,
+    DatasetUploadComponent,
     // directives
     DragAndDropDirective,
     // pipes
+    FormatTimeDiffPipe,
     FormatNumberPipe,
     LocalizedDatePipe,
     ShortStatusPipe,

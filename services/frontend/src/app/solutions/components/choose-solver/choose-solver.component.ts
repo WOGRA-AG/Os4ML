@@ -10,10 +10,10 @@ import { ListItem } from '../../../shared/models/list-item';
   styleUrls: ['./choose-solver.component.scss'],
 })
 export class ChooseSolverComponent implements OnDestroy {
-  @Output() selectedSolverChange: EventEmitter<Solver> =
+  @Output() public selectedSolverChange: EventEmitter<Solver> =
     new EventEmitter<Solver>();
 
-  listItems$: Observable<ListItem[]>;
+  public listItems$: Observable<ListItem[]>;
 
   private destroy$: Subject<void> = new Subject<void>();
 

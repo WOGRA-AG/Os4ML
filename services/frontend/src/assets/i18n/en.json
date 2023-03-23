@@ -13,7 +13,7 @@
         "solver_running": "Solver running",
         "url_is_ignored": "Url is ignored",
         "loading_model": "Loading model",
-        "prediction": "Predicting"
+        "predicting": "Predicting"
       },
       "done": {
         "solver_done": "Solver finished",
@@ -71,6 +71,7 @@
   },
   "solution": {
     "name": "Solution",
+    "plural": "Solutions",
     "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
     "settings": "Solution Settings",
     "placeholder": "Solution Name",
@@ -87,6 +88,24 @@
     "delete": {
       "title": "Delete Solution",
       "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    }
+  },
+  "prediction": {
+    "action": "Predict",
+    "create": "Create Prediction",
+    "plural": "Predictions",
+    "detail": {
+      "name": "Prediction Name",
+      "runtime": "Runtime",
+      "creation": "Creation",
+      "download": "Download"
+    },
+    "empty": "Make predictions with your trained model",
+    "placeholder": {
+      "description": "Predictions allow you to evaluate your model on unseen data"
+    },
+    "error": {
+      "invalid_put_url": "Invalid put url for prediction data"
     }
   },
   "problem": {
@@ -120,6 +139,16 @@
     },
     "create_databag": {
       "step_one": "Data"
+    },
+    "create_prediction": {
+      "step_data": "Data",
+      "step_download": "Download",
+      "download_template": "Download Template csv",
+      "download_result": "Download Result",
+      "name_input": "Prediction Name"
+    },
+    "dataset_upload": {
+      "url_label": "Url"
     }
   },
   "page": {

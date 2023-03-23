@@ -25,6 +25,6 @@ def combine_data_and_result(
     df: pd.DataFrame, result_df: pd.DataFrame, output_fields: Iterator[str]
 ) -> pd.DataFrame:
     for output_field in output_fields:
-        pred_col = f"{output_field}_prediction"
+        pred_col = f"{output_field}_predictions"
         df[pred_col] = result_df[pred_col]
     return df

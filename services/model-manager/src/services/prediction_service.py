@@ -97,7 +97,9 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
             usertoken=usertoken,
             solution=solution,
         )
-        url = self.objectstore.get_presigned_put_url(file_name, usertoken="")
+        url = self.objectstore.get_presigned_put_url(
+            file_name, usertoken=usertoken
+        )
         return UrlAndPredictionId(url=url, prediction_id=prediction.id)
 
     def get_prediction_result_put_url(self, id_: str, usertoken: str) -> str:
