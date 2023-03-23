@@ -16,24 +16,18 @@ import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { StatusSpinnerComponent } from './components/molecules/status-spinner/status-spinner.component';
-import { SelectableListComponent } from './components/organisms/selectable-list/selectable-list.component';
-import { ListItemComponent } from './components/molecules/list-item/list-item.component';
 import { PopupConfirmComponent } from './components/organisms/popup-confirm/popup-confirm.component';
 import { FormatTimeDiffPipe } from './pipes/format-time-diff';
-import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
 import { DatasetUploadComponent } from './components/organisms/dataset-upload/dataset-upload.component';
 import { PlaceholderComponent } from './components/molecules/placeholder/placeholder.component';
-import { ButtonComponent } from './components/atoms/button/button.component';
-import { IconButtonComponent } from './components/atoms/icon-button/icon-button.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { DesignModule } from '../design/design.module';
 
 @NgModule({
   declarations: [
     // atoms
     ElementDividerComponent,
     StarComponent,
-    ButtonComponent,
-    IconButtonComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,
@@ -41,12 +35,9 @@ import { TranslateModule } from '@ngx-translate/core';
     ToggleItemComponent,
     UploadFieldComponent,
     StatusSpinnerComponent,
-    ListItemComponent,
-    BreadcrumbsComponent,
     PlaceholderComponent,
     // organisms
     PopupConfirmComponent,
-    SelectableListComponent,
     DatasetUploadComponent,
     // directives
     DragAndDropDirective,
@@ -64,14 +55,12 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
+    DesignModule,
   ],
   exports: [
     // atoms
     ElementDividerComponent,
     StarComponent,
-    ListItemComponent,
-    ButtonComponent,
-    IconButtonComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,
@@ -79,10 +68,8 @@ import { TranslateModule } from '@ngx-translate/core';
     ToggleItemComponent,
     UploadFieldComponent,
     StatusSpinnerComponent,
-    BreadcrumbsComponent,
     PlaceholderComponent,
     // organisms
-    SelectableListComponent,
     DatasetUploadComponent,
     // directives
     DragAndDropDirective,
@@ -99,6 +86,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
+    DesignModule,
   ],
   providers: [ShortStatusPipe],
 })

@@ -25,6 +25,7 @@ import { PredictionsModule } from './predictions/predictions.module';
 import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { DesignModule } from './design/design.module';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -62,6 +63,7 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
       },
     }),
     MaterialModule,
+    DesignModule,
     DatabagsModule,
     SolutionsModule,
     SharedModule,
