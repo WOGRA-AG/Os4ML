@@ -7,8 +7,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: os4ml
-      tier: frontend
+      app.kubernetes.io/name: os4ml
+      app.kubernetes.io/component: frontend
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,15 +16,13 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/inject: "false"
       labels:
-        app: os4ml
-        tier: frontend
+        app.kubernetes.io/name: os4ml
+        app.kubernetes.io/component: frontend
     spec:
       containers:
         - name: frontend
-          image: "gitlab-registry.wogra.com/developer/wogra/os4ml/frontend"
+          image: "wogra/os4ml-frontend"
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -37,13 +35,29 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          readinessProbe:
+          startupProbe:
             httpGet:
               port: http
               path: /
               scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 4
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 4
           securityContext:
             allowPrivilegeEscalation: false
           lifecycle:

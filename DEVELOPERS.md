@@ -1,35 +1,12 @@
 ## Deployment
-### Using terraform
+### Using terraform and k3d
 #### Create Cluster Service
 ```sh
-k3d cluster create os4ml-cluster --k3s-node-label 'cloud.google.com/gke-nodepool=highcpu-pool@server:0'
-```
-```sh
-git clone https://github.com/WOGRA-AG/Os4ML.git
-cd os4ml/terraform
+git clone https://github.com/WOGRA-AG/terraform-kustomization-os4ml.git
+cd terraform-kustomization-os4ml
+k3d cluster create --config ./k3d-default.yaml
 terraform init
 terraform apply -auto-approve
-```
-### Using kubectl
-#### Create Cluster Service
-```sh
-while ! kubectl apply -k github.com/kubeflow/manifests.git/example; do echo "Retrying to apply resources"; sleep 10; done
-kubectl apply -k common/profile
-kubectl apply -k common/base
-kubectl apply -k common/cert-manager
-kubectl apply -k apps/objectstore-manager
-kubectl apply -k apps/job-manager/base
-kubectl apply -k apps/frontend
-```
-
-#### Delete Cluster Service
-```sh
-kubectl delete -k common/profile
-kubectl delete -k common/base
-kubectl delete -k common/cert-manager
-kubectl delete -k apps/objectstore-manager
-kubectl delete -k apps/job-manager/base
-kubectl delete -k apps/frontend
 ```
 
 ## kubectl
@@ -50,14 +27,11 @@ kubectl delete namespace <namespace>
 ```
  
 ## Issues
-```sh
-telepresence: error: Failed to establish intercept: intercept in error state AGENT_ERROR: intercept was made from an unauthenticated client
-```
 ### Telepresence Reset
 ```sh
-telepresence quit -u
-telepresence uninstall --everything
-rm -r ~/.config/telepresence
+telepresence quit -s
+telepresence helm uninstall
+telepresence helm install
 telepresence connect
 ```
 
@@ -69,13 +43,6 @@ telepresence intercept jobmanager --namespace os4ml --port 8000:8000
 telepresence intercept objectstore-manager --namespace os4ml --port 8001:8000
 ```
 
-### Telepresence panic
-```sh
-sudo rm /var/run/telepresence-daemon.socket
-telepresence quit -u
-telepresence uninstall --everything
-telepresence connect
-```
 ### Formatting and Import Sorting
 ```sh
 black --config ./pyproject.toml src tests --exclude src/build --check 
@@ -94,33 +61,6 @@ https://docs.min.io/minio/k8s/reference/minio-kubectl-plugin.html#kubectl-minio-
 kubectl minio proxy
 ```
 copy jwt, browse to localhost:9090 and paste jwt on login screen
-
-### Push image to test on cluster
-edit manifests/apps/job-manager/base/deployment.yaml
-```yaml
-image: "gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992"
-imagePullPolicy: Always
-```
-now run
-```bash
-kubectl delete -k manifests/apps/job-manager/overlays/istio
-DOCKER_BUILDKIT=1 docker build -f services/job-manager/Dockerfile . --tag gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992 --target production --no-cache
-docker push gitlab-registry.wogra.com/developer/wogra/os4ml/job-manager:7e64992
-kubectl apply -k manifests/apps/job-manager/overlays/istio
-```
-
-edit manifests/apps/objectstore-manager/base/deployment.yaml
-```yaml
-image: "gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992"
-imagePullPolicy: Always
-```
-now run
-```bash
-kubectl delete -k manifests/apps/objectstore-manager/overlays/istio
-DOCKER_BUILDKIT=1 docker build services/objectstore-manager --tag gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992 --target production --no-cache
-docker push gitlab-registry.wogra.com/developer/wogra/os4ml/objectstore-manager:7e64992
-kubectl apply -k manifests/apps/objectstore-manager/overlays/istio
-```
 
 ## Access fastapi service swagger-docs
 

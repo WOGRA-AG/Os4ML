@@ -10,5 +10,5 @@ spec:
       targetPort: http
       name: api
   selector:
-    app: os4ml
-    name: objectstore-manager
+    app.kubernetes.io/name: os4ml
+    app.kubernetes.io/component: objectstore-manager
