@@ -4,8 +4,8 @@ metadata:
   name: frontend
 spec:
   selector:
-    app: os4ml
-    tier: frontend
+    app.kubernetes.io/name: os4ml
+    app.kubernetes.io/component: frontend
   ports:
     - name: http
       port: 80
