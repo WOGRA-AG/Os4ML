@@ -6,6 +6,8 @@ from datetime import datetime
 from io import StringIO
 from typing import AsyncIterable
 
+from fastapi import Depends
+
 from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
@@ -15,8 +17,6 @@ from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.dataset_put_url import DatasetPutUrl
-from fastapi import Depends
-
 from exceptions import (
     DatabagIdUpdateNotAllowedException,
     DatabagNotFoundException,

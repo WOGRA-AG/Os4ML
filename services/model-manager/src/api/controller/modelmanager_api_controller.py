@@ -1,3 +1,5 @@
+from fastapi import Depends
+
 from build.openapi_server.models.databag import Databag
 from build.openapi_server.models.dataset_put_url import DatasetPutUrl
 from build.openapi_server.models.prediction import Prediction
@@ -6,8 +8,6 @@ from build.openapi_server.models.solver import Solver
 from build.openapi_server.models.url_and_prediction_id import (
     UrlAndPredictionId,
 )
-from fastapi import Depends
-
 from services.databag_service import DatabagService
 from services.prediction_service import PredictionSerivce
 from services.solution_service import SolutionService

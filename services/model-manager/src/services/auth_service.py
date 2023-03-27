@@ -2,9 +2,10 @@ import base64
 import json
 from http import HTTPStatus
 
+from fastapi import Header, HTTPException
+
 from build.openapi_server.models.oidc_user import OIDCUser
 from build.openapi_server.models.user import User
-from fastapi import Header, HTTPException
 
 
 def _parse_oidc_token(usertoken: str = Header()) -> OIDCUser:

@@ -1,6 +1,8 @@
 import uuid
 from typing import Any
 
+from fastapi import Depends
+
 from build.job_manager_client.apis import JobmanagerApi
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.apis import ObjectstoreApi
@@ -9,8 +11,6 @@ from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.url_and_prediction_id import (
     UrlAndPredictionId,
 )
-from fastapi import Depends
-
 from services import (
     PREDICTION_CONFIG_FILE_NAME,
     PREDICTION_DATA_FILE_NAME,
