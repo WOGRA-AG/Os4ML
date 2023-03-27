@@ -1,5 +1,4 @@
 import pytest
-
 from build.openapi_server.apis.modelmanager_api import get_solvers
 
 

@@ -6,8 +6,6 @@ from datetime import datetime
 from io import BytesIO
 from typing import AsyncIterator
 
-from fastapi import Depends
-
 from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.job_manager_client.model.run import Run
@@ -16,6 +14,8 @@ from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
 from build.openapi_server.models.solution import Solution
+from fastapi import Depends
+
 from exceptions import (
     SolutionIdUpdateNotAllowedException,
     SolutionNotFoundException,
