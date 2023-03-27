@@ -24,7 +24,7 @@ def prediction_pipeline(
 
 
 def main():
-    compile_pipeline(prediction_pipeline, file=__file__, node_pool='high-cpu')
+    compile_pipeline(prediction_pipeline, file=__file__, node_pool="high-cpu")
 
 
 if __name__ == "__main__":
