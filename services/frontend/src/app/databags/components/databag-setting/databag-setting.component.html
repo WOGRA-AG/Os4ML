@@ -35,10 +35,20 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <app-button variant="stroked" color="warn" type="button" (click)="delete()">
+  <app-button
+    id="delete-databag-button"
+    variant="stroked"
+    color="warn"
+    type="button"
+    (click)="delete()">
     {{ 'action.delete' | translate }}
   </app-button>
-  <app-button variant="raised" form="ngForm" color="primary" type="submit">
+  <app-button
+    id="update-databag-button"
+    variant="raised"
+    form="ngForm"
+    color="primary"
+    type="submit">
     {{ 'action.update' | translate }}
   </app-button>
 </mat-dialog-actions>

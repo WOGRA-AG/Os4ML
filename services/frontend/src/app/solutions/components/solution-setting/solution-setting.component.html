@@ -72,7 +72,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <app-icon-button color="primary" icon="delete_forever" (click)="delete()">
+  <app-icon-button
+    id="delete-solution-button"
+    color="primary"
+    icon="delete_forever"
+    (click)="delete()">
   </app-icon-button>
   <a
     *ngIf="solution.modelUrl"
@@ -84,6 +88,7 @@
     <mat-icon>download</mat-icon>
   </a>
   <app-button
+    id="create-prediction-button"
     *ngIf="solution.predictionTemplateUrl && solution.modelUrl"
     color="primary"
     variant="raised"
@@ -91,6 +96,7 @@
     {{ 'prediction.action' | translate }}
   </app-button>
   <app-button
+    id="predictions-page-link-button"
     *ngIf="solution.id && solution.modelUrl"
     color="primary"
     variant="raised"
