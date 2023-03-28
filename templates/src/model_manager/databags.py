@@ -29,4 +29,8 @@ def update_databag_status(databag_id: str, status: StatusMessage) -> Databag:
 
 def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
     url = model_manager.get_dataframe_put_url(databag.id, usertoken=USER_TOKEN)
-    requests.put(url, data=dataframe)
+    requests.put(
+        url,
+        data=dataframe,
+        headers={"Content-Type": "application/octet-stream"},
+    )
