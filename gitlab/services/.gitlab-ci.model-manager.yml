@@ -21,7 +21,7 @@ model-manager-build:
   extends:
     - .build-production
   needs:
-    - os-manager-test-and-lint
+    - model-manager-test-and-lint
   variables:
     DOCKERFILE: 'services/model-manager/Dockerfile'
     IMG_NAME: 'os4ml-model-manager'
