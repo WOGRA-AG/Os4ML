@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SolutionsPageComponent } from './templates/pages/solutions-page/solutions-page.component';
-import { DatabagsPageComponent } from './templates/pages/databags-page/databags-page.component';
-import { NotFoundPageComponent } from './templates/pages/not-found-page/not-found-page.component';
-import { PredictionsPageComponent } from './templates/pages/predictions-page/predictions-page.component';
 
 const routes: Routes = [
   {
@@ -12,11 +8,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: SolutionsPageComponent,
+        loadComponent: () =>
+          import(
+            './templates/pages/solutions-page/solutions-page.component'
+          ).then(mod => mod.SolutionsPageComponent),
       },
       {
         path: ':solutionId/predictions',
-        component: PredictionsPageComponent,
+        loadComponent: () =>
+          import(
+            './templates/pages/predictions-page/predictions-page.component'
+          ).then(mod => mod.PredictionsPageComponent),
       },
     ],
   },
@@ -27,12 +29,18 @@ const routes: Routes = [
   },
   {
     path: 'databags',
-    component: DatabagsPageComponent,
+    loadComponent: () =>
+      import('./templates/pages/databags-page/databags-page.component').then(
+        mod => mod.DatabagsPageComponent
+      ),
     runGuardsAndResolvers: 'always',
   },
   {
     path: '**',
-    component: NotFoundPageComponent,
+    loadComponent: () =>
+      import('./templates/pages/not-found-page/not-found-page.component').then(
+        mod => mod.NotFoundPageComponent
+      ),
   },
 ];
 
