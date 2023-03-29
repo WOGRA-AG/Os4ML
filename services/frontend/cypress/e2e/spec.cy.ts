@@ -4,6 +4,8 @@ describe('Databags', () => {
   const predictionTimeout = 300000;
   const deleteTimeout = 5000;
   const downloadTimeout = 15000;
+  const inputTimeout = 1000;
+  const standardTimeout = 1000;
 
   beforeEach('login', () => {
     cy.viewport(1280, 720);
@@ -106,7 +108,7 @@ describe('Databags', () => {
   it('predict', function () {
     cy.visit('/solutions');
     cy.get('.solution-list-item').click();
-    cy.get(':nth-child(3) > .mdc-button__label').click();
+    cy.get('#create-prediction-button').click();
     cy.get('#dataset-name-input').clear({ force: true });
     cy.get('#dataset-name-input').type('pred', { force: true });
     cy.get('#file-input')
@@ -124,10 +126,8 @@ describe('Databags', () => {
     cy.readFile(downloadedFile, 'binary', { timeout: downloadTimeout }).should(
       buffer => expect(buffer.length).to.be.gt(100)
     );
-    cy.get(
-      'app-create-prediction-stepper.ng-star-inserted > .mat-mdc-dialog-actions > button.mdc-button--raised > .mdc-button__label'
-    ).click();
-    cy.get('[tabindex="0"] > .mdc-button__label').click();
+    cy.get('#close-create-prediction-dialog-button').click();
+    cy.get('#predictions-page-link-button').click();
     cy.get('.prediction-list-item > :nth-child(1) > :nth-child(2)').should(
       'have.text',
       'pred'
@@ -141,9 +141,11 @@ describe('Databags', () => {
       '.sidenav-container > :nth-child(1) > .mat-mdc-nav-list > :nth-child(2) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content'
     ).click();
     cy.get('.databag-list-item > :nth-child(2)').click();
-    cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('renamed-titanic.xls');
-    cy.get('.mat-mdc-dialog-actions > .mdc-button--raised').click();
+    cy.get('#mat-input-0').clear({ timeout: inputTimeout });
+    cy.get('#mat-input-0').type('renamed-titanic.xls', {
+      timeout: inputTimeout,
+    });
+    cy.get('#update-databag-button').click();
     cy.get(':nth-child(1) > .mat-body-2').should(
       'have.text',
       'renamed-titanic.xls'
@@ -156,8 +158,9 @@ describe('Databags', () => {
       '#bag-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
     ).click();
     cy.get('.solution-list-item > :nth-child(1)').click();
+    cy.get('#mat-input-0').click();
     cy.get('#mat-input-0').clear();
-    cy.get('#mat-input-0').type('Renamed Solution');
+    cy.get('#mat-input-0').type('Renamed Solution', { timeout: inputTimeout });
     cy.get('#solution-update-button').click();
     cy.get('.solution-list-item > :nth-child(1) > :nth-child(2)').should(
       'have.text',
@@ -169,18 +172,14 @@ describe('Databags', () => {
     cy.visit('/solutions');
     cy.get('.mat-subtitle-2').click();
     cy.get('.solution-list-item > :nth-child(1)').click();
-    cy.get('.delete-button').click();
+    cy.get('#delete-solution-button').click();
     cy.get(
       '.ng-star-inserted > app-dialog-section > .dialog-element > .dialog-element-content'
     ).should(
       'have.text',
       ' Are you sure you want to delete this solution? All data will be lost!\n'
     );
-    cy.get(
-      'app-popup-confirm > .mat-mdc-dialog-actions > .mdc-button--outlined'
-    )
-      .wait(deleteTimeout)
-      .click();
+    cy.get('#confirm-popup-button').wait(deleteTimeout).click();
     cy.wait(deleteTimeout);
     cy.get('h1.primary').should(
       'have.text',
@@ -190,20 +189,20 @@ describe('Databags', () => {
 
   it('delete databag', () => {
     cy.visit('/solutions');
-    cy.get('.mat-mdc-nav-list > :nth-child(2)').click();
-    cy.get('.databag-list-item > :nth-child(1)').click();
-    cy.get('.mdc-button--outlined').click();
+    cy.get('.mat-mdc-nav-list > :nth-child(2)', {
+      timeout: standardTimeout,
+    }).click();
+    cy.get('.databag-list-item > :nth-child(1)', {
+      timeout: standardTimeout,
+    }).click();
+    cy.get('#delete-databag-button').click();
     cy.get(
       '.ng-star-inserted > app-dialog-section > .dialog-element > .dialog-element-content'
     ).should(
       'have.text',
       ' Are you sure you want to delete this databag? All data will be lost!\n'
     );
-    cy.get(
-      'app-popup-confirm > .mat-mdc-dialog-actions > .mdc-button--outlined'
-    )
-      .wait(deleteTimeout)
-      .click();
+    cy.get('#confirm-popup-button').wait(deleteTimeout).click();
     cy.wait(deleteTimeout);
     cy.get('h1.primary').should(
       'have.text',
@@ -213,7 +212,7 @@ describe('Databags', () => {
 
   it('regression with fastlane', () => {
     cy.visit('/solutions');
-    cy.get('.support-card > .mdc-button').click();
+    cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type('Fastlane Databag');
     cy.get('#file-input')
@@ -233,26 +232,23 @@ describe('Databags', () => {
     cy.get('#add-databag-main-button').click();
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type('fast solution');
-    cy.wait(1000);
+    cy.wait(standardTimeout);
     cy.get(
       'app-choose-solver > app-selectable-list > .mat-mdc-list > .mat-mdc-list-item > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container'
     ).click();
-    cy.wait(1000);
+    cy.wait(standardTimeout);
     cy.get('#add-databag-main-button').click();
     cy.get('.status-column > .done', { timeout: solutionTimeout });
   });
 
   it('dataframe script', () => {
-    cy.get(
-      '#bag-list > :last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
-    ).click();
+    cy.get('#create-databag-button').click({ force: true });
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type('script');
     cy.get('#file-input')
       .invoke('show')
       .selectFile('cypress/fixtures/dataframe_script.py');
     cy.get('#add-databag-main-button').click();
-    cy.wait(1000);
     cy.get('#mat-select-value-1', { timeout: databagTimeout }).should(
       'have.text',
       'numerical'
@@ -261,15 +257,14 @@ describe('Databags', () => {
     cy.get(
       ':first-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended > .mat-subtitle-2'
     ).should('have.text', 'script');
-    cy.wait(1000);
     cy.get(
-      ':nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
+      ':nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended',
+      { timeout: standardTimeout }
     ).click();
-    cy.wait(1000);
-    cy.get('#add-solution-button-empty').click();
-    cy.wait(1000);
+    cy.get('#add-solution-button-empty', { timeout: standardTimeout }).click();
     cy.get(
-      'app-selectable-list.ng-star-inserted > .mat-mdc-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .primary'
+      'app-selectable-list.ng-star-inserted > .mat-mdc-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .primary',
+      { timeout: standardTimeout }
     ).should('have.text', ' PassengerId ');
     cy.get(
       'app-selectable-list.ng-star-inserted > .mat-mdc-list > :nth-child(1) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .mat-subtitle-2'
@@ -277,9 +272,7 @@ describe('Databags', () => {
   });
 
   it('mnist', function () {
-    cy.get(
-      ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
-    ).click();
+    cy.get('#create-databag-button').click({ force: true });
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type('mnist');
     cy.get('#file-input')
@@ -303,9 +296,7 @@ describe('Databags', () => {
   });
 
   it('tif', function () {
-    cy.get(
-      ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
-    ).click();
+    cy.get('#create-databag-button').click({ force: true });
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type('tif');
     cy.get('#file-input')
@@ -343,15 +334,13 @@ describe('Databags', () => {
   });
 
   it('url', function () {
-    cy.get(
-      ':last-child > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > .nav-item-extended'
-    ).click();
-    cy.get('#dataset-name-input', { timeout: 1000 }).clear();
+    cy.get('#create-databag-button').click({ force: true });
+    cy.get('#dataset-name-input', { timeout: inputTimeout }).clear();
     cy.get('#dataset-name-input').type('url');
-    cy.get('#dataset-url-input', { timeout: 1000 }).clear();
+    cy.get('#dataset-url-input', { timeout: inputTimeout }).clear();
     cy.get('#dataset-url-input').type(
       'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv',
-      { timeout: 1000 }
+      { timeout: inputTimeout }
     );
     cy.get('#add-databag-main-button').click();
     cy.get(

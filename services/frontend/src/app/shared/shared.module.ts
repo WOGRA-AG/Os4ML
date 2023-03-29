@@ -6,8 +6,6 @@ import { ShortStatusPipe } from './pipes/short-status.pipe';
 import { MaterialModule } from '../material/material.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HasElementsPipe } from './pipes/has-elements.pipe';
-import { AddButtonComponent } from './components/atoms/add-button/add-button.component';
-import { CloseButtonComponent } from './components/atoms/close-button/close-button.component';
 import { ElementDividerComponent } from './components/atoms/element-divider/element-divider.component';
 import { StarComponent } from './components/atoms/star/star.component';
 import { DialogHeaderComponent } from './components/molecules/dialog-header/dialog-header.component';
@@ -28,6 +26,8 @@ import { FormatTimeDiffPipe } from './pipes/format-time-diff';
 import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
 import { DatasetUploadComponent } from './components/organisms/dataset-upload/dataset-upload.component';
 import { PlaceholderComponent } from './components/molecules/placeholder/placeholder.component';
+import { ButtonComponent } from './components/atoms/button/button.component';
+import { IconButtonComponent } from './components/atoms/icon-button/icon-button.component';
 
 export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,10 +35,10 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
 @NgModule({
   declarations: [
     // atoms
-    AddButtonComponent,
-    CloseButtonComponent,
     ElementDividerComponent,
     StarComponent,
+    ButtonComponent,
+    IconButtonComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,
@@ -78,11 +78,11 @@ export const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   ],
   exports: [
     // atoms
-    AddButtonComponent,
-    CloseButtonComponent,
     ElementDividerComponent,
     StarComponent,
     ListItemComponent,
+    ButtonComponent,
+    IconButtonComponent,
     // molecules
     DialogHeaderComponent,
     DialogSectionComponent,

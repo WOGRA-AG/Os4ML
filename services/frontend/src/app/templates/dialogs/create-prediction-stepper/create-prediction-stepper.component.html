@@ -48,22 +48,21 @@
     [status]="
       prediction.status || 'message.pipeline.default' | translate
     "></app-status-spinner>
-  <button
+  <app-button
     id="predict-dialog-button"
-    mat-raised-button
+    variant="raised"
     color="primary"
     type="submit"
     (click)="predict(stepper, createPrediction)"
     [disabled]="running || !createPrediction.valid()">
     {{ 'prediction.action' | translate }}
-  </button>
+  </app-button>
 </ng-template>
 
 <ng-template #stepDownloadActions>
-  <button mat-flat-button (click)="back(stepper)">
-    <mat-icon>arrow_back_ios</mat-icon>
+  <app-button variant="stroked" icon="arrow_back_ios" (click)="back(stepper)">
     {{ 'action.previous_step' | translate }}
-  </button>
+  </app-button>
   <a
     id="download-prediction-result-link"
     *ngIf="prediction.resultUrl"
@@ -73,12 +72,13 @@
     color="primary">
     {{ 'dialog.create_prediction.download_result' | translate }}
   </a>
-  <button
-    mat-raised-button
+  <app-button
+    id="close-create-prediction-dialog-button"
+    variant="raised"
     color="primary"
     type="submit"
     (click)="close()"
     [disabled]="false">
     {{ 'action.last_step' | translate }}
-  </button>
+  </app-button>
 </ng-template>

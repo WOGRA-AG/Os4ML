@@ -3,12 +3,12 @@
 <span class="mat-body-1" *ngIf="!!description">{{
   description | translate
 }}</span>
-<button
-  mat-raised-button
+<app-button
+  variant="raised"
   id="placholder-button"
   class="main-button"
   color="primary"
+  [icon]="buttonIcon"
   (click)="buttonClick.emit()">
-  <mat-icon *ngIf="!!buttonIcon">{{ buttonIcon }}</mat-icon>
   {{ buttonText | translate }}
-</button>
+</app-button>
