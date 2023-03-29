@@ -7,9 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
 import { NgFor, NgClass } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-choose-databag',
@@ -17,9 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   styleUrls: ['./choose-databag.component.scss'],
   standalone: true,
   imports: [
-    MatExpansionModule,
-    MatIconModule,
-    MatListModule,
+    MaterialModule,
     NgFor,
     NgClass,
     ButtonComponent,

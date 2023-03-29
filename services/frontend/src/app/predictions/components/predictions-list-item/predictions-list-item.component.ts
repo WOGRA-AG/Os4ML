@@ -7,10 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 import { FormatTimeDiffPipe } from '../../../shared/pipes/format-time-diff';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { NgClass, AsyncPipe } from '@angular/common';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-predictions-list-item',
@@ -19,9 +17,7 @@ import { NgClass, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgClass,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
+    MaterialModule,
     AsyncPipe,
     FormatTimeDiffPipe,
     LocalizedDatePipe,

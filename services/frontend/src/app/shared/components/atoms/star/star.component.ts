@@ -1,12 +1,12 @@
 import { Component, HostBinding, Input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-star',
   templateUrl: './star.component.html',
   styleUrls: ['./star.component.scss'],
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MaterialModule],
 })
 export class StarComponent {
   @Input() public percentage = 0; // value between 0 and 1

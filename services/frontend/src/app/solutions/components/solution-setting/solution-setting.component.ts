@@ -3,7 +3,6 @@ import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogModule,
 } from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { SolutionService } from '../../services/solution.service';
@@ -14,16 +13,12 @@ import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/crea
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
 import { NgFor, NgIf } from '@angular/common';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-solution-setting',
@@ -32,17 +27,12 @@ import { DialogHeaderComponent } from '../../../shared/components/molecules/dial
   standalone: true,
   imports: [
     DialogHeaderComponent,
-    MatDialogModule,
+    MaterialModule,
     FormsModule,
     DialogSectionComponent,
-    MatFormFieldModule,
-    MatInputModule,
-    MatChipsModule,
     NgFor,
     NgIf,
     IconButtonComponent,
-    MatButtonModule,
-    MatIconModule,
     ButtonComponent,
     RouterLink,
     TranslateModule,

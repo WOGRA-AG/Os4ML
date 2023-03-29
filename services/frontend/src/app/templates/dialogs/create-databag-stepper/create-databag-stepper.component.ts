@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { firstValueFrom } from 'rxjs';
 import { DatabagService } from 'src/app/databags/services/databag.service';
@@ -13,8 +13,8 @@ import { DatabagFieldsComponent } from '../../../databags/components/databag-fie
 import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { CreateDatabagComponent as CreateDatabagComponent_1 } from '../../../databags/components/create-databag/create-databag.component';
-import { MatIconModule } from '@angular/material/icon';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-create-databag-stepper',
@@ -23,9 +23,7 @@ import { DialogHeaderComponent } from '../../../shared/components/molecules/dial
   standalone: true,
   imports: [
     DialogHeaderComponent,
-    MatStepperModule,
-    MatIconModule,
-    MatDialogModule,
+    MaterialModule,
     CreateDatabagComponent_1,
     FormsModule,
     DialogSectionComponent,

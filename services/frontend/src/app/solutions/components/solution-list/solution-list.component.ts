@@ -4,14 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { SolutionSettingComponent } from '../solution-setting/solution-setting.component';
 import { SolutionListItemComponent } from '../solution-list-item/solution-list-item.component';
 import { NgFor } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-solution-list',
   templateUrl: './solution-list.component.html',
   styleUrls: ['./solution-list.component.scss'],
   standalone: true,
-  imports: [MatListModule, NgFor, SolutionListItemComponent],
+  imports: [MaterialModule, NgFor, SolutionListItemComponent],
 })
 export class SolutionListComponent {
   @Input() public solutions: Solution[] = [];

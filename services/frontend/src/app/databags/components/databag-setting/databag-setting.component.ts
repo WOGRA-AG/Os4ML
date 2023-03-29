@@ -3,7 +3,6 @@ import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogModule,
 } from '@angular/material/dialog';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../services/databag.service';
@@ -14,8 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
 import { DatabagFieldsComponent } from '../databag-fields/databag-fields.component';
 import { NgClass } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MaterialModule } from 'src/app/material/material.module';
 import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
@@ -27,11 +25,9 @@ import { DialogHeaderComponent } from '../../../shared/components/molecules/dial
   standalone: true,
   imports: [
     DialogHeaderComponent,
-    MatDialogModule,
+    MaterialModule,
     FormsModule,
     DialogSectionComponent,
-    MatFormFieldModule,
-    MatInputModule,
     NgClass,
     DatabagFieldsComponent,
     ButtonComponent,

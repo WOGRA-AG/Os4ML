@@ -1,9 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MaterialModule } from 'src/app/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-spinner.component';
@@ -19,7 +16,7 @@ import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-head
   imports: [
     DialogHeaderComponent,
     DialogSectionComponent,
-    MatDialogModule,
+    MaterialModule,
     NgIf,
     StatusSpinnerComponent,
     ButtonComponent,

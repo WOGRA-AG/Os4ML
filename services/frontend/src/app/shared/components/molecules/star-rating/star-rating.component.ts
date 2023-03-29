@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { StarComponent } from '../../atoms/star/star.component';
 import { NgFor } from '@angular/common';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-star-rating',
   templateUrl: './star-rating.component.html',
   standalone: true,
-  imports: [MatTooltipModule, NgFor, StarComponent, FormatNumberPipe],
+  imports: [MaterialModule, NgFor, StarComponent, FormatNumberPipe],
 })
 export class StarRatingComponent implements OnInit {
   @Input() public rating = 0; // value between 0 and 1
