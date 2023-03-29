@@ -12,8 +12,9 @@
     CACHE_REGISTRY: developer/wogra/os4ml
     IMAGE_REGISTRY: $CI_REGISTRY_IMAGE
   needs:
-    - build-frontend
     - build-frontend-image
+    - model-manager-build
+    - workflow-translator-build
     - job-manager-build
     - os-manager-build
     - build-python
