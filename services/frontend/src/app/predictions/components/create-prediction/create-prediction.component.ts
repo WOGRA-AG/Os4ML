@@ -5,17 +5,20 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { firstValueFrom, last, Subject, takeUntil, tap } from 'rxjs';
 import { ErrorService } from 'src/app/core/services/error.service';
 import { urlRegex } from 'src/app/shared/lib/regex/regex';
 import { PredictionService } from '../../services/prediction.service';
+import { DatasetUploadComponent } from '../../../shared/components/organisms/dataset-upload/dataset-upload.component';
 
 @Component({
   selector: 'app-create-prediction',
   templateUrl: './create-prediction.component.html',
   styleUrls: ['./create-prediction.component.scss'],
+  standalone: true,
+  imports: [DatasetUploadComponent, TranslateModule],
 })
 export class CreatePredictionComponent implements OnDestroy {
   @Input() public solution: Solution = {};

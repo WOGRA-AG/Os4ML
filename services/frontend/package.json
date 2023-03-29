@@ -16,6 +16,7 @@
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint && prettier --check .",
     "format": "ng lint --fix && prettier --write .",
+    "prettier": "prettier --write .",
     "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open",
     "config-prettier": "eslint-config-prettier src/main.ts"
   },

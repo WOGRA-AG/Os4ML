@@ -10,11 +10,33 @@ import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
+import { NgFor, NgIf } from '@angular/common';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { FormsModule } from '@angular/forms';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-solution-setting',
   templateUrl: './solution-setting.component.html',
   styleUrls: ['./solution-setting.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    MaterialModule,
+    FormsModule,
+    DialogSectionComponent,
+    NgFor,
+    NgIf,
+    IconButtonComponent,
+    ButtonComponent,
+    RouterLink,
+    TranslateModule,
+  ],
 })
 export class SolutionSettingComponent implements OnDestroy {
   public solution: Solution;

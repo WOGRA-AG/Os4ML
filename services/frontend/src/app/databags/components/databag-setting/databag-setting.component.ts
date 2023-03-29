@@ -9,11 +9,30 @@ import { DatabagService } from '../../services/databag.service';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { DatabagFieldsComponent } from '../databag-fields/databag-fields.component';
+import { NgClass } from '@angular/common';
+import { MaterialModule } from 'src/app/material/material.module';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { FormsModule } from '@angular/forms';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 
 @Component({
   selector: 'app-databag-setting',
   templateUrl: './databag-setting.component.html',
   styleUrls: ['./databag-setting.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    MaterialModule,
+    FormsModule,
+    DialogSectionComponent,
+    NgClass,
+    DatabagFieldsComponent,
+    ButtonComponent,
+    TranslateModule,
+  ],
 })
 export class DatabagSettingComponent implements OnDestroy {
   public databag: Databag = {};

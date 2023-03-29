@@ -4,6 +4,7 @@ import { getShortStatus } from '../lib/status/status';
 
 @Pipe({
   name: 'shortStatus',
+  standalone: true,
 })
 export class ShortStatusPipe implements PipeTransform {
   transform(status: string | undefined | null): PipelineStatus {

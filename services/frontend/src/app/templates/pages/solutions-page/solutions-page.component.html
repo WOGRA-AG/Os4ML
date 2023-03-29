@@ -23,12 +23,13 @@
               <app-solution-list
                 [solutions]="solutionsInDatabag"
                 class="solution-list"></app-solution-list>
-              <app-add-button
+              <app-button
                 (click)="addSolution()"
                 class="add-solution-button"
                 color="primary"
                 type="submit"
-                >{{ 'solution.create' | translate }}</app-add-button
+                icon="add"
+                >{{ 'solution.create' | translate }}</app-button
               >
             </div>
           </ng-container>
