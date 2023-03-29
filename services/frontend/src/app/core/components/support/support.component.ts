@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
 
 @Component({
   selector: 'app-support',
   templateUrl: './support.component.html',
   styleUrls: ['./support.component.scss'],
+  standalone: true,
+  imports: [ButtonComponent, TranslateModule],
 })
 export class SupportComponent {
   constructor(private dialog: MatDialog) {}

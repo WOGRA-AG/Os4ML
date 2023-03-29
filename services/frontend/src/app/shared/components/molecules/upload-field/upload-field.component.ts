@@ -1,9 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MaterialModule } from 'src/app/material/material.module';
+import { NgIf } from '@angular/common';
+import { DragAndDropDirective } from '../../../directives/drag-and-drop.directive';
 
 @Component({
   selector: 'app-upload-field',
   templateUrl: './upload-field.component.html',
   styleUrls: ['./upload-field.component.scss'],
+  standalone: true,
+  imports: [DragAndDropDirective, NgIf, MaterialModule, TranslateModule],
 })
 export class UploadFieldComponent {
   @Input() public file: File = new File([], '');

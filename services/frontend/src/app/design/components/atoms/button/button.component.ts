@@ -5,11 +5,30 @@ import {
   ButtonVariant,
   ColorPalette,
 } from 'src/app/shared/lib/types/button-types';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  NgSwitch,
+  NgSwitchDefault,
+  NgIf,
+  NgTemplateOutlet,
+  NgSwitchCase,
+} from '@angular/common';
 
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
+  standalone: true,
+  imports: [
+    NgSwitch,
+    NgSwitchDefault,
+    MatButtonModule,
+    NgIf,
+    MatIconModule,
+    NgTemplateOutlet,
+    NgSwitchCase,
+  ],
 })
 export class ButtonComponent {
   @Input() public color: ColorPalette = 'primary';

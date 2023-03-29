@@ -3,11 +3,25 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateDatabagStepperComponent } from 'src/app/templates/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../services/databag.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { NgFor, NgClass } from '@angular/common';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-choose-databag',
   templateUrl: './choose-databag.component.html',
   styleUrls: ['./choose-databag.component.scss'],
+  standalone: true,
+  imports: [
+    MaterialModule,
+    NgFor,
+    NgClass,
+    ButtonComponent,
+    LocalizedDatePipe,
+    TranslateModule,
+  ],
 })
 export class ChooseDatabagComponent implements OnInit {
   @Input() public databags: Databag[] = [];
