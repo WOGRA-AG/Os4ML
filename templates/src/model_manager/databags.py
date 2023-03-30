@@ -1,11 +1,10 @@
 from typing import IO
 
-import requests
-
 from build.model_manager_client.model.databag import Databag
 from config import USER_TOKEN
 from model_manager.init_api_client import model_manager
 from models.status_message import StatusMessage
+from util.upload import put_file_to_url
 
 
 def get_databag_by_id(databag_id: str) -> Databag:
@@ -29,8 +28,4 @@ def update_databag_status(databag_id: str, status: StatusMessage) -> Databag:
 
 def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
     url = model_manager.get_dataframe_put_url(databag.id, usertoken=USER_TOKEN)
-    requests.put(
-        url,
-        data=dataframe,
-        headers={"Content-Type": "application/octet-stream"},
-    )
+    put_file_to_url(url, dataframe)

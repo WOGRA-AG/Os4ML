@@ -1,12 +1,11 @@
 from datetime import datetime
 from typing import IO
 
-import requests
-
 from build.model_manager_client.model.solution import Solution
 from config import DATE_FORMAT_STR, USER_TOKEN
 from model_manager.init_api_client import model_manager
 from models.status_message import StatusMessage
+from util.upload import put_file_to_url
 
 
 def get_solution_by_id(solution_id: str) -> Solution:
@@ -47,11 +46,11 @@ def update_solution_error_status(
 
 def upload_model(model: IO[bytes], solution_id: str) -> None:
     url = model_manager.get_model_put_url(solution_id, usertoken=USER_TOKEN)
-    requests.put(url, data=model)
+    put_file_to_url(url, model)
 
 
 def upload_prediction_template(template: IO[bytes], solution_id: str) -> None:
     url = model_manager.get_prediction_template_put_url(
         solution_id, usertoken=USER_TOKEN
     )
-    requests.put(url, data=template)
+    put_file_to_url(url, template)
