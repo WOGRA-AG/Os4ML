@@ -6,11 +6,37 @@ import { CreateDatabagComponent } from 'src/app/databags/components/create-datab
 import { Databag, Solution, Solver } from 'build/openapi/modelmanager';
 import { DatabagService } from 'src/app/databags/services/databag.service';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { StatusSpinnerComponent } from '../../../shared/components/molecules/status-spinner/status-spinner.component';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { ChooseSolverComponent } from '../../../solutions/components/choose-solver/choose-solver.component';
+import { MaterialModule } from 'src/app/material/material.module';
+import { FormsModule } from '@angular/forms';
+import { ChooseDatabagColumnComponent } from '../../../solutions/components/choose-databag-column/choose-databag-column.component';
+import { NgIf, NgClass } from '@angular/common';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { CreateDatabagComponent as CreateDatabagComponent_1 } from '../../../databags/components/create-databag/create-databag.component';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 
 @Component({
   selector: 'app-getting-started-stepper',
   templateUrl: './getting-started-stepper.component.html',
   styleUrls: ['./getting-started-stepper.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    MaterialModule,
+    CreateDatabagComponent_1,
+    DialogSectionComponent,
+    NgIf,
+    ChooseDatabagColumnComponent,
+    FormsModule,
+    NgClass,
+    ChooseSolverComponent,
+    ButtonComponent,
+    StatusSpinnerComponent,
+    TranslateModule,
+  ],
 })
 export class GettingStartedStepperComponent implements OnDestroy {
   public databag: Databag = {};

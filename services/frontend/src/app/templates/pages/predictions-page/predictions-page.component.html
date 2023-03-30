@@ -5,14 +5,13 @@
     <app-predictions-list [predictions]="predictions" class="prediction-list">
     </app-predictions-list>
     <div class="actions">
-      <button
-        mat-raised-button
-        class="fab-button mat-raised-button"
+      <app-button
+        variant="raised"
+        icon="add"
         color="primary"
         (click)="createPrediction()">
-        <mat-icon>add</mat-icon>
         {{ 'prediction.create' | translate }}
-      </button>
+      </app-button>
     </div>
   </ng-container>
 </ng-container>

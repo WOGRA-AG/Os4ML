@@ -1,10 +1,23 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { urlRegex } from 'src/app/shared/lib/regex/regex';
+import { TranslateModule } from '@ngx-translate/core';
+import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.component';
+import { MaterialModule } from 'src/app/material/material.module';
+import { FormsModule } from '@angular/forms';
+import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 
 @Component({
   selector: 'app-dataset-upload',
   templateUrl: './dataset-upload.component.html',
   styleUrls: ['./dataset-upload.component.scss'],
+  standalone: true,
+  imports: [
+    DialogSectionComponent,
+    MaterialModule,
+    FormsModule,
+    UploadFieldComponent,
+    TranslateModule,
+  ],
 })
 export class DatasetUploadComponent {
   @Input() public nameLabel = '';

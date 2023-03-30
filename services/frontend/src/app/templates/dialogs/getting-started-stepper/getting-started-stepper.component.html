@@ -73,14 +73,14 @@
 
 <mat-dialog-actions>
   <div *ngIf="stepperStep > 0">
-    <button
-      mat-flat-button
+    <app-button
+      variant="stroked"
+      icon="arrow_back_ios"
       [disableRipple]="true"
       (click)="back(stepper)"
       [disabled]="runningSpinner">
-      <mat-icon>arrow_back_ios</mat-icon>
       {{ 'action.previous_step' | translate }}
-    </button>
+    </app-button>
   </div>
   <div class="button-spacer"></div>
   <app-status-spinner
@@ -88,9 +88,9 @@
     [status]="
       databag.status || 'message.pipeline.default' | translate
     "></app-status-spinner>
-  <button
+  <app-button
     id="add-databag-main-button"
-    mat-raised-button
+    variant="raised"
     color="primary"
     class="main-button"
     type="submit"
@@ -98,5 +98,5 @@
     [disabled]="isDisabled(createDatabagComponent, solution_name.valid)">
     <div *ngIf="stepperStep >= 2">{{ 'action.last_step' | translate }}</div>
     <div *ngIf="stepperStep < 2">{{ 'action.next_step' | translate }}</div>
-  </button>
+  </app-button>
 </mat-dialog-actions>

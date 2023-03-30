@@ -65,28 +65,28 @@
 
 <ng-template #nextButton>
   <mat-dialog-actions>
-    <button
+    <app-button
       id="define-output-next-button"
-      mat-raised-button
+      variant="raised"
       color="primary"
       class="main-button"
       (click)="nextPageClick(stepper)"
       [disabled]="!solution.outputFields">
       {{ 'action.next_step' | translate }}
-    </button>
+    </app-button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #createButton>
   <mat-dialog-actions>
-    <button
-      mat-flat-button
+    <app-button
+      variant="stroked"
+      icon="arrow_back_ios"
       [disableRipple]="true"
       (click)="back(stepper)"
       [disabled]="submitting">
-      <mat-icon>arrow_back_ios</mat-icon>
       {{ 'action.previous_step' | translate }}
-    </button>
+    </app-button>
     <div class="button-spacer"></div>
     <mat-spinner
       color="accent"
@@ -94,15 +94,15 @@
       [diameter]="40"
       mode="indeterminate"
       class="spinner"></mat-spinner>
-    <button
+    <app-button
       id="define-solver-next-button"
-      mat-raised-button
+      variant="raised"
       color="primary"
       [disabled]="submitting || !solution.solver || !solution.name"
       class="main-button"
       form="ngForm"
       type="submit">
       {{ 'solution.create' | translate }}
-    </button>
+    </app-button>
   </mat-dialog-actions>
 </ng-template>

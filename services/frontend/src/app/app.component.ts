@@ -5,10 +5,14 @@ import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import localeEn from '@angular/common/locales/en';
 import localeEnExtra from '@angular/common/locales/extra/en';
+import { RouterOutlet } from '@angular/router';
+import { NavBarComponent } from './core/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [NavBarComponent, RouterOutlet],
 })
 export class AppComponent {
   constructor(translate: TranslateService) {

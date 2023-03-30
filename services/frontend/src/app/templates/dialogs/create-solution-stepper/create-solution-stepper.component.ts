@@ -8,11 +8,33 @@ import {
   Solution,
   Solver,
 } from '../../../../../build/openapi/modelmanager';
+import { TranslateModule } from '@ngx-translate/core';
+import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { ChooseSolverComponent } from '../../../solutions/components/choose-solver/choose-solver.component';
+import { NgClass, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ChooseDatabagColumnComponent } from '../../../solutions/components/choose-databag-column/choose-databag-column.component';
+import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @Component({
   selector: 'app-create-solution-stepper',
   templateUrl: './create-solution-stepper.component.html',
   styleUrls: ['./create-solution-stepper.component.scss'],
+  standalone: true,
+  imports: [
+    DialogHeaderComponent,
+    DialogSectionComponent,
+    ChooseDatabagColumnComponent,
+    FormsModule,
+    MaterialModule,
+    NgClass,
+    ChooseSolverComponent,
+    NgIf,
+    ButtonComponent,
+    TranslateModule,
+  ],
 })
 export class CreateSolutionStepperComponent implements OnDestroy {
   public databag: Databag = {};

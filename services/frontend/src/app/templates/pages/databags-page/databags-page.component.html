@@ -5,14 +5,14 @@
     <app-databag-list [databags]="databags" class="databag-list">
     </app-databag-list>
     <div class="actions">
-      <button
-        mat-raised-button
+      <app-button
+        variant="raised"
         class="fab-button mat-raised-button"
         color="primary"
+        icon="add"
         (click)="addDatabag()">
-        <mat-icon>add</mat-icon>
         {{ 'databag.create' | translate }}
-      </button>
+      </app-button>
     </div>
   </ng-container>
 </ng-container>
