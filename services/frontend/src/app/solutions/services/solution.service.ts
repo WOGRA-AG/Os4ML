@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  concatWith,
+  first,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 import {
   Databag,
   ModelmanagerService,
@@ -22,8 +31,13 @@ export class SolutionService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
-    this._solutions$ = this.webSocketConnectionService.connect(
-      solutionWebsocketPath
+    this._solutions$ = this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getSolutions(token)),
+      first(),
+      concatWith(
+        this.webSocketConnectionService.connect(solutionWebsocketPath)
+      ),
+      shareReplay(1)
     );
   }
 

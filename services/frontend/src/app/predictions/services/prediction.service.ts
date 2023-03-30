@@ -16,6 +16,8 @@ import {
   takeWhile,
   throwError,
   catchError,
+  first,
+  shareReplay,
 } from 'rxjs';
 import { PipelineStatus } from 'src/app/core/models/pipeline-status';
 import { ErrorService } from 'src/app/core/services/error.service';
@@ -39,8 +41,13 @@ export class PredictionService {
     private translateService: TranslateService,
     private errorService: ErrorService
   ) {
-    this._predictions$ = this.webSocketConnectionService.connect(
-      predictionsWebsocketPath
+    this._predictions$ = this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getPredictions(token)),
+      first(),
+      concatWith(
+        this.webSocketConnectionService.connect(predictionsWebsocketPath)
+      ),
+      shareReplay(1)
     );
   }
 

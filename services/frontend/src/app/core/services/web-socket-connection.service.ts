@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, switchMap, retry, shareReplay } from 'rxjs';
+import { Observable, map, switchMap, retry } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 import { UserService } from './user.service';
 
@@ -18,8 +18,7 @@ export class WebSocketConnectionService {
           `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`
       ),
       switchMap(url => webSocket(url)),
-      retry(),
-      shareReplay(1)
+      retry()
     );
   }
 }
