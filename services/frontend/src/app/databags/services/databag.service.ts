@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import {
   catchError,
-  filter,
   map,
   Observable,
   switchMap,
   throwError,
   of,
+  concatWith,
+  first,
+  shareReplay,
+  raceWith,
 } from 'rxjs';
 import {
   Databag,
@@ -19,6 +22,7 @@ import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-tim
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ErrorService } from 'src/app/core/services/error.service';
 import { databagsWebsocketPath } from 'src/environments/environment';
+import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 
 @Injectable({
   providedIn: 'root',
@@ -33,8 +37,15 @@ export class DatabagService {
     private http: HttpClient,
     private errorService: ErrorService
   ) {
-    this._databags$ = this.webSocketConnectionService.connect(
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
       databagsWebsocketPath
+    );
+    this._databags$ = this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getDatabags(token)),
+      first(),
+      concatWith(webSocketConnection$),
+      raceWith(webSocketConnection$),
+      shareReplay(1)
     );
   }
 
@@ -51,8 +62,7 @@ export class DatabagService {
   getDatabagById(id: string): Observable<Databag> {
     return this.databags$.pipe(
       map(databags => databags.find(databag => databag.id === id)),
-      filter(databag => !!databag),
-      map(databag => databag!)
+      filterNotDefined()
     );
   }
 
