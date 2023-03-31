@@ -10,6 +10,7 @@ import {
   concatWith,
   first,
   shareReplay,
+  raceWith,
 } from 'rxjs';
 import {
   Databag,
@@ -36,12 +37,14 @@ export class DatabagService {
     private http: HttpClient,
     private errorService: ErrorService
   ) {
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
+      databagsWebsocketPath
+    );
     this._databags$ = this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getDatabags(token)),
       first(),
-      concatWith(
-        this.webSocketConnectionService.connect(databagsWebsocketPath)
-      ),
+      concatWith(webSocketConnection$),
+      raceWith(webSocketConnection$),
       shareReplay(1)
     );
   }

@@ -6,6 +6,7 @@ import {
   map,
   Observable,
   of,
+  raceWith,
   shareReplay,
   switchMap,
 } from 'rxjs';
@@ -31,12 +32,14 @@ export class SolutionService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
+    const webSocketConnection = this.webSocketConnectionService.connect(
+      solutionWebsocketPath
+    );
     this._solutions$ = this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolutions(token)),
       first(),
-      concatWith(
-        this.webSocketConnectionService.connect(solutionWebsocketPath)
-      ),
+      concatWith(webSocketConnection),
+      raceWith(webSocketConnection),
       shareReplay(1)
     );
   }
