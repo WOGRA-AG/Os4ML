@@ -4,7 +4,6 @@ from pipelines.build import compile_pipeline, load_component
 
 get_file_type_op = load_component("get_file_type")
 execute_dataframe_script_op = load_component("execute_dataframe_script")
-get_dataset_op = load_component("get_dataset")
 create_dataframe_op = load_component("create_dataframe")
 sniffle_op = load_component("sniffle_dataset")
 
@@ -32,11 +31,7 @@ def databag(
         )
 
     with Condition(file_type.output != "script", name="no-script"):
-        dataset = get_dataset_op(
-            databag_id=databag_id,
-        )
         dataframe = create_dataframe_op(
-            dataset=dataset.output,
             file_type=file_type.output,
             databag_id=databag_id,
         )
