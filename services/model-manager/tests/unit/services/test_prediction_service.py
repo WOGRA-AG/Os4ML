@@ -5,13 +5,13 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from pytest_mock import MockerFixture
-
 from build.job_manager_client.models import RunParams
 from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.models import JsonResponse
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
+from pytest_mock import MockerFixture
+
 from exceptions import (
     IdUpdateNotAllowedException,
     ModelNotFoundException,

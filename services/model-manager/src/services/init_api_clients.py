@@ -4,6 +4,7 @@ from build.job_manager_client.api.jobmanager_api import JobmanagerApi
 from build.objectstore_client import ApiClient as ObjectstoreApiClient
 from build.objectstore_client import Configuration as ObjectstoreConfiguration
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
+
 from services import OS4ML_NAMESPACE
 
 

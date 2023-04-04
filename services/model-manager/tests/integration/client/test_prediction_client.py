@@ -1,15 +1,15 @@
 import uuid
 from unittest.mock import Mock
 
-import pytest
-from fastapi.testclient import TestClient
-from pytest_mock import MockerFixture
-
 import build.openapi_server.apis.modelmanager_api
+import pytest
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.url_and_prediction_id import (
     UrlAndPredictionId,
 )
+from fastapi.testclient import TestClient
+from pytest_mock import MockerFixture
+
 from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
 
 
