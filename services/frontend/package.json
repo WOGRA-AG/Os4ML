@@ -8,7 +8,7 @@
     "prestart": "npm run generate:modelmanager",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check true --proxy-config proxy.conf.json",
-    "start-frontend": "ng serve --host 0.0.0.0 --disable-host-check true --proxy-config proxy.conf.json",
+    "start-frontend": "ng serve --host 0.0.0.0 --disable-host-check true --proxy-config frontend-only-proxy.conf.json",
     "prebuild": "npm run generate:modelmanager",
     "prepare": "cd ../.. && husky install ./services/frontend/.husky",
     "build": "ng build --output-hashing=all --base-href .",
