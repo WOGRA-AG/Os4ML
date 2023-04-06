@@ -9,8 +9,7 @@
     'solution.detail.quality' | translate
   }}</span>
   <app-star-rating
-    [rating]="getModelQualityMetric()?.value || 0"
-    [ratingName]="getModelQualityMetric()?.name"
+    [rating]="solution.metrics?.combined || 0"
     [numberStars]="5"></app-star-rating>
 </div>
 <div class="list-item-column">
