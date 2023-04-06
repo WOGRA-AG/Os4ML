@@ -1,11 +1,4 @@
-from kfp.v2.dsl import (
-    Artifact,
-    ClassificationMetrics,
-    Dataset,
-    Input,
-    Metrics,
-    Output,
-)
+from kfp.v2.dsl import Artifact, Dataset, Input
 
 from components.build import build_component
 from components.images import ludwig_image
@@ -14,8 +7,6 @@ from components.images import ludwig_image
 def ludwig_solver(
     dataframe: Input[Dataset],
     databag: Input[Artifact],
-    cls_metrics: Output[ClassificationMetrics],
-    metrics: Output[Metrics],
     solution_id: str,
     batch_size: int = 8,
     epochs: int = 50,
@@ -28,8 +19,6 @@ def ludwig_solver(
     ludwig_solver(
         dataframe=dataframe,
         databag=databag,
-        cls_metrics=cls_metrics,
-        metrics=metrics,
         solution_id=solution_id,
         batch_size=batch_size,
         epochs=epochs,

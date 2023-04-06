@@ -92,11 +92,8 @@ class SolutionService:
         json_content_bytes = json_response.json_content.encode()
         json_str = base64.decodebytes(json_content_bytes)
         json_dict = json.loads(json_str)
-        print(json_dict)
         metrics = json_dict.pop("metrics", None)
-        print(metrics)
         solution = Solution(**json_dict)
-        print(solution)
         if metrics:
             solution.metrics = Metrics(**metrics)
         return solution
