@@ -3,25 +3,48 @@ import { Observable } from 'rxjs';
 import { ListItem } from 'src/app/shared/models/list-item';
 import { ListItemComponent } from '../../molecules/list-item/list-item.component';
 import { MatListModule } from '@angular/material/list';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgIf, NgFor, NgClass, AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-selectable-list',
   templateUrl: './selectable-list.component.html',
   styleUrls: ['./selectable-list.component.scss'],
   standalone: true,
-  imports: [NgIf, MatListModule, NgFor, NgClass, ListItemComponent, AsyncPipe],
+  imports: [
+    NgIf,
+    MatListModule,
+    NgFor,
+    NgClass,
+    ListItemComponent,
+    AsyncPipe,
+    CommonModule,
+  ],
 })
 export class SelectableListComponent {
   @Input() public listItems$: Observable<ListItem[]> | null = null;
+  @Input() public multiSelect = false;
 
-  @Output() public selectedItemKeyChange: EventEmitter<string> =
-    new EventEmitter<string>();
+  @Output() public selectedItemKeyChange: EventEmitter<string[]> =
+    new EventEmitter<string[]>();
 
-  public currentSelectedItem: ListItem | null = null;
+  public currentSelectedItems: string[] = [];
 
-  selectItem(item: ListItem): void {
-    this.selectedItemKeyChange.emit(item.key);
-    this.currentSelectedItem = item;
+  public selectItem(item: ListItem): void {
+    if (this.multiSelect) {
+      this.handleMultiselectItem(item);
+    } else {
+      this.currentSelectedItems = [item.key];
+    }
+  }
+
+  private handleMultiselectItem(item: ListItem): void {
+    if (!this.currentSelectedItems.includes(item.key)) {
+      this.currentSelectedItems.push(item.key);
+    } else {
+      this.currentSelectedItems.splice(
+        this.currentSelectedItems.indexOf(item.key),
+        1
+      ); //deleting
+    }
   }
 }
