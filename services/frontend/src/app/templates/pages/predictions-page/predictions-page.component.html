@@ -3,10 +3,8 @@
 <ng-container *ngIf="predictions$ | async as predictions">
   <ng-container *ngIf="predictions.length > 0; else placeholder">
     <div class="data-insight-wrapper">
-      <app-data-insight-card
-        *ngFor="let prediction of predictions" >
-        <app-data-insight-item
-          [title]="'prediction.detail.name' | translate">
+      <app-data-insight-card *ngFor="let prediction of predictions">
+        <app-data-insight-item [title]="'prediction.detail.name' | translate">
           <span class="mat-body-2">{{ prediction.name }}</span>
         </app-data-insight-item>
         <app-data-insight-item
@@ -18,12 +16,11 @@
         </app-data-insight-item>
         <app-data-insight-item
           [title]="'prediction.detail.creation' | translate">
-        <span class="mat-body-2">
-          {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
-        </span>
+          <span class="mat-body-2">
+            {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
+          </span>
         </app-data-insight-item>
-        <app-data-insight-item
-          [title]="'prediction.detail.status' | translate">
+        <app-data-insight-item [title]="'prediction.detail.status' | translate">
           <app-processing-status-indicator [status]="prediction.status">
           </app-processing-status-indicator>
         </app-data-insight-item>

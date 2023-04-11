@@ -23,7 +23,7 @@ import { IconButtonComponent } from '../../../design/components/atoms/icon-butto
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SolutionSettingComponent } from '../../../solutions/components/solution-setting/solution-setting.component';
 import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
-import {RouterLink} from "@angular/router";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-solutions-page',

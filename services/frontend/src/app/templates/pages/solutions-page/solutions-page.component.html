@@ -38,9 +38,7 @@
                   <span class="mat-body-2">
                     <app-runtime-indicator
                       [creationTime]="solution.creationTime"
-                      [completionTime]="
-                        solution.completionTime
-                      ">
+                      [completionTime]="solution.completionTime">
                     </app-runtime-indicator>
                   </span>
                 </app-data-insight-item>
@@ -80,7 +78,9 @@
                   <app-icon-button
                     *ngIf="solution.id && solution.modelUrl"
                     [routerLink]="[solution.id, 'predictions']"
-                    [matTooltip]="'solution.detail.tooltips.show_predictions' | translate"
+                    [matTooltip]="
+                      'solution.detail.tooltips.show_predictions' | translate
+                    "
                     aria-label="Button that displays a tooltip when focused or hovered over"
                     color="primary"
                     icon="batch_prediction">
