@@ -12,23 +12,23 @@ def get_solution_by_id(solution_id: str) -> Solution:
     return model_manager.get_solution_by_id(solution_id, usertoken=USER_TOKEN)
 
 
-def update_solution(solution: Solution) -> None:
+def update_solution(solution: Solution, completed=False) -> Solution:
+    if completed:
+        solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
     model_manager.update_solution_by_id(
         solution.id, solution=solution, usertoken=USER_TOKEN
     )
+    return solution
 
 
 def update_solution_status(
-    solution_id: str, status: StatusMessage
+    solution_id: str, status: StatusMessage, completed=False
 ) -> Solution:
     solution = model_manager.get_solution_by_id(
         solution_id, usertoken=USER_TOKEN
     )
     solution.status = status.value
-    model_manager.update_solution_by_id(
-        solution_id, solution=solution, usertoken=USER_TOKEN
-    )
-    return solution
+    return update_solution(solution, completed=completed)
 
 
 def update_solution_error_status(
@@ -38,10 +38,7 @@ def update_solution_error_status(
         solution_id, usertoken=USER_TOKEN
     )
     solution.status = status.value
-    solution.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
-    model_manager.update_solution_by_id(
-        solution_id, solution=solution, usertoken=USER_TOKEN
-    )
+    update_solution(solution, completed=True)
 
 
 def upload_model(model: IO[bytes], solution_id: str) -> None:

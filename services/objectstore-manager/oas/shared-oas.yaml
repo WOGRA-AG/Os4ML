@@ -92,9 +92,8 @@ components:
           items:
             type: string
         metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/Metric'
+          nullable: true
+          $ref: '#/components/schemas/Metrics'
         creationTime:
           type: string
         completionTime:
@@ -143,8 +142,20 @@ components:
           type: string
         pipelineStep:
           type: string
+    Metrics:
+      type: object
+      nullable: true
+      properties:
+        combined:
+          type: number
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
     Metric:
       properties:
+        outputField:
+          type: string
         name:
           type: string
         value:

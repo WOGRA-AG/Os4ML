@@ -4,7 +4,6 @@ from pipelines.build import compile_pipeline, load_component
 
 load_databag_and_dataframe_op = load_component("load_databag_and_dataframe")
 ludwig_solver_op = load_component("ludwig_solver")
-get_metrics_op = load_component("get_metrics")
 create_prediction_template = load_component("create_prediction_template")
 
 
@@ -22,7 +21,7 @@ def ludwig_solver_pipeline(
     databag_and_dataframe = load_databag_and_dataframe_op(
         solution_id=solution_id,
     )
-    ludwig_solver = ludwig_solver_op(
+    ludwig_solver_op(
         dataframe=databag_and_dataframe.outputs["dataframe"],
         databag=databag_and_dataframe.outputs["databag"],
         solution_id=solution_id,
@@ -34,10 +33,6 @@ def ludwig_solver_pipeline(
     )
     create_prediction_template(
         dataframe=databag_and_dataframe.outputs["dataframe"],
-        solution_id=solution_id,
-    )
-    get_metrics_op(
-        metrics=ludwig_solver.outputs["metrics"],
         solution_id=solution_id,
     )
 
