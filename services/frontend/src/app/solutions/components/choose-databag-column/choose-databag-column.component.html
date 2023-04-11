@@ -1,4 +1,5 @@
 <app-selectable-list
+  [multiSelect]="true"
   *ngIf="outputColumnAvailable && !!listItems$; else helpMessage"
   [listItems$]="listItems$"
   (selectedItemKeyChange)="selectedColumnChange.emit($event)">
