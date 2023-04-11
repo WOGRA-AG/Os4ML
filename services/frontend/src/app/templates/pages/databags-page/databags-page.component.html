@@ -1,9 +1,50 @@
 <ng-container *ngIf="databags$ | async as databags">
-  <ng-container *ngIf="databags | hasElements; else placeholder">
+  <div class="data-insight-container" *ngIf="databags | hasElements; else placeholder">
     <h2>{{ 'databag.plural' | translate }}</h2>
 
-    <app-databag-list [databags]="databags" class="databag-list">
-    </app-databag-list>
+    <app-data-insight-card *ngFor="let databag of databags">
+      <app-data-insight-item
+        [title]="'databag.placeholder' | translate">
+        <span class="mat-body-2">{{ databag.databagName }}</span>
+      </app-data-insight-item>
+      <app-data-insight-item
+        [title]="'databag.detail.type' | translate">
+        <span class="mat-body-2">{{ databag.databagType }}</span>
+      </app-data-insight-item>
+      <app-data-insight-item
+        [title]="'databag.detail.number_of_features' | translate">
+        <span class="mat-body-2">{{ databag.numberColumns }}</span>
+      </app-data-insight-item>
+      <app-data-insight-item
+        [title]="'databag.detail.number_of_samples' | translate">
+        <span class="mat-body-2">{{ databag.numberRows }}</span>
+      </app-data-insight-item>
+      <app-data-insight-item
+        [title]="'databag.detail.creation' | translate">
+        <span class="mat-body-2">
+          {{ databag.creationTime | localizedDate }}
+          {{ databag.creationTime | localizedDate : 'mediumTime' }}
+        </span>
+      </app-data-insight-item>
+      <app-data-insight-item
+        [title]="'databag.detail.actions' | translate">
+        <app-icon-button
+          (click)="openDatabagSettingDialog(databag)"
+          [matTooltip]="'databag.detail.tooltips.settings' | translate"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          color="accent"
+          icon="edit">
+        </app-icon-button>
+        <app-icon-button
+          (click)="openCreateSolutionStepperDialog(databag)"
+          [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          color="primary"
+          icon="add">
+        </app-icon-button>
+      </app-data-insight-item>
+    </app-data-insight-card>
+
     <div class="actions">
       <app-button
         variant="raised"
@@ -14,7 +55,7 @@
         {{ 'databag.create' | translate }}
       </app-button>
     </div>
-  </ng-container>
+  </div>
 </ng-container>
 
 <ng-template #placeholder>

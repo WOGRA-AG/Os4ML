@@ -14,21 +14,25 @@ import { ButtonComponent } from '../../../design/components/atoms/button/button.
 import { PredictionsListComponent } from '../../../predictions/components/predictions-list/predictions-list.component';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { BreadcrumbsComponent } from '../../../design/components/molecules/breadcrumbs/breadcrumbs.component';
+import {
+    DataInsightCardComponent
+} from "../../../shared/components/organisms/data-insight-card/data-insight-card.component";
 
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
   styleUrls: ['./predictions-page.component.scss'],
   standalone: true,
-  imports: [
-    BreadcrumbsComponent,
-    NgIf,
-    PredictionsListComponent,
-    ButtonComponent,
-    NoPredictionPlaceholderComponent,
-    AsyncPipe,
-    TranslateModule,
-  ],
+    imports: [
+        BreadcrumbsComponent,
+        NgIf,
+        PredictionsListComponent,
+        ButtonComponent,
+        NoPredictionPlaceholderComponent,
+        AsyncPipe,
+        TranslateModule,
+        DataInsightCardComponent,
+    ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
   public predictions$: Observable<Prediction[]> = of([]);

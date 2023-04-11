@@ -61,7 +61,12 @@
       "type": "Type",
       "number_of_features": "Features",
       "number_of_samples": "Samples",
-      "creation": "Creation"
+      "creation": "Creation",
+      "actions": "Actions",
+      "tooltips": {
+        "settings": "Databag Settings",
+        "add_solution": "Add Solution"
+      }
     },
     "empty": "Get started with Machine Learning",
     "delete": {
@@ -82,7 +87,11 @@
       "quality": "Quality",
       "runtime": "Runtime",
       "creation": "Creation",
-      "status": "Status"
+      "status": "Status",
+      "tooltips": {
+        "settings": "Solution Settings",
+        "add_prediction": "Add Prediction"
+      }
     },
     "empty": "Analyze your Data with Machine Learning",
     "delete": {

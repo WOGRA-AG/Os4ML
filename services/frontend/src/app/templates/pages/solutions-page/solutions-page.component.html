@@ -20,9 +20,53 @@
                 solutionsInDatabag | hasElements;
                 else solutionsPlaceholder
               ">
-              <app-solution-list
-                [solutions]="solutionsInDatabag"
-                class="solution-list"></app-solution-list>
+              <app-data-insight-card *ngFor="let solution of solutionsInDatabag">
+                <app-data-insight-item
+                  [title]="'solution.placeholder' | translate">
+                  <span class="mat-body-2">{{ solution.name }}</span>
+                </app-data-insight-item>
+                <app-data-insight-item
+                  [title]="'solution.detail.quality' | translate">
+                  <app-star-rating
+                    [rating]="solution.metrics?.combined || 0"
+                    [numberStars]="5">
+                  </app-star-rating>
+                </app-data-insight-item>
+                <app-data-insight-item
+                  [title]="'solution.detail.runtime' | translate">
+                  <span class="mat-body-2">
+                    <app-runtime-indicator
+                      [creationTime]="solution.creationTime"
+                      [completionTime]="solution.completionTime"
+                    ></app-runtime-indicator>
+                  </span>
+                </app-data-insight-item>
+                <app-data-insight-item
+                  [title]="'solution.detail.creation' | translate">
+                  <span class="mat-body-2">{{ solution.creationTime | localizedDate : 'dd.MM.yyyy' }}</span>
+                </app-data-insight-item>
+                <app-data-insight-item
+                  [title]="'solution.detail.status' | translate">
+                  <app-processing-status-indicator [status]="solution.status"></app-processing-status-indicator>
+                </app-data-insight-item>
+                <app-data-insight-item
+                  [title]="'databag.detail.actions' | translate">
+                  <app-icon-button
+                    (click)="openSolutionSettingDialog(solution)"
+                    [matTooltip]="'solution.detail.tooltips.settings' | translate"
+                    aria-label="Button that displays a tooltip when focused or hovered over"
+                    color="accent"
+                    icon="edit">
+                  </app-icon-button>
+                  <app-icon-button
+                    (click)="openSolutionSettingDialog(solution)"
+                    [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
+                    aria-label="Button that displays a tooltip when focused or hovered over"
+                    color="primary"
+                    icon="add">
+                  </app-icon-button>
+                </app-data-insight-item>
+              </app-data-insight-card>
               <app-button
                 (click)="addSolution()"
                 class="add-solution-button"

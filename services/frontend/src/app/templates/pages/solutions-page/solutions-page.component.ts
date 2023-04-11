@@ -11,9 +11,28 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { NoSolutionsPlaceholderComponent } from '../../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
-import { SolutionListComponent } from '../../../solutions/components/solution-list/solution-list.component';
 import { ChooseDatabagComponent } from '../../../databags/components/choose-databag/choose-databag.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import {NgIf, AsyncPipe, NgForOf} from '@angular/common';
+import {
+    DataInsightCardComponent
+} from '../../../shared/components/organisms/data-insight-card/data-insight-card.component';
+import {
+  DataInsightItemComponent
+} from '../../../shared/components/molecules/data-insight-item/data-insight-item.component';
+import {StarRatingComponent} from '../../../shared/components/molecules/star-rating/star-rating.component';
+import {LocalizedDatePipe} from '../../../shared/pipes/localized-date.pipe';
+import {
+  ProcessingStatusIndicatorComponent
+} from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
+import {
+  RuntimeIndicatorComponent
+} from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
+import {IconButtonComponent} from '../../../design/components/atoms/icon-button/icon-button.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {SolutionSettingComponent} from '../../../solutions/components/solution-setting/solution-setting.component';
+import {
+  CreatePredictionStepperComponent
+} from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -23,13 +42,21 @@ import { NgIf, AsyncPipe } from '@angular/common';
   imports: [
     NgIf,
     ChooseDatabagComponent,
-    SolutionListComponent,
     ButtonComponent,
     NoSolutionsPlaceholderComponent,
     NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
     HasElementsPipe,
+    DataInsightCardComponent,
+    DataInsightItemComponent,
+    NgForOf,
+    StarRatingComponent,
+    LocalizedDatePipe,
+    ProcessingStatusIndicatorComponent,
+    RuntimeIndicatorComponent,
+    IconButtonComponent,
+    MatTooltipModule,
   ],
 })
 export class SolutionsPageComponent {
@@ -62,6 +89,24 @@ export class SolutionsPageComponent {
     );
     this.dialog.open(CreateSolutionStepperComponent, {
       data: { databag },
+    });
+  }
+  openSolutionSettingDialog(solution: Solution): void {
+    this.dialog.open(SolutionSettingComponent, {
+      data: { solution },
+      panelClass: 'setting-dialog',
+      height: '100%',
+      position: {
+        right: '12px',
+      },
+    });
+  }
+
+  openCreatePredictionDialog(solution: Solution): void {
+    this.dialog.open(CreatePredictionStepperComponent, {
+      data: {
+        solution: { solution },
+      },
     });
   }
 
