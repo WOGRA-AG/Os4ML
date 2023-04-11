@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./card.component.scss'],
   standalone: true,
 })
-export class CardComponent {
-
-}
+export class CardComponent {}

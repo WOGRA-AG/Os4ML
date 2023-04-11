@@ -64,8 +64,8 @@
       "creation": "Creation",
       "actions": "Actions",
       "tooltips": {
-        "settings": "Databag Settings",
-        "add_solution": "Add Solution"
+        "settings": "Databag settings",
+        "add_solution": "Add solution"
       }
     },
     "empty": "Get started with Machine Learning",
@@ -88,9 +88,11 @@
       "runtime": "Runtime",
       "creation": "Creation",
       "status": "Status",
+      "actions": "Actions",
       "tooltips": {
-        "settings": "Solution Settings",
-        "add_prediction": "Add Prediction"
+        "settings": "Solution settings",
+        "add_prediction": "Add prediction",
+        "show_predictions": "Show predictions"
       }
     },
     "empty": "Analyze your Data with Machine Learning",
@@ -107,7 +109,12 @@
       "name": "Prediction Name",
       "runtime": "Runtime",
       "creation": "Creation",
-      "download": "Download"
+      "download": "Download",
+      "status": "Status",
+      "actions": "Actions",
+      "tooltips": {
+        "download": "Download prediction"
+      }
     },
     "empty": "Make predictions with your trained model",
     "placeholder": {

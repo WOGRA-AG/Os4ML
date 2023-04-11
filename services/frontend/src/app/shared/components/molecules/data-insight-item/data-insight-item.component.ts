@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-data-insight-item',
@@ -8,5 +8,4 @@ import {Component, Input} from '@angular/core';
 })
 export class DataInsightItemComponent {
   @Input() public title = '';
-
 }

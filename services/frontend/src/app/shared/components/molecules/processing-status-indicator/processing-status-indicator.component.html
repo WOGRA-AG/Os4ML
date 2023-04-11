@@ -1,10 +1,10 @@
 <div
   id="solution-status"
   class="status mat-button"
-  [ngClass]="
-    {'running': (status | shortStatus) === 'Running',
-    'error': (status | shortStatus) === 'Error',
-    'done': (status | shortStatus) === 'Done'}"
-  >
+  [ngClass]="{
+    running: (status | shortStatus) === 'Running',
+    error: (status | shortStatus) === 'Error',
+    done: (status | shortStatus) === 'Done'
+  }">
   {{ status | shortStatus }}
 </div>

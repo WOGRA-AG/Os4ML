@@ -20,7 +20,8 @@
                 solutionsInDatabag | hasElements;
                 else solutionsPlaceholder
               ">
-              <app-data-insight-card *ngFor="let solution of solutionsInDatabag">
+              <app-data-insight-card
+                *ngFor="let solution of solutionsInDatabag">
                 <app-data-insight-item
                   [title]="'solution.placeholder' | translate">
                   <span class="mat-body-2">{{ solution.name }}</span>
@@ -37,33 +38,52 @@
                   <span class="mat-body-2">
                     <app-runtime-indicator
                       [creationTime]="solution.creationTime"
-                      [completionTime]="solution.completionTime"
-                    ></app-runtime-indicator>
+                      [completionTime]="
+                        solution.completionTime
+                      ">
+                    </app-runtime-indicator>
                   </span>
                 </app-data-insight-item>
                 <app-data-insight-item
                   [title]="'solution.detail.creation' | translate">
-                  <span class="mat-body-2">{{ solution.creationTime | localizedDate : 'dd.MM.yyyy' }}</span>
+                  <span class="mat-body-2">{{
+                    solution.creationTime | localizedDate : 'dd.MM.yyyy'
+                  }}</span>
                 </app-data-insight-item>
                 <app-data-insight-item
                   [title]="'solution.detail.status' | translate">
-                  <app-processing-status-indicator [status]="solution.status"></app-processing-status-indicator>
+                  <app-processing-status-indicator
+                    [status]="
+                      solution.status
+                    "></app-processing-status-indicator>
                 </app-data-insight-item>
                 <app-data-insight-item
                   [title]="'databag.detail.actions' | translate">
                   <app-icon-button
                     (click)="openSolutionSettingDialog(solution)"
-                    [matTooltip]="'solution.detail.tooltips.settings' | translate"
+                    [matTooltip]="
+                      'solution.detail.tooltips.settings' | translate
+                    "
                     aria-label="Button that displays a tooltip when focused or hovered over"
                     color="accent"
                     icon="edit">
                   </app-icon-button>
                   <app-icon-button
-                    (click)="openSolutionSettingDialog(solution)"
-                    [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
+                    (click)="openCreatePredictionDialog(solution)"
+                    [matTooltip]="
+                      'solution.detail.tooltips.add_prediction' | translate
+                    "
                     aria-label="Button that displays a tooltip when focused or hovered over"
                     color="primary"
                     icon="add">
+                  </app-icon-button>
+                  <app-icon-button
+                    *ngIf="solution.id && solution.modelUrl"
+                    [routerLink]="[solution.id, 'predictions']"
+                    [matTooltip]="'solution.detail.tooltips.show_predictions' | translate"
+                    aria-label="Button that displays a tooltip when focused or hovered over"
+                    color="primary"
+                    icon="batch_prediction">
                   </app-icon-button>
                 </app-data-insight-item>
               </app-data-insight-card>
