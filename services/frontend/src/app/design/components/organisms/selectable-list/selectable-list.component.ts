@@ -14,14 +14,30 @@ import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
 })
 export class SelectableListComponent {
   @Input() public listItems$: Observable<ListItem[]> | null = null;
+  @Input() public multiSelect = false;
 
-  @Output() public selectedItemKeyChange: EventEmitter<string> =
-    new EventEmitter<string>();
+  @Output() public selectedItemKeyChange: EventEmitter<string[]> =
+    new EventEmitter<string[]>();
 
-  public currentSelectedItem: ListItem | null = null;
+  public currentSelectedItems: string[] = [];
 
-  selectItem(item: ListItem): void {
-    this.selectedItemKeyChange.emit(item.key);
-    this.currentSelectedItem = item;
+  public selectItem(item: ListItem): void {
+    if (this.multiSelect) {
+      this.handleMultiselectItem(item);
+    } else {
+      this.currentSelectedItems = [item.key];
+    }
+    this.selectedItemKeyChange.emit(this.currentSelectedItems);
+  }
+
+  private handleMultiselectItem(item: ListItem): void {
+    if (!this.currentSelectedItems.includes(item.key)) {
+      this.currentSelectedItems.push(item.key);
+    } else {
+      this.currentSelectedItems.splice(
+        this.currentSelectedItems.indexOf(item.key),
+        1
+      );
+    }
   }
 }
