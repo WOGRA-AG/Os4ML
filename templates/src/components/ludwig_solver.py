@@ -1,19 +1,20 @@
 import functools
 import os
+import statistics
 import tempfile
 import zipfile
 
-from kfp.v2.dsl import ClassificationMetrics, Dataset, Input, Metrics, Output
+from kfp.v2.dsl import Dataset, Input
 from ludwig.api import LudwigModel
 
+from build.model_manager_client.models import Metric, Metrics, Solution
 from config import MODEL_DIR_NAME
 from load.databag import load_databag
 from load.dataframe import load_dataframe
 from ludwig_model.dataset import train_validate_test_split
-from ludwig_model.labels import get_all_label_values, get_label_name
-from ludwig_model.metrics import calculate_conf_matrix
 from ludwig_model.model import build_model, train_model
 from model_manager.solutions import (
+    update_solution,
     update_solution_error_status,
     update_solution_status,
     upload_model,
@@ -25,8 +26,6 @@ from util.exception_handler import exception_handler
 def ludwig_solver(
     dataframe: Input[Dataset],
     databag: Input[Dataset],
-    cls_metrics: Output[ClassificationMetrics],
-    metrics: Output[Metrics],
     solution_id: str,
     batch_size: int,
     epochs: int,
@@ -52,33 +51,33 @@ def ludwig_solver(
             df_full, test_split, validation_split
         )
         train_model(model, df_train, df_validate, df_test)
-        evaluate_model(
-            model, model_definition, df_full, df_test, metrics, cls_metrics
-        )
+        solution = evaluate_model(model, solution, df_test)
         upload_model_to_solution(model, solution_id)
+        solution.status = StatusMessage.SOLVER_DONE.value
+        update_solution(solution, completed=True)
 
 
 def evaluate_model(
-    model, model_definition, dataset, df_test, metrics, cls_metrics
-):
-    label_name = get_label_name(model_definition)
-    label_values = get_all_label_values(dataset, label_name)
+    model: LudwigModel, solution: Solution, df_test
+) -> Solution:
+    details = [
+        evaluate_output_field(output_field, model, df_test)
+        for output_field in solution.output_fields
+    ]
+    combined = statistics.mean(metric.value for metric in details)
+    solution.metrics = Metrics(combined=combined, details=details)
+    return solution
 
+
+def evaluate_output_field(name: str, model: LudwigModel, df_test) -> Metric:
     stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
-
-    y_true = df_test[label_name].dropna()
-    y_pred = pred[pred.columns[0]]
-
-    label_stats = stats[label_name]
+    label_stats = stats[name]
     if "accuracy" in label_stats:
         accuracy = float(label_stats["accuracy"])
-        metrics.log_metric("accuracy", accuracy)
-
-        conf_matrix = calculate_conf_matrix(y_true, y_pred, label_values)
-        cls_metrics.log_confusion_matrix(label_values, conf_matrix)
+        return Metric(output_field=name, name="accuracy", value=accuracy)
     if "r2" in label_stats:
         r2_score = float(max(0, label_stats["r2"]))
-        metrics.log_metric("r2_score", r2_score)
+        return Metric(output_field=name, name="r2_score", value=r2_score)
 
 
 def upload_model_to_solution(
