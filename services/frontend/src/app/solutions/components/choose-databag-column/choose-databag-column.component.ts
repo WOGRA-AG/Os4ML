@@ -21,7 +21,7 @@ import { NgIf } from '@angular/common';
 })
 export class ChooseDatabagColumnComponent implements OnChanges {
   @Input() public databag: Databag = {};
-  @Output() public selectedColumnChange = new EventEmitter<string>();
+  @Output() public selectedColumnChange = new EventEmitter<string[]>();
   public listItems$: Observable<ListItem[]> | undefined;
 
   private allowedColumnTypes = ['category', 'numerical'];
