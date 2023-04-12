@@ -76,8 +76,8 @@ export class CreateSolutionStepperComponent implements OnDestroy {
     stepper.next();
   }
 
-  selectOutputColumn(columnName: string): void {
-    this.solution.outputFields = [columnName];
+  selectOutputColumn(columnNames: string[]): void {
+    this.solution.outputFields = columnNames;
   }
 
   close(): void {
