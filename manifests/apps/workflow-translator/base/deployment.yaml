@@ -39,6 +39,36 @@ spec:
                 configMapKeyRef:
                   name: workflow-translator-config
                   key: os4mlNS
+            - name: PREPARE_NODE_SELECTOR
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: prepareNodeSelector
+            - name: PREPARE_NODE_TOLERATION
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: prepareNodeToleration
+            - name: SOLVE_NODE_SELECTOR
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: solveNodeSelector
+            - name: SOLVE_NODE_TOLERATION
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: solveNodeToleration
+            - name: APPLY_NODE_SELECTOR
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: applyNodeSelector
+            - name: APPLY_NODE_TOLERATION
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: applyNodeToleration
           resources:
             limits:
               cpu: 500m
