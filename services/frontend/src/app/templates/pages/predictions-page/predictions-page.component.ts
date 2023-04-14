@@ -19,7 +19,6 @@ import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
 import { ProcessingStatusIndicatorComponent } from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
 import { MaterialModule } from '../../../material/material.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-predictions-page',
@@ -40,7 +39,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     RuntimeIndicatorComponent,
     ProcessingStatusIndicatorComponent,
     MaterialModule,
-    MatTooltipModule,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {

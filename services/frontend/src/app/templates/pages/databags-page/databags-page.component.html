@@ -29,14 +29,16 @@
         <app-icon-button
           (click)="openDatabagSettingDialog(databag)"
           [matTooltip]="'databag.detail.tooltips.settings' | translate"
-          aria-label="Button that displays a tooltip when focused or hovered over"
+          attr.aria-label="{{ 'databag.detail.tooltips.settings' | translate }}"
           color="accent"
           icon="edit">
         </app-icon-button>
         <app-icon-button
           (click)="openCreateSolutionStepperDialog(databag)"
           [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
-          aria-label="Button that displays a tooltip when focused or hovered over"
+          attr.aria-label="{{
+            'databag.detail.tooltips.add_solution' | translate
+          }}"
           color="primary"
           icon="add">
         </app-icon-button>

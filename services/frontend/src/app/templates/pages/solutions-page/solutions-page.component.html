@@ -71,7 +71,9 @@
                     [matTooltip]="
                       'solution.detail.tooltips.add_prediction' | translate
                     "
-                    aria-label="Button that displays a tooltip when focused or hovered over"
+                    attr.aria-label="{{
+                      'solution.detail.tooltips.add_prediction' | translate
+                    }}"
                     color="primary"
                     icon="add">
                   </app-icon-button>
@@ -81,6 +83,9 @@
                     [matTooltip]="
                       'solution.detail.tooltips.show_predictions' | translate
                     "
+                    attr.aria-label="{{
+                      'solution.detail.tooltips.show_predictions' | translate
+                    }}"
                     aria-label="Button that displays a tooltip when focused or hovered over"
                     color="primary"
                     icon="batch_prediction">

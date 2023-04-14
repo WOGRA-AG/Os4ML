@@ -20,10 +20,10 @@ import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 import { ProcessingStatusIndicatorComponent } from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
 import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
 import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { SolutionSettingComponent } from '../../../solutions/components/solution-setting/solution-setting.component';
 import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { RouterLink } from '@angular/router';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-solutions-page',
@@ -47,7 +47,7 @@ import { RouterLink } from '@angular/router';
     ProcessingStatusIndicatorComponent,
     RuntimeIndicatorComponent,
     IconButtonComponent,
-    MatTooltipModule,
+    MaterialModule,
     RouterLink,
   ],
 })

@@ -29,6 +29,9 @@
           <a
             mat-icon-button
             color="primary"
+            attr.aria-label="{{
+              'prediction.detail.tooltips.download' | translate
+            }}"
             [matTooltip]="'prediction.detail.tooltips.download' | translate"
             [disabled]="!prediction.resultUrl"
             target="_blank"

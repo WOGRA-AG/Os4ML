@@ -1,7 +1,7 @@
 @import 'src/app/material/essentials/color';
 
 :host {
+  display: flex;
   background: $surface;
-  box-shadow: 0px 6px 58px rgba(196, 203, 214, 0.103611);
   border-radius: 24px;
 }

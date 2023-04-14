@@ -3,7 +3,6 @@ import { DatabagService } from '../../../databags/services/databag.service';
 import { Observable } from 'rxjs';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { HasElementsPipe } from '../../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,6 +15,7 @@ import { DataInsightItemComponent } from '../../../shared/components/molecules/d
 import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
 import { DatabagSettingComponent } from '../../../databags/components/databag-setting/databag-setting.component';
 import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-databags-page',
@@ -33,7 +33,7 @@ import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-st
     NgForOf,
     LocalizedDatePipe,
     DataInsightItemComponent,
-    MatTooltipModule,
+    MaterialModule,
     IconButtonComponent,
   ],
 })
