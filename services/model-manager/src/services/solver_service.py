@@ -14,7 +14,7 @@ class SolverService:
                 name="ludwig-solver",
                 type="pipeline",
                 description="Solver with Ludwig AutoML",
-                pipeline_step="solver",
+                pipeline_step="solve",
             ),
         ]
 
