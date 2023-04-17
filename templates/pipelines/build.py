@@ -4,7 +4,6 @@ from typing import Callable
 from kfp.compiler import Compiler
 from kfp.components import load_component_from_file
 from kfp.dsl import PipelineConf, PipelineExecutionMode
-from kubernetes.client.models import V1LocalObjectReference
 
 PIPELINE_FILE_NAME = "pipeline.yaml"
 
@@ -18,9 +17,7 @@ def load_component(component_dir: str):
 
 def compile_pipeline(pipeline_func: Callable, pipeline_file: str):
     pipeline_name = pathlib.Path(pipeline_file).parent / PIPELINE_FILE_NAME
-    credentials = V1LocalObjectReference("registry-credentials")
     conf = PipelineConf()
-    conf.set_image_pull_secrets([credentials])
     conf.set_image_pull_policy("IfNotPresent")
     Compiler(mode=PipelineExecutionMode.V2_COMPATIBLE).compile(
         pipeline_func, str(pipeline_name), pipeline_conf=conf
