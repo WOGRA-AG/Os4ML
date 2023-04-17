@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { NgClass } from '@angular/common';
+import { PipelineStatus } from '../../../../core/models/pipeline-status';
 
 @Component({
   selector: 'app-processing-status-indicator',
@@ -10,5 +11,6 @@ import { NgClass } from '@angular/common';
   imports: [ShortStatusPipe, NgClass],
 })
 export class ProcessingStatusIndicatorComponent {
-  @Input() public status: string | null | undefined = undefined;
+  @Input() public shortStatus: PipelineStatus | null = null;
+  public pipelineStatus = PipelineStatus;
 }

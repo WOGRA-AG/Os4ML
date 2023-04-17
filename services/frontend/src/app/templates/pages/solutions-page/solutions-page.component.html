@@ -23,10 +23,12 @@
               <app-data-insight-card
                 *ngFor="let solution of solutionsInDatabag">
                 <app-data-insight-item
+                  content
                   [title]="'solution.placeholder' | translate">
                   <span class="mat-body-2">{{ solution.name }}</span>
                 </app-data-insight-item>
                 <app-data-insight-item
+                  content
                   [title]="'solution.detail.quality' | translate">
                   <app-star-rating
                     [rating]="solution.metrics?.combined || 0"
@@ -34,6 +36,7 @@
                   </app-star-rating>
                 </app-data-insight-item>
                 <app-data-insight-item
+                  content
                   [title]="'solution.detail.runtime' | translate">
                   <span class="mat-body-2">
                     <app-runtime-indicator
@@ -43,19 +46,21 @@
                   </span>
                 </app-data-insight-item>
                 <app-data-insight-item
+                  content
                   [title]="'solution.detail.creation' | translate">
                   <span class="mat-body-2">{{
                     solution.creationTime | localizedDate : 'dd.MM.yyyy'
                   }}</span>
                 </app-data-insight-item>
                 <app-data-insight-item
+                  content
                   [title]="'solution.detail.status' | translate">
                   <app-processing-status-indicator
-                    [status]="
-                      solution.status
-                    "></app-processing-status-indicator>
+                    [shortStatus]="solution.status | shortStatus">
+                  </app-processing-status-indicator>
                 </app-data-insight-item>
                 <app-data-insight-item
+                  actions
                   [title]="'databag.detail.actions' | translate">
                   <app-icon-button
                     (click)="openSolutionSettingDialog(solution)"

@@ -2,9 +2,9 @@
   id="solution-status"
   class="status mat-button"
   [ngClass]="{
-    running: (status | shortStatus) === 'Running',
-    error: (status | shortStatus) === 'Error',
-    done: (status | shortStatus) === 'Done'
+    running: shortStatus === pipelineStatus.running,
+    error: shortStatus === pipelineStatus.error,
+    done: shortStatus === pipelineStatus.done
   }">
-  {{ status | shortStatus }}
+  {{ shortStatus }}
 </div>

@@ -24,6 +24,8 @@ import { SolutionSettingComponent } from '../../../solutions/components/solution
 import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { RouterLink } from '@angular/router';
 import { MaterialModule } from '../../../material/material.module';
+import { PipelineStatus } from '../../../core/models/pipeline-status';
+import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 
 @Component({
   selector: 'app-solutions-page',
@@ -49,12 +51,14 @@ import { MaterialModule } from '../../../material/material.module';
     IconButtonComponent,
     MaterialModule,
     RouterLink,
+    ShortStatusPipe,
   ],
 })
 export class SolutionsPageComponent {
   public databags$: Observable<Databag[]>;
   public selectedDatabagId$: BehaviorSubject<string> = new BehaviorSubject('');
   public solutionsInDatabag$: Observable<Solution[]>;
+  public pipelineStatus = PipelineStatus;
 
   constructor(
     private databagService: DatabagService,

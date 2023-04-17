@@ -19,6 +19,8 @@ import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
 import { ProcessingStatusIndicatorComponent } from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
 import { MaterialModule } from '../../../material/material.module';
+import { PipelineStatus } from '../../../core/models/pipeline-status';
+import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
 
 @Component({
   selector: 'app-predictions-page',
@@ -39,10 +41,12 @@ import { MaterialModule } from '../../../material/material.module';
     RuntimeIndicatorComponent,
     ProcessingStatusIndicatorComponent,
     MaterialModule,
+    ShortStatusPipe,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
   public predictions$: Observable<Prediction[]> = of([]);
+  public pipelineStatus = PipelineStatus;
   public breadcrumbs: Breadcrumb[] = [];
   private solution: Solution = {};
   private readonly _destroy$: Subject<void> = new Subject<void>();

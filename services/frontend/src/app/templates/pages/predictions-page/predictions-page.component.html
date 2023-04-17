@@ -4,10 +4,13 @@
   <ng-container *ngIf="predictions.length > 0; else placeholder">
     <div class="data-insight-wrapper">
       <app-data-insight-card *ngFor="let prediction of predictions">
-        <app-data-insight-item [title]="'prediction.detail.name' | translate">
+        <app-data-insight-item
+          content
+          [title]="'prediction.detail.name' | translate">
           <span class="mat-body-2">{{ prediction.name }}</span>
         </app-data-insight-item>
         <app-data-insight-item
+          content
           [title]="'prediction.detail.runtime' | translate">
           <app-runtime-indicator
             [creationTime]="prediction.creationTime"
@@ -15,16 +18,21 @@
           </app-runtime-indicator>
         </app-data-insight-item>
         <app-data-insight-item
+          content
           [title]="'prediction.detail.creation' | translate">
           <span class="mat-body-2">
             {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
           </span>
         </app-data-insight-item>
-        <app-data-insight-item [title]="'prediction.detail.status' | translate">
-          <app-processing-status-indicator [status]="prediction.status">
+        <app-data-insight-item
+          content
+          [title]="'prediction.detail.status' | translate">
+          <app-processing-status-indicator
+            [shortStatus]="prediction.status | shortStatus">
           </app-processing-status-indicator>
         </app-data-insight-item>
         <app-data-insight-item
+          actions
           [title]="'prediction.detail.actions' | translate">
           <a
             mat-icon-button
