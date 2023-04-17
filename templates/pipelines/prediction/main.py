@@ -24,7 +24,7 @@ def prediction_pipeline(
 
 
 def main():
-    compile_pipeline(prediction_pipeline, file=__file__)
+    compile_pipeline(prediction_pipeline, pipeline_file=__file__)
 
 
 if __name__ == "__main__":

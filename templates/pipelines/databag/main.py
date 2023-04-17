@@ -44,7 +44,7 @@ def databag(
 
 
 def main():
-    compile_pipeline(databag, file=__file__)
+    compile_pipeline(databag, pipeline_file=__file__)
 
 
 if __name__ == "__main__":

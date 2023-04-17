@@ -16,8 +16,8 @@ def load_component(component_dir: str):
     return load_component_from_file(str(component_file))
 
 
-def compile_pipeline(pipeline_func: Callable, file: str):
-    pipeline_name = pathlib.Path(file).parent / PIPELINE_FILE_NAME
+def compile_pipeline(pipeline_func: Callable, pipeline_file: str):
+    pipeline_name = pathlib.Path(pipeline_file).parent / PIPELINE_FILE_NAME
     credentials = V1LocalObjectReference("registry-credentials")
     conf = PipelineConf()
     conf.set_image_pull_secrets([credentials])
