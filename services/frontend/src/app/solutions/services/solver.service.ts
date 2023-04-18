@@ -3,9 +3,9 @@ import { UserService } from '../../core/services/user.service';
 import {
   ModelmanagerService,
   Solver,
+  PipelineStep,
 } from '../../../../build/openapi/modelmanager';
 import { map, Observable, switchMap, take } from 'rxjs';
-import { PipelineStep } from '../../core/models/pipeline-step';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class SolverService {
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolvers(token)),
       map(solvers =>
-        solvers.filter(solver => solver.pipelineStep === PipelineStep.solver)
+        solvers.filter(solver => solver.pipelineStep === PipelineStep.Solve)
       )
     );
   }
