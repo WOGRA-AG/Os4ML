@@ -129,8 +129,8 @@ export class GettingStartedStepperComponent implements OnDestroy {
     return this.databagService.deleteDatabagById(this.databag.id);
   }
 
-  selectOutputColumn(columnName: string): void {
-    this.solution.outputFields = [columnName];
+  selectOutputColumn(columnNames: string[]): void {
+    this.solution.outputFields = columnNames;
   }
 
   selectSolver(solver: Solver): void {
