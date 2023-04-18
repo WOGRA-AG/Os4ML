@@ -6,14 +6,12 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ErrorService } from '../services/error.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private router: Router,
     private errorService: ErrorService,
     private translate: TranslateService
   ) {}
@@ -27,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         const errorMsg: string = err.error.message || err.statusText;
 
         if (err.status === 401 || err.status === 403) {
-          this.router.navigate(['/']);
+          window.location.reload();
         } else if (err.status === 404 && err.url.includes('/run/')) {
         } else if (err.status >= 400 && err.status <= 499) {
           this.translate.get('action.confirm').subscribe((res: string) => {
