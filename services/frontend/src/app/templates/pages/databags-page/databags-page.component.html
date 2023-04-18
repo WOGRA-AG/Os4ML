@@ -5,12 +5,10 @@
     <h2>{{ 'databag.plural' | translate }}</h2>
     <app-data-insight-card *ngFor="let databag of databags">
       <ng-container content>
-        <app-data-insight-item
-          [title]="'databag.placeholder' | translate">
+        <app-data-insight-item [title]="'databag.placeholder' | translate">
           <span class="mat-body-2">{{ databag.databagName }}</span>
         </app-data-insight-item>
-        <app-data-insight-item
-          [title]="'databag.detail.type' | translate">
+        <app-data-insight-item [title]="'databag.detail.type' | translate">
           <span class="mat-body-2">{{ databag.databagType }}</span>
         </app-data-insight-item>
         <app-data-insight-item
@@ -21,21 +19,21 @@
           [title]="'databag.detail.number_of_samples' | translate">
           <span class="mat-body-2">{{ databag.numberRows }}</span>
         </app-data-insight-item>
-        <app-data-insight-item
-          [title]="'databag.detail.creation' | translate">
-        <span class="mat-body-2">
-          {{ databag.creationTime | localizedDate }}
-          {{ databag.creationTime | localizedDate : 'mediumTime' }}
-        </span>
+        <app-data-insight-item [title]="'databag.detail.creation' | translate">
+          <span class="mat-body-2">
+            {{ databag.creationTime | localizedDate }}
+            {{ databag.creationTime | localizedDate : 'mediumTime' }}
+          </span>
         </app-data-insight-item>
       </ng-container>
       <ng-container actions>
-        <app-data-insight-item
-          [title]="'databag.detail.actions' | translate">
+        <app-data-insight-item [title]="'databag.detail.actions' | translate">
           <app-icon-button
             (click)="openDatabagSettingDialog(databag)"
             [matTooltip]="'databag.detail.tooltips.settings' | translate"
-            attr.aria-label="{{ 'databag.detail.tooltips.settings' | translate }}"
+            attr.aria-label="{{
+              'databag.detail.tooltips.settings' | translate
+            }}"
             color="accent"
             icon="edit">
           </app-icon-button>
@@ -43,8 +41,8 @@
             (click)="openCreateSolutionStepperDialog(databag)"
             [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
             attr.aria-label="{{
-            'databag.detail.tooltips.add_solution' | translate
-          }}"
+              'databag.detail.tooltips.add_solution' | translate
+            }}"
             color="primary"
             icon="add">
           </app-icon-button>

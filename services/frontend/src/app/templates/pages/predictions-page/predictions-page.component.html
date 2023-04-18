@@ -5,8 +5,7 @@
     <div class="data-insight-wrapper">
       <app-data-insight-card *ngFor="let prediction of predictions">
         <ng-container content>
-          <app-data-insight-item
-            [title]="'prediction.detail.name' | translate">
+          <app-data-insight-item [title]="'prediction.detail.name' | translate">
             <span class="mat-body-2">{{ prediction.name }}</span>
           </app-data-insight-item>
           <app-data-insight-item
@@ -18,9 +17,9 @@
           </app-data-insight-item>
           <app-data-insight-item
             [title]="'prediction.detail.creation' | translate">
-          <span class="mat-body-2">
-            {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
-          </span>
+            <span class="mat-body-2">
+              {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
+            </span>
           </app-data-insight-item>
           <app-data-insight-item
             [title]="'prediction.detail.status' | translate">
@@ -36,8 +35,8 @@
               mat-icon-button
               color="primary"
               attr.aria-label="{{
-              'prediction.detail.tooltips.download' | translate
-            }}"
+                'prediction.detail.tooltips.download' | translate
+              }}"
               [matTooltip]="'prediction.detail.tooltips.download' | translate"
               [disabled]="!prediction.resultUrl"
               target="_blank"
