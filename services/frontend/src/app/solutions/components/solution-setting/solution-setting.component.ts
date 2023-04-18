@@ -9,7 +9,7 @@ import { SolutionService } from '../../services/solution.service';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
-import { CreatePredictionStepperComponent } from 'src/app/templates/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { CreatePredictionStepperComponent } from 'src/app/pages/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';

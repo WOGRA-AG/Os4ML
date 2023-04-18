@@ -11,6 +11,7 @@ import { NavBarComponent } from './core/components/nav-bar/nav-bar.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [NavBarComponent, RouterOutlet],
 })

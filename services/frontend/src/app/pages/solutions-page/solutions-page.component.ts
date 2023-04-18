@@ -1,31 +1,32 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
-import { DatabagService } from '../../../databags/services/databag.service';
-import { SolutionService } from '../../../solutions/services/solution.service';
-import { CreateDatabagStepperComponent } from '../../dialogs/create-databag-stepper/create-databag-stepper.component';
-import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
-import { HasElementsPipe } from '../../../shared/pipes/has-elements.pipe';
+import { Databag, Solution } from '../../../../build/openapi/modelmanager';
+import { DatabagService } from '../../databags/services/databag.service';
+import { SolutionService } from '../../solutions/services/solution.service';
+import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
+import { CreateSolutionStepperComponent } from '../dialogs/create-solution-stepper/create-solution-stepper.component';
+import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NoDatabagsPlaceholderComponent } from '../../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
-import { NoSolutionsPlaceholderComponent } from '../../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
-import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
-import { ChooseDatabagComponent } from '../../../databags/components/choose-databag/choose-databag.component';
+import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
+import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
+import { ButtonComponent } from '../../design/components/atoms/button/button.component';
+import { ChooseDatabagComponent } from '../../databags/components/choose-databag/choose-databag.component';
 import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
-import { DataInsightCardComponent } from '../../../shared/components/organisms/data-insight-card/data-insight-card.component';
-import { DataInsightItemComponent } from '../../../shared/components/molecules/data-insight-item/data-insight-item.component';
-import { StarRatingComponent } from '../../../shared/components/molecules/star-rating/star-rating.component';
-import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
-import { ProcessingStatusIndicatorComponent } from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
-import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
-import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
-import { SolutionSettingComponent } from '../../../solutions/components/solution-setting/solution-setting.component';
-import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { DataInsightCardComponent } from '../../shared/components/organisms/data-insight-card/data-insight-card.component';
+import { DataInsightItemComponent } from '../../shared/components/molecules/data-insight-item/data-insight-item.component';
+import { StarRatingComponent } from '../../shared/components/molecules/star-rating/star-rating.component';
+import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
+import { ProcessingStatusIndicatorComponent } from '../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
+import { RuntimeIndicatorComponent } from '../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
+import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
+import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
+import { CreatePredictionStepperComponent } from '../dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { RouterLink } from '@angular/router';
-import { MaterialModule } from '../../../material/material.module';
-import { PipelineStatus } from '../../../core/models/pipeline-status';
-import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
+import { MaterialModule } from '../../material/material.module';
+import { PipelineStatus } from '../../core/models/pipeline-status';
+import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
+import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -52,6 +53,7 @@ import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
     MaterialModule,
     RouterLink,
     ShortStatusPipe,
+    Os4mlDefaultTemplateComponent,
   ],
 })
 export class SolutionsPageComponent {

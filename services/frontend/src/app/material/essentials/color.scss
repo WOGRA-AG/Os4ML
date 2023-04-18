@@ -203,6 +203,10 @@ $on-surface-disabled: rgba($on-surface, 0.38);
 $border-color: rgba($on-surface, 0.12);
 $overlay: rgba($primary-color-900, 0.16);
 
+.background {
+  background-color: $background;
+}
+
 .primary {
   color: $primary-color;
 }
