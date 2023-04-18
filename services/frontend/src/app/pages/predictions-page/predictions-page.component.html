@@ -1,5 +1,5 @@
 <app-os4ml-default-template>
-  <h2>{{ 'prediction.plural' | translate }}</h2>
+  <h1 class="headline-1 primary">{{ 'prediction.plural' | translate }}</h1>
   <app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
   <ng-container *ngIf="predictions$ | async as predictions">
     <ng-container *ngIf="predictions.length > 0; else placeholder">

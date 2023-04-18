@@ -15,4 +15,10 @@ nav {
   position: fixed;
   width: 205px;
   height: 100%;
+
+  a,
+  .logo {
+    width: 100%;
+    text-decoration: none;
+  }
 }

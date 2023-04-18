@@ -1,4 +1,5 @@
 <app-os4ml-default-template>
+  <h1 class="headline-1 primary">{{ 'solution.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
       <div class="content-container">
@@ -9,9 +10,6 @@
           "></app-choose-databag>
         <ng-container *ngIf="selectedDatabagId$ | async as selectedDatabagId">
           <div class="solutions-template">
-            <div class="solutions-taskbar">
-              <h2>{{ 'solution.plural' | translate }}</h2>
-            </div>
             <ng-container
               *ngIf="solutionsInDatabag$ | async as solutionsInDatabag">
               <div
