@@ -63,7 +63,9 @@
                       [matTooltip]="
                         'solution.detail.tooltips.settings' | translate
                       "
-                      aria-label="Button that displays a tooltip when focused or hovered over"
+                      attr.aria-label="{{
+                        'solution.detail.tooltips.settings' | translate
+                      }}"
                       color="accent"
                       icon="edit">
                     </app-icon-button>
