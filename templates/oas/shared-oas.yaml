@@ -147,7 +147,7 @@ components:
         description:
           type: string
         pipelineStep:
-          $ref: '#/components/schemas/PipelineStep'
+          type: string
     Metrics:
       type: object
       nullable: true
