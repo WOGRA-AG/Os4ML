@@ -28,7 +28,7 @@ class PipelineStep(str, enum.Enum):
 def get_pipeline_step_by_name(name: str) -> PipelineStep:
     if name == "databag":
         return PipelineStep.PREPARE
-    if name == "ludwig_solver":
+    if name == "ludwig-solver":
         return PipelineStep.SOLVE
     if name == "prediction":
         return PipelineStep.APPLY
