@@ -115,10 +115,9 @@ describe('Databags', () => {
       .invoke('show')
       .selectFile('cypress/fixtures/titanic_predict.csv');
     cy.get('#predict-dialog-button').click();
-
     cy.get('#download-prediction-result-link', {
       timeout: predictionTimeout,
-    }).should('have.text', ' Download Result ');
+    }).should('not.have.css', 'pointer-events', 'none');
     cy.get('#download-prediction-result-link').click();
     const downloadedFile = `${Cypress.config(
       'downloadsFolder'
@@ -126,8 +125,6 @@ describe('Databags', () => {
     cy.readFile(downloadedFile, 'binary', { timeout: downloadTimeout }).should(
       buffer => expect(buffer.length).to.be.gt(100)
     );
-    cy.get('#close-create-prediction-dialog-button').click();
-    cy.get('#predictions-page-link-button').click();
     cy.get('.prediction-list-item > :nth-child(1) > :nth-child(2)').should(
       'have.text',
       'pred'
