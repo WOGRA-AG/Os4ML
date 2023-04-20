@@ -1,4 +1,5 @@
 @import 'src/app/material/essentials/media-queries';
+@import 'src/app/material/essentials/color';
 
 .string-input {
   width: 100%;
@@ -43,5 +44,15 @@
 
   @media #{$large-and-up} {
     max-height: 200px;
+  }
+}
+
+.docs-text {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: bold;
   }
 }
