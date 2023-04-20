@@ -38,9 +38,7 @@ def ludwig_solver_pipeline(
 
 
 def main():
-    compile_pipeline(
-        ludwig_solver_pipeline, file=__file__, node_pool="high-cpu"
-    )
+    compile_pipeline(ludwig_solver_pipeline, pipeline_file=__file__)
 
 
 if __name__ == "__main__":

@@ -405,6 +405,8 @@ components:
       $ref: './shared-oas.yaml#/components/schemas/OIDCUser'
     DatabagType:
       $ref: './shared-oas.yaml#/components/schemas/DatabagType'
+    PipelineStep:
+      $ref: './shared-oas.yaml#/components/schemas/PipelineStep'
     PutUrl:
       type: string
     DatasetPutUrl:

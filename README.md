@@ -1,4 +1,4 @@
-![Ludwig logo](https://github.com/WOGRA-AG/os4ml-docs/raw/main/docs/assets/Os4ML_Logo_Large.png
+![Ludwig logo](https://github.com/WOGRA-AG/os4ml-docs/raw/main/docs/assets/logos/Os4ML_Logo_Large.png
  "Os4ML logo")
 
 # Open space for Machine Learning
@@ -10,7 +10,7 @@ following features:
 
 - Create a data bags using Excel sheets
 - Create a solution using [Ludwig](https://github.com/ludwig-ai/ludwig) for 
-  categorization problems
+  categorization and regression problems
 - Integration of external storage, e.g. [Shepard][] using python scripts
 - Multi-User Isolation
 
@@ -26,8 +26,10 @@ use third-party open source software.
 There is a lot of work to do. In the near future the following will happen:
 
 - [x] A [Terraform module to install Os4ML](https://github.com/WOGRA-AG/terraform-kustomization-os4ml) on a k3d cluster using ArgoCD
-- [ ] Solving regression problems (Winter 2022)
-- [ ] Intelligent Data Labeling (Spring 2023)
+- [x] Solving regression problems (Winter 2022)
+- [x] Solving multi output problems (Spring 2022)
+- [ ] Adding Transfer Learning Support (Summer 2023)
+- [ ] Intelligent Data Labeling (Fall 2023)
    
 ## 	Acknowledgment
 Os4ML is a project of the [WOGRA AG][] research group in cooperation with the 

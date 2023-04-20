@@ -123,7 +123,10 @@
         "description": "Upload your data and create a databag.",
         "upper_field_placeholder": "click to browse or",
         "lower_field_placeholder": "drag and drop your file",
-        "connect_placeholder": "Url"
+        "connect_placeholder": "Url",
+        "pre_docs": "Encountering issues with uploading? Our",
+        "docs": "documentation",
+        "post_docs": "can assist you - take a look for guidance."
       },
       "problem": {
         "description": "What do you want to predict?",

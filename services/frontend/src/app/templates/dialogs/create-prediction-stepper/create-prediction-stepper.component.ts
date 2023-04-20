@@ -64,10 +64,10 @@ export class CreatePredictionStepperComponent {
   }
 
   async close(): Promise<void> {
+    this.dialogRef.close();
     if (this.stepperStep === 0) {
       await this.clearProgress();
     }
-    this.dialogRef.close();
   }
 
   async back(stepper: MatStepper): Promise<void> {

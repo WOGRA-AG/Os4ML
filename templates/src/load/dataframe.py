@@ -22,7 +22,7 @@ def save_dataframe(df: pd.DataFrame, path: str) -> None:
 
 def create_df(file_type: str, path: str) -> pd.DataFrame:
     if file_type == FileType.CSV:
-        return pd.read_csv(path)
+        return pd.read_csv(path, sep=None, engine="python")
     if file_type == FileType.EXCEL:
         return pd.read_excel(path, sheet_name=0)
     if file_type == FileType.ZIP:
