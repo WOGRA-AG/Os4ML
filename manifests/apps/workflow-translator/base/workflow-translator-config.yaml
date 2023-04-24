@@ -5,3 +5,9 @@ metadata:
 data:
   os4mlNS: 'os4ml'
   engine: 'kubeflow'
+  prepareNodeSelector: ''
+  prepareNodeToleration: ''
+  solveNodeSelector: ''
+  solveNodeToleration: ''
+  applyNodeSelector: ''
+  applyNodeToleration: ''

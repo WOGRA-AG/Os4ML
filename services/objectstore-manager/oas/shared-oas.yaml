@@ -132,6 +132,12 @@ components:
         resultUrl:
           $ref: '#/components/schemas/Url'
           nullable: true
+    PipelineStep:
+      type: string
+      enum:
+        - prepare
+        - solve
+        - apply
     Solver:
       properties:
         name:

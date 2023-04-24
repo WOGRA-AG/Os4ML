@@ -71,7 +71,7 @@
       color="primary"
       class="main-button"
       (click)="nextPageClick(stepper)"
-      [disabled]="!solution.outputFields">
+      [disabled]="!solution.outputFields || solution.outputFields.length === 0">
       {{ 'action.next_step' | translate }}
     </app-button>
   </mat-dialog-actions>

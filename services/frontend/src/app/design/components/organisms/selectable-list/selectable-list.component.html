@@ -2,9 +2,7 @@
   <mat-list-item
     *ngFor="let item of listItems$ | async"
     class="pointer bg-primary"
-    [ngClass]="{
-      active: item.key === currentSelectedItem?.key
-    }"
+    [class.active]="currentSelectedItems.includes(item.key)"
     (click)="selectItem(item)">
     <app-list-item [item]="item"></app-list-item>
   </mat-list-item>

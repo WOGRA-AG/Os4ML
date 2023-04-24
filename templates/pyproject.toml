@@ -12,6 +12,7 @@ authors = ["WOGRA AG <info@wogra.com>"]
 python = "^3.8"
 pandas = "^1.4.1"
 kfp = "^1.8.14"
+pillow = "^9.5.0"
 
 [tool.poetry.dev-dependencies]
 coverage = { version = "^5.3", extras = ["toml"] }
