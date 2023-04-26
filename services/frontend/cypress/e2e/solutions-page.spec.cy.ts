@@ -24,12 +24,13 @@ before(() => {
   updatedDatabagName = `updated ${databagName}`;
   updatedSolutionName = `updated ${solutionName}`;
 });
+beforeEach(() => {
+  cy.visit('/#/solutions');
+  cy.wait(2000);
+});
 
 describe('Solutions Page', () => {
   it('add a Databag xls', () => {
-    cy.visit('/#/solutions');
-    cy.wait(2000);
-
     createDatabag(databagName, 'cypress/fixtures/titanic.xls');
     cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`)

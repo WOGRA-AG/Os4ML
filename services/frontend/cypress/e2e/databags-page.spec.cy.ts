@@ -16,22 +16,23 @@ let updatedDatabagName: string;
 let updatedSolutionName: string;
 
 before('login', () => {
+  updatedDatabagName = `updated ${databagName}`;
+  updatedSolutionName = `updated ${solutionName}`;
   login();
 });
 
 after('logout', () => {
   logout();
 });
-
-before(() => {
-  updatedDatabagName = `updated ${databagName}`;
-  updatedSolutionName = `updated ${solutionName}`;
+beforeEach(() => {
+  cy.visit('/#/databags');
+  cy.wait(2000);
 });
-describe('Databags Page', () => {
-  it('verify documentation link', () => {
-    cy.visit('/databags');
-    cy.wait(2000);
 
+describe('Databags Page', () => {
+
+
+  it('verify documentation link', () => {
     const documentationUrl = 'https://wogra-ag.github.io/os4ml-docs/';
     cy.get('[data-testid="add-databag"]', { timeout: 500 }).click();
     cy.get('[data-testid="documentation-link"]').should(
