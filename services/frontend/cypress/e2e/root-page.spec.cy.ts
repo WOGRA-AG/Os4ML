@@ -21,7 +21,6 @@ describe('Root Page', () => {
     cy.visit('/#/solutions');
     cy.wait(2000);
 
-
     cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type(databagName);
