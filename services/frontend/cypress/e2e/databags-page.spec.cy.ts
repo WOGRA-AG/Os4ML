@@ -28,7 +28,7 @@ before(() => {
 });
 describe('Databags Page', () => {
   beforeEach(() => {
-    cy.visit('/#/databags');
+    cy.visit('/databags');
     cy.wait(2000);
   });
 
