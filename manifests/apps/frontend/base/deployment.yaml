@@ -47,16 +47,16 @@ spec:
               port: http
               path: /
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 30
+            initialDelaySeconds: 5
+            periodSeconds: 5
             failureThreshold: 4
           livenessProbe:
             httpGet:
               port: http
               path: /
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 30
+            initialDelaySeconds: 5
+            periodSeconds: 10
             failureThreshold: 4
           securityContext:
             allowPrivilegeEscalation: false
