@@ -4,12 +4,20 @@ import {
   deleteDatabag,
   deleteSolution,
 } from '../utils/e2e.utils';
+import { login, logout } from '../utils/e2e.login';
 
 const inputTimeout = 1000;
 const databagName = `e2e databag ${new Date().toISOString()}`;
 const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
+
+beforeEach('login', () => {
+  login();
+});
+afterEach('logout', () => {
+  logout();
+});
 
 before(() => {
   updatedDatabagName = `updated ${databagName}`;

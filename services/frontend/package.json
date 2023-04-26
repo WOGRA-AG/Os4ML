@@ -18,9 +18,9 @@
     "lint": "ng lint && prettier --check .",
     "format": "ng lint --fix && prettier --write .",
     "prettier": "prettier --write .",
-    "e2e": "cypress open",
-    "e2e:run": "cypress run",
-    "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open",
+    "e2e:run": "npx cypress run",
+    "e2e:local": "cypress open",
+    "cypress:open": "npx cypress open --env LOGIN_DISABLED=true",
     "config-prettier": "eslint-config-prettier src/main.ts"
   },
   "private": true,

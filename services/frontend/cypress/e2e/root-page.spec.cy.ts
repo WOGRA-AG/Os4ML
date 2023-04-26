@@ -1,11 +1,20 @@
 ///<reference path="../utils/e2e.utils.ts"/>
 import { deleteDatabag, deleteSolution } from '../utils/e2e.utils';
+import { login, logout } from '../utils/e2e.login';
 
 const databagName = `e2e Fastlane databag ${new Date().toISOString()}`;
 const solutionName = `e2e Fastlane solutionName ${new Date().toISOString()}`;
 const databagTimeout = 1000000;
 const standardTimeout = 1000;
 const solutionTimeout = 600000;
+
+beforeEach('login', () => {
+  login();
+});
+afterEach('logout', () => {
+  logout();
+});
+
 describe('Root Page', () => {
   it('regression with fastlane', () => {
     cy.visit('/solutions');

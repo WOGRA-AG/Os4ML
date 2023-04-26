@@ -1,6 +1,7 @@
 //reference path="../../node_modules/cypress/types/net-stubbing.d.ts"/>
 
 import { createDatabag, deleteDatabag } from '../utils/e2e.utils';
+import { login, logout } from '../utils/e2e.login';
 
 const databagTimeout = 1000000;
 const solutionTimeout = 600000;
@@ -13,6 +14,14 @@ const databagName = `e2e databag ${new Date().toISOString()}`;
 const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
+
+beforeEach('login', () => {
+  login();
+});
+afterEach('logout', () => {
+  logout();
+});
+
 before(() => {
   updatedDatabagName = `updated ${databagName}`;
   updatedSolutionName = `updated ${solutionName}`;
@@ -20,11 +29,7 @@ before(() => {
 describe('Databags Page', () => {
   beforeEach(() => {
     cy.visit('/#/databags');
-    cy.intercept(
-      'GET',
-      'http://localhost:4200/apis/v1beta1/model-manager/databags'
-    ).as('getDatabags');
-    cy.wait('@getDatabags');
+    cy.wait(2000);
   });
 
   it('verify documentation link', () => {
