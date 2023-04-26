@@ -17,7 +17,7 @@ beforeEach('login', () => {
 
 describe('Root Page', () => {
   it('regression with fastlane', () => {
-    cy.visit('https://testing.os4ml.wogra.com/#/solutions');
+    cy.visit('/#/solutions');
 
     cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
@@ -54,7 +54,7 @@ describe('Root Page', () => {
     });
 
     deleteSolution(solutionName);
-    cy.visit('https://testing.os4ml.wogra.com/#/databags');
+    cy.visit('/databags');
     deleteDatabag(databagName);
   });
 });
