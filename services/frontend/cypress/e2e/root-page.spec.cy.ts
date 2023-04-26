@@ -11,9 +11,9 @@ const solutionTimeout = 600000;
 beforeEach('login', () => {
   login();
 });
-afterEach('logout', () => {
-  logout();
-});
+// afterEach('logout', () => {
+//   logout();
+// });
 
 describe('Root Page', () => {
   it('regression with fastlane', () => {
