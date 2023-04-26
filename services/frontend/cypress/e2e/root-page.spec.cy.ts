@@ -48,7 +48,6 @@ describe('Root Page', () => {
     cy.wait(standardTimeout);
     cy.get('#add-databag-main-button').click();
 
-
     cy.wait(2000);
     cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`, { timeout: 500 })
