@@ -18,6 +18,8 @@
     "lint": "ng lint && prettier --check .",
     "format": "ng lint --fix && prettier --write .",
     "prettier": "prettier --write .",
+    "e2e": "cypress open",
+    "e2e:run": "cypress run",
     "cypress:open": "NODE_OPTIONS=--openssl-legacy-provider cypress open",
     "config-prettier": "eslint-config-prettier src/main.ts"
   },

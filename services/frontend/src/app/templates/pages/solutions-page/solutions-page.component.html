@@ -1,6 +1,6 @@
 <ng-container *ngIf="databags$ | async as databags">
   <ng-container *ngIf="databags | hasElements; else placeholder">
-    <div class="content-container">
+    <div class="content-container" data-testid="solution-page">
       <app-choose-databag
         [databags]="databags"
         (selectedDatabagIdChange)="
@@ -20,6 +20,8 @@
                 else solutionsPlaceholder
               ">
               <app-data-insight-card
+                class="solution-card"
+                data-testid="solution-item"
                 *ngFor="let solution of solutionsInDatabag">
                 <ng-container content>
                   <app-data-insight-item
@@ -51,6 +53,8 @@
                   <app-data-insight-item
                     [title]="'solution.detail.status' | translate">
                     <app-processing-status-indicator
+                      data-testid="solution-status-indicator"
+                      id="solution-status"
                       [shortStatus]="solution.status | shortStatus">
                     </app-processing-status-indicator>
                   </app-data-insight-item>
@@ -59,6 +63,8 @@
                   <app-data-insight-item
                     [title]="'databag.detail.actions' | translate">
                     <app-icon-button
+                      class="solution-settings"
+                      data-testid="solution-settings-button"
                       (click)="openSolutionSettingDialog(solution)"
                       [matTooltip]="
                         'solution.detail.tooltips.settings' | translate
@@ -70,6 +76,7 @@
                       icon="edit">
                     </app-icon-button>
                     <app-icon-button
+                      class="add-prediction"
                       (click)="openCreatePredictionDialog(solution)"
                       [matTooltip]="
                         'solution.detail.tooltips.add_prediction' | translate
@@ -96,6 +103,7 @@
                 </ng-container>
               </app-data-insight-card>
               <app-button
+                data-testid="add-solution"
                 (click)="addSolution()"
                 class="add-solution-button"
                 color="primary"

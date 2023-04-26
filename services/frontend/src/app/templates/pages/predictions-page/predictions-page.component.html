@@ -3,10 +3,14 @@
 <ng-container *ngIf="predictions$ | async as predictions">
   <ng-container *ngIf="predictions.length > 0; else placeholder">
     <div class="data-insight-wrapper">
-      <app-data-insight-card *ngFor="let prediction of predictions">
+      <app-data-insight-card
+        class="predictions-card"
+        *ngFor="let prediction of predictions">
         <ng-container content>
           <app-data-insight-item [title]="'prediction.detail.name' | translate">
-            <span class="mat-body-2">{{ prediction.name }}</span>
+            <span class="mat-body-2" class="prediction-name">{{
+              prediction.name
+            }}</span>
           </app-data-insight-item>
           <app-data-insight-item
             [title]="'prediction.detail.runtime' | translate">
@@ -24,6 +28,7 @@
           <app-data-insight-item
             [title]="'prediction.detail.status' | translate">
             <app-processing-status-indicator
+              class="prediction-status"
               [shortStatus]="prediction.status | shortStatus">
             </app-processing-status-indicator>
           </app-data-insight-item>

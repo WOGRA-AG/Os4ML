@@ -2,7 +2,11 @@
   {{ 'solution.create' | translate }}
 </app-dialog-header>
 
-<mat-stepper [linear]="false" orientation="horizontal" #stepper>
+<mat-stepper
+  [linear]="false"
+  orientation="horizontal"
+  #stepper
+  data-testid="create-solution-stepper">
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
