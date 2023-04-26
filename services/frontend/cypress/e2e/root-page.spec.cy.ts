@@ -17,7 +17,7 @@ afterEach('logout', () => {
 
 describe('Root Page', () => {
   it('regression with fastlane', () => {
-    cy.visit('/solutions');
+    cy.visit('/#/solutions');
 
     cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
