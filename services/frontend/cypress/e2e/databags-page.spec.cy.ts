@@ -15,10 +15,11 @@ const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
 
-beforeEach('login', () => {
+before('login', () => {
   login();
 });
-afterEach('logout', () => {
+
+after('logout', () => {
   logout();
 });
 
@@ -27,12 +28,10 @@ before(() => {
   updatedSolutionName = `updated ${solutionName}`;
 });
 describe('Databags Page', () => {
-  beforeEach(() => {
+  it('verify documentation link', () => {
     cy.visit('/databags');
     cy.wait(2000);
-  });
 
-  it('verify documentation link', () => {
     const documentationUrl = 'https://wogra-ag.github.io/os4ml-docs/';
     cy.get('[data-testid="add-databag"]', { timeout: 500 }).click();
     cy.get('[data-testid="documentation-link"]').should(

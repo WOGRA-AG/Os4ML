@@ -8,16 +8,19 @@ const databagTimeout = 1000000;
 const standardTimeout = 1000;
 const solutionTimeout = 600000;
 
-beforeEach('login', () => {
+before('login', () => {
   login();
 });
-// afterEach('logout', () => {
-//   logout();
-// });
+
+after('logout', () => {
+  logout();
+});
 
 describe('Root Page', () => {
   it('regression with fastlane', () => {
     cy.visit('/#/solutions');
+    cy.wait(2000);
+
 
     cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
@@ -55,6 +58,8 @@ describe('Root Page', () => {
 
     deleteSolution(solutionName);
     cy.visit('/databags');
+    cy.wait(2000);
+
     deleteDatabag(databagName);
   });
 });

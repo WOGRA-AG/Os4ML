@@ -12,10 +12,11 @@ const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
 
-beforeEach('login', () => {
+before('login', () => {
   login();
 });
-afterEach('logout', () => {
+
+after('logout', () => {
   logout();
 });
 
@@ -25,12 +26,10 @@ before(() => {
 });
 
 describe('Solutions Page', () => {
-  beforeEach(() => {
+  it('add a Databag xls', () => {
     cy.visit('/#/solutions');
     cy.wait(2000);
-  });
 
-  it('add a Databag xls', () => {
     createDatabag(databagName, 'cypress/fixtures/titanic.xls');
     cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`)
@@ -75,6 +74,7 @@ describe('Solutions Page', () => {
 
   it('delete a Databag', () => {
     cy.visit('/#/databags');
+    cy.wait(2000);
     deleteDatabag(databagName);
     cy.get('[data-testid="databag-page"]').should('not.contain', databagName);
   });
