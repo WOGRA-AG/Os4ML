@@ -1,9 +1,10 @@
 export function login() {
   cy.viewport(1280, 720);
-
+  cy.log('lol');
   if (!Cypress.env('CYPRESS_dev')) {
+    cy.log('fddd');
     cy.visit('https://testing.os4ml.wogra.com');
-    cy.log(Cypress.env('Login'));
+    cy.log('fddd');
     cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear();
     // add username to run locally
