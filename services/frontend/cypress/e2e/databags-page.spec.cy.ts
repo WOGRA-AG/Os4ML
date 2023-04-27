@@ -15,7 +15,7 @@ const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
 
-before('login', () => {
+beforeEach('login', () => {
   updatedDatabagName = `updated ${databagName}`;
   updatedSolutionName = `updated ${solutionName}`;
   login();
@@ -83,6 +83,7 @@ describe('Databags Page', () => {
   });
 
   it('delete a Databag dataframe script', () => {
+    updatedDatabagName = databagName + ' dataframe script';
     deleteDatabag(updatedDatabagName);
     cy.get('[data-testid="databag-page"]').should(
       'not.contain',

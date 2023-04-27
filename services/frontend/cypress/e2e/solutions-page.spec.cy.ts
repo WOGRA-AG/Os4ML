@@ -12,7 +12,7 @@ const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
 let updatedSolutionName: string;
 
-before('login', () => {
+beforeEach('login', () => {
   login();
 });
 

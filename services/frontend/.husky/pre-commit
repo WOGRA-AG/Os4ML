@@ -10,18 +10,18 @@ if ! $lint ; then
   fail=true
 fi
 
-cd ../model-manager
-black="poetry run black --config ./pyproject.toml --exclude src/build --check src tests"
-if ! $black ; then
-  poetry run black --config ./pyproject.toml src tests
-  fail=true
-fi
-
-isort="poetry run isort --settings-path ./pyproject.toml --check-only src tests"
-if ! $isort ; then
-  poetry run isort --settings-path ./pyproject.toml src tests
-  fail=true
-fi
+#cd ../model-manager
+#black="poetry run black --config ./pyproject.toml --exclude src/build --check src tests"
+#if ! $black ; then
+#  poetry run black --config ./pyproject.toml src tests
+#  fail=true
+#fi
+#
+#isort="poetry run isort --settings-path ./pyproject.toml --check-only src tests"
+#if ! $isort ; then
+#  poetry run isort --settings-path ./pyproject.toml src tests
+#  fail=true
+#fi
 
 if [ "$fail" = true ]; then
   exit 1

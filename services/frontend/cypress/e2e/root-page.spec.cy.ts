@@ -8,7 +8,7 @@ const databagTimeout = 1000000;
 const standardTimeout = 1000;
 const solutionTimeout = 600000;
 
-before('login', () => {
+beforeEach('login', () => {
   login();
 });
 
