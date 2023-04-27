@@ -21,11 +21,11 @@ import { ProcessingStatusIndicatorComponent } from '../../../shared/components/m
 import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
 import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
 import { SolutionSettingComponent } from '../../../solutions/components/solution-setting/solution-setting.component';
-import { CreatePredictionStepperComponent } from '../../dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { RouterLink } from '@angular/router';
 import { MaterialModule } from '../../../material/material.module';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
 import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
+import { CreatePredictionComponent } from '../../dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -99,7 +99,7 @@ export class SolutionsPageComponent {
   }
 
   openCreatePredictionDialog(solution: Solution): void {
-    this.dialog.open(CreatePredictionStepperComponent, {
+    this.dialog.open(CreatePredictionComponent, {
       data: {
         solution: { solution },
       },
