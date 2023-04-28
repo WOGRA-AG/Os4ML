@@ -1,6 +1,5 @@
 e2e:
   image: cypress/browsers:node18.12.0-chrome103-ff107
-  start_in: 30 seconds
   tags:
     - aime
   stage: e2e
@@ -19,3 +18,5 @@ e2e:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_PIPELINE_SOURCE
+      when: delayed
+      start_in: 30 seconds
