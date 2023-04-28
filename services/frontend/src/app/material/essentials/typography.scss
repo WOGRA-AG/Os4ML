@@ -61,6 +61,10 @@ $custom-typography: mat.define-typography-config(
     text-align: left;
   }
 
+  b.mat-caption {
+    font-weight: 800;
+  }
+
   .mat-overline {
     text-align: left;
     text-transform: uppercase;

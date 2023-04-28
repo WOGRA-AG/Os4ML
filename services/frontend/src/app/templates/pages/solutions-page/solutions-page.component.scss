@@ -22,8 +22,7 @@
 .list-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 75vh;
+  gap: 1rem;
 }
 
 .solution-list {
