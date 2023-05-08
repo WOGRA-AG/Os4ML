@@ -60,7 +60,7 @@ RUN buildDeps="build-essential" \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
-ENV POETRY_VERSION=1.2.1
+ENV POETRY_VERSION=1.4.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 - --version ${POETRY_VERSION} && \
     chmod a+x /opt/poetry/bin/poetry
@@ -79,7 +79,6 @@ ENV FASTAPI_ENV=development
 # Copying poetry and venv into image
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
 
 # Copying in our entrypoint
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -89,6 +88,7 @@ RUN chmod +x /docker-entrypoint.sh
 WORKDIR $PYSETUP_PATH
 RUN poetry install --no-root
 
+COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
 WORKDIR $PROJECT_DIR
 COPY . .
 
