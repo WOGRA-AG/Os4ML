@@ -1,4 +1,4 @@
-<app-os4ml-default-template data-testid="solutions-page">
+<app-os4ml-default-template data-testid="solutions-page" >
   <h1 class="headline-1 primary">{{ 'solution.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
