@@ -1,4 +1,3 @@
-
 export function login() {
   cy.viewport(1280, 720);
   if (!Cypress.env('dev')) {
