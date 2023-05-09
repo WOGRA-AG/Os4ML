@@ -1,6 +1,7 @@
+
 export function login() {
   cy.viewport(1280, 720);
-  if (!Cypress.env('CYPRESS_dev')) {
+  if (!Cypress.env('dev')) {
     cy.visit('/');
     cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
     cy.get('#username').clear();
@@ -18,7 +19,7 @@ export function login() {
 }
 
 export function logout() {
-  if (!Cypress.env('CYPRESS_dev')) {
+  if (!Cypress.env('dev')) {
     cy.visit('/logout');
     cy.get('#kc-logout').click();
     cy.get('#kc-page-title').contains('You are logged out');
