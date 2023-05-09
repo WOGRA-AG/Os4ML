@@ -9,7 +9,6 @@ import { SolutionService } from '../../services/solution.service';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
-import { CreatePredictionStepperComponent } from 'src/app/pages/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
@@ -19,6 +18,7 @@ import { DialogSectionComponent } from '../../../shared/components/molecules/dia
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
+import { CreatePredictionStepperComponent } from '../../../pages/dialogs/create-prediction-stepper/create-prediction-stepper.component';
 
 @Component({
   selector: 'app-solution-setting',
@@ -100,6 +100,7 @@ export class SolutionSettingComponent implements OnDestroy {
         solution: this.solution,
       },
     });
+    this.dialogRef.close();
   }
 
   ngOnDestroy(): void {

@@ -19,14 +19,14 @@ import { StarRatingComponent } from '../../shared/components/molecules/star-rati
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { ProcessingStatusIndicatorComponent } from '../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
 import { RuntimeIndicatorComponent } from '../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
-import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
-import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
-import { CreatePredictionStepperComponent } from '../dialogs/create-prediction-stepper/create-prediction-stepper.component';
-import { RouterLink } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
-import { PipelineStatus } from '../../core/models/pipeline-status';
+import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
+import { RouterLink } from '@angular/router';
 import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
+import { PipelineStatus } from '../../core/models/pipeline-status';
+import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
+import { CreatePredictionComponent } from '../../predictions/components/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -101,7 +101,7 @@ export class SolutionsPageComponent {
   }
 
   openCreatePredictionDialog(solution: Solution): void {
-    this.dialog.open(CreatePredictionStepperComponent, {
+    this.dialog.open(CreatePredictionComponent, {
       data: {
         solution: { solution },
       },

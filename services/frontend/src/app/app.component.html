@@ -6,13 +6,13 @@
       </a>
     </ng-container>
     <ng-container main-nav>
-      <a [routerLink]="['/databags']">
+      <a data-testid="databags-page-link" [routerLink]="['/databags']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>folder_open</mat-icon>
           <b class="nav-caption">{{ 'databag.plural' | translate }}</b>
         </app-side-nav-item>
       </a>
-      <a [routerLink]="['/solutions']">
+      <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>lightbulb</mat-icon>
           <b class="nav-caption">{{ 'solution.plural' | translate }}</b>
@@ -21,6 +21,7 @@
     </ng-container>
     <ng-container footer-nav>
       <button
+        id="get-started-button"
         mat-stroked-button
         color="primary"
         (click)="openGettingStartedDialog()">

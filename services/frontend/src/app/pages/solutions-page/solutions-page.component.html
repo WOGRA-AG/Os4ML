@@ -1,8 +1,8 @@
-<app-os4ml-default-template>
+<app-os4ml-default-template data-testid="solutions-page">
   <h1 class="headline-1 primary">{{ 'solution.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
-      <div class="content-container">
+      <div class="content-container" data-testid="solution-page">
         <app-choose-databag
           [databags]="databags"
           (selectedDatabagIdChange)="
@@ -19,6 +19,7 @@
                   else solutionsPlaceholder
                 ">
                 <app-data-insight-card
+                  data-testid="solution-item"
                   *ngFor="let solution of solutionsInDatabag">
                   <ng-container content>
                     <app-data-insight-item
@@ -50,6 +51,7 @@
                     <app-data-insight-item
                       [title]="'solution.detail.status' | translate">
                       <app-processing-status-indicator
+                        data-testid="solution-status-indicator"
                         [shortStatus]="solution.status | shortStatus">
                       </app-processing-status-indicator>
                     </app-data-insight-item>
@@ -58,6 +60,7 @@
                     <app-data-insight-item
                       [title]="'databag.detail.actions' | translate">
                       <app-icon-button
+                        data-testid="solution-settings-button"
                         (click)="openSolutionSettingDialog(solution)"
                         [matTooltip]="
                           'solution.detail.tooltips.settings' | translate

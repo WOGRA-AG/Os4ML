@@ -3,13 +3,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { firstValueFrom } from 'rxjs';
-import { CreatePredictionComponent } from 'src/app/predictions/components/create-prediction/create-prediction.component';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
 import { StatusSpinnerComponent } from '../../../shared/components/molecules/status-spinner/status-spinner.component';
 import { NgIf } from '@angular/common';
-import { CreatePredictionComponent as CreatePredictionComponent_1 } from '../../../predictions/components/create-prediction/create-prediction.component';
+import {
+  CreatePredictionComponent,
+  CreatePredictionComponent as CreatePredictionComponent_1,
+} from '../../../predictions/components/create-prediction/create-prediction.component';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
 

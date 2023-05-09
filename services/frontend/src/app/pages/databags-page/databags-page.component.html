@@ -1,10 +1,12 @@
-<app-os4ml-default-template>
+<app-os4ml-default-template data-testid="databag-page">
   <h1 class="headline-1 primary">{{ 'databag.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <div
       class="data-insight-wrapper"
       *ngIf="databags | hasElements; else placeholder">
-      <app-data-insight-card *ngFor="let databag of databags">
+      <app-data-insight-card
+        data-testid="databag-item"
+        *ngFor="let databag of databags">
         <ng-container content>
           <app-data-insight-item [title]="'databag.placeholder' | translate">
             <span class="mat-body-2">{{ databag.databagName }}</span>
@@ -31,6 +33,7 @@
         <ng-container actions>
           <app-data-insight-item [title]="'databag.detail.actions' | translate">
             <app-icon-button
+              data-testid="databag-settings-button"
               (click)="openDatabagSettingDialog(databag)"
               [matTooltip]="'databag.detail.tooltips.settings' | translate"
               attr.aria-label="{{
@@ -53,6 +56,7 @@
       </app-data-insight-card>
       <div class="actions">
         <app-button
+          data-testid="add-databag"
           variant="raised"
           class="fab-button mat-raised-button"
           color="primary"

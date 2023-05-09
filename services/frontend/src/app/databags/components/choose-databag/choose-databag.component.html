@@ -8,6 +8,7 @@
   </mat-expansion-panel-header>
   <mat-nav-list class="bag-list" id="bag-list">
     <mat-list-item
+      data-testid="databag-item"
       [ngClass]="{
         active: databagService.isSameDatabag(databag, selectedDatabag)
       }"
@@ -20,7 +21,7 @@
         <span class="mat-subtitle-2">{{ databag.databagName }}</span>
       </div>
     </mat-list-item>
-    <mat-list-item (click)="openAddDialog()">
+    <mat-list-item data-testid="add-databag" (click)="openAddDialog()">
       <div class="nav-item-extended">
         <app-button
           id="create-databag-button"
