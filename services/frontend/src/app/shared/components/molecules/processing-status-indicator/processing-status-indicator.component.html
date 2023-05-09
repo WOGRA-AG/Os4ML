@@ -1,0 +1,9 @@
+<div
+  class="status mat-button"
+  [ngClass]="{
+    running: shortStatus === pipelineStatus.running,
+    error: shortStatus === pipelineStatus.error,
+    done: shortStatus === pipelineStatus.done
+  }">
+  {{ shortStatus }}
+</div>
