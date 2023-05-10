@@ -1,4 +1,4 @@
-const isDev = Cypress.env('dev') === 'true';
+const isDev = Cypress.env('dev') === true;
 export function login() {
   cy.viewport(1280, 720);
   if (isDev) {
