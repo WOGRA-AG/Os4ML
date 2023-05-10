@@ -21,6 +21,7 @@
     "e2e:run": "npx cypress run",
     "e2e:local": "cross-env CYPRESS_dev=true npx cypress run",
     "cypress:open": "cross-env CYPRESS_dev=true npx cypress open",
+    "cypress:open-test": "npx cypress open",
     "config-prettier": "eslint-config-prettier src/main.ts"
   },
   "private": true,
