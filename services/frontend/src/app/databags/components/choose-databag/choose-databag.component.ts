@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateDatabagStepperComponent } from 'src/app/templates/dialogs/create-databag-stepper/create-databag-stepper.component';
+import { CreateDatabagStepperComponent } from 'src/app/pages/dialogs/create-databag-stepper/create-databag-stepper.component';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../services/databag.service';
 import { TranslateModule } from '@ngx-translate/core';

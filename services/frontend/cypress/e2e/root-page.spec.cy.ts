@@ -17,6 +17,18 @@ after('logout', () => {
 });
 
 describe('Root Page', () => {
+  it('Test link databag-page', () => {
+    cy.get('[data-testid=databags-page-link]').click();
+    cy.url().should('include', '/databags');
+    cy.get('[data-testid="databag-page"]').should('be.visible');
+  });
+
+  it('Test link solutions-page', () => {
+    cy.get('[data-testid=solutions-page-link]').click();
+    cy.url().should('include', '/solutions');
+    cy.get('[data-testid="solutions-page"]').should('be.visible');
+  });
+
   it('regression with fastlane', () => {
     cy.visit('/#/solutions');
     cy.wait(2000);
