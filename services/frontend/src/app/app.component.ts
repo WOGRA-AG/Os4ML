@@ -13,6 +13,7 @@ import { SideNavItemComponent } from './shared/components/molecules/side-nav-ite
 import { SupportComponent } from './core/components/support/support.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-stepper/getting-started-stepper.component';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -32,16 +33,27 @@ import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-
   ],
 })
 export class AppComponent {
-  constructor(translate: TranslateService, private dialog: MatDialog) {
+  constructor(
+    private translate: TranslateService,
+    private dialog: MatDialog,
+    private themeService: ThemeService
+  ) {
     registerLocaleData(localeDe, 'de', localeDeExtra);
     registerLocaleData(localeEn, 'en', localeEnExtra);
     translate.setDefaultLang('en');
     translate.use('en');
+    this.themeService.loadTheme();
   }
 
   openGettingStartedDialog(): void {
     this.dialog.open(GettingStartedStepperComponent, {
       panelClass: 'getting-started-dialog',
     });
+  }
+
+  toggleTheme(): void {
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    this.themeService.toggleTheme(newTheme);
   }
 }

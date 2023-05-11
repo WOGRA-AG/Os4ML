@@ -10,8 +10,10 @@
 @use 'table.scss' as table;
 @use 'chips.scss' as chips;
 @use 'stepper.scss' as stepper;
+@use 'form-field.scss' as form-field;
 
 @mixin theme($theme, $typography-config, $variants) {
+  @include form-field.theme($theme);
   @include sidenav.theme($theme);
   @include toolbar.theme($theme);
   @include navlist.theme($theme, $typography-config, $variants);
@@ -20,7 +22,7 @@
   @include stepper.theme($theme);
   @include expansionModule.theme($theme);
   @include dialog.theme($theme);
-  @include list.theme($theme, colors.$background);
-  @include table.theme($theme, colors.$background);
+  @include list.theme($theme, red);
+  @include table.theme($theme, red);
   @include chips.theme($theme);
 }

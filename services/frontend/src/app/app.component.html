@@ -1,4 +1,4 @@
-<nav>
+<nav class="surface">
   <app-side-nav>
     <ng-container identity>
       <a [routerLink]="'/'">
@@ -20,6 +20,7 @@
       </a>
     </ng-container>
     <ng-container footer-nav>
+      <button (click)="toggleTheme()">Toggle Theme</button>
       <button
         id="get-started-button"
         mat-stroked-button
@@ -38,6 +39,6 @@
     </ng-container>
   </app-side-nav>
 </nav>
-<div class="app-wrapper">
+<div class="app-wrapper background">
   <router-outlet></router-outlet>
 </div>

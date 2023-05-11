@@ -1,5 +1,4 @@
 @import 'src/app/material/essentials/media-queries';
-@import 'src/app/material/essentials/color';
 
 .string-input {
   width: 100%;
@@ -52,7 +51,7 @@
 
   a {
     text-decoration: none;
-    color: $primary-color;
+    color: red;
     font-weight: bold;
   }
 }

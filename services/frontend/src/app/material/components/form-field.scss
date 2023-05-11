@@ -1,0 +1,82 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+@mixin color($theme) {
+  // Standardzustand
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+    .mdc-notched-outline
+    .mdc-notched-outline__leading,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+    .mdc-notched-outline
+    .mdc-notched-outline__notch,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+    .mdc-notched-outline
+    .mdc-notched-outline__trailing {
+    border-color: var(--md-sys-color-outline);
+  }
+
+  // Hover-Zustand
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--focused
+    ):hover
+    .mdc-notched-outline
+    .mdc-notched-outline__leading,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--focused
+    ):hover
+    .mdc-notched-outline
+    .mdc-notched-outline__notch,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--focused
+    ):hover
+    .mdc-notched-outline
+    .mdc-notched-outline__trailing {
+    border-color: var(--md-sys-color-on-surface-variant);
+  }
+
+  // Fokus-Zustand
+  .mdc-text-field--outlined.mdc-text-field--focused:not(
+      .mdc-text-field--disabled
+    )
+    .mdc-notched-outline
+    .mdc-notched-outline__leading,
+  .mdc-text-field--outlined.mdc-text-field--focused:not(
+      .mdc-text-field--disabled
+    )
+    .mdc-notched-outline
+    .mdc-notched-outline__notch,
+  .mdc-text-field--outlined.mdc-text-field--focused:not(
+      .mdc-text-field--disabled
+    )
+    .mdc-notched-outline
+    .mdc-notched-outline__trailing {
+    border-color: var(--md-sys-color-primary);
+  }
+
+  // Textfeldinhalt Farbe
+  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .mdc-list-item__primary-text {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  // Platzhalter Farbe
+  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: var(--md-sys-color-on-surface);
+  }
+  .mat-mdc-dialog-container .mdc-dialog__content,
+  .mat-mdc-select-value,
+  .mat-mdc-select-arrow {
+    color: var(--md-sys-color-on-surface);
+  }
+}
+
+@mixin layout() {
+}
+
+@mixin theme($theme) {
+  @include color($theme);
+  @include layout();
+}

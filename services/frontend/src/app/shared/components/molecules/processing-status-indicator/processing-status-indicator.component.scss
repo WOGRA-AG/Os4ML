@@ -1,5 +1,3 @@
-@import 'src/app/material/essentials/color';
-
 :host {
   display: block;
   min-width: 80px;
@@ -13,16 +11,16 @@
 }
 
 .running {
-  color: $primary-color;
-  background-color: $primary-color-100;
+  color: red;
+  background-color: red;
 }
 
 .error {
-  color: $warn-color;
-  background-color: $warn-color-100;
+  color: red;
+  background-color: red;
 }
 
 .done {
-  color: $success-color;
-  background-color: $success-color-100;
+  color: red;
+  background-color: red;
 }
