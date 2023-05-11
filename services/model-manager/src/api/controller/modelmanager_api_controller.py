@@ -108,10 +108,10 @@ class ModelmanagerApiController:
         )
 
     def get_prediction_template_put_url(
-        self, solution_id: str, usertoken: str = ""
+        self, solution_id: str, file_name: str, usertoken: str = ""
     ) -> str:
         return self.solution_service.get_prediction_template_put_url(  # type: ignore
-            solution_id, usertoken
+            solution_id, file_name, usertoken
         )
 
     # ----- predictions -----
