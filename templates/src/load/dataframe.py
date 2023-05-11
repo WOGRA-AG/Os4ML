@@ -19,6 +19,7 @@ from file_type.file_type import file_type_from_file_name
 from models.column_data_type import ColumnDataType
 from models.file_type import FileType
 from sniffle.sniffle import sniff_series
+from util.download import download_file
 
 
 def load_dataframe(path: str) -> pd.DataFrame:
@@ -29,25 +30,32 @@ def save_dataframe(df: pd.DataFrame, path: str) -> None:
     df.to_pickle(path)
 
 
-def create_df(file_type: str, path: str) -> pd.DataFrame:
+def build_dataframe(url: str, file_type: str) -> pd.DataFrame:
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        with open(tmp_file.name, "wb") as output_file:
+            download_file(url, output_file)
+        return read_df(file_type, tmp_file.name)
+
+
+def read_df(file_type: str, path: str) -> pd.DataFrame:
     if file_type == FileType.CSV:
         return pd.read_csv(path, sep=None, engine="python")
     if file_type == FileType.EXCEL:
         return pd.read_excel(path, sheet_name=0)
     if file_type == FileType.ZIP:
-        return read_zip(path)
+        df, root_dir = read_zip(path)
+        load_files_to_df(df, root_dir)
     raise FileTypeUnknownException()
 
 
-def read_zip(path: str) -> pd.DataFrame:
+def read_zip(path: str) -> tuple[pd.DataFrame, pathlib.Path]:
     with tempfile.TemporaryDirectory() as tmp_dir_name:
         with zipfile.ZipFile(path) as zip_file:
             zip_file.extractall(tmp_dir_name)
         root_dir = get_root_dir(tmp_dir_name)
         dataframe_file = get_dataframe_file(root_dir)
         file_type = file_type_from_file_name(dataframe_file)
-        df = create_df(file_type, dataframe_file)
-        return load_files_to_df(df, root_dir)
+        return read_df(file_type, dataframe_file), root_dir
 
 
 def get_root_dir(dir_: str) -> pathlib.Path:
