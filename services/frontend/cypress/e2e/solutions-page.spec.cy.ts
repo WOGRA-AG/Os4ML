@@ -62,6 +62,38 @@ describe('Solutions Page', () => {
       .should('exist');
   });
 
+  it('create Pridiction', () => {
+    // cy.get('[data-testid="solution-item"]')
+    //   .filter(`:contains("${solutionName}")`)
+    //   .find('[data-testid="create-prediction-button"]')
+    //   .click();
+    // cy.get('#dataset-name-input').clear({ force: true });
+    // cy.get('#dataset-name-input').type('pred', { force: true });
+    // cy.get('#file-input')
+    //   .invoke('show')
+    //   .selectFile('cypress/fixtures/titanic_predict.csv');
+    // cy.get('#predict-dialog-button').click();
+    //
+    // cy.get('#download-prediction-result-link', {
+    //   timeout: 300000,
+    // }).should('have.text', ' Download Result ');
+    // cy.get('#predict-dialog-button').click();
+    // const downloadedFile = `${Cypress.config(
+    //   'downloadsFolder'
+    // )}/prediction_result.csv`;
+    // cy.readFile(downloadedFile, 'binary', { timeout: 300000 }).should(
+    //   buffer => expect(buffer.length).to.be.gt(100)
+    // );
+    // cy.get('#close-create-prediction-dialog-button').click();
+    // cy.get('#predictions-page-link-button').click();
+    // cy.get('.prediction-list-item > :nth-child(1) > :nth-child(2)').should(
+    //   'have.text',
+    //   'pred'
+    // );
+
+  });
+
+
   it('delete Solution', () => {
     cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`)

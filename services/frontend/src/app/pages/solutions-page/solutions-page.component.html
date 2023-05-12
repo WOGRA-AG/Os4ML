@@ -65,21 +65,24 @@
                         [matTooltip]="
                           'solution.detail.tooltips.settings' | translate
                         "
-                        aria-label="Button that displays a tooltip when focused or hovered over"
+                        attr.aria-label="{{
+                        'solution.detail.tooltips.show_predictions' | translate
+                      }}"
                         color="accent"
                         icon="edit">
                       </app-icon-button>
-                      <app-icon-button
-                        (click)="openCreatePredictionDialog(solution)"
-                        [matTooltip]="
-                          'solution.detail.tooltips.add_prediction' | translate
-                        "
-                        attr.aria-label="{{
-                          'solution.detail.tooltips.add_prediction' | translate
-                        }}"
-                        color="primary"
-                        icon="add">
-                      </app-icon-button>
+<!--                      <app-icon-button-->
+<!--                        data-testid="create-prediction-button"-->
+<!--                        (click)="openCreatePredictionDialog(solution)"-->
+<!--                        [matTooltip]="-->
+<!--                          'solution.detail.tooltips.add_prediction' | translate-->
+<!--                        "-->
+<!--                        attr.aria-label="{{-->
+<!--                          'solution.detail.tooltips.add_prediction' | translate-->
+<!--                        }}"-->
+<!--                        color="primary"-->
+<!--                        icon="add">-->
+<!--                      </app-icon-button>-->
                       <app-icon-button
                         *ngIf="solution.id && solution.modelUrl"
                         [routerLink]="[solution.id, 'predictions']"
@@ -91,7 +94,6 @@
                           'solution.detail.tooltips.show_predictions'
                             | translate
                         }}"
-                        aria-label="Button that displays a tooltip when focused or hovered over"
                         color="primary"
                         icon="batch_prediction">
                       </app-icon-button>

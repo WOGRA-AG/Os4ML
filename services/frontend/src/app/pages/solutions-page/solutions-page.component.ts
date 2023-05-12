@@ -26,7 +26,7 @@ import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { PipelineStatus } from '../../core/models/pipeline-status';
 import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
-import { CreatePredictionComponent } from '../../predictions/components/create-prediction/create-prediction.component';
+import {CreatePredictionComponent} from '../dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-solutions-page',
