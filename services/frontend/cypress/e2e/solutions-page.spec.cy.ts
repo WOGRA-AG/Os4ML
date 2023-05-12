@@ -90,9 +90,7 @@ describe('Solutions Page', () => {
     //   'have.text',
     //   'pred'
     // );
-
   });
-
 
   it('delete Solution', () => {
     cy.get('[data-testid="databag-item"]')

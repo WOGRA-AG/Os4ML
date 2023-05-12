@@ -66,23 +66,24 @@
                           'solution.detail.tooltips.settings' | translate
                         "
                         attr.aria-label="{{
-                        'solution.detail.tooltips.show_predictions' | translate
-                      }}"
+                          'solution.detail.tooltips.show_predictions'
+                            | translate
+                        }}"
                         color="accent"
                         icon="edit">
                       </app-icon-button>
-<!--                      <app-icon-button-->
-<!--                        data-testid="create-prediction-button"-->
-<!--                        (click)="openCreatePredictionDialog(solution)"-->
-<!--                        [matTooltip]="-->
-<!--                          'solution.detail.tooltips.add_prediction' | translate-->
-<!--                        "-->
-<!--                        attr.aria-label="{{-->
-<!--                          'solution.detail.tooltips.add_prediction' | translate-->
-<!--                        }}"-->
-<!--                        color="primary"-->
-<!--                        icon="add">-->
-<!--                      </app-icon-button>-->
+                      <!--                      <app-icon-button-->
+                      <!--                        data-testid="create-prediction-button"-->
+                      <!--                        (click)="openCreatePredictionDialog(solution)"-->
+                      <!--                        [matTooltip]="-->
+                      <!--                          'solution.detail.tooltips.add_prediction' | translate-->
+                      <!--                        "-->
+                      <!--                        attr.aria-label="{{-->
+                      <!--                          'solution.detail.tooltips.add_prediction' | translate-->
+                      <!--                        }}"-->
+                      <!--                        color="primary"-->
+                      <!--                        icon="add">-->
+                      <!--                      </app-icon-button>-->
                       <app-icon-button
                         *ngIf="solution.id && solution.modelUrl"
                         [routerLink]="[solution.id, 'predictions']"
