@@ -68,6 +68,7 @@ export class CreatePredictionComponent implements OnDestroy {
 
     if (this.file.name) {
       this.prediction.status = 'message.pipeline.running.uploading_file';
+      this.prediction.dataFileName = this.file.name;
       this.prediction = await firstValueFrom(
         this.predictionService.uploadData(this.file, this.prediction)
       );

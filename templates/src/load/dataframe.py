@@ -1,7 +1,9 @@
+import csv
 import functools
 import pathlib
 import tempfile
 import zipfile
+from typing import IO
 
 import numpy as np
 import pandas as pd
@@ -39,13 +41,27 @@ def build_dataframe(url: str, file_type: str) -> pd.DataFrame:
 
 def read_df(file_type: str, path: str) -> pd.DataFrame:
     if file_type == FileType.CSV:
-        return pd.read_csv(path, sep=None, engine="python")
-    if file_type == FileType.EXCEL:
+        with open(path) as file:
+            return read_csv(file)
+    elif file_type == FileType.EXCEL:
         return pd.read_excel(path, sheet_name=0)
-    if file_type == FileType.ZIP:
+    elif file_type == FileType.ZIP:
         df, root_dir = read_zip(path)
-        load_files_to_df(df, root_dir)
-    raise FileTypeUnknownException()
+        return load_files_to_df(df, root_dir)
+    else:
+        raise FileTypeUnknownException()
+
+
+def read_csv(file: IO[str]) -> pd.DataFrame:
+    # see: https://github.com/pandas-dev/pandas/issues/53035
+    lines = "\n".join(file.readlines(3))
+    file.seek(0)
+    try:
+        csv.Sniffer().sniff(lines, delimiters=[",", ";", ":", "\t", " "])
+    except csv.Error:
+        return pd.read_csv(file, sep=",", engine="python")
+
+    return pd.read_csv(file, sep=None, engine="python")
 
 
 def read_zip(path: str) -> tuple[pd.DataFrame, pathlib.Path]:

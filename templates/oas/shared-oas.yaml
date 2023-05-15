@@ -129,6 +129,9 @@ components:
           $ref: '#/components/schemas/SolutionId'
         runId:
           $ref: '#/components/schemas/RunId'
+        dataFileName:
+          type: string
+          nullable: true
         dataUrl:
           $ref: '#/components/schemas/Url'
           nullable: true

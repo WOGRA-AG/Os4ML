@@ -145,10 +145,10 @@ class ModelmanagerApiController:
         )
 
     def get_prediction_data_put_url(
-        self, solution_id: str, usertoken: str = ""
+        self, solution_id: str, file_name: str, usertoken: str = ""
     ) -> UrlAndPredictionId:
         return self.prediction_service.get_prediction_data_put_url(
-            solution_id, usertoken
+            solution_id, file_name, usertoken
         )
 
     def get_prediction_result_put_url(

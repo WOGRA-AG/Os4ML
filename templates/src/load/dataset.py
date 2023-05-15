@@ -1,4 +1,4 @@
-from build.models.databag import Databag
+from build.model_manager_client.model.databag import Databag
 from file_type.file_type import (
     file_type_from_file_name,
     get_file_name_from_url,

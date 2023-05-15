@@ -32,7 +32,6 @@ def ludwig_solver_pipeline(
         validation_split=validation_split,
     )
     create_prediction_template(
-        dataframe=databag_and_dataframe.outputs["dataframe"],
         solution_id=solution_id,
     )
 
