@@ -9,23 +9,19 @@ import {
 import {
   concatWith,
   map,
-  filter,
   Observable,
   of,
   switchMap,
-  takeWhile,
   throwError,
   catchError,
   first,
   shareReplay,
   raceWith,
 } from 'rxjs';
-import { PipelineStatus } from 'src/app/core/models/pipeline-status';
 import { ErrorService } from 'src/app/core/services/error.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import { getShortStatus } from 'src/app/shared/lib/status/status';
 import { predictionsWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
@@ -95,16 +91,7 @@ export class PredictionService {
 
   createPrediction(prediction: Prediction): Observable<Prediction> {
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.createPrediction(token, prediction)),
-      switchMap(pred =>
-        of(pred).pipe(concatWith(this.getPredictionById(pred.id)))
-      ),
-      takeWhile(
-        pred => getShortStatus(pred?.status) === PipelineStatus.running,
-        true
-      ),
-      filter(pred => !!pred),
-      map(pred => pred!)
+      switchMap(token => this.modelManager.createPrediction(token, prediction))
     );
   }
 

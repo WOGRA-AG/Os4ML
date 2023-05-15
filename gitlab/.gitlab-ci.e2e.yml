@@ -18,3 +18,5 @@ e2e:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_PIPELINE_SOURCE
+      when: delayed
+      start_in: 30 seconds

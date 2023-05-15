@@ -8,8 +8,14 @@ import { HasElementsPipe } from '../../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
-import { DatabagListComponent } from '../../../databags/components/databag-list/databag-list.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
+import { DataInsightCardComponent } from '../../../shared/components/organisms/data-insight-card/data-insight-card.component';
+import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
+import { DataInsightItemComponent } from '../../../shared/components/molecules/data-insight-item/data-insight-item.component';
+import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
+import { DatabagSettingComponent } from '../../../databags/components/databag-setting/databag-setting.component';
+import { CreateSolutionStepperComponent } from '../../dialogs/create-solution-stepper/create-solution-stepper.component';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-databags-page',
@@ -18,12 +24,17 @@ import { NgIf, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    DatabagListComponent,
     ButtonComponent,
     NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
     HasElementsPipe,
+    DataInsightCardComponent,
+    NgForOf,
+    LocalizedDatePipe,
+    DataInsightItemComponent,
+    MaterialModule,
+    IconButtonComponent,
   ],
 })
 export class DatabagsPageComponent {
@@ -36,6 +47,21 @@ export class DatabagsPageComponent {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
   }
 
+  openDatabagSettingDialog(databag: Databag): void {
+    this.dialog.open(DatabagSettingComponent, {
+      data: { databag },
+      panelClass: 'setting-dialog',
+      height: '100%',
+      position: {
+        right: '12px',
+      },
+    });
+  }
+  openCreateSolutionStepperDialog(databag: Databag): void {
+    this.dialog.open(CreateSolutionStepperComponent, {
+      data: { databag },
+    });
+  }
   addDatabag(): void {
     this.dialog.open(CreateDatabagStepperComponent);
   }
