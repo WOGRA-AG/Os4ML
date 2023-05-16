@@ -23,7 +23,7 @@ import { ProcessingStatusIndicatorComponent } from '../../shared/components/mole
 import { MaterialModule } from '../../material/material.module';
 import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { PipelineStatus } from '../../core/models/pipeline-status';
-import { CreatePredictionComponent } from '../../predictions/components/create-prediction/create-prediction.component';
+import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-predictions-page',

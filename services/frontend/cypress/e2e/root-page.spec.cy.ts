@@ -16,6 +16,11 @@ after('logout', () => {
   logout();
 });
 
+beforeEach(() => {
+  cy.visit('/');
+  cy.wait(2000);
+});
+
 describe('Root Page', () => {
   it('Test link databag-page', () => {
     cy.get('[data-testid=databags-page-link]').click();
@@ -30,9 +35,6 @@ describe('Root Page', () => {
   });
 
   it('regression with fastlane', () => {
-    cy.visit('/#/solutions');
-    cy.wait(2000);
-
     cy.get('#get-started-button').click();
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type(databagName);
@@ -60,9 +62,9 @@ describe('Root Page', () => {
     cy.wait(standardTimeout);
     cy.get('#add-databag-main-button').click();
 
-    cy.wait(2000);
+    cy.wait(standardTimeout);
     cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${databagName}")`, { timeout: 500 })
+      .filter(`:contains("${databagName}")`, { timeout: standardTimeout })
       .click();
     cy.get('[data-testid="solution-status-indicator"]').contains('Done', {
       timeout: solutionTimeout,
@@ -70,7 +72,7 @@ describe('Root Page', () => {
 
     deleteSolution(solutionName);
     cy.visit('/#/databags');
-    cy.wait(2000);
+    cy.wait(standardTimeout);
 
     deleteDatabag(databagName);
   });

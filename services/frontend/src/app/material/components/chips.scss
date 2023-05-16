@@ -8,6 +8,7 @@
   .mat-mdc-standard-chip {
     // TODO(Max): Chip background Contrast is too low, so we have to force mdc to set it to the specified value
     background-color: var(--md-sys-color-secondary-container) !important;
+    color: var(--md-sys-color-on-secondary-container) !important;
   }
 }
 

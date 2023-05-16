@@ -260,7 +260,7 @@ paths:
         200:
           $ref: '#/components/responses/PutUrlResponse'
 
-  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-template":
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-template/{fileName}":
     get:
       summary: "get put url for prediction template of solution"
       operationId: getPredictionTemplatePutUrl
@@ -269,11 +269,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
+        - $ref: '#/components/parameters/FileName'
       responses:
         200:
           $ref: '#/components/responses/PutUrlResponse'
 
-  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-data":
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-data/{fileName}":
     get:
       summary: "get put url for prediction data"
       operationId: getPredictionDataPutUrl
@@ -282,6 +283,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SolutionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
+        - $ref: '#/components/parameters/FileName'
       responses:
         200:
           description: OK

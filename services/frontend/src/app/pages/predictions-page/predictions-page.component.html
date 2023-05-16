@@ -1,25 +1,28 @@
 <app-os4ml-default-template>
-  <h1 class="headline-1 primary">{{ 'prediction.plural' | translate }}</h1>
+  <h1 class="headline-1 primary-text">{{ 'prediction.plural' | translate }}</h1>
   <app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
   <ng-container *ngIf="predictions$ | async as predictions">
     <ng-container *ngIf="predictions.length > 0; else placeholder">
       <div class="data-insight-wrapper">
-        <app-data-insight-card *ngFor="let prediction of predictions">
+        <app-data-insight-card
+          *ngFor="let prediction of predictions"
+          data-testid="prediction-item">
           <ng-container content>
             <app-data-insight-item
               [title]="'prediction.detail.name' | translate">
-              <span class="mat-body-2">{{ prediction.name }}</span>
+              <span class="mat-body-2 on-surface-text">{{ prediction.name }}</span>
             </app-data-insight-item>
             <app-data-insight-item
               [title]="'prediction.detail.runtime' | translate">
               <app-runtime-indicator
+                class="on-surface-text"
                 [creationTime]="prediction.creationTime"
                 [completionTime]="prediction.completionTime">
               </app-runtime-indicator>
             </app-data-insight-item>
             <app-data-insight-item
               [title]="'prediction.detail.creation' | translate">
-              <span class="mat-body-2">
+              <span class="mat-body-2 on-surface-text">
                 {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
               </span>
             </app-data-insight-item>
@@ -34,6 +37,7 @@
             <app-data-insight-item
               [title]="'prediction.detail.actions' | translate">
               <a
+                data-testid="prediction-download-button"
                 mat-icon-button
                 color="primary"
                 attr.aria-label="{{

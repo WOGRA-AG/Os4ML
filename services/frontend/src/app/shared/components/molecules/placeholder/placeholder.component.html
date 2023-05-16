@@ -1,6 +1,6 @@
 <img *ngIf="!!imgSrc" class="placeholder-image" [src]="imgSrc" [alt]="imgAlt" />
-<h1 class="primary" *ngIf="!!title">{{ title | translate }}</h1>
-<span class="mat-body-1" *ngIf="!!description">{{
+<h1 class="primary-text" *ngIf="!!title">{{ title | translate }}</h1>
+<span class="mat-body-1 on-background-text" *ngIf="!!description">{{
   description | translate
 }}</span>
 <app-button

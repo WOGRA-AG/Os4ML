@@ -18,7 +18,7 @@ import { DialogSectionComponent } from '../../../shared/components/molecules/dia
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
-import { CreatePredictionStepperComponent } from '../../../pages/dialogs/create-prediction-stepper/create-prediction-stepper.component';
+import { CreatePredictionComponent } from '../../../pages/dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-solution-setting',
@@ -95,7 +95,7 @@ export class SolutionSettingComponent implements OnDestroy {
   }
 
   createPrediction(): void {
-    this.dialog.open(CreatePredictionStepperComponent, {
+    this.dialog.open(CreatePredictionComponent, {
       data: {
         solution: this.solution,
       },

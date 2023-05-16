@@ -1,12 +1,12 @@
 <div class="breadcrumbs">
   <div *ngFor="let bc of breadcrumbs; let last = last">
     <div *ngIf="!last" class="link-wrapper">
-      <div class="mat-body-2 link accent" [routerLink]="bc.link">
+      <div class="mat-body-2 link on-background-text" [routerLink]="bc.link">
         {{ bc.label }}
       </div>
-      <mat-icon matListItemIcon>arrow_right</mat-icon>
+      <mat-icon matListItemIcon class="on-background-text">arrow_right</mat-icon>
     </div>
-    <div *ngIf="last" class="mat-body-1 primary">
+    <div *ngIf="last" class="mat-body-1 primary-text">
       {{ bc.label }}
     </div>
   </div>

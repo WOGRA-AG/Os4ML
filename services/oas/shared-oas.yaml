@@ -99,6 +99,9 @@ components:
         completionTime:
           type: string
           nullable: true
+        predictionTemplateFileName:
+          type: string
+          nullable: true
         runId:
           $ref: '#/components/schemas/RunId'
         predictionTemplateUrl:
@@ -126,6 +129,9 @@ components:
           $ref: '#/components/schemas/SolutionId'
         runId:
           $ref: '#/components/schemas/RunId'
+        dataFileName:
+          type: string
+          nullable: true
         dataUrl:
           $ref: '#/components/schemas/Url'
           nullable: true

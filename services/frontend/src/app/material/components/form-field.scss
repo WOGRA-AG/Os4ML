@@ -71,6 +71,36 @@
   .mat-mdc-select-arrow {
     color: var(--md-sys-color-on-surface);
   }
+
+  // Deaktivierter Zustand
+  .mdc-text-field--outlined.mdc-text-field--disabled
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+  .mdc-text-field--outlined.mdc-text-field--disabled
+  .mdc-notched-outline
+  .mdc-notched-outline__notch,
+  .mdc-text-field--outlined.mdc-text-field--disabled
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing {
+    border-color: var(--md-sys-color-outline-light);
+  }
+
+  // Textfeldinhalt Farbe für deaktivierte Felder
+  .mdc-text-field.mdc-text-field--disabled .mdc-text-field__input {
+    color: var(--md-sys-color-outline-light);
+  }
+
+  // Platzhalter Farbe für deaktivierte Felder
+  .mdc-text-field.mdc-text-field--disabled .mdc-floating-label {
+    color: var(--md-sys-color-outline-light);
+  }
+
+  // Farbanpassung für deaktivierte Dialoge, Select-Werte und Pfeile
+  .mat-mdc-dialog-container.mdc-dialog--disabled .mdc-dialog__content,
+  .mat-mdc-select-value.mdc-select--disabled,
+  .mat-mdc-select-arrow.mdc-select--disabled {
+    color: var(--md-sys-color-outline-light);
+  }
 }
 
 @mixin layout() {
