@@ -63,7 +63,7 @@ def create_csv_prediciton_template(
     df = build_dataframe(databag.dataset_url, file_type.value)
     df = make_template_df(df, solution)
 
-    with tempfile.NamedTemporaryFile() as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix=".csv") as tmp_file:
         df.to_csv(tmp_file.name, index=False)
         with open(tmp_file.name, "rb") as file:
             upload_prediction_template(file, solution.id, file_name)
@@ -75,7 +75,7 @@ def create_excel_prediciton_template(
     df = build_dataframe(databag.dataset_url, file_type.value)
     df = make_template_df(df, solution)
 
-    with tempfile.NamedTemporaryFile() as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix=".xlsx") as tmp_file:
         df.to_excel(tmp_file.name, index=False)
         with open(tmp_file.name, "rb") as file:
             upload_prediction_template(file, solution.id, file_name)
