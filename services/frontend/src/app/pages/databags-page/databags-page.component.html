@@ -1,17 +1,15 @@
-<div data-testid="databag-page">
+<app-os4ml-default-template data-testid="databag-page">
+  <h1 class="headline-1 primary">{{ 'databag.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <div
       class="data-insight-wrapper"
       *ngIf="databags | hasElements; else placeholder">
-      <h2>{{ 'databag.plural' | translate }}</h2>
       <app-data-insight-card
         data-testid="databag-item"
         *ngFor="let databag of databags">
         <ng-container content>
           <app-data-insight-item [title]="'databag.placeholder' | translate">
-            <span class="mat-body-2 databag-name">{{
-              databag.databagName
-            }}</span>
+            <span class="mat-body-2">{{ databag.databagName }}</span>
           </app-data-insight-item>
           <app-data-insight-item [title]="'databag.detail.type' | translate">
             <span class="mat-body-2">{{ databag.databagType }}</span>
@@ -69,11 +67,11 @@
       </div>
     </div>
   </ng-container>
+</app-os4ml-default-template>
 
-  <ng-template #placeholder>
-    <div class="placeholder-container">
-      <app-no-databags-placeholder
-        (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
-    </div>
-  </ng-template>
-</div>
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-no-databags-placeholder
+      (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
+  </div>
+</ng-template>

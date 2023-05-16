@@ -3,24 +3,27 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
 import { Observable, Subject, switchMap, takeUntil, map, of } from 'rxjs';
-import { Breadcrumb } from 'src/app/design/components/molecules/breadcrumbs/breadcrumbs.component';
+import {
+  Breadcrumb,
+  BreadcrumbsComponent,
+} from 'src/app/design/components/molecules/breadcrumbs/breadcrumbs.component';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NoPredictionPlaceholderComponent } from '../../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
-import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { NoPredictionPlaceholderComponent } from '../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
+import { ButtonComponent } from '../../design/components/atoms/button/button.component';
 import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
-import { BreadcrumbsComponent } from '../../../design/components/molecules/breadcrumbs/breadcrumbs.component';
-import { CreatePredictionComponent } from '../../dialogs/create-prediction/create-prediction.component';
-import { DataInsightCardComponent } from '../../../shared/components/organisms/data-insight-card/data-insight-card.component';
-import { DataInsightItemComponent } from '../../../shared/components/molecules/data-insight-item/data-insight-item.component';
-import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
-import { RuntimeIndicatorComponent } from '../../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
-import { ProcessingStatusIndicatorComponent } from '../../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
-import { MaterialModule } from '../../../material/material.module';
-import { PipelineStatus } from '../../../core/models/pipeline-status';
-import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
+import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
+import { DataInsightCardComponent } from '../../shared/components/organisms/data-insight-card/data-insight-card.component';
+import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
+import { DataInsightItemComponent } from '../../shared/components/molecules/data-insight-item/data-insight-item.component';
+import { RuntimeIndicatorComponent } from '../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
+import { ProcessingStatusIndicatorComponent } from '../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
+import { MaterialModule } from '../../material/material.module';
+import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
+import { PipelineStatus } from '../../core/models/pipeline-status';
+import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-predictions-page',
@@ -42,6 +45,7 @@ import { ShortStatusPipe } from '../../../shared/pipes/short-status.pipe';
     ProcessingStatusIndicatorComponent,
     MaterialModule,
     ShortStatusPipe,
+    Os4mlDefaultTemplateComponent,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
