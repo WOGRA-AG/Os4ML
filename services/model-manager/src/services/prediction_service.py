@@ -13,7 +13,6 @@ from build.openapi_server.models.url_and_prediction_id import (
 )
 from services import (
     PREDICTION_CONFIG_FILE_NAME,
-    PREDICTION_DATA_FILE_NAME,
     PREDICTION_MESSAGE_CHANNEL,
     PREDICTION_RESULT_FILE_NAME,
 )
@@ -28,7 +27,6 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     messaging_service = MessagingService(PREDICTION_MESSAGE_CHANNEL)
     model_name = "Prediction"
     config_file_name = PREDICTION_CONFIG_FILE_NAME
-    data_file_name = PREDICTION_DATA_FILE_NAME
     result_file_name = PREDICTION_RESULT_FILE_NAME
     prediction_pipeline = "prediction"
 
@@ -65,7 +63,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
         self, prediction: Prediction, usertoken: str
     ) -> Prediction:
         prediction.data_url = self.get_presigned_get_url(
-            prediction, self.data_file_name, usertoken=usertoken
+            prediction, prediction.data_file_name, usertoken=usertoken
         )
         prediction.result_url = self.get_presigned_get_url(
             prediction, self.result_file_name, usertoken=usertoken
@@ -85,7 +83,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
         )
 
     def get_prediction_data_put_url(
-        self, solution_id: str, usertoken: str
+        self, solution_id: str, file_name: str, usertoken: str
     ) -> UrlAndPredictionId:
         prediction = Prediction(id=str(uuid.uuid4()))
         solution = self.solution_service.get_solution_by_id(
@@ -93,7 +91,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
         )
         file_name = self.get_file_name(
             prediction,
-            self.data_file_name,
+            file_name,
             usertoken=usertoken,
             solution=solution,
         )

@@ -365,7 +365,7 @@ def test_get_prediction_data_put_url(
     objectstore.get_presigned_put_url.return_value = "url"
 
     url_and_prediction_id = prediction_service.get_prediction_data_put_url(
-        "solution_id", usertoken=""
+        "solution_id", "prediction_data.csv", usertoken=""
     )
 
     uuid.UUID(url_and_prediction_id.prediction_id)
