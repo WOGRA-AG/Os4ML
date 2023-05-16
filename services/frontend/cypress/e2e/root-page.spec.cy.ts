@@ -21,8 +21,6 @@ beforeEach(() => {
   cy.wait(2000);
 });
 
-
-
 describe('Root Page', () => {
   it('Test link databag-page', () => {
     cy.get('[data-testid=databags-page-link]').click();
