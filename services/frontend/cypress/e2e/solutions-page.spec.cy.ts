@@ -49,10 +49,10 @@ describe('Solutions Page', () => {
       .filter(`:contains("${solutionName}")`)
       .should('exist');
     cy.get('[data-testid="solution-item"]')
-      .filter(`:contains("${solutionName}")`).contains('Done', {
-      timeout: 600000,
-    });
-
+      .filter(`:contains("${solutionName}")`)
+      .contains('Done', {
+        timeout: 600000,
+      });
   });
 
   it('change Solution name', () => {
@@ -88,9 +88,10 @@ describe('Solutions Page', () => {
       .filter(`:contains("${predictionName}")`)
       .should('exist');
     cy.get('[data-testid="prediction-item"]')
-      .filter(`:contains("${predictionName}")`).contains('Done', {
-      timeout: 600000,
-    });
+      .filter(`:contains("${predictionName}")`)
+      .contains('Done', {
+        timeout: 600000,
+      });
 
     cy.get('[data-testid="prediction-item"]')
       .filter(`:contains("${predictionName}")`)
@@ -100,8 +101,8 @@ describe('Solutions Page', () => {
     const downloadedFile = `${Cypress.config(
       'downloadsFolder'
     )}/prediction_result.csv`;
-    cy.readFile(downloadedFile, 'binary', { timeout: 300000 }).should(
-      buffer => expect(buffer.length).to.be.gt(100)
+    cy.readFile(downloadedFile, 'binary', { timeout: 300000 }).should(buffer =>
+      expect(buffer.length).to.be.gt(100)
     );
   });
 

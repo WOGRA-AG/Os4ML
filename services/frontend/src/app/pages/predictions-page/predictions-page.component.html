@@ -4,7 +4,9 @@
   <ng-container *ngIf="predictions$ | async as predictions">
     <ng-container *ngIf="predictions.length > 0; else placeholder">
       <div class="data-insight-wrapper">
-        <app-data-insight-card *ngFor="let prediction of predictions" data-testid="prediction-item">
+        <app-data-insight-card
+          *ngFor="let prediction of predictions"
+          data-testid="prediction-item">
           <ng-container content>
             <app-data-insight-item
               [title]="'prediction.detail.name' | translate">
