@@ -41,3 +41,6 @@ class StatusMessage(str, enum.Enum):
         "message.pipeline.error.loading_prediction_data_failed"
     )
     PREDICTING_FAILED = "message.pipeline.error.prediction_failed"
+    DATA_FILE_NOT_FOUND = "message.pipeline.error.data_file_not_found"
+    TOO_MANY_DATA_FILES = "message.pipeline.error.too_many_data_files"
+    FILE_TYPE_NOT_SUPPORTED = "message.pipeline.error.file_type_not_supported"

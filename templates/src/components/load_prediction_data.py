@@ -7,7 +7,7 @@ from file_type.file_type import (
     file_type_from_file_name,
     get_file_name_from_url,
 )
-from load.dataframe import create_df, save_dataframe
+from load.dataframe import read_df, save_dataframe
 from model_manager.predictions import (
     get_prediction_by_id,
     update_prediction_status,
@@ -33,5 +33,5 @@ def load_prediction_data(
                 download_file(prediction.data_url, file)
             file_name = get_file_name_from_url(prediction.data_url)
             file_type = file_type_from_file_name(file_name)
-            df = create_df(file_type, tmp_file.name)
+            df = read_df(file_type, tmp_file.name)
             save_dataframe(df, prediction_data.path)

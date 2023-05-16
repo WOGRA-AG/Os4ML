@@ -35,7 +35,10 @@
         "prediction_template_could_not_be_created": "Prediction template could not be created",
         "loading_model_failed": "loading of the trained model failed",
         "loading_prediction_data_failed": "failed to load the prediction data",
-        "predicting_failed": "predicting failed"
+        "predicting_failed": "predicting failed",
+        "data_file_not_found": "data file not found",
+        "too_many_data_files": "too many data files",
+        "file_type_not_supported": "file type not supported"
       }
     }
   },
@@ -162,7 +165,7 @@
     "create_prediction": {
       "step_data": "Data",
       "step_download": "Download",
-      "download_template": "Download Template csv",
+      "download_template": "Download Template",
       "download_result": "Download Result",
       "name_input": "Prediction Name"
     },

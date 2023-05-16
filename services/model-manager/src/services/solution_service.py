@@ -171,7 +171,7 @@ class SolutionService:
         self, solution: Solution, usertoken: str
     ) -> Solution:
         prediction_template_file = self._get_file_name(
-            solution, self.prediction_template_file_name
+            solution, solution.prediction_template_file_name
         )
         try:
             solution.prediction_template_url = (
@@ -198,11 +198,11 @@ class SolutionService:
         )
 
     def get_prediction_template_put_url(
-        self, solution_id: str, usertoken: str
+        self, solution_id: str, file_name: str, usertoken: str
     ) -> str:
         return self._get_presigned_put_url_for_solution_file(
             solution_id,
-            self.prediction_template_file_name,
+            file_name,
             usertoken=usertoken,
         )
 

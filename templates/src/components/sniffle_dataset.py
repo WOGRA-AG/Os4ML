@@ -7,7 +7,6 @@ from kfp.v2.dsl import Dataset, Input
 
 from build.model_manager_client.model.column import Column
 from build.model_manager_client.model.databag import Databag
-from config import IMAGE_COL_NAME
 from load.dataframe import load_dataframe, save_dataframe
 from model_manager.databags import (
     get_databag_by_id,
@@ -16,11 +15,7 @@ from model_manager.databags import (
     upload_dataframe,
 )
 from models.status_message import StatusMessage
-from sniffle.sniffle import (
-    get_num_rows,
-    sniff_column_datatypes,
-    sniff_zip_types,
-)
+from sniffle.sniffle import get_num_rows, sniff_column_datatypes
 from util.exception_handler import exception_handler
 
 
@@ -53,8 +48,6 @@ def sniffle_dataset(
 
 
 def create_columns(df: pd.DataFrame, max_categories=10) -> List[Column]:
-    if IMAGE_COL_NAME in df:
-        return sniff_zip_types(df)
     return sniff_column_datatypes(df, max_categories=max_categories)
 
 
