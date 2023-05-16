@@ -233,9 +233,9 @@ $os4ml-light-background: (
   // Background color of the application
   hover: rgba(var(--md-sys-color-outline), 0.04),
   // Background color for hover states
-  card: var(--md-sys-color-surface),
+  card: var(--md-sys-color-inverse-surface),
   // Background color for cards
-  dialog: var(--md-sys-color-surface),
+  dialog: var(--md-sys-color-inverse-surface),
   // Background color for dialogs
   disabled-button: rgba(var(--md-sys-color-outline), 0.12),
   // Background color for disabled buttons

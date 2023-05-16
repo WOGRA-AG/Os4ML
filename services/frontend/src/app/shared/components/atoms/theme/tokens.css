@@ -103,9 +103,9 @@
   --md-ref-palette-error99: #fffbff;
   --md-ref-palette-error100: #ffffff;
   /* light */
-  --md-sys-color-primary-light: #006688; /* Primary light color, typically for major actionable elements */
+  --md-sys-color-primary-light: #2eaadc; /* Primary light color, typically for major actionable elements */
   --md-sys-color-on-primary-light: #ffffff; /* Color for text and icons on primary color */
-  --md-sys-color-primary-container-light: #c2e8ff; /* Light primary color for container backgrounds */
+  --md-sys-color-primary-container-light: #e6f5fb; /* Light primary color for container backgrounds */
   --md-sys-color-on-primary-container-light: #2eaadc; /* Color for text and icons on light primary containers */
 
   --md-sys-color-secondary-light: #8d4f00; /* Secondary light color, for secondary interface elements */
@@ -123,26 +123,31 @@
   --md-sys-color-on-error-light: #ffffff; /* Color for text and icons on error color */
   --md-sys-color-on-error-container-light: #410002; /* Color for text and icons on light error containers */
 
-  --md-sys-color-background-light: #ecf7fc; /* Background color of the app or site */
-  --md-sys-color-on-background-light: #001f25; /* Color for text and icons on background */
+  --md-sys-color-background-light: #ffffff; /* Background color of the app or site */
+  --md-sys-color-on-background-light: #666666; /* Color for text and icons on background */
 
-  --md-sys-color-surface-light: #fff; /* General surface color for UI elements such as cards, sheets, menus */
+  --md-sys-color-surface-light: #f2fbff; /* General surface color for UI elements such as cards, sheets, menus */
   --md-sys-color-on-surface-light: #666666; /* Color for text and icons on surface color */
 
-  --md-sys-color-surface-variant-light: #dce3e9; /* Variant surface color for distinguishing UI elements */
+  --md-sys-color-surface-variant-light: #ffffff; /* Variant surface color for distinguishing UI elements */
   --md-sys-color-on-surface-variant-light: #40484d; /* Color for text and icons on surface variant color */
 
   --md-sys-color-outline-light: #71787d; /* Color for outlines and dividers */
+
   --md-sys-color-inverse-on-surface-light: #d6f6ff; /* Inverse color for text and icons on surface color */
-  --md-sys-color-inverse-surface-light: #00363f; /* Inverse surface color for UI elements */
+  --md-sys-color-inverse-surface-light: #ffffff; /* Inverse surface color for UI elements */
 
   --md-sys-color-inverse-primary-light: #75d1ff; /* Inverse primary color, typically for major actionable elements */
 
   --md-sys-color-shadow-light: #000000; /* Color for shadows, typically used for depth effect on UI elements */
-  --md-sys-color-surface-tint-light: #006688; /* Tint color a lighter variant of surface */
   --md-sys-color-surface-tint-light: #006688; /* Tint color for surface elements, usually a lighter or darker shade of the surface color */
   --md-sys-color-outline-variant-light: #c0c7cd; /* Variant color for outlines and dividers, usually to create a contrast or highlight */
-  --md-sys-color-scrim-light: #000000; /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
+  --md-sys-color-scrim-light: rgba(
+    18,
+    127,
+    197,
+    0.16
+  ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
 
   /* dark */
   --md-sys-color-primary-dark: #75d1ff; /* Primary dark color, typically for major actionable elements in dark theme */
@@ -176,17 +181,29 @@
 
   --md-sys-color-outline-dark: #8a9297; /* Color for outlines and dividers in dark theme */
   --md-sys-color-inverse-on-surface-dark: #001f25; /* Inverse color for text and icons on surface color in dark theme */
-  --md-sys-color-inverse-surface-dark: #a6eeff; /* Inverse surface color for UI elements in dark theme */
+  --md-sys-color-inverse-surface-dark: #001f25; /* Inverse surface color for UI elements in dark theme */
 
   --md-sys-color-inverse-primary-dark: #006688; /* Inverse primary color, typically for major actionable elements in dark theme */
 
   --md-sys-color-shadow-dark: #000000; /* Color for shadows, typically used for depth effect on UI elements in dark theme */
   --md-sys-color-surface-tint-dark: #75d1ff; /* Tint color for surface elements in dark theme, usually a lighter shade of the surface color */
   --md-sys-color-outline-variant-dark: #40484d; /* Variant color for outlines and dividers in dark theme, usually to create a contrast or highlight */
-  --md-sys-color-scrim-dark: #000000; /* Scrim color in dark theme, typically used for overlay or backdrop el
+  --md-sys-color-scrim-dark: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Scrim color in dark theme, typically used for overlay or backdrop el
 
   /* Custom Colors */
-  --md-custom-color-Custom-Color-1: #832695;
+  --md-custom-color-processing-status-running: #e6f5fb;
+  --md-custom-color-on-processing-status-running: #2eaadc;
+  --md-custom-color-processing-status-error: #fbd9d7;
+  --md-custom-color-on-processing-status-error: #ea4335;
+  --md-custom-color-processing-status-warning: #fef2cd;
+  --md-custom-color-on-processing-status-warning: #fbbc04;
+  --md-custom-color-processing-status-done: #d6eedd;
+  --md-custom-color-on-processing-status-done: #34a853;
 
   /* display - large */
   --md-sys-typescale-display-large-font-family-name: Roboto;

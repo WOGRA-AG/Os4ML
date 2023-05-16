@@ -11,16 +11,16 @@
 }
 
 .running {
-  color: red;
-  background-color: red;
+  color: var(--md-custom-color-on-processing-status-running);
+  background-color: var(--md-custom-color-processing-status-running);
 }
 
 .error {
-  color: red;
-  background-color: red;
+  color: var(--md-custom-color-on-processing-status-error);
+  background-color: var(--md-custom-color-processing-status-error);
 }
 
 .done {
-  color: red;
-  background-color: red;
+  color: var(--md-custom-color-on-processing-status-done);
+  background-color: var(--md-custom-color-processing-status-done);
 }

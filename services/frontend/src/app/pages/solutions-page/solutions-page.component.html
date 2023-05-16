@@ -1,5 +1,5 @@
 <app-os4ml-default-template data-testid="solutions-page">
-  <h1 class="headline-1 primary">{{ 'solution.plural' | translate }}</h1>
+  <h1 class="headline-1 primary-text">{{ 'solution.plural' | translate }}</h1>
   <ng-container *ngIf="databags$ | async as databags">
     <ng-container *ngIf="databags | hasElements; else placeholder">
       <div class="content-container" data-testid="solution-page">
@@ -24,7 +24,9 @@
                   <ng-container content>
                     <app-data-insight-item
                       [title]="'solution.placeholder' | translate">
-                      <span class="mat-body-2">{{ solution.name }}</span>
+                      <span class="mat-body-2 on-surface-text">{{
+                        solution.name
+                      }}</span>
                     </app-data-insight-item>
                     <app-data-insight-item
                       [title]="'solution.detail.quality' | translate">
@@ -35,7 +37,7 @@
                     </app-data-insight-item>
                     <app-data-insight-item
                       [title]="'solution.detail.runtime' | translate">
-                      <span class="mat-body-2">
+                      <span class="mat-body-2 on-surface-text">
                         <app-runtime-indicator
                           [creationTime]="solution.creationTime"
                           [completionTime]="solution.completionTime">
@@ -44,7 +46,7 @@
                     </app-data-insight-item>
                     <app-data-insight-item
                       [title]="'solution.detail.creation' | translate">
-                      <span class="mat-body-2">{{
+                      <span class="mat-body-2 on-surface-text">{{
                         solution.creationTime | localizedDate : 'dd.MM.yyyy'
                       }}</span>
                     </app-data-insight-item>
@@ -66,7 +68,7 @@
                           'solution.detail.tooltips.settings' | translate
                         "
                         aria-label="Button that displays a tooltip when focused or hovered over"
-                        color="accent"
+                        color="primary"
                         icon="edit">
                       </app-icon-button>
                       <app-icon-button

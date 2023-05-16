@@ -6,8 +6,7 @@
   $primary-color-900: mat.get-color-from-palette($primary-palette, 900);
 
   .cdk-overlay-dark-backdrop {
-    background: $primary-color-900;
-    filter: opacity(0.2);
+    background: var(--md-sys-color-scrim);
   }
 }
 
