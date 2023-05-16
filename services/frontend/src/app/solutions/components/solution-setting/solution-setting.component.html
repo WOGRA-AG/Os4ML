@@ -28,9 +28,11 @@
       <div title>{{ 'solution.detail.input_fields' | translate }}</div>
       <div>
         <mat-chip-listbox>
-          <mat-chip-option disabled *ngFor="let input_fields of solution.inputFields">{{
-            input_fields
-          }}</mat-chip-option>
+          <mat-chip-option
+            disabled
+            *ngFor="let input_fields of solution.inputFields"
+            >{{ input_fields }}</mat-chip-option
+          >
         </mat-chip-listbox>
       </div>
     </app-dialog-section>

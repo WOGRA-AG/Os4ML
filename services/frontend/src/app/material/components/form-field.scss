@@ -2,7 +2,7 @@
 @use 'sass:map';
 
 @mixin color($theme) {
-  // Standardzustand
+  // Default state
   .mdc-text-field--outlined:not(.mdc-text-field--disabled)
     .mdc-notched-outline
     .mdc-notched-outline__leading,
@@ -15,7 +15,7 @@
     border-color: var(--md-sys-color-outline);
   }
 
-  // Hover-Zustand
+  // Hover state
   .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
       .mdc-text-field--focused
     ):hover
@@ -34,7 +34,7 @@
     border-color: var(--md-sys-color-on-surface-variant);
   }
 
-  // Fokus-Zustand
+  // Focus state
   .mdc-text-field--outlined.mdc-text-field--focused:not(
       .mdc-text-field--disabled
     )
@@ -53,7 +53,7 @@
     border-color: var(--md-sys-color-primary);
   }
 
-  // Textfeldinhalt Farbe
+  // Text field content color
   .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
     color: var(--md-sys-color-on-surface);
   }
@@ -62,7 +62,7 @@
     color: var(--md-sys-color-on-surface);
   }
 
-  // Platzhalter Farbe
+  // Placeholder color
   .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: var(--md-sys-color-on-surface);
   }
@@ -72,30 +72,30 @@
     color: var(--md-sys-color-on-surface);
   }
 
-  // Deaktivierter Zustand
+  // Disabled state
   .mdc-text-field--outlined.mdc-text-field--disabled
-  .mdc-notched-outline
-  .mdc-notched-outline__leading,
+    .mdc-notched-outline
+    .mdc-notched-outline__leading,
   .mdc-text-field--outlined.mdc-text-field--disabled
-  .mdc-notched-outline
-  .mdc-notched-outline__notch,
+    .mdc-notched-outline
+    .mdc-notched-outline__notch,
   .mdc-text-field--outlined.mdc-text-field--disabled
-  .mdc-notched-outline
-  .mdc-notched-outline__trailing {
+    .mdc-notched-outline
+    .mdc-notched-outline__trailing {
     border-color: var(--md-sys-color-outline-light);
   }
 
-  // Textfeldinhalt Farbe für deaktivierte Felder
+  // Text field content color for disabled fields
   .mdc-text-field.mdc-text-field--disabled .mdc-text-field__input {
     color: var(--md-sys-color-outline-light);
   }
 
-  // Platzhalter Farbe für deaktivierte Felder
+  // Placeholder color for disabled fields
   .mdc-text-field.mdc-text-field--disabled .mdc-floating-label {
     color: var(--md-sys-color-outline-light);
   }
 
-  // Farbanpassung für deaktivierte Dialoge, Select-Werte und Pfeile
+  // Color adjustment for disabled dialogs, select values, and arrows
   .mat-mdc-dialog-container.mdc-dialog--disabled .mdc-dialog__content,
   .mat-mdc-select-value.mdc-select--disabled,
   .mat-mdc-select-arrow.mdc-select--disabled {
