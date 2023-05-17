@@ -12,6 +12,7 @@ os-manager-validate-oas:
 os-manager-test-and-lint:
   extends:
     - .build-test-and-lint
+  resource_group: objectstore
   variables:
     DOCKERFILE: 'services/objectstore-manager/Dockerfile'
     IMG_NAME: 'os4ml-objectstore-manager'
