@@ -10,6 +10,7 @@ const deleteTimeout = 5000;
 const downloadTimeout = 15000;
 const inputTimeout = 1000;
 const standardTimeout = 1000;
+const startTimeout = 2000;
 const databagName = `e2e databag ${new Date().toISOString()}`;
 const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 let updatedDatabagName: string;
@@ -26,13 +27,14 @@ after('logout', () => {
 });
 beforeEach(() => {
   cy.visit('/#/databags');
-  cy.wait(2000);
 });
 
 describe('Databags Page', () => {
   it('verify documentation link', () => {
     const documentationUrl = 'https://wogra-ag.github.io/os4ml-docs/';
-    cy.get('[data-testid="add-databag"]', { timeout: 500 }).click();
+    cy.get('[data-testid="add-databag"]', {
+      timeout: startTimeout + standardTimeout,
+    }).click();
     cy.get('[data-testid="documentation-link"]').should(
       'have.attr',
       'href',
@@ -48,14 +50,20 @@ describe('Databags Page', () => {
   });
 
   it('add a Databag xls', () => {
-    createDatabag(databagName, 'cypress/fixtures/titanic.xls');
+    createDatabag(
+      databagName,
+      'cypress/fixtures/titanic.xls',
+      startTimeout + standardTimeout
+    );
     cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`)
       .should('exist');
   });
 
   it('change Databag name', () => {
-    cy.get('[data-testid="databag-item"]')
+    cy.get('[data-testid="databag-item"]', {
+      timeout: startTimeout + standardTimeout,
+    })
       .filter(`:contains("${databagName}")`)
       .find('[data-testid="databag-settings-button"]')
       .click();
