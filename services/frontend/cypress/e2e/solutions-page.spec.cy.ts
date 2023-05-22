@@ -5,6 +5,8 @@ import {
   deleteSolution,
 } from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
+// @ts-ignore
+const path = require('path');
 
 const inputTimeout = 1000;
 const databagName = `e2e databag ${new Date().toISOString()}`;
@@ -87,6 +89,7 @@ describe('Solutions Page', () => {
     cy.get('[data-testid="prediction-item"]')
       .filter(`:contains("${predictionName}")`)
       .should('exist');
+    cy.wait(60000);
     cy.get('[data-testid="prediction-item"]')
       .filter(`:contains("${predictionName}")`)
       .contains('Done', {
@@ -98,9 +101,10 @@ describe('Solutions Page', () => {
       .find('[data-testid="prediction-download-button"]')
       .click();
 
-    const downloadedFile = `${Cypress.config(
-      'downloadsFolder'
-    )}/prediction_result.csv`;
+    const downloadedFile = path.join(
+      Cypress.config('downloadsFolder'),
+      'prediction_result.csv'
+    );
     cy.readFile(downloadedFile, 'binary', { timeout: 300000 }).should(buffer =>
       expect(buffer.length).to.be.gt(100)
     );
