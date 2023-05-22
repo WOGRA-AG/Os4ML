@@ -1,6 +1,16 @@
+import time
+
 from google.cloud.storage import Client
+from icecream import ic
 
 from lib.singleton import Singleton
+
+
+def time_prefix() -> str:
+    return f"ic | {time.strftime('%H:%M:%S')}"
+
+
+ic.configureOutput(prefix=time_prefix)
 
 
 class GcsClient(Client, metaclass=Singleton):
@@ -8,4 +18,7 @@ class GcsClient(Client, metaclass=Singleton):
 
 
 def get_gcs_client() -> Client:
-    return Client()
+    ic()
+    client = Client()
+    ic()
+    return client
