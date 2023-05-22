@@ -7,6 +7,7 @@ from io import StringIO
 from typing import AsyncIterable
 
 from fastapi import Depends
+from icecream import ic
 
 from build.job_manager_client import ApiException, ApiTypeError
 from build.job_manager_client.api.jobmanager_api import JobmanagerApi
@@ -52,9 +53,11 @@ class DatabagService:
         return f"{databag_id}/{object_name}"
 
     def get_databags(self, usertoken: str) -> list[Databag]:
+        ic()
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
             path_prefix="", usertoken=usertoken
         )
+        ic()
         databags = (
             self._load_databag_from_object_name(
                 object_name, usertoken=usertoken
@@ -62,19 +65,28 @@ class DatabagService:
             for object_name in object_names
             if self.databag_config_file_name in object_name
         )
-        return [
+        ic()
+        urls = [
             self.update_presigned_urls(databag, usertoken=usertoken)
             for databag in databags
         ]
+        ic()
+        return urls
 
     async def stream_databags(
         self, usertoken: str, client_id: uuid.UUID
     ) -> AsyncIterable[list[Databag]]:
+        ic()
         user = get_parsed_token(usertoken)
+        ic()
         yield self.get_databags(usertoken)
+        ic()
         while True:
+            ic()
             await self.messaging_service.wait(user.id, client_id)
+            ic()
             yield self.get_databags(usertoken)
+            ic()
 
     def _notify_databag_update(self, usertoken: str) -> None:
         user = get_parsed_token(usertoken)

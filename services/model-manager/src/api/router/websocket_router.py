@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Query, WebSocket
+from icecream import ic
 
 from api.controller.modelmanager_websocket_controller import (
     WebsocketController,
@@ -13,7 +14,9 @@ async def stream_databags(
     usertoken: str = Query(None, description=""),
     _controller: WebsocketController = Depends(),
 ) -> None:
+    ic()
     await _controller.stream_databags(websocket, usertoken=usertoken)
+    ic()
 
 
 @router.websocket("/apis/v1beta1/model-manager/solutions")

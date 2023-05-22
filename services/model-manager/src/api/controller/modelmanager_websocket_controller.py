@@ -2,6 +2,7 @@ import asyncio
 import uuid
 
 from fastapi import Depends, WebSocket, WebSocketDisconnect
+from icecream import ic
 
 from lib.camel_case import convert_to_camel_case
 from services.databag_service import DatabagService
@@ -23,30 +24,45 @@ class WebsocketController:
     async def stream_databags(
         self, websocket: WebSocket, usertoken: str
     ) -> None:
+        ic()
         await websocket.accept()
+        ic()
         client_id = uuid.uuid4()
+        ic()
         task = None
+        ic()
         try:
             # see issue https://github.com/tiangolo/fastapi/issues/3934
             task = asyncio.create_task(
                 self._stream_databags(websocket, usertoken, client_id)
             )
+            ic()
             while True:
+                ic()
                 await websocket.receive_text()
         except WebSocketDisconnect:
+            ic()
             if task:
+                ic()
                 task.cancel()
+                ic()
             self.databag_service.terminate_databags_stream(client_id)
+            ic()
 
     async def _stream_databags(
         self, websocket: WebSocket, usertoken: str, client_id: uuid.UUID
     ) -> None:
+        ic()
         async for databags in self.databag_service.stream_databags(
             usertoken, client_id
         ):
+            ic()
             databag_dicts = [databag.dict() for databag in databags]
+            ic()
             camel_case_databag_dicts = convert_to_camel_case(databag_dicts)
+            ic()
             await websocket.send_json(camel_case_databag_dicts)
+            ic()
 
     async def stream_solutions(
         self, websocket: WebSocket, usertoken: str
