@@ -1,3 +1,5 @@
+ARG POETRY_VERSION=1.4.2
+ARG PYTHON_VERSION=3.10.6
 FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 COPY oas/ /oas
@@ -10,11 +12,16 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as production
+FROM python:${PYTHON_VERSION}-slim as production
 
-COPY dockerfiles/python/requirements.txt /requirements.txt
+RUN apt update && apt install -y --no-install-recommends curl
 
-RUN pip install -r /requirements.txt
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/usr POETRY_VERSION=${POETRY_VERSION} python -
+
+COPY dockerfiles/python/pyproject.toml /pyproject.toml
+COPY dockerfiles/python/poetry.lock /poetry.lock
+
+RUN poetry config virtualenvs.create false && poetry install --no-root --only main
 
 COPY --from=openapi /build/ /src/build/
 COPY ./src /src

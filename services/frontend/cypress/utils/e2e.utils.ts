@@ -1,5 +1,9 @@
-export function createDatabag(databagName: string, selectFile: string) {
-  cy.get('[data-testid="add-databag"]', { timeout: 5000 }).click();
+export function createDatabag(
+  databagName: string,
+  selectFile: string,
+  timeout = 5000
+) {
+  cy.get('[data-testid="add-databag"]', { timeout: timeout }).click();
   cy.get('#dataset-name-input').clear();
   cy.get('#dataset-name-input').type(databagName);
   cy.get('#file-input').invoke('show').selectFile(selectFile);

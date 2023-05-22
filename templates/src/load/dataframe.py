@@ -130,9 +130,6 @@ def load_file(file: str, path: str) -> object:
 def load_image(file: pathlib.Path) -> np.ndarray:
     img = Image.open(file)
     img = np.asarray(img)
-    if img.dtype == "uint16":
-        # fix for tif files, this will change with ludwig version 0.7
-        img = img.astype("int64")
     if len(img.shape) == 2:
         img = np.expand_dims(img, axis=2)
     return img

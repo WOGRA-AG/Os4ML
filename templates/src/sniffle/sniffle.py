@@ -16,7 +16,7 @@ def sniff_column_datatypes(
             sniff_series(column, max_categories=max_categories).value,
             column.size,
         )
-        for name, column in df.iteritems()
+        for name, column in df.items()
     )
     return [
         Column(name=name, type=type_, num_entries=size)
