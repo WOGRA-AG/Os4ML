@@ -62,6 +62,11 @@
     color: var(--md-sys-color-on-surface);
   }
 
+  // Placeholder Input
+  .mat-mdc-input-element.mat-mdc-form-field-input-control.mdc-text-field__input::placeholder {
+    color: var(--md-sys-color-outline);
+  }
+
   // Placeholder color
   .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: var(--md-sys-color-on-surface);
