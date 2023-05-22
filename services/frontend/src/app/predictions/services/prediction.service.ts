@@ -112,7 +112,6 @@ export class PredictionService {
       prediciton.dataFileName!
     ).pipe(
       switchMap(({ url, predictionId }) => {
-        console.log(url);
         prediciton.id = predictionId;
         if (!url) {
           return throwError(
