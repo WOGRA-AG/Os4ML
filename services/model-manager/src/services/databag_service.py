@@ -178,26 +178,35 @@ class DatabagService:
     def update_presigned_urls(
         self, databag: Databag, usertoken: str
     ) -> Databag:
+        ic()
         if databag.databag_type == DatasetType.LOCAL_FILE:
+            ic()
             dataset_file = self._get_databag_object_name(
                 databag.id, databag.file_name
             )
+            ic()
             try:
+                ic()
                 databag.dataset_url = self.objectstore.get_presigned_get_url(
                     dataset_file, usertoken=usertoken
                 )
+                ic()
             except NotFoundException:
                 pass
 
+        ic()
         daraframe_file = self._get_databag_object_name(
             databag.id, self.dataframe_file_name
         )
+        ic()
         try:
             databag.dataframe_url = self.objectstore.get_presigned_get_url(
                 daraframe_file, usertoken=usertoken
             )
+            ic()
         except NotFoundException:
             pass
+        ic()
         return databag
 
     def get_dataset_put_url(
