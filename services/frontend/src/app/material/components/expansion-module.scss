@@ -5,6 +5,11 @@
   $primary-palette: map.get($theme, 'primary');
   $primary-color: mat.get-color-from-palette($primary-palette, 500);
 
+  .mat-expansion-panel {
+    box-shadow: none !important;
+    background-color: var(--md-sys-color-surface);
+  }
+
   .mat-expansion-panel:not(.mat-expanded) {
     .mat-expansion-panel-header:hover:not([aria-disabled='true']) {
       background-color: rgba($primary-color, 0.1);
@@ -28,10 +33,9 @@
   }
 
   .mat-expansion-panel-header.mat-expanded {
+    border-bottom: 1px solid;
     max-height: 48px;
     border-radius: 0;
-    border-width: 1px;
-    border-style: solid;
   }
 
   .mat-expansion-panel-header-title {

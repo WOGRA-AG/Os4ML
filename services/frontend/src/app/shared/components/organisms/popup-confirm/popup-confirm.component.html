@@ -1,9 +1,9 @@
 <app-dialog-header (closeDialog)="close()">
-  {{ data.titleKey | translate }}
+  <span class="primary-text">{{ data.titleKey | translate }}</span>
 </app-dialog-header>
 
 <app-dialog-section>
-  {{ data.messageKey | translate }}
+  <span class="on-surface-variant-text">{{ data.messageKey | translate }}</span>
 </app-dialog-section>
 
 <mat-dialog-actions align="end">

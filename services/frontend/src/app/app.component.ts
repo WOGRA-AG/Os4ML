@@ -32,7 +32,7 @@ import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-
   ],
 })
 export class AppComponent {
-  constructor(translate: TranslateService, private dialog: MatDialog) {
+  constructor(private translate: TranslateService, private dialog: MatDialog) {
     registerLocaleData(localeDe, 'de', localeDeExtra);
     registerLocaleData(localeEn, 'en', localeEnExtra);
     translate.setDefaultLang('en');

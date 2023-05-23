@@ -1,0 +1,294 @@
+/* This class is used to apply the primary color as a background */
+.primary {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* This class is used to apply the primary color to text */
+.primary-text {
+  color: var(--md-sys-color-primary);
+}
+
+/* This class is used to apply the primary color alternative as a background */
+.on-primary {
+  background-color: var(--md-sys-color-on-primary);
+}
+
+/* This class is used to apply the primary color alternative to text */
+.on-primary-text {
+  color: var(--md-sys-color-on-primary);
+}
+
+/* This class is used to apply the primary container color as a background */
+.primary-container {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+/* This class is used to apply the primary container color to text */
+.primary-container-text {
+  color: var(--md-sys-color-primary-container);
+}
+
+/* This class is used to apply the primary container color alternative as a background */
+.on-primary-container {
+  background-color: var(--md-sys-color-on-primary-container);
+}
+
+/* This class is used to apply the primary container color alternative to text */
+.on-primary-container-text {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* This class is used to apply the secondary color as a background */
+.secondary {
+  background-color: var(--md-sys-color-secondary);
+}
+
+/* This class is used to apply the secondary color to text */
+.secondary-text {
+  color: var(--md-sys-color-secondary);
+}
+
+/* This class is used to apply the secondary color alternative as a background */
+.on-secondary {
+  background-color: var(--md-sys-color-on-secondary);
+}
+
+/* This class is used to apply the secondary color alternative to text */
+.on-secondary-text {
+  color: var(--md-sys-color-on-secondary);
+}
+
+/* This class is used to apply the secondary container color as a background */
+.secondary-container {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+/* This class is used to apply the secondary container color to text */
+.secondary-container-text {
+  color: var(--md-sys-color-secondary-container);
+}
+
+/* This class is used to apply the secondary container color alternative as a background */
+.on-secondary-container {
+  background-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* This class is used to apply the secondary container color alternative to text */
+.on-secondary-container-text {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* This class is used to apply the tertiary color as a background */
+.tertiary {
+  background-color: var(--md-sys-color-tertiary);
+}
+
+/* This class is used to apply the tertiary color to text */
+.tertiary-text {
+  color: var(--md-sys-color-tertiary);
+}
+
+/* This class is used to apply the tertiary color alternative as a background */
+.on-tertiary {
+  background-color: var(--md-sys-color-on-tertiary);
+}
+
+/* This class is used to apply the tertiary color alternative to text */
+.on-tertiary-text {
+  color: var(--md-sys-color-on-tertiary);
+}
+
+/* This class is used to apply the tertiary container color as a background */
+.tertiary-container {
+  background-color: var(--md-sys-color-tertiary-container);
+}
+
+/* This class is used to apply the tertiary container color to text */
+.tertiary-container-text {
+  color: var(--md-sys-color-tertiary-container);
+}
+
+/* This class is used to apply the tertiary container color alternative to text */
+.on-tertiary-container-text {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* This class is used to apply the error color as a background */
+.error {
+  background-color: var(--md-sys-color-error);
+}
+
+/* This class is used to apply the error color to text */
+.error-text {
+  color: var(--md-sys-color-error);
+}
+
+/* This class is used to apply the error container color as a background */
+.error-container {
+  background-color: var(--md-sys-color-error-container);
+}
+
+/* This class is used to apply the error container color to text */
+.error-container-text {
+  color: var(--md-sys-color-error-container);
+}
+
+/* This class is used to apply the error color alternative as a background */
+.on-error {
+  background-color: var(--md-sys-color-on-error);
+}
+
+/* This class is used to apply the error color alternative to text */
+.on-error-text {
+  color: var(--md-sys-color-on-error);
+}
+
+/* This class is used to apply the error container color alternative as a background */
+.on-error-container {
+  background-color: var(--md-sys-color-on-error-container);
+}
+
+/* This class is used to apply the error container color alternative to text */
+.on-error-container-text {
+  color: var(--md-sys-color-on-error-container);
+}
+
+/* This class is used to apply the background color */
+.background {
+  background-color: var(--md-sys-color-background);
+}
+
+/* This class is used to apply the background color to text */
+.background-text {
+  color: var(--md-sys-color-background);
+}
+
+/* This class is used to apply the alternative background color */
+.on-background {
+  background-color: var(--md-sys-color-on-background);
+}
+
+/* This class is used to apply the alternative background color to text */
+.on-background-text {
+  color: var(--md-sys-color-on-background);
+}
+
+/* This class is used to apply the surface color as a background */
+.surface {
+  background-color: var(--md-sys-color-surface);
+}
+
+/* This class is used to apply the surface color to text */
+.surface-text {
+  color: var(--md-sys-color-surface);
+}
+
+/* This class is used to apply the alternative surface color as a background */
+.on-surface {
+  background-color: var(--md-sys-color-on-surface);
+}
+
+/* This class is used to apply the alternative surface color to text */
+.on-surface-text {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* This class is used to apply a variant of the surface color as a background */
+.surface-variant {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/* This class is used to apply a variant of the surface color to text */
+.surface-variant-text {
+  color: var(--md-sys-color-surface-variant);
+}
+
+/* This class is used to apply an alternative variant of the surface color as a background */
+.on-surface-variant {
+  background-color: var(--md-sys-color-on-surface-variant);
+}
+
+/* This class is used to apply an alternative variant of the surface color to text */
+.on-surface-variant-text {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* This class is used to apply the outline color as a background */
+.outline {
+  background-color: var(--md-sys-color-outline);
+}
+
+/* This class is used to apply the outline color to text */
+.outline-text {
+  color: var(--md-sys-color-outline);
+}
+
+/* This class is used to apply the inverse of the surface color as a background */
+.inverse-on-surface {
+  background-color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* This class is used to apply the inverse of the surface color to text */
+.inverse-on-surface-text {
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* This class is used to apply the inverse surface color as a background */
+.inverse-surface {
+  background-color: var(--md-sys-color-inverse-surface);
+}
+
+/* This class is used to apply the inverse surface color to text */
+.inverse-surface-text {
+  color: var(--md-sys-color-inverse-surface);
+}
+
+/* This class is used to apply the inverse primary color as a background */
+.inverse-primary {
+  background-color: var(--md-sys-color-inverse-primary);
+}
+
+/* This class is used to apply the inverse primary color to text */
+.inverse-primary-text {
+  color: var(--md-sys-color-inverse-primary);
+}
+
+/* This class is used to apply the shadow color as a background */
+.shadow {
+  background-color: var(--md-sys-color-shadow);
+}
+
+/* This class is used to apply the shadow color to text */
+.shadow-text {
+  color: var(--md-sys-color-shadow);
+}
+
+/* This class is used to apply the surface tint color as a background */
+.surface-tint {
+  background-color: var(--md-sys-color-surface-tint);
+}
+
+/* This class is used to apply the surface tint color to text */
+.surface-tint-text {
+  color: var(--md-sys-color-surface-tint);
+}
+
+/* This class is used to apply the outline variant color as a background */
+.outline-variant {
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+/* This class is used to apply the outline variant color to text */
+.outline-variant-text {
+  color: var(--md-sys-color-outline-variant);
+}
+
+/* This class is used to apply the scrim color as a background */
+.scrim {
+  background-color: var(--md-sys-color-scrim);
+}
+
+/* This class is used to apply the scrim color to text */
+.scrim-text {
+  color: var(--md-sys-color-scrim);
+}

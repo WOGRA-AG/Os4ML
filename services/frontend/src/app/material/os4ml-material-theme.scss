@@ -28,8 +28,8 @@ $os4ml-light-theme: define-light-theme(
   (
     color: (
       primary: colors.$os4ml-light-primary,
-      accent: colors.$os4ml-light-accent,
-      warn: colors.$os4ml-light-warn,
+      accent: colors.$os4ml-light-secondary,
+      warn: colors.$os4ml-light-error,
     ),
     typography: typography.$custom-typography,
     density: 0,

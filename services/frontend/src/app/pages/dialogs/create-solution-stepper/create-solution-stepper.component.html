@@ -1,5 +1,7 @@
 <app-dialog-header (closeDialog)="close()">
-  {{ 'solution.create' | translate }}
+  <span class="on-surface-text">
+    {{ 'solution.create' | translate }}
+  </span>
 </app-dialog-header>
 
 <mat-stepper
@@ -73,7 +75,6 @@
       id="define-output-next-button"
       variant="raised"
       color="primary"
-      class="main-button"
       (click)="nextPageClick(stepper)"
       [disabled]="!solution.outputFields || solution.outputFields.length === 0">
       {{ 'action.next_step' | translate }}

@@ -1,5 +1,5 @@
 <app-dialog-header (closeDialog)="close()">
-  {{ 'databag.settings' | translate }}
+  <span class="on-surface-text">{{ 'databag.settings' | translate }}</span>
 </app-dialog-header>
 
 <mat-dialog-content>
@@ -9,10 +9,13 @@
     (ngSubmit)="f.form.valid && onSubmit()"
     #f="ngForm">
     <app-dialog-section>
-      <div title>{{ 'databag.placeholder' | translate }}</div>
+      <div title class="on-surface-text">
+        {{ 'databag.placeholder' | translate }}
+      </div>
       <div>
         <mat-form-field>
           <input
+            class="on-surface-text"
             matInput
             type="string"
             placeholder="{{ 'databag.placeholder' | translate }}"

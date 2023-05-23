@@ -9,17 +9,22 @@
     $primary-palette,
     500
   );
+
   $accent-contrast-500: mat.get-contrast-color-from-palette(
     $accent-palette,
     500
   );
   $warn-contrast-500: mat.get-contrast-color-from-palette($warn-palette, 500);
   $background: mat.get-color-from-palette($primary-palette, A100);
+  $disabled: mat.get-color-from-palette($primary-palette, 50);
 
   .mat-mdc-icon-button {
     &.mat-mdc-button-base {
       background-color: $background;
     }
+  }
+  .mat-mdc-raised-button:disabled {
+    background: $disabled;
   }
 
   //TODO: Contrast color does not work properly with mdc as of Angular Material 15.2. So this is a temporary workaround and should be removed as soon as possible

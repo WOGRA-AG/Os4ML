@@ -2,101 +2,159 @@
 @use '@angular/material' as mat;
 
 $md-os4ml-colors-primary: (
-  50: #e6f5fb,
-  100: #c0e6f5,
-  200: #97d5ee,
-  300: #6dc4e7,
-  400: #4db7e1,
-  500: #2eaadc,
-  600: #29a3d8,
-  700: #2399d3,
-  800: #1d90ce,
-  900: #127fc5,
-  A100: #f4f9fd,
-  A200: #c1e5ff,
-  A400: #8ed0ff,
-  A700: #74c5ff,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
-  ),
+  50: var(--md-sys-color-primary-container),
+  // --md-sys-color-primary-container-light
+  100: var(--md-sys-color-primary-container),
+  // --md-sys-color-primary-container-light
+  200: var(--md-sys-color-primary-container),
+  // --md-sys-color-primary-container-light
+  300: var(--md-sys-color-primary-container),
+  // --md-sys-color-primary-container-light
+  400: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  500: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  600: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  700: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  800: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  900: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  A100: var(--md-sys-color-primary-container),
+  // --md-sys-color-primary-container-light
+  A200: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  A400: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  A700: var(--md-sys-color-primary),
+  // --md-sys-color-primary-light
+  contrast:
+    (
+      50: var(--md-sys-color-on-primary-container),
+      // --md-sys-color-on-primary-container-light
+      100: var(--md-sys-color-on-primary-container),
+      // --md-sys-color-on-primary-container-light
+      200: var(--md-sys-color-on-primary-container),
+      // --md-sys-color-on-primary-container-light
+      300: var(--md-sys-color-on-primary-container),
+      // --md-sys-color-on-primary-container-light
+      400: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      500: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      600: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      700: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      800: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      900: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      A100: var(--md-sys-color-on-primary-container),
+      // --md-sys-color-on-primary-container-light
+      A200: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      A400: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+      A700: var(--md-sys-color-on-primary),
+      // --md-sys-color-on-primary-light
+    ),
 );
 
-$md-os4ml-colors-accent: (
-  50: #ededed,
-  100: #d1d1d1,
-  200: #b3b3b3,
-  300: #949494,
-  400: #7d7d7d,
-  500: #666666,
-  600: #5e5e5e,
-  700: #535353,
-  800: #494949,
-  900: #383838,
-  A100: #f49c9c,
-  A200: #ef6e6e,
-  A400: #ff2a2a,
-  A700: #ff1111,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #ffffff,
-    A700: #ffffff,
-  ),
+$md-os4ml-colors-secondary: (
+  50: var(--md-sys-color-secondary-container),
+  // --md-sys-color-secondary-container-light
+  100: var(--md-sys-color-secondary-container),
+  // --md-sys-color-secondary-container-light
+  200: var(--md-sys-color-secondary-container),
+  // --md-sys-color-secondary-container-light
+  300: var(--md-sys-color-secondary-container),
+  // --md-sys-color-secondary-container-light
+  400: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  500: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  600: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  700: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  800: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  900: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  A100: var(--md-sys-color-secondary-container),
+  // --md-sys-color-secondary-container-light
+  A200: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  A400: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  A700: var(--md-sys-color-secondary),
+  // --md-sys-color-secondary-light
+  contrast:
+    (
+      50: var(--md-sys-color-on-secondary-container),
+      // --md-sys-color-on-secondary-container-light
+      100: var(--md-sys-color-on-secondary-container),
+      // --md-sys-color-on-secondary-container-light
+      200: var(--md-sys-color-on-secondary-container),
+      // --md-sys-color-on-secondary-container-light
+      300: var(--md-sys-color-on-secondary-container),
+      // --md-sys-color-on-secondary-container-light
+      400: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      500: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      600: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      700: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      800: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      900: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      A100: var(--md-sys-color-on-secondary-container),
+      // --md-sys-color-on-secondary-container-light
+      A200: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      A400: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+      A700: var(--md-sys-color-on-secondary),
+      // --md-sys-color-on-secondary-light
+    ),
 );
 
-$md-os4ml-colors-warn: (
-  50: #fce9e3,
-  100: #f8c9ba,
-  200: #f3a58c,
-  300: #ee805e,
-  400: #ea653c,
-  500: #e64a19,
-  600: #e34316,
-  700: #df3a12,
-  800: #db320e,
-  900: #d52208,
-  A100: #fffefe,
-  A200: #ffd0cb,
-  A400: #ffa298,
-  A700: #ff8b7f,
+$md-os4ml-colors-error: (
+  50: var(--md-sys-color-error-container),
+  100: var(--md-sys-color-error-container),
+  200: var(--md-sys-color-error-container),
+  300: var(--md-sys-color-error-container),
+  400: var(--md-sys-color-error),
+  500: var(--md-sys-color-error),
+  600: var(--md-sys-color-error),
+  700: var(--md-sys-color-error),
+  800: var(--md-sys-color-error),
+  900: var(--md-sys-color-error),
+  A100: var(--md-sys-color-error-container),
+  A200: var(--md-sys-color-error),
+  A400: var(--md-sys-color-error),
+  A700: var(--md-sys-color-error),
   contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
+    50: var(--md-sys-color-on-error-container),
+    100: var(--md-sys-color-on-error-container),
+    200: var(--md-sys-color-on-error-container),
+    300: var(--md-sys-color-on-error-container),
+    400: var(--md-sys-color-on-error),
+    500: var(--md-sys-color-on-error),
+    600: var(--md-sys-color-on-error),
+    700: var(--md-sys-color-on-error),
+    800: var(--md-sys-color-on-error),
+    900: var(--md-sys-color-on-error),
+    A100: var(--md-sys-color-on-error-container),
+    A200: var(--md-sys-color-on-error),
+    A400: var(--md-sys-color-on-error),
+    A700: var(--md-sys-color-on-error),
   ),
 );
 
@@ -134,120 +192,74 @@ $md-os4ml-colors-success: (
 );
 
 $os4ml-light-foreground: (
-  base: black,
-  divider: rgba(black, 0.12),
-  dividers: rgba(black, 0.12),
-  disabled: rgba(white, 0.5),
-  disabled-button: rgba(black, 0.12),
-  disabled-text: rgba(white, 0.5),
-  elevation: black,
-  hint-text: rgba(white, 0.5),
-  secondary-text: rgba(black, 0.54),
-  icon: rgba(black, 0.54),
-  icons: rgba(black, 0.54),
-  text: rgba(black, 0.87),
-  slider-min: rgba(black, 0.87),
-  slider-off: rgba(black, 0.26),
-  slider-off-active: rgba(black, 0.38),
+  base: var(--md-sys-color-on-background),
+  // Base font color
+  divider: var(--md-sys-color-outline),
+  // Color for line dividers
+  dividers: var(--md-sys-color-outline),
+  // An alternative name for the color of line dividers
+  disabled: rgba(var(--md-sys-color-on-background), 0.5),
+  // Color for disabled elements
+  disabled-button: rgba(var(--md-sys-color-outline), 0.12),
+  // Color for disabled buttons
+  disabled-text: rgba(var(--md-sys-color-on-background), 0.5),
+  // Text color for disabled elements
+  elevation: var(--md-sys-color-shadow),
+  // Color for shadows (used for "elevation")
+  hint-text: rgba(var(--md-sys-color-on-background), 0.5),
+  // Color for hint texts
+  secondary-text: rgba(var(--md-sys-color-on-background), 0.54),
+  // Color for secondary text
+  icon: rgba(var(--md-sys-color-on-background), 0.54),
+  // Color for icons
+  icons: rgba(var(--md-sys-color-on-background), 0.54),
+  // An alternative name for the color of icons
+  text: var(--md-sys-color-on-background),
+  // Main text color
+  slider-min: var(--md-sys-color-primary),
+  // Color for the part of a slider to the left of the handle
+  slider-off: rgba(var(--md-sys-color-outline), 0.26),
+  // Color for the part of a slider to the right of the handle when the slider is not active
+  slider-off-active: rgba(var(--md-sys-color-primary), 0.38),
+  // Color for the part of a slider to the right of the handle when the slider is active
 );
 
 $os4ml-light-background: (
-  status-bar: map.get(mat.$grey-palette, 300),
-  app-bar: map.get(mat.$grey-palette, 100),
+  status-bar: var(--md-sys-color-primary-container),
+  // Background color of the status bar
+  app-bar: var(--md-sys-color-primary),
+  // Background color of the app bar
   background: map.get(mat.$grey-palette, 50),
-  hover: rgba(black, 0.04),
-  card: white,
-  dialog: white,
-  disabled-button: rgba(black, 0.12),
-  raised-button: white,
-  focused-button: rgba(black, 0.12),
-  selected-button: map.get(mat.$grey-palette, 300),
-  selected-disabled-button: map.get(mat.$grey-palette, 400),
-  disabled-button-toggle: map.get(mat.$grey-palette, 200),
-  unselected-chip: map.get(mat.$grey-palette, 300),
-  disabled-list-option: map.get(mat.$grey-palette, 200),
-  tooltip: map.get(mat.$grey-palette, 700),
+  // Background color of the application
+  hover: rgba(var(--md-sys-color-outline), 0.04),
+  // Background color for hover states
+  card: var(--md-sys-color-inverse-surface),
+  // Background color for cards
+  dialog: var(--md-sys-color-inverse-surface),
+  // Background color for dialogs
+  disabled-button: rgba(var(--md-sys-color-outline), 0.12),
+  // Background color for disabled buttons
+  raised-button: rgba(var(--md-sys-color-background), 3),
+  // Background color for raised buttons
+  focused-button: rgba(var(--md-sys-color-outline), 0.12),
+  // Background color for focused buttons
+  selected-button: var(--md-sys-color-primary-container),
+  // Background color for selected buttons
+  selected-disabled-button: var(--md-sys-color-secondary-container),
+  // Background color for selected disabled buttons
+  disabled-button-toggle: var(--md-sys-color-secondary-container),
+  // Background color for disabled button toggles
+  unselected-chip: var(--md-sys-color-primary-container),
+  // Background color for unselected chips
+  disabled-list-option: var(--md-sys-color-secondary-container),
+  // Background color for disabled list options
+  tooltip: var(--md-sys-color-secondary),
+  // Background color for tooltips
 );
 
 $os4ml-light-primary: mat.define-palette($md-os4ml-colors-primary);
-$os4ml-light-warn: mat.define-palette($md-os4ml-colors-warn);
-$os4ml-light-accent: mat.define-palette($md-os4ml-colors-accent);
+$os4ml-light-secondary: mat.define-palette($md-os4ml-colors-secondary);
+$os4ml-light-error: mat.define-palette($md-os4ml-colors-error);
 $os4ml-light-tertiary: mat.define-palette(mat.$gray-palette);
 $os4ml-light-success: mat.define-palette($md-os4ml-colors-success);
 $os4ml-light-info: mat.define-palette(mat.$blue-palette);
-
-$primary-color: mat.get-color-from-palette($os4ml-light-primary, 500);
-$primary-color-100: mat.get-color-from-palette($os4ml-light-primary, 100);
-$primary-color-900: mat.get-color-from-palette($os4ml-light-primary, 900);
-$primary-variant: mat.get-color-from-palette($os4ml-light-primary, 700);
-$accent-color: mat.get-color-from-palette($os4ml-light-accent, 500);
-$accent-color-100: mat.get-color-from-palette($os4ml-light-accent, 100);
-$warn-color: mat.get-color-from-palette($os4ml-light-warn, default);
-$warn-color-100: mat.get-color-from-palette($os4ml-light-warn, 100);
-$success-color: mat.get-color-from-palette($os4ml-light-success, default);
-$success-color-100: mat.get-color-from-palette($os4ml-light-success, 100);
-$background: #f4f9fd;
-$background-hover: #f7fcfe;
-$surface: #ffffff;
-$error: #b00020;
-$on-primary: #ffffff;
-$on-secondary: #000000;
-$on-background: #000000;
-$on-surface: #000000;
-$on-error: #ffffff;
-$on-primary-high: rgba($on-primary, 1);
-$on-primary-medium: rgba($on-primary, 0.74);
-$on-primary-disabled: rgba($on-primary, 0.38);
-$on-surface-high: #383838;
-$on-surface-medium: rgba($on-surface, 0.6);
-$on-surface-disabled: rgba($on-surface, 0.38);
-$border-color: rgba($on-surface, 0.12);
-$overlay: rgba($primary-color-900, 0.16);
-
-.background {
-  background-color: $background;
-}
-
-.primary {
-  color: $primary-color;
-}
-
-.accent {
-  color: $accent-color;
-}
-
-.warn {
-  color: $warn-color;
-}
-
-.bg-primary {
-  background-color: $background;
-}
-
-.bg-warn {
-  background-color: $warn-color;
-}
-
-.bg-accent {
-  background-color: $accent-color;
-}
-
-.bg-surface {
-  background-color: $surface;
-}
-
-.border-color {
-  border-color: rgb(0, 0, 0, 0.12);
-}
-
-.on-surface-disabled {
-  color: $on-surface-disabled;
-}
-
-.on-surface-medium {
-  color: $on-surface-medium;
-}
-
-.on-surface-high {
-  color: $on-surface-high;
-}
