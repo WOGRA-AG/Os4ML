@@ -1,0 +1,85 @@
+<app-os4ml-default-template data-testid="databag-page">
+  <h1 class="headline-1 primary-text">{{ 'databag.plural' | translate }}</h1>
+  <ng-container *ngIf="databags$ | async as databags">
+    <div
+      class="data-insight-wrapper"
+      *ngIf="databags | hasElements; else placeholder">
+      <app-data-insight-card
+        data-testid="databag-item"
+        *ngFor="let databag of databags">
+        <ng-container content>
+          <app-data-insight-item [title]="'databag.placeholder' | translate">
+            <span class="mat-body-2 on-surface-text">{{
+              databag.databagName
+            }}</span>
+          </app-data-insight-item>
+          <app-data-insight-item [title]="'databag.detail.type' | translate">
+            <span class="mat-body-2 on-surface-text">{{
+              databag.databagType
+            }}</span>
+          </app-data-insight-item>
+          <app-data-insight-item
+            [title]="'databag.detail.number_of_features' | translate">
+            <span class="mat-body-2 on-surface-text">{{
+              databag.numberColumns
+            }}</span>
+          </app-data-insight-item>
+          <app-data-insight-item
+            [title]="'databag.detail.number_of_samples' | translate">
+            <span class="mat-body-2 on-surface-text">{{
+              databag.numberRows
+            }}</span>
+          </app-data-insight-item>
+          <app-data-insight-item
+            [title]="'databag.detail.creation' | translate">
+            <span class="mat-body-2 on-surface-text">
+              {{ databag.creationTime | localizedDate }}
+              {{ databag.creationTime | localizedDate : 'mediumTime' }}
+            </span>
+          </app-data-insight-item>
+        </ng-container>
+        <ng-container actions>
+          <app-data-insight-item [title]="'databag.detail.actions' | translate">
+            <app-icon-button
+              data-testid="databag-settings-button"
+              (click)="openDatabagSettingDialog(databag)"
+              [matTooltip]="'databag.detail.tooltips.settings' | translate"
+              attr.aria-label="{{
+                'databag.detail.tooltips.settings' | translate
+              }}"
+              color="primary"
+              icon="edit">
+            </app-icon-button>
+            <app-icon-button
+              (click)="openCreateSolutionStepperDialog(databag)"
+              [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
+              attr.aria-label="{{
+                'databag.detail.tooltips.add_solution' | translate
+              }}"
+              color="primary"
+              icon="add">
+            </app-icon-button>
+          </app-data-insight-item>
+        </ng-container>
+      </app-data-insight-card>
+      <div class="actions">
+        <app-button
+          data-testid="add-databag"
+          variant="raised"
+          class="fab-button mat-raised-button"
+          color="primary"
+          icon="add"
+          (click)="addDatabag()">
+          {{ 'databag.create' | translate }}
+        </app-button>
+      </div>
+    </div>
+  </ng-container>
+</app-os4ml-default-template>
+
+<ng-template #placeholder>
+  <div class="placeholder-container">
+    <app-no-databags-placeholder
+      (addDatabagButton)="addDatabag()"></app-no-databags-placeholder>
+  </div>
+</ng-template>

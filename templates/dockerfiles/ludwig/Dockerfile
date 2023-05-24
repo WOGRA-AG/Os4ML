@@ -10,11 +10,13 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-FROM wogra/ludwig-gpu:latest as production
+FROM wogra/cuda-poetry:cuda11.7.1-poetry1.4.2 as production
 
-COPY dockerfiles/ludwig/requirements.txt /requirements.txt
+COPY dockerfiles/ludwig/pyproject.toml /pyproject.toml
+COPY dockerfiles/ludwig/poetry.lock /poetry.lock
 
-RUN pip install -r /requirements.txt
+RUN poetry config virtualenvs.create false && poetry install --no-root --only main
+RUN pip install torch==2.0.1 # fix for pytorch
 
 COPY --from=openapi /build/ /src/build/
 COPY ./src /src

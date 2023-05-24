@@ -95,16 +95,22 @@ export class PredictionService {
     );
   }
 
-  getPredictionDataPutUrl(solutionId: string): Observable<UrlAndPredictionId> {
+  getPredictionDataPutUrl(
+    solutionId: string,
+    fileName: string
+  ): Observable<UrlAndPredictionId> {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.getPredictionDataPutUrl(solutionId, token)
+        this.modelManager.getPredictionDataPutUrl(solutionId, fileName, token)
       )
     );
   }
 
   uploadData(file: File, prediciton: Prediction): Observable<Prediction> {
-    return this.getPredictionDataPutUrl(prediciton.solutionId!).pipe(
+    return this.getPredictionDataPutUrl(
+      prediciton.solutionId!,
+      prediciton.dataFileName!
+    ).pipe(
       switchMap(({ url, predictionId }) => {
         prediciton.id = predictionId;
         if (!url) {

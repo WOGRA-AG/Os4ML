@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.app-wrapper {
+  padding-left: 205px;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+nav {
+  position: fixed;
+  width: 205px;
+  height: 100%;
+
+  a,
+  .logo {
+    width: 100%;
+    text-decoration: none;
+  }
+}

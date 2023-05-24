@@ -18,7 +18,7 @@ import { DialogSectionComponent } from '../../../shared/components/molecules/dia
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
-import { CreatePredictionComponent } from 'src/app/templates/dialogs/create-prediction/create-prediction.component';
+import { CreatePredictionComponent } from '../../../pages/dialogs/create-prediction/create-prediction.component';
 
 @Component({
   selector: 'app-solution-setting',

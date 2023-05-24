@@ -172,9 +172,10 @@ async def test_get_prediction_data_put_url(
             prediction_id="prediction_id",
         )
     )
-    resp = client.get(route_prefix + "solutions/solution_id/prediction-data")
+    resp = client.get(
+        route_prefix + "solutions/solution_id/prediction-data/file.csv"
+    )
     assert resp.status_code == 200
-    print(resp.json())
     assert resp.json()["predictionId"] == "prediction_id"
     assert resp.json()["url"].startswith("http")
 

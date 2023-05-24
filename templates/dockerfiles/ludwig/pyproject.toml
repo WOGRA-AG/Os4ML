@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "os4ml-ludwig"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "os4ml_ludwig"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ludwig = "^0.7.4"
+kfp = "^1.8.21"
+pandas = "^2.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

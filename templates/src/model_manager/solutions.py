@@ -46,8 +46,15 @@ def upload_model(model: IO[bytes], solution_id: str) -> None:
     put_file_to_url(url, model)
 
 
-def upload_prediction_template(template: IO[bytes], solution_id: str) -> None:
-    url = model_manager.get_prediction_template_put_url(
+def upload_prediction_template(
+    template: IO[bytes], solution_id: str, file_name: str
+) -> None:
+    solution = model_manager.get_solution_by_id(
         solution_id, usertoken=USER_TOKEN
+    )
+    solution.prediction_template_file_name = file_name
+    update_solution(solution)
+    url = model_manager.get_prediction_template_put_url(
+        solution_id, file_name, usertoken=USER_TOKEN
     )
     put_file_to_url(url, template)

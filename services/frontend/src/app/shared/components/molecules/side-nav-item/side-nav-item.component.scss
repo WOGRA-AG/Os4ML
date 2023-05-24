@@ -1,0 +1,38 @@
+:host {
+  height: 3rem;
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.content {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--md-sys-color-on-surface);
+
+  &:hover {
+    background-color: var(--md-sys-color-primary-container);
+  }
+
+  &.is-active {
+    color: var(--md-sys-color-on-primary-container);
+    background-color: var(--md-sys-color-primary-container);
+  }
+}
+
+.focus-indicator {
+  border-radius: 10px;
+  height: 100%;
+  width: 4px;
+
+  &.is-active {
+    background: var(--md-sys-color-on-primary-container);
+  }
+}

@@ -1,5 +1,5 @@
 <app-dialog-header (closeDialog)="close()">
-  {{ 'solution.settings' | translate }}
+  <span class="on-surface-text">{{ 'solution.settings' | translate }}</span>
 </app-dialog-header>
 
 <mat-dialog-content>
@@ -28,9 +28,11 @@
       <div title>{{ 'solution.detail.input_fields' | translate }}</div>
       <div>
         <mat-chip-listbox>
-          <mat-chip-option *ngFor="let input_fields of solution.inputFields">{{
-            input_fields
-          }}</mat-chip-option>
+          <mat-chip-option
+            disabled
+            *ngFor="let input_fields of solution.inputFields"
+            >{{ input_fields }}</mat-chip-option
+          >
         </mat-chip-listbox>
       </div>
     </app-dialog-section>
@@ -40,6 +42,7 @@
       <div>
         <mat-chip-listbox>
           <mat-chip-option
+            disabled
             *ngFor="let output_fields of solution.outputFields"
             >{{ output_fields }}</mat-chip-option
           >
