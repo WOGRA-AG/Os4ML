@@ -1,16 +1,10 @@
 @mixin color($theme, $background) {
-  /* Targeting all cells and headers within the table */
   .mat-mdc-header-row {
     .mat-mdc-header-cell {
-      /* Changing the text color inside the cells */
-      color: var(--md-sys-color-primary); /* Choose your preferred color */
+      color: var(--md-sys-color-primary);
       border-bottom: 1px solid var(--md-sys-color-outline);
     }
-
-    /* Changing the background color of rows */
-    background-color: var(
-      --md-sys-color-surface
-    ); /* Choose your preferred color */
+    background-color: var(--md-sys-color-surface);
   }
   .mdc-data-table__row:last-child .mdc-data-table__cell,
   .mat-mdc-cell {
@@ -22,9 +16,7 @@
 
 @mixin layout() {
   .mat-mdc-table {
-    /* Adding border radius to the table */
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px; /* Adjust according to your preference */
+    border-radius: 5px 5px 0px 0px;
     overflow: hidden;
   }
 
