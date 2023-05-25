@@ -1,7 +1,9 @@
 <app-os4ml-default-template>
-  <h1 class="headline-1 primary-text">{{ 'prediction.plural' | translate }}</h1>
-  <app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
-  <ng-container *ngIf="predictions$ | async as predictions">
+  <h1 header class="headline-1 primary-text">
+    {{ 'prediction.plural' | translate }}
+  </h1>
+  <app-breadcrumbs main [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+  <ng-container main *ngIf="predictions$ | async as predictions">
     <ng-container *ngIf="predictions.length > 0; else placeholder">
       <div class="data-insight-wrapper">
         <app-data-insight-card
@@ -69,10 +71,6 @@
 </app-os4ml-default-template>
 
 <ng-template #placeholder>
-  <div class="placeholder-container">
-    <app-no-prediction-placeholder
-      (addPredictionChange)="
-        createPrediction()
-      "></app-no-prediction-placeholder>
-  </div>
+  <app-no-prediction-placeholder (addPredictionChange)="createPrediction()">
+  </app-no-prediction-placeholder>
 </ng-template>
