@@ -4,7 +4,7 @@
   </h1>
   <app-breadcrumbs main [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
   <ng-container main *ngIf="predictions$ | async as predictions">
-    <ng-container *ngIf="predictions.length > 0; else placeholder">
+    <ng-container *ngIf="predictions | hasElements; else placeholder">
       <div class="data-insight-wrapper">
         <app-data-insight-card
           *ngFor="let prediction of predictions"

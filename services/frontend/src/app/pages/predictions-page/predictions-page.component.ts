@@ -13,7 +13,7 @@ import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoPredictionPlaceholderComponent } from '../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
 import { ButtonComponent } from '../../design/components/atoms/button/button.component';
-import { NgIf, AsyncPipe, NgForOf, JsonPipe } from '@angular/common';
+import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { DataInsightCardComponent } from '../../shared/components/organisms/data-insight-card/data-insight-card.component';
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
@@ -24,6 +24,7 @@ import { MaterialModule } from '../../material/material.module';
 import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { PipelineStatus } from '../../core/models/pipeline-status';
 import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
+import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 
 @Component({
   selector: 'app-predictions-page',
@@ -46,7 +47,7 @@ import { CreatePredictionComponent } from '../dialogs/create-prediction/create-p
     MaterialModule,
     ShortStatusPipe,
     Os4mlDefaultTemplateComponent,
-    JsonPipe,
+    HasElementsPipe,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {

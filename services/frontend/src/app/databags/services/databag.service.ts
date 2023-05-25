@@ -9,8 +9,8 @@ import {
   of,
   concatWith,
   first,
-  shareReplay,
   raceWith,
+  BehaviorSubject,
 } from 'rxjs';
 import {
   Databag,
@@ -28,7 +28,7 @@ import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
   providedIn: 'root',
 })
 export class DatabagService {
-  private readonly _databags$: Observable<Databag[]>;
+  private readonly _databagsSubject$ = new BehaviorSubject<Databag[]>([]);
 
   constructor(
     private userService: UserService,
@@ -40,17 +40,20 @@ export class DatabagService {
     const webSocketConnection$ = this.webSocketConnectionService.connect(
       databagsWebsocketPath
     );
-    this._databags$ = this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getDatabags(token)),
-      first(),
-      concatWith(webSocketConnection$),
-      raceWith(webSocketConnection$),
-      shareReplay(1)
-    );
+    this.userService.currentToken$
+      .pipe(
+        switchMap(token => this.modelManager.getDatabags(token)),
+        first(),
+        concatWith(webSocketConnection$),
+        raceWith(webSocketConnection$)
+      )
+      .subscribe(databags => {
+        this._databagsSubject$.next(databags);
+      });
   }
 
   get databags$(): Observable<Databag[]> {
-    return this._databags$;
+    return this._databagsSubject$.asObservable();
   }
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
