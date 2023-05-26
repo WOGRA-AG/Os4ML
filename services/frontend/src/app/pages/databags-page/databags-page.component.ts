@@ -8,7 +8,7 @@ import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { ButtonComponent } from '../../design/components/atoms/button/button.component';
-import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
+import { NgIf, AsyncPipe, NgForOf, JsonPipe } from '@angular/common';
 import { DataInsightCardComponent } from '../../shared/components/organisms/data-insight-card/data-insight-card.component';
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { DataInsightItemComponent } from '../../shared/components/molecules/data-insight-item/data-insight-item.component';
@@ -37,6 +37,7 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
     MaterialModule,
     IconButtonComponent,
     Os4mlDefaultTemplateComponent,
+    JsonPipe,
   ],
 })
 export class DatabagsPageComponent {
