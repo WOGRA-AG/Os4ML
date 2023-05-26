@@ -62,30 +62,11 @@
         </app-icon-button>
       </td>
     </ng-container>
-    <tr
-      mat-header-row
-      *matHeaderRowDef="[
-        'databagName',
-        'databagType',
-        'features',
-        'samples',
-        'creation',
-        'actions'
-      ]"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr
       data-testid="databag-item"
       mat-row
-      *matRowDef="
-        let row;
-        columns: [
-          'databagName',
-          'databagType',
-          'features',
-          'samples',
-          'creation',
-          'actions'
-        ]
-      "></tr>
+      *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <app-no-databags-placeholder
     main

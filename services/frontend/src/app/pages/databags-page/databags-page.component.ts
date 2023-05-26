@@ -40,6 +40,14 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
   ],
 })
 export class DatabagsPageComponent {
+  public displayedColumns: string[] = [
+    'databagName',
+    'databagType',
+    'features',
+    'samples',
+    'creation',
+    'actions',
+  ];
   public readonly databags$: Observable<Databag[]>;
 
   constructor(
