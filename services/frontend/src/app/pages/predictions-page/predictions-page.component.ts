@@ -24,6 +24,7 @@ import { MaterialModule } from '../../material/material.module';
 import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { PipelineStatus } from '../../core/models/pipeline-status';
 import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
+import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 
 @Component({
   selector: 'app-predictions-page',
@@ -46,6 +47,7 @@ import { CreatePredictionComponent } from '../dialogs/create-prediction/create-p
     MaterialModule,
     ShortStatusPipe,
     Os4mlDefaultTemplateComponent,
+    HasElementsPipe,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {

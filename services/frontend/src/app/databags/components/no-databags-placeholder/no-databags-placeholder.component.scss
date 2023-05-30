@@ -1,11 +1,18 @@
+:host {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
 .placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  height: 100%;
-  width: 100%;
+  min-height: 366px;
+  max-width: 483px;
 
   img {
     margin: 15px;
