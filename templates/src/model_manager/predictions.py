@@ -5,6 +5,7 @@ from build.model_manager_client.model.prediction import Prediction
 from config import DATE_FORMAT_STR, USER_TOKEN
 from model_manager.init_api_client import model_manager
 from models.status_message import StatusMessage
+from util.download import download_file
 from util.upload import put_file_to_url
 
 
@@ -28,8 +29,15 @@ def update_prediction_status(
     )
 
 
+def download_prediction_data(data_file: IO[bytes], prediction_id: str) -> None:
+    url = model_manager.get_prediction_data_get_url(
+        prediction_id, usertoken=USER_TOKEN
+    )
+    download_file(url, data_file)
+
+
 def upload_prediction_result(result: IO[bytes], prediction_id: str) -> None:
-    url = model_manager.get_prediction_result_put_url(
+    url = model_manager.create_prediction_result_put_url(
         prediction_id, usertoken=USER_TOKEN
     )
     put_file_to_url(url, result)

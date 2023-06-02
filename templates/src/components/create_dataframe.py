@@ -19,5 +19,5 @@ def create_dataframe(
     )
     with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
         databag = get_databag_by_id(databag_id)
-        df = build_dataframe(databag.dataset_url, file_type)
+        df = build_dataframe(databag, file_type)
         save_dataframe(df, dataframe.path)
