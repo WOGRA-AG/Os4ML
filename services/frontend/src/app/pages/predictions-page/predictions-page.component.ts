@@ -25,6 +25,8 @@ import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
 import { PipelineStatus } from '../../core/models/pipeline-status';
 import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
+import { IsPredictionDonePipe } from 'src/app/shared/pipes/is-prediction-done.pipe';
+import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-predictions-page',
@@ -48,6 +50,8 @@ import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
     ShortStatusPipe,
     Os4mlDefaultTemplateComponent,
     HasElementsPipe,
+    IsPredictionDonePipe,
+    IconButtonComponent,
   ],
 })
 export class PredictionsPageComponent implements OnInit, OnDestroy {
@@ -98,5 +102,18 @@ export class PredictionsPageComponent implements OnInit, OnDestroy {
         solution: this.solution,
       },
     });
+  }
+
+  downloadPredictionResult(
+    prediction: Prediction,
+    downloadLink: HTMLAnchorElement
+  ): void {
+    this.predictionService
+      .getPredictionResultGetUrl(prediction)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
   }
 }

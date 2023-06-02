@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import {
-  catchError,
+  tap,
   map,
   Observable,
   switchMap,
-  throwError,
   of,
   concatWith,
   first,
@@ -14,15 +13,15 @@ import {
 } from 'rxjs';
 import {
   Databag,
-  DatasetPutUrl,
+  DatabagType,
   ModelmanagerService,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ErrorService } from 'src/app/core/services/error.service';
+import { HttpClient } from '@angular/common/http';
 import { databagsWebsocketPath } from 'src/environments/environment';
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
+import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +33,7 @@ export class DatabagService {
     private userService: UserService,
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService,
-    private http: HttpClient,
-    private errorService: ErrorService
+    private http: HttpClient
   ) {
     const webSocketConnection$ = this.webSocketConnectionService.connect(
       databagsWebsocketPath
@@ -69,12 +67,6 @@ export class DatabagService {
     );
   }
 
-  createDatabag(databag: Databag): Observable<Databag> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.createDatabag(token, databag))
-    );
-  }
-
   deleteDatabagById(id: string | undefined): Observable<void> {
     if (!id) {
       return of(undefined);
@@ -98,34 +90,54 @@ export class DatabagService {
     );
   }
 
-  getDatasetPutUrl(fileName: string): Observable<DatasetPutUrl> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getDatasetPutUrl(fileName, token))
-    );
-  }
-
-  uploadDataset(file: File, databag: Databag): Observable<Databag> {
-    return this.getDatasetPutUrl(file.name).pipe(
-      switchMap(({ url, databagId }) => {
-        databag.id = databagId;
-        if (!url) {
-          return throwError(() => new Error('Invalid put url for dataset'));
-        }
-        const headers = new HttpHeaders({
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          'Content-Type': 'application/octet-stream',
-        });
-        return this.http.put(url, file, { headers });
-      }),
-      map(() => databag),
-      catchError(err => {
-        this.errorService.reportError(err);
-        return throwError(() => err);
-      })
-    );
-  }
-
   isSameDatabag(databag1: Databag, databag2: Databag): boolean {
     return databag1.id === databag2.id;
+  }
+
+  createLocalFileDatabag(file: File, databag: Databag): Observable<Databag> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this._createLocalFileDatabag(file, databag, token))
+    );
+  }
+
+  createFileUrlDatabag(url: string, databag: Databag): Observable<Databag> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this._createFileUrlDatabag(url, databag, token))
+    );
+  }
+
+  private _createLocalFileDatabag(
+    file: File,
+    databag: Databag,
+    token: string
+  ): Observable<Databag> {
+    databag.fileName = file.name;
+    databag.databagType = DatabagType.LocalFile;
+    return this.modelManager.createDatabag(token, databag).pipe(
+      tap(createdDatabag => (databag = createdDatabag)),
+      switchMap(() =>
+        this.modelManager.createDatasetPutUrl(databag.id!, token)
+      ),
+      switchMap(url => putFileAsOctetStream(this.http, url, file)),
+      switchMap(() =>
+        this.modelManager.startDatabagPipeline(databag.id!, token)
+      )
+    );
+  }
+
+  private _createFileUrlDatabag(
+    url: string,
+    databag: Databag,
+    token: string
+  ): Observable<Databag> {
+    databag.datasetUrl = url;
+    databag.databagType = DatabagType.FileUrl;
+    return this.modelManager
+      .createDatabag(token, databag)
+      .pipe(
+        switchMap(createdDatabag =>
+          this.modelManager.startDatabagPipeline(createdDatabag.id!, token)
+        )
+      );
   }
 }

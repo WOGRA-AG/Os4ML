@@ -90,7 +90,7 @@
                     <!--                        icon="add">-->
                     <!--                      </app-icon-button>-->
                     <app-icon-button
-                      *ngIf="solution.id && solution.modelUrl"
+                      *ngIf="solution.id && (solution | isSolutionDone)"
                       [routerLink]="[solution.id, 'predictions']"
                       [matTooltip]="
                         'solution.detail.tooltips.show_predictions' | translate

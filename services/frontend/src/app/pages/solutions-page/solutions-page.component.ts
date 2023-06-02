@@ -27,6 +27,7 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
 import { PipelineStatus } from '../../core/models/pipeline-status';
 import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
 import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
+import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
 
 @Component({
   selector: 'app-solutions-page',
@@ -54,6 +55,7 @@ import { CreatePredictionComponent } from '../dialogs/create-prediction/create-p
     RouterLink,
     ShortStatusPipe,
     Os4mlDefaultTemplateComponent,
+    IsSolutionDonePipe,
   ],
 })
 export class SolutionsPageComponent {

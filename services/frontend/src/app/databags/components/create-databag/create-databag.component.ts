@@ -5,7 +5,6 @@ import { ErrorService } from '../../../core/services/error.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { DatabagService } from '../../services/databag.service';
 import { PipelineStatus } from '../../../core/models/pipeline-status';
-import { DatabagType } from 'build/openapi/modelmanager/model/databagType';
 import { urlRegex } from 'src/app/shared/lib/regex/regex';
 import { getShortStatus } from 'src/app/shared/lib/status/status';
 import { DatasetUploadComponent } from '../../../shared/components/organisms/dataset-upload/dataset-upload.component';
@@ -41,25 +40,19 @@ export class CreateDatabagComponent {
 
     try {
       if (this.file.name) {
-        this.databag.fileName = this.file.name;
-        this.databag.databagType = DatabagType.LocalFile;
         this.databag.status = 'message.pipeline.running.uploading_file';
         this.databagChange.next(this.databag);
         this.databag = await firstValueFrom(
-          this.databagService.uploadDataset(this.file, this.databag)
+          this.databagService.createLocalFileDatabag(this.file, this.databag)
         );
       } else {
-        this.databag.datasetUrl = this.fileUrl;
-        this.databag.databagType = DatabagType.FileUrl;
+        this.databag = await firstValueFrom(
+          this.databagService.createFileUrlDatabag(this.fileUrl, this.databag)
+        );
       }
 
-      this.databag.status = 'Starting Pipeline';
       this.databagChange.next(this.databag);
 
-      this.databag = await firstValueFrom(
-        this.databagService.createDatabag(this.databag)
-      );
-      this.databagChange.next(this.databag);
       await firstValueFrom(this.outputDatabagUpdates(this.databag.id!));
     } catch (err: any) {
       this.errorService.reportError(err);
