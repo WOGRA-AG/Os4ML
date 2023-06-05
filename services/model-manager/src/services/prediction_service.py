@@ -9,7 +9,7 @@ from build.objectstore_client.exceptions import NotFoundException
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
 from exceptions import (
-    PredictionDataFileNameNotSpecified,
+    PredictionDataFileNameNotSpecifiedException,
     PredictionDataNotFoundException,
     PredictionResultNotFoundException,
 )
@@ -92,7 +92,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
         if prediction.data_url:
             return prediction.data_url  # type: ignore
         if not prediction.data_file_name:
-            raise PredictionDataFileNameNotSpecified()
+            raise PredictionDataFileNameNotSpecifiedException()
         try:
             return self.get_presigned_get_url(  # type: ignore
                 prediction, prediction.data_file_name, usertoken=usertoken
@@ -103,7 +103,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     def create_prediction_data_put_url(self, id_: str, usertoken: str) -> str:
         prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
         if not prediction.data_file_name:
-            raise PredictionDataFileNameNotSpecified()
+            raise PredictionDataFileNameNotSpecifiedException()
         file_name = self.get_file_name(
             prediction,
             prediction.data_file_name,

@@ -1,6 +1,6 @@
 export const getRuntime = (
-  creationTime: string | undefined,
-  completionTime: string | undefined
+  creationTime: string | null | undefined,
+  completionTime: string | null | undefined
 ): number => {
   if (!creationTime) {
     return 0;

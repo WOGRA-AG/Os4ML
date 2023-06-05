@@ -71,7 +71,7 @@ export class CreateDatabagComponent {
   }
 
   valid(): boolean {
-    if (!this.databag.databagName || this.databag.databagName.length === 0) {
+    if (!this.databag.name || this.databag.name.length === 0) {
       return false;
     }
     if (this.fileUrl) {

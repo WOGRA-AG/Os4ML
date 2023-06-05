@@ -169,21 +169,21 @@ class DatabagService:
         databag = self.get_databag_by_id(databag_id, usertoken)
         if databag.dataset_url:
             return databag.dataset_url  # type: ignore
-        if not databag.file_name:
+        if not databag.dataset_file_name:
             raise DatasetFileNameNotSpecifiedException()
         try:
             return self._get_presigned_get_url_for_databag_file(
-                databag_id, databag.file_name, usertoken=usertoken
+                databag_id, databag.dataset_file_name, usertoken=usertoken
             )
         except NotFoundException:
             raise DatasetNotFoundException()
 
     def create_dataset_put_url(self, databag_id: str, usertoken: str) -> str:
         databag = self.get_databag_by_id(databag_id, usertoken)
-        if not databag.file_name:
+        if not databag.dataset_file_name:
             raise DatasetFileNameNotSpecifiedException()
         return self._get_presigned_put_url_for_databag_file(
-            databag_id, databag.file_name, usertoken=usertoken
+            databag_id, databag.dataset_file_name, usertoken=usertoken
         )
 
     def get_dataframe_get_url(self, databag_id: str, usertoken: str) -> str:

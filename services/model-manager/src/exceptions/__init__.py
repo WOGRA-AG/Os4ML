@@ -22,6 +22,7 @@ from .id_update_not_allowed import (
 )
 from .resource_not_found import (
     DatabagNotFoundException,
+    ModelNotFoundException,
     PredictionNotFoundException,
     ResourceNotFoundException,
     SolutionNotFoundException,

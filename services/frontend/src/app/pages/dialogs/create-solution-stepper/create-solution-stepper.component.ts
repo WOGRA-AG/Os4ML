@@ -57,7 +57,7 @@ export class CreateSolutionStepperComponent implements OnDestroy {
   }
 
   onSubmit(): void {
-    if (!this.databag || !this.databag.id || !this.databag.databagName) {
+    if (!this.databag || !this.databag.id || !this.databag.name) {
       this.close();
       return;
     }

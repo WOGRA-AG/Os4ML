@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
-import { firstValueFrom, Subject } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
@@ -100,6 +100,16 @@ export class CreatePredictionComponent implements OnDestroy {
       return !!this.url.match(this.urlRegex);
     }
     return !!this.file.name;
+  }
+
+  downloadTemplate(downloadLink: HTMLAnchorElement): void {
+    this.predictionService
+      .getPredictionTemplateGetUrl(this.solution.id!)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
   }
 
   ngOnDestroy(): void {

@@ -18,9 +18,7 @@
         <span class="mat-caption">{{
           databag?.creationTime | localizedDate : 'dd.MM.YYYY - HH:mm'
         }}</span>
-        <span class="mat-subtitle-2 on-surface-text">{{
-          databag.databagName
-        }}</span>
+        <span class="mat-subtitle-2 on-surface-text">{{ databag.name }}</span>
       </div>
     </mat-list-item>
     <mat-list-item data-testid="add-databag" (click)="openAddDialog()">
