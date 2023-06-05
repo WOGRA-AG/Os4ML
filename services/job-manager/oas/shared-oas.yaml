@@ -35,15 +35,18 @@ components:
         id:
           $ref: "#/components/schemas/DatabagId"
           nullable: true
-        databagName:
+        name:
           type: string
         status:
           type: string
           nullable: true
-        databagType:
+        runId:
+          $ref: '#/components/schemas/RunId'
+          nullable: true
+        creationTime:
           type: string
           nullable: true
-        fileName:
+        databagType:
           type: string
           nullable: true
         numberRows:
@@ -57,16 +60,12 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/Column"
-        creationTime:
-          type: string
-          nullable: true
-        runId:
+        datasetFileName:
           type: string
           nullable: true
         datasetUrl:
           $ref: '#/components/schemas/Url'
-        dataframeUrl:
-          $ref: '#/components/schemas/Url'
+          nullable: true
     Solution:
       properties:
         id:
@@ -77,9 +76,15 @@ components:
         status:
           type: string
           nullable: true
-        solver:
+        runId:
+          $ref: '#/components/schemas/RunId'
+          nullable: true
+        creationTime:
           type: string
-        databagName:
+        completionTime:
+          type: string
+          nullable: true
+        solver:
           type: string
         databagId:
           $ref: "#/components/schemas/DatabagId"
@@ -94,21 +99,8 @@ components:
         metrics:
           nullable: true
           $ref: '#/components/schemas/Metrics'
-        creationTime:
-          type: string
-        completionTime:
-          type: string
-          nullable: true
         predictionTemplateFileName:
           type: string
-          nullable: true
-        runId:
-          $ref: '#/components/schemas/RunId'
-        predictionTemplateUrl:
-          $ref: '#/components/schemas/Url'
-          nullable: true
-        modelUrl:
-          $ref: '#/components/schemas/Url'
           nullable: true
     Prediction:
       properties:
@@ -120,22 +112,21 @@ components:
         status:
           type: string
           nullable: true
+        runId:
+          $ref: '#/components/schemas/RunId'
+          nullable: true
         creationTime:
           type: string
+          nullable: true
         completionTime:
           type: string
           nullable: true
         solutionId:
           $ref: '#/components/schemas/SolutionId'
-        runId:
-          $ref: '#/components/schemas/RunId'
         dataFileName:
           type: string
           nullable: true
         dataUrl:
-          $ref: '#/components/schemas/Url'
-          nullable: true
-        resultUrl:
           $ref: '#/components/schemas/Url'
           nullable: true
     PipelineStep:
