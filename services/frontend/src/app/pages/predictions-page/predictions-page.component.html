@@ -40,18 +40,25 @@
           <ng-container actions>
             <app-data-insight-item
               [title]="'prediction.detail.actions' | translate">
-              <a
+              <app-icon-button
+                *ngIf="prediction | isPredictionDone"
                 data-testid="prediction-download-button"
-                mat-icon-button
                 color="primary"
+                icon="download"
                 attr.aria-label="{{
                   'prediction.detail.tooltips.download' | translate
                 }}"
                 [matTooltip]="'prediction.detail.tooltips.download' | translate"
-                [disabled]="!prediction.resultUrl"
+                (click)="
+                  downloadPredictionResult(prediction, downloadResultLink)
+                ">
+              </app-icon-button>
+              <a
+                download
                 target="_blank"
-                [href]="prediction.resultUrl">
-                <mat-icon matListItemIcon>download</mat-icon>
+                hidden
+                aria-hidden="true"
+                #downloadResultLink>
               </a>
             </app-data-insight-item>
           </ng-container>

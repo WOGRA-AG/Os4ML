@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
-import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
@@ -67,13 +67,19 @@ export class CreatePredictionComponent implements OnDestroy {
     this.prediction.solutionId = this.solution.id;
 
     if (this.file.name) {
-      this.prediction.status = 'message.pipeline.running.uploading_file';
-      this.prediction.dataFileName = this.file.name;
       this.prediction = await firstValueFrom(
-        this.predictionService.uploadData(this.file, this.prediction)
+        this.predictionService.createLocalFilePrediction(
+          this.file,
+          this.prediction
+        )
       );
     } else if (this.url) {
-      this.prediction.dataUrl = this.url;
+      this.prediction = await firstValueFrom(
+        this.predictionService.createFileUrlPrediction(
+          this.url,
+          this.prediction
+        )
+      );
     } else {
       const res = this.translate.instant('message_no_dataset');
       const conf = this.translate.instant('action.confirm');
@@ -81,12 +87,6 @@ export class CreatePredictionComponent implements OnDestroy {
       this.running = false;
       return;
     }
-
-    await firstValueFrom(
-      this.predictionService
-        .createPrediction(this.prediction)
-        .pipe(takeUntil(this.destroy$))
-    );
     this.running = false;
     this.dialogRef.close();
     this.router.navigate(['solutions', this.solution.id, 'predictions']);

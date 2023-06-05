@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  catchError,
   concatWith,
   first,
   map,
@@ -67,8 +66,18 @@ export class SolutionService {
       solution.inputFields = this.getInputFields(solution, databag);
     }
     return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.createSolution(token, solution)),
-      catchError(() => of({ runId: '' }))
+      switchMap(token =>
+        this.modelManager
+          .createSolution(token, solution)
+          .pipe(
+            switchMap(createdSolution =>
+              this.modelManager.startSolutionPipeline(
+                createdSolution.id!,
+                token
+              )
+            )
+          )
+      )
     );
   }
 
@@ -92,6 +101,12 @@ export class SolutionService {
       switchMap(token =>
         this.modelManager.updateSolutionById(id, token, solution)
       )
+    );
+  }
+
+  getModelGetUlr(id: string): Observable<string> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getModelGetUrl(id, token))
     );
   }
 

@@ -1,13 +1,9 @@
 from fastapi import Depends
 
 from build.openapi_server.models.databag import Databag
-from build.openapi_server.models.dataset_put_url import DatasetPutUrl
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.solver import Solver
-from build.openapi_server.models.url_and_prediction_id import (
-    UrlAndPredictionId,
-)
 from services.databag_service import DatabagService
 from services.prediction_service import PredictionSerivce
 from services.solution_service import SolutionService
@@ -62,15 +58,34 @@ class ModelmanagerApiController:
     ) -> None:
         return self.databag_service.delete_databag_by_id(databag_id, usertoken)  # type: ignore
 
-    def get_dataset_put_url(
-        self, file_name: str, usertoken: str = ""
-    ) -> DatasetPutUrl:
-        return self.databag_service.get_dataset_put_url(file_name, usertoken)
+    def start_databag_pipeline(
+        self, databag_id: str, usertoken: str = ""
+    ) -> Databag:
+        return self.databag_service.start_databag_pipeline(
+            databag_id, usertoken
+        )
 
-    def get_dataframe_put_url(
+    def get_dataset_get_url(self, databag_id: str, usertoken: str = "") -> str:
+        return self.databag_service.get_dataset_get_url(databag_id, usertoken)  # type: ignore
+
+    def create_dataset_put_url(
         self, databag_id: str, usertoken: str = ""
     ) -> str:
-        return self.databag_service.get_dataframe_put_url(  # type: ignore
+        return self.databag_service.create_dataset_put_url(  # type: ignore
+            databag_id, usertoken
+        )
+
+    def get_dataframe_get_url(
+        self, databag_id: str, usertoken: str = ""
+    ) -> str:
+        return self.databag_service.get_dataframe_get_url(  # type: ignore
+            databag_id, usertoken
+        )
+
+    def create_dataframe_put_url(
+        self, databag_id: str, usertoken: str = ""
+    ) -> str:
+        return self.databag_service.create_dataframe_put_url(  # type: ignore
             databag_id, usertoken
         )
 
@@ -88,13 +103,6 @@ class ModelmanagerApiController:
     ) -> Solution:
         return self.solution_service.get_solution_by_id(solution_id, usertoken)
 
-    def delete_solution_by_id(
-        self, solution_id: str, usertoken: str = ""
-    ) -> None:
-        return self.solution_service.delete_solution_by_id(  # type: ignore
-            solution_id, usertoken
-        )
-
     def update_solution_by_id(
         self, solution_id: str, solution: Solution, usertoken: str = ""
     ) -> Solution:
@@ -102,16 +110,42 @@ class ModelmanagerApiController:
             solution_id, solution, usertoken
         )
 
-    def get_model_put_url(self, solution_id: str, usertoken: str = "") -> str:
-        return self.solution_service.get_model_put_url(  # type: ignore
+    def delete_solution_by_id(
+        self, solution_id: str, usertoken: str = ""
+    ) -> None:
+        return self.solution_service.delete_solution_by_id(  # type: ignore
             solution_id, usertoken
         )
 
-    def get_prediction_template_put_url(
-        self, solution_id: str, file_name: str, usertoken: str = ""
+    def start_solution_pipeline(
+        self, solution_id: str, usertoken: str = ""
+    ) -> Solution:
+        return self.solution_service.start_solution_pipeline(
+            solution_id, usertoken
+        )
+
+    def get_model_get_url(self, solution_id: str, usertoken: str = "") -> str:
+        return self.solution_service.get_model_get_url(solution_id, usertoken)  # type: ignore
+
+    def create_model_put_url(
+        self, solution_id: str, usertoken: str = ""
     ) -> str:
-        return self.solution_service.get_prediction_template_put_url(  # type: ignore
-            solution_id, file_name, usertoken
+        return self.solution_service.create_model_put_url(  # type: ignore
+            solution_id, usertoken
+        )
+
+    def get_prediction_template_get_url(
+        self, solution_id: str, usertoken: str = ""
+    ) -> str:
+        return self.solution_service.get_prediction_template_get_url(  # type: ignore
+            solution_id, usertoken
+        )
+
+    def create_prediction_template_put_url(
+        self, solution_id: str, usertoken: str = ""
+    ) -> str:
+        return self.solution_service.create_prediction_template_put_url(  # type: ignore
+            solution_id, usertoken
         )
 
     # ----- predictions -----
@@ -130,13 +164,6 @@ class ModelmanagerApiController:
             prediction_id, usertoken
         )
 
-    def delete_prediction_by_id(
-        self, prediction_id: str, usertoken: str = ""
-    ) -> None:
-        return self.prediction_service.delete_prediction_by_id(  # type: ignore
-            prediction_id, usertoken
-        )
-
     def update_prediction_by_id(
         self, prediction_id: str, prediction: Prediction, usertoken: str = ""
     ) -> Prediction:
@@ -144,16 +171,44 @@ class ModelmanagerApiController:
             prediction_id, prediction, usertoken
         )
 
-    def get_prediction_data_put_url(
-        self, solution_id: str, file_name: str, usertoken: str = ""
-    ) -> UrlAndPredictionId:
-        return self.prediction_service.get_prediction_data_put_url(
-            solution_id, file_name, usertoken
+    def delete_prediction_by_id(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> None:
+        return self.prediction_service.delete_prediction_by_id(  # type: ignore
+            prediction_id, usertoken
         )
 
-    def get_prediction_result_put_url(
+    def start_prediction_pipeline(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> Prediction:
+        return self.prediction_service.start_prediction_pipeline(
+            prediction_id, usertoken
+        )
+
+    def get_prediction_data_get_url(
         self, prediction_id: str, usertoken: str = ""
     ) -> str:
-        return self.prediction_service.get_prediction_result_put_url(  # type: ignore
+        return self.prediction_service.get_prediction_data_get_url(  # type: ignore
+            prediction_id, usertoken
+        )
+
+    def create_prediction_data_put_url(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> str:
+        return self.prediction_service.create_prediction_data_put_url(  # type: ignore
+            prediction_id, usertoken
+        )
+
+    def get_prediction_result_get_url(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> str:
+        return self.prediction_service.get_prediction_result_get_url(  # type: ignore
+            prediction_id, usertoken
+        )
+
+    def create_prediction_result_put_url(
+        self, prediction_id: str, usertoken: str = ""
+    ) -> str:
+        return self.prediction_service.create_prediction_result_put_url(  # type: ignore
             prediction_id, usertoken
         )
