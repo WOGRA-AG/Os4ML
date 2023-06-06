@@ -111,7 +111,7 @@ export class DatabagService {
     databag: Databag,
     token: string
   ): Observable<Databag> {
-    databag.fileName = file.name;
+    databag.datasetFileName = file.name;
     databag.databagType = DatabagType.LocalFile;
     return this.modelManager.createDatabag(token, databag).pipe(
       tap(createdDatabag => (databag = createdDatabag)),

@@ -71,7 +71,7 @@ export class GettingStartedStepperComponent implements OnDestroy {
       case 1:
         break;
       case 2:
-        if (!this.databag || !this.databag.id || !this.databag.databagName) {
+        if (!this.databag || !this.databag.id || !this.databag.name) {
           this.dialogRef.close();
           return;
         }

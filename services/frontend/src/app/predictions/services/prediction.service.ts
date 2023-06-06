@@ -89,6 +89,14 @@ export class PredictionService {
     );
   }
 
+  getPredictionTemplateGetUrl(solutionId: string): Observable<string> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.getPredictionTemplateGetUrl(solutionId, token)
+      )
+    );
+  }
+
   createLocalFilePrediction(
     file: File,
     prediction: Prediction

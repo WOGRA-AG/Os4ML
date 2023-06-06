@@ -61,7 +61,6 @@ export class SolutionService {
   createSolution(solution: Solution, databag: Databag): Observable<Solution> {
     solution.status = SolutionStatus.created;
     solution.databagId = databag.id;
-    solution.databagName = databag.databagName;
     if (!solution.inputFields || solution.inputFields.length <= 0) {
       solution.inputFields = this.getInputFields(solution, databag);
     }

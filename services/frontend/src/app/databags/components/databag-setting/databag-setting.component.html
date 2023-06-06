@@ -21,7 +21,7 @@
             placeholder="{{ 'databag.placeholder' | translate }}"
             required
             name="databag_name"
-            [(ngModel)]="databag.databagName"
+            [(ngModel)]="databag.name"
             #databag_name="ngModel"
             [ngClass]="{ 'is-invalid': f.submitted && databag_name.invalid }" />
         </mat-form-field>
