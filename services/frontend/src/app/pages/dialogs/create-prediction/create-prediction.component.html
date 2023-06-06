@@ -12,13 +12,12 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <a
-    id="download-prediction-template-link"
-    *ngIf="solution.predictionTemplateUrl"
-    [href]="solution.predictionTemplateUrl"
-    target="_blank"
-    mat-stroked-button
-    color="primary">
+  <app-button
+    color="primary"
+    variant="stroked"
+    (click)="downloadTemplate(downloadTemplateLink)">
+  </app-button>
+  <a download target="_blank" hidden aria-hidden="true" #downloadTemplateLink>
     {{ 'dialog.create_prediction.download_template' | translate }}
   </a>
   <app-status-spinner

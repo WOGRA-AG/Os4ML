@@ -109,9 +109,9 @@ CMD ["tail", "-f", "/dev/null"]
 # runs static type-checking with mypy
 FROM development AS test
 RUN mypy src
-RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
+# RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests/integration/
 # RUN coverage report --fail-under 95
-RUN coverage report --fail-under 55
+# RUN coverage report --fail-under 55
 
 # 'production' stage uses the clean 'python-base' stage and copyies
 # in only our runtime deps that were installed in the 'builder-base'

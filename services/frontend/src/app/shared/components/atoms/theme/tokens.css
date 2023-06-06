@@ -132,7 +132,12 @@
   --md-sys-color-surface-variant-light: #ffffff; /* Variant surface color for distinguishing UI elements */
   --md-sys-color-on-surface-variant-light: #40484d; /* Color for text and icons on surface variant color */
 
-  --md-sys-color-outline-light: #71787d; /* Color for outlines and dividers */
+  --md-sys-color-outline-light: rgba(
+    0,
+    0,
+    0,
+    0.12
+  ); /* Color for outlines and dividers */
 
   --md-sys-color-inverse-on-surface-light: #d6f6ff; /* Inverse color for text and icons on surface color */
   --md-sys-color-inverse-surface-light: #ffffff; /* Inverse surface color for UI elements */

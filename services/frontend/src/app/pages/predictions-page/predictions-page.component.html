@@ -1,8 +1,10 @@
 <app-os4ml-default-template>
-  <h1 class="headline-1 primary-text">{{ 'prediction.plural' | translate }}</h1>
-  <app-breadcrumbs [breadcrumbs]="breadcrumbs"> </app-breadcrumbs>
-  <ng-container *ngIf="predictions$ | async as predictions">
-    <ng-container *ngIf="predictions.length > 0; else placeholder">
+  <h1 header class="headline-1 primary-text">
+    {{ 'prediction.plural' | translate }}
+  </h1>
+  <app-breadcrumbs main [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+  <ng-container main *ngIf="predictions$ | async as predictions">
+    <ng-container *ngIf="predictions | hasElements; else placeholder">
       <div class="data-insight-wrapper">
         <app-data-insight-card
           *ngFor="let prediction of predictions"
@@ -38,18 +40,25 @@
           <ng-container actions>
             <app-data-insight-item
               [title]="'prediction.detail.actions' | translate">
-              <a
+              <app-icon-button
+                *ngIf="prediction | isPredictionDone"
                 data-testid="prediction-download-button"
-                mat-icon-button
                 color="primary"
+                icon="download"
                 attr.aria-label="{{
                   'prediction.detail.tooltips.download' | translate
                 }}"
                 [matTooltip]="'prediction.detail.tooltips.download' | translate"
-                [disabled]="!prediction.resultUrl"
+                (click)="
+                  downloadPredictionResult(prediction, downloadResultLink)
+                ">
+              </app-icon-button>
+              <a
+                download
                 target="_blank"
-                [href]="prediction.resultUrl">
-                <mat-icon matListItemIcon>download</mat-icon>
+                hidden
+                aria-hidden="true"
+                #downloadResultLink>
               </a>
             </app-data-insight-item>
           </ng-container>
@@ -69,10 +78,6 @@
 </app-os4ml-default-template>
 
 <ng-template #placeholder>
-  <div class="placeholder-container">
-    <app-no-prediction-placeholder
-      (addPredictionChange)="
-        createPrediction()
-      "></app-no-prediction-placeholder>
-  </div>
+  <app-no-prediction-placeholder (addPredictionChange)="createPrediction()">
+  </app-no-prediction-placeholder>
 </ng-template>

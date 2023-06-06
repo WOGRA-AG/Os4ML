@@ -1,10 +1,28 @@
 @mixin color($theme, $background) {
+  .mat-mdc-header-row {
+    .mat-mdc-header-cell {
+      color: var(--md-sys-color-primary);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+    }
+    background-color: var(--md-sys-color-surface);
+  }
+  .mdc-data-table__row:last-child .mdc-data-table__cell,
+  .mat-mdc-cell {
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    border-bottom: 1px solid var(--md-sys-color-outline);
+  }
 }
 
 @mixin layout() {
   .mat-mdc-table {
-    border-radius: 14px;
-    overflow: hidden !important;
+    border-radius: 5px 5px 0px 0px;
+    overflow: hidden;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    padding: 1rem;
   }
 
   .mat-mdc-paginator {

@@ -4,6 +4,7 @@ from build.model_manager_client.model.databag import Databag
 from config import USER_TOKEN
 from model_manager.init_api_client import model_manager
 from models.status_message import StatusMessage
+from util.download import download_file
 from util.upload import put_file_to_url
 
 
@@ -26,6 +27,18 @@ def update_databag_status(databag_id: str, status: StatusMessage) -> Databag:
     return databag
 
 
+def download_dataset(dataset: IO[bytes], databag: Databag) -> None:
+    url = model_manager.get_dataset_get_url(databag.id, usertoken=USER_TOKEN)
+    download_file(url, dataset)
+
+
+def download_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
+    url = model_manager.get_dataframe_get_url(databag.id, usertoken=USER_TOKEN)
+    download_file(url, dataframe)
+
+
 def upload_dataframe(dataframe: IO[bytes], databag: Databag) -> None:
-    url = model_manager.get_dataframe_put_url(databag.id, usertoken=USER_TOKEN)
+    url = model_manager.create_dataframe_put_url(
+        databag.id, usertoken=USER_TOKEN
+    )
     put_file_to_url(url, dataframe)

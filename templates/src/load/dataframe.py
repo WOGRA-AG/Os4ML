@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
+from build.model_manager_client.model.databag import Databag
 from exceptions.data_file import (
     DataFileNotFoundException,
     TooManyDataFilesException,
@@ -18,10 +19,10 @@ from exceptions.file_type_unknown import (
     FileTypeUnknownException,
 )
 from file_type.file_type import file_type_from_file_name
+from model_manager.databags import download_dataset
 from models.column_data_type import ColumnDataType
 from models.file_type import FileType
 from sniffle.sniffle import sniff_series
-from util.download import download_file
 
 
 def load_dataframe(path: str) -> pd.DataFrame:
@@ -32,10 +33,10 @@ def save_dataframe(df: pd.DataFrame, path: str) -> None:
     df.to_pickle(path)
 
 
-def build_dataframe(url: str, file_type: str) -> pd.DataFrame:
+def build_dataframe(databag: Databag, file_type: str) -> pd.DataFrame:
     with tempfile.NamedTemporaryFile() as tmp_file:
         with open(tmp_file.name, "wb") as output_file:
-            download_file(url, output_file)
+            download_dataset(output_file, databag)
         return read_df(file_type, tmp_file.name)
 
 

@@ -15,10 +15,12 @@ from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from build.objectstore_client.exceptions import NotFoundException
 from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.metric import Metric
 from build.openapi_server.models.metrics import Metrics
 from build.openapi_server.models.solution import Solution
 from exceptions import (
+    ModelFileNotFoundException,
+    PredictionTemplateFileNameNotSpecifiedException,
+    PredictionTemplateNotFoundException,
     SolutionIdUpdateNotAllowedException,
     SolutionNotFoundException,
 )
@@ -58,15 +60,10 @@ class SolutionService:
         objects: list[str] = self.objectstore.get_objects_with_prefix(
             path_prefix="", usertoken=usertoken
         )
-        solutions = (
+        return [
             self._load_solution_from_object(obj, usertoken)
             for obj in objects
             if self.solution_config_file_name in obj
-        )
-
-        return [
-            self.update_presigned_urls(solution, usertoken=usertoken)
-            for solution in solutions
         ]
 
     async def stream_solutions(
@@ -111,8 +108,15 @@ class SolutionService:
     def create_solution(self, solution: Solution, usertoken: str) -> Solution:
         solution.id = str(uuid.uuid4())
         solution.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
-        run_params = RunParams(solution_id=solution.id)
+        self._notify_solution_update(usertoken)
         self._persist_solution(solution, usertoken=usertoken)
+        return solution
+
+    def start_solution_pipeline(
+        self, solution_id: str, usertoken: str
+    ) -> Solution:
+        solution = self.get_solution_by_id(solution_id, usertoken=usertoken)
+        run_params = RunParams(solution_id=solution_id)
         solution.run_id = self.jobmanager.create_run_by_solver_name(
             solution.solver, run_params=run_params, usertoken=usertoken
         )
@@ -138,7 +142,7 @@ class SolutionService:
             raise SolutionIdUpdateNotAllowedException()
         self._persist_solution(solution, usertoken=usertoken)
         self._notify_solution_update(usertoken)
-        return self.update_presigned_urls(solution, usertoken=usertoken)
+        return solution
 
     def delete_solution_by_id(self, id_: str, usertoken: str) -> None:
         try:
@@ -167,43 +171,56 @@ class SolutionService:
         )
         self._notify_solution_update(usertoken)
 
-    def update_presigned_urls(
-        self, solution: Solution, usertoken: str
-    ) -> Solution:
-        prediction_template_file = self._get_file_name(
-            solution, solution.prediction_template_file_name
-        )
+    def get_model_get_url(self, solution_id: str, usertoken: str) -> str:
         try:
-            solution.prediction_template_url = (
-                self.objectstore.get_presigned_get_url(
-                    prediction_template_file, usertoken=usertoken
-                )
+            return self._get_presigned_get_url_for_solution_file(
+                solution_id, self.model_file_name, usertoken=usertoken
             )
         except NotFoundException:
-            pass
+            raise ModelFileNotFoundException()
 
-        model_url_file = self._get_file_name(solution, self.model_file_name)
-        try:
-            solution.model_url = self.objectstore.get_presigned_get_url(
-                model_url_file, usertoken=usertoken
-            )
-        except NotFoundException:
-            pass
-
-        return solution
-
-    def get_model_put_url(self, solution_id: str, usertoken: str) -> str:
+    def create_model_put_url(self, solution_id: str, usertoken: str) -> str:
         return self._get_presigned_put_url_for_solution_file(
             solution_id, self.model_file_name, usertoken=usertoken
         )
 
-    def get_prediction_template_put_url(
-        self, solution_id: str, file_name: str, usertoken: str
+    def get_prediction_template_get_url(
+        self, solution_id: str, usertoken: str
     ) -> str:
+        solution = self.get_solution_by_id(solution_id, usertoken=usertoken)
+        if not solution.prediction_template_file_name:
+            raise PredictionTemplateFileNameNotSpecifiedException()
+        try:
+            return self._get_presigned_get_url_for_solution_file(
+                solution_id,
+                solution.prediction_template_file_name,
+                usertoken=usertoken,
+            )
+        except NotFoundException:
+            raise PredictionTemplateNotFoundException()
+
+    def create_prediction_template_put_url(
+        self, solution_id: str, usertoken: str
+    ) -> str:
+        solution = self.get_solution_by_id(solution_id, usertoken=usertoken)
+        if not solution.prediction_template_file_name:
+            raise PredictionTemplateFileNameNotSpecifiedException()
         return self._get_presigned_put_url_for_solution_file(
             solution_id,
-            file_name,
+            solution.prediction_template_file_name,
             usertoken=usertoken,
+        )
+
+    def _get_presigned_get_url_for_solution_file(
+        self, solution_id: str, file_name: str, usertoken: str
+    ) -> str:
+        solution = self.get_solution_by_id(
+            id_=solution_id,
+            usertoken=usertoken,
+        )
+        object_name = self._get_file_name(solution, file_name)
+        return self.objectstore.get_presigned_get_url(  # type: ignore
+            object_name, usertoken=usertoken
         )
 
     def _get_presigned_put_url_for_solution_file(

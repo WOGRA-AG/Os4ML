@@ -12,7 +12,7 @@ import { FormatTimeDiffPipe } from '../../../pipes/format-time-diff';
   imports: [AsyncPipe, FormatTimeDiffPipe, DatePipe],
 })
 export class RuntimeIndicatorComponent {
-  @Input() public creationTime: string | undefined;
+  @Input() public creationTime: string | null | undefined;
   @Input() public completionTime: string | null | undefined;
 
   public runtime$: Observable<number>;
@@ -21,10 +21,7 @@ export class RuntimeIndicatorComponent {
     this.runtime$ = timer(0, 1000).pipe(
       takeWhile(() => !this.completionTime),
       startWith(null),
-      map(() => {
-        const completionTime = this.completionTime || new Date().toISOString();
-        return getRuntime(this.creationTime, completionTime);
-      })
+      map(() => getRuntime(this.creationTime, this.completionTime))
     );
   }
 }

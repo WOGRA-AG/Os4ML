@@ -3,9 +3,8 @@ import functools
 from kfp.v2.dsl import Artifact, Output
 
 from model_manager.predictions import update_prediction_status
-from model_manager.solutions import get_solution_by_id
+from model_manager.solutions import download_model, get_solution_by_id
 from models.status_message import StatusMessage
-from util.download import download_file
 from util.exception_handler import exception_handler
 
 
@@ -22,4 +21,4 @@ def load_model(
         )
         solution = get_solution_by_id(prediction.solution_id)
         with open(model.path, "wb") as model_file:
-            download_file(solution.model_url, model_file)
+            download_model(model_file, solution.id)

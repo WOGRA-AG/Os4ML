@@ -67,13 +67,19 @@ export class CreatePredictionComponent implements OnDestroy {
     this.prediction.solutionId = this.solution.id;
 
     if (this.file.name) {
-      this.prediction.status = 'message.pipeline.running.uploading_file';
-      this.prediction.dataFileName = this.file.name;
       this.prediction = await firstValueFrom(
-        this.predictionService.uploadData(this.file, this.prediction)
+        this.predictionService.createLocalFilePrediction(
+          this.file,
+          this.prediction
+        )
       );
     } else if (this.url) {
-      this.prediction.dataUrl = this.url;
+      this.prediction = await firstValueFrom(
+        this.predictionService.createFileUrlPrediction(
+          this.url,
+          this.prediction
+        )
+      );
     } else {
       const res = this.translate.instant('message_no_dataset');
       const conf = this.translate.instant('action.confirm');
@@ -81,12 +87,6 @@ export class CreatePredictionComponent implements OnDestroy {
       this.running = false;
       return;
     }
-
-    await firstValueFrom(
-      this.predictionService
-        .createPrediction(this.prediction)
-        .pipe(takeUntil(this.destroy$))
-    );
     this.running = false;
     this.dialogRef.close();
     this.router.navigate(['solutions', this.solution.id, 'predictions']);
@@ -100,6 +100,16 @@ export class CreatePredictionComponent implements OnDestroy {
       return !!this.url.match(this.urlRegex);
     }
     return !!this.file.name;
+  }
+
+  downloadTemplate(downloadLink: HTMLAnchorElement): void {
+    this.predictionService
+      .getPredictionTemplateGetUrl(this.solution.id!)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
   }
 
   ngOnDestroy(): void {

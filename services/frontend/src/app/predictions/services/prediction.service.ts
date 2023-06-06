@@ -1,28 +1,22 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  ModelmanagerService,
-  Prediction,
-  UrlAndPredictionId,
-} from 'build/openapi/modelmanager';
+import { ModelmanagerService, Prediction } from 'build/openapi/modelmanager';
 import {
   concatWith,
   map,
   Observable,
   of,
   switchMap,
-  throwError,
-  catchError,
   first,
   shareReplay,
   raceWith,
+  tap,
 } from 'rxjs';
-import { ErrorService } from 'src/app/core/services/error.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
 import { predictionsWebsocketPath } from 'src/environments/environment';
+import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
 
 @Injectable({
   providedIn: 'root',
@@ -34,9 +28,7 @@ export class PredictionService {
     private userService: UserService,
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService,
-    private http: HttpClient,
-    private translateService: TranslateService,
-    private errorService: ErrorService
+    private http: HttpClient
   ) {
     const webSocketConnection = this.webSocketConnectionService.connect(
       predictionsWebsocketPath
@@ -89,51 +81,76 @@ export class PredictionService {
     );
   }
 
-  createPrediction(prediction: Prediction): Observable<Prediction> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.createPrediction(token, prediction))
-    );
-  }
-
-  getPredictionDataPutUrl(
-    solutionId: string,
-    fileName: string
-  ): Observable<UrlAndPredictionId> {
+  getPredictionResultGetUrl(prediction: Prediction): Observable<string> {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.getPredictionDataPutUrl(solutionId, fileName, token)
+        this.modelManager.getPredictionResultGetUrl(prediction.id!, token)
       )
     );
   }
 
-  uploadData(file: File, prediciton: Prediction): Observable<Prediction> {
-    return this.getPredictionDataPutUrl(
-      prediciton.solutionId!,
-      prediciton.dataFileName!
-    ).pipe(
-      switchMap(({ url, predictionId }) => {
-        prediciton.id = predictionId;
-        if (!url) {
-          return throwError(
-            () =>
-              new Error(
-                this.translateService.instant(
-                  'prediction.error.invalid_put_url'
-                )
-              )
-          );
-        }
-        const headers = new HttpHeaders({
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          'Content-Type': 'application/octet-stream',
-        });
-        return this.http.put(url, file, { headers });
-      }),
-      map(() => prediciton),
-      catchError(err => {
-        this.errorService.reportError(err);
-        return throwError(() => err);
-      })
+  getPredictionTemplateGetUrl(solutionId: string): Observable<string> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.getPredictionTemplateGetUrl(solutionId, token)
+      )
     );
+  }
+
+  createLocalFilePrediction(
+    file: File,
+    prediction: Prediction
+  ): Observable<Prediction> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this._createLocalFilePrediction(file, prediction, token)
+      )
+    );
+  }
+
+  createFileUrlPrediction(
+    url: string,
+    prediction: Prediction
+  ): Observable<Prediction> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this._createFileUrlPrediction(url, prediction, token))
+    );
+  }
+
+  private _createLocalFilePrediction(
+    file: File,
+    prediction: Prediction,
+    token: string
+  ): Observable<Prediction> {
+    prediction.status = 'message.pipeline.running.uploading_file';
+    prediction.dataFileName = file.name;
+    return this.modelManager.createPrediction(token, prediction).pipe(
+      tap(createdPrediction => (prediction = createdPrediction)),
+      switchMap(() =>
+        this.modelManager.createPredictionDataPutUrl(prediction.id!, token)
+      ),
+      switchMap(url => putFileAsOctetStream(this.http, url, file)),
+      switchMap(() =>
+        this.modelManager.startPredictionPipeline(prediction.id!, token)
+      )
+    );
+  }
+
+  private _createFileUrlPrediction(
+    url: string,
+    prediction: Prediction,
+    token: string
+  ): Observable<Prediction> {
+    prediction.dataUrl = url;
+    return this.modelManager
+      .createPrediction(token, prediction)
+      .pipe(
+        switchMap(createdPrediction =>
+          this.modelManager.startPredictionPipeline(
+            createdPrediction.id!,
+            token
+          )
+        )
+      );
   }
 }
