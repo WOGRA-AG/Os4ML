@@ -1,3 +1,43 @@
-<app-nav-bar>
+<nav class="surface">
+  <app-side-nav>
+    <ng-container identity>
+      <a [routerLink]="'/'">
+        <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo" />
+      </a>
+    </ng-container>
+    <ng-container main-nav>
+      <a data-testid="databags-page-link" [routerLink]="['/databags']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>folder_open</mat-icon>
+          <b class="nav-caption">{{ 'databag.plural' | translate }}</b>
+        </app-side-nav-item>
+      </a>
+      <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>lightbulb</mat-icon>
+          <b class="nav-caption">{{ 'solution.plural' | translate }}</b>
+        </app-side-nav-item>
+      </a>
+    </ng-container>
+    <ng-container footer-nav>
+      <button
+        id="get-started-button"
+        mat-stroked-button
+        color="primary"
+        (click)="openGettingStartedDialog()">
+        <b class="nav-caption">Guided Tour</b>
+      </button>
+      <a
+        href="https://wogra-ag.github.io/os4ml-docs/"
+        target="_blank"
+        mat-button
+        color="primary">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <b class="nav-caption">Documentation</b>
+      </a>
+    </ng-container>
+  </app-side-nav>
+</nav>
+<div class="app-wrapper background">
   <router-outlet></router-outlet>
-</app-nav-bar>
+</div>

@@ -16,13 +16,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Databag'
+          $ref: '#/components/responses/DatabagList'
     post:
       summary: "create databag"
       operationId: createDatabag
@@ -31,17 +25,10 @@ paths:
       parameters:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Databag'
+        $ref: '#/components/requestBodies/Databag'
       responses:
         201:
-          description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Databag'
+          $ref: '#/components/responses/Databag'
 
   "/apis/v1beta1/model-manager/databags/{databagId}":
     get:
@@ -54,11 +41,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Databag'
+          $ref: '#/components/responses/Databag'
         404:
           $ref: '#/components/responses/NotFound'
     put:
@@ -70,17 +53,10 @@ paths:
         - $ref: '#/components/parameters/DatabagId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Databag'
+        $ref: '#/components/requestBodies/Databag'
       responses:
         200:
-          description: "Databag updated"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Databag'
+          $ref: '#/components/responses/Databag'
     delete:
       summary: "delete Databag"
       operationId: deleteDatabagById
@@ -93,27 +69,10 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/databags/dataset/{fileName}":
-    get:
-      summary: "get put url for dataset and get databagId for the databag"
-      operationId: getDatasetPutUrl
-      tags:
-        - modelmanager
-      parameters:
-        - $ref: '#/components/parameters/FileName'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DatasetPutUrl'
-
-  "/apis/v1beta1/model-manager/databags/{databagId}/dataframe":
-    get:
-      summary: "get put url for dataframe of the databag"
-      operationId: getDataframePutUrl
+  "/apis/v1beta1/model-manager/databags/{databagId}/start-pipeline":
+    post:
+      summary: "start pipeline for databag"
+      operationId: startDatabagPipeline
       tags:
         - modelmanager
       parameters:
@@ -121,7 +80,55 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          $ref: '#/components/responses/PutUrlResponse'
+          $ref: '#/components/responses/Databag'
+
+  "/apis/v1beta1/model-manager/databags/{databagId}/dataset":
+    get:
+      summary: "get a presigned get url to download the dataset of the databag"
+      operationId: getDatasetGetUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the dataset to the databag"
+      operationId: createDatasetPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+
+  "/apis/v1beta1/model-manager/databags/{databagId}/dataframe":
+    get:
+      summary: "get a presigned get url to download the dataframe of the databag"
+      operationId: getDataframeGetUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the dataframe to the databag"
+      operationId: createDataframePutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/DatabagId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
 
   "/apis/v1beta1/model-manager/solvers":
     get:
@@ -133,13 +140,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solver'
+          $ref: '#/components/responses/SolverList'
 
   "/apis/v1beta1/model-manager/solvers/{solverName}":
     get:
@@ -152,11 +153,7 @@ paths:
         - modelmanager
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solver'
+          $ref: '#/components/responses/Solver'
         404:
           $ref: '#/components/responses/NotFound'
 
@@ -170,13 +167,7 @@ paths:
         - modelmanager
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Solution'
+          $ref: '#/components/responses/SolutionList'
     post:
       summary: "Create a Solution"
       operationId: createSolution
@@ -185,17 +176,10 @@ paths:
       tags:
         - modelmanager
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
+        $ref: '#/components/requestBodies/Solution'
       responses:
         201:
-          description: "Solution created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
+          $ref: '#/components/responses/Solution'
 
   "/apis/v1beta1/model-manager/solutions/{solutionId}":
     get:
@@ -208,11 +192,7 @@ paths:
         - modelmanager
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
+          $ref: '#/components/responses/Solution'
         404:
           $ref: '#/components/responses/NotFound'
     put:
@@ -224,17 +204,10 @@ paths:
       tags:
         - modelmanager
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Solution'
+        $ref: '#/components/requestBodies/Solution'
       responses:
         200:
-          description: "Solution updated"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Solution'
+          $ref: '#/components/responses/Solution'
     delete:
       summary: "delete a solution by id"
       operationId: deleteSolutionById
@@ -247,10 +220,10 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/solutions/{solutionId}/model":
-    get:
-      summary: "get put url for model of solution"
-      operationId: getModelPutUrl
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/start-pipeline":
+    post:
+      summary: "start pipeline for solution"
+      operationId: startSolutionPipeline
       tags:
         - modelmanager
       parameters:
@@ -258,12 +231,36 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          $ref: '#/components/responses/PutUrlResponse'
+          $ref: '#/components/responses/Solution'
+
+  "/apis/v1beta1/model-manager/solutions/{solutionId}/model":
+    get:
+      summary: "get a presigned get url to download the model of the solution"
+      operationId: getModelGetUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the model to the solution"
+      operationId: createModelPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/SolutionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
 
   "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-template":
     get:
-      summary: "get put url for prediction template of solution"
-      operationId: getPredictionTemplatePutUrl
+      summary: "get a presigned get url to download the prediction template"
+      operationId: getPredictionTemplateGetUrl
       tags:
         - modelmanager
       parameters:
@@ -271,12 +268,10 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          $ref: '#/components/responses/PutUrlResponse'
-
-  "/apis/v1beta1/model-manager/solutions/{solutionId}/prediction-data":
-    get:
-      summary: "get put url for prediction data"
-      operationId: getPredictionDataPutUrl
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the prediction template to the solution"
+      operationId: createPredictionTemplatePutUrl
       tags:
         - modelmanager
       parameters:
@@ -284,11 +279,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UrlAndPredictionId'
+          $ref: '#/components/responses/Url'
 
   "/apis/v1beta1/model-manager/predictions":
     get:
@@ -300,13 +291,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: './shared-oas.yaml#/components/schemas/Prediction'
+          $ref: '#/components/responses/PredictionList'
     post:
       summary: "create prediction"
       operationId: createPrediction
@@ -315,17 +300,10 @@ paths:
       parameters:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Prediction'
+        $ref: '#/components/requestBodies/Prediction'
       responses:
         201:
-          description: "Resource created"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Prediction'
+          $ref: '#/components/responses/Prediction'
 
   "/apis/v1beta1/model-manager/predictions/{predictionId}":
     get:
@@ -338,11 +316,7 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Prediction'
+          $ref: '#/components/responses/Prediction'
         404:
           $ref: '#/components/responses/NotFound'
     put:
@@ -354,17 +328,10 @@ paths:
         - $ref: '#/components/parameters/PredictionId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './shared-oas.yaml#/components/schemas/Prediction'
+        $ref: '#/components/requestBodies/Prediction'
       responses:
         200:
-          description: "Prediction updated"
-          content:
-            application/json:
-              schema:
-                $ref: './shared-oas.yaml#/components/schemas/Prediction'
+          $ref: '#/components/responses/Prediction'
     delete:
       summary: "delete Prediction"
       operationId: deletePredictionById
@@ -377,10 +344,10 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
-  "/apis/v1beta1/model-manager/predictions/{predictionId}/prediction-result":
-    get:
-      summary: "get put url for prediction result"
-      operationId: getPredictionResultPutUrl
+  "/apis/v1beta1/model-manager/predictions/{predictionId}/start-pipeline":
+    post:
+      summary: "start pipeline for the prediction"
+      operationId: startPredictionPipeline
       tags:
         - modelmanager
       parameters:
@@ -388,11 +355,59 @@ paths:
         - $ref: './shared-oas.yaml#/components/parameters/User'
       responses:
         200:
-          $ref: '#/components/responses/PutUrlResponse'
+          $ref: '#/components/responses/Prediction'
+
+  "/apis/v1beta1/model-manager/predictions/{predictionId}/prediction-data":
+    get:
+      summary: "get a presigned get url to download the prediction data of the prediction"
+      operationId: getPredictionDataGetUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the prediction data to the prediction"
+      operationId: createPredictionDataPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+
+  "/apis/v1beta1/model-manager/predictions/{predictionId}/prediction-result":
+    get:
+      summary: "get a presigned get url to download the prediction result of the prediction"
+      operationId: getPredictionResultGetUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
+    post:
+      summary: "create a presigned put url to upload the prediction result to the prediction"
+      operationId: createPredictionResultPutUrl
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/PredictionId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/Url'
 
 components:
   schemas:
-    Error:
+    ErrorSchema:
       required:
         - path
         - error
@@ -407,20 +422,8 @@ components:
       $ref: './shared-oas.yaml#/components/schemas/DatabagType'
     PipelineStep:
       $ref: './shared-oas.yaml#/components/schemas/PipelineStep'
-    PutUrl:
+    Url:
       type: string
-    DatasetPutUrl:
-      properties:
-        url:
-          $ref: '#/components/schemas/PutUrl'
-        databagId:
-          $ref: './shared-oas.yaml#/components/schemas/DatabagId'
-    UrlAndPredictionId:
-      properties:
-        url:
-          $ref: '#/components/schemas/PutUrl'
-        predictionId:
-          $ref: './shared-oas.yaml#/components/schemas/PredictionId'
   parameters:
     DatabagId:
       name: databagId
@@ -457,6 +460,27 @@ components:
       required: true
       schema:
         type: string
+  requestBodies:
+    Databag:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Databag"
+    Solution:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Solution"
+    Solver:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Solver"
+    Prediction:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Prediction"
   responses:
     Created:
       description: New resource created
@@ -469,22 +493,78 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
-    PutUrlResponse:
-      description: The requested put url
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PutUrl'
+            $ref: "#/components/schemas/ErrorSchema"
     RequestBodyMismatch:
       description: The provided request body has the wrong format
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorSchema"
     RequestBodyInvalid:
       description: The content of the request body is invalid
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/ErrorSchema"
+    Url:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Url"
+    Databag:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Databag"
+    DatabagList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/Databag"
+    Solution:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Solution"
+    SolutionList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/Solution"
+    Solver:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Solver"
+    SolverList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/Solver"
+    Prediction:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/Prediction"
+    PredictionList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/Prediction"

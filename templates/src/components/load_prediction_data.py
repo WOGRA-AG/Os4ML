@@ -3,17 +3,14 @@ import tempfile
 
 from kfp.v2.dsl import Dataset, Output
 
-from file_type.file_type import (
-    file_type_from_file_name,
-    get_file_name_from_url,
-)
-from load.dataframe import create_df, save_dataframe
+from file_type.file_type import file_type_from_file_name
+from load.dataframe import read_df, save_dataframe
 from model_manager.predictions import (
+    download_prediction_data,
     get_prediction_by_id,
     update_prediction_status,
 )
 from models.status_message import StatusMessage
-from util.download import download_file
 from util.exception_handler import exception_handler
 
 
@@ -30,8 +27,7 @@ def load_prediction_data(
         prediction = get_prediction_by_id(prediction_id)
         with tempfile.NamedTemporaryFile() as tmp_file:
             with open(tmp_file.name, "wb") as file:
-                download_file(prediction.data_url, file)
-            file_name = get_file_name_from_url(prediction.data_url)
-            file_type = file_type_from_file_name(file_name)
-            df = create_df(file_type, tmp_file.name)
+                download_prediction_data(file, prediction_id)
+            file_type = file_type_from_file_name(prediction.data_file_name)
+            df = read_df(file_type, tmp_file.name)
             save_dataframe(df, prediction_data.path)

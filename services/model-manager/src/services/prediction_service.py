@@ -1,4 +1,3 @@
-import uuid
 from typing import Any
 
 from fastapi import Depends
@@ -6,14 +5,16 @@ from fastapi import Depends
 from build.job_manager_client.apis import JobmanagerApi
 from build.job_manager_client.model.run_params import RunParams
 from build.objectstore_client.apis import ObjectstoreApi
+from build.objectstore_client.exceptions import NotFoundException
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
-from build.openapi_server.models.url_and_prediction_id import (
-    UrlAndPredictionId,
+from exceptions import (
+    PredictionDataFileNameNotSpecifiedException,
+    PredictionDataNotFoundException,
+    PredictionResultNotFoundException,
 )
 from services import (
     PREDICTION_CONFIG_FILE_NAME,
-    PREDICTION_DATA_FILE_NAME,
     PREDICTION_MESSAGE_CHANNEL,
     PREDICTION_RESULT_FILE_NAME,
 )
@@ -28,7 +29,6 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     messaging_service = MessagingService(PREDICTION_MESSAGE_CHANNEL)
     model_name = "Prediction"
     config_file_name = PREDICTION_CONFIG_FILE_NAME
-    data_file_name = PREDICTION_DATA_FILE_NAME
     result_file_name = PREDICTION_RESULT_FILE_NAME
     prediction_pipeline = "prediction"
 
@@ -61,17 +61,6 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     def build_model(self, dict_: dict[str, Any]) -> Prediction:
         return Prediction(**dict_)
 
-    def update_get_urls(
-        self, prediction: Prediction, usertoken: str
-    ) -> Prediction:
-        prediction.data_url = self.get_presigned_get_url(
-            prediction, self.data_file_name, usertoken=usertoken
-        )
-        prediction.result_url = self.get_presigned_get_url(
-            prediction, self.result_file_name, usertoken=usertoken
-        )
-        return prediction
-
     def create_run_params(self, prediction: Prediction) -> RunParams:
         return RunParams(prediction_id=prediction.id)
 
@@ -84,25 +73,58 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
             usertoken=usertoken,
         )
 
-    def get_prediction_data_put_url(
-        self, solution_id: str, usertoken: str
-    ) -> UrlAndPredictionId:
-        prediction = Prediction(id=str(uuid.uuid4()))
-        solution = self.solution_service.get_solution_by_id(
-            solution_id, usertoken=usertoken
+    def start_prediction_pipeline(
+        self, id_: str, usertoken: str
+    ) -> Prediction:
+        prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
+        run_params = self.create_run_params(prediction)
+        prediction.run_id = self.jobmanager.create_run_by_solver_name(
+            self.prediction_pipeline,
+            run_params=run_params,
+            usertoken=usertoken,
         )
+        self._persist_model(prediction, usertoken=usertoken)
+        self._notify_model_update(usertoken)
+        return prediction
+
+    def get_prediction_data_get_url(self, id_: str, usertoken: str) -> str:
+        prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
+        if prediction.data_url:
+            return prediction.data_url  # type: ignore
+        if not prediction.data_file_name:
+            raise PredictionDataFileNameNotSpecifiedException()
+        try:
+            return self.get_presigned_get_url(  # type: ignore
+                prediction, prediction.data_file_name, usertoken=usertoken
+            )
+        except NotFoundException:
+            raise PredictionDataNotFoundException()
+
+    def create_prediction_data_put_url(self, id_: str, usertoken: str) -> str:
+        prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
+        if not prediction.data_file_name:
+            raise PredictionDataFileNameNotSpecifiedException()
         file_name = self.get_file_name(
             prediction,
-            self.data_file_name,
+            prediction.data_file_name,
             usertoken=usertoken,
-            solution=solution,
         )
-        url = self.objectstore.get_presigned_put_url(
+        return self.objectstore.get_presigned_put_url(  # type: ignore
             file_name, usertoken=usertoken
         )
-        return UrlAndPredictionId(url=url, prediction_id=prediction.id)
 
-    def get_prediction_result_put_url(self, id_: str, usertoken: str) -> str:
+    def get_prediction_result_get_url(self, id_: str, usertoken: str) -> str:
+        prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
+        try:
+            return self.get_presigned_get_url(  # type: ignore
+                prediction, self.result_file_name, usertoken=usertoken
+            )
+        except NotFoundException:
+            raise PredictionResultNotFoundException()
+
+    def create_prediction_result_put_url(
+        self, id_: str, usertoken: str
+    ) -> str:
         return self.get_presigned_put_url(  # type: ignore
             id_, self.result_file_name, usertoken=usertoken
         )

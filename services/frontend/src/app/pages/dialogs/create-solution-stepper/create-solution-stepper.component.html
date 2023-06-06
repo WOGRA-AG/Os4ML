@@ -1,0 +1,113 @@
+<app-dialog-header (closeDialog)="close()">
+  <span class="on-surface-text">
+    {{ 'solution.create' | translate }}
+  </span>
+</app-dialog-header>
+
+<mat-stepper
+  [linear]="false"
+  orientation="horizontal"
+  #stepper
+  data-testid="create-solution-stepper">
+  <ng-template matStepperIcon="edit">
+    <mat-icon>check</mat-icon>
+  </ng-template>
+  <mat-step
+    label="{{ 'problem.name' | translate }}"
+    completed="{{ stepperStep > 0 }}">
+    <mat-dialog-content>
+      <app-dialog-section>
+        <div description>
+          {{ 'dialog.section.problem.description' | translate }}
+        </div>
+        <app-choose-databag-column
+          [databag]="databag"
+          (selectedColumnChange)="
+            selectOutputColumn($event)
+          "></app-choose-databag-column>
+      </app-dialog-section>
+    </mat-dialog-content>
+  </mat-step>
+
+  <mat-step completed="false" label="Settings">
+    <mat-dialog-content>
+      <app-dialog-section>
+        <form
+          id="ngForm"
+          class="input-form"
+          name="form"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          #f="ngForm">
+          <mat-form-field>
+            <mat-label>{{ 'solution.placeholder' | translate }}</mat-label>
+            <input
+              id="define-solver-name-input"
+              matInput
+              type="string"
+              placeholder="{{ 'solution.placeholder' | translate }}"
+              required
+              name="databag_name"
+              [(ngModel)]="solution.name"
+              #databag_name="ngModel"
+              [ngClass]="{
+                'is-invalid': f.submitted && databag_name.invalid
+              }" />
+          </mat-form-field>
+        </form>
+      </app-dialog-section>
+
+      <app-dialog-section>
+        <div class="mat-body-1" title>
+          {{ 'dialog.section.solver.description' | translate }}
+        </div>
+        <app-choose-solver
+          (selectedSolverChange)="selectSolver($event)"></app-choose-solver>
+      </app-dialog-section>
+    </mat-dialog-content>
+  </mat-step>
+</mat-stepper>
+
+<div *ngIf="stepperStep === 0; then nextButton; else createButton"></div>
+
+<ng-template #nextButton>
+  <mat-dialog-actions>
+    <app-button
+      id="define-output-next-button"
+      variant="raised"
+      color="primary"
+      (click)="nextPageClick(stepper)"
+      [disabled]="!solution.outputFields || solution.outputFields.length === 0">
+      {{ 'action.next_step' | translate }}
+    </app-button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #createButton>
+  <mat-dialog-actions>
+    <app-button
+      variant="stroked"
+      icon="arrow_back_ios"
+      [disableRipple]="true"
+      (click)="back(stepper)"
+      [disabled]="submitting">
+      {{ 'action.previous_step' | translate }}
+    </app-button>
+    <div class="button-spacer"></div>
+    <mat-spinner
+      color="accent"
+      *ngIf="submitting"
+      [diameter]="40"
+      mode="indeterminate"
+      class="spinner"></mat-spinner>
+    <app-button
+      id="define-solver-next-button"
+      variant="raised"
+      color="primary"
+      [disabled]="submitting || !solution.solver || !solution.name"
+      class="main-button"
+      form="ngForm"
+      type="submit">
+      {{ 'solution.create' | translate }}
+    </app-button>
+  </mat-dialog-actions>
+</ng-template>

@@ -8,16 +8,16 @@ export const ROUTES: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import(
-            './templates/pages/solutions-page/solutions-page.component'
-          ).then(mod => mod.SolutionsPageComponent),
+          import('./pages/solutions-page/solutions-page.component').then(
+            mod => mod.SolutionsPageComponent
+          ),
       },
       {
         path: ':solutionId/predictions',
         loadComponent: () =>
-          import(
-            './templates/pages/predictions-page/predictions-page.component'
-          ).then(mod => mod.PredictionsPageComponent),
+          import('./pages/predictions-page/predictions-page.component').then(
+            mod => mod.PredictionsPageComponent
+          ),
       },
     ],
   },
@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
   {
     path: 'databags',
     loadComponent: () =>
-      import('./templates/pages/databags-page/databags-page.component').then(
+      import('./pages/databags-page/databags-page.component').then(
         mod => mod.DatabagsPageComponent
       ),
     runGuardsAndResolvers: 'always',
@@ -37,7 +37,7 @@ export const ROUTES: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import('./templates/pages/not-found-page/not-found-page.component').then(
+      import('./pages/not-found-page/not-found-page.component').then(
         mod => mod.NotFoundPageComponent
       ),
   },

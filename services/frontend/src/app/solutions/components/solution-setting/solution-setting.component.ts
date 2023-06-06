@@ -18,7 +18,8 @@ import { DialogSectionComponent } from '../../../shared/components/molecules/dia
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
-import { CreatePredictionComponent } from 'src/app/templates/dialogs/create-prediction/create-prediction.component';
+import { CreatePredictionComponent } from '../../../pages/dialogs/create-prediction/create-prediction.component';
+import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
 
 @Component({
   selector: 'app-solution-setting',
@@ -36,6 +37,7 @@ import { CreatePredictionComponent } from 'src/app/templates/dialogs/create-pred
     ButtonComponent,
     RouterLink,
     TranslateModule,
+    IsSolutionDonePipe,
   ],
 })
 export class SolutionSettingComponent implements OnDestroy {
@@ -106,5 +108,15 @@ export class SolutionSettingComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(undefined);
     this.destroy$.complete();
+  }
+
+  downloadModel(downloadLink: HTMLAnchorElement): void {
+    this.solutionService
+      .getModelGetUlr(this.solution.id!)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
   }
 }

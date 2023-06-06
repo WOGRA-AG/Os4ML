@@ -1,8 +1,8 @@
-<mat-expansion-panel expanded disabled>
+<mat-expansion-panel class="surface" expanded disabled>
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon class="databag-list-mat-panel-title-icon">folder_open</mat-icon>
-      <span>{{ 'databag.plural' | translate }}</span>
+      <span class="on-surface-text">{{ 'databag.plural' | translate }}</span>
     </mat-panel-title>
     <mat-panel-description> </mat-panel-description>
   </mat-expansion-panel-header>
@@ -18,7 +18,7 @@
         <span class="mat-caption">{{
           databag?.creationTime | localizedDate : 'dd.MM.YYYY - HH:mm'
         }}</span>
-        <span class="mat-subtitle-2">{{ databag.databagName }}</span>
+        <span class="mat-subtitle-2 on-surface-text">{{ databag.name }}</span>
       </div>
     </mat-list-item>
     <mat-list-item data-testid="add-databag" (click)="openAddDialog()">
@@ -29,7 +29,7 @@
           icon="add"
           size="small"
           class="databag-list-mat-expansion-panel-add-button"
-          color="accent">
+          color="primary">
           {{ 'databag.create' | translate }}
         </app-button>
       </div>

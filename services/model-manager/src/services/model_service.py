@@ -59,10 +59,6 @@ class ModelService(Generic[T], ABC):
     def build_model(self, dict_: dict[str, Any]) -> T:
         raise NotImplementedError
 
-    @abstractmethod
-    def update_get_urls(self, model: T, usertoken: str) -> T:
-        raise NotImplementedError
-
     @property
     @abstractmethod
     def model_name(self) -> str:
@@ -73,17 +69,11 @@ class ModelService(Generic[T], ABC):
         raise NotImplementedError
 
     def create_model(self, model: T, solver_name: str, usertoken: str) -> T:
-        if model.id is None:
-            model.id = str(uuid.uuid4())
+        model.id = str(uuid.uuid4())
         model.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._persist_model(model, usertoken=usertoken)
-        run_params = self.create_run_params(model)
-        model.run_id = self.jobmanager.create_run_by_solver_name(
-            solver_name, run_params=run_params, usertoken=usertoken
-        )
-        self._persist_model(model, usertoken=usertoken)
         self._notify_model_update(usertoken)
-        return self.update_get_urls(model, usertoken=usertoken)
+        return model
 
     def get_models(self, usertoken: str) -> list[T]:
         object_names: list[str] = self.objectstore.get_objects_with_prefix(
@@ -110,7 +100,7 @@ class ModelService(Generic[T], ABC):
             raise ModelIdUpdateNotAllowedException(self.model_name)
         self._persist_model(model, usertoken=usertoken)
         self._notify_model_update(usertoken)
-        return self.update_get_urls(model, usertoken=usertoken)
+        return model
 
     def delete_model_by_id(self, id_: str, usertoken: str) -> None:
         try:
@@ -197,5 +187,4 @@ class ModelService(Generic[T], ABC):
         json_content_bytes = json_response.json_content.encode()
         json_str = base64.decodebytes(json_content_bytes)
         json_dict = json.loads(json_str)
-        model = self.build_model(json_dict)
-        return self.update_get_urls(model, usertoken=usertoken)
+        return self.build_model(json_dict)

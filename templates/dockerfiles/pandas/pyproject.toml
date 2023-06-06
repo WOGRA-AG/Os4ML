@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "os4ml-pandas"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "os4ml_pandas"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.0.0"
+numpy = "^1.24.2"
+Pillow = "^9.5.0"
+kfp = "^1.8.21"
+et-xmlfile = "^1.1.0"
+python-dateutil = "^2.8.2"
+pytz = "^2023.3"
+pyxlsb = "^1.0.10"
+six = "^1.16.0"
+xlrd = "^2.0.1"
+openpyxl = "^3.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

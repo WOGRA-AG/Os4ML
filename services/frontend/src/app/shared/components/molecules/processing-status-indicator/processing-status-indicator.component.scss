@@ -1,5 +1,3 @@
-@import 'src/app/material/essentials/color';
-
 :host {
   display: block;
   min-width: 80px;
@@ -13,16 +11,16 @@
 }
 
 .running {
-  color: $primary-color;
-  background-color: $primary-color-100;
+  color: var(--md-custom-color-on-processing-status-running);
+  background-color: var(--md-custom-color-processing-status-running);
 }
 
 .error {
-  color: $warn-color;
-  background-color: $warn-color-100;
+  color: var(--md-custom-color-on-processing-status-error);
+  background-color: var(--md-custom-color-processing-status-error);
 }
 
 .done {
-  color: $success-color;
-  background-color: $success-color-100;
+  color: var(--md-custom-color-on-processing-status-done);
+  background-color: var(--md-custom-color-processing-status-done);
 }

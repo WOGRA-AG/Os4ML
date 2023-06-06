@@ -1,0 +1,83 @@
+<app-os4ml-default-template>
+  <h1 header class="headline-1 primary-text">
+    {{ 'prediction.plural' | translate }}
+  </h1>
+  <app-breadcrumbs main [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+  <ng-container main *ngIf="predictions$ | async as predictions">
+    <ng-container *ngIf="predictions | hasElements; else placeholder">
+      <div class="data-insight-wrapper">
+        <app-data-insight-card
+          *ngFor="let prediction of predictions"
+          data-testid="prediction-item">
+          <ng-container content>
+            <app-data-insight-item
+              [title]="'prediction.detail.name' | translate">
+              <span class="mat-body-2 on-surface-text">{{
+                prediction.name
+              }}</span>
+            </app-data-insight-item>
+            <app-data-insight-item
+              [title]="'prediction.detail.runtime' | translate">
+              <app-runtime-indicator
+                class="on-surface-text"
+                [creationTime]="prediction.creationTime"
+                [completionTime]="prediction.completionTime">
+              </app-runtime-indicator>
+            </app-data-insight-item>
+            <app-data-insight-item
+              [title]="'prediction.detail.creation' | translate">
+              <span class="mat-body-2 on-surface-text">
+                {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
+              </span>
+            </app-data-insight-item>
+            <app-data-insight-item
+              [title]="'prediction.detail.status' | translate">
+              <app-processing-status-indicator
+                [shortStatus]="prediction.status | shortStatus">
+              </app-processing-status-indicator>
+            </app-data-insight-item>
+          </ng-container>
+          <ng-container actions>
+            <app-data-insight-item
+              [title]="'prediction.detail.actions' | translate">
+              <app-icon-button
+                *ngIf="prediction | isPredictionDone"
+                data-testid="prediction-download-button"
+                color="primary"
+                icon="download"
+                attr.aria-label="{{
+                  'prediction.detail.tooltips.download' | translate
+                }}"
+                [matTooltip]="'prediction.detail.tooltips.download' | translate"
+                (click)="
+                  downloadPredictionResult(prediction, downloadResultLink)
+                ">
+              </app-icon-button>
+              <a
+                download
+                target="_blank"
+                hidden
+                aria-hidden="true"
+                #downloadResultLink>
+              </a>
+            </app-data-insight-item>
+          </ng-container>
+        </app-data-insight-card>
+      </div>
+      <div class="actions">
+        <app-button
+          variant="raised"
+          icon="download"
+          color="primary"
+          (click)="createPrediction()">
+          {{ 'prediction.create' | translate }}
+        </app-button>
+      </div>
+    </ng-container>
+  </ng-container>
+</app-os4ml-default-template>
+
+<ng-template #placeholder>
+  <app-no-prediction-placeholder (addPredictionChange)="createPrediction()">
+  </app-no-prediction-placeholder>
+</ng-template>

@@ -33,7 +33,7 @@
         color: rgba($on-surface, 0.38);
       }
       .mat-subtitle-2 {
-        color: $secondary-900;
+        color: var(--md-sys-color-on-surface);
       }
     }
   }

@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "os4ml-python"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "os4ml_python"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+kfp = "^1.8.21"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

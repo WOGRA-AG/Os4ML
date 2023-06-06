@@ -4,10 +4,9 @@
 @mixin color($theme) {
   $primary-palette: map.get($theme, 'primary');
   $primary-color-900: mat.get-color-from-palette($primary-palette, 900);
-  $overlay-backdrop-color: rgba($primary-color-900, 0.16);
 
   .cdk-overlay-dark-backdrop {
-    background: $overlay-backdrop-color;
+    background: var(--md-sys-color-scrim);
   }
 }
 
