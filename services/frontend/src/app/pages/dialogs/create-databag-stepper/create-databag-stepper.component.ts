@@ -50,6 +50,9 @@ export class CreateDatabagStepperComponent {
     stepper: MatStepper,
     createDatabagComponent: CreateDatabagComponent
   ): Promise<void> {
+    if (this.running) {
+      return;
+    }
     this.running = true;
     await createDatabagComponent.createDatabag();
     this.running = false;
