@@ -22,7 +22,7 @@ from {{modelPackage}}.user import User
 {{/imports}}
 {{#securityImports.0}}from services.auth_service import get_parsed_token{{/securityImports.0}}
 
-from api.controller.{{classFilename}}_controller import {{classname}}Controller
+from src.api.controller.{{classFilename}}_controller import {{classname}}Controller
 
 router = APIRouter(prefix="")
 

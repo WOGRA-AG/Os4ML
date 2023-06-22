@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, WebSocket
 
-from api.controller.modelmanager_websocket_controller import (
+from src.api.controller.modelmanager_websocket_controller import (
     WebsocketController,
 )
 

@@ -2,27 +2,30 @@ from typing import Any
 
 from fastapi import Depends
 
-from build.job_manager_client.apis import JobmanagerApi
-from build.job_manager_client.model.run_params import RunParams
-from build.objectstore_client.apis import ObjectstoreApi
-from build.objectstore_client.exceptions import NotFoundException
-from build.openapi_server.models.prediction import Prediction
-from build.openapi_server.models.solution import Solution
-from exceptions import (
+from src.build.job_manager_client.apis import JobmanagerApi
+from src.build.job_manager_client.model.run_params import RunParams
+from src.build.objectstore_client.apis import ObjectstoreApi
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.openapi_server.models.prediction import Prediction
+from src.build.openapi_server.models.solution import Solution
+from src.exceptions import (
     PredictionDataFileNameNotSpecifiedException,
     PredictionDataNotFoundException,
     PredictionResultNotFoundException,
 )
-from services import (
+from src.services import (
     PREDICTION_CONFIG_FILE_NAME,
     PREDICTION_MESSAGE_CHANNEL,
     PREDICTION_RESULT_FILE_NAME,
 )
-from services.databag_service import DatabagService
-from services.init_api_clients import init_jobmanager_api, init_objectstore_api
-from services.messaging_service import MessagingService
-from services.model_service import ModelService
-from services.solution_service import SolutionService
+from src.services.databag_service import DatabagService
+from src.services.init_api_clients import (
+    init_jobmanager_api,
+    init_objectstore_api,
+)
+from src.services.messaging_service import MessagingService
+from src.services.model_service import ModelService
+from src.services.solution_service import SolutionService
 
 
 class PredictionSerivce(ModelService[Prediction]):  # type: ignore
@@ -52,7 +55,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     ) -> str:
         if solution is None:
             solution = self.solution_service.get_solution_by_id(
-                prediction.solution_id, usertoken=usertoken
+                prediction.solution_id, usertoken=usertoken  # type: ignore
             )
         return (
             f"{solution.databag_id}/{solution.id}/{prediction.id}/{file_name}"
@@ -90,7 +93,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     def get_prediction_data_get_url(self, id_: str, usertoken: str) -> str:
         prediction = self.get_prediction_by_id(id_, usertoken=usertoken)
         if prediction.data_url:
-            return prediction.data_url  # type: ignore
+            return prediction.data_url
         if not prediction.data_file_name:
             raise PredictionDataFileNameNotSpecifiedException()
         try:
@@ -125,7 +128,7 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     def create_prediction_result_put_url(
         self, id_: str, usertoken: str
     ) -> str:
-        return self.get_presigned_put_url(  # type: ignore
+        return self.get_presigned_put_url(
             id_, self.result_file_name, usertoken=usertoken
         )
 

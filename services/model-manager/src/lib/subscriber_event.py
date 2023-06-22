@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
 
-from lib.threadsafe_event import ThreadSafeEvent
+from src.lib.threadsafe_event import ThreadSafeEvent
 
 T = TypeVar("T")
 

@@ -8,33 +8,36 @@ from typing import AsyncIterator
 
 from fastapi import Depends
 
-from build.job_manager_client import ApiException, ApiTypeError
-from build.job_manager_client.api.jobmanager_api import JobmanagerApi
-from build.job_manager_client.model.run import Run
-from build.job_manager_client.model.run_params import RunParams
-from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from build.objectstore_client.exceptions import NotFoundException
-from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.metrics import Metrics
-from build.openapi_server.models.solution import Solution
-from exceptions import (
+from src.build.job_manager_client import ApiException, ApiTypeError
+from src.build.job_manager_client.api.jobmanager_api import JobmanagerApi
+from src.build.job_manager_client.model.run import Run
+from src.build.job_manager_client.model.run_params import RunParams
+from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.metrics import Metrics
+from src.build.openapi_server.models.solution import Solution
+from src.exceptions import (
     ModelFileNotFoundException,
     PredictionTemplateFileNameNotSpecifiedException,
     PredictionTemplateNotFoundException,
     SolutionIdUpdateNotAllowedException,
     SolutionNotFoundException,
 )
-from services import (
+from src.services import (
     DATE_FORMAT_STR,
     MODEL_FILE_NAME,
     PREDICTION_TEMPLATE_FILE_NAME,
     SOLUTION_CONFIG_FILE_NAME,
     SOLUTION_MESSAGE_CHANNEL,
 )
-from services.auth_service import get_parsed_token
-from services.databag_service import DatabagService
-from services.init_api_clients import init_jobmanager_api, init_objectstore_api
-from services.messaging_service import MessagingService
+from src.services.auth_service import get_parsed_token
+from src.services.databag_service import DatabagService
+from src.services.init_api_clients import (
+    init_jobmanager_api,
+    init_objectstore_api,
+)
+from src.services.messaging_service import MessagingService
 
 
 class SolutionService:

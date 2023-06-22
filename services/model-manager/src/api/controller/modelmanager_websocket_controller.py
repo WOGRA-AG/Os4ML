@@ -3,11 +3,11 @@ import uuid
 
 from fastapi import Depends, WebSocket, WebSocketDisconnect
 
-from lib.camel_case import convert_to_camel_case
-from services.databag_service import DatabagService
-from services.prediction_service import PredictionSerivce
-from services.solution_service import SolutionService
-from services.transfer_learning_service import TransferLearningService
+from src.lib.camel_case import convert_to_camel_case
+from src.services.databag_service import DatabagService
+from src.services.prediction_service import PredictionSerivce
+from src.services.solution_service import SolutionService
+from src.services.transfer_learning_service import TransferLearningService
 
 
 class WebsocketController:

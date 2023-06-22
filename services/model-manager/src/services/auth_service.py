@@ -4,8 +4,8 @@ from http import HTTPStatus
 
 from fastapi import Header, HTTPException
 
-from build.openapi_server.models.oidc_user import OIDCUser
-from build.openapi_server.models.user import User
+from src.build.openapi_server.models.oidc_user import OIDCUser
+from src.build.openapi_server.models.user import User
 
 
 def _parse_oidc_token(usertoken: str = Header()) -> OIDCUser:
@@ -28,7 +28,7 @@ def _parse_user_from_oidc(
 ) -> User:
     user: User = User(
         id=oidc_user.sub,
-        email=oidc_user.email,
+        email=oidc_user.email,  # type: ignore
         first_name=oidc_user.given_name or "",
         last_name=oidc_user.family_name or "",
         raw_token=usertoken,

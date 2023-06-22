@@ -1,14 +1,14 @@
-from build.job_manager_client import ApiClient as JobmanagerApiClient
-from build.job_manager_client import Configuration as JobmanagerConfiguration
-from build.job_manager_client.api.jobmanager_api import JobmanagerApi
-from build.objectstore_client import ApiClient as ObjectstoreApiClient
-from build.objectstore_client import Configuration as ObjectstoreConfiguration
-from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from services import OS4ML_NAMESPACE
+from src.build.job_manager_client import ApiClient as JobmanagerApiClient
+from src.build.job_manager_client import Configuration as JobmanagerConf
+from src.build.job_manager_client.api.jobmanager_api import JobmanagerApi
+from src.build.objectstore_client import ApiClient as ObjectstoreApiClient
+from src.build.objectstore_client import Configuration as ObjectstoreConf
+from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from src.services import OS4ML_NAMESPACE
 
 
 def init_objectstore_api() -> ObjectstoreApi:
-    default_config = ObjectstoreConfiguration.get_default_copy()
+    default_config = ObjectstoreConf.get_default_copy()
     url_arr = default_config.host.split(".")
     if len(url_arr) <= 1:
         return ObjectstoreApi()
@@ -19,7 +19,7 @@ def init_objectstore_api() -> ObjectstoreApi:
 
 
 def init_jobmanager_api() -> JobmanagerApi:
-    default_config = JobmanagerConfiguration.get_default_copy()
+    default_config = JobmanagerConf.get_default_copy()
     url_arr = default_config.host.split(".")
     if len(url_arr) <= 1:
         return JobmanagerApi()

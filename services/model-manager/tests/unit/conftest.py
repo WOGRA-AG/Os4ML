@@ -4,31 +4,31 @@ from unittest.mock import Mock
 import pytest
 from pytest_mock import MockerFixture
 
-import services.databag_service
-import services.prediction_service
-import services.solution_service
-from build.openapi_server.models.databag import Databag
-from build.openapi_server.models.prediction import Prediction
-from build.openapi_server.models.solution import Solution
-from services.databag_service import DatabagService
-from services.prediction_service import PredictionSerivce
-from services.solution_service import SolutionService
+import src.services.databag_service
+import src.services.prediction_service
+import src.services.solution_service
+from src.build.openapi_server.models.databag import Databag
+from src.build.openapi_server.models.prediction import Prediction
+from src.build.openapi_server.models.solution import Solution
+from src.services.databag_service import DatabagService
+from src.services.prediction_service import PredictionSerivce
+from src.services.solution_service import SolutionService
 
 
 @pytest.fixture(autouse=True)
 def mock_messaging_services(mocker):
     mocker.patch.object(
-        services.prediction_service.MessagingService,
+        src.services.prediction_service.MessagingService,
         "_listen_to_channel",
         mocker.Mock(),
     )
     mocker.patch.object(
-        services.solution_service.MessagingService,
+        src.services.solution_service.MessagingService,
         "_listen_to_channel",
         mocker.Mock(),
     )
     mocker.patch.object(
-        services.databag_service.MessagingService,
+        src.services.databag_service.MessagingService,
         "_listen_to_channel",
         mocker.Mock(),
     )
