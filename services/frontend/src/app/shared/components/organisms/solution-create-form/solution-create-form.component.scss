@@ -1,0 +1,11 @@
+form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  gap: 1.5rem;
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

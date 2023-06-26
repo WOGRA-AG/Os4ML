@@ -13,9 +13,7 @@
 @mixin layout() {
   .mat-mdc-dialog-container {
     border-radius: 24px;
-    width: 384px;
-    min-height: 192px;
-    max-height: 100vh;
+
     overflow: hidden;
 
     .mat-dialog-header {

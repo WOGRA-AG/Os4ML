@@ -1,4 +1,98 @@
 {
+  "organisms": {
+    "solution_data_table": {
+      "header": {
+        "solution_name": "Solution Name",
+        "databag_name": "Databag Name",
+        "quality": "Quality",
+        "runtime": "Runtime",
+        "creation": "Creation",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "settings": {
+          "tooltip": "Solution settings"
+        },
+        "add_predictions": {
+          "tooltip": "Add prediction"
+        },
+        "show_predictions": {
+          "tooltip": "Show predictions"
+        }
+      }
+    },
+    "solution_create_form": {
+      "aria_label": "Solution creation form",
+      "form_fields": {
+        "name": {
+          "label": "Solution Name",
+          "aria_label": "Solution creation form",
+          "error": "Solution name is required",
+          "hint": "Choose a meaningful name for your solution to easily identify them"
+        },
+        "databag_id": {
+          "label": "Databagauswählen",
+          "aria_label": "Select databag",
+          "hint": "Select the databag for which you want to create a solution"
+        },
+        "selected_fields": {
+          "hint": "Mark fields, from your data bag, which the AI may use as input for its training",
+          "help_message": "Please select a databag first to specify further training",
+          "error": ""
+        }
+      },
+      "submit-button": "Create Solution"
+    }
+  },
+  "pages": {
+    "solution_create_dialog": {
+      "title": "Create Solution"
+    },
+    "solution_page": {
+      "title": "Solutions",
+      "actions": {
+        "filter_by_databag": {
+          "label": "Filter by Databag",
+          "option_none": "None"
+        },
+        "new_databag": "New Databag",
+        "create_solution": "Create Solution"
+      },
+      "plural": "Solutions",
+      "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
+      "settings": "Solution Settings",
+      "placeholder": "Solution Name",
+      "create": "Create Solution"
+    },
+    "detail": {
+      "title": "Solution details",
+      "solution_name": "Solution name",
+      "input_fields": "Input Fields",
+      "output_fields": "Output Fields",
+      "quality": "Quality",
+      "runtime": "Runtime",
+      "creation": "Creation",
+      "status": "Status",
+      "actions": "Actions",
+      "tooltips": {
+        "settings": "Solution settings",
+        "add_prediction": "Add prediction",
+        "show_predictions": "Show predictions"
+      }
+    },
+    "empty": "Analyze your Data with Machine Learning",
+    "delete": {
+      "title": "Delete Solution",
+      "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
+    }
+  },
+  "root": {
+    "naviagion": {
+      "databags": "Databags",
+      "solutions": "Solution"
+    }
+  },
   "message": {
     "no_dataset": "No Dataset specified",
     "error": "Error",
@@ -85,6 +179,8 @@
     "placeholder": "Solution Name",
     "create": "Create Solution",
     "detail": {
+      "title": "Solution Settings",
+      "solution_name": "Solution Name",
       "input_fields": "Input Fields",
       "output_fields": "Output Fields",
       "quality": "Quality",

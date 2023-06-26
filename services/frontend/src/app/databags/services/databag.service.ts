@@ -67,6 +67,16 @@ export class DatabagService {
     );
   }
 
+  // getDatabagById(id: string):ö Observable<Databag> {
+  //   this._databagsSubject$.getValue().find(databag => databag.id === id)
+  //
+  //
+  //   return this.databags$.pipe(
+  //     map(databags => databags.find(databag => databag.id === id)),
+  //     filterNotDefined()
+  //   );
+  // }
+
   deleteDatabagById(id: string | undefined): Observable<void> {
     if (!id) {
       return of(undefined);
