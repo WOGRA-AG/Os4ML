@@ -97,7 +97,6 @@ export class SolutionCreateFormComponent implements OnInit {
     const inputFields: string[] = allFieldsNames.filter(
       name => !selectedFields.includes(name)
     );
-    console.log(inputFields);
     return inputFields;
   }
 }
