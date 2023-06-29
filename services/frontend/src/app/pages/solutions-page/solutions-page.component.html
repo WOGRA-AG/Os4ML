@@ -1,58 +1,44 @@
 <app-os4ml-default-template data-testid="solutions-page">
   <h1 header role="header" class="headline-1 primary-text">
-    {{ 'pages.solution_page.title' | translate }}
+    {{ 'pages.solutions_page.title' | translate }}
   </h1>
   <div nav role="actions" class="actions">
-    <mat-form-field>
-      <mat-label>{{
-        'pages.solution_page.actions.filter_by_databag.label' | translate
-      }}</mat-label>
-      <mat-select
-        [aria-label]="
-          'pages.solution_page.actions.filter_by_databag.label' | translate
-        "
-        (selectionChange)="onDatabagChanged($event.value)"
-        [value]="databagId$ | async">
-        <mat-option>{{
-          'pages.solution_page.actions.filter_by_databag.option_none'
-            | translate
-        }}</mat-option>
-        <mat-option
-          *ngFor="let databag of databags$ | async"
-          [value]="databag.id">
-          {{ databag.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-select
+      [label]="
+        'pages.solutions_page.actions.filter_by_databag.label' | translate
+      "
+      [options]="
+        (databags$ | async) ?? []
+          | toSelectOption : getDatabagId : getDatabagName
+      "
+      [defaultValue]="(databagId$ | async) ?? undefined"
+      (selectionChange)="onDatabagChanged($event)">
+    </app-select>
     <div class="button-section">
       <app-button
         attr.aria-label="{{
-          'pages.solution_page.actions.new_databag' | translate
+          'pages.solutions_page.actions.new_databag' | translate
         }}"
         data-testid="add-databag"
         variant="basic"
         class="fab-button mat-raised-button"
         color="primary"
         (click)="addDatabag()">
-        {{ 'pages.solution_page.actions.new_databag' | translate }}
+        {{ 'pages.solutions_page.actions.new_databag' | translate }}
       </app-button>
-      <app-button
+      <app-solution-create-button
+        [type]="'primary'"
         [disabled]="!(databags$ | async | hasElements)"
-        attr.aria-label="{{
-          'pages.solution_page.actions.create_solution' | translate
-        }}"
-        data-testid="add-solution"
-        variant="raised"
-        class="fab-button mat-raised-button"
-        color="primary"
-        (click)="addSolution()">
-        {{ 'pages.solution_page.actions.create_solution' | translate }}
-      </app-button>
+        (addSolution)="addSolution()">
+        ></app-solution-create-button
+      >
     </div>
   </div>
   <ng-container main>
     <app-solution-data-table
-      [solutions]="(solutions$ | async) ?? []"
+      [solutions]="
+        solutions$ | async | filterSolutionsByDatabagId : (databagId$ | async)
+      "
       [databags]="(databags$ | async) ?? []"
       (solutionSettingButton)="
         openSolutionSettingDialog($event)

@@ -1,7 +1,18 @@
 {
+  "root": {
+    "navigation": {
+      "databags": "Databags",
+      "solutions": "Solution",
+      "predictions": "Predictions"
+    },
+    "footer-navigation": {
+      "guided_tour": "Guided Tour",
+      "documentation": "Documentation"
+    }
+  },
   "organisms": {
     "solution_data_table": {
-      "header": {
+      "column_header": {
         "solution_name": "Solution Name",
         "databag_name": "Databag Name",
         "quality": "Quality",
@@ -22,6 +33,9 @@
         }
       }
     },
+    "solution_create_button": {
+      "label": "Create Solution"
+    },
     "solution_create_form": {
       "aria_label": "Solution creation form",
       "form_fields": {
@@ -32,7 +46,7 @@
           "hint": "Choose a meaningful name for your solution to easily identify them"
         },
         "databag_id": {
-          "label": "Databagauswählen",
+          "label": "Databagselect",
           "aria_label": "Select databag",
           "hint": "Select the databag for which you want to create a solution"
         },
@@ -46,10 +60,13 @@
     }
   },
   "pages": {
+    "predictions_page": {
+      "title": "Predictions"
+    },
     "solution_create_dialog": {
       "title": "Create Solution"
     },
-    "solution_page": {
+    "solutions_page": {
       "title": "Solutions",
       "actions": {
         "filter_by_databag": {
@@ -85,12 +102,6 @@
     "delete": {
       "title": "Delete Solution",
       "confirmation": "Are you sure you want to delete this solution? All data will be lost!"
-    }
-  },
-  "root": {
-    "naviagion": {
-      "databags": "Databags",
-      "solutions": "Solution"
     }
   },
   "message": {

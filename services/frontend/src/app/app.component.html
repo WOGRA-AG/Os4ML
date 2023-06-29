@@ -9,14 +9,16 @@
       <a data-testid="databags-page-link" [routerLink]="['/databags']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>folder_open</mat-icon>
-          <b class="nav-caption">{{ 'root.naviagion.databags' | translate }}</b>
+          <b class="nav-caption">{{
+            'root.navigation.databags' | translate
+          }}</b>
         </app-side-nav-item>
       </a>
       <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>lightbulb</mat-icon>
           <b class="nav-caption">{{
-            'root.naviagion.solutions' | translate
+            'root.navigation.solutions' | translate
           }}</b>
         </app-side-nav-item>
       </a>

@@ -1,0 +1,20 @@
+<app-button
+  *ngIf="!isFAB"
+  [disabled]="!!disabled"
+  attr.aria-label="{{ 'organisms.solution_create_button.label' | translate }}"
+  data-testid="add-solution"
+  [variant]="variant"
+  class="fab-button mat-raised-button"
+  color="primary"
+  (click)="addSolution.emit()">
+  {{ 'organisms.solution_create_button.label' | translate }}
+</app-button>
+
+<app-icon-button
+  *ngIf="isFAB"
+  (click)="addSolution.emit()"
+  [matTooltip]="'organisms.organisms.label' | translate"
+  attr.aria-label="{{ 'organisms.solution_create_button.label' | translate }}"
+  color="primary"
+  icon="add">
+</app-icon-button>

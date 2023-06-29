@@ -5,6 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 
 @Component({
   selector: 'app-databag-data-table',
@@ -16,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IconButtonComponent,
     MatTooltipModule,
     TranslateModule,
+    SolutionCreateButtonComponent,
   ],
   standalone: true,
 })

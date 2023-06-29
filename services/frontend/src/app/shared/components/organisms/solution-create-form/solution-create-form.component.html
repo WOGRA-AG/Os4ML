@@ -41,6 +41,9 @@
         {{ databag.name }}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="databagId?.invalid && databagId?.touched">
+      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+    </mat-error>
     <mat-hint class="on-surface-text">
       {{
         'organisms.solution_create_form.form_fields.databag_id.hint' | translate

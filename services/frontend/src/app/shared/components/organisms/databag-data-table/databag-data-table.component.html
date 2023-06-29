@@ -36,15 +36,11 @@
         color="primary"
         icon="edit">
       </app-icon-button>
-      <app-icon-button
-        (click)="createSolutionButton.emit(element.id)"
-        [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
-        attr.aria-label="{{
-          'databag.detail.tooltips.add_solution' | translate
-        }}"
-        color="primary"
-        icon="add">
-      </app-icon-button>
+      <app-solution-create-button
+        [type]="'FAB'"
+        (addSolution)="createSolutionButton.emit(element.id)">
+        >
+      </app-solution-create-button>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

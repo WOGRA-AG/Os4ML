@@ -21,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
+import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 
 @Component({
   selector: 'app-solution-create-form',
@@ -38,6 +39,7 @@ import { ButtonComponent } from '../../../../design/components/atoms/button/butt
     NgForOf,
     GetDatabagByIdPipe,
     ButtonComponent,
+    SolutionCreateButtonComponent,
   ],
   standalone: true,
 })

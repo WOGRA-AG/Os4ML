@@ -1,13 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import {
-  combineLatest,
-  concatMap,
   first,
   map,
   Observable,
   of,
   Subject,
-  take,
+  switchMap,
   takeUntil,
 } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,6 +26,10 @@ import { SolutionSettingComponent } from '../../solutions/components/solution-se
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
 import { MatSelectModule } from '@angular/material/select';
+import { SelectComponent } from '../../shared/components/molecules/select/select.component';
+import { ToSelectOptionPipe } from '../../shared/pipes/to-select-option.pipe';
+import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-solutions-by-databag-id.pipe';
+import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -47,6 +49,10 @@ import { MatSelectModule } from '@angular/material/select';
     ButtonComponent,
     MatSelectModule,
     NgForOf,
+    SelectComponent,
+    ToSelectOptionPipe,
+    FilterSolutionsByDatabagIdPipe,
+    SolutionCreateButtonComponent,
   ],
 })
 export class SolutionsPageComponent implements OnDestroy {
@@ -62,7 +68,7 @@ export class SolutionsPageComponent implements OnDestroy {
     private router: Router
   ) {
     this.selectedDatabag$ = this.databagId$.pipe(
-      concatMap(id => {
+      switchMap(id => {
         if (id) {
           return this.databagService.getDatabagById(id).pipe(first());
         } else {
@@ -73,27 +79,19 @@ export class SolutionsPageComponent implements OnDestroy {
 
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.solutions$ = this.solutionService.getSolutionByCreationTime();
-    this.solutions$ = combineLatest([
-      this.solutions$,
-      this.selectedDatabag$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([solutions, selectedDatabag]) => {
-        if (selectedDatabag) {
-          return solutions.filter(
-            solution => solution.databagId === selectedDatabag.id
-          );
-        } else {
-          return solutions;
-        }
-      })
-    );
   }
+
   public get databagId$(): Observable<string | null> {
     return this.activatedRoute.queryParamMap.pipe(
-      map(params => params.get('selectedDatabag')),
-      map(id => id!)
+      map(params => params.get('selectedDatabag'))
     );
+  }
+
+  public getDatabagId(databag: Databag): string {
+    return databag.id ?? '';
+  }
+  public getDatabagName(databag: Databag): string {
+    return databag.name ?? '';
   }
 
   onDatabagChanged(databagId: string | null): void {
@@ -110,7 +108,7 @@ export class SolutionsPageComponent implements OnDestroy {
 
   addSolution(): void {
     this.databagId$
-      .pipe(takeUntil(this.destroy$), take(1))
+      .pipe(takeUntil(this.destroy$), first())
       .subscribe(databagId => {
         this.dialog.open(SolutionCreateDialogComponent, {
           data: { databagId },
