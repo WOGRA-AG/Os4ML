@@ -23,7 +23,7 @@ spec:
       containers:
         - name: frontend
           image: "wogra/os4ml-frontend"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               name: http
