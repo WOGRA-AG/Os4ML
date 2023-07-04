@@ -3,6 +3,9 @@
     {{ 'databag.plural' | translate }}
   </h1>
   <div main class="actions">
+    <app-new-button [type]="'primary'" [text]="'Primary'"></app-new-button>
+    <app-new-button [type]="'secondary'" [text]="'Seconday'"></app-new-button>
+    <app-new-button [type]="'text'" [text]="'Text'"></app-new-button>
     <app-button
       data-testid="add-databag"
       variant="raised"

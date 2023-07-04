@@ -1,6 +1,7 @@
 <ng-container [ngSwitch]="variant">
   <ng-container *ngSwitchDefault>
     <button
+      class="old-button"
       mat-button
       [color]="color"
       [class]="size"
@@ -16,6 +17,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="'raised'">
     <button
+      class="old-button"
       mat-raised-button
       [color]="color"
       [class]="size"
@@ -31,6 +33,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="'flat'">
     <button
+      class="old-button"
       mat-flat-button
       [color]="color"
       [class]="size"
@@ -46,6 +49,7 @@
   </ng-container>
   <ng-container *ngSwitchCase="'stroked'">
     <button
+      class="old-button"
       mat-stroked-button
       [color]="color"
       [class]="size"

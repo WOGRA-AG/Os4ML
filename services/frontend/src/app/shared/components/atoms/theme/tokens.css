@@ -281,12 +281,12 @@
   --md-sys-typescale-label-large-line-height: 20px;
   --md-sys-typescale-label-large-letter-spacing: 0.1px;
   /* label - medium */
-  --md-sys-typescale-label-medium-font-family-name: Roboto;
-  --md-sys-typescale-label-medium-font-family-style: Medium;
-  --md-sys-typescale-label-medium-font-weight: 500px;
-  --md-sys-typescale-label-medium-font-size: 12px;
-  --md-sys-typescale-label-medium-line-height: 16px;
-  --md-sys-typescale-label-medium-letter-spacing: 0.5px;
+  --md-sys-typescale-label-medium-font-family-name: Avenir;
+  --md-sys-typescale-label-medium-font-family-style: normal;
+  --md-sys-typescale-label-medium-font-weight: 800;
+  --md-sys-typescale-label-medium-font-size: 1.125rem;
+  --md-sys-typescale-label-medium-line-height: 1.5rem;
+  --md-sys-typescale-label-medium-letter-spacing: 0.07813rem;
   /* label - small */
   --md-sys-typescale-label-small-font-family-name: Roboto;
   --md-sys-typescale-label-small-font-family-style: Medium;

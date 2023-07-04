@@ -2,3 +2,10 @@
 # Intellij
 .idea
 **/*.iml
+
+# System Files
+.DS_Store
+Thumbs.db
+cypress/downloads/
+
+cypress.env.json

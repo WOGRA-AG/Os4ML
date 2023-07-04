@@ -17,6 +17,7 @@ import { DatabagSettingComponent } from '../../databags/components/databag-setti
 import { CreateSolutionStepperComponent } from '../dialogs/create-solution-stepper/create-solution-stepper.component';
 import { MaterialModule } from '../../material/material.module';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
+import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -37,6 +38,7 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
     MaterialModule,
     IconButtonComponent,
     Os4mlDefaultTemplateComponent,
+    NewButtonComponent,
   ],
 })
 export class DatabagsPageComponent {
