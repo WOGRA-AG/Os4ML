@@ -65,6 +65,7 @@ export class CreatePredictionComponent implements OnDestroy {
     }
     this.running = true;
     this.prediction.solutionId = this.solution.id;
+    this.prediction.databagId = this.solution.databagId;
 
     if (this.file.name) {
       this.prediction = await firstValueFrom(
