@@ -1,21 +1,51 @@
-.button {
-  display: inline-flex;
-  padding: 0.75rem 1.5rem;
-  justify-content: center;
-  align-items: center;
-  height: 48px;
-  border-width: 0;
-  box-sizing: border-box;
+.small-button{
+    display: inline-flex;
+    padding: 8px 16px 8px 16px;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    border-width: 0;
+    border-radius: 0.3125rem;
+    gap: 4px;
+    box-sizing: border-box;
+    &:disabled {
+        background-color: var(--md-sys-color-disabled);
+    }
 }
 
-.button :disabled {
-  background-color: var(--md-sys-color-disabled);
+.medium-button{
+    display: inline-flex;
+    padding: 12px 24px 12px 24px;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    border-width: 0;
+    border-radius: 0.4375rem;
+    gap: 8px;
+    box-sizing: border-box;
+    &:disabled {
+        background-color: var(--md-sys-color-disabled);
+    }
+}
+
+.large-button{
+    display: inline-flex;
+    padding: 16px 24px 16px 24px;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    border-width: 0;
+    border-radius: 0.48056rem;
+    gap: 8px;
+    box-sizing: border-box;
+    &:disabled {
+        background-color: var(--md-sys-color-disabled);
+    }
 }
 
 .primary-button {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
-  border-radius: 0.4375rem;
   border-width: 0;
   box-shadow: none;
 
@@ -34,7 +64,7 @@
 }
 
 .secondary-button {
-  background-color: var(--md-sys-color-background);
+  background-color: transparent;
   color: var(--md-sys-color-primary);
   border-color: var(--md-sys-color-primary);
   border-radius: 0.3125rem;
@@ -58,7 +88,7 @@
 
 .text-button {
   color: var(--md-sys-color-primary);
-  background-color: var(--md-sys-color-background);
+  background-color: transparent;
   border-radius: 0.3125rem;
 
   &:hover {
@@ -75,4 +105,22 @@
       cursor: not-allowed;
     }
   }
+}
+
+.small-mat-icon{
+    font-size: 1rem;
+    height: auto;
+    width: auto;
+}
+
+.medium-mat-icon{
+    font-size: 24px;
+    height: auto;
+    width: auto;
+}
+
+.large-mat-icon{
+    font-size: 32px;
+    height: auto;
+    width: auto;
 }

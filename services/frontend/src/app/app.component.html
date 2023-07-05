@@ -20,6 +20,13 @@
       </a>
     </ng-container>
     <ng-container footer-nav>
+      <app-new-button [type]="'secondary'" [size]="'small'" [icon]="''" (click)="openGettingStartedDialog()">
+        Guided Tour
+      </app-new-button>
+      <app-new-button [type]="'text'" [size]="'small'" [icon]="'description'" (click)="openDocumentation()">
+        Documentation
+      </app-new-button>
+      <!--
       <button
         id="get-started-button"
         mat-stroked-button
@@ -35,6 +42,7 @@
         <mat-icon matListItemIcon>description</mat-icon>
         <b class="nav-caption">Documentation</b>
       </a>
+    -->
     </ng-container>
   </app-side-nav>
 </nav>
