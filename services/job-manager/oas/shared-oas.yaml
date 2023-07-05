@@ -121,6 +121,8 @@ components:
         completionTime:
           type: string
           nullable: true
+        databagId:
+          $ref: '#/components/schemas/DatabagId'
         solutionId:
           $ref: '#/components/schemas/SolutionId'
         dataFileName:
