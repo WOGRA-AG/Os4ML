@@ -1,0 +1,83 @@
+<table mat-table [dataSource]="predictions">
+  <ng-container matColumnDef="predictionName">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.prediction_data_table.column_header.prediction_name'
+          | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="solutionName">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.prediction_data_table.column_header.solution_name'
+          | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      {{ (solutions | getSolutionById : element.solutionId)?.name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="databagName">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.prediction_data_table.column_header.databag_name' | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      {{
+        (
+          databags
+          | getDatabagById
+            : (solutions | getSolutionById : element.solutionId)?.databagId ??
+                ''
+        )?.name
+      }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="runtime">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{ 'organisms.prediction_data_table.column_header.runtime' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.creationTime }}</td>
+  </ng-container>
+  <ng-container matColumnDef="creation">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{ 'organisms.prediction_data_table.column_header.creation' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{ 'organisms.prediction_data_table.column_header.status' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <app-processing-status-indicator
+        [shortStatus]="element.status | shortStatus">
+      </app-processing-status-indicator>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{ 'organisms.prediction_data_table.column_header.actions' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <app-icon-button
+        attr.aria-label="{{
+          'pages.solutions_page.actions.new_databag' | translate
+        }}"
+        data-testid="add-databag"
+        variant="basic"
+        class="fab-button mat-raised-button"
+        color="primary"
+        icon="download">
+      </app-icon-button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    data-testid="prediction-item"
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

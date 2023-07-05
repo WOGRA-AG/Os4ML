@@ -1,0 +1,30 @@
+<app-os4ml-dialog-template>
+  <ng-container header>
+    <h1 header role="header" class="headline-1 primary-text">
+      {{ 'pages.solution_create_dialog.title' | translate }}
+    </h1>
+    <app-icon-button
+      data-testid="close-button"
+      (click)="close()"
+      icon="close"
+      color="accent">
+    </app-icon-button>
+  </ng-container>
+
+  <app-prediction-create-form
+    *ngIf="databags$ | async"
+    [databags]="(databags$ | async) ?? []"
+    [solutions]="(solutions$ | async) ?? []"
+    [selectedDatabagId]="data.databagId"
+    main>
+  </app-prediction-create-form>
+  <ng-container footer>
+    <mat-spinner
+      color="primary"
+      *ngIf="submitting"
+      [diameter]="40"
+      mode="indeterminate"
+      class="spinner">
+    </mat-spinner>
+  </ng-container>
+</app-os4ml-dialog-template>

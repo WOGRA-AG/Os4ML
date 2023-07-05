@@ -3,15 +3,11 @@
     {{ 'databag.plural' | translate }}
   </h1>
   <div nav class="actions">
-    <app-button
-      data-testid="add-databag"
-      variant="raised"
-      class="fab-button mat-raised-button"
-      color="primary"
-      icon="add"
-      (click)="addDatabag()">
-      {{ 'databag.create' | translate }}
-    </app-button>
+    <app-databag-create-button
+      [type]="'primary'"
+      [disabled]="!(databags$ | async | hasElements)"
+      (addSolution)="addDatabag()">
+    </app-databag-create-button>
   </div>
   <ng-container main *ngIf="databags$ | async as databags">
     <app-databag-data-table

@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  Column,
+  Databag,
+  Solution,
+} from '../../../../../../build/openapi/modelmanager';
+import {
   AbstractControl,
   FormArray,
   FormBuilder,
@@ -7,45 +12,45 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  Column,
-  Databag,
-  Solution,
-} from '../../../../../../build/openapi/modelmanager';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
-import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
-import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
+import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
-import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
+import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
+import { DatasetUploadComponent } from '../dataset-upload/dataset-upload.component';
+import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.component';
 
 @Component({
-  selector: 'app-solution-create-form',
-  templateUrl: './solution-create-form.component.html',
-  styleUrls: ['./solution-create-form.component.scss'],
+  selector: 'app-prediction-create-form',
+  templateUrl: './prediction-create-form.component.html',
+  styleUrls: ['./prediction-create-form.component.scss'],
   standalone: true,
   imports: [
     MatInputModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    ElementDividerComponent,
-    SelectableListComponent,
-    GetPredictListItemsFromDatabagPipe,
     TranslateModule,
+    MatSelectModule,
+    SelectableListComponent,
     NgIf,
-    NgForOf,
     GetDatabagByIdPipe,
+    GetPredictListItemsFromDatabagPipe,
     ButtonComponent,
-    SolutionCreateButtonComponent,
+    ElementDividerComponent,
+    ReactiveFormsModule,
+    JsonPipe,
+    NgForOf,
+    DatasetUploadComponent,
+    UploadFieldComponent,
   ],
 })
-export class SolutionCreateFormComponent implements OnInit {
+export class PredictionCreateFormComponent implements OnInit {
   @Input() public selectedDatabagId: string | undefined;
+  @Input() public selectedSolutionId: string | undefined;
   @Input() public databags: Databag[] = [];
+  @Input() public solutions: Solution[] = [];
   @Output() public submitSolution = new EventEmitter<Solution>();
 
   public createSolutionForm: FormGroup;
@@ -53,6 +58,7 @@ export class SolutionCreateFormComponent implements OnInit {
     this.createSolutionForm = this.fb.group({
       name: ['', Validators.required],
       databagId: ['', Validators.required],
+      solutionId: ['', Validators.required],
       selectedFields: this.fb.array([], Validators.required),
     });
   }
@@ -60,6 +66,10 @@ export class SolutionCreateFormComponent implements OnInit {
     return this.createSolutionForm.get('name');
   }
   get databagId(): AbstractControl | null {
+    return this.createSolutionForm.get('databagId');
+  }
+
+  get solutionId(): AbstractControl | null {
     return this.createSolutionForm.get('databagId');
   }
   get selectedFields(): AbstractControl | null {

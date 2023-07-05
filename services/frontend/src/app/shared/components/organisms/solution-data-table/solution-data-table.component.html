@@ -93,7 +93,11 @@
       <!--          </app-icon-button>-->
       <app-icon-button
         *ngIf="element.id && (element | isSolutionDone)"
-        [routerLink]="[element.id, 'predictions']"
+        [routerLink]="['/predictions']"
+        [queryParams]="{
+          selectedDatabag: element.databagId,
+          selectedSolution: element.id
+        }"
         [matTooltip]="
           'organisms.solution_data_table.actions.show_predictions.tooltip'
             | translate

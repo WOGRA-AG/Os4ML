@@ -10,7 +10,13 @@
       "documentation": "Documentation"
     }
   },
+  "molecules": {
+    "select.option_none": "None"
+  },
   "organisms": {
+    "databag_create_button.label": "Create Databag",
+    "databag_filter": "Filter by Databag",
+    "solution_filter": "Filter by Solution",
     "solution_data_table": {
       "column_header": {
         "solution_name": "Solution Name",
@@ -33,9 +39,7 @@
         }
       }
     },
-    "solution_create_button": {
-      "label": "Create Solution"
-    },
+    "solution_create_button.label": "Create Solution",
     "solution_create_form": {
       "aria_label": "Solution creation form",
       "form_fields": {
@@ -57,31 +61,24 @@
         }
       },
       "submit-button": "Create Solution"
+    },
+    "prediction_create_button.label": "Create Prediction",
+    "prediction_data_table": {
+      "column_header": {
+        "prediction_name": "Prediction Name",
+        "solution_name": "Solution Name",
+        "databag_name": "Databag Name",
+        "runtime": "Runtime",
+        "creation": "Creation",
+        "status": "Status",
+        "actions": "Actions"
+      }
     }
   },
   "pages": {
-    "predictions_page": {
-      "title": "Predictions"
-    },
-    "solution_create_dialog": {
-      "title": "Create Solution"
-    },
-    "solutions_page": {
-      "title": "Solutions",
-      "actions": {
-        "filter_by_databag": {
-          "label": "Filter by Databag",
-          "option_none": "None"
-        },
-        "new_databag": "New Databag",
-        "create_solution": "Create Solution"
-      },
-      "plural": "Solutions",
-      "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
-      "settings": "Solution Settings",
-      "placeholder": "Solution Name",
-      "create": "Create Solution"
-    },
+    "predictions_page.title": "Predictions",
+    "solution_create_dialog.title": "Create Solution",
+    "solutions_page.title": "Solutions",
     "detail": {
       "title": "Solution details",
       "solution_name": "Solution name",

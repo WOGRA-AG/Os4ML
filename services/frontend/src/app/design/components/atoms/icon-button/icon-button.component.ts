@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatButtonModule, MatIconModule],
 })
 export class IconButtonComponent {
+  @Input() public disabled = false;
   @Input() public color: ColorPalette = 'primary';
   @Input() public type: ButtonType = 'button';
   @Input() public size: ButtonSize = 'medium';

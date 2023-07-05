@@ -17,19 +17,16 @@ import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
-import { ButtonComponent } from '../../design/components/atoms/button/button.component';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
-import { MatSelectModule } from '@angular/material/select';
-import { SelectComponent } from '../../shared/components/molecules/select/select.component';
-import { ToSelectOptionPipe } from '../../shared/pipes/to-select-option.pipe';
 import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-solutions-by-databag-id.pipe';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
+import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
+import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -42,17 +39,14 @@ import { SolutionCreateButtonComponent } from '../../shared/components/organisms
     NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
-    LocalizedDatePipe,
     Os4mlDefaultTemplateComponent,
     SolutionDataTableComponent,
     HasElementsPipe,
-    ButtonComponent,
-    MatSelectModule,
     NgForOf,
-    SelectComponent,
-    ToSelectOptionPipe,
     FilterSolutionsByDatabagIdPipe,
     SolutionCreateButtonComponent,
+    DatabagFilterComponent,
+    DatabagCreateButtonComponent,
   ],
 })
 export class SolutionsPageComponent implements OnDestroy {
@@ -78,7 +72,7 @@ export class SolutionsPageComponent implements OnDestroy {
     );
 
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
-    this.solutions$ = this.solutionService.getSolutionByCreationTime();
+    this.solutions$ = this.solutionService.getSolutionsByCreationTime();
   }
 
   public get databagId$(): Observable<string | null> {
@@ -86,14 +80,6 @@ export class SolutionsPageComponent implements OnDestroy {
       map(params => params.get('selectedDatabag'))
     );
   }
-
-  public getDatabagId(databag: Databag): string {
-    return databag.id ?? '';
-  }
-  public getDatabagName(databag: Databag): string {
-    return databag.name ?? '';
-  }
-
   onDatabagChanged(databagId: string | null): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -101,11 +87,9 @@ export class SolutionsPageComponent implements OnDestroy {
       queryParamsHandling: 'merge',
     });
   }
-
   addDatabag(): void {
     this.dialog.open(CreateDatabagStepperComponent);
   }
-
   addSolution(): void {
     this.databagId$
       .pipe(takeUntil(this.destroy$), first())
@@ -115,7 +99,6 @@ export class SolutionsPageComponent implements OnDestroy {
         });
       });
   }
-
   openSolutionSettingDialog(solution: Solution): void {
     this.dialog.open(SolutionSettingComponent, {
       data: { solution },
@@ -126,7 +109,6 @@ export class SolutionsPageComponent implements OnDestroy {
       },
     });
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

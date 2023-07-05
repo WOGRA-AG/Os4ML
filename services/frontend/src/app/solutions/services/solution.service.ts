@@ -47,7 +47,7 @@ export class SolutionService {
     return this._solutions$;
   }
 
-  getSolutionByCreationTime(): Observable<Solution[]> {
+  getSolutionsByCreationTime(): Observable<Solution[]> {
     return this.solutions$.pipe(
       map(solutions => solutions.sort(sortByCreationTime))
     );

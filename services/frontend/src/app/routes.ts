@@ -12,13 +12,6 @@ export const ROUTES: Routes = [
             mod => mod.SolutionsPageComponent
           ),
       },
-      {
-        path: ':solutionId/predictions',
-        loadComponent: () =>
-          import('./pages/predictions-page/predictions-page.component').then(
-            mod => mod.PredictionsPageComponent
-          ),
-      },
     ],
   },
   {
@@ -31,6 +24,14 @@ export const ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/databags-page/databags-page.component').then(
         mod => mod.DatabagsPageComponent
+      ),
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'predictions',
+    loadComponent: () =>
+      import('./pages/predictions-page/predictions-page.component').then(
+        mod => mod.PredictionsPageComponent
       ),
     runGuardsAndResolvers: 'always',
   },
