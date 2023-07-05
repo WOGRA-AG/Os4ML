@@ -63,12 +63,16 @@ describe('Root Page', () => {
     cy.get('#add-databag-main-button').click();
 
     cy.wait(standardTimeout);
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${databagName}")`, { timeout: standardTimeout })
-      .click();
-    cy.get('[data-testid="solution-status-indicator"]').contains('Done', {
-      timeout: solutionTimeout,
-    });
+
+    cy.visit('/solutions');
+    cy.get('[data-testid="solution-item"]')
+      .filter(`:contains("${solutionName}")`)
+      .should('exist');
+    cy.get('[data-testid="solution-item"]')
+      .filter(`:contains("${solutionName}")`)
+      .contains('Done', {
+        timeout: 600000,
+      });
 
     deleteSolution(solutionName);
     cy.visit('/#/databags');

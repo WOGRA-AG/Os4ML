@@ -1,5 +1,5 @@
 <app-dialog-header (closeDialog)="close()">
-  <span class="on-surface-text">{{ 'solution.settings' | translate }}</span>
+  <span class="on-surface-text">{{ 'solution.detail.title' | translate }}</span>
 </app-dialog-header>
 
 <mat-dialog-content>
@@ -10,7 +10,7 @@
     (ngSubmit)="(f.form.valid)"
     #f="ngForm">
     <app-dialog-section>
-      <div title>{{ 'solution.placeholder' | translate }}</div>
+      <div title>{{ 'solution.detail.solution_name' | translate }}</div>
       <div>
         <mat-form-field>
           <input

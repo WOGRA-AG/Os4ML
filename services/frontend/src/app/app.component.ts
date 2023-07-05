@@ -7,7 +7,7 @@ import localeEn from '@angular/common/locales/en';
 import localeEnExtra from '@angular/common/locales/extra/en';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './core/components/nav-bar/nav-bar.component';
-import { SideNavComponent } from './shared/components/organisms/side-nav/side-nav.component';
+import { SideNavComponent } from './shared/components/templates/side-nav/side-nav.component';
 import { MaterialModule } from './material/material.module';
 import { SideNavItemComponent } from './shared/components/molecules/side-nav-item/side-nav-item.component';
 import { SupportComponent } from './core/components/support/support.component';

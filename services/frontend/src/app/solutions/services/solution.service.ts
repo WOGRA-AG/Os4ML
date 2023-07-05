@@ -47,14 +47,34 @@ export class SolutionService {
     return this._solutions$;
   }
 
-  getSolutionsByDatabagIdSortByCreationTime(
-    databagId: string | undefined
-  ): Observable<Solution[]> {
+  getSolutionByCreationTime(): Observable<Solution[]> {
     return this.solutions$.pipe(
-      map(solutions =>
-        solutions.filter(solution => solution.databagId === databagId)
-      ),
       map(solutions => solutions.sort(sortByCreationTime))
+    );
+  }
+
+  createSolutionNew(solution: Solution): Observable<Solution> {
+    const solutionDTO: Solution = {
+      status: SolutionStatus.created,
+      name: solution.name,
+      databagId: solution.databagId,
+      inputFields: solution.inputFields,
+      outputFields: solution.outputFields,
+      solver: 'ludwig-solver',
+    };
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager
+          .createSolution(token, solutionDTO)
+          .pipe(
+            switchMap(createdSolution =>
+              this.modelManager.startSolutionPipeline(
+                createdSolution.id!,
+                token
+              )
+            )
+          )
+      )
     );
   }
 
