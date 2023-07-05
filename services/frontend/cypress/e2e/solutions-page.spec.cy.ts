@@ -35,7 +35,7 @@ beforeEach(() => {
 describe('Solutions Page', () => {
   it('add a Databag xls', () => {
     createDatabag(databagName, 'cypress/fixtures/titanic.xls');
-    cy.get('[data-testid="databag-item"]')
+    cy.get('[data-testid="databag-table"]')
       .filter(`:contains("${databagName}")`)
       .should('exist');
   });

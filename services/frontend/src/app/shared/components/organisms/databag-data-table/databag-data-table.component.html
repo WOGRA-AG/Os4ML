@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="databags">
+<table mat-table [dataSource]="databags" data-testid="databag-table">
   <ng-container matColumnDef="databagName">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       Databag Name
@@ -45,7 +45,6 @@
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
-    data-testid="databag-item"
     mat-row
     *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
