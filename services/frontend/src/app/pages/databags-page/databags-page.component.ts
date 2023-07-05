@@ -15,10 +15,7 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
-import {
-  DatabagCreateButtonComponent
-} from "../../shared/components/organisms/databag-create-button/databag-create-button.component";
-
+import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 
 @Component({
   selector: 'app-databags-page',

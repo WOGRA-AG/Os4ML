@@ -13,7 +13,10 @@ import { SideNavItemComponent } from './shared/components/molecules/side-nav-ite
 import { SupportComponent } from './core/components/support/support.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-stepper/getting-started-stepper.component';
-import {ButtonTypes, NewButtonComponent} from './shared/components/molecules/new-button/new-button.component';
+import {
+  ButtonTypes,
+  NewButtonComponent,
+} from './shared/components/molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-root',
