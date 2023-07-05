@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class NewButtonComponent {
   @Input() public type: 'primary' | 'secondary' | 'text' = 'primary';
   @Input() public size: 'small' | 'medium' | 'large' = 'medium';
+  @Input() public ariaLabel = '';
   @Input() public icon = '';
   @Input() public disabled = false;
 }
