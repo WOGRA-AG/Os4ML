@@ -3,11 +3,6 @@
     {{ 'databag.plural' | translate }}
   </h1>
   <div main class="actions">
-    <!--
-    <app-new-button [type]="'primary'" [size]="'large'" [text]="'Primary'" [icon]="'add'"></app-new-button>
-    <app-new-button [type]="'secondary'" [size]="'large'" [text]="'Seconday'" [icon]="''"></app-new-button>
-    <app-new-button [type]="'text'" [size]="'large'" [text]="'Text'" [icon]="''"></app-new-button>
-    -->
     <app-new-button
       [type]="'primary'"
       [size]="'medium'"
@@ -16,17 +11,6 @@
       (click)="addDatabag()">
       {{ 'databag.create' | translate }}
     </app-new-button>
-    <!--
-    <app-button
-      data-testid="add-databag"
-      variant="raised"
-      class="fab-button mat-raised-button"
-      color="primary"
-      icon="add"
-      (click)="addDatabag()">
-      {{ 'databag.create' | translate }}
-    </app-button>
-    -->
   </div>
   <ng-container main *ngIf="databags$ | async as databags">
     <table mat-table [dataSource]="databags">
