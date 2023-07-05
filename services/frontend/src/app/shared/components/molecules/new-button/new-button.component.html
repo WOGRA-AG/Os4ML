@@ -1,8 +1,8 @@
 <button
-  [ngClass]="[size +'-button', type + '-button', 'label-' + size]"
+  [ngClass]="[size + '-button', type + '-button', 'label-' + size]"
   matRipple
   [matRippleColor]="''"
   [disabled]="disabled">
-  <mat-icon *ngIf="icon" [ngClass]="[size + '-mat-icon']" >{{ icon }}</mat-icon>
+  <mat-icon *ngIf="icon" [ngClass]="[size + '-mat-icon']">{{ icon }}</mat-icon>
   <ng-content></ng-content>
 </button>

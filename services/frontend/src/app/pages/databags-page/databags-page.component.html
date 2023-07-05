@@ -8,7 +8,11 @@
     <app-new-button [type]="'secondary'" [size]="'large'" [text]="'Seconday'" [icon]="''"></app-new-button>
     <app-new-button [type]="'text'" [size]="'large'" [text]="'Text'" [icon]="''"></app-new-button>
     -->
-    <app-new-button [type]="'primary'" [size]="'medium'" [icon]="'add'"  (click)="addDatabag()">
+    <app-new-button
+      [type]="'primary'"
+      [size]="'medium'"
+      [icon]="'add'"
+      (click)="addDatabag()">
       {{ 'databag.create' | translate }}
     </app-new-button>
     <!--

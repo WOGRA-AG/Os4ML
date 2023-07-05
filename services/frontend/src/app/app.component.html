@@ -20,10 +20,18 @@
       </a>
     </ng-container>
     <ng-container footer-nav>
-      <app-new-button [type]="'secondary'" [size]="'small'" [icon]="''" (click)="openGettingStartedDialog()">
+      <app-new-button
+        [type]="'secondary'"
+        [size]="'small'"
+        [icon]="''"
+        (click)="openGettingStartedDialog()">
         Guided Tour
       </app-new-button>
-      <app-new-button [type]="'text'" [size]="'small'" [icon]="'description'" (click)="openDocumentation()">
+      <app-new-button
+        [type]="'text'"
+        [size]="'small'"
+        [icon]="'description'"
+        (click)="openDocumentation()">
         Documentation
       </app-new-button>
       <!--
