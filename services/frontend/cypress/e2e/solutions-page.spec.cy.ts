@@ -35,7 +35,7 @@ beforeEach(() => {
 describe('Solutions Page', () => {
   it('add a Databag xls', () => {
     createDatabag(databagName, 'cypress/fixtures/titanic.xls');
-    cy.get('[data-testid="databag-table"]')
+    cy.get('[data-testid="databag-item"]')
       .filter(`:contains("${databagName}")`)
       .should('exist');
   });
@@ -108,7 +108,7 @@ describe('Solutions Page', () => {
 
   it('delete Solution', () => {
     deleteSolution(updatedSolutionName);
-    cy.get('[data-testid="solution-item"]').should(
+    cy.get('[data-testid="solution-table"]').should(
       'not.contain',
       updatedSolutionName
     );
