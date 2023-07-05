@@ -1,131 +1,52 @@
 <app-os4ml-default-template data-testid="solutions-page">
-  <h1 header class="headline-1 primary-text">
-    {{ 'solution.plural' | translate }}
+  <h1 header role="header" class="headline-1 primary-text">
+    {{ 'pages.solutions_page.title' | translate }}
   </h1>
-  <ng-container main *ngIf="databags$ | async as databags">
-    <div
-      *ngIf="databags | hasElements; else placeholder"
-      class="content-container"
-      data-testid="solution-page">
-      <app-choose-databag
-        [databags]="databags"
-        (selectedDatabagIdChange)="
-          selectedDatabagChanged($event)
-        "></app-choose-databag>
-      <ng-container *ngIf="selectedDatabagId$ | async as selectedDatabagId">
-        <div class="solutions-template">
-          <ng-container
-            *ngIf="solutionsInDatabag$ | async as solutionsInDatabag">
-            <div
-              class="list-container"
-              *ngIf="
-                solutionsInDatabag | hasElements;
-                else solutionsPlaceholder
-              ">
-              <app-data-insight-card
-                data-testid="solution-item"
-                *ngFor="let solution of solutionsInDatabag">
-                <ng-container content>
-                  <app-data-insight-item
-                    [title]="'solution.placeholder' | translate">
-                    <span class="mat-body-2 on-surface-text">{{
-                      solution.name
-                    }}</span>
-                  </app-data-insight-item>
-                  <app-data-insight-item
-                    [title]="'solution.detail.quality' | translate">
-                    <app-star-rating
-                      [rating]="solution.metrics?.combined || 0"
-                      [numberStars]="5">
-                    </app-star-rating>
-                  </app-data-insight-item>
-                  <app-data-insight-item
-                    [title]="'solution.detail.runtime' | translate">
-                    <span class="mat-body-2 on-surface-text">
-                      <app-runtime-indicator
-                        [creationTime]="solution.creationTime"
-                        [completionTime]="solution.completionTime">
-                      </app-runtime-indicator>
-                    </span>
-                  </app-data-insight-item>
-                  <app-data-insight-item
-                    [title]="'solution.detail.creation' | translate">
-                    <span class="mat-body-2 on-surface-text">{{
-                      solution.creationTime | localizedDate : 'dd.MM.yyyy'
-                    }}</span>
-                  </app-data-insight-item>
-                  <app-data-insight-item
-                    [title]="'solution.detail.status' | translate">
-                    <app-processing-status-indicator
-                      data-testid="solution-status-indicator"
-                      [shortStatus]="solution.status | shortStatus">
-                    </app-processing-status-indicator>
-                  </app-data-insight-item>
-                </ng-container>
-                <ng-container actions>
-                  <app-data-insight-item
-                    [title]="'databag.detail.actions' | translate">
-                    <app-icon-button
-                      data-testid="solution-settings-button"
-                      (click)="openSolutionSettingDialog(solution)"
-                      [matTooltip]="
-                        'solution.detail.tooltips.settings' | translate
-                      "
-                      attr.aria-label="{{
-                        'solution.detail.tooltips.show_predictions' | translate
-                      }}"
-                      color="primary"
-                      icon="edit">
-                    </app-icon-button>
-                    <!--                      <app-icon-button-->
-                    <!--                        data-testid="create-prediction-button"-->
-                    <!--                        (click)="openCreatePredictionDialog(solution)"-->
-                    <!--                        [matTooltip]="-->
-                    <!--                          'solution.detail.tooltips.add_prediction' | translate-->
-                    <!--                        "-->
-                    <!--                        attr.aria-label="{{-->
-                    <!--                          'solution.detail.tooltips.add_prediction' | translate-->
-                    <!--                        }}"-->
-                    <!--                        color="primary"-->
-                    <!--                        icon="add">-->
-                    <!--                      </app-icon-button>-->
-                    <app-icon-button
-                      *ngIf="solution.id && (solution | isSolutionDone)"
-                      [routerLink]="[solution.id, 'predictions']"
-                      [matTooltip]="
-                        'solution.detail.tooltips.show_predictions' | translate
-                      "
-                      attr.aria-label="{{
-                        'solution.detail.tooltips.show_predictions' | translate
-                      }}"
-                      color="primary"
-                      icon="batch_prediction">
-                    </app-icon-button>
-                  </app-data-insight-item>
-                </ng-container>
-              </app-data-insight-card>
-              <app-button
-                (click)="addSolution()"
-                class="add-solution-button"
-                color="primary"
-                type="submit"
-                icon="add"
-                >{{ 'solution.create' | translate }}</app-button
-              >
-            </div>
-          </ng-container>
-          <ng-template #solutionsPlaceholder>
-            <app-no-solutions-placeholder
-              (addSolutionButton)="
-                addSolution()
-              "></app-no-solutions-placeholder>
-          </ng-template>
-        </div>
-      </ng-container>
+  <div nav role="actions" class="actions">
+    <app-select
+      [label]="
+        'pages.solutions_page.actions.filter_by_databag.label' | translate
+      "
+      [options]="
+        (databags$ | async) ?? []
+          | toSelectOption : getDatabagId : getDatabagName
+      "
+      [defaultValue]="(databagId$ | async) ?? undefined"
+      (selectionChange)="onDatabagChanged($event)">
+    </app-select>
+    <div class="button-section">
+      <app-databag-create-button
+        [type]="'text'"
+        [disabled]="!(databags$ | async | hasElements)"
+        (addSolution)="addDatabag()">
+        ></app-databag-create-button
+      >
+      <app-solution-create-button
+        [type]="'primary'"
+        [disabled]="!(databags$ | async | hasElements)"
+        (addSolution)="addSolution()">
+        ></app-solution-create-button
+      >
     </div>
+  </div>
+  <ng-container main>
+    <app-solution-data-table
+      [solutions]="
+        solutions$ | async | filterSolutionsByDatabagId : (databagId$ | async)
+      "
+      [databags]="(databags$ | async) ?? []"
+      (solutionSettingButton)="
+        openSolutionSettingDialog($event)
+      "></app-solution-data-table>
+    <app-no-solutions-placeholder
+      *ngIf="
+        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
+      "
+      (addSolutionButton)="addSolution()">
+    </app-no-solutions-placeholder>
+    <app-no-databags-placeholder
+      *ngIf="!(databags$ | async | hasElements)"
+      (addDatabagButton)="addDatabag()">
+    </app-no-databags-placeholder>
   </ng-container>
 </app-os4ml-default-template>
-<ng-template #placeholder>
-  <app-no-databags-placeholder (addDatabagButton)="addDatabag()">
-  </app-no-databags-placeholder>
-</ng-template>

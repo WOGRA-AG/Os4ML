@@ -9,19 +9,23 @@
       <a data-testid="databags-page-link" [routerLink]="['/databags']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>folder_open</mat-icon>
-          <b class="nav-caption">{{ 'databag.plural' | translate }}</b>
+          <b class="nav-caption">{{
+            'root.navigation.databags' | translate
+          }}</b>
         </app-side-nav-item>
       </a>
       <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>lightbulb</mat-icon>
-          <b class="nav-caption">{{ 'solution.plural' | translate }}</b>
+          <b class="nav-caption">{{
+            'root.navigation.solutions' | translate
+          }}</b>
         </app-side-nav-item>
       </a>
     </ng-container>
     <ng-container footer-nav>
       <app-new-button
-        [type]="'secondary'"
+        [type]="buttonTypes.secondary"
         [size]="'small'"
         [icon]="''"
         [ariaLabel]="'openGettingStartedDialog'"
@@ -29,7 +33,7 @@
         Guided Tour
       </app-new-button>
       <app-new-button
-        [type]="'text'"
+        [type]="buttonTypes.text"
         [size]="'small'"
         [icon]="'description'"
         [ariaLabel]="'openDocumentation'"

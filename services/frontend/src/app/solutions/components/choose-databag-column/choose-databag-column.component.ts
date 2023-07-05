@@ -9,15 +9,15 @@ import { Databag } from 'build/openapi/modelmanager';
 import { of, Observable, map } from 'rxjs';
 import { ListItem } from 'src/app/shared/models/list-item';
 import { TranslateModule } from '@ngx-translate/core';
-import { SelectableListComponent } from '../../../design/components/organisms/selectable-list/selectable-list.component';
-import { NgIf } from '@angular/common';
+import { SelectableListComponent } from '../../../shared/components/molecules/selectable-list/selectable-list.component';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-choose-databag-column',
   templateUrl: './choose-databag-column.component.html',
   styleUrls: ['./choose-databag-column.component.scss'],
   standalone: true,
-  imports: [NgIf, SelectableListComponent, TranslateModule],
+  imports: [NgIf, SelectableListComponent, TranslateModule, AsyncPipe],
 })
 export class ChooseDatabagColumnComponent implements OnChanges {
   @Input() public databag: Databag = {};

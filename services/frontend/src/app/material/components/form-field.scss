@@ -3,13 +3,19 @@
 
 @mixin color($theme) {
   // Default state
-  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--invalid
+    )
     .mdc-notched-outline
     .mdc-notched-outline__leading,
-  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--invalid
+    )
     .mdc-notched-outline
     .mdc-notched-outline__notch,
-  .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(
+      .mdc-text-field--invalid
+    )
     .mdc-notched-outline
     .mdc-notched-outline__trailing {
     border-color: var(--md-sys-color-outline);
