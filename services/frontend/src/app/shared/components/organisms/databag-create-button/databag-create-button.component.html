@@ -6,13 +6,13 @@
   [disabled]="!!disabled"
   [ariaLabel]="'organisms.databag_create_button.label' | translate"
   data-testid="add-databag"
-  (click)="addSolution.emit()">
+  (click)="addDatabag.emit()">
   {{ 'organisms.databag_create_button.label' | translate }}
 </app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"
-  (click)="addSolution.emit()"
+  (click)="addDatabag.emit()"
   [matTooltip]="'organisms.databag_create_button.label' | translate"
   attr.aria-label="{{ 'organisms.databag_create_button.label' | translate }}"
   color="primary"

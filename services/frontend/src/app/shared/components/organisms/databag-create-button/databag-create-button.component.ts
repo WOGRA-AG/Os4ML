@@ -26,7 +26,7 @@ import {
 export class DatabagCreateButtonComponent {
   @Input() public type: 'primary' | 'text' | 'FAB' = 'text';
   @Input() public disabled?: boolean;
-  @Output() public addSolution = new EventEmitter<void>();
+  @Output() public addDatabag = new EventEmitter<void>();
 
   get variant(): ButtonTypes {
     if (this.type === 'primary' || this.type === 'FAB') {
