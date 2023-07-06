@@ -4,11 +4,11 @@
   </h1>
 
   <div main class="actions">
-    <app-databag-create-button (addDatabag)="addDatabag()"
-                               [type]="'primary'"
-                               data-testid="add-databag">
-    </app-databag-create-button
-    >
+    <app-databag-create-button
+      (addDatabag)="addDatabag()"
+      [type]="'primary'"
+      data-testid="add-databag">
+    </app-databag-create-button>
   </div>
   <ng-container main *ngIf="databags$ | async as databags">
     <app-databag-data-table
