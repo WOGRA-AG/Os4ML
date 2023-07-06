@@ -4,10 +4,6 @@
   [matRippleColor]="''"
   [disabled]="disabled"
   [ariaLabel]="ariaLabel">
-  <mat-icon
-    *ngIf="icon"
-    [class.disabled]="disabled"
-    >{{ icon }}</mat-icon
-  >
+  <mat-icon *ngIf="icon" [class.disabled]="disabled">{{ icon }}</mat-icon>
   <ng-content></ng-content>
 </button>
