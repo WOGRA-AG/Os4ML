@@ -35,7 +35,7 @@ describe('Root Page', () => {
   });
 
   it('regression with fastlane', () => {
-    cy.get('#get-started-button').click();
+    cy.get('[data-testid=open-getting-started-dialog]').click();
     cy.get('#dataset-name-input').clear();
     cy.get('#dataset-name-input').type(databagName);
     cy.get('#file-input')

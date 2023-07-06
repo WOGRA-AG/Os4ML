@@ -25,14 +25,14 @@
     </ng-container>
     <ng-container footer-nav>
       <app-new-button
-        id="get-started-button"
+        data-testid="open-getting-started-dialog"
         [type]="buttonTypes.secondary"
         [size]="'small'"
         [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
         (click)="openGettingStartedDialog()">
         {{ 'root.footer-navigation.guided_tour' | translate }}
       </app-new-button>
-      <a href="https://wogra-ag.github.io/os4ml-docs/">
+      <a data-testid="documentation-link" href="https://wogra-ag.github.io/os4ml-docs/" target="_blank">
         <app-new-button
           [type]="buttonTypes.text"
           [size]="'small'"
