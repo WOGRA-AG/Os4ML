@@ -4,7 +4,7 @@
   [size]="'medium'"
   [icon]="'add'"
   [disabled]="!!disabled"
-  [ariaLabel]="'organisms.solution_create_button.label'"
+  [ariaLabel]="'organisms.solution_create_button.label' | translate"
   data-testid="add-solution"
   (click)="addSolution.emit()">
   {{ 'organisms.solution_create_button.label' | translate }}

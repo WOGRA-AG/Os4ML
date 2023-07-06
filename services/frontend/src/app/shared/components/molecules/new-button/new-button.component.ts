@@ -18,7 +18,7 @@ export enum ButtonTypes {
 export class NewButtonComponent {
   @Input() public type: ButtonTypes = ButtonTypes.primary;
   @Input() public size: 'small' | 'medium' | 'large' = 'medium';
-  @Input() public ariaLabel = '';
-  @Input() public icon = '';
-  @Input() public disabled = false;
+  @Input() public ariaLabel?: string = '';
+  @Input() public icon?: string = '';
+  @Input() public disabled?: boolean = false;
 }

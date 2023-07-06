@@ -49,7 +49,4 @@ export class AppComponent {
       panelClass: 'getting-started-dialog',
     });
   }
-  openDocumentation(): void {
-    window.open('https://wogra-ag.github.io/os4ml-docs/');
-  }
 }

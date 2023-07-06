@@ -1,12 +1,11 @@
 <button
-  [ngClass]="[size + '-button', type + '-button', 'label-' + size]"
+  [ngClass]="[size, type]"
   matRipple
   [matRippleColor]="''"
   [disabled]="disabled"
   [ariaLabel]="ariaLabel">
   <mat-icon
     *ngIf="icon"
-    [ngClass]="[size + '-mat-icon']"
     [class.disabled]="disabled"
     >{{ icon }}</mat-icon
   >

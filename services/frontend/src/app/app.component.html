@@ -28,19 +28,19 @@
         id="get-started-button"
         [type]="buttonTypes.secondary"
         [size]="'small'"
-        [icon]="''"
-        [ariaLabel]="'openGettingStartedDialog'"
+        [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
         (click)="openGettingStartedDialog()">
-        Guided Tour
+        {{ 'root.footer-navigation.guided_tour' | translate }}
       </app-new-button>
-      <app-new-button
-        [type]="buttonTypes.text"
-        [size]="'small'"
-        [icon]="'description'"
-        [ariaLabel]="'openDocumentation'"
-        (click)="openDocumentation()">
-        Documentation
-      </app-new-button>
+      <a href="https://wogra-ag.github.io/os4ml-docs/">
+        <app-new-button
+          [type]="buttonTypes.text"
+          [size]="'small'"
+          [icon]="'description'"
+          [ariaLabel]="'root.footer-navigation.documentation' | translate">
+          {{ 'root.footer-navigation.documentation' | translate }}
+        </app-new-button>
+      </a>
     </ng-container>
   </app-side-nav>
 </nav>
