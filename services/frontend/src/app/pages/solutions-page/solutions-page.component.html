@@ -17,15 +17,14 @@
     <div class="button-section">
       <app-databag-create-button
         [type]="'text'"
-        [disabled]="!(databags$ | async | hasElements)"
         (addDatabag)="addDatabag()">
-        ></app-databag-create-button
+        </app-databag-create-button
       >
       <app-solution-create-button
         [type]="'primary'"
         [disabled]="!(databags$ | async | hasElements)"
         (addSolution)="addSolution()">
-        ></app-solution-create-button
+        </app-solution-create-button
       >
     </div>
   </div>

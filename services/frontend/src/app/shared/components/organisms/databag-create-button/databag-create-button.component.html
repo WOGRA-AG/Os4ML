@@ -1,11 +1,11 @@
 <app-new-button
+  data-testid="add-databag"
   *ngIf="!isFAB"
   [type]="variant"
   [size]="'medium'"
   [icon]="'add'"
   [disabled]="!!disabled"
   [ariaLabel]="'organisms.databag_create_button.label' | translate"
-  data-testid="add-databag"
   (click)="addDatabag.emit()">
   {{ 'organisms.databag_create_button.label' | translate }}
 </app-new-button>
