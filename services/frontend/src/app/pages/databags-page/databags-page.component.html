@@ -6,7 +6,6 @@
   <div main class="actions">
     <app-databag-create-button
       [type]="'primary'"
-      [disabled]="!(databags$ | async | hasElements)"
       (addDatabag)="addDatabag()">
       ></app-databag-create-button
     >
