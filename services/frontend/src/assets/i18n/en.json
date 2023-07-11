@@ -11,6 +11,7 @@
     }
   },
   "organisms": {
+    "databag_create_button.label": "Create Databag",
     "solution_data_table": {
       "column_header": {
         "solution_name": "Solution Name",

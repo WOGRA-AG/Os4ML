@@ -1,3 +1,20 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic&subset=latin,latin-ext,cyrillic,cyrillic-ext,greek-ext,greek,vietnamese);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext,cyrillic-ext,cyrillic,greek-ext,greek,vietnamese);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,latin-ext,greek-ext,greek,vietnamese,cyrillic,cyrillic-ext);
+
+@font-face {
+  font-family: 'Avenir Roman';
+  src: local('Avenir Roman'),
+    url('/assets/fonts/AvenirLTPro-Roman.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Avenir Black';
+  src: local('Avenir Black'),
+    url('/assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
+}
+
 :root {
   --md-source: #2eaadc;
   /* primary */
@@ -274,26 +291,26 @@
   --md-sys-typescale-body-small-line-height: 16px;
   --md-sys-typescale-body-small-letter-spacing: 0.4px;
   /* label - large */
-  --md-sys-typescale-label-large-font-family-name: Roboto;
-  --md-sys-typescale-label-large-font-family-style: Medium;
-  --md-sys-typescale-label-large-font-weight: 500px;
-  --md-sys-typescale-label-large-font-size: 14px;
-  --md-sys-typescale-label-large-line-height: 20px;
-  --md-sys-typescale-label-large-letter-spacing: 0.1px;
+  --md-sys-typescale-label-large-font-family-name: Avenir Roman;
+  --md-sys-typescale-label-large-font-family-style: normal;
+  --md-sys-typescale-label-large-font-weight: 800;
+  --md-sys-typescale-label-large-font-size: 1.3125rem;
+  --md-sys-typescale-label-large-line-height: 1.5rem;
+  --md-sys-typescale-label-large-letter-spacing: 0.08881rem;
   /* label - medium */
-  --md-sys-typescale-label-medium-font-family-name: Roboto;
-  --md-sys-typescale-label-medium-font-family-style: Medium;
-  --md-sys-typescale-label-medium-font-weight: 500px;
-  --md-sys-typescale-label-medium-font-size: 12px;
-  --md-sys-typescale-label-medium-line-height: 16px;
-  --md-sys-typescale-label-medium-letter-spacing: 0.5px;
+  --md-sys-typescale-label-medium-font-family-name: Avenir Roman;
+  --md-sys-typescale-label-medium-font-family-style: normal;
+  --md-sys-typescale-label-medium-font-weight: 800;
+  --md-sys-typescale-label-medium-font-size: 1.125rem;
+  --md-sys-typescale-label-medium-line-height: 1.5rem;
+  --md-sys-typescale-label-medium-letter-spacing: 0.07813rem;
   /* label - small */
-  --md-sys-typescale-label-small-font-family-name: Roboto;
-  --md-sys-typescale-label-small-font-family-style: Medium;
-  --md-sys-typescale-label-small-font-weight: 500px;
-  --md-sys-typescale-label-small-font-size: 11px;
-  --md-sys-typescale-label-small-line-height: 16px;
-  --md-sys-typescale-label-small-letter-spacing: 0.5px;
+  --md-sys-typescale-label-small-font-family-name: Avenir Roman;
+  --md-sys-typescale-label-small-font-family-style: normal;
+  --md-sys-typescale-label-small-font-weight: 800;
+  --md-sys-typescale-label-small-font-size: 0.875rem;
+  --md-sys-typescale-label-small-line-height: 1rem;
+  --md-sys-typescale-label-small-letter-spacing: 0.07813rem;
   /* title - large */
   --md-sys-typescale-title-large-font-family-name: Roboto;
   --md-sys-typescale-title-large-font-family-style: Regular;

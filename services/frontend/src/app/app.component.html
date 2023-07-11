@@ -24,20 +24,25 @@
       </a>
     </ng-container>
     <ng-container footer-nav>
-      <button
-        id="get-started-button"
-        mat-stroked-button
-        color="primary"
+      <app-new-button
+        data-testid="open-getting-started-dialog"
+        [type]="buttonTypes.secondary"
+        [size]="'small'"
+        [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
         (click)="openGettingStartedDialog()">
-        <b class="nav-caption">Guided Tour</b>
-      </button>
+        {{ 'root.footer-navigation.guided_tour' | translate }}
+      </app-new-button>
       <a
+        data-testid="documentation-link"
         href="https://wogra-ag.github.io/os4ml-docs/"
-        target="_blank"
-        mat-button
-        color="primary">
-        <mat-icon matListItemIcon>description</mat-icon>
-        <b class="nav-caption">Documentation</b>
+        target="_blank">
+        <app-new-button
+          [type]="buttonTypes.text"
+          [size]="'small'"
+          [icon]="'description'"
+          [ariaLabel]="'root.footer-navigation.documentation' | translate">
+          {{ 'root.footer-navigation.documentation' | translate }}
+        </app-new-button>
       </a>
     </ng-container>
   </app-side-nav>

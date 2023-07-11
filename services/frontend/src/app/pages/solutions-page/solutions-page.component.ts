@@ -30,6 +30,8 @@ import { SelectComponent } from '../../shared/components/molecules/select/select
 import { ToSelectOptionPipe } from '../../shared/pipes/to-select-option.pipe';
 import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-solutions-by-databag-id.pipe';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
+import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
+import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -53,6 +55,8 @@ import { SolutionCreateButtonComponent } from '../../shared/components/organisms
     ToSelectOptionPipe,
     FilterSolutionsByDatabagIdPipe,
     SolutionCreateButtonComponent,
+    NewButtonComponent,
+    DatabagCreateButtonComponent,
   ],
 })
 export class SolutionsPageComponent implements OnDestroy {
