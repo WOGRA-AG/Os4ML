@@ -1,5 +1,5 @@
 <form
-  [formGroup]="createSolutionForm"
+  [formGroup]="createPredictionForm"
   (ngSubmit)="onSubmit()"
   attr.aria-label="{{
     'organisms.solution.create_form.aria_label' | translate
@@ -10,44 +10,16 @@
     </mat-label>
     <input
       matInput
-      formControlName="name"
+      formControlName="predictionName"
       data-testid="input-name"
       attr.aria-label="{{
         'organisms.solution_create_form.form_fields.name.aria_label' | translate
       }}" />
-    <mat-error *ngIf="name?.invalid && name?.touched">
+    <mat-error *ngIf="predictionName?.invalid && predictionName?.touched">
       {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
     </mat-error>
     <mat-hint class="on-surface-text">
       {{ 'organisms.solution_create_form.form_fields.name.hint' | translate }}
-    </mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>
-      {{
-        'organisms.solution_create_form.form_fields.databag_id.label'
-          | translate
-      }}
-    </mat-label>
-    <mat-select
-      [(value)]="selectedDatabagId"
-      data-testid="input-databagId"
-      formControlName="databagId"
-      attr.aria-label="{{
-        'organisms.solution_create_form.form_fields.databag_id.aria_label'
-          | translate
-      }}">
-      <mat-option *ngFor="let databag of databags" [value]="databag.id">
-        {{ databag.name }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="databagId?.invalid && databagId?.touched">
-      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
-    </mat-error>
-    <mat-hint class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.databag_id.hint' | translate
-      }}
     </mat-hint>
   </mat-form-field>
   <mat-form-field>
@@ -79,19 +51,23 @@
     </mat-hint>
   </mat-form-field>
   <app-element-divider></app-element-divider>
-  <app-upload-field class="upload-field"></app-upload-field>
-
-  <ng-template #helpMessage>
-    <div class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.help_message'
-          | translate
-      }}
-    </div>
-  </ng-template>
+  <button type="button" (click)="toggleFileMode()">toggle mode</button>
+  <div *ngIf="localFileMode">
+    <mat-label>Datei auswählen</mat-label>
+    <app-file-dropzone
+      [selectedFileName]="predictionDataFile?.value.name"
+      (fileDropped)="predictionDataFileSelected($event)"></app-file-dropzone>
+  </div>
+  <mat-form-field *ngIf="!localFileMode">
+    <mat-label>URL</mat-label>
+    <input
+      matInput
+      formControlName="predictionDataUrl"
+      placeholder="Geben Sie eine URL ein" />
+  </mat-form-field>
   <div class="button-row">
     <app-button
-      [disabled]="createSolutionForm.invalid"
+      [disabled]="createPredictionForm.invalid"
       type="submit"
       data-testid="create-databag"
       variant="raised"

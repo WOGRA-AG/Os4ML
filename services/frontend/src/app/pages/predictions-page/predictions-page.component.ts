@@ -9,7 +9,7 @@ import {
   map,
   first,
   combineLatest,
-  tap,
+  switchMap,
 } from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
@@ -20,7 +20,6 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { DatabagService } from '../../databags/services/databag.service';
 import { PredictionsDataTableComponent } from '../../shared/components/organisms/predictions-data-table/predictions-data-table.component';
-import { FilterPredictionsBySoluitonIdAndDatabagIdPipe } from '../../shared/pipes/filter-predictions-by-soluiton-id-and-databag-id.pipe';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
@@ -45,7 +44,6 @@ import { DatabagCreateButtonComponent } from '../../shared/components/organisms/
     Os4mlDefaultTemplateComponent,
     HasElementsPipe,
     PredictionsDataTableComponent,
-    FilterPredictionsBySoluitonIdAndDatabagIdPipe,
     SolutionCreateButtonComponent,
     NoSolutionsPlaceholderComponent,
     NoDatabagsPlaceholderComponent,
@@ -72,7 +70,11 @@ export class PredictionsPageComponent implements OnDestroy {
   ) {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.solutions$ = this.solutionService.getSolutionsByCreationTime();
-    this.predictions$ = this.predictionService.getPredictionsByCreationTime();
+    this.predictions$ = combineLatest([this.databagId$, this.solutionId$]).pipe(
+      switchMap(([databagId, solutionId]) =>
+        this.predictionService.getFilteredPredictions(databagId, solutionId)
+      )
+    );
   }
 
   public get databagId$(): Observable<string | null> {
@@ -116,17 +118,13 @@ export class PredictionsPageComponent implements OnDestroy {
   }
 
   addPrediction(): void {
-    combineLatest([this.databagId$, this.solutionId$])
-      .pipe(
-        takeUntil(this.destroy$),
-        first(),
-        tap(([databagId, solutionId]) => {
-          this.dialog.open(PredictionsCreateDialogComponent, {
-            data: { databagId, solutionId },
-          });
-        })
-      )
-      .subscribe();
+    this.solutionId$
+      .pipe(takeUntil(this.destroy$), first())
+      .subscribe(solutionId => {
+        this.dialog.open(PredictionsCreateDialogComponent, {
+          data: { solutionId },
+        });
+      });
   }
 
   ngOnDestroy(): void {

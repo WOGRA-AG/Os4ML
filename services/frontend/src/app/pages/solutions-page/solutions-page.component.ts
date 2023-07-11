@@ -23,7 +23,6 @@ import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates
 import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
-import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-solutions-by-databag-id.pipe';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
@@ -43,7 +42,6 @@ import { DatabagCreateButtonComponent } from '../../shared/components/organisms/
     SolutionDataTableComponent,
     HasElementsPipe,
     NgForOf,
-    FilterSolutionsByDatabagIdPipe,
     SolutionCreateButtonComponent,
     DatabagFilterComponent,
     DatabagCreateButtonComponent,
@@ -72,7 +70,11 @@ export class SolutionsPageComponent implements OnDestroy {
     );
 
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
-    this.solutions$ = this.solutionService.getSolutionsByCreationTime();
+    this.solutions$ = this.databagId$.pipe(
+      switchMap(databagId =>
+        this.solutionService.getFilteredSolutions(databagId)
+      )
+    );
   }
 
   public get databagId$(): Observable<string | null> {

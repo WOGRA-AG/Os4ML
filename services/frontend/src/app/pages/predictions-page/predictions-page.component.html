@@ -35,13 +35,8 @@
     <app-predictions-data-table
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
-      [predictions]="
-        predictions$
-          | async
-          | filterPredictionsBySoluitonIdAndDatabagId
-            : (databagId$ | async)
-            : (solutionId$ | async)
-      "></app-predictions-data-table>
+      [predictions]="(predictions$ | async) ?? []">
+    </app-predictions-data-table>
     <app-no-solutions-placeholder
       *ngIf="
         (databags$ | async | hasElements) && !(solutions$ | async | hasElements)

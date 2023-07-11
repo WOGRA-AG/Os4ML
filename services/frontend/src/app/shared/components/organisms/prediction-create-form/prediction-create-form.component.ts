@@ -1,15 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  Column,
-  Databag,
-  Solution,
-} from '../../../../../../build/openapi/modelmanager';
+import { Solution } from '../../../../../../build/openapi/modelmanager';
 import {
   AbstractControl,
-  FormArray,
+  AbstractControlOptions,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +20,16 @@ import { ButtonComponent } from '../../../../design/components/atoms/button/butt
 import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
 import { DatasetUploadComponent } from '../dataset-upload/dataset-upload.component';
 import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.component';
+import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
+import { MatListModule } from '@angular/material/list';
+import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
+
+export interface PredictionFormOutput {
+  predictionName: string;
+  solutionId: string;
+  predictionDataFile?: File;
+  predictionDataUrl?: string;
+}
 
 @Component({
   selector: 'app-prediction-create-form',
@@ -44,71 +51,78 @@ import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.
     NgForOf,
     DatasetUploadComponent,
     UploadFieldComponent,
+    FileDropzoneComponent,
+    MatListModule,
+    GetSolutionByIdPipe,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
-  @Input() public selectedDatabagId: string | undefined;
   @Input() public selectedSolutionId: string | undefined;
-  @Input() public databags: Databag[] = [];
   @Input() public solutions: Solution[] = [];
-  @Output() public submitSolution = new EventEmitter<Solution>();
+  @Output() public submitPrediction = new EventEmitter<PredictionFormOutput>();
 
-  public createSolutionForm: FormGroup;
+  public localFileMode = true;
+  public createPredictionForm: FormGroup;
   constructor(private fb: FormBuilder) {
-    this.createSolutionForm = this.fb.group({
-      name: ['', Validators.required],
-      databagId: ['', Validators.required],
-      solutionId: ['', Validators.required],
-      selectedFields: this.fb.array([], Validators.required),
-    });
+    this.createPredictionForm = this.fb.group(
+      {
+        predictionName: ['', Validators.required],
+        solutionId: ['', Validators.required],
+        predictionDataFile: [''],
+        predictionDataUrl: [''],
+      },
+      { validator: this.eitherUrlOrFile } as AbstractControlOptions
+    );
   }
-  get name(): AbstractControl | null {
-    return this.createSolutionForm.get('name');
+  get predictionName(): AbstractControl | null {
+    return this.createPredictionForm.get('predictionName');
   }
-  get databagId(): AbstractControl | null {
-    return this.createSolutionForm.get('databagId');
-  }
-
   get solutionId(): AbstractControl | null {
-    return this.createSolutionForm.get('databagId');
+    return this.createPredictionForm.get('solutionId');
   }
-  get selectedFields(): AbstractControl | null {
-    return this.createSolutionForm.get('selectedFields');
+  get predictionDataFile(): AbstractControl | null {
+    return this.createPredictionForm.get('predictionDataFile');
+  }
+  get predictionDataUrl(): AbstractControl | null {
+    return this.createPredictionForm.get('predictionDataUrl');
   }
 
   ngOnInit(): void {
-    this.createSolutionForm.get('databagId')?.setValue(this.selectedDatabagId);
+    this.createPredictionForm
+      .get('solutionId')
+      ?.setValue(this.selectedSolutionId);
   }
-  selectedFieldsChange(columns: string[]): void {
-    this.selectedFields?.markAsTouched();
-    const selectedFields = this.selectedFields as FormArray;
-    while (selectedFields.length !== 0) {
-      selectedFields.removeAt(0);
-    }
-    columns.forEach(column => {
-      selectedFields.push(this.fb.control(column, Validators.required));
-    });
+
+  public predictionDataFileSelected(predictionDataFile: File): void {
+    this.createPredictionForm
+      .get('predictionDataFile')
+      ?.setValue(predictionDataFile);
+  }
+  public toggleFileMode(): void {
+    this.localFileMode = !this.localFileMode;
+    this.predictionDataFile?.setValue('');
+    this.predictionDataUrl?.setValue('');
   }
   public onSubmit(): void {
-    if (this.createSolutionForm.valid) {
-      const sumbitSolution: Solution = {
-        name: this.name?.value,
-        databagId: this.databagId?.value,
-        outputFields: this.selectedFields?.value,
-        inputFields: this.getUnselectedColumns(this.selectedFields?.value),
-      };
-      this.submitSolution.emit(sumbitSolution);
+    if (this.createPredictionForm.valid) {
+      this.submitPrediction.emit({
+        predictionName: this.predictionName?.value,
+        solutionId: this.solutionId?.value,
+        predictionDataFile: this.predictionDataFile?.value,
+        predictionDataUrl: this.predictionDataUrl?.value,
+      });
     }
   }
-  private getUnselectedColumns(selectedFields: string[]): string[] {
-    const selectedDatabag = this.databags.find(
-      databag => databag.id === this.databagId?.value
-    );
-    const allFields: Column[] = selectedDatabag?.columns ?? [];
-    const allFieldsNames: string[] = allFields.map(column => column.name!);
-    const inputFields: string[] = allFieldsNames.filter(
-      name => !selectedFields.includes(name)
-    );
-    return inputFields;
+
+  private eitherUrlOrFile(control: AbstractControl): ValidationErrors | null {
+    const file = control.get('predictionDataFile')?.value;
+    const url = control.get('predictionDataUrl')?.value;
+    if (file && url) {
+      return { onlyUrlOrFile: true };
+    }
+    if ((file && !url) || (!file && url)) {
+      return null;
+    }
+    return { eitherUrlOrFile: true };
   }
 }

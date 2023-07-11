@@ -81,13 +81,13 @@ export class SolutionCreateFormComponent implements OnInit {
   }
   public onSubmit(): void {
     if (this.createSolutionForm.valid) {
-      const sumbitSolution: Solution = {
+      const submitSolution: Solution = {
         name: this.name?.value,
         databagId: this.databagId?.value,
         outputFields: this.selectedFields?.value,
         inputFields: this.getUnselectedColumns(this.selectedFields?.value),
       };
-      this.submitSolution.emit(sumbitSolution);
+      this.submitSolution.emit(submitSolution);
     }
   }
   private getUnselectedColumns(selectedFields: string[]): string[] {

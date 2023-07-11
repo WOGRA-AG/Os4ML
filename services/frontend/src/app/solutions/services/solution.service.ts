@@ -53,6 +53,16 @@ export class SolutionService {
     );
   }
 
+  getFilteredSolutions(databagId: string | null): Observable<Solution[]> {
+    return this.getSolutionsByCreationTime().pipe(
+      map(solutions =>
+        solutions.filter(solution =>
+          databagId ? solution.databagId === databagId : true
+        )
+      )
+    );
+  }
+
   createSolutionNew(solution: Solution): Observable<Solution> {
     const solutionDTO: Solution = {
       status: SolutionStatus.created,
@@ -97,12 +107,6 @@ export class SolutionService {
             )
           )
       )
-    );
-  }
-
-  getSolutionById(id: string): Observable<Solution> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getSolutionById(id, token))
     );
   }
 

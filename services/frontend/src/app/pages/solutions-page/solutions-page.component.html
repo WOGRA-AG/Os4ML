@@ -22,9 +22,7 @@
   </div>
   <ng-container main>
     <app-solution-data-table
-      [solutions]="
-        solutions$ | async | filterSolutionsByDatabagId : (databagId$ | async)
-      "
+      [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
       (solutionSettingButton)="
         openSolutionSettingDialog($event)

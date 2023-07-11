@@ -12,10 +12,10 @@
   </ng-container>
 
   <app-prediction-create-form
-    *ngIf="databags$ | async"
-    [databags]="(databags$ | async) ?? []"
+    *ngIf="solutions$ | async"
     [solutions]="(solutions$ | async) ?? []"
-    [selectedDatabagId]="data.databagId"
+    [selectedSolutionId]="data.solutionId"
+    (submitPrediction)="submitPrediction($event)"
     main>
   </app-prediction-create-form>
   <ng-container footer>

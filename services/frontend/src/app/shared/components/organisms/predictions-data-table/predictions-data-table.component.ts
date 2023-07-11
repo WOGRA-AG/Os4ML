@@ -13,6 +13,8 @@ import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-s
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
+import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
+import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
 
 @Component({
   selector: 'app-predictions-data-table',
@@ -29,6 +31,8 @@ import { IconButtonComponent } from '../../../../design/components/atoms/icon-bu
     ShortStatusPipe,
     ButtonComponent,
     IconButtonComponent,
+    LocalizedDatePipe,
+    RuntimeIndicatorComponent,
   ],
 })
 export class PredictionsDataTableComponent {

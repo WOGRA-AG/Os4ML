@@ -1,0 +1,17 @@
+<input
+  id="file-input"
+  type="file"
+  class="file-input"
+  (change)="uploadFile($event)"
+  #fileUpload />
+<div
+  class="file-dropzone"
+  [class.active]="isDragging"
+  (click)="fileUpload.click()"
+  (keydown.enter)="fileUpload.click()"
+  (keydown.space)="fileUpload.click()"
+  aria-label="fileDropzone"
+  tabindex="0">
+  <p *ngIf="!selectedFileName">Click to browse or drag and drop your file</p>
+  <p>{{ selectedFileName }}</p>
+</div>

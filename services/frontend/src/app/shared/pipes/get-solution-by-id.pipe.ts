@@ -7,6 +7,12 @@ import { Solution } from '../../../../build/openapi/modelmanager';
 })
 export class GetSolutionByIdPipe implements PipeTransform {
   transform(solutions: Solution[] | null, id: string): Solution | undefined {
+    return this.getSolutionById(solutions, id);
+  }
+  getSolutionById(
+    solutions: Solution[] | null,
+    id: string
+  ): Solution | undefined {
     if (!solutions) {
       return undefined;
     }
