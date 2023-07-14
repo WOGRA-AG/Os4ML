@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpEventType} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ModelmanagerService, Prediction } from 'build/openapi/modelmanager';
 import {
@@ -22,7 +22,10 @@ import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
   providedIn: 'root',
 })
 export class PredictionService {
+  public progress = 0;
+
   private readonly _predictions$: Observable<Prediction[]>;
+
 
   constructor(
     private userService: UserService,
@@ -150,6 +153,12 @@ export class PredictionService {
         this.modelManager.createPredictionDataPutUrl(prediction.id!, token)
       ),
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
+      tap((upload => {
+        console.log(upload);
+        if (upload.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(((upload.loaded / upload.total) * 100));
+        }
+      })),
       switchMap(() =>
         this.modelManager.startPredictionPipeline(prediction.id!, token)
       )

@@ -44,7 +44,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   constructor(
     private router: Router,
     private solutionService: SolutionService,
-    private predictionService: PredictionService,
+    public predictionService: PredictionService,
     private getSolutionByIdPipe: GetSolutionByIdPipe,
     public dialogRef: MatDialogRef<PredictionsCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
