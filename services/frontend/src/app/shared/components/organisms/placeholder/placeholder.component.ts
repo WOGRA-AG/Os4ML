@@ -22,13 +22,32 @@ import { DatabagCreateButtonComponent } from '../databag-create-button/databag-c
   ],
 })
 export class PlaceholderComponent {
-  @Input() public type: any;
+  @Input() public type:
+    | 'fallback'
+    | 'noDataOnDatabags'
+    | 'noDataOnSolutions'
+    | 'noSolutionOnSolutions'
+    | 'selectedDataHasNoSolutionsOnSolutions'
+    | 'noDataNoSolutionOnPredictions'
+    | 'selectedDataHasNoSolutionOnPrediction'
+    | 'noPredictionsOnPredictions'
+    | 'selectedSolutionHasNoPrediction' = 'fallback';
 
   @Output() public addDatabag = new EventEmitter<void>();
+  @Output() public addSolution = new EventEmitter<void>();
+  @Output() public addPrediction = new EventEmitter<void>();
 
   public buttonTypes = ButtonTypes;
 
-  public onAddDatabag(): void {
+  public onAddDatabag():void {
     this.addDatabag.emit();
+  }
+
+  public onAddSolution():void{
+    this.addSolution.emit();
+  }
+
+  public onAddPrediction():void{
+    this.addPrediction.emit();
   }
 }

@@ -65,7 +65,6 @@ export class DatabagsPageComponent {
     });
   }
   addDatabag(): void {
-    console.log('LOG');
     this.dialog.open(CreateDatabagStepperComponent);
   }
 }

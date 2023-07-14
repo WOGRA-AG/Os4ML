@@ -11,8 +11,9 @@
       'organisms.placeholder.no_databag_on_databags.description' | translate
     }}</span>
     <app-databag-create-button
-      (addDatabag)="addDatabag.emit()"
-      [type]="'primary'">
+        *ngIf="type === 'noDataOnDatabags'"
+        (addDatabag)="addDatabag.emit()"
+        [type]="'primary'">
     </app-databag-create-button>
 
     <!-- <app-new-button 

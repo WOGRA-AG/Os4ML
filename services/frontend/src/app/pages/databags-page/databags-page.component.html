@@ -16,8 +16,10 @@
       (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
-    <app-placeholder [type]="'noDataOnDatabags'">
-      (addDatabag)="addDatabag()"
+    <app-placeholder 
+      *ngIf="!(databags | hasElements)"
+      [type]="'noDataOnDatabags'"
+      (addDatabag)="addDatabag()">
     </app-placeholder>
 
     <!-- <app-no-databags-placeholder
