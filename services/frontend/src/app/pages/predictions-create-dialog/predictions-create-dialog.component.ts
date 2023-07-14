@@ -62,7 +62,10 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
-  public downloadPredictionTemplate(downloadLink: HTMLAnchorElement, solutionId: string): void {
+  public downloadPredictionTemplate(
+    downloadLink: HTMLAnchorElement,
+    solutionId: string
+  ): void {
     this.predictionService
       .getPredictionTemplateGetUrl(solutionId)
       .pipe(takeUntil(this.destroy$))

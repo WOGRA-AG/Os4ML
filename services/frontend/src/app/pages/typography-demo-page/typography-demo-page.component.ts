@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./typography-demo-page.component.scss'],
   standalone: true,
 })
-export class TypographyDemoPageComponent {
-
-}
+export class TypographyDemoPageComponent {}

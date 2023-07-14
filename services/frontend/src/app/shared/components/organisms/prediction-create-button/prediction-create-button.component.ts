@@ -4,7 +4,10 @@ import { NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import {ButtonTypes, NewButtonComponent} from '../../molecules/new-button/new-button.component';
+import {
+  ButtonTypes,
+  NewButtonComponent,
+} from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-prediction-create-button',

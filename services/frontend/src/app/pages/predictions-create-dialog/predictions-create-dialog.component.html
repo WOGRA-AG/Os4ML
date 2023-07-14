@@ -15,11 +15,19 @@
     *ngIf="(solutions$ | async) && !submitting"
     [solutions]="(solutions$ | async) ?? []"
     [selectedSolutionId]="data.solutionId"
-    (downloadPredictionTemplate)="downloadPredictionTemplate(downloadPredictionTemplateAnker, $event)"
+    (downloadPredictionTemplate)="
+      downloadPredictionTemplate(downloadPredictionTemplateAnker, $event)
+    "
     (submitPrediction)="submitPrediction($event)"
     main>
   </app-prediction-create-form>
-  <a main download target="_blank" hidden aria-hidden="true" #downloadPredictionTemplateAnker>
+  <a
+    main
+    download
+    target="_blank"
+    hidden
+    aria-hidden="true"
+    #downloadPredictionTemplateAnker>
     {{ 'dialog.create_prediction.download_template' | translate }}
   </a>
   <ng-container footer>

@@ -23,7 +23,10 @@ import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.
 import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
 import { MatListModule } from '@angular/material/list';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
-import {ButtonTypes, NewButtonComponent} from '../../molecules/new-button/new-button.component';
+import {
+  ButtonTypes,
+  NewButtonComponent,
+} from '../../molecules/new-button/new-button.component';
 
 export interface PredictionFormOutput {
   predictionName: string;

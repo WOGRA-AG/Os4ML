@@ -38,9 +38,9 @@ export const ROUTES: Routes = [
   {
     path: 'typo',
     loadComponent: () =>
-      import('./pages/typography-demo-page/typography-demo-page.component').then(
-        mod => mod.TypographyDemoPageComponent
-      ),
+      import(
+        './pages/typography-demo-page/typography-demo-page.component'
+      ).then(mod => mod.TypographyDemoPageComponent),
   },
   {
     path: '**',

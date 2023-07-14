@@ -7,17 +7,22 @@
   <div class="data-section">
     <mat-form-field>
       <mat-label>
-        {{ 'organisms.solution_create_form.form_fields.name.label' | translate }}
+        {{
+          'organisms.solution_create_form.form_fields.name.label' | translate
+        }}
       </mat-label>
       <input
         matInput
         formControlName="predictionName"
         data-testid="input-name"
         attr.aria-label="{{
-        'organisms.solution_create_form.form_fields.name.aria_label' | translate
-      }}" />
+          'organisms.solution_create_form.form_fields.name.aria_label'
+            | translate
+        }}" />
       <mat-error *ngIf="predictionName?.invalid && predictionName?.touched">
-        {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+        {{
+          'organisms.solution_create_form.form_fields.name.error' | translate
+        }}
       </mat-error>
       <mat-hint class="on-surface-text">
         {{ 'organisms.solution_create_form.form_fields.name.hint' | translate }}
@@ -26,8 +31,8 @@
     <mat-form-field>
       <mat-label>
         {{
-        'organisms.solution_create_form.form_fields.databag_id.label'
-          | translate
+          'organisms.solution_create_form.form_fields.databag_id.label'
+            | translate
         }}
       </mat-label>
       <mat-select
@@ -35,26 +40,31 @@
         data-testid="input-databagId"
         formControlName="solutionId"
         attr.aria-label="{{
-        'organisms.solution_create_form.form_fields.databag_id.aria_label'
-          | translate
-      }}">
+          'organisms.solution_create_form.form_fields.databag_id.aria_label'
+            | translate
+        }}">
         <mat-option *ngFor="let solution of solutions" [value]="solution.id">
           {{ solution.name }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="solutionId?.invalid && solutionId?.touched">
-        {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+        {{
+          'organisms.solution_create_form.form_fields.name.error' | translate
+        }}
       </mat-error>
       <mat-hint class="on-surface-text">
         {{
-        'organisms.solution_create_form.form_fields.databag_id.hint' | translate
+          'organisms.solution_create_form.form_fields.databag_id.hint'
+            | translate
         }}
       </mat-hint>
     </mat-form-field>
   </div>
   <app-element-divider></app-element-divider>
   <div class="upload-section">
-    <div class="label-medium primary-text text-align-center">Upload your data</div>
+    <div class="label-medium primary-text text-align-center">
+      Upload your data
+    </div>
     <ng-container *ngIf="localFileMode">
       <app-file-dropzone
         [selectedFileName]="predictionDataFile?.value.name"
