@@ -2,11 +2,11 @@
   <h1 header class="headline-1 primary-text">
     {{ 'databag.plural' | translate }}
   </h1>
-  <div nav class="actions">
+  <div main class="actions">
     <app-databag-create-button
+      (addDatabag)="addDatabag()"
       [type]="'primary'"
-      [disabled]="!(databags$ | async | hasElements)"
-      (addSolution)="addDatabag()">
+      data-testid="add-databag">
     </app-databag-create-button>
   </div>
   <ng-container main *ngIf="databags$ | async as databags">

@@ -1,0 +1,10 @@
+<button
+  [ngClass]="[size, variant, 'label-' + size]"
+  matRipple
+  [matRippleColor]="''"
+  [disabled]="disabled"
+  [ariaLabel]="ariaLabel"
+  [type]="type">
+  <mat-icon *ngIf="icon" [class.disabled]="disabled">{{ icon }}</mat-icon>
+  <ng-content></ng-content>
+</button>

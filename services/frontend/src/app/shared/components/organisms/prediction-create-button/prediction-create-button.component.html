@@ -1,14 +1,14 @@
-<app-button
+<app-new-button
+  data-testid="add-databag"
   *ngIf="!isFAB"
-  [disabled]="!!disabled"
-  attr.aria-label="{{ 'organisms.prediction_create_button.label' | translate }}"
-  data-testid="add-prediction"
   [variant]="variant"
-  class="fab-button mat-raised-button"
-  color="primary"
+  [size]="'medium'"
+  [icon]="'add'"
+  [disabled]="!!disabled"
+  [ariaLabel]="'organisms.prediction_create_button.label' | translate"
   (click)="addSolution.emit()">
   {{ 'organisms.prediction_create_button.label' | translate }}
-</app-button>
+</app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"

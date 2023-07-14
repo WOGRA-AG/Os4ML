@@ -32,6 +32,7 @@ beforeEach(() => {
 describe('Databags Page', () => {
   it('verify documentation link', () => {
     const documentationUrl = 'https://wogra-ag.github.io/os4ml-docs/';
+    cy.wait(200);
     cy.get('[data-testid="add-databag"]', {
       timeout: startTimeout + standardTimeout,
     })

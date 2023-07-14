@@ -36,6 +36,13 @@ export const ROUTES: Routes = [
     runGuardsAndResolvers: 'always',
   },
   {
+    path: 'typo',
+    loadComponent: () =>
+      import('./pages/typography-demo-page/typography-demo-page.component').then(
+        mod => mod.TypographyDemoPageComponent
+      ),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./pages/not-found-page/not-found-page.component').then(

@@ -23,6 +23,7 @@ import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.
 import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
 import { MatListModule } from '@angular/material/list';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
+import {ButtonTypes, NewButtonComponent} from '../../molecules/new-button/new-button.component';
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -54,15 +55,18 @@ export interface PredictionFormOutput {
     FileDropzoneComponent,
     MatListModule,
     GetSolutionByIdPipe,
+    NewButtonComponent,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
   @Input() public selectedSolutionId: string | undefined;
   @Input() public solutions: Solution[] = [];
   @Output() public submitPrediction = new EventEmitter<PredictionFormOutput>();
+  @Output() public downloadPredictionTemplate = new EventEmitter<string>();
 
   public localFileMode = true;
   public createPredictionForm: FormGroup;
+  public buttonTypes = ButtonTypes;
   constructor(private fb: FormBuilder) {
     this.createPredictionForm = this.fb.group(
       {
@@ -102,6 +106,9 @@ export class PredictionCreateFormComponent implements OnInit {
     this.localFileMode = !this.localFileMode;
     this.predictionDataFile?.setValue('');
     this.predictionDataUrl?.setValue('');
+  }
+  public onDownloadPredictionTemplate(): void {
+    this.downloadPredictionTemplate.emit(this.solutionId?.value);
   }
   public onSubmit(): void {
     if (this.createPredictionForm.valid) {

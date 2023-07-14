@@ -1,12 +1,24 @@
+@import './src/app/shared/components/atoms/theme/media-queries';
+
 .display-large {
   font-family: var(--md-sys-typescale-display-large-font-family-name);
   font-style: var(--md-sys-typescale-display-large-font-family-style);
   font-weight: var(--md-sys-typescale-display-large-font-weight);
   font-size: var(--md-sys-typescale-display-large-font-size);
-  letter-spacing: var(--md-sys-typescale-display-large-tracking);
-  line-height: var(--md-sys-typescale-display-large-height);
+  letter-spacing: var(--md-sys-typescale-display-large-letter-spacing);
+  line-height: var(--md-sys-typescale-display-large-line-height);
   text-transform: var(--md-sys-typescale-display-large-text-transform);
   text-decoration: var(--md-sys-typescale-display-large-text-decoration);
+
+  //@media #{$medium-and-up} {
+  //  font-size: 33px;
+  //}
+  //
+  //@media #{$large-and-up} {
+  //  font-size: 55px;
+  //}
+
+
 }
 .display-medium {
   font-family: var(--md-sys-typescale-display-medium-font-family-name);

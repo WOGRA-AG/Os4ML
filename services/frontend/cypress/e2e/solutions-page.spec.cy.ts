@@ -108,7 +108,7 @@ describe('Solutions Page', () => {
 
   it('delete Solution', () => {
     deleteSolution(updatedSolutionName);
-    cy.get('[data-testid="solution-item"]').should(
+    cy.get('[data-testid="solution-table"]').should(
       'not.contain',
       updatedSolutionName
     );

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="solutions">
+<table mat-table [dataSource]="solutions" data-testid="solution-table">
   <ng-container matColumnDef="solutionName">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{
@@ -113,7 +113,7 @@
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
-    data-testid="solution-item"
     mat-row
-    *matRowDef="let row; columns: displayedColumns"></tr>
+    *matRowDef="let row; columns: displayedColumns"
+    data-testid="solution-item"></tr>
 </table>

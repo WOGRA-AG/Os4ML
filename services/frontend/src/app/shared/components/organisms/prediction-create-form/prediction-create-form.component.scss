@@ -1,11 +1,29 @@
 form {
   display: flex;
   flex-direction: column;
-  padding-top: 1rem;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: 1rem;
+
+  .data-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .docs-text {
+    padding: 1rem;
+  }
+
 
   .button-row {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    gap: 1rem;
   }
 }

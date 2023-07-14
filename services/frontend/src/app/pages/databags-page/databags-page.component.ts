@@ -11,6 +11,7 @@ import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { DatabagSettingComponent } from '../../databags/components/databag-setting/databag-setting.component';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
+import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
@@ -29,6 +30,7 @@ import { DatabagCreateButtonComponent } from '../../shared/components/organisms/
     NgForOf,
     LocalizedDatePipe,
     Os4mlDefaultTemplateComponent,
+    NewButtonComponent,
     DatabagDataTableComponent,
     DatabagCreateButtonComponent,
   ],

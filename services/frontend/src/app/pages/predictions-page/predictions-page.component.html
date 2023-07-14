@@ -15,12 +15,9 @@
     </div>
     <div class="select-section">
       <app-databag-create-button
-        [type]="'base'"
-        [disabled]="!(databags$ | async | hasElements)"
         (addSolution)="addDatabag()">
       </app-databag-create-button>
       <app-solution-create-button
-        [type]="'base'"
         [disabled]="!(solutions$ | async | hasElements)"
         (addSolution)="addSolution()">
       </app-solution-create-button>

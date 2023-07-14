@@ -1,14 +1,14 @@
-<app-button
+<app-new-button
   *ngIf="!isFAB"
-  [disabled]="!!disabled"
-  attr.aria-label="{{ 'organisms.solution_create_button.label' | translate }}"
-  data-testid="add-solution"
   [variant]="variant"
-  class="fab-button mat-raised-button"
-  color="primary"
+  [size]="'medium'"
+  [icon]="'add'"
+  [disabled]="!!disabled"
+  [ariaLabel]="'organisms.solution_create_button.label' | translate"
+  data-testid="add-solution"
   (click)="addSolution.emit()">
   {{ 'organisms.solution_create_button.label' | translate }}
-</app-button>
+</app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"

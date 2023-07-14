@@ -1,18 +1,18 @@
-<app-button
-  *ngIf="!isFAB"
-  [disabled]="!!disabled"
-  attr.aria-label="{{ 'organisms.databag_create_button.label' | translate }}"
+<app-new-button
   data-testid="add-databag"
+  *ngIf="!isFAB"
   [variant]="variant"
-  class="fab-button mat-raised-button"
-  color="primary"
-  (click)="addSolution.emit()">
+  [size]="'medium'"
+  [icon]="'add'"
+  [disabled]="!!disabled"
+  [ariaLabel]="'organisms.databag_create_button.label' | translate"
+  (click)="addDatabag.emit()">
   {{ 'organisms.databag_create_button.label' | translate }}
-</app-button>
+</app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"
-  (click)="addSolution.emit()"
+  (click)="addDatabag.emit()"
   [matTooltip]="'organisms.databag_create_button.label' | translate"
   attr.aria-label="{{ 'organisms.databag_create_button.label' | translate }}"
   color="primary"

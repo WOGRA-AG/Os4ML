@@ -8,10 +8,7 @@
       [defaultValue]="(databagId$ | async) ?? undefined"
       (databagChange)="onDatabagChanged($event)"></app-databag-filter>
     <div class="button-section">
-      <app-databag-create-button
-        [type]="'base'"
-        [disabled]="!(databags$ | async | hasElements)"
-        (addSolution)="addDatabag()">
+      <app-databag-create-button [type]="'text'" (addDatabag)="addDatabag()">
       </app-databag-create-button>
       <app-solution-create-button
         [type]="'primary'"

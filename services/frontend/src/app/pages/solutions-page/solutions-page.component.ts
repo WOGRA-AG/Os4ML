@@ -25,6 +25,7 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
+import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 
 @Component({
@@ -44,6 +45,7 @@ import { DatabagCreateButtonComponent } from '../../shared/components/organisms/
     NgForOf,
     SolutionCreateButtonComponent,
     DatabagFilterComponent,
+    NewButtonComponent,
     DatabagCreateButtonComponent,
   ],
 })

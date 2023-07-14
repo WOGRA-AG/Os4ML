@@ -143,6 +143,8 @@ export class PredictionService {
   ): Observable<Prediction> {
     prediction.status = 'message.pipeline.running.uploading_file';
     prediction.dataFileName = file.name;
+
+
     return this.modelManager.createPrediction(token, prediction).pipe(
       tap(createdPrediction => (prediction = createdPrediction)),
       switchMap(() =>
@@ -151,7 +153,7 @@ export class PredictionService {
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       switchMap(() =>
         this.modelManager.startPredictionPipeline(prediction.id!, token)
-      )
+      ),
     );
   }
 

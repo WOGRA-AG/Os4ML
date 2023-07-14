@@ -4,76 +4,119 @@
   attr.aria-label="{{
     'organisms.solution.create_form.aria_label' | translate
   }}">
-  <mat-form-field>
-    <mat-label>
-      {{ 'organisms.solution_create_form.form_fields.name.label' | translate }}
-    </mat-label>
-    <input
-      matInput
-      formControlName="predictionName"
-      data-testid="input-name"
-      attr.aria-label="{{
+  <div class="data-section">
+    <mat-form-field>
+      <mat-label>
+        {{ 'organisms.solution_create_form.form_fields.name.label' | translate }}
+      </mat-label>
+      <input
+        matInput
+        formControlName="predictionName"
+        data-testid="input-name"
+        attr.aria-label="{{
         'organisms.solution_create_form.form_fields.name.aria_label' | translate
       }}" />
-    <mat-error *ngIf="predictionName?.invalid && predictionName?.touched">
-      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
-    </mat-error>
-    <mat-hint class="on-surface-text">
-      {{ 'organisms.solution_create_form.form_fields.name.hint' | translate }}
-    </mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>
-      {{
+      <mat-error *ngIf="predictionName?.invalid && predictionName?.touched">
+        {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+      </mat-error>
+      <mat-hint class="on-surface-text">
+        {{ 'organisms.solution_create_form.form_fields.name.hint' | translate }}
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{
         'organisms.solution_create_form.form_fields.databag_id.label'
           | translate
-      }}
-    </mat-label>
-    <mat-select
-      [(value)]="selectedSolutionId"
-      data-testid="input-databagId"
-      formControlName="solutionId"
-      attr.aria-label="{{
+        }}
+      </mat-label>
+      <mat-select
+        [(value)]="selectedSolutionId"
+        data-testid="input-databagId"
+        formControlName="solutionId"
+        attr.aria-label="{{
         'organisms.solution_create_form.form_fields.databag_id.aria_label'
           | translate
       }}">
-      <mat-option *ngFor="let solution of solutions" [value]="solution.id">
-        {{ solution.name }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="solutionId?.invalid && solutionId?.touched">
-      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
-    </mat-error>
-    <mat-hint class="on-surface-text">
-      {{
+        <mat-option *ngFor="let solution of solutions" [value]="solution.id">
+          {{ solution.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="solutionId?.invalid && solutionId?.touched">
+        {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+      </mat-error>
+      <mat-hint class="on-surface-text">
+        {{
         'organisms.solution_create_form.form_fields.databag_id.hint' | translate
-      }}
-    </mat-hint>
-  </mat-form-field>
-  <app-element-divider></app-element-divider>
-  <button type="button" (click)="toggleFileMode()">toggle mode</button>
-  <div *ngIf="localFileMode">
-    <mat-label>Datei auswählen</mat-label>
-    <app-file-dropzone
-      [selectedFileName]="predictionDataFile?.value.name"
-      (fileDropped)="predictionDataFileSelected($event)"></app-file-dropzone>
+        }}
+      </mat-hint>
+    </mat-form-field>
   </div>
-  <mat-form-field *ngIf="!localFileMode">
-    <mat-label>URL</mat-label>
-    <input
-      matInput
-      formControlName="predictionDataUrl"
-      placeholder="Geben Sie eine URL ein" />
-  </mat-form-field>
+  <app-element-divider></app-element-divider>
+  <div class="upload-section">
+    <div class="label-medium primary-text text-align-center">Upload your data</div>
+    <ng-container *ngIf="localFileMode">
+      <app-file-dropzone
+        [selectedFileName]="predictionDataFile?.value.name"
+        (fileDropped)="predictionDataFileSelected($event)">
+      </app-file-dropzone>
+      <app-new-button
+        class="text-align-center"
+        [variant]="buttonTypes.text"
+        [size]="'small'"
+        (click)="toggleFileMode()">
+        Use Data source from the web
+      </app-new-button>
+    </ng-container>
+    <ng-container *ngIf="!localFileMode">
+      <mat-form-field>
+        <mat-label>URL</mat-label>
+        <input
+          matInput
+          formControlName="predictionDataUrl"
+          placeholder="Geben Sie eine URL ein" />
+      </mat-form-field>
+      <app-new-button
+        class="text-align-center"
+        [variant]="buttonTypes.text"
+        [size]="'small'"
+        (click)="toggleFileMode()">
+        Use Data source from your computer
+      </app-new-button>
+    </ng-container>
+    <div class="docs-text">
+      <div class="text-align-center">Encountering issues with uploading?</div>
+      <div class="text-align-center">
+        Our
+        <a
+          class="primary-text label-small"
+          href="https://wogra-ag.github.io/os4ml-docs/"
+          data-testid="documentation-link"
+          target="_blank">
+          {{ 'dialog.section.upload.docs' | translate }}
+        </a>
+        {{ 'dialog.section.upload.post_docs' | translate }}
+      </div>
+    </div>
+  </div>
   <div class="button-row">
-    <app-button
-      [disabled]="createPredictionForm.invalid"
+    <app-new-button
+      [disabled]="!solutionId?.value"
+      (click)="onDownloadPredictionTemplate()"
+      [variant]="buttonTypes.secondary"
+      [size]="'medium'"
+      [ariaLabel]="'organisms.solution_create_button.label' | translate"
+      data-testid="add-solution">
+      Download Template CSV
+    </app-new-button>
+    <app-new-button
       type="submit"
-      data-testid="create-databag"
-      variant="raised"
-      class="mat-raised-button"
-      color="primary">
-      {{ 'organisms.solution_create_form.submit-button' | translate }}
-    </app-button>
+      [variant]="buttonTypes.primary"
+      [size]="'medium'"
+      [disabled]="createPredictionForm.invalid"
+      [ariaLabel]="'organisms.solution_create_button.label' | translate"
+      data-testid="add-solution">
+      Create
+    </app-new-button>
   </div>
 </form>

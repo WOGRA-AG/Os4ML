@@ -38,9 +38,7 @@ import { GetSolutionByIdPipe } from '../../shared/pipes/get-solution-by-id.pipe'
 })
 export class PredictionsCreateDialogComponent implements OnDestroy {
   public solutions$: Observable<Solution[]>;
-
   public submitting = false;
-
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -63,7 +61,18 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   close(): void {
     this.dialogRef.close();
   }
+
+  public downloadPredictionTemplate(downloadLink: HTMLAnchorElement, solutionId: string): void {
+    this.predictionService
+      .getPredictionTemplateGetUrl(solutionId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
+  }
   public submitPrediction(predictionFormOutput: PredictionFormOutput): void {
+    this.submitting = true;
     this.solutions$
       .pipe(takeUntil(this.destroy$), first())
       .subscribe(solutions =>
@@ -107,7 +116,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         prediction
       )
       .pipe(takeUntil(this.destroy$))
-      .subscribe(x => console.log(x));
+      .subscribe();
   }
 
   private createPredictionFromFileUrl(
