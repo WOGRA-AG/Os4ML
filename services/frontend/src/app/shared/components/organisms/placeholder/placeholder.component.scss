@@ -1,0 +1,42 @@
+:host {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .placeholder-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+    width: 100%;;
+  }
+  
+  .placeholder {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    max-width: 510px;
+    height: auto;
+    gap: 1rem;
+  }
+  
+  .placeholder-image {
+    margin: auto;
+    background-image: src"./assets/illustrations/no_solution.svg";
+    height: 45%;
+    margin-bottom: 2rem;
+  }
+
+  .placeholder-image-noDataOnDatabags{
+    margin: auto;
+    height: 13vh;
+    margin-bottom: 2rem;
+  }
+  
+  .main-button {
+    margin: auto;
+  }
+  

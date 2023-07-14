@@ -11,6 +11,13 @@
     }
   },
   "organisms": {
+    "placeholder": {
+      "no_databag_on_databags" : {
+        "title" : "Let's get started with OS4ML",
+        "description" : "To start with OS4ML you first need to create a databag",
+        "button" : "Create Databag"
+      }
+    },
     "databag_create_button.label": "Create Databag",
     "solution_data_table": {
       "column_header": {

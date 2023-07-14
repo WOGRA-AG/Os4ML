@@ -10,16 +10,20 @@
       data-testid="add-databag">
     </app-databag-create-button>
   </div>
-  asdada
   <ng-container main *ngIf="databags$ | async as databags">
     <app-databag-data-table
       [databags]="(databags$ | async) ?? []"
       (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
-    <app-no-databags-placeholder
+    <app-placeholder
+      [type]="'noDataOnDatabags'">
+      (addDatabag)="addDatabag()"
+    </app-placeholder>
+
+    <!-- <app-no-databags-placeholder
       *ngIf="!(databags | hasElements)"
       (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
+    </app-no-databags-placeholder> -->
   </ng-container>
 </app-os4ml-default-template>

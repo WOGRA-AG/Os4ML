@@ -16,26 +16,28 @@ import { NewButtonComponent } from '../../shared/components/molecules/new-button
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
+import { PlaceholderComponent } from 'src/app/shared/components/organisms/placeholder/placeholder.component';
 
 @Component({
-  selector: 'app-databags-page',
-  templateUrl: './databags-page.component.html',
-  styleUrls: ['./databags-page.component.scss'],
-  standalone: true,
-  imports: [
-    NgIf,
-    ButtonComponent,
-    NoDatabagsPlaceholderComponent,
-    AsyncPipe,
-    TranslateModule,
-    HasElementsPipe,
-    NgForOf,
-    LocalizedDatePipe,
-    Os4mlDefaultTemplateComponent,
-    NewButtonComponent,
-    DatabagDataTableComponent,
-    DatabagCreateButtonComponent,
-  ],
+    selector: 'app-databags-page',
+    templateUrl: './databags-page.component.html',
+    styleUrls: ['./databags-page.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        ButtonComponent,
+        NoDatabagsPlaceholderComponent,
+        AsyncPipe,
+        TranslateModule,
+        HasElementsPipe,
+        NgForOf,
+        LocalizedDatePipe,
+        Os4mlDefaultTemplateComponent,
+        NewButtonComponent,
+        DatabagDataTableComponent,
+        DatabagCreateButtonComponent,
+        PlaceholderComponent
+    ]
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
@@ -63,6 +65,7 @@ export class DatabagsPageComponent {
     });
   }
   addDatabag(): void {
+    console.log("LOG")
     this.dialog.open(CreateDatabagStepperComponent);
   }
 }
