@@ -31,7 +31,7 @@
     {{ 'dialog.create_prediction.download_template' | translate }}
   </a>
   <ng-container footer>
-    {{predictionService.progress}}
+    {{ predictionService.progress }}
     <mat-spinner
       color="primary"
       *ngIf="submitting"
