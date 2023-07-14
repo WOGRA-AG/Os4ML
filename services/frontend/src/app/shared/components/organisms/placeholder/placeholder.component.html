@@ -1,19 +1,21 @@
 <div class="placeholder-container">
-    <div class="placeholder">
-      <img
-        [ngClass]="['placeholder-image-' + type]"
-        src='{{ "./assets/illustrations/" + type + ".svg" }}'
-        alt="Databag Illustration" />
-      <span class="title-large primary-text">{{ 'organisms.placeholder.no_databag_on_databags.title' | translate }}</span>
-      <span class="body-medium on-surface-text">{{
-        'organisms.placeholder.no_databag_on_databags.description' | translate
-      }}</span>
-        <app-databag-create-button
-            (addDatabag)="addDatabag.emit()"
-            [type]="'primary'">
-        </app-databag-create-button>
-    
-      <!-- <app-new-button 
+  <div class="placeholder">
+    <img
+      [ngClass]="['placeholder-image-' + type]"
+      src="{{ './assets/illustrations/' + type + '.svg' }}"
+      alt="Databag Illustration" />
+    <span class="title-large primary-text">{{
+      'organisms.placeholder.no_databag_on_databags.title' | translate
+    }}</span>
+    <span class="body-medium on-surface-text">{{
+      'organisms.placeholder.no_databag_on_databags.description' | translate
+    }}</span>
+    <app-databag-create-button
+      (addDatabag)="addDatabag.emit()"
+      [type]="'primary'">
+    </app-databag-create-button>
+
+    <!-- <app-new-button 
         *ngIf="type === 'noDataOnDatabags' "
         [type]="buttonTypes.primary"
         [size]="'medium'"
@@ -21,7 +23,7 @@
         (click)="addSolutionButton.emit($event)">
         {{ 'organisms.placeholder.no_databag_on_databags.button' | translate }}
       </app-new-button> -->
-      <!-- <app-button
+    <!-- <app-button
         variant="raised"
         class="main-button"
         id="add-solution-button-empty"
@@ -30,6 +32,5 @@
         data-testid="add-solution">
         {{ 'solution.create' | translate }}
       </app-button> -->
-    </div>
   </div>
-  
+</div>

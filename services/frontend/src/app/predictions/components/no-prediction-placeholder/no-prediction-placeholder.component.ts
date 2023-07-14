@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './no-prediction-placeholder.component.html',
   styleUrls: ['./no-prediction-placeholder.component.scss'],
   standalone: true,
-  imports:  [TranslateModule],
+  imports: [TranslateModule],
 })
 export class NoPredictionPlaceholderComponent {
   @Output() public addPredictionChange = new EventEmitter<void>();
