@@ -5,21 +5,24 @@ import {
   ButtonTypes,
   NewButtonComponent,
 } from '../../molecules/new-button/new-button.component';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { DatabagCreateButtonComponent } from '../databag-create-button/databag-create-button.component';
+import { SolutionCreateButtonComponent } from "../solution-create-button/solution-create-button.component";
 
 @Component({
-  selector: 'app-placeholder',
-  templateUrl: './placeholder.component.html',
-  styleUrls: ['./placeholder.component.scss'],
-  standalone: true,
-  imports: [
-    ButtonComponent,
-    TranslateModule,
-    NewButtonComponent,
-    NgClass,
-    DatabagCreateButtonComponent,
-  ],
+    selector: 'app-placeholder',
+    templateUrl: './placeholder.component.html',
+    styleUrls: ['./placeholder.component.scss'],
+    standalone: true,
+    imports: [
+        ButtonComponent,
+        TranslateModule,
+        NewButtonComponent,
+        NgClass,
+        DatabagCreateButtonComponent,
+        NgIf,
+        SolutionCreateButtonComponent
+    ]
 })
 export class PlaceholderComponent {
   @Input() public type:
@@ -39,15 +42,15 @@ export class PlaceholderComponent {
 
   public buttonTypes = ButtonTypes;
 
-  public onAddDatabag():void {
+  public onAddDatabag(): void {
     this.addDatabag.emit();
   }
 
-  public onAddSolution():void{
+  public onAddSolution(): void {
     this.addSolution.emit();
   }
 
-  public onAddPrediction():void{
+  public onAddPrediction(): void {
     this.addPrediction.emit();
   }
 }

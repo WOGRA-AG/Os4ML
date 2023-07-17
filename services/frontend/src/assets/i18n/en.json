@@ -12,10 +12,33 @@
   },
   "organisms": {
     "placeholder": {
-      "no_databag_on_databags": {
+      "noDataOnDatabags": {
         "title": "Let's get started with OS4ML",
-        "description": "To start with OS4ML you first need to create a databag",
-        "button": "Create Databag"
+        "description": "To start with OS4ML you need to create a databag first"
+      },
+      "noDataOnSolutions": {
+        "title": "Let's get started with OS4ML",
+        "description": "To start with OS4ML you need to create a databag first"
+      },
+      "selectedDataHasNoSolutionsOnSolutions": {
+        "title": "No Solutions yet for your selected Databag",
+        "description": "After uploading your databag the next step will be creating a solution"
+      },
+      "noDataNoSolutionOnPredictions": {
+        "title": "Let's get started with OS4ML",
+        "description": "To start with OS4ML you first need to create a databag"
+      },
+      "selectedDataHasNoSolutionOnPrediction": {
+        "title": "No Solutions yet for your selected Databag",
+        "description": "After uploading your databag the next step will be creating a solution before you can create predictions"
+      },
+      "noPredictionsOnPredictions": {
+        "title": "No predictions created yet",
+        "description": "Seems like you haven't created predictions so far. Start creating now!"
+      },
+      "selectedSolutionHasNoPrediction": {
+        "title": "No predictions yet for your selection",
+        "description": "You haven't created predictions yet for your selected solution"
       }
     },
     "databag_create_button.label": "Create Databag",

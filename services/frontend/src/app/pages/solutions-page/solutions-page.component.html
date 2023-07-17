@@ -33,7 +33,20 @@
       (solutionSettingButton)="
         openSolutionSettingDialog($event)
       "></app-solution-data-table>
-    <app-no-solutions-placeholder
+
+    <app-placeholder
+      *ngIf="(databags$ | async | hasElements) && !(solutions$ | async | hasElements)"
+      [type]="'noSolutionOnSolutions'"
+      (addSolutionButton)="addSolution()">
+    </app-placeholder>
+
+    <app-placeholder
+      *ngIf="!(databags$ | async | hasElements)"
+      [type]="'noDataOnSolutions'"
+      (addSolutionButton)="addSolution()">
+    </app-placeholder>
+
+    <!-- <app-no-solutions-placeholder
       *ngIf="
         (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
       "
@@ -42,6 +55,6 @@
     <app-no-databags-placeholder
       *ngIf="!(databags$ | async | hasElements)"
       (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
+    </app-no-databags-placeholder> -->
   </ng-container>
 </app-os4ml-default-template>
