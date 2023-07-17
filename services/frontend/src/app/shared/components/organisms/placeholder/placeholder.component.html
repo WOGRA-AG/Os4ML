@@ -5,19 +5,27 @@
       src="{{ './assets/illustrations/' + type + '.svg' }}"
       alt="Databag Illustration" />
     <span class="title-large primary-text">{{
-      'organisms.placeholder.'+ type +'.title' | translate
+      'organisms.placeholder.' + type + '.title' | translate
     }}</span>
     <span class="body-medium on-surface-text">{{
-      'organisms.placeholder.'+ type +'.description' | translate
+      'organisms.placeholder.' + type + '.description' | translate
     }}</span>
     <app-databag-create-button
-      *ngIf="type == 'noDataOnDatabags' || type == 'noDataOnSolutions' || type == 'noDataNoSolutionOnPredictions'"
+      *ngIf="
+        type === 'noDataOnDatabags' ||
+        type === 'noDataOnSolutions' ||
+        type === 'noDataNoSolutionOnPredictions'
+      "
       (addDatabag)="addDatabag.emit()"
       [type]="'primary'">
     </app-databag-create-button>
 
     <app-solution-create-button
-      *ngIf="type == 'noSolutionOnSolutions' || type == 'selectedDataHasNoSolutionsOnSolutions' || type == 'selectedDataHasNoSolutionOnPrediction'"
+      *ngIf="
+        type === 'noSolutionOnSolutions' ||
+        type === 'selectedDataHasNoSolutionsOnSolutions' ||
+        type === 'selectedDataHasNoSolutionOnPrediction'
+      "
       (addSolution)="addSolution.emit()"
       [type]="'primary'">
     </app-solution-create-button>

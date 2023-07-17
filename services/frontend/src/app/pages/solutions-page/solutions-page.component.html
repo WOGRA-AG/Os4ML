@@ -35,7 +35,9 @@
       "></app-solution-data-table>
 
     <app-placeholder
-      *ngIf="(databags$ | async | hasElements) && !(solutions$ | async | hasElements)"
+      *ngIf="
+        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
+      "
       [type]="'noSolutionOnSolutions'"
       (addSolutionButton)="addSolution()">
     </app-placeholder>

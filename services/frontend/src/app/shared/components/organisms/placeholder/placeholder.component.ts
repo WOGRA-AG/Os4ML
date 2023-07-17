@@ -7,22 +7,22 @@ import {
 } from '../../molecules/new-button/new-button.component';
 import { NgClass, NgIf } from '@angular/common';
 import { DatabagCreateButtonComponent } from '../databag-create-button/databag-create-button.component';
-import { SolutionCreateButtonComponent } from "../solution-create-button/solution-create-button.component";
+import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 
 @Component({
-    selector: 'app-placeholder',
-    templateUrl: './placeholder.component.html',
-    styleUrls: ['./placeholder.component.scss'],
-    standalone: true,
-    imports: [
-        ButtonComponent,
-        TranslateModule,
-        NewButtonComponent,
-        NgClass,
-        DatabagCreateButtonComponent,
-        NgIf,
-        SolutionCreateButtonComponent
-    ]
+  selector: 'app-placeholder',
+  templateUrl: './placeholder.component.html',
+  styleUrls: ['./placeholder.component.scss'],
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    TranslateModule,
+    NewButtonComponent,
+    NgClass,
+    DatabagCreateButtonComponent,
+    NgIf,
+    SolutionCreateButtonComponent,
+  ],
 })
 export class PlaceholderComponent {
   @Input() public type:
