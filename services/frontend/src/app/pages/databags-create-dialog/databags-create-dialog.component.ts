@@ -1,20 +1,18 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Observable, Subject, takeUntil} from 'rxjs';
-import {Databag} from '../../../../build/openapi/modelmanager';
-import {Router} from '@angular/router';
-import {DatabagService} from '../../databags/services/databag.service';
-import {MatDialogRef} from '@angular/material/dialog';
-import {AsyncPipe, NgIf} from '@angular/common';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Databag } from '../../../../build/openapi/modelmanager';
+import { Router } from '@angular/router';
+import { DatabagService } from '../../databags/services/databag.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   DatabagFormOutput,
-  DatabagsCreateFormComponent
+  DatabagsCreateFormComponent,
 } from '../../shared/components/organisms/databags-create-form/databags-create-form.component';
-import {TranslateModule} from '@ngx-translate/core';
-import {
-  Os4mlDialogTemplateComponent
-} from '../../shared/components/templates/os4ml-dialog-template/os4ml-dialog-template.component';
-import {IconButtonComponent} from '../../design/components/atoms/icon-button/icon-button.component';
-import {UploadingFilesComponent} from '../../shared/components/organisms/uploading-files/uploading-files.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { Os4mlDialogTemplateComponent } from '../../shared/components/templates/os4ml-dialog-template/os4ml-dialog-template.component';
+import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
+import { UploadingFilesComponent } from '../../shared/components/organisms/uploading-files/uploading-files.component';
 
 @Component({
   selector: 'app-databags-create-dialog',
@@ -28,8 +26,8 @@ import {UploadingFilesComponent} from '../../shared/components/organisms/uploadi
     Os4mlDialogTemplateComponent,
     IconButtonComponent,
     UploadingFilesComponent,
-    AsyncPipe
-  ]
+    AsyncPipe,
+  ],
 })
 export class DatabagsCreateDialogComponent implements OnDestroy {
   public submitting = false;
@@ -39,10 +37,10 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   constructor(
     private router: Router,
     private databagService: DatabagService,
-    public dialogRef: MatDialogRef<DatabagsCreateDialogComponent>,
-
+    public dialogRef: MatDialogRef<DatabagsCreateDialogComponent>
   ) {
-    this.databagUploadProgress$ = this.databagService.getUploadDatabagFileProgress();
+    this.databagUploadProgress$ =
+      this.databagService.getUploadDatabagFileProgress();
   }
 
   close(): void {
@@ -80,10 +78,8 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     databagFormOutput: DatabagFormOutput
   ): void {
     databag.datasetFileName = databagFormOutput.databagDataFile!.name;
-    this.databagService.createLocalFileDatabag(
-      databagFormOutput.databagDataFile!,
-      databag
-      )
+    this.databagService
+      .createLocalFileDatabag(databagFormOutput.databagDataFile!, databag)
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }
@@ -92,11 +88,9 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     databagFormOutput: DatabagFormOutput
   ): void {
     databag.datasetUrl = databagFormOutput.databagDataUrl;
-    this.databagService.createLocalFileDatabag(
-      databagFormOutput.databagDataFile!,
-      databag
-    )
-    .pipe(takeUntil(this.destroy$))
-    .subscribe();
+    this.databagService
+      .createLocalFileDatabag(databagFormOutput.databagDataFile!, databag)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 }

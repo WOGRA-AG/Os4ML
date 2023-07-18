@@ -1,12 +1,14 @@
-<app-loader-spinning-planet>
-</app-loader-spinning-planet>
-<div class="label-small on-surface-text" [class.label-upload-done]="progress === 100">
-  {{fileName}}
+<app-loader-spinning-planet> </app-loader-spinning-planet>
+<div
+  class="label-small on-surface-text"
+  [class.label-upload-done]="progress === 100">
+  {{ fileName }}
 </div>
-<mat-progress-bar mode="determinate"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  [value]="progress">
+<mat-progress-bar
+  mode="determinate"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  [value]="progress">
 </mat-progress-bar>
 <div class="cancel-button-row">
   <app-new-button
@@ -14,7 +16,9 @@
     *ngIf="!(progress === 100)"
     variant="text"
     size="small"
-    [ariaLabel]="'organisms.uploading_files.cancel_upload.aria_label' | translate"
+    [ariaLabel]="
+      'organisms.uploading_files.cancel_upload.aria_label' | translate
+    "
     data-testid="add-solution">
     {{ 'organisms.uploading_files.cancel_upload.button' | translate }}
   </app-new-button>

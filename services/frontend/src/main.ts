@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
 import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
-import {LottieModule} from 'ngx-lottie';
+import { LottieModule } from 'ngx-lottie';
 
 if (environment.production) {
   enableProdMode();

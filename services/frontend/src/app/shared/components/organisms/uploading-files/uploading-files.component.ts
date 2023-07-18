@@ -1,12 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LoaderSpinningPlanetComponent} from '../../molecules/loader-spinning-planet/loader-spinning-planet.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {
-  DocumentationHintTextComponent
-} from '../../molecules/documentation-hint-text/documentation-hint-text.component';
-import {NewButtonComponent} from '../../molecules/new-button/new-button.component';
-import {TranslateModule} from '@ngx-translate/core';
-import {NgIf} from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { LoaderSpinningPlanetComponent } from '../../molecules/loader-spinning-planet/loader-spinning-planet.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-uploading-files',
@@ -19,8 +17,8 @@ import {NgIf} from '@angular/common';
     DocumentationHintTextComponent,
     NewButtonComponent,
     TranslateModule,
-    NgIf
-  ]
+    NgIf,
+  ],
 })
 export class UploadingFilesComponent {
   @Input() public fileName = '';

@@ -55,28 +55,42 @@
     <ng-container>
       <span class="on-surface-text">
         {{
-        'organisms.solution_create_form.form_fields.selected_fields.hint'
-          | translate
+          'organisms.solution_create_form.form_fields.selected_fields.hint'
+            | translate
         }}
       </span>
-      <mat-form-field >
-        <mat-label>{{ 'organisms.solution_create_form.form_fields.output.label' | translate }}</mat-label>
+      <mat-form-field>
+        <mat-label>{{
+          'organisms.solution_create_form.form_fields.output.label' | translate
+        }}</mat-label>
         <mat-select
           data-testid="input-databagId"
-          formControlName="selectedFields" multiple
-          attr.aria-label="{{ 'organisms.solution_create_form.form_fields.output' | translate }}">
-          <mat-option *ngFor="let predictListItem of databags | getDatabagById : databagId?.value | getPredictListItemsFromDatabag"
-                      [value]="predictListItem.label">
-            <span class="label-small">{{predictListItem.label}}</span> -
-            <span>{{predictListItem.description}}</span>
+          formControlName="selectedFields"
+          multiple
+          attr.aria-label="{{
+            'organisms.solution_create_form.form_fields.output' | translate
+          }}">
+          <mat-option
+            *ngFor="
+              let predictListItem of databags
+                | getDatabagById : databagId?.value
+                | getPredictListItemsFromDatabag
+            "
+            [value]="predictListItem.label">
+            <span class="label-small">{{ predictListItem.label }}</span> -
+            <span>{{ predictListItem.description }}</span>
           </mat-option>
         </mat-select>
         <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
-          {{ 'organisms.solution_create_form.form_fields.selected_fields.no_databag_message' | translate }}
+          {{
+            'organisms.solution_create_form.form_fields.selected_fields.no_databag_message'
+              | translate
+          }}
         </mat-error>
         <mat-hint class="on-surface-text">
           {{
-          'organisms.solution_create_form.form_fields.selected_fields.help_message' | translate
+            'organisms.solution_create_form.form_fields.selected_fields.help_message'
+              | translate
           }}
         </mat-hint>
       </mat-form-field>

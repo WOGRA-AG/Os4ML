@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { NgIf } from '@angular/common';
-import {TranslateModule} from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-dropzone',

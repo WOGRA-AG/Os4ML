@@ -1,28 +1,26 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
   FormBuilder,
-  FormGroup, ReactiveFormsModule,
+  FormGroup,
+  ReactiveFormsModule,
   ValidationErrors,
-  Validators
-} from '@angular/forms';;
-import {NewButtonComponent} from '../../molecules/new-button/new-button.component';
-import {TranslateModule} from '@ngx-translate/core';
-import {
-  DocumentationHintTextComponent
-} from '../../molecules/documentation-hint-text/documentation-hint-text.component';
-import {MatInputModule} from '@angular/material/input';
-import {FileDropzoneComponent} from '../../molecules/file-dropzone/file-dropzone.component';
-import {ElementDividerComponent} from '../../atoms/element-divider/element-divider.component';
-import {NgIf} from '@angular/common';
+  Validators,
+} from '@angular/forms';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
+import { MatInputModule } from '@angular/material/input';
+import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
+import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
+import { NgIf } from '@angular/common';
 
 export interface DatabagFormOutput {
   databagName: string;
   databagDataFile?: File;
   databagDataUrl?: string;
 }
-
 
 @Component({
   selector: 'app-databags-create-form',
@@ -37,8 +35,8 @@ export interface DatabagFormOutput {
     FileDropzoneComponent,
     ElementDividerComponent,
     ReactiveFormsModule,
-    NgIf
-  ]
+    NgIf,
+  ],
 })
 export class DatabagsCreateFormComponent {
   @Output() public submitDatabag = new EventEmitter<DatabagFormOutput>();
@@ -65,9 +63,7 @@ export class DatabagsCreateFormComponent {
     return this.createDatabagForm.get('databagDataUrl');
   }
   public databagDataFileSelected(databagDataFile: File): void {
-    this.createDatabagForm
-      .get('databagDataFile')
-      ?.setValue(databagDataFile);
+    this.createDatabagForm.get('databagDataFile')?.setValue(databagDataFile);
   }
   public toggleFileMode(): void {
     this.localFileMode = !this.localFileMode;

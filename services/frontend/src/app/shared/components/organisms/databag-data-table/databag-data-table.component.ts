@@ -6,10 +6,8 @@ import { IconButtonComponent } from '../../../../design/components/atoms/icon-bu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
-import {
-  ProcessingStatusIndicatorComponent
-} from '../../molecules/processing-status-indicator/processing-status-indicator.component';
-import {ShortStatusPipe} from '../../../pipes/short-status.pipe';
+import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
+import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 
 @Component({
   selector: 'app-databag-data-table',

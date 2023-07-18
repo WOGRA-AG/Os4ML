@@ -26,8 +26,8 @@ import { SolutionCreateButtonComponent } from '../../shared/components/organisms
 import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import {PredictionsCreateDialogComponent} from '../predictions-create-dialog/predictions-create-dialog.component';
-import {DatabagsCreateDialogComponent} from '../databags-create-dialog/databags-create-dialog.component';
+import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
+import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 
 @Component({
   selector: 'app-solutions-page',

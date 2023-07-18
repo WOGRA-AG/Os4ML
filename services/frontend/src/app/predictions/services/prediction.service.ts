@@ -10,7 +10,8 @@ import {
   first,
   shareReplay,
   raceWith,
-  tap, BehaviorSubject,
+  tap,
+  BehaviorSubject,
 } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
@@ -163,7 +164,9 @@ export class PredictionService {
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       tap(upload => {
         if (upload.type === HttpEventType.UploadProgress) {
-          this._uploadFileProgressSubject$.next(Math.round((upload.loaded / upload.total) * 100));
+          this._uploadFileProgressSubject$.next(
+            Math.round((upload.loaded / upload.total) * 100)
+          );
         }
       }),
       switchMap(() =>
@@ -179,16 +182,11 @@ export class PredictionService {
   ): Observable<Prediction> {
     prediction.dataUrl = url;
     this._uploadFileProgressSubject$.next(0);
-    return this.modelManager
-      .createPrediction(token, prediction)
-      .pipe(
-        tap(() =>  this._uploadFileProgressSubject$.next(100)),
-        switchMap(createdPrediction =>
-          this.modelManager.startPredictionPipeline(
-            createdPrediction.id!,
-            token
-          )
-        )
-      );
+    return this.modelManager.createPrediction(token, prediction).pipe(
+      tap(() => this._uploadFileProgressSubject$.next(100)),
+      switchMap(createdPrediction =>
+        this.modelManager.startPredictionPipeline(createdPrediction.id!, token)
+      )
+    );
   }
 }

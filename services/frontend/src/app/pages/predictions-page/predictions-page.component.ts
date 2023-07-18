@@ -29,8 +29,8 @@ import { DatabagFilterComponent } from '../../shared/components/organisms/databa
 import { SolutionFilterComponent } from '../../shared/components/organisms/solution-filter/solution-filter.component';
 import { PredictionCreateButtonComponent } from '../../shared/components/organisms/prediction-create-button/prediction-create-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import {PopupConfirmComponent} from '../../shared/components/organisms/popup-confirm/popup-confirm.component';
-import {DatabagsCreateDialogComponent} from '../databags-create-dialog/databags-create-dialog.component';
+import { PopupConfirmComponent } from '../../shared/components/organisms/popup-confirm/popup-confirm.component';
+import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 
 @Component({
   selector: 'app-predictions-page',
@@ -142,7 +142,8 @@ export class PredictionsPageComponent implements OnDestroy {
   }
 
   deletePrediction(predictionId: string): void {
-    const deletePrediction = this.predictionService.deletePredictionById(predictionId);
+    const deletePrediction =
+      this.predictionService.deletePredictionById(predictionId);
     this.dialog.open(PopupConfirmComponent, {
       data: {
         titleKey: 'solution.delete.title',

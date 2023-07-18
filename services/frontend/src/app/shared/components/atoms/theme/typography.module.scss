@@ -26,9 +26,7 @@
     font-size: 3.25rem;
     line-height: 4.5rem;
   }
-
 }
-
 
 .display-small {
   font-family: var(--md-sys-typescale-display-small-font-family-name);
@@ -42,7 +40,6 @@
     font-size: 2.5rem;
     line-height: 3.5rem;
   }
-
 }
 
 .headline-large {
@@ -73,7 +70,6 @@
   }
 }
 
-
 .headline-small {
   font-family: var(--md-sys-typescale-headline-small-font-family-name);
   font-style: var(--md-sys-typescale-headline-small-font-family-style);
@@ -87,7 +83,6 @@
     line-height: 2rem;
   }
 }
-
 
 .body-large {
   font-family: var(--md-sys-typescale-body-large-font-family-name);
@@ -159,7 +154,6 @@
   line-height: var(--md-sys-typescale-label-small-line-height);
 }
 
-
 .title-large {
   font-family: var(--md-sys-typescale-title-large-font-family-name);
   font-style: var(--md-sys-typescale-title-large-font-family-style);
@@ -175,7 +169,6 @@
   }
 }
 
-
 .title-medium {
   font-family: var(--md-sys-typescale-title-medium-font-family-name);
   font-style: var(--md-sys-typescale-title-medium-font-family-style);
@@ -187,7 +180,7 @@
   @media #{$medium-and-up} {
     font-size: 1.125rem;
     line-height: 1.5rem;
-    letter-spacing: 0.00938rem
+    letter-spacing: 0.00938rem;
   }
 }
 

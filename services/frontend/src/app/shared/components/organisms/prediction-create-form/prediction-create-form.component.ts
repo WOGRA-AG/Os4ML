@@ -24,9 +24,7 @@ import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzo
 import { MatListModule } from '@angular/material/list';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
-import {
-  DocumentationHintTextComponent
-} from '../../molecules/documentation-hint-text/documentation-hint-text.component';
+import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
 
 export interface PredictionFormOutput {
   predictionName: string;

@@ -54,11 +54,10 @@
         "data_source_url": "Use Data source from the web",
         "data_source_local_file": "Use Data source from your computer"
       },
-     "submit": {
-       "button": "Submit Databag",
-       "aria_label": "Submit Databag"
-     }
-
+      "submit": {
+        "button": "Submit Databag",
+        "aria_label": "Submit Databag"
+      }
     },
     "solution_filter": "Filter by Solution",
     "solution_data_table": {
@@ -120,6 +119,7 @@
     }
   },
   "pages": {
+    "databags_page.title": "Databags",
     "databag_create_dialog.title": "Create Databag",
     "solutions_page.title": "Solutions",
     "solution_create_dialog.title": "Create Solution",

@@ -15,12 +15,10 @@
     (submitDatabag)="submitDatabag($event)"
     main>
   </app-databags-create-form>
-  <div main *ngIf="submitting" >
+  <div main *ngIf="submitting">
     <app-uploading-files
       [progress]="(databagUploadProgress$ | async) ?? 0"
       (finishUpload)="finishUpload()"
-      (cancelUpload)="close()"
-    ></app-uploading-files>
+      (cancelUpload)="close()"></app-uploading-files>
   </div>
 </app-os4ml-dialog-template>
-

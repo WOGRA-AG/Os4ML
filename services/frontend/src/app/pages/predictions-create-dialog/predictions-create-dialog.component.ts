@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import {first, Observable, Subject, takeUntil} from 'rxjs';
+import { first, Observable, Subject, takeUntil } from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -14,9 +14,9 @@ import {
   PredictionCreateFormComponent,
   PredictionFormOutput,
 } from '../../shared/components/organisms/prediction-create-form/prediction-create-form.component';
-import {PredictionService} from '../../predictions/services/prediction.service';
+import { PredictionService } from '../../predictions/services/prediction.service';
 import { GetSolutionByIdPipe } from '../../shared/pipes/get-solution-by-id.pipe';
-import {UploadingFilesComponent} from '../../shared/components/organisms/uploading-files/uploading-files.component';
+import { UploadingFilesComponent } from '../../shared/components/organisms/uploading-files/uploading-files.component';
 
 @Component({
   selector: 'app-predictions-create-dialog',
@@ -24,18 +24,18 @@ import {UploadingFilesComponent} from '../../shared/components/organisms/uploadi
   styleUrls: ['./predictions-create-dialog.component.scss'],
   standalone: true,
 
-    imports: [
-        IconButtonComponent,
-        SolutionCreateFormComponent,
-        MaterialModule,
-        AsyncPipe,
-        TranslateModule,
-        Os4mlDialogTemplateComponent,
-        NgIf,
-        PredictionCreateFormComponent,
-        JsonPipe,
-        UploadingFilesComponent,
-    ],
+  imports: [
+    IconButtonComponent,
+    SolutionCreateFormComponent,
+    MaterialModule,
+    AsyncPipe,
+    TranslateModule,
+    Os4mlDialogTemplateComponent,
+    NgIf,
+    PredictionCreateFormComponent,
+    JsonPipe,
+    UploadingFilesComponent,
+  ],
   providers: [GetSolutionByIdPipe],
 })
 export class PredictionsCreateDialogComponent implements OnDestroy {
@@ -51,10 +51,11 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     public predictionService: PredictionService,
     private getSolutionByIdPipe: GetSolutionByIdPipe,
     public dialogRef: MatDialogRef<PredictionsCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { solutionId: string },
+    @Inject(MAT_DIALOG_DATA) public data: { solutionId: string }
   ) {
     this.solutions$ = this.solutionService.getSolutionsByCreationTime();
-    this.predictionUploadProgress$ = this.predictionService.getPredictionUploadProgress();
+    this.predictionUploadProgress$ =
+      this.predictionService.getPredictionUploadProgress();
   }
 
   ngOnDestroy(): void {

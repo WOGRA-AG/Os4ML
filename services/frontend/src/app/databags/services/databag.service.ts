@@ -18,7 +18,7 @@ import {
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { databagsWebsocketPath } from 'src/environments/environment';
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
@@ -27,7 +27,8 @@ import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
   providedIn: 'root',
 })
 export class DatabagService {
-  private readonly _uploadDatabagFileProgressSubject$ = new BehaviorSubject<number>(0);
+  private readonly _uploadDatabagFileProgressSubject$ =
+    new BehaviorSubject<number>(0);
 
   private readonly _databagsSubject$ = new BehaviorSubject<Databag[]>([]);
 
@@ -59,7 +60,6 @@ export class DatabagService {
   getUploadDatabagFileProgress(): Observable<number> {
     return this._uploadDatabagFileProgressSubject$;
   }
-
 
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
     return this.databags$.pipe(
@@ -130,7 +130,9 @@ export class DatabagService {
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       tap(upload => {
         if (upload.type === HttpEventType.UploadProgress) {
-          this._uploadDatabagFileProgressSubject$.next(Math.round((upload.loaded / upload.total) * 100));
+          this._uploadDatabagFileProgressSubject$.next(
+            Math.round((upload.loaded / upload.total) * 100)
+          );
         }
       }),
       switchMap(() =>
@@ -148,13 +150,11 @@ export class DatabagService {
     databag.databagType = DatabagType.FileUrl;
     this._uploadDatabagFileProgressSubject$.next(0);
 
-    return this.modelManager
-      .createDatabag(token, databag)
-      .pipe(
-        tap(() =>  this._uploadDatabagFileProgressSubject$.next(100)),
-        switchMap(createdDatabag =>
-          this.modelManager.startDatabagPipeline(createdDatabag.id!, token)
-        )
-      );
+    return this.modelManager.createDatabag(token, databag).pipe(
+      tap(() => this._uploadDatabagFileProgressSubject$.next(100)),
+      switchMap(createdDatabag =>
+        this.modelManager.startDatabagPipeline(createdDatabag.id!, token)
+      )
+    );
   }
 }

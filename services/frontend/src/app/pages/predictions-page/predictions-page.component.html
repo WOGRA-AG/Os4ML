@@ -33,15 +33,12 @@
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
       [predictions]="(predictions$ | async) ?? []"
-      (downloadPredictionButton)="downloadPredictionResult($event, downloadResultLink)"
+      (downloadPredictionButton)="
+        downloadPredictionResult($event, downloadResultLink)
+      "
       (deletePredictionButton)="deletePrediction($event)">
     </app-predictions-data-table>
-    <a
-      download
-      target="_blank"
-      hidden
-      aria-hidden="true"
-      #downloadResultLink>
+    <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
     </a>
     <app-no-solutions-placeholder
       *ngIf="

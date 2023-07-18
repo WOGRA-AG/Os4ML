@@ -18,11 +18,11 @@ import { ElementDividerComponent } from '../../atoms/element-divider/element-div
 import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import {JsonPipe, NgForOf, NgIf} from '@angular/common';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
-import {NewButtonComponent} from '../../molecules/new-button/new-button.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-solution-create-form',

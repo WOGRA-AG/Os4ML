@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   Databag,
   Prediction,
@@ -15,7 +15,7 @@ import { ButtonComponent } from '../../../../design/components/atoms/button/butt
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
 import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
-import {NewButtonComponent} from '../../molecules/new-button/new-button.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-predictions-data-table',

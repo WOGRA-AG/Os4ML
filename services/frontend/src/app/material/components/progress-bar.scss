@@ -11,10 +11,11 @@
     transition: border-color 0.3s ease-in-out;
   }
 
-  .mat-mdc-progress-bar[aria-valuenow="100"] .mdc-linear-progress__bar-inner {
-    border-color: var(--md-custom-color-on-processing-status-done); /* Die Farbe der Fortschrittsleiste, wenn sie 100% erreicht */
+  .mat-mdc-progress-bar[aria-valuenow='100'] .mdc-linear-progress__bar-inner {
+    border-color: var(
+      --md-custom-color-on-processing-status-done
+    ); /* Die Farbe der Fortschrittsleiste, wenn sie 100% erreicht */
   }
-
 }
 
 @mixin layout() {

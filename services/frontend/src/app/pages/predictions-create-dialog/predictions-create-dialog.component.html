@@ -20,12 +20,11 @@
     (submitPrediction)="submitPrediction($event)"
     main>
   </app-prediction-create-form>
-  <div main *ngIf="submitting" >
-   <app-uploading-files
-     [progress]="(predictionUploadProgress$ | async) ?? 0"
-     (finishUpload)="finishUpload()"
-     (cancelUpload)="close()"
-   ></app-uploading-files>
+  <div main *ngIf="submitting">
+    <app-uploading-files
+      [progress]="(predictionUploadProgress$ | async) ?? 0"
+      (finishUpload)="finishUpload()"
+      (cancelUpload)="close()"></app-uploading-files>
   </div>
   <a
     main

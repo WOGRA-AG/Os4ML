@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class NewButtonComponent {
   @Input() public type: 'submit' | 'button' | 'reset' = 'button';
-  @Input() public variant: 'primary' | 'secondary' |  'text' = 'primary';
+  @Input() public variant: 'primary' | 'secondary' | 'text' = 'primary';
   @Input() public size: 'small' | 'medium' | 'large' = 'medium';
   @Input() public ariaLabel?: string = '';
   @Input() public icon?: string = '';
