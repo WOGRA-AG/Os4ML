@@ -1,7 +1,7 @@
 <app-os4ml-dialog-template>
   <ng-container header>
     <h1 header role="header" class="headline-medium primary-text">
-      {{ 'pages.solution_create_dialog.title' | translate }}
+      {{ 'pages.prediction_create_dialog.title' | translate }}
     </h1>
     <app-icon-button
       data-testid="close-button"
@@ -10,7 +10,6 @@
       color="accent">
     </app-icon-button>
   </ng-container>
-
   <app-prediction-create-form
     *ngIf="(solutions$ | async) && !submitting"
     [solutions]="(solutions$ | async) ?? []"
@@ -21,6 +20,13 @@
     (submitPrediction)="submitPrediction($event)"
     main>
   </app-prediction-create-form>
+  <div main *ngIf="submitting" >
+   <app-uploading-files
+     [progress]="(predictionUploadProgress$ | async) ?? 0"
+     (finishUpload)="finishUpload()"
+     (cancelUpload)="close()"
+   ></app-uploading-files>
+  </div>
   <a
     main
     download
@@ -30,14 +36,4 @@
     #downloadPredictionTemplateAnker>
     {{ 'dialog.create_prediction.download_template' | translate }}
   </a>
-  <ng-container footer>
-    {{ predictionService.progress }}
-    <mat-spinner
-      color="primary"
-      *ngIf="submitting"
-      [diameter]="40"
-      mode="indeterminate"
-      class="spinner">
-    </mat-spinner>
-  </ng-container>
 </app-os4ml-dialog-template>

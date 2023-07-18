@@ -80,18 +80,8 @@
         color="primary"
         icon="edit">
       </app-icon-button>
-      <!--          <app-icon-button-->
-      <!--            data-testid="create-prediction-button"-->
-      <!--            (click)="openCreatePredictionDialog(element)"-->
-      <!--            [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"-->
-      <!--            attr.aria-label="{{-->
-      <!--              'solution.detail.tooltips.add_prediction' | translate-->
-      <!--            }}"-->
-      <!--            class="mr-1"-->
-      <!--            color="primary"-->
-      <!--            icon="add">-->
-      <!--          </app-icon-button>-->
       <app-icon-button
+        class="mr-1"
         *ngIf="element.id && (element | isSolutionDone)"
         [routerLink]="['/predictions']"
         [queryParams]="{
@@ -108,6 +98,16 @@
         }}"
         color="primary"
         icon="batch_prediction">
+      </app-icon-button>
+      <app-icon-button
+        data-testid="create-prediction-button"
+        (click)="createPredictionButton.emit(element.id)"
+        [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
+        attr.aria-label="{{
+          'solution.detail.tooltips.add_prediction' | translate
+        }}"
+        color="primary"
+        icon="add">
       </app-icon-button>
     </td>
   </ng-container>

@@ -4,10 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
-import {
-  ButtonTypes,
-  NewButtonComponent,
-} from '../../molecules/new-button/new-button.component';
+import {NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-solution-create-button',
@@ -27,11 +24,11 @@ export class SolutionCreateButtonComponent {
   @Input() public type: 'primary' | 'text' | 'FAB' = 'primary';
   @Input() public disabled?: boolean;
   @Output() public addSolution = new EventEmitter<void>();
-  get variant(): ButtonTypes {
+  get variant(): 'primary' | 'text' {
     if (this.type === 'primary' || this.type === 'FAB') {
-      return ButtonTypes.primary;
+      return 'primary';
     }
-    return ButtonTypes.text;
+    return 'text';
   }
   get isFAB(): boolean {
     return this.type === 'FAB';

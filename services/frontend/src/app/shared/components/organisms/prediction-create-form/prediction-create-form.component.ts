@@ -23,10 +23,10 @@ import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.
 import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
 import { MatListModule } from '@angular/material/list';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import {
-  ButtonTypes,
-  NewButtonComponent,
-} from '../../molecules/new-button/new-button.component';
+  DocumentationHintTextComponent
+} from '../../molecules/documentation-hint-text/documentation-hint-text.component';
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -59,6 +59,7 @@ export interface PredictionFormOutput {
     MatListModule,
     GetSolutionByIdPipe,
     NewButtonComponent,
+    DocumentationHintTextComponent,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
@@ -69,7 +70,7 @@ export class PredictionCreateFormComponent implements OnInit {
 
   public localFileMode = true;
   public createPredictionForm: FormGroup;
-  public buttonTypes = ButtonTypes;
+
   constructor(private fb: FormBuilder) {
     this.createPredictionForm = this.fb.group(
       {

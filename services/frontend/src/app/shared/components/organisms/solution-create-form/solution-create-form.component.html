@@ -51,51 +51,47 @@
     </mat-hint>
   </mat-form-field>
   <app-element-divider></app-element-divider>
-  <ng-container *ngIf="databagId?.value; else helpMessage">
-    <span class="on-surface-text">
-      {{
+  <div class="prediction-options">
+    <ng-container>
+      <span class="on-surface-text">
+        {{
         'organisms.solution_create_form.form_fields.selected_fields.hint'
           | translate
-      }}
-    </span>
-    <app-selectable-list
-      *ngIf="databagId?.value"
-      [multiSelect]="true"
-      [listItems]="
-        databags
-          | getDatabagById : databagId?.value
-          | getPredictListItemsFromDatabag
-      "
-      (selectedItemKeyChange)="selectedFieldsChange($event)">
-      attr.aria-label="{{
-        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
-          | translate
-      }}"
-    </app-selectable-list>
-    <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.no_databag_message'
-          | translate
-      }}
-    </mat-error>
-  </ng-container>
-  <ng-template #helpMessage>
-    <div class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.help_message'
-          | translate
-      }}
-    </div>
-  </ng-template>
+        }}
+      </span>
+      <mat-form-field >
+        <mat-label>{{ 'organisms.solution_create_form.form_fields.output.label' | translate }}</mat-label>
+        <mat-select
+          data-testid="input-databagId"
+          formControlName="selectedFields" multiple
+          attr.aria-label="{{ 'organisms.solution_create_form.form_fields.output' | translate }}">
+          <mat-option *ngFor="let predictListItem of databags | getDatabagById : databagId?.value | getPredictListItemsFromDatabag"
+                      [value]="predictListItem.label">
+            <span class="label-small">{{predictListItem.label}}</span> -
+            <span>{{predictListItem.description}}</span>
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
+          {{ 'organisms.solution_create_form.form_fields.selected_fields.no_databag_message' | translate }}
+        </mat-error>
+        <mat-hint class="on-surface-text">
+          {{
+          'organisms.solution_create_form.form_fields.selected_fields.help_message' | translate
+          }}
+        </mat-hint>
+      </mat-form-field>
+    </ng-container>
+  </div>
   <div class="button-row">
-    <app-button
-      [disabled]="createSolutionForm.invalid"
+    <app-new-button
       type="submit"
+      variant="primary"
+      size="medium"
       data-testid="create-databag"
-      variant="raised"
-      class="mat-raised-button"
-      color="primary">
-      {{ 'organisms.solution_create_form.submit-button' | translate }}
-    </app-button>
+      [disabled]="createSolutionForm.invalid"
+      [ariaLabel]="'organisms.solution_create_form.submit-button' | translate"
+      data-testid="add-solution">
+      Create
+    </app-new-button>
   </div>
 </form>

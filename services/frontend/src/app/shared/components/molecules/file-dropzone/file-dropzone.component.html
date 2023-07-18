@@ -10,8 +10,10 @@
   (click)="fileUpload.click()"
   (keydown.enter)="fileUpload.click()"
   (keydown.space)="fileUpload.click()"
-  aria-label="fileDropzone"
+  [ariaLabel]="'molecules.file_dropzone.aria_label' | translate"
   tabindex="0">
-  <p *ngIf="!selectedFileName">Click to browse or drag and drop your file</p>
+  <p *ngIf="!selectedFileName">
+    {{ 'molecules.file_dropzone.label' | translate }}
+  </p>
   <p>{{ selectedFileName }}</p>
 </div>

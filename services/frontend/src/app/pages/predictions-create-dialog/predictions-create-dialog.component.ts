@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { first, Observable, Subject, takeUntil } from 'rxjs';
+import {first, Observable, Subject, takeUntil} from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -14,8 +14,9 @@ import {
   PredictionCreateFormComponent,
   PredictionFormOutput,
 } from '../../shared/components/organisms/prediction-create-form/prediction-create-form.component';
-import { PredictionService } from '../../predictions/services/prediction.service';
+import {PredictionService} from '../../predictions/services/prediction.service';
 import { GetSolutionByIdPipe } from '../../shared/pipes/get-solution-by-id.pipe';
+import {UploadingFilesComponent} from '../../shared/components/organisms/uploading-files/uploading-files.component';
 
 @Component({
   selector: 'app-predictions-create-dialog',
@@ -23,22 +24,25 @@ import { GetSolutionByIdPipe } from '../../shared/pipes/get-solution-by-id.pipe'
   styleUrls: ['./predictions-create-dialog.component.scss'],
   standalone: true,
 
-  imports: [
-    IconButtonComponent,
-    SolutionCreateFormComponent,
-    MaterialModule,
-    AsyncPipe,
-    TranslateModule,
-    Os4mlDialogTemplateComponent,
-    NgIf,
-    PredictionCreateFormComponent,
-    JsonPipe,
-  ],
+    imports: [
+        IconButtonComponent,
+        SolutionCreateFormComponent,
+        MaterialModule,
+        AsyncPipe,
+        TranslateModule,
+        Os4mlDialogTemplateComponent,
+        NgIf,
+        PredictionCreateFormComponent,
+        JsonPipe,
+        UploadingFilesComponent,
+    ],
   providers: [GetSolutionByIdPipe],
 })
 export class PredictionsCreateDialogComponent implements OnDestroy {
   public solutions$: Observable<Solution[]>;
+  public predictionUploadProgress$: Observable<number>;
   public submitting = false;
+  public selectedSolutionId?: string;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -47,10 +51,10 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     public predictionService: PredictionService,
     private getSolutionByIdPipe: GetSolutionByIdPipe,
     public dialogRef: MatDialogRef<PredictionsCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { solutionId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { solutionId: string },
   ) {
     this.solutions$ = this.solutionService.getSolutionsByCreationTime();
+    this.predictionUploadProgress$ = this.predictionService.getPredictionUploadProgress();
   }
 
   ngOnDestroy(): void {
@@ -76,11 +80,19 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
   public submitPrediction(predictionFormOutput: PredictionFormOutput): void {
     this.submitting = true;
+    this.selectedSolutionId = predictionFormOutput.solutionId;
     this.solutions$
       .pipe(takeUntil(this.destroy$), first())
       .subscribe(solutions =>
         this.createPrediction(solutions, predictionFormOutput)
       );
+  }
+
+  public finishUpload(): void {
+    this.dialogRef.close();
+    this.router.navigate(['predictions'], {
+      queryParams: { selectedSolution: this.selectedSolutionId },
+    });
   }
 
   private createPrediction(

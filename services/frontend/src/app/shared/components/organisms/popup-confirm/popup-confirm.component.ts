@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-sp
 import { NgIf } from '@angular/common';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-header.component';
+import { finalize, Observable, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-popup-confirm',
@@ -23,8 +24,9 @@ import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-head
     TranslateModule,
   ],
 })
-export class PopupConfirmComponent {
+export class PopupConfirmComponent implements OnDestroy {
   public submitting = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dialog: MatDialogRef<PopupConfirmComponent, boolean>,
@@ -32,21 +34,30 @@ export class PopupConfirmComponent {
     public data: {
       titleKey: string;
       messageKey: string;
-      onConfirm: () => Promise<void>;
+      onConfirm: Observable<void>;
     }
   ) {
     this.dialog.disableClose = true;
   }
 
   close(): void {
-    this.dialog.close(false);
+    this.dialog.close();
   }
 
   submit(): void {
     this.submitting = true;
-    this.data.onConfirm().then(() => {
-      this.submitting = false;
+    this.data.onConfirm.pipe(
+      takeUntil(this.destroy$),
+      finalize(() => {
+        this.submitting = false;
+      })
+    ).subscribe(() => {
       this.dialog.close(true);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

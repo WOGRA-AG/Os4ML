@@ -6,13 +6,14 @@ import {
   Output,
 } from '@angular/core';
 import { NgIf } from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-dropzone',
   templateUrl: './file-dropzone.component.html',
   styleUrls: ['./file-dropzone.component.scss'],
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, TranslateModule],
 })
 export class FileDropzoneComponent {
   @Input() public selectedFileName = 'No File Selected';

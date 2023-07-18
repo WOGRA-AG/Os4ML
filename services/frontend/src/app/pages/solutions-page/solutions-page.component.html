@@ -8,11 +8,13 @@
       [defaultValue]="(databagId$ | async) ?? undefined"
       (databagChange)="onDatabagChanged($event)"></app-databag-filter>
     <div class="button-section">
-      <app-databag-create-button [type]="'text'" (addDatabag)="addDatabag()">
+      <app-databag-create-button
+        [type]="'text'"
+        (addDatabag)="addDatabag()">
       </app-databag-create-button>
       <app-solution-create-button
         [type]="'primary'"
-        [disabled]="!(solutions$ | async | hasElements)"
+        [disabled]="!(databags$ | async | hasElements)"
         (addSolution)="addSolution()">
       </app-solution-create-button>
     </div>
@@ -21,9 +23,9 @@
     <app-solution-data-table
       [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
-      (solutionSettingButton)="
-        openSolutionSettingDialog($event)
-      "></app-solution-data-table>
+      (solutionSettingButton)="openSolutionSettingDialog($event)"
+      (createPredictionButton)="openCreatePredictionDialog($event)"
+    ></app-solution-data-table>
     <app-no-solutions-placeholder
       *ngIf="
         (databags$ | async | hasElements) && !(solutions$ | async | hasElements)

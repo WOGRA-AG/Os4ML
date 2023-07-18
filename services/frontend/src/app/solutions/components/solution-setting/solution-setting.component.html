@@ -80,7 +80,7 @@
     id="delete-solution-button"
     color="primary"
     icon="delete_forever"
-    (click)="delete()">
+    (click)="deleteSolution(solution.id!)">
   </app-icon-button>
   <app-icon-button
     *ngIf="solution | isSolutionDone"
@@ -90,14 +90,7 @@
     (click)="downloadModel(downloadModelLink)">
   </app-icon-button>
   <a download target="_blank" hidden aria-hidden="true" #downloadModelLink> </a>
-  <app-button
-    id="create-prediction-button"
-    *ngIf="solution | isSolutionDone"
-    color="primary"
-    variant="raised"
-    (click)="createPrediction()">
-    {{ 'prediction.action' | translate }}
-  </app-button>
+
   <app-button
     id="predictions-page-link-button"
     *ngIf="solution.id && (solution | isSolutionDone)"

@@ -10,7 +10,7 @@ import {
   first,
   shareReplay,
   raceWith,
-  tap,
+  tap, BehaviorSubject,
 } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
@@ -18,11 +18,15 @@ import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-tim
 import { predictionsWebsocketPath } from 'src/environments/environment';
 import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
 
+export interface UploadFile {
+  name: string;
+  progress: number;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class PredictionService {
-  public progress = 0;
+  private readonly _uploadFileProgressSubject$ = new BehaviorSubject<number>(0);
 
   private readonly _predictions$: Observable<Prediction[]>;
 
@@ -52,6 +56,10 @@ export class PredictionService {
     return this._predictions$.pipe(
       map(predictions => predictions.sort(sortByCreationTime))
     );
+  }
+
+  getPredictionUploadProgress(): Observable<number> {
+    return this._uploadFileProgressSubject$;
   }
 
   getPredictionsBySolutionIdSortByCreationTime(
@@ -102,10 +110,10 @@ export class PredictionService {
     );
   }
 
-  getPredictionResultGetUrl(prediction: Prediction): Observable<string> {
+  getPredictionResultGetUrl(predictionId: string): Observable<string> {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.getPredictionResultGetUrl(prediction.id!, token)
+        this.modelManager.getPredictionResultGetUrl(predictionId, token)
       )
     );
   }
@@ -145,6 +153,7 @@ export class PredictionService {
   ): Observable<Prediction> {
     prediction.status = 'message.pipeline.running.uploading_file';
     prediction.dataFileName = file.name;
+    this._uploadFileProgressSubject$.next(0);
 
     return this.modelManager.createPrediction(token, prediction).pipe(
       tap(createdPrediction => (prediction = createdPrediction)),
@@ -153,9 +162,8 @@ export class PredictionService {
       ),
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       tap(upload => {
-        console.log(upload);
         if (upload.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round((upload.loaded / upload.total) * 100);
+          this._uploadFileProgressSubject$.next(Math.round((upload.loaded / upload.total) * 100));
         }
       }),
       switchMap(() =>
@@ -170,9 +178,11 @@ export class PredictionService {
     token: string
   ): Observable<Prediction> {
     prediction.dataUrl = url;
+    this._uploadFileProgressSubject$.next(0);
     return this.modelManager
       .createPrediction(token, prediction)
       .pipe(
+        tap(() =>  this._uploadFileProgressSubject$.next(100)),
         switchMap(createdPrediction =>
           this.modelManager.startPredictionPipeline(
             createdPrediction.id!,

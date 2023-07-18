@@ -12,7 +12,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../databags/services/databag.service';
 import { SolutionService } from '../../solutions/services/solution.service';
-import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
@@ -27,6 +26,8 @@ import { SolutionCreateButtonComponent } from '../../shared/components/organisms
 import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
+import {PredictionsCreateDialogComponent} from '../predictions-create-dialog/predictions-create-dialog.component';
+import {DatabagsCreateDialogComponent} from '../databags-create-dialog/databags-create-dialog.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -92,7 +93,7 @@ export class SolutionsPageComponent implements OnDestroy {
     });
   }
   addDatabag(): void {
-    this.dialog.open(CreateDatabagStepperComponent);
+    this.dialog.open(DatabagsCreateDialogComponent);
   }
   addSolution(): void {
     this.databagId$
@@ -111,6 +112,11 @@ export class SolutionsPageComponent implements OnDestroy {
       position: {
         right: '12px',
       },
+    });
+  }
+  openCreatePredictionDialog(solutionId: string): void {
+    this.dialog.open(PredictionsCreateDialogComponent, {
+      data: { solutionId },
     });
   }
   ngOnDestroy(): void {

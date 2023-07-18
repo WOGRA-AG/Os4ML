@@ -34,8 +34,8 @@
     <ng-container footer-nav>
       <app-new-button
         data-testid="open-getting-started-dialog"
-        [variant]="buttonTypes.secondary"
-        [size]="'small'"
+        variant="secondary"
+        size="small"
         [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
         (click)="openGettingStartedDialog()">
         {{ 'root.footer-navigation.guided_tour' | translate }}
@@ -45,9 +45,9 @@
         href="https://wogra-ag.github.io/os4ml-docs/"
         target="_blank">
         <app-new-button
-          [variant]="buttonTypes.text"
-          [size]="'small'"
-          [icon]="'description'"
+          variant="text"
+          size="small"
+          icon="description"
           [ariaLabel]="'root.footer-navigation.documentation' | translate">
           {{ 'root.footer-navigation.documentation' | translate }}
         </app-new-button>

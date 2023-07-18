@@ -14,15 +14,16 @@
         (solutionChange)="onSolutionChanged($event)"></app-solution-filter>
     </div>
     <div class="select-section">
-      <app-databag-create-button (addSolution)="addDatabag()">
+      <app-databag-create-button (addDatabag)="addDatabag()">
       </app-databag-create-button>
       <app-solution-create-button
-        [disabled]="!(solutions$ | async | hasElements)"
+        [type]="'text'"
+        [disabled]="!(databags$ | async | hasElements)"
         (addSolution)="addSolution()">
       </app-solution-create-button>
       <app-prediction-create-button
         [type]="'primary'"
-        [disabled]="!(predictions$ | async | hasElements)"
+        [disabled]="!(solutions$ | async | hasElements)"
         (addSolution)="addPrediction()">
       </app-prediction-create-button>
     </div>
@@ -31,8 +32,17 @@
     <app-predictions-data-table
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
-      [predictions]="(predictions$ | async) ?? []">
+      [predictions]="(predictions$ | async) ?? []"
+      (downloadPredictionButton)="downloadPredictionResult($event, downloadResultLink)"
+      (deletePredictionButton)="deletePrediction($event)">
     </app-predictions-data-table>
+    <a
+      download
+      target="_blank"
+      hidden
+      aria-hidden="true"
+      #downloadResultLink>
+    </a>
     <app-no-solutions-placeholder
       *ngIf="
         (databags$ | async | hasElements) && !(solutions$ | async | hasElements)

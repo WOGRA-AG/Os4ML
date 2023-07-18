@@ -21,7 +21,6 @@ import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { DatabagService } from '../../databags/services/databag.service';
 import { PredictionsDataTableComponent } from '../../shared/components/organisms/predictions-data-table/predictions-data-table.component';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
-import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
 import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
@@ -30,6 +29,8 @@ import { DatabagFilterComponent } from '../../shared/components/organisms/databa
 import { SolutionFilterComponent } from '../../shared/components/organisms/solution-filter/solution-filter.component';
 import { PredictionCreateButtonComponent } from '../../shared/components/organisms/prediction-create-button/prediction-create-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
+import {PopupConfirmComponent} from '../../shared/components/organisms/popup-confirm/popup-confirm.component';
+import {DatabagsCreateDialogComponent} from '../databags-create-dialog/databags-create-dialog.component';
 
 @Component({
   selector: 'app-predictions-page',
@@ -104,7 +105,7 @@ export class PredictionsPageComponent implements OnDestroy {
     });
   }
   addDatabag(): void {
-    this.dialog.open(CreateDatabagStepperComponent);
+    this.dialog.open(DatabagsCreateDialogComponent);
   }
 
   addSolution(): void {
@@ -127,6 +128,29 @@ export class PredictionsPageComponent implements OnDestroy {
       });
   }
 
+  downloadPredictionResult(
+    predictionId: string,
+    downloadLink: HTMLAnchorElement
+  ): void {
+    this.predictionService
+      .getPredictionResultGetUrl(predictionId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        downloadLink.href = url;
+        downloadLink.click();
+      });
+  }
+
+  deletePrediction(predictionId: string): void {
+    const deletePrediction = this.predictionService.deletePredictionById(predictionId);
+    this.dialog.open(PopupConfirmComponent, {
+      data: {
+        titleKey: 'solution.delete.title',
+        messageKey: 'solution.delete.confirmation',
+        onConfirm: deletePrediction,
+      },
+    });
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

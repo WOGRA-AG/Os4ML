@@ -2,7 +2,7 @@
   "root": {
     "navigation": {
       "databags": "Databags",
-      "solutions": "Solution",
+      "solutions": "Solutions",
       "predictions": "Predictions"
     },
     "footer-navigation": {
@@ -11,11 +11,55 @@
     }
   },
   "molecules": {
-    "select.option_none": "None"
+    "select.option_none": "None",
+    "file_dropzone": {
+      "label": "Click to browse or drag and drop your file",
+      "aria_label": "Click to browse or drag and drop your file"
+    }
   },
   "organisms": {
+    "uploading_files": {
+      "cancel_upload": {
+        "button": "Cancel Upload",
+        "aria_label": "Cancel Upload"
+      },
+      "finish_upload": {
+        "button": "Finish Upload",
+        "aria_label": "Finish Upload"
+      }
+    },
     "databag_create_button.label": "Create Databag",
     "databag_filter": "Filter by Databag",
+    "databag_create_form": {
+      "aria_label": "Databag create form",
+      "upload_section.title": "Upload your data",
+      "form_fields": {
+        "name": {
+          "label": "Databag Name",
+          "aria_label": "Databag Name",
+          "error": "Databag name is required",
+          "hint": "Choose a meaningful name for your databag to easily identify them"
+        },
+        "databag_data_url": {
+          "label": "Enter a URL",
+          "aria_label": "Enter a URL"
+        },
+        "selected_fields": {
+          "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
+          "help_message": "Please select a databag first to specify further training",
+          "error": ""
+        }
+      },
+      "toggle_file_mode": {
+        "data_source_url": "Use Data source from the web",
+        "data_source_local_file": "Use Data source from your computer"
+      },
+     "submit": {
+       "button": "Submit Databag",
+       "aria_label": "Submit Databag"
+     }
+
+    },
     "solution_filter": "Filter by Solution",
     "solution_data_table": {
       "column_header": {
@@ -55,7 +99,7 @@
           "hint": "Select the databag for which you want to create a solution"
         },
         "selected_fields": {
-          "hint": "Mark fields, from your data bag, which the AI may use as input for its training",
+          "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
           "help_message": "Please select a databag first to specify further training",
           "error": ""
         }
@@ -76,9 +120,11 @@
     }
   },
   "pages": {
-    "predictions_page.title": "Predictions",
-    "solution_create_dialog.title": "Create Solution",
+    "databag_create_dialog.title": "Create Databag",
     "solutions_page.title": "Solutions",
+    "solution_create_dialog.title": "Create Solution",
+    "predictions_page.title": "Predictions",
+    "prediction_create_dialog.title": "Create Predictions",
     "detail": {
       "title": "Solution details",
       "solution_name": "Solution name",

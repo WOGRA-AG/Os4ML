@@ -72,8 +72,8 @@
       </app-file-dropzone>
       <app-new-button
         class="text-align-center"
-        [variant]="buttonTypes.text"
-        [size]="'small'"
+        variant="text"
+        size="small"
         (click)="toggleFileMode()">
         Use Data source from the web
       </app-new-button>
@@ -88,41 +88,28 @@
       </mat-form-field>
       <app-new-button
         class="text-align-center"
-        [variant]="buttonTypes.text"
-        [size]="'small'"
+        variant="text"
+        size="small"
         (click)="toggleFileMode()">
         Use Data source from your computer
       </app-new-button>
     </ng-container>
-    <div class="docs-text">
-      <div class="text-align-center">Encountering issues with uploading?</div>
-      <div class="text-align-center">
-        Our
-        <a
-          class="primary-text label-small"
-          href="https://wogra-ag.github.io/os4ml-docs/"
-          data-testid="documentation-link"
-          target="_blank">
-          {{ 'dialog.section.upload.docs' | translate }}
-        </a>
-        {{ 'dialog.section.upload.post_docs' | translate }}
-      </div>
-    </div>
+    <app-documentation-hint-text></app-documentation-hint-text>
   </div>
   <div class="button-row">
     <app-new-button
       [disabled]="!solutionId?.value"
       (click)="onDownloadPredictionTemplate()"
-      [variant]="buttonTypes.secondary"
-      [size]="'medium'"
+      variant="secondary"
+      size="medium"
       [ariaLabel]="'organisms.solution_create_button.label' | translate"
       data-testid="add-solution">
       Download Template CSV
     </app-new-button>
     <app-new-button
       type="submit"
-      [variant]="buttonTypes.primary"
-      [size]="'medium'"
+      variant="primary"
+      size="medium"
       [disabled]="createPredictionForm.invalid"
       [ariaLabel]="'organisms.solution_create_button.label' | translate"
       data-testid="add-solution">

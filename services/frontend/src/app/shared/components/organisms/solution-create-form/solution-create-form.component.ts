@@ -18,10 +18,11 @@ import { ElementDividerComponent } from '../../atoms/element-divider/element-div
 import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import {JsonPipe, NgForOf, NgIf} from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
+import {NewButtonComponent} from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-solution-create-form',
@@ -41,6 +42,8 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
     GetDatabagByIdPipe,
     ButtonComponent,
     SolutionCreateButtonComponent,
+    NewButtonComponent,
+    JsonPipe,
   ],
 })
 export class SolutionCreateFormComponent implements OnInit {
@@ -53,7 +56,7 @@ export class SolutionCreateFormComponent implements OnInit {
     this.createSolutionForm = this.fb.group({
       name: ['', Validators.required],
       databagId: ['', Validators.required],
-      selectedFields: this.fb.array([], Validators.required),
+      selectedFields: ['', Validators.required],
     });
   }
   get name(): AbstractControl | null {
@@ -87,6 +90,7 @@ export class SolutionCreateFormComponent implements OnInit {
         outputFields: this.selectedFields?.value,
         inputFields: this.getUnselectedColumns(this.selectedFields?.value),
       };
+      console.log(submitSolution);
       this.submitSolution.emit(submitSolution);
     }
   }

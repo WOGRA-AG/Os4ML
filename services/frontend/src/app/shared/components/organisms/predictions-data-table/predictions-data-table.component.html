@@ -67,11 +67,24 @@
         attr.aria-label="{{
           'pages.solutions_page.actions.new_databag' | translate
         }}"
+        (click)="downloadPredictionButton.emit(element.id)"
+        [disabled]="(element.status | shortStatus) !== 'Done'"
+        data-testid="add-databag"
+        variant="basic"
+        class="fab-button mat-raised-button mr-1"
+        color="primary"
+        icon="download">
+      </app-icon-button>
+      <app-icon-button
+        (click)="deletePredictionButton.emit(element.id)"
+        attr.aria-label="{{
+          'pages.solutions_page.actions.delete_prediction' | translate
+        }}"
         data-testid="add-databag"
         variant="basic"
         class="fab-button mat-raised-button"
         color="primary"
-        icon="download">
+        icon="delete_forever">
       </app-icon-button>
     </td>
   </ng-container>
