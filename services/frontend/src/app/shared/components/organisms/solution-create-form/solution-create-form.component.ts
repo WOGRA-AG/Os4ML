@@ -90,7 +90,6 @@ export class SolutionCreateFormComponent implements OnInit {
         outputFields: this.selectedFields?.value,
         inputFields: this.getUnselectedColumns(this.selectedFields?.value),
       };
-      console.log(submitSolution);
       this.submitSolution.emit(submitSolution);
     }
   }

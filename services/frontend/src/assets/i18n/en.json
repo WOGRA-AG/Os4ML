@@ -30,6 +30,23 @@
     },
     "databag_create_button.label": "Create Databag",
     "databag_filter": "Filter by Databag",
+    "databag_data_table": {
+      "column_header": {
+        "databag_name": "Databag Name",
+        "type": "Type",
+        "features": "Features",
+        "samples": "Samples",
+        "runtime": "Runtime",
+        "creation": "Creation",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "settings": {
+          "tooltip": "Databag settings"
+        }
+      }
+    },
     "databag_create_form": {
       "aria_label": "Databag create form",
       "upload_section.title": "Upload your data",
@@ -93,17 +110,23 @@
           "hint": "Choose a meaningful name for your solution to easily identify them"
         },
         "databag_id": {
-          "label": "Databagselect",
+          "label": "Select databag",
           "aria_label": "Select databag",
+          "error": "Solution name is required",
           "hint": "Select the databag for which you want to create a solution"
         },
         "selected_fields": {
+          "label": "Select output",
+          "aria_label": "Select output",
           "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
           "help_message": "Please select a databag first to specify further training",
-          "error": ""
+          "error": "Solution name is required"
         }
       },
-      "submit-button": "Create Solution"
+      "submit": {
+        "button": "Submit Solution",
+        "aria_label": "Submit Solution"
+      }
     },
     "prediction_create_button.label": "Create Prediction",
     "prediction_data_table": {
@@ -115,6 +138,40 @@
         "creation": "Creation",
         "status": "Status",
         "actions": "Actions"
+      }
+    },
+    "prediction_create_form": {
+      "aria_label": "Prediction creation form",
+      "form_fields": {
+        "name": {
+          "label": "Prediction Name",
+          "aria_label": "Prediction creation form",
+          "error": "Prediction name is required",
+          "hint": "Choose a meaningful name for your prediction to easily identify them"
+        },
+        "solution_id": {
+          "label": "Select solution",
+          "aria_label": "Select solution",
+          "error": "Solution is required",
+          "hint": "Select the solution for which you want to create a prediction"
+        },
+        "prediction_data_url": {
+          "label": "Enter a URL",
+          "aria_label": "Enter a URL"
+        }
+      },
+      "upload_section.title": "Upload your data",
+      "toggle_file_mode": {
+        "data_source_url": "Use Data source from the web",
+        "data_source_local_file": "Use Data source from your computer"
+      },
+      "download_csv": {
+        "button": "Download Template CSV",
+        "aria_label": "Download Template CSV"
+      },
+      "submit": {
+        "button": "Submit Prediction",
+        "aria_label": "Submit Prediction"
       }
     }
   },

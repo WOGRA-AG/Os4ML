@@ -42,6 +42,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public solutions$: Observable<Solution[]>;
   public predictionUploadProgress$: Observable<number>;
   public submitting = false;
+  public uploadingFileName = '';
   public selectedSolutionId?: string;
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -111,6 +112,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     };
 
     if (predictionFormOutput.predictionDataFile) {
+      this.uploadingFileName = predictionFormOutput.predictionDataFile.name;
       this.createPredictionFromLocalFile(prediction, predictionFormOutput);
       return;
     }

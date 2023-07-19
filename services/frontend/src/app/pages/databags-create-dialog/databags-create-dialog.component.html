@@ -17,6 +17,7 @@
   </app-databags-create-form>
   <div main *ngIf="submitting">
     <app-uploading-files
+      [fileName]="uploadingFileName"
       [progress]="(databagUploadProgress$ | async) ?? 0"
       (finishUpload)="finishUpload()"
       (cancelUpload)="close()"></app-uploading-files>

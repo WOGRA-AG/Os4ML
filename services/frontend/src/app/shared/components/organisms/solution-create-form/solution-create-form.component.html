@@ -42,7 +42,7 @@
       </mat-option>
     </mat-select>
     <mat-error *ngIf="databagId?.invalid && databagId?.touched">
-      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
+      {{ 'organisms.solution_create_form.form_fields.databag_id.error' | translate }}
     </mat-error>
     <mat-hint class="on-surface-text">
       {{
@@ -53,22 +53,16 @@
   <app-element-divider></app-element-divider>
   <div class="prediction-options">
     <ng-container>
-      <span class="on-surface-text">
-        {{
-          'organisms.solution_create_form.form_fields.selected_fields.hint'
-            | translate
-        }}
-      </span>
       <mat-form-field>
         <mat-label>{{
-          'organisms.solution_create_form.form_fields.output.label' | translate
+          'organisms.solution_create_form.form_fields.selected_fields.label' | translate
         }}</mat-label>
         <mat-select
           data-testid="input-databagId"
           formControlName="selectedFields"
           multiple
           attr.aria-label="{{
-            'organisms.solution_create_form.form_fields.output' | translate
+            'organisms.solution_create_form.selected_fields.aria_label' | translate
           }}">
           <mat-option
             *ngFor="
@@ -83,14 +77,20 @@
         </mat-select>
         <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
           {{
-            'organisms.solution_create_form.form_fields.selected_fields.no_databag_message'
+            'organisms.solution_create_form.form_fields.selected_fields.error'
               | translate
           }}
         </mat-error>
-        <mat-hint class="on-surface-text">
+        <mat-hint *ngIf="!databagId?.value" class="on-surface-text">
           {{
             'organisms.solution_create_form.form_fields.selected_fields.help_message'
               | translate
+          }}
+        </mat-hint>
+        <mat-hint *ngIf="databagId?.value" class="on-surface-text">
+        {{
+          'organisms.solution_create_form.form_fields.selected_fields.hint'
+            | translate
           }}
         </mat-hint>
       </mat-form-field>
@@ -103,9 +103,11 @@
       size="medium"
       data-testid="create-databag"
       [disabled]="createSolutionForm.invalid"
-      [ariaLabel]="'organisms.solution_create_form.submit-button' | translate"
+      [ariaLabel]="
+        'organisms.solution_create_form.submit.aria_label' | translate
+      "
       data-testid="add-solution">
-      Create
+      {{ 'organisms.solution_create_form.submit.button' | translate }}
     </app-new-button>
   </div>
 </form>

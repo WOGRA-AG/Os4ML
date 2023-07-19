@@ -31,6 +31,7 @@ import { UploadingFilesComponent } from '../../shared/components/organisms/uploa
 })
 export class DatabagsCreateDialogComponent implements OnDestroy {
   public submitting = false;
+  public uploadingFileName = '';
   public databagUploadProgress$: Observable<number>;
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -58,6 +59,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     };
 
     if (databagFormOutput.databagDataFile) {
+      this.uploadingFileName = databagFormOutput.databagDataFile.name;
       this.createDatabagFromLocalFile(databag, databagFormOutput);
       return;
     }
