@@ -51,7 +51,7 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
     DatabagFilterComponent,
     SolutionFilterComponent,
     PredictionCreateButtonComponent,
-    DatabagCreateButtonComponent
+    DatabagCreateButtonComponent,
   ],
 })
 export class PredictionsPageComponent implements OnDestroy {

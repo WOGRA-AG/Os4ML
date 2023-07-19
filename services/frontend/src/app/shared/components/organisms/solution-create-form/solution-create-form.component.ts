@@ -41,7 +41,7 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     GetDatabagByIdPipe,
     ButtonComponent,
     SolutionCreateButtonComponent,
-    NewButtonComponent
+    NewButtonComponent,
   ],
 })
 export class SolutionCreateFormComponent implements OnInit {
