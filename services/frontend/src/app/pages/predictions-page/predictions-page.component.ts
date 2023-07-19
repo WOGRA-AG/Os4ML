@@ -15,7 +15,7 @@ import { PredictionService } from 'src/app/predictions/services/prediction.servi
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoPredictionPlaceholderComponent } from '../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
-import { NgIf, AsyncPipe, JsonPipe } from '@angular/common';
+import { NgIf, AsyncPipe } from '@angular/common';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { DatabagService } from '../../databags/services/databag.service';
@@ -51,8 +51,7 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
     DatabagFilterComponent,
     SolutionFilterComponent,
     PredictionCreateButtonComponent,
-    DatabagCreateButtonComponent,
-    JsonPipe,
+    DatabagCreateButtonComponent
   ],
 })
 export class PredictionsPageComponent implements OnDestroy {

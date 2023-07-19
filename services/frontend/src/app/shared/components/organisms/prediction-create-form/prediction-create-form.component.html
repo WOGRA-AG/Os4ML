@@ -25,7 +25,9 @@
         }}
       </mat-error>
       <mat-hint class="on-surface-text">
-        {{ 'organisms.prediction_create_form.form_fields.name.hint' | translate }}
+        {{
+          'organisms.prediction_create_form.form_fields.name.hint' | translate
+        }}
       </mat-hint>
     </mat-form-field>
     <mat-form-field>
@@ -49,7 +51,8 @@
       </mat-select>
       <mat-error *ngIf="solutionId?.invalid && solutionId?.touched">
         {{
-          'organisms.prediction_create_form.form_fields.solution_id.error' | translate
+          'organisms.prediction_create_form.form_fields.solution_id.error'
+            | translate
         }}
       </mat-error>
       <mat-hint class="on-surface-text">
@@ -76,8 +79,8 @@
         size="small"
         (click)="toggleFileMode()">
         {{
-        'organisms.prediction_create_form.toggle_file_mode.data_source_url'
-          | translate
+          'organisms.prediction_create_form.toggle_file_mode.data_source_url'
+            | translate
         }}
       </app-new-button>
     </ng-container>
@@ -85,17 +88,17 @@
       <mat-form-field>
         <mat-label>
           {{
-          'organisms.prediction_create_form.prediction_data_url.label'
-            | translate
+            'organisms.prediction_create_form.prediction_data_url.label'
+              | translate
           }}
         </mat-label>
         <input
           matInput
           formControlName="predictionDataUrl"
           [ariaLabel]="
-          'organisms.prediction_create_form.form_fields.prediction_data_url.aria_label'
-            | translate"
-        />
+            'organisms.prediction_create_form.form_fields.prediction_data_url.aria_label'
+              | translate
+          " />
       </mat-form-field>
       <app-new-button
         class="text-align-center"
@@ -103,8 +106,8 @@
         size="small"
         (click)="toggleFileMode()">
         {{
-        'organisms.prediction_create_form.toggle_file_mode.data_source_local_file'
-          | translate
+          'organisms.prediction_create_form.toggle_file_mode.data_source_local_file'
+            | translate
         }}
       </app-new-button>
     </ng-container>
@@ -116,7 +119,9 @@
       (click)="onDownloadPredictionTemplate()"
       variant="secondary"
       size="medium"
-      [ariaLabel]="'organisms.prediction_create_form.download_csv.aria_label' | translate"
+      [ariaLabel]="
+        'organisms.prediction_create_form.download_csv.aria_label' | translate
+      "
       data-testid="add-solution">
       {{ 'organisms.prediction_create_form.download_csv.button' | translate }}
     </app-new-button>
@@ -125,7 +130,9 @@
       variant="primary"
       size="medium"
       [disabled]="createPredictionForm.invalid"
-      [ariaLabel]="'organisms.prediction_create_form.submit.aria_label' | translate"
+      [ariaLabel]="
+        'organisms.prediction_create_form.submit.aria_label' | translate
+      "
       data-testid="add-solution">
       {{ 'organisms.prediction_create_form.submit.button' | translate }}
     </app-new-button>

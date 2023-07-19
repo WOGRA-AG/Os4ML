@@ -2,40 +2,32 @@
   <ng-container matColumnDef="databagName">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{
-      'organisms.databag_data_table.column_header.databag_name' | translate
+        'organisms.databag_data_table.column_header.databag_name' | translate
       }}
     </th>
     <td mat-cell *matCellDef="let element">{{ element.name }}</td>
   </ng-container>
   <ng-container matColumnDef="databagType">
     <th mat-header-cell *matHeaderCellDef>
-      {{
-      'organisms.databag_data_table.column_header.type' | translate
-      }}
+      {{ 'organisms.databag_data_table.column_header.type' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">{{ element.databagType }}</td>
   </ng-container>
   <ng-container matColumnDef="features">
     <th mat-header-cell *matHeaderCellDef>
-      {{
-      'organisms.databag_data_table.column_header.features' | translate
-      }}
+      {{ 'organisms.databag_data_table.column_header.features' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">{{ element.numberColumns }}</td>
   </ng-container>
   <ng-container matColumnDef="samples">
     <th mat-header-cell *matHeaderCellDef>
-      {{
-      'organisms.databag_data_table.column_header.samples' | translate
-      }}
+      {{ 'organisms.databag_data_table.column_header.samples' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">{{ element.numberRows }}</td>
   </ng-container>
   <ng-container matColumnDef="creation">
     <th mat-header-cell *matHeaderCellDef>
-      {{
-      'organisms.databag_data_table.column_header.creation' | translate
-      }}
+      {{ 'organisms.databag_data_table.column_header.creation' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       {{ element.creationTime | localizedDate }}
@@ -54,16 +46,18 @@
   </ng-container>
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>
-      {{
-      'organisms.databag_data_table.column_header.actions' | translate
-      }}
+      {{ 'organisms.databag_data_table.column_header.actions' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <app-icon-button
         data-testid="databag-settings-button"
         (click)="settingButton.emit(element)"
-        [matTooltip]="'organisms.databag_data_table.actions.settings.tooltip' | translate"
-        attr.aria-label="{{ 'organisms.databag_data_table.actions.settings.tooltip' | translate }}"
+        [matTooltip]="
+          'organisms.databag_data_table.actions.settings.tooltip' | translate
+        "
+        attr.aria-label="{{
+          'organisms.databag_data_table.actions.settings.tooltip' | translate
+        }}"
         class="mr-1"
         color="primary"
         icon="edit">

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -18,7 +17,7 @@ import { ElementDividerComponent } from '../../atoms/element-divider/element-div
 import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
@@ -42,8 +41,7 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     GetDatabagByIdPipe,
     ButtonComponent,
     SolutionCreateButtonComponent,
-    NewButtonComponent,
-    JsonPipe,
+    NewButtonComponent
   ],
 })
 export class SolutionCreateFormComponent implements OnInit {
@@ -71,16 +69,6 @@ export class SolutionCreateFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.createSolutionForm.get('databagId')?.setValue(this.selectedDatabagId);
-  }
-  selectedFieldsChange(columns: string[]): void {
-    this.selectedFields?.markAsTouched();
-    const selectedFields = this.selectedFields as FormArray;
-    while (selectedFields.length !== 0) {
-      selectedFields.removeAt(0);
-    }
-    columns.forEach(column => {
-      selectedFields.push(this.fb.control(column, Validators.required));
-    });
   }
   public onSubmit(): void {
     if (this.createSolutionForm.valid) {

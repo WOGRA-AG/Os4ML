@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
-import { JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
@@ -49,7 +49,6 @@ export interface PredictionFormOutput {
     ButtonComponent,
     ElementDividerComponent,
     ReactiveFormsModule,
-    JsonPipe,
     NgForOf,
     DatasetUploadComponent,
     UploadFieldComponent,

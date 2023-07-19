@@ -42,7 +42,10 @@
       </mat-option>
     </mat-select>
     <mat-error *ngIf="databagId?.invalid && databagId?.touched">
-      {{ 'organisms.solution_create_form.form_fields.databag_id.error' | translate }}
+      {{
+        'organisms.solution_create_form.form_fields.databag_id.error'
+          | translate
+      }}
     </mat-error>
     <mat-hint class="on-surface-text">
       {{
@@ -55,14 +58,16 @@
     <ng-container>
       <mat-form-field>
         <mat-label>{{
-          'organisms.solution_create_form.form_fields.selected_fields.label' | translate
+          'organisms.solution_create_form.form_fields.selected_fields.label'
+            | translate
         }}</mat-label>
         <mat-select
           data-testid="input-databagId"
           formControlName="selectedFields"
           multiple
           attr.aria-label="{{
-            'organisms.solution_create_form.selected_fields.aria_label' | translate
+            'organisms.solution_create_form.selected_fields.aria_label'
+              | translate
           }}">
           <mat-option
             *ngFor="
@@ -88,9 +93,9 @@
           }}
         </mat-hint>
         <mat-hint *ngIf="databagId?.value" class="on-surface-text">
-        {{
-          'organisms.solution_create_form.form_fields.selected_fields.hint'
-            | translate
+          {{
+            'organisms.solution_create_form.form_fields.selected_fields.hint'
+              | translate
           }}
         </mat-hint>
       </mat-form-field>

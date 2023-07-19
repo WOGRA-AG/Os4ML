@@ -44,7 +44,6 @@ export class FileDropzoneComponent {
       return;
     }
     const files = event.dataTransfer.files;
-    console.log(files);
     if (files.length > 0) {
       this.fileDropped.emit(files[0]);
     }
@@ -53,7 +52,6 @@ export class FileDropzoneComponent {
   uploadFile(event: Event): void {
     const element = event.currentTarget as HTMLInputElement;
     const fileList: FileList | null = element.files;
-    console.log(fileList);
     if (fileList && fileList.length > 0) {
       this.fileDropped.emit(fileList[0]);
     }

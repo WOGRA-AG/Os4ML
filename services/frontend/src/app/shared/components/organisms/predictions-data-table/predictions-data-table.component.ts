@@ -7,7 +7,6 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
-import { JsonPipe } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
@@ -26,7 +25,6 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     MatTableModule,
     TranslateModule,
     GetSolutionByIdPipe,
-    JsonPipe,
     GetDatabagByIdPipe,
     ProcessingStatusIndicatorComponent,
     ShortStatusPipe,
