@@ -17,29 +17,29 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { PlaceholderComponent } from 'src/app/shared/components/organisms/placeholder/placeholder.component';
-import { GetPlaceholderVariantPipe } from "../../shared/pipes/get-placeholder-variant.pipe";
+import { GetPlaceholderVariantPipe } from '../../shared/pipes/get-placeholder-variant.pipe';
 
 @Component({
-    selector: 'app-databags-page',
-    templateUrl: './databags-page.component.html',
-    styleUrls: ['./databags-page.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        ButtonComponent,
-        NoDatabagsPlaceholderComponent,
-        AsyncPipe,
-        TranslateModule,
-        HasElementsPipe,
-        NgForOf,
-        LocalizedDatePipe,
-        Os4mlDefaultTemplateComponent,
-        NewButtonComponent,
-        DatabagDataTableComponent,
-        DatabagCreateButtonComponent,
-        PlaceholderComponent,
-        GetPlaceholderVariantPipe
-    ]
+  selector: 'app-databags-page',
+  templateUrl: './databags-page.component.html',
+  styleUrls: ['./databags-page.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    ButtonComponent,
+    NoDatabagsPlaceholderComponent,
+    AsyncPipe,
+    TranslateModule,
+    HasElementsPipe,
+    NgForOf,
+    LocalizedDatePipe,
+    Os4mlDefaultTemplateComponent,
+    NewButtonComponent,
+    DatabagDataTableComponent,
+    DatabagCreateButtonComponent,
+    PlaceholderComponent,
+    GetPlaceholderVariantPipe,
+  ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;

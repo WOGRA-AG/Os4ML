@@ -17,7 +17,7 @@
     </app-databag-data-table>
     <app-placeholder
       *ngIf="!(databags | hasElements)"
-      [variant]="(databags | getPlaceholderVariant)"
+      [variant]="databags | getPlaceholderVariant"
       (addDatabag)="addDatabag()">
     </app-placeholder>
   </ng-container>

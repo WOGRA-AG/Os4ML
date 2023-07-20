@@ -11,17 +11,13 @@
       'organisms.placeholder.' + variant + '.description' | translate
     }}</span>
     <app-databag-create-button
-      *ngIf="
-        variant === 'noData'
-      "
+      *ngIf="variant === 'noData'"
       (addDatabag)="addDatabag.emit()"
       [type]="'primary'">
     </app-databag-create-button>
 
     <app-solution-create-button
-      *ngIf="
-        variant === 'noSolution'
-      "
+      *ngIf="variant === 'noSolution'"
       (addSolution)="addSolution.emit()"
       [type]="'primary'">
     </app-solution-create-button>

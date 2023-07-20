@@ -1,15 +1,17 @@
-import { Pipe, PipeTransform, isStandalone } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { Databag, Prediction, Solution } from 'build/openapi/modelmanager';
 import { PlaceholderVariant } from '../components/organisms/placeholder/placeholder.component';
 
 @Pipe({
   name: 'getPlaceholderVariant',
-  standalone: true
+  standalone: true,
 })
 export class GetPlaceholderVariantPipe implements PipeTransform {
-
-  transform(databags?: Databag[] | null, solutions?: Solution[], predictions?: Prediction[]): PlaceholderVariant {
-    
+  transform(
+    databags?: Databag[] | null,
+    solutions?: Solution[],
+    predictions?: Prediction[]
+  ): PlaceholderVariant {
     const hasDatabags = !!databags && databags.length > 0;
     const hasSolutions = !!solutions && solutions.length > 0;
     const hasPredictions = !!predictions && predictions.length > 0;
@@ -28,8 +30,7 @@ export class GetPlaceholderVariantPipe implements PipeTransform {
     if (hasDatabags && hasSolutions && !hasPredictions) {
       return PlaceholderVariant.noPrediction;
     }
-    
+
     return PlaceholderVariant.noData;
   }
-
 }

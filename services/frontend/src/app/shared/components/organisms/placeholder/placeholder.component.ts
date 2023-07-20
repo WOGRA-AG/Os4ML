@@ -13,8 +13,8 @@ export enum PlaceholderVariant {
   noData = 'noData',
   noSolution = 'noSolution',
   noPrediction = 'noPrediction',
-  noPlaceholder = 'noPlaceholder'
-};
+  noPlaceholder = 'noPlaceholder',
+}
 
 @Component({
   selector: 'app-placeholder',
@@ -32,13 +32,12 @@ export enum PlaceholderVariant {
   ],
 })
 export class PlaceholderComponent {
-
-  public buttonTypes = ButtonTypes;
-
   @Input() public variant: PlaceholderVariant = PlaceholderVariant.noData;
   @Output() public addDatabag = new EventEmitter<void>();
   @Output() public addSolution = new EventEmitter<void>();
   @Output() public addPrediction = new EventEmitter<void>();
+
+  public buttonTypes = ButtonTypes;
 
   public onAddDatabag(): void {
     this.addDatabag.emit();
