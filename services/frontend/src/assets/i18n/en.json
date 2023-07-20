@@ -20,6 +20,10 @@
         "title": "Let's get started with OS4ML",
         "description": "To start with OS4ML you need to create a databag first"
       },
+      "noSolutionOnSolutions": {
+        "title": "No Solutions yet",
+        "description": "After uploading your databag the next step will be creating a solution"
+      },
       "selectedDataHasNoSolutionsOnSolutions": {
         "title": "No Solutions yet for your selected Databag",
         "description": "After uploading your databag the next step will be creating a solution"
