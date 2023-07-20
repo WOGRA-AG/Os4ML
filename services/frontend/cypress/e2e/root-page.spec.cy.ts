@@ -34,6 +34,12 @@ describe('Root Page', () => {
     cy.get('[data-testid="solutions-page"]').should('be.visible');
   });
 
+  it('Test link predictions-page', () => {
+    cy.get('[data-testid=predictions-page-link]').click();
+    cy.url().should('include', '/predictions');
+    cy.get('[data-testid="predictions-page"]').should('be.visible');
+  });
+
   it('regression with fastlane', () => {
     cy.get('[data-testid=open-getting-started-dialog]').click();
     cy.get('#dataset-name-input').clear();
@@ -45,6 +51,7 @@ describe('Root Page', () => {
     cy.get(
       '#cdk-step-content-0-1 > .mat-mdc-dialog-content > app-dialog-section > .dialog-element > :nth-child(3) > div'
     ).should('have.text', ' What do you want to predict? ');
+    cy.wait(2000);
     cy.get(
       ':nth-child(4) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container > .mat-subtitle-2',
       { timeout: databagTimeout }
@@ -53,6 +60,7 @@ describe('Root Page', () => {
       ':nth-child(4) > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content > app-list-item > .list-item-container'
     ).click();
     cy.get('#add-databag-main-button').click();
+    cy.wait(2000);
     cy.get('#mat-input-0').clear();
     cy.get('#mat-input-0').type(solutionName);
     cy.wait(standardTimeout);

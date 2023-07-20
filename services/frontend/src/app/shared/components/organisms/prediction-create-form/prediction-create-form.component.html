@@ -39,7 +39,7 @@
       </mat-label>
       <mat-select
         [(value)]="selectedSolutionId"
-        data-testid="input-databagId"
+        data-testid="input-solutionId"
         formControlName="solutionId"
         attr.aria-label="{{
           'organisms.prediction_create_form.form_fields.solution_id.aria_label'
@@ -122,7 +122,7 @@
       [ariaLabel]="
         'organisms.prediction_create_form.download_csv.aria_label' | translate
       "
-      data-testid="add-solution">
+      data-testid="download-prediction-template">
       {{ 'organisms.prediction_create_form.download_csv.button' | translate }}
     </app-new-button>
     <app-new-button
@@ -133,7 +133,7 @@
       [ariaLabel]="
         'organisms.prediction_create_form.submit.aria_label' | translate
       "
-      data-testid="add-solution">
+      data-testid="submit-prediction">
       {{ 'organisms.prediction_create_form.submit.button' | translate }}
     </app-new-button>
   </div>

@@ -62,7 +62,7 @@
             | translate
         }}</mat-label>
         <mat-select
-          data-testid="input-databagId"
+          data-testid="input-selected-fields"
           formControlName="selectedFields"
           multiple
           attr.aria-label="{{
@@ -106,12 +106,11 @@
       type="submit"
       variant="primary"
       size="medium"
-      data-testid="create-databag"
+      data-testid="submit-solution"
       [disabled]="createSolutionForm.invalid"
       [ariaLabel]="
         'organisms.solution_create_form.submit.aria_label' | translate
-      "
-      data-testid="add-solution">
+      ">
       {{ 'organisms.solution_create_form.submit.button' | translate }}
     </app-new-button>
   </div>

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="predictions">
+<table mat-table [dataSource]="predictions" data-testid="prediction-table">
   <ng-container matColumnDef="predictionName">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{
@@ -69,7 +69,7 @@
         }}"
         (click)="downloadPredictionButton.emit(element.id)"
         [disabled]="(element.status | shortStatus) !== 'Done'"
-        data-testid="add-databag"
+        data-testid="prediction-download-button"
         variant="basic"
         class="fab-button mat-raised-button mr-1"
         color="primary"
@@ -80,7 +80,7 @@
         attr.aria-label="{{
           'pages.solutions_page.actions.delete_prediction' | translate
         }}"
-        data-testid="add-databag"
+        data-testid="prediction-delete-button"
         variant="basic"
         class="fab-button mat-raised-button"
         color="primary"
