@@ -33,33 +33,35 @@ import { SolutionCreateButtonComponent } from '../../shared/components/organisms
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { PlaceholderComponent } from '../../shared/components/organisms/placeholder/placeholder.component';
+import { GetPlaceholderVariantPipe } from "../../shared/pipes/get-placeholder-variant.pipe";
 
 @Component({
-  selector: 'app-solutions-page',
-  templateUrl: './solutions-page.component.html',
-  styleUrls: ['./solutions-page.component.scss'],
-  standalone: true,
-  imports: [
-    NgIf,
-    NoSolutionsPlaceholderComponent,
-    NoDatabagsPlaceholderComponent,
-    AsyncPipe,
-    TranslateModule,
-    LocalizedDatePipe,
-    Os4mlDefaultTemplateComponent,
-    SolutionDataTableComponent,
-    HasElementsPipe,
-    ButtonComponent,
-    MatSelectModule,
-    NgForOf,
-    SelectComponent,
-    ToSelectOptionPipe,
-    FilterSolutionsByDatabagIdPipe,
-    SolutionCreateButtonComponent,
-    NewButtonComponent,
-    DatabagCreateButtonComponent,
-    PlaceholderComponent,
-  ],
+    selector: 'app-solutions-page',
+    templateUrl: './solutions-page.component.html',
+    styleUrls: ['./solutions-page.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NoSolutionsPlaceholderComponent,
+        NoDatabagsPlaceholderComponent,
+        AsyncPipe,
+        TranslateModule,
+        LocalizedDatePipe,
+        Os4mlDefaultTemplateComponent,
+        SolutionDataTableComponent,
+        HasElementsPipe,
+        ButtonComponent,
+        MatSelectModule,
+        NgForOf,
+        SelectComponent,
+        ToSelectOptionPipe,
+        FilterSolutionsByDatabagIdPipe,
+        SolutionCreateButtonComponent,
+        NewButtonComponent,
+        DatabagCreateButtonComponent,
+        PlaceholderComponent,
+        GetPlaceholderVariantPipe
+    ]
 })
 export class SolutionsPageComponent implements OnDestroy {
   public databags$: Observable<Databag[]>;

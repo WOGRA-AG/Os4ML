@@ -2,7 +2,6 @@
   <h1 header class="headline-1 primary-text">
     {{ 'databag.plural' | translate }}
   </h1>
-
   <div main class="actions">
     <app-databag-create-button
       (addDatabag)="addDatabag()"
@@ -18,13 +17,8 @@
     </app-databag-data-table>
     <app-placeholder
       *ngIf="!(databags | hasElements)"
-      [type]="'noDataOnDatabags'"
+      [variant]="(databags | getPlaceholderVariant)"
       (addDatabag)="addDatabag()">
     </app-placeholder>
-
-    <!-- <app-no-databags-placeholder
-      *ngIf="!(databags | hasElements)"
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder> -->
   </ng-container>
 </app-os4ml-default-template>

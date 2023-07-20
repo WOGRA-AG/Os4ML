@@ -32,31 +32,14 @@
       [databags]="(databags$ | async) ?? []"
       (solutionSettingButton)="
         openSolutionSettingDialog($event)
-      "></app-solution-data-table>
+      "></app-solution-data-table> 
 
-    <app-placeholder
-      *ngIf="
-        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
-      "
-      [type]="'noSolutionOnSolutions'"
-      (addSolutionButton)="addSolution()">
-    </app-placeholder>
+      <app-placeholder
+        *ngIf="!(solutions$ | async | hasElements)"
+        [variant]="(databags$ | async) | getPlaceholderVariant"
+        (addDatabag)="addDatabag()"
+        (addSolution)="addSolution()">
+      </app-placeholder>
 
-    <app-placeholder
-      *ngIf="!(databags$ | async | hasElements)"
-      [type]="'noDataOnSolutions'"
-      (addSolutionButton)="addSolution()">
-    </app-placeholder>
-
-    <!-- <app-no-solutions-placeholder
-      *ngIf="
-        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
-      "
-      (addSolutionButton)="addSolution()">
-    </app-no-solutions-placeholder>
-    <app-no-databags-placeholder
-      *ngIf="!(databags$ | async | hasElements)"
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder> -->
   </ng-container>
 </app-os4ml-default-template>

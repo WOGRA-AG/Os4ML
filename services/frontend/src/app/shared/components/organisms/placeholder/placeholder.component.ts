@@ -9,6 +9,13 @@ import { NgClass, NgIf } from '@angular/common';
 import { DatabagCreateButtonComponent } from '../databag-create-button/databag-create-button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 
+export enum PlaceholderVariant {
+  noData = 'noData',
+  noSolution = 'noSolution',
+  noPrediction = 'noPrediction',
+  noPlaceholder = 'noPlaceholder'
+};
+
 @Component({
   selector: 'app-placeholder',
   templateUrl: './placeholder.component.html',
@@ -25,22 +32,13 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
   ],
 })
 export class PlaceholderComponent {
-  @Input() public type:
-    | 'fallback'
-    | 'noDataOnDatabags'
-    | 'noDataOnSolutions'
-    | 'noSolutionOnSolutions'
-    | 'selectedDataHasNoSolutionsOnSolutions'
-    | 'noDataNoSolutionOnPredictions'
-    | 'selectedDataHasNoSolutionOnPrediction'
-    | 'noPredictionsOnPredictions'
-    | 'selectedSolutionHasNoPrediction' = 'fallback';
 
+  public buttonTypes = ButtonTypes;
+
+  @Input() public variant: PlaceholderVariant = PlaceholderVariant.noData;
   @Output() public addDatabag = new EventEmitter<void>();
   @Output() public addSolution = new EventEmitter<void>();
   @Output() public addPrediction = new EventEmitter<void>();
-
-  public buttonTypes = ButtonTypes;
 
   public onAddDatabag(): void {
     this.addDatabag.emit();

@@ -1,20 +1,18 @@
 <div class="placeholder-container">
   <div class="placeholder">
     <img
-      [ngClass]="['placeholder-image']"
-      src="{{ './assets/illustrations/' + type + '.svg' }}"
+      class="placeholder-image"
+      src="{{ './assets/illustrations/' + variant + '.svg' }}"
       alt="Databag Illustration" />
     <span class="title-large primary-text">{{
-      'organisms.placeholder.' + type + '.title' | translate
+      'organisms.placeholder.' + variant + '.title' | translate
     }}</span>
     <span class="body-medium on-surface-text">{{
-      'organisms.placeholder.' + type + '.description' | translate
+      'organisms.placeholder.' + variant + '.description' | translate
     }}</span>
     <app-databag-create-button
       *ngIf="
-        type === 'noDataOnDatabags' ||
-        type === 'noDataOnSolutions' ||
-        type === 'noDataNoSolutionOnPredictions'
+        variant === 'noData'
       "
       (addDatabag)="addDatabag.emit()"
       [type]="'primary'">
@@ -22,30 +20,10 @@
 
     <app-solution-create-button
       *ngIf="
-        type === 'noSolutionOnSolutions' ||
-        type === 'selectedDataHasNoSolutionsOnSolutions' ||
-        type === 'selectedDataHasNoSolutionOnPrediction'
+        variant === 'noSolution'
       "
       (addSolution)="addSolution.emit()"
       [type]="'primary'">
     </app-solution-create-button>
-
-    <!-- <app-new-button 
-        *ngIf="type === 'noDataOnDatabags' "
-        [type]="buttonTypes.primary"
-        [size]="'medium'"
-        [ariaLabel]="'organisms.placeholder.no_databag_on_databags.button' | translate"
-        (click)="addSolutionButton.emit($event)">
-        {{ 'organisms.placeholder.no_databag_on_databags.button' | translate }}
-      </app-new-button> -->
-    <!-- <app-button
-        variant="raised"
-        class="main-button"
-        id="add-solution-button-empty"
-        color="primary"
-        icon="lightbulb_outline"
-        data-testid="add-solution">
-        {{ 'solution.create' | translate }}
-      </app-button> -->
   </div>
 </div>
