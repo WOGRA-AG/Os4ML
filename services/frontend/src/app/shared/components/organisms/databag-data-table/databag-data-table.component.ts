@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
-import {RuntimeIndicatorComponent} from "../../molecules/runtime-indicator/runtime-indicator.component";
+import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
 
 @Component({
   selector: 'app-databag-data-table',

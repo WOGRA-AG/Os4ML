@@ -1,7 +1,9 @@
 import {
-  createDatabag, createPrediction,
+  createDatabag,
+  createPrediction,
   createSolution,
-  deleteDatabag, deletePrediction,
+  deleteDatabag,
+  deletePrediction,
   deleteSolution,
 } from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
@@ -49,9 +51,12 @@ describe('Predictions Page', () => {
       });
   });
 
-
   it('create Pridiction', () => {
-    createPrediction(predictionName, solutionName, 'cypress/fixtures/titanic_predict.csv');
+    createPrediction(
+      predictionName,
+      solutionName,
+      'cypress/fixtures/titanic_predict.csv'
+    );
     cy.wait(2000);
     cy.get('[data-testid="prediction-item"]')
       .filter(`:contains("${predictionName}")`)
@@ -61,7 +66,6 @@ describe('Predictions Page', () => {
       .contains('Done', {
         timeout: 600000,
       });
-
 
     // cy.get('[data-testid="solution-item"]')
     //   .filter(`:contains("${updatedSolutionName}")`)
@@ -102,22 +106,25 @@ describe('Predictions Page', () => {
 
   it('delete Prediction', () => {
     deletePrediction(predictionName);
-    cy.get('[data-testid="prediction-table"]')
-      .should('not.contain', predictionName);
+    cy.get('[data-testid="prediction-table"]').should(
+      'not.contain',
+      predictionName
+    );
   });
 
   it('delete Solution', () => {
     cy.visit('/#/solutions');
     deleteSolution(solutionName);
-    cy.get('[data-testid="solution-table"]')
-      .should('not.contain', solutionName);
+    cy.get('[data-testid="solution-table"]').should(
+      'not.contain',
+      solutionName
+    );
   });
 
   it('delete a Databag', () => {
     cy.visit('/#/databags');
     cy.wait(2000);
     deleteDatabag(databagName);
-    cy.get('[data-testid="databag-page"]')
-      .should('not.contain', databagName);
+    cy.get('[data-testid="databag-page"]').should('not.contain', databagName);
   });
 });
