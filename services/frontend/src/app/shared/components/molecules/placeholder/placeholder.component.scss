@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.placeholder-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
+}
+
+.placeholder {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  max-width: 510px;
+  height: auto;
+  gap: 1rem;
+}
+
+.placeholder-image {
+  height: 13vh;
+  margin: 0 auto 2rem;
+}
+
+.main-button {
+  margin: auto;
+}

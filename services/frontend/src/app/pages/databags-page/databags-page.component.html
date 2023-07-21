@@ -15,10 +15,10 @@
       (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
-    <app-placeholder
-      *ngIf="!(databags | hasElements)"
-      [variant]="databags | getPlaceholderVariant"
+    <app-ml-status-placeholder
+      *ngIf="!(databags$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
       (addDatabag)="addDatabag()">
-    </app-placeholder>
+    </app-ml-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>

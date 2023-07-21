@@ -34,11 +34,12 @@
         openSolutionSettingDialog($event)
       "></app-solution-data-table>
 
-    <app-placeholder
+    <app-ml-status-placeholder
       *ngIf="!(solutions$ | async | hasElements)"
-      [variant]="databags$ | async | getPlaceholderVariant"
+      [hasSolutions]="solutions$ | async | hasElements"
+      [hasDatabags]="databags$ | async | hasElements"
       (addDatabag)="addDatabag()"
       (addSolution)="addSolution()">
-    </app-placeholder>
+    </app-ml-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>

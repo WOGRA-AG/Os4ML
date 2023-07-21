@@ -16,8 +16,9 @@ import { NewButtonComponent } from '../../shared/components/molecules/new-button
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import { PlaceholderComponent } from 'src/app/shared/components/organisms/placeholder/placeholder.component';
-import { GetPlaceholderVariantPipe } from '../../shared/pipes/get-placeholder-variant.pipe';
+import {
+  MlEntityStatusPlaceholderComponent
+} from "../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component";
 
 @Component({
   selector: 'app-databags-page',
@@ -37,13 +38,11 @@ import { GetPlaceholderVariantPipe } from '../../shared/pipes/get-placeholder-va
     NewButtonComponent,
     DatabagDataTableComponent,
     DatabagCreateButtonComponent,
-    PlaceholderComponent,
-    GetPlaceholderVariantPipe,
+    MlEntityStatusPlaceholderComponent,
   ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
-
   constructor(
     private databagService: DatabagService,
     private dialog: MatDialog

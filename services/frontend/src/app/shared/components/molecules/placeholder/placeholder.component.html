@@ -1,0 +1,15 @@
+<div class="placeholder-container">
+  <div class="placeholder">
+    <img
+      class="placeholder-image"
+      [src]="src"
+      [alt]="title" />
+    <span class="title-large primary-text">
+      {{ title }}
+    </span>
+    <span class="body-medium on-surface-text">
+      {{ description }}
+    </span>
+    <ng-content></ng-content>
+  </div>
+</div>
