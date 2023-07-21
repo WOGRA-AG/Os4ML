@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-placeholder',
   templateUrl: './placeholder.component.html',
   styleUrls: ['./placeholder.component.scss'],
-  standalone: true
+  standalone: true,
 })
 export class PlaceholderComponent {
   @Input() public src?: string;

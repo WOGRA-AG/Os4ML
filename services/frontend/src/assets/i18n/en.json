@@ -11,7 +11,7 @@
     }
   },
   "organisms": {
-    "placeholder": {
+    "ml_status_placeholder": {
       "noDatabagPlaceholder": {
         "title": "Let's get started with OS4ML",
         "description": "To start with OS4ML you need to create a databag first"

@@ -32,9 +32,7 @@ import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-soluti
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import {
-  MlEntityStatusPlaceholderComponent
-} from "../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component";
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-solutions-page',

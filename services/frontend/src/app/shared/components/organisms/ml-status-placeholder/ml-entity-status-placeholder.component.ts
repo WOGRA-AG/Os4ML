@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {SolutionCreateButtonComponent} from "../solution-create-button/solution-create-button.component";
-import {DatabagCreateButtonComponent} from "../databag-create-button/databag-create-button.component";
-import {PlaceholderComponent} from "../../molecules/placeholder/placeholder.component";
-import {TranslateModule} from "@ngx-translate/core";
-import {NgIf} from "@angular/common";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
+import { DatabagCreateButtonComponent } from '../databag-create-button/databag-create-button.component';
+import { PlaceholderComponent } from '../../molecules/placeholder/placeholder.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-ml-status-placeholder',
@@ -14,20 +14,22 @@ import {NgIf} from "@angular/common";
     DatabagCreateButtonComponent,
     PlaceholderComponent,
     TranslateModule,
-    NgIf
+    NgIf,
   ],
-  standalone: true
+  standalone: true,
 })
-
 export class MlEntityStatusPlaceholderComponent {
   @Input() public hasDatabags = false;
-  @Input() public hasSolutions =false;
+  @Input() public hasSolutions = false;
   @Input() public hasPredictions = false;
   @Output() public addDatabag = new EventEmitter<void>();
   @Output() public addSolution = new EventEmitter<void>();
   @Output() public addPrediction = new EventEmitter<void>();
 
-  get placeholderStatus(): 'noDatabagPlaceholder' |  'noSolutionPlaceholder' | 'noPredictionPlaceholder' {
+  get placeholderStatus():
+    | 'noDatabagPlaceholder'
+    | 'noSolutionPlaceholder'
+    | 'noPredictionPlaceholder' {
     if (!this.hasDatabags) {
       return 'noDatabagPlaceholder';
     }
