@@ -1,8 +1,12 @@
 <app-placeholder
   [src]="'./assets/illustrations/' + placeholderStatus + '.svg'"
-  [title]="'organisms.ml_status_placeholder.' + placeholderStatus + '.title' | translate"
+  [title]="
+    'organisms.ml_status_placeholder.' + placeholderStatus + '.title'
+      | translate
+  "
   [description]="
-    'organisms.ml_status_placeholder.' + placeholderStatus + '.description' | translate
+    'organisms.ml_status_placeholder.' + placeholderStatus + '.description'
+      | translate
   ">
   <app-databag-create-button
     *ngIf="placeholderStatus === 'noDatabagPlaceholder'"
