@@ -1,4 +1,4 @@
-ARG POETRY_VERSION=1.4.2
+ARG POETRY_VERSION=1.5.1
 ARG PYTHON_VERSION=3.10.6
 FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
