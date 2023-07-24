@@ -16,6 +16,7 @@ import { NewButtonComponent } from '../../shared/components/molecules/new-button
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -35,11 +36,11 @@ import { DatabagCreateButtonComponent } from '../../shared/components/organisms/
     NewButtonComponent,
     DatabagDataTableComponent,
     DatabagCreateButtonComponent,
+    MlEntityStatusPlaceholderComponent,
   ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
-
   constructor(
     private databagService: DatabagService,
     private dialog: MatDialog
