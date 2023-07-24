@@ -1,3 +1,4 @@
+ARG POETRY_VERSION=1.5.1
 FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 WORKDIR /usr/app
@@ -43,7 +44,8 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_NO_INTERACTION=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
-    PROJECT_DIR="/app"
+    PROJECT_DIR="/app" \
+    POETRY_VERSION=${POETRY_VERSION}
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
@@ -60,9 +62,8 @@ RUN buildDeps="build-essential" \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
-ENV POETRY_VERSION=1.4.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 - --version ${POETRY_VERSION} && \
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 - && \
     chmod a+x /opt/poetry/bin/poetry
 
 # We copy our Python requirements here to cache them
