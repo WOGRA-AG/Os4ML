@@ -9,31 +9,40 @@
       <a data-testid="databags-page-link" [routerLink]="['/databags']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>folder_open</mat-icon>
-          <b class="nav-caption">{{ 'databag.plural' | translate }}</b>
+          <b class="nav-caption">{{
+            'root.navigation.databags' | translate
+          }}</b>
         </app-side-nav-item>
       </a>
       <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
         <app-side-nav-item>
           <mat-icon matListItemIcon>lightbulb</mat-icon>
-          <b class="nav-caption">{{ 'solution.plural' | translate }}</b>
+          <b class="nav-caption">{{
+            'root.navigation.solutions' | translate
+          }}</b>
         </app-side-nav-item>
       </a>
     </ng-container>
     <ng-container footer-nav>
-      <button
-        id="get-started-button"
-        mat-stroked-button
-        color="primary"
+      <app-new-button
+        data-testid="open-getting-started-dialog"
+        [type]="buttonTypes.secondary"
+        [size]="'small'"
+        [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
         (click)="openGettingStartedDialog()">
-        <b class="nav-caption">Guided Tour</b>
-      </button>
+        {{ 'root.footer-navigation.guided_tour' | translate }}
+      </app-new-button>
       <a
+        data-testid="documentation-link"
         href="https://wogra-ag.github.io/os4ml-docs/"
-        target="_blank"
-        mat-button
-        color="primary">
-        <mat-icon matListItemIcon>description</mat-icon>
-        <b class="nav-caption">Documentation</b>
+        target="_blank">
+        <app-new-button
+          [type]="buttonTypes.text"
+          [size]="'small'"
+          [icon]="'description'"
+          [ariaLabel]="'root.footer-navigation.documentation' | translate">
+          {{ 'root.footer-navigation.documentation' | translate }}
+        </app-new-button>
       </a>
     </ng-container>
   </app-side-nav>

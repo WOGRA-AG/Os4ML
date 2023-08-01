@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateDatabagComponent as CreateDatabagComponent_1 } from '../../../databags/components/create-databag/create-databag.component';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-databag-stepper',
@@ -40,6 +41,7 @@ export class CreateDatabagStepperComponent {
   public databag: Databag = {};
 
   constructor(
+    private router: Router,
     public dialogRef: MatDialogRef<CreateDatabagStepperComponent>,
     private databagService: DatabagService
   ) {
@@ -68,6 +70,7 @@ export class CreateDatabagStepperComponent {
       this.databagService.updateDatabagById(this.databag.id, this.databag)
     );
     this.dialogRef.close();
+    this.router.navigate(['databags']);
   }
 
   async clearProgress(): Promise<void> {

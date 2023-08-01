@@ -1,5 +1,7 @@
 <app-dialog-header (closeDialog)="close()">
-  {{ 'dialog.get_started.title' | translate }}
+  <span class="on-surface-text">{{
+    'dialog.get_started.title' | translate
+  }}</span>
 </app-dialog-header>
 
 <mat-stepper [linear]="false" orientation="horizontal" #stepper>

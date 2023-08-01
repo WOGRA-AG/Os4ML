@@ -1,3 +1,4 @@
+ARG POETRY_VERSION=1.5.1
 FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
 
 COPY oas/ /oas
@@ -10,7 +11,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
-FROM wogra/cuda-poetry:cuda11.7.1-poetry1.4.2 as production
+FROM wogra/cuda-poetry:cuda11.7.1-poetry${POETRY_VERSION} as production
 
 COPY dockerfiles/ludwig/pyproject.toml /pyproject.toml
 COPY dockerfiles/ludwig/poetry.lock /poetry.lock

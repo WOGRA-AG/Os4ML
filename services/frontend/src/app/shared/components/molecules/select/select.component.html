@@ -1,0 +1,16 @@
+<mat-form-field>
+  <mat-label>
+    {{ label }}
+  </mat-label>
+  <mat-select
+    [aria-label]="label"
+    (selectionChange)="selectionChange.emit($event.value)"
+    [value]="defaultValue">
+    <mat-option>{{
+      'pages.solutions_page.actions.filter_by_databag.option_none' | translate
+    }}</mat-option>
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.viewValue }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

@@ -23,7 +23,7 @@ spec:
       containers:
         - name: jobmanager
           image: "wogra/os4ml-job-manager"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
               name: http

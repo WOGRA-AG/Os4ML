@@ -3,77 +3,22 @@
     {{ 'databag.plural' | translate }}
   </h1>
   <div main class="actions">
-    <app-button
-      data-testid="add-databag"
-      variant="raised"
-      class="fab-button mat-raised-button"
-      color="primary"
-      icon="add"
-      (click)="addDatabag()">
-      {{ 'databag.create' | translate }}
-    </app-button>
+    <app-databag-create-button
+      (addDatabag)="addDatabag()"
+      [type]="'primary'"
+      data-testid="add-databag">
+    </app-databag-create-button>
   </div>
   <ng-container main *ngIf="databags$ | async as databags">
-    <table mat-table [dataSource]="databags">
-      <ng-container matColumnDef="databagName">
-        <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-          Databag Name
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
-      <ng-container matColumnDef="databagType">
-        <th mat-header-cell *matHeaderCellDef>Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.databagType }}</td>
-      </ng-container>
-      <ng-container matColumnDef="features">
-        <th mat-header-cell *matHeaderCellDef>Features</th>
-        <td mat-cell *matCellDef="let element">{{ element.numberColumns }}</td>
-      </ng-container>
-      <ng-container matColumnDef="samples">
-        <th mat-header-cell *matHeaderCellDef>Samples</th>
-        <td mat-cell *matCellDef="let element">{{ element.numberRows }}</td>
-      </ng-container>
-      <ng-container matColumnDef="creation">
-        <th mat-header-cell *matHeaderCellDef>Creation</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.creationTime | localizedDate }}
-          {{ element.creationTime | localizedDate : 'mediumTime' }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-          <app-icon-button
-            data-testid="databag-settings-button"
-            (click)="openDatabagSettingDialog(element)"
-            [matTooltip]="'databag.detail.tooltips.settings' | translate"
-            attr.aria-label="{{
-              'databag.detail.tooltips.settings' | translate
-            }}"
-            class="mr-1"
-            color="primary"
-            icon="edit">
-          </app-icon-button>
-          <app-icon-button
-            (click)="openCreateSolutionStepperDialog(element)"
-            [matTooltip]="'databag.detail.tooltips.add_solution' | translate"
-            attr.aria-label="{{
-              'databag.detail.tooltips.add_solution' | translate
-            }}"
-            color="primary"
-            icon="add">
-          </app-icon-button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        data-testid="databag-item"
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-    <app-no-databags-placeholder
-      *ngIf="!(databags | hasElements)"
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
+    <app-databag-data-table
+      [databags]="(databags$ | async) ?? []"
+      (settingButton)="openDatabagSettingDialog($event)"
+      (createSolutionButton)="openCreateSolutionStepperDialog($event)">
+    </app-databag-data-table>
+    <app-ml-status-placeholder
+      *ngIf="!(databags$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
+      (addDatabag)="addDatabag()">
+    </app-ml-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>
