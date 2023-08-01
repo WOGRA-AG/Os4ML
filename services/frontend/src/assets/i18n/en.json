@@ -66,8 +66,8 @@
           "hint": "Select the databag for which you want to create a solution"
         },
         "selected_fields": {
-          "hint": "Mark fields, from your data bag, which the AI may use as input for its training",
-          "help_message": "Please select a databag first to specify further training",
+          "hint": "Mark fields, from your data bag, that the AI should predict",
+          "help_message": "Please select a databag first to specify further training details",
           "error": ""
         }
       },
