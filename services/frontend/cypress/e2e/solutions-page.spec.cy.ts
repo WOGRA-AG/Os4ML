@@ -41,11 +41,7 @@ describe('Solutions Page', () => {
   });
 
   it('add Solution', () => {
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${databagName}")`, { timeout: 500 })
-      .click();
-    cy.wait(500);
-    createSolution(solutionName);
+    createSolution(solutionName, databagName);
     cy.wait(2000);
     cy.get('[data-testid="solution-item"]')
       .filter(`:contains("${solutionName}")`)
@@ -111,11 +107,8 @@ describe('Solutions Page', () => {
   });
 
   it('delete Solution', () => {
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${databagName}")`)
-      .click();
     deleteSolution(updatedSolutionName);
-    cy.get('[data-testid="solution-page"]').should(
+    cy.get('[data-testid="solution-table"]').should(
       'not.contain',
       updatedSolutionName
     );

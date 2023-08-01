@@ -23,7 +23,7 @@ spec:
       containers:
         - name: objectstore-manager
           image: "wogra/os4ml-objectstore-manager"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
               name: http

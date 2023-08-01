@@ -1,6 +1,7 @@
-<mat-list *ngIf="listItems$">
+<mat-list *ngIf="listItems">
   <mat-list-item
-    *ngFor="let item of listItems$ | async"
+    data-testid="mat-list-item"
+    *ngFor="let item of listItems"
     class="pointer bg-primary"
     [class.active]="currentSelectedItems.includes(item.key)"
     (click)="selectItem(item)">

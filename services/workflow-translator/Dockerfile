@@ -1,3 +1,4 @@
+ARG POETRY_VERSION=1.5.1
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
 FROM gitlab-registry.wogra.com/developer/images/python:3.10.7-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
@@ -11,7 +12,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv" \
     PROJECT_DIR="/app" \
-    POETRY_VERSION=1.2.0 \
+    POETRY_VERSION=${POETRY_VERSION} \
     OPENAPI_GENERATOR_CLI_VERSION=5.4.0
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$JAVA_HOME/bin:$PATH"
@@ -44,7 +45,7 @@ WORKDIR $PYSETUP_PATH
 COPY services/workflow-translator/poetry.lock services/workflow-translator/pyproject.toml ./
 
 RUN --mount=type=cache,target=/root/.cache \
-    poetry install --no-dev --no-interaction --no-ansi
+    poetry install --only main --no-root
 
 WORKDIR /templates
 COPY templates /templates
@@ -67,7 +68,7 @@ RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR $PYSETUP_PATH
 RUN --mount=type=cache,target=/root/.cache \
-    poetry install -q
+    poetry install --no-root
 
 WORKDIR $PROJECT_DIR
 COPY services/workflow-translator/ .

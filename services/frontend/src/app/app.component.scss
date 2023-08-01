@@ -15,9 +15,15 @@ nav {
   width: 205px;
   height: 100%;
 
-  a,
-  .logo {
+  a {
+    display: inline-flex;
     width: 100%;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
+    .logo {
+      width: 100%;
+      text-decoration: none;
+    }
   }
 }

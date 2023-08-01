@@ -23,7 +23,7 @@ spec:
       containers:
         - name: workflow-translator
           image: "wogra/os4ml-workflow-translator"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
               name: http

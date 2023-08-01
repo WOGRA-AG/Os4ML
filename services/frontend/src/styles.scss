@@ -1,10 +1,11 @@
 @import 'src/app/shared/components/atoms/theme/tokens.css';
-//@import 'src/app/shared/components/atoms/theme/pink-tokens.css';
+// @import 'src/app/shared/components/atoms/theme/pink-tokens.css';
 @import 'src/app/shared/components/atoms/theme/theme.light.css'
   (prefers-color-scheme: light);
 @import 'src/app/shared/components/atoms/theme/theme.dark.css'
   (prefers-color-scheme: dark);
 @import 'src/app/shared/components/atoms/theme/colors.module.scss';
+@import 'src/app/shared/components/atoms/theme/typography.module.scss';
 @import 'src/app/shared/components/atoms/theme/spacing.module.scss';
 @import 'src/app/material/os4ml-material-theme';
 /* You can add global styles to this file, and also import other style files */

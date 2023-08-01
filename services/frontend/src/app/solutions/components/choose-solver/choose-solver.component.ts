@@ -3,14 +3,15 @@ import { Solver } from 'build/openapi/modelmanager';
 import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { SolverService } from '../../services/solver.service';
 import { ListItem } from '../../../shared/models/list-item';
-import { SelectableListComponent } from '../../../design/components/organisms/selectable-list/selectable-list.component';
+import { SelectableListComponent } from '../../../shared/components/molecules/selectable-list/selectable-list.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-choose-solver',
   templateUrl: './choose-solver.component.html',
   styleUrls: ['./choose-solver.component.scss'],
   standalone: true,
-  imports: [SelectableListComponent],
+  imports: [SelectableListComponent, AsyncPipe],
 })
 export class ChooseSolverComponent implements OnDestroy {
   @Output() public selectedSolverChange: EventEmitter<Solver> =
