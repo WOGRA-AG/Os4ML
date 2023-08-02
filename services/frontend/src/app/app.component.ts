@@ -17,6 +17,7 @@ import {
   ButtonTypes,
   NewButtonComponent,
 } from './shared/components/molecules/new-button/new-button.component';
+import { ThemeToggleComponent } from './shared/components/molecules/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,7 @@ import {
     SideNavItemComponent,
     SupportComponent,
     NewButtonComponent,
+    ThemeToggleComponent,
   ],
 })
 export class AppComponent {
