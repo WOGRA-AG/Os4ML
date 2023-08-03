@@ -74,10 +74,11 @@
         [selectedFileName]="predictionDataFile?.value.name"
         (fileDropped)="predictionDataFileSelected($event)">
       </app-file-dropzone>
-      <mat-hint *ngIf="predictionDataFile?.errors?.['invalidFileFormat']" class="error-text text-align-center">
+      <mat-hint
+        *ngIf="predictionDataFile?.errors?.['invalidFileFormat']"
+        class="error-text text-align-center">
         {{
-          'organisms.prediction_create_form.upload_section.error'
-          | translate
+          'organisms.prediction_create_form.upload_section.error' | translate
         }}
       </mat-hint>
       <app-new-button

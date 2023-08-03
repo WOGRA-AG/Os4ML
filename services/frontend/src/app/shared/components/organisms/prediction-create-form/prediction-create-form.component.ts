@@ -134,10 +134,20 @@ export class PredictionCreateFormComponent implements OnInit {
     return { eitherUrlOrFile: true };
   }
 
-  private validateFileFormats(control: AbstractControl): ValidationErrors | null {
+  private validateFileFormats(
+    control: AbstractControl
+  ): ValidationErrors | null {
     const file = control.value;
     if (file) {
-      const allowedFormats = ['.csv', '.xls', '.xlsx', '.xlsm', '.xlsb', '.odf', '.ods'];
+      const allowedFormats = [
+        '.csv',
+        '.xls',
+        '.xlsx',
+        '.xlsm',
+        '.xlsb',
+        '.odf',
+        '.ods',
+      ];
       const extension = file.name ? file.name.split('.').pop() : '';
       if (allowedFormats.indexOf('.' + extension) === -1) {
         return { invalidFileFormat: true };

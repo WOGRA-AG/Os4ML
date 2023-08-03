@@ -36,11 +36,10 @@
         [selectedFileName]="databagDataFile?.value.name"
         (fileDropped)="databagDataFileSelected($event)">
       </app-file-dropzone>
-      <mat-hint *ngIf="databagDataFile?.errors?.['invalidFileFormat']" class="error-text text-align-center">
-        {{
-        'organisms.databag_create_form.upload_section.error'
-          | translate
-        }}
+      <mat-hint
+        *ngIf="databagDataFile?.errors?.['invalidFileFormat']"
+        class="error-text text-align-center">
+        {{ 'organisms.databag_create_form.upload_section.error' | translate }}
       </mat-hint>
       <app-new-button
         class="text-align-center"

@@ -46,14 +46,10 @@ export class PopupConfirmComponent implements OnDestroy {
 
   submit(): void {
     this.submitting = true;
-    this.data.onConfirm
-      .pipe(
-        takeUntil(this.destroy$),
-      )
-      .subscribe( () => {
-        this.submitting = false;
-        this.dialog.close(true);
-      });
+    this.data.onConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.submitting = false;
+      this.dialog.close(true);
+    });
   }
 
   ngOnDestroy(): void {

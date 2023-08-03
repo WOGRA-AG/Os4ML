@@ -21,7 +21,7 @@ input {
   }
 
   &.invalid {
-    border-color:  var(--md-sys-color-error);
+    border-color: var(--md-sys-color-error);
 
     .selected-file-name {
       color: var(--md-sys-color-error);

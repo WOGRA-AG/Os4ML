@@ -4,7 +4,7 @@ import { DatabagCreateButtonComponent } from '../databag-create-button/databag-c
 import { PlaceholderComponent } from '../../molecules/placeholder/placeholder.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
-import {PredictionCreateButtonComponent} from '../prediction-create-button/prediction-create-button.component';
+import { PredictionCreateButtonComponent } from '../prediction-create-button/prediction-create-button.component';
 
 @Component({
   selector: 'app-ml-entity-status-placeholder',

@@ -22,9 +22,7 @@
       [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
       (solutionSettingButton)="openSolutionSettingDialog($event)"
-      (createPredictionButton)="
-        openCreatePredictionDialog($event)
-      ">
+      (createPredictionButton)="openCreatePredictionDialog($event)">
     </app-solution-data-table>
     <app-ml-entity-status-placeholder
       *ngIf="!(solutions$ | async | hasElements)"

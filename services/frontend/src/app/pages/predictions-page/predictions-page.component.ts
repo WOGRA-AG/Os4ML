@@ -31,32 +31,30 @@ import { PredictionCreateButtonComponent } from '../../shared/components/organis
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { PopupConfirmComponent } from '../../shared/components/organisms/popup-confirm/popup-confirm.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
-import {
-    MlEntityStatusPlaceholderComponent
-} from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
   styleUrls: ['./predictions-page.component.scss'],
   standalone: true,
-    imports: [
-        NgIf,
-        NoPredictionPlaceholderComponent,
-        AsyncPipe,
-        TranslateModule,
-        Os4mlDefaultTemplateComponent,
-        HasElementsPipe,
-        PredictionsDataTableComponent,
-        SolutionCreateButtonComponent,
-        NoSolutionsPlaceholderComponent,
-        NoDatabagsPlaceholderComponent,
-        DatabagFilterComponent,
-        SolutionFilterComponent,
-        PredictionCreateButtonComponent,
-        DatabagCreateButtonComponent,
-        MlEntityStatusPlaceholderComponent,
-    ],
+  imports: [
+    NgIf,
+    NoPredictionPlaceholderComponent,
+    AsyncPipe,
+    TranslateModule,
+    Os4mlDefaultTemplateComponent,
+    HasElementsPipe,
+    PredictionsDataTableComponent,
+    SolutionCreateButtonComponent,
+    NoSolutionsPlaceholderComponent,
+    NoDatabagsPlaceholderComponent,
+    DatabagFilterComponent,
+    SolutionFilterComponent,
+    PredictionCreateButtonComponent,
+    DatabagCreateButtonComponent,
+    MlEntityStatusPlaceholderComponent,
+  ],
 })
 export class PredictionsPageComponent implements OnDestroy {
   public databags$: Observable<Databag[]>;
