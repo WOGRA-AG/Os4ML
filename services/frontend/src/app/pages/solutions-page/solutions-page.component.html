@@ -25,15 +25,13 @@
       (createPredictionButton)="
         openCreatePredictionDialog($event)
       "></app-solution-data-table>
-    <app-no-solutions-placeholder
-      *ngIf="
-        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
-      "
-      (addSolutionButton)="addSolution()">
-    </app-no-solutions-placeholder>
-    <app-no-databags-placeholder
-      *ngIf="!(databags$ | async | hasElements)"
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
+
+    <app-ml-status-placeholder
+      *ngIf="!(solutions$ | async | hasElements)"
+      [hasSolutions]="solutions$ | async | hasElements"
+      [hasDatabags]="databags$ | async | hasElements"
+      (addDatabag)="addDatabag()"
+      (addSolution)="addSolution()">
+    </app-ml-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>

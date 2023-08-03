@@ -28,6 +28,20 @@
         "aria_label": "Finish Upload"
       }
     },
+    "ml_status_placeholder": {
+      "noDatabagPlaceholder": {
+        "title": "Let's get started with OS4ML",
+        "description": "To start with OS4ML you need to create a databag first"
+      },
+      "noSolutionPlaceholder": {
+        "title": "No Solutions yet",
+        "description": "After uploading your databag the next step will be creating a solution"
+      },
+      "noPredictionPlaceholder": {
+        "title": "No predictions created yet",
+        "description": "Seems like you haven't created predictions so far. Start creating now!"
+      }
+    },
     "databag_create_button.label": "Create Databag",
     "databag_filter": "Filter by Databag",
     "databag_data_table": {

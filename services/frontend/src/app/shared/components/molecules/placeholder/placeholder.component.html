@@ -1,14 +1,12 @@
-<img *ngIf="!!imgSrc" class="placeholder-image" [src]="imgSrc" [alt]="imgAlt" />
-<h1 class="primary-text" *ngIf="!!title">{{ title | translate }}</h1>
-<span class="mat-body-1 on-background-text" *ngIf="!!description">{{
-  description | translate
-}}</span>
-<app-button
-  variant="raised"
-  id="placholder-button"
-  class="main-button"
-  color="primary"
-  [icon]="buttonIcon"
-  (click)="buttonClick.emit()">
-  {{ buttonText | translate }}
-</app-button>
+<div class="placeholder-container">
+  <div class="placeholder">
+    <img class="placeholder-image" [src]="src" [alt]="title" />
+    <span class="title-large primary-text">
+      {{ title }}
+    </span>
+    <span class="body-medium on-surface-text">
+      {{ description }}
+    </span>
+    <ng-content></ng-content>
+  </div>
+</div>

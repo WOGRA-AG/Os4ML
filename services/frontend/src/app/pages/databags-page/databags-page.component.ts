@@ -15,6 +15,7 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -33,11 +34,11 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
     NewButtonComponent,
     DatabagDataTableComponent,
     DatabagCreateButtonComponent,
+    MlEntityStatusPlaceholderComponent,
   ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
-
   constructor(
     private databagService: DatabagService,
     private dialog: MatDialog
