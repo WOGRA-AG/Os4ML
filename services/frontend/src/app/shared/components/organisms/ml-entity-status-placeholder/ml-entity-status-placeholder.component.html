@@ -19,4 +19,10 @@
     (addSolution)="onAddSolution()"
     [type]="'primary'">
   </app-solution-create-button>
+
+  <app-prediction-create-button
+    *ngIf="placeholderStatus === 'noPredictionPlaceholder'"
+    (addPrediction)="onAddPrediction()"
+    [type]="'primary'">
+  </app-prediction-create-button>
 </app-placeholder>

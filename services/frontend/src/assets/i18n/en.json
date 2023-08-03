@@ -63,7 +63,10 @@
     },
     "databag_create_form": {
       "aria_label": "Databag create form",
-      "upload_section.title": "Upload your data",
+      "upload_section": {
+        "title": "Upload your data",
+        "error": "The selected file must have one of the following formats: .csv, .xls, .xlsx, .xlsm, .xlsb, .odf, .ods, .zip."
+      },
       "form_fields": {
         "name": {
           "label": "Databag Name",
@@ -132,9 +135,9 @@
         "selected_fields": {
           "label": "Select output",
           "aria_label": "Select output",
-          "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
+          "hint": "Mark fields, from your data bag, that the AI should predict",
           "help_message": "Please select a databag first to specify further training",
-          "error": "Solution name is required"
+          "error": "Output is required"
         }
       },
       "submit": {
@@ -174,7 +177,10 @@
           "aria_label": "Enter a URL"
         }
       },
-      "upload_section.title": "Upload your data",
+      "upload_section": {
+        "title": "Upload your data",
+        "error": "The selected file must have one of the following formats: .csv, .xls, .xlsx, .xlsm, .xlsb, .odf, .ods."
+      },
       "toggle_file_mode": {
         "data_source_url": "Use Data source from the web",
         "data_source_local_file": "Use Data source from your computer"

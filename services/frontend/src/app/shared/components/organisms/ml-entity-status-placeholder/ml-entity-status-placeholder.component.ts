@@ -4,9 +4,10 @@ import { DatabagCreateButtonComponent } from '../databag-create-button/databag-c
 import { PlaceholderComponent } from '../../molecules/placeholder/placeholder.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
+import {PredictionCreateButtonComponent} from '../prediction-create-button/prediction-create-button.component';
 
 @Component({
-  selector: 'app-ml-status-placeholder',
+  selector: 'app-ml-entity-status-placeholder',
   templateUrl: './ml-entity-status-placeholder.component.html',
   styleUrls: ['./ml-entity-status-placeholder.component.scss'],
   imports: [
@@ -15,6 +16,7 @@ import { NgIf } from '@angular/common';
     PlaceholderComponent,
     TranslateModule,
     NgIf,
+    PredictionCreateButtonComponent,
   ],
   standalone: true,
 })
@@ -37,7 +39,7 @@ export class MlEntityStatusPlaceholderComponent {
       return 'noSolutionPlaceholder';
     }
     if (!this.hasPredictions) {
-      return 'noSolutionPlaceholder';
+      return 'noPredictionPlaceholder';
     }
     return 'noDatabagPlaceholder';
   }

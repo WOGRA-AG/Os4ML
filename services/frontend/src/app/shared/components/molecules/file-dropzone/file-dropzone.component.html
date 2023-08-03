@@ -6,6 +6,7 @@
   #fileUpload />
 <div
   class="file-dropzone"
+  [class.invalid]="invalid"
   [class.active]="isDragging"
   (click)="fileUpload.click()"
   (keydown.enter)="fileUpload.click()"
@@ -15,5 +16,5 @@
   <p *ngIf="!selectedFileName">
     {{ 'molecules.file_dropzone.label' | translate }}
   </p>
-  <p>{{ selectedFileName }}</p>
+  <p class="selected-file-name">{{ selectedFileName }}</p>
 </div>

@@ -7,7 +7,7 @@ import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-sp
 import { NgIf } from '@angular/common';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-header.component';
-import { finalize, Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-popup-confirm',
@@ -49,11 +49,9 @@ export class PopupConfirmComponent implements OnDestroy {
     this.data.onConfirm
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => {
-          this.submitting = false;
-        })
       )
-      .subscribe(() => {
+      .subscribe( () => {
+        this.submitting = false;
         this.dialog.close(true);
       });
   }

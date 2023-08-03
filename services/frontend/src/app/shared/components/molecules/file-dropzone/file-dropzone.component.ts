@@ -17,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class FileDropzoneComponent {
   @Input() public selectedFileName = 'No File Selected';
+  @Input() public invalid = false;
   @Output() private fileDropped = new EventEmitter<File>();
   public isDragging = false;
 

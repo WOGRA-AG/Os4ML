@@ -6,13 +6,13 @@
   [icon]="'add'"
   [disabled]="!!disabled"
   [ariaLabel]="'organisms.prediction_create_button.label' | translate"
-  (click)="addSolution.emit()">
+  (click)="addPrediction.emit()">
   {{ 'organisms.prediction_create_button.label' | translate }}
 </app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"
-  (click)="addSolution.emit()"
+  (click)="addPrediction.emit()"
   [matTooltip]="'organisms.prediction_create_button.label' | translate"
   attr.aria-label="{{ 'organisms.prediction_create_button.label' | translate }}"
   color="primary"

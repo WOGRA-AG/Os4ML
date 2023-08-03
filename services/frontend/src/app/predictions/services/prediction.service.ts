@@ -53,54 +53,24 @@ export class PredictionService {
     return this._predictions$;
   }
 
-  getPredictionsByCreationTime(): Observable<Prediction[]> {
-    return this._predictions$.pipe(
-      map(predictions => predictions.sort(sortByCreationTime))
-    );
-  }
-
   getPredictionUploadProgress(): Observable<number> {
     return this._uploadFileProgressSubject$;
-  }
-
-  getPredictionsBySolutionIdSortByCreationTime(
-    solutionId: string | undefined
-  ): Observable<Prediction[]> {
-    return this._predictions$.pipe(
-      map(predictions =>
-        predictions.filter(prediction => prediction.solutionId === solutionId)
-      ),
-      map(predictions => predictions.sort(sortByCreationTime))
-    );
   }
   getFilteredPredictions(
     databagId: string | null,
     solutionId: string | null
   ): Observable<Prediction[]> {
-    return this.getPredictionsByCreationTime().pipe(
+    return this._predictions$.pipe(
       map(predictions =>
         predictions.filter(
           prediction =>
             (databagId ? prediction.databagId === databagId : true) &&
             (solutionId ? prediction.solutionId === solutionId : true)
         )
-      )
-    );
-  }
-  getPredictionsSortByCreationTime(): Observable<Prediction[]> {
-    return this._predictions$.pipe(
+      ),
       map(predictions => predictions.sort(sortByCreationTime))
     );
   }
-
-  getPredictionById(
-    id: string | undefined
-  ): Observable<Prediction | undefined> {
-    return this._predictions$.pipe(
-      map(predictions => predictions.find(prediction => prediction.id === id))
-    );
-  }
-
   deletePredictionById(id: string | undefined): Observable<void> {
     if (!id) {
       return of(undefined);

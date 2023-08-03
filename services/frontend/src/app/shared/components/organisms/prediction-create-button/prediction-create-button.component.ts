@@ -23,7 +23,7 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
 export class PredictionCreateButtonComponent {
   @Input() public type: 'primary' | 'text' | 'FAB' = 'primary';
   @Input() public disabled?: boolean;
-  @Output() public addSolution = new EventEmitter<void>();
+  @Output() public addPrediction = new EventEmitter<void>();
 
   get variant(): 'primary' | 'text' {
     if (this.type === 'primary' || this.type === 'FAB') {

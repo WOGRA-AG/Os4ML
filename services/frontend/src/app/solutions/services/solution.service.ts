@@ -110,6 +110,16 @@ export class SolutionService {
     );
   }
 
+  getSolutionById(
+    solutions: Solution[] | null,
+    id: string
+  ): Solution | undefined {
+    if (!solutions) {
+      return undefined;
+    }
+    return solutions.find(solution => solution.id === id);
+  }
+
   deleteSolutionById(id: string | undefined): Observable<void> {
     if (!id) {
       return of(undefined);

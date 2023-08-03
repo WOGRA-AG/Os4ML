@@ -50,7 +50,6 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     private router: Router,
     private solutionService: SolutionService,
     public predictionService: PredictionService,
-    private getSolutionByIdPipe: GetSolutionByIdPipe,
     public dialogRef: MatDialogRef<PredictionsCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { solutionId: string }
   ) {
@@ -101,7 +100,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     solutions: Solution[],
     predictionFormOutput: PredictionFormOutput
   ): void {
-    const solution = this.getSolutionByIdPipe.getSolutionById(
+    const solution = this.solutionService.getSolutionById(
       solutions,
       predictionFormOutput.solutionId
     );

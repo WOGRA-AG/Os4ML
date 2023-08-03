@@ -24,7 +24,7 @@
       <app-prediction-create-button
         [type]="'primary'"
         [disabled]="!(solutions$ | async | hasElements)"
-        (addSolution)="addPrediction()">
+        (addPrediction)="addPrediction()">
       </app-prediction-create-button>
     </div>
   </div>
@@ -40,23 +40,15 @@
     </app-predictions-data-table>
     <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
     </a>
-    <app-no-solutions-placeholder
-      *ngIf="
-        (databags$ | async | hasElements) && !(solutions$ | async | hasElements)
-      "
-      (addSolutionButton)="addSolution()">
-    </app-no-solutions-placeholder>
-    <app-no-databags-placeholder
-      *ngIf="!(databags$ | async | hasElements)"
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
-    <app-no-databags-placeholder
-      *ngIf="
-        (databags$ | async | hasElements) &&
-        (solutions$ | async | hasElements) &&
-        !(predictions$ | async | hasElements)
-      "
-      (addDatabagButton)="addDatabag()">
-    </app-no-databags-placeholder>
+    <app-ml-entity-status-placeholder
+      *ngIf="!(predictions$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
+      [hasSolutions]="solutions$ | async | hasElements"
+      [hasPredictions]="predictions$ | async | hasElements"
+      (addDatabag)="addDatabag()"
+      (addSolution)="addSolution()"
+      (addPrediction)="addPrediction()"
+    >
+    </app-ml-entity-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>

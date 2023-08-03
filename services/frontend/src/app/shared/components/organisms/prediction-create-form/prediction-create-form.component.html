@@ -70,9 +70,16 @@
     </div>
     <ng-container *ngIf="localFileMode">
       <app-file-dropzone
+        [invalid]="predictionDataFile?.errors?.['invalidFileFormat']"
         [selectedFileName]="predictionDataFile?.value.name"
         (fileDropped)="predictionDataFileSelected($event)">
       </app-file-dropzone>
+      <mat-hint *ngIf="predictionDataFile?.errors?.['invalidFileFormat']" class="error-text text-align-center">
+        {{
+          'organisms.prediction_create_form.upload_section.error'
+          | translate
+        }}
+      </mat-hint>
       <app-new-button
         class="text-align-center"
         variant="text"

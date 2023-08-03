@@ -54,53 +54,49 @@
     </mat-hint>
   </mat-form-field>
   <app-element-divider></app-element-divider>
-  <div class="prediction-options">
-    <ng-container>
-      <mat-form-field>
-        <mat-label>{{
-          'organisms.solution_create_form.form_fields.selected_fields.label'
-            | translate
-        }}</mat-label>
-        <mat-select
-          data-testid="input-selected-fields"
-          formControlName="selectedFields"
-          multiple
-          attr.aria-label="{{
-            'organisms.solution_create_form.selected_fields.aria_label'
-              | translate
-          }}">
-          <mat-option
-            *ngFor="
-              let predictListItem of databags
-                | getDatabagById : databagId?.value
-                | getPredictListItemsFromDatabag
-            "
-            [value]="predictListItem.label">
-            <span class="label-small">{{ predictListItem.label }}</span> -
-            <span>{{ predictListItem.description }}</span>
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
-          {{
-            'organisms.solution_create_form.form_fields.selected_fields.error'
-              | translate
-          }}
-        </mat-error>
-        <mat-hint *ngIf="!databagId?.value" class="on-surface-text">
-          {{
-            'organisms.solution_create_form.form_fields.selected_fields.help_message'
-              | translate
-          }}
-        </mat-hint>
-        <mat-hint *ngIf="databagId?.value" class="on-surface-text">
-          {{
-            'organisms.solution_create_form.form_fields.selected_fields.hint'
-              | translate
-          }}
-        </mat-hint>
-      </mat-form-field>
-    </ng-container>
-  </div>
+  <mat-form-field class="prediction-options">
+    <mat-label>{{
+      'organisms.solution_create_form.form_fields.selected_fields.label'
+        | translate
+    }}</mat-label>
+    <mat-select
+      data-testid="input-selected-fields"
+      formControlName="selectedFields"
+      multiple
+      attr.aria-label="{{
+        'organisms.solution_create_form.selected_fields.aria_label'
+          | translate
+      }}">
+      <mat-option
+        *ngFor="
+          let predictListItem of databags
+            | getDatabagById : databagId?.value
+            | getPredictListItemsFromDatabag
+        "
+        [value]="predictListItem.label">
+        <span class="label-small">{{ predictListItem.label }}</span> -
+        <span>{{ predictListItem.description }}</span>
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
+      {{
+        'organisms.solution_create_form.form_fields.selected_fields.error'
+          | translate
+      }}
+    </mat-error>
+    <mat-hint *ngIf="!databagId?.value" class="on-surface-text">
+      {{
+        'organisms.solution_create_form.form_fields.selected_fields.help_message'
+          | translate
+      }}
+    </mat-hint>
+    <mat-hint *ngIf="databagId?.value" class="on-surface-text">
+      {{
+        'organisms.solution_create_form.form_fields.selected_fields.hint'
+          | translate
+      }}
+    </mat-hint>
+  </mat-form-field>
   <div class="button-row">
     <app-new-button
       type="submit"

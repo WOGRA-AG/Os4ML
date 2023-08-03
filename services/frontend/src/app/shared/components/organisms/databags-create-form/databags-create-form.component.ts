@@ -47,7 +47,7 @@ export class DatabagsCreateFormComponent {
     this.createDatabagForm = this.fb.group(
       {
         databagName: ['', Validators.required],
-        databagDataFile: [''],
+        databagDataFile: ['', this.validateFileFormats],
         databagDataUrl: [''],
       },
       { validator: this.eitherUrlOrFile } as AbstractControlOptions
@@ -90,5 +90,17 @@ export class DatabagsCreateFormComponent {
       return null;
     }
     return { eitherUrlOrFile: true };
+  }
+
+  private validateFileFormats(control: AbstractControl): ValidationErrors | null {
+    const file = control.value;
+    if (file) {
+      const allowedFormats = ['.csv', '.xls', '.xlsx', '.xlsm', '.xlsb', '.odf', '.ods', '.zip'];
+      const extension = file.name ? file.name.split('.').pop() : '';
+      if (allowedFormats.indexOf('.' + extension) === -1) {
+        return { invalidFileFormat: true };
+      }
+    }
+    return null;
   }
 }
