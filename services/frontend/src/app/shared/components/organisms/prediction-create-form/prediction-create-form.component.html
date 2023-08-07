@@ -80,6 +80,8 @@
         {{
           'organisms.prediction_create_form.upload_section.error' | translate
         }}
+        <br>
+        <span *ngFor="let format of allowedFormats">{{ format }}&nbsp;</span>
       </mat-hint>
       <app-new-button
         class="text-align-center"

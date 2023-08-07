@@ -25,7 +25,7 @@
       [fileName]="uploadingFileName"
       [progress]="(predictionUploadProgress$ | async) ?? 0"
       (finishUpload)="finishUpload()"
-      (cancelUpload)="close()"></app-uploading-files>
+      (cancelUpload)="cancelUpload()"></app-uploading-files>
   </div>
   <a
     main

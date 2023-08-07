@@ -67,13 +67,21 @@ export class PredictionCreateFormComponent implements OnInit {
 
   public localFileMode = true;
   public createPredictionForm: FormGroup;
-
+  public  allowedFormats = [
+    '.csv',
+    '.xls',
+    '.xlsx',
+    '.xlsm',
+    '.xlsb',
+    '.odf',
+    '.ods',
+  ];
   constructor(private fb: FormBuilder) {
     this.createPredictionForm = this.fb.group(
       {
         predictionName: ['', Validators.required],
         solutionId: ['', Validators.required],
-        predictionDataFile: ['', this.validateFileFormats],
+        predictionDataFile: ['', this.validateFileFormats.bind(this)],
         predictionDataUrl: [''],
       },
       { validator: this.eitherUrlOrFile } as AbstractControlOptions
@@ -138,16 +146,8 @@ export class PredictionCreateFormComponent implements OnInit {
     control: AbstractControl
   ): ValidationErrors | null {
     const file = control.value;
+    const allowedFormats: string[] = this.allowedFormats;
     if (file) {
-      const allowedFormats = [
-        '.csv',
-        '.xls',
-        '.xlsx',
-        '.xlsm',
-        '.xlsb',
-        '.odf',
-        '.ods',
-      ];
       const extension = file.name ? file.name.split('.').pop() : '';
       if (allowedFormats.indexOf('.' + extension) === -1) {
         return { invalidFileFormat: true };

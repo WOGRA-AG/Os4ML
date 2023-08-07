@@ -1,6 +1,6 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ModelmanagerService, Prediction } from 'build/openapi/modelmanager';
+import {ModelmanagerService, Prediction} from 'build/openapi/modelmanager';
 import {
   concatWith,
   map,
@@ -28,9 +28,7 @@ export interface UploadFile {
 })
 export class PredictionService {
   private readonly _uploadFileProgressSubject$ = new BehaviorSubject<number>(0);
-
-  private readonly _predictions$: Observable<Prediction[]>;
-
+  private readonly _predictionsSubject$ = new BehaviorSubject<Prediction[]>([]);
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
@@ -40,17 +38,19 @@ export class PredictionService {
     const webSocketConnection = this.webSocketConnectionService.connect(
       predictionsWebsocketPath
     );
-    this._predictions$ = this.userService.currentToken$.pipe(
+    this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getPredictions(token)),
       first(),
       concatWith(webSocketConnection),
       raceWith(webSocketConnection),
       shareReplay(1)
-    );
+    ).subscribe(predictions => {
+      this._predictionsSubject$.next(predictions);
+    });
   }
 
   get predictions$(): Observable<Prediction[]> {
-    return this._predictions$;
+    return this._predictionsSubject$.asObservable();
   }
 
   getPredictionUploadProgress(): Observable<number> {
@@ -60,7 +60,7 @@ export class PredictionService {
     databagId: string | null,
     solutionId: string | null
   ): Observable<Prediction[]> {
-    return this._predictions$.pipe(
+    return this.predictions$.pipe(
       map(predictions =>
         predictions.filter(
           prediction =>
@@ -70,6 +70,15 @@ export class PredictionService {
       ),
       map(predictions => predictions.sort(sortByCreationTime))
     );
+  }
+  getPredictionById(
+    id: string
+  ): Prediction | undefined {
+    const predictions = this._predictionsSubject$.getValue();
+    if (!predictions) {
+      return undefined;
+    }
+    return predictions.find(prediction => prediction.id === id);
   }
   deletePredictionById(id: string | undefined): Observable<void> {
     if (!id) {

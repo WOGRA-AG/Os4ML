@@ -65,7 +65,7 @@
       "aria_label": "Databag create form",
       "upload_section": {
         "title": "Upload your data",
-        "error": "The selected file must have one of the following formats: .csv, .xls, .xlsx, .xlsm, .xlsb, .odf, .ods, .zip."
+        "error": "The selected file must have one of the following formats:"
       },
       "form_fields": {
         "name": {
@@ -179,7 +179,7 @@
       },
       "upload_section": {
         "title": "Upload your data",
-        "error": "The selected file must have one of the following formats: .csv, .xls, .xlsx, .xlsm, .xlsb, .odf, .ods."
+        "error": "The selected file must have one of the following formats:"
       },
       "toggle_file_mode": {
         "data_source_url": "Use Data source from the web",

@@ -60,7 +60,7 @@ export class CreateDatabagComponent {
   }
 
   outputDatabagUpdates(databagId: string): Observable<Databag> {
-    return this.databagService.getDatabagById(databagId).pipe(
+    return this.databagService.getDatabagById$(databagId).pipe(
       tap(databag => this.databagChange.next(databag)),
       takeWhile(
         databag => getShortStatus(databag.status) === PipelineStatus.running,

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  BehaviorSubject,
   concatWith,
   first,
   map,
@@ -24,8 +25,7 @@ import { solutionWebsocketPath } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SolutionService {
-  private readonly _solutions$: Observable<Solution[]>;
-
+  private readonly _solutionsSubject$ = new BehaviorSubject<Solution[]>([]);
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
@@ -34,17 +34,18 @@ export class SolutionService {
     const webSocketConnection = this.webSocketConnectionService.connect(
       solutionWebsocketPath
     );
-    this._solutions$ = this.userService.currentToken$.pipe(
+    this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getSolutions(token)),
       first(),
       concatWith(webSocketConnection),
       raceWith(webSocketConnection),
       shareReplay(1)
-    );
+    ).subscribe(solutions => {
+      this._solutionsSubject$.next(solutions);
+    });
   }
-
   get solutions$(): Observable<Solution[]> {
-    return this._solutions$;
+    return this._solutionsSubject$.asObservable();
   }
 
   getSolutionsByCreationTime(): Observable<Solution[]> {
@@ -53,13 +54,15 @@ export class SolutionService {
     );
   }
 
-  getFilteredSolutions(databagId: string | null): Observable<Solution[]> {
-    return this.getSolutionsByCreationTime().pipe(
+  getFilteredSolutions(databagId: string | null
+  ): Observable<Solution[]> {
+    return this.solutions$.pipe(
       map(solutions =>
         solutions.filter(solution =>
           databagId ? solution.databagId === databagId : true
         )
-      )
+      ),
+      map(predictions => predictions.sort(sortByCreationTime))
     );
   }
 
@@ -111,9 +114,9 @@ export class SolutionService {
   }
 
   getSolutionById(
-    solutions: Solution[] | null,
     id: string
   ): Solution | undefined {
+    const solutions = this._solutionsSubject$.getValue();
     if (!solutions) {
       return undefined;
     }

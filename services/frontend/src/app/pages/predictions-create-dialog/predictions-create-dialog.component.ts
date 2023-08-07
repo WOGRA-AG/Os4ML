@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { first, Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -45,6 +45,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public uploadingFileName = '';
   public selectedSolutionId?: string;
   private destroy$: Subject<void> = new Subject<void>();
+  private cancelUpload$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -61,6 +62,8 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(undefined);
     this.destroy$.complete();
+    this.cancelUpload$.next();
+    this.cancelUpload$.complete();
   }
 
   close(): void {
@@ -82,11 +85,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public submitPrediction(predictionFormOutput: PredictionFormOutput): void {
     this.submitting = true;
     this.selectedSolutionId = predictionFormOutput.solutionId;
-    this.solutions$
-      .pipe(takeUntil(this.destroy$), first())
-      .subscribe(solutions =>
-        this.createPrediction(solutions, predictionFormOutput)
-      );
+    this.createPrediction(predictionFormOutput);
   }
 
   public finishUpload(): void {
@@ -95,13 +94,14 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
       queryParams: { selectedSolution: this.selectedSolutionId },
     });
   }
-
+  public cancelUpload(): void {
+    this.cancelUpload$.next();
+    this.dialogRef.close();
+  }
   private createPrediction(
-    solutions: Solution[],
     predictionFormOutput: PredictionFormOutput
   ): void {
     const solution = this.solutionService.getSolutionById(
-      solutions,
       predictionFormOutput.solutionId
     );
     const prediction: Prediction = {
@@ -132,7 +132,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         predictionFormOutput.predictionDataFile!,
         prediction
       )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.cancelUpload$))
       .subscribe();
   }
 

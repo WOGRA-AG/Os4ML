@@ -14,7 +14,7 @@
       }}
     </th>
     <td mat-cell *matCellDef="let element">
-      {{ (databags | getDatabagById : element.databagId)?.name }}
+      {{ (element.databagId | getDatabagById)?.name }}
     </td>
   </ng-container>
   <ng-container matColumnDef="metrics">

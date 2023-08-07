@@ -14,7 +14,7 @@ import { DocumentationHintTextComponent } from '../../molecules/documentation-hi
 import { MatInputModule } from '@angular/material/input';
 import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
 import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
-import { NgIf } from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 
 export interface DatabagFormOutput {
   databagName: string;
@@ -36,6 +36,7 @@ export interface DatabagFormOutput {
     ElementDividerComponent,
     ReactiveFormsModule,
     NgIf,
+    NgForOf,
   ],
 })
 export class DatabagsCreateFormComponent {
@@ -43,11 +44,22 @@ export class DatabagsCreateFormComponent {
 
   public localFileMode = true;
   public createDatabagForm: FormGroup;
+  public allowedFormats = [
+    '.csv',
+    '.xls',
+    '.xlsx',
+    '.xlsm',
+    '.xlsb',
+    '.odf',
+    '.ods',
+    '.py',
+    '.zip',
+  ];
   constructor(private fb: FormBuilder) {
     this.createDatabagForm = this.fb.group(
       {
         databagName: ['', Validators.required],
-        databagDataFile: ['', this.validateFileFormats],
+        databagDataFile: ['', this.validateFileFormats.bind(this)],
         databagDataUrl: [''],
       },
       { validator: this.eitherUrlOrFile } as AbstractControlOptions
@@ -95,18 +107,10 @@ export class DatabagsCreateFormComponent {
   private validateFileFormats(
     control: AbstractControl
   ): ValidationErrors | null {
+    const allowedFormats: string[] = this.allowedFormats;
+    console.log(allowedFormats);
     const file = control.value;
     if (file) {
-      const allowedFormats = [
-        '.csv',
-        '.xls',
-        '.xlsx',
-        '.xlsm',
-        '.xlsb',
-        '.odf',
-        '.ods',
-        '.zip',
-      ];
       const extension = file.name ? file.name.split('.').pop() : '';
       if (allowedFormats.indexOf('.' + extension) === -1) {
         return { invalidFileFormat: true };

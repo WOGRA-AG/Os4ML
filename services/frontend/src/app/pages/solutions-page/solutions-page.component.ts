@@ -3,7 +3,6 @@ import {
   first,
   map,
   Observable,
-  of,
   Subject,
   switchMap,
   takeUntil,
@@ -55,7 +54,6 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
 export class SolutionsPageComponent implements OnDestroy {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
-  public selectedDatabag$: Observable<Databag | null>;
   private destroy$ = new Subject<void>();
   constructor(
     private databagService: DatabagService,
@@ -64,16 +62,6 @@ export class SolutionsPageComponent implements OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.selectedDatabag$ = this.databagId$.pipe(
-      switchMap(id => {
-        if (id) {
-          return this.databagService.getDatabagById(id).pipe(first());
-        } else {
-          return of(null);
-        }
-      })
-    );
-
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.solutions$ = this.databagId$.pipe(
       switchMap(databagId =>

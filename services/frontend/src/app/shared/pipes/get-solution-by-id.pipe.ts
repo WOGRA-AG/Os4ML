@@ -1,21 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Solution } from '../../../../build/openapi/modelmanager';
+import {SolutionService} from '../../solutions/services/solution.service';
 
 @Pipe({
   name: 'getSolutionById',
   standalone: true,
 })
 export class GetSolutionByIdPipe implements PipeTransform {
-  transform(solutions: Solution[] | null, id: string): Solution | undefined {
-    return this.getSolutionById(solutions, id);
-  }
-  getSolutionById(
-    solutions: Solution[] | null,
-    id: string
-  ): Solution | undefined {
-    if (!solutions) {
-      return undefined;
-    }
-    return solutions.find(solution => solution.id === id);
+  constructor(private solutionService: SolutionService) { }
+  transform(id: string): Solution | undefined {
+    return this.solutionService.getSolutionById(id);
   }
 }
