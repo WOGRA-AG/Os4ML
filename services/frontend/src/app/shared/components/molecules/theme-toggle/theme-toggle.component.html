@@ -1,0 +1,4 @@
+<app-icon-button
+  (click)="themeService.toggleTheme()"
+  *ngIf="icon$ | async as icon"
+  [icon]="icon"></app-icon-button>
