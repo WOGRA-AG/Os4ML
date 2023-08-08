@@ -13,30 +13,27 @@ export class ThemeService {
 
   constructor(private rendererFactory: RendererFactory2) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    this.setTheme(this.loadTheme());
+    this.theme = this.loadTheme();
   }
 
   get theme$(): Observable<Theme> {
     return this._theme$.asObservable();
   }
 
-  get currentTheme(): Theme {
+  get theme(): Theme {
     return this._theme$.value;
   }
 
-  toggleTheme(): void {
-    const newTheme: Theme = this.currentTheme === 'light' ? 'dark' : 'light';
-    this.setTheme(newTheme);
-  }
-
-  setTheme(theme: Theme): void {
-    this.renderer.removeClass(
-      document.body,
-      this.getThemeClass(this.currentTheme)
-    );
+  set theme(theme: Theme) {
+    this.renderer.removeClass(document.body, this.getThemeClass(this.theme));
     this.renderer.addClass(document.body, this.getThemeClass(theme));
     this._theme$.next(theme);
     this.saveTheme(theme);
+  }
+
+  toggleTheme(): void {
+    const newTheme: Theme = this.theme === 'light' ? 'dark' : 'light';
+    this.theme = newTheme;
   }
 
   private saveTheme(theme: Theme): void {

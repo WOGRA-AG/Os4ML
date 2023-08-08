@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from 'src/app/core/services/theme.service';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button/icon-button.component';
 
 @Component({
@@ -12,6 +12,16 @@ import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button
   styleUrls: ['./theme-toggle.component.scss'],
 })
 export class ThemeToggleComponent {
-  public themeService = inject(ThemeService);
-  public icon$ = this.themeService.theme$.pipe(map(theme => `${theme}_mode`));
+  private _themeService = inject(ThemeService);
+  private _icon$ = this._themeService.theme$.pipe(
+    map(theme => `${theme}_mode`)
+  );
+
+  protected get icon$(): Observable<string> {
+    return this._icon$;
+  }
+
+  protected get themeService(): ThemeService {
+    return this._themeService;
+  }
 }
