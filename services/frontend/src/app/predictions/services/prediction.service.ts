@@ -11,7 +11,9 @@ import {
   shareReplay,
   raceWith,
   tap,
-  BehaviorSubject, takeUntil, Subject,
+  BehaviorSubject,
+  takeUntil,
+  Subject,
 } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
@@ -87,7 +89,7 @@ export class PredictionService {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
         this.modelManager.getPredictionTemplateGetUrl(solutionId, token)
-      )
+      ),
     );
   }
   createLocalFilePrediction(
@@ -98,14 +100,24 @@ export class PredictionService {
     this._uploadFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createPrediction(token, prediction).pipe(
-          switchMap(updatedPrediction => this._createLocalFilePrediction(file, updatedPrediction, token).pipe(
-            takeUntil(cancelUpload.pipe(
-              tap(() => this.logCancellation(updatedPrediction))
-            )),
-          ))
-        )
-      ),
+        this.modelManager
+          .createPrediction(token, prediction)
+          .pipe(
+            switchMap(updatedPrediction =>
+              this._createLocalFilePrediction(
+                file,
+                updatedPrediction,
+                token
+              ).pipe(
+                takeUntil(
+                  cancelUpload.pipe(
+                    tap(() => this.logCancellation(updatedPrediction))
+                  )
+                )
+              )
+            )
+          )
+      )
     );
   }
   createURLPrediction(
@@ -116,13 +128,20 @@ export class PredictionService {
     this._uploadFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createPrediction(token, prediction).pipe(
-          switchMap(updatedPrediction => this._createUrlPrediction(url, updatedPrediction, token).pipe(
-            takeUntil(cancelUpload.pipe(
-              tap(() => this.logCancellation(updatedPrediction))
-            )),
-          )))
-      ),
+        this.modelManager
+          .createPrediction(token, prediction)
+          .pipe(
+            switchMap(updatedPrediction =>
+              this._createUrlPrediction(url, updatedPrediction, token).pipe(
+                takeUntil(
+                  cancelUpload.pipe(
+                    tap(() => this.logCancellation(updatedPrediction))
+                  )
+                )
+              )
+            )
+          )
+      )
     );
   }
   private _createLocalFilePrediction(
@@ -130,13 +149,15 @@ export class PredictionService {
     prediction: Prediction,
     token: string
   ): Observable<Prediction> {
-    return this.modelManager.createPredictionDataPutUrl(prediction.id!, token).pipe(
-      switchMap(url => putFileAsOctetStream(this.http, url, file)),
-      tap(upload => this.handleUploadProgress(upload)),
-      switchMap(() =>
-        this.modelManager.startPredictionPipeline(prediction.id!, token)
-      )
-    );
+    return this.modelManager
+      .createPredictionDataPutUrl(prediction.id!, token)
+      .pipe(
+        switchMap(url => putFileAsOctetStream(this.http, url, file)),
+        tap(upload => this.handleUploadProgress(upload)),
+        switchMap(() =>
+          this.modelManager.startPredictionPipeline(prediction.id!, token)
+        )
+      );
   }
   private _createUrlPrediction(
     url: string,

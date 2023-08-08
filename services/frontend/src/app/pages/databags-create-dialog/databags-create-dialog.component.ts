@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
-import {Databag, DatabagType} from '../../../../build/openapi/modelmanager';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Databag, DatabagType } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { DatabagService } from '../../databags/services/databag.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -36,7 +36,6 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   private cancelUpload$: Subject<void> = new Subject<void>();
 
-
   constructor(
     private router: Router,
     private databagService: DatabagService,
@@ -47,7 +46,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   }
 
   close(): void {
-    if(this.submitting && !(this.databagUploadProgress$.getValue() === 100)) {
+    if (this.submitting && !(this.databagUploadProgress$.getValue() === 100)) {
       this.cancelUpload();
     }
     this.dialogRef.close();
@@ -91,13 +90,14 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   ): void {
     databag.databagType = DatabagType.LocalFile;
     databag.datasetFileName = databagFormOutput.databagDataFile!.name;
-    this.databagService.createLocalFileDatabag(
-      databagFormOutput.databagDataFile!,
-      databag,
-      this.cancelUpload$
-    )
-    .pipe(takeUntil(this.destroy$))
-    .subscribe();
+    this.databagService
+      .createLocalFileDatabag(
+        databagFormOutput.databagDataFile!,
+        databag,
+        this.cancelUpload$
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
   private createUrlDatabag(
     databagFormOutput: DatabagFormOutput,
@@ -105,12 +105,9 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   ): void {
     databag.datasetUrl = databagFormOutput.databagDataUrl!;
     databag.databagType = DatabagType.FileUrl;
-    this.databagService.createUrlDatabag(
-      databag,
-      this.cancelUpload$
-    )
-    .pipe(takeUntil(this.destroy$))
-    .subscribe();
+    this.databagService
+      .createUrlDatabag(databag, this.cancelUpload$)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
-
 }

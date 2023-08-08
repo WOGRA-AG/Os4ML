@@ -9,11 +9,14 @@ import {
   concatWith,
   first,
   raceWith,
-  BehaviorSubject, Subject, takeUntil,
+  BehaviorSubject,
+  Subject,
+  takeUntil,
 } from 'rxjs';
 import {
   Databag,
-  ModelmanagerService, Prediction,
+  ModelmanagerService,
+  Prediction,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
@@ -114,14 +117,20 @@ export class DatabagService {
     this._uploadDatabagFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createDatabag(token, databag).pipe(
-          switchMap(updatedDatabag => this._createLocalFileDatabag(file, updatedDatabag, token).pipe(
-            takeUntil(cancelUpload.pipe(
-              tap(() => this.logCancellation(updatedDatabag))
-            )),
-          ))
-        )
-      ),
+        this.modelManager
+          .createDatabag(token, databag)
+          .pipe(
+            switchMap(updatedDatabag =>
+              this._createLocalFileDatabag(file, updatedDatabag, token).pipe(
+                takeUntil(
+                  cancelUpload.pipe(
+                    tap(() => this.logCancellation(updatedDatabag))
+                  )
+                )
+              )
+            )
+          )
+      )
     );
   }
   createUrlDatabag(
@@ -131,13 +140,20 @@ export class DatabagService {
     this._uploadDatabagFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createDatabag(token, databag).pipe(
-          switchMap(updatedDatabag => this._createUrlDatabag(updatedDatabag, token).pipe(
-            takeUntil(cancelUpload.pipe(
-              tap(() => this.logCancellation(updatedDatabag))
-            )),
-          )))
-      ),
+        this.modelManager
+          .createDatabag(token, databag)
+          .pipe(
+            switchMap(updatedDatabag =>
+              this._createUrlDatabag(updatedDatabag, token).pipe(
+                takeUntil(
+                  cancelUpload.pipe(
+                    tap(() => this.logCancellation(updatedDatabag))
+                  )
+                )
+              )
+            )
+          )
+      )
     );
   }
   private _createLocalFileDatabag(
@@ -145,6 +161,7 @@ export class DatabagService {
     databag: Databag,
     token: string
   ): Observable<Databag> {
+    console.log(databag)
     return this.modelManager.createDatasetPutUrl(databag.id!, token).pipe(
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       tap(upload => this.handleUploadProgress(upload)),
@@ -161,10 +178,7 @@ export class DatabagService {
       .createDatabag(token, databag)
       .pipe(
         switchMap(createdPrediction =>
-          this.modelManager.startDatabagPipeline(
-            createdPrediction.id!,
-            token
-          )
+          this.modelManager.startDatabagPipeline(createdPrediction.id!, token)
         )
       );
   }

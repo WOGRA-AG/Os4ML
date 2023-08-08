@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import {BehaviorSubject, Observable, Subject, takeUntil} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, takeUntil, tap} from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -67,7 +67,10 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   close(): void {
-    if (this.submitting && !(this.predictionUploadProgress$.getValue() === 100)) {
+    if (
+      this.submitting &&
+      !(this.predictionUploadProgress$.getValue() === 100)
+    ) {
       this.cancelUpload();
     }
     this.dialogRef.close();
@@ -79,8 +82,11 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   ): void {
     this.predictionService
       .getPredictionTemplateGetUrl(solutionId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        tap(console.log),
+        takeUntil(this.destroy$))
       .subscribe(url => {
+        console.log(url);
         downloadLink.href = url;
         downloadLink.click();
       });
@@ -95,7 +101,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public finishUpload(): void {
     this.dialogRef.close();
     this.router.navigate(['predictions'], {
-      queryParams: {selectedSolution: this.selectedSolutionId},
+      queryParams: { selectedSolution: this.selectedSolutionId },
     });
   }
 
@@ -105,7 +111,9 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   private createPrediction(predictionFormOutput: PredictionFormOutput): void {
-    const solution = this.solutionService.getSolutionById(predictionFormOutput.solutionId);
+    const solution = this.solutionService.getSolutionById(
+      predictionFormOutput.solutionId
+    );
 
     const prediction: Prediction = {
       name: predictionFormOutput.predictionName,
@@ -130,25 +138,27 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     prediction: Prediction
   ): void {
     prediction.dataFileName = predictionFormOutput.predictionDataFile!.name;
-    this.predictionService.createLocalFilePrediction(
-      predictionFormOutput.predictionDataFile!,
-      prediction,
-      this.cancelUpload$
-    )
-    .pipe(takeUntil(this.destroy$))
-    .subscribe();
+    this.predictionService
+      .createLocalFilePrediction(
+        predictionFormOutput.predictionDataFile!,
+        prediction,
+        this.cancelUpload$
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   private createUrlPrediction(
     predictionFormOutput: PredictionFormOutput,
     prediction: Prediction
   ): void {
-    this.predictionService.createURLPrediction(
-      predictionFormOutput.predictionDataUrl!,
-      prediction,
-      this.cancelUpload$
-    )
-    .pipe(takeUntil(this.destroy$))
-    .subscribe();
+    this.predictionService
+      .createURLPrediction(
+        predictionFormOutput.predictionDataUrl!,
+        prediction,
+        this.cancelUpload$
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 }
