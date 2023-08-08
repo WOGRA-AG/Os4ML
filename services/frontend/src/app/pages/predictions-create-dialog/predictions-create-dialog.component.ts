@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import {BehaviorSubject, Observable, Subject, takeUntil, tap} from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -82,9 +82,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   ): void {
     this.predictionService
       .getPredictionTemplateGetUrl(solutionId)
-      .pipe(
-        tap(console.log),
-        takeUntil(this.destroy$))
+      .pipe(tap(console.log), takeUntil(this.destroy$))
       .subscribe(url => {
         console.log(url);
         downloadLink.href = url;

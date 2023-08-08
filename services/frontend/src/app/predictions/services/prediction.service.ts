@@ -89,7 +89,7 @@ export class PredictionService {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
         this.modelManager.getPredictionTemplateGetUrl(solutionId, token)
-      ),
+      )
     );
   }
   createLocalFilePrediction(

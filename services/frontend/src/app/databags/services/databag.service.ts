@@ -161,7 +161,7 @@ export class DatabagService {
     databag: Databag,
     token: string
   ): Observable<Databag> {
-    console.log(databag)
+    console.log(databag);
     return this.modelManager.createDatasetPutUrl(databag.id!, token).pipe(
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
       tap(upload => this.handleUploadProgress(upload)),
