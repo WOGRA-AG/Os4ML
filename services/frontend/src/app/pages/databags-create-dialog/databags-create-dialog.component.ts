@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { Databag } from '../../../../build/openapi/modelmanager';
+import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
+import {Databag, DatabagType} from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { DatabagService } from '../../databags/services/databag.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -32,8 +32,10 @@ import { UploadingFilesComponent } from '../../shared/components/organisms/uploa
 export class DatabagsCreateDialogComponent implements OnDestroy {
   public submitting = false;
   public uploadingFileName = '';
-  public databagUploadProgress$: Observable<number>;
+  public databagUploadProgress$: BehaviorSubject<number>;
   private destroy$: Subject<void> = new Subject<void>();
+  private cancelUpload$: Subject<void> = new Subject<void>();
+
 
   constructor(
     private router: Router,
@@ -45,12 +47,26 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   }
 
   close(): void {
+    if(this.submitting && !(this.databagUploadProgress$.getValue() === 100)) {
+      this.cancelUpload();
+    }
+    this.dialogRef.close();
+  }
+
+  public cancelUpload(): void {
+    this.cancelUpload$.next();
     this.dialogRef.close();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(undefined);
     this.destroy$.complete();
+    this.cancelUpload$.next();
+    this.cancelUpload$.complete();
+  }
+  public finishUpload(): void {
+    this.dialogRef.close();
+    this.router.navigate(['databags']);
   }
   public submitDatabag(databagFormOutput: DatabagFormOutput): void {
     this.submitting = true;
@@ -60,39 +76,41 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
 
     if (databagFormOutput.databagDataFile) {
       this.uploadingFileName = databagFormOutput.databagDataFile.name;
-      this.createDatabagFromLocalFile(databag, databagFormOutput);
+      this.createLocalFileDatabag(databagFormOutput, databag);
       return;
     }
     if (databagFormOutput.databagDataUrl) {
-      this.createDatabagFromFileUrl(databag, databagFormOutput);
+      this.createUrlDatabag(databagFormOutput, databag);
       return;
     }
     console.error('Both predictionDataFile and predictionDataUrl are null.');
   }
-
-  public finishUpload(): void {
-    this.dialogRef.close();
-    this.router.navigate(['databags']);
-  }
-
-  private createDatabagFromLocalFile(
-    databag: Databag,
-    databagFormOutput: DatabagFormOutput
+  private createLocalFileDatabag(
+    databagFormOutput: DatabagFormOutput,
+    databag: Databag
   ): void {
+    databag.databagType = DatabagType.LocalFile;
     databag.datasetFileName = databagFormOutput.databagDataFile!.name;
-    this.databagService
-      .createLocalFileDatabag(databagFormOutput.databagDataFile!, databag)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    this.databagService.createLocalFileDatabag(
+      databagFormOutput.databagDataFile!,
+      databag,
+      this.cancelUpload$
+    )
+    .pipe(takeUntil(this.destroy$))
+    .subscribe();
   }
-  private createDatabagFromFileUrl(
-    databag: Databag,
-    databagFormOutput: DatabagFormOutput
+  private createUrlDatabag(
+    databagFormOutput: DatabagFormOutput,
+    databag: Databag
   ): void {
-    databag.datasetUrl = databagFormOutput.databagDataUrl;
-    this.databagService
-      .createLocalFileDatabag(databagFormOutput.databagDataFile!, databag)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    databag.datasetUrl = databagFormOutput.databagDataUrl!;
+    databag.databagType = DatabagType.FileUrl;
+    this.databagService.createUrlDatabag(
+      databag,
+      this.cancelUpload$
+    )
+    .pipe(takeUntil(this.destroy$))
+    .subscribe();
   }
+
 }

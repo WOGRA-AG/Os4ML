@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import {BehaviorSubject, Observable, Subject, takeUntil} from 'rxjs';
 import { Prediction, Solution } from '../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../solutions/services/solution.service';
@@ -40,12 +40,12 @@ import { UploadingFilesComponent } from '../../shared/components/organisms/uploa
 })
 export class PredictionsCreateDialogComponent implements OnDestroy {
   public solutions$: Observable<Solution[]>;
-  public predictionUploadProgress$: Observable<number>;
+  public predictionUploadProgress$: BehaviorSubject<number>;
   public submitting = false;
   public uploadingFileName = '';
   public selectedSolutionId?: string;
   private destroy$: Subject<void> = new Subject<void>();
-  private cancelUpload$ = new Subject<void>();
+  private cancelUpload$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -67,6 +67,9 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   close(): void {
+    if (this.submitting && !(this.predictionUploadProgress$.getValue() === 100)) {
+      this.cancelUpload();
+    }
     this.dialogRef.close();
   }
 
@@ -82,6 +85,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         downloadLink.click();
       });
   }
+
   public submitPrediction(predictionFormOutput: PredictionFormOutput): void {
     this.submitting = true;
     this.selectedSolutionId = predictionFormOutput.solutionId;
@@ -91,19 +95,18 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public finishUpload(): void {
     this.dialogRef.close();
     this.router.navigate(['predictions'], {
-      queryParams: { selectedSolution: this.selectedSolutionId },
+      queryParams: {selectedSolution: this.selectedSolutionId},
     });
   }
+
   public cancelUpload(): void {
     this.cancelUpload$.next();
     this.dialogRef.close();
   }
-  private createPrediction(
-    predictionFormOutput: PredictionFormOutput
-  ): void {
-    const solution = this.solutionService.getSolutionById(
-      predictionFormOutput.solutionId
-    );
+
+  private createPrediction(predictionFormOutput: PredictionFormOutput): void {
+    const solution = this.solutionService.getSolutionById(predictionFormOutput.solutionId);
+
     const prediction: Prediction = {
       name: predictionFormOutput.predictionName,
       solutionId: predictionFormOutput.solutionId,
@@ -111,42 +114,41 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     };
 
     if (predictionFormOutput.predictionDataFile) {
-      this.uploadingFileName = predictionFormOutput.predictionDataFile.name;
-      this.createPredictionFromLocalFile(prediction, predictionFormOutput);
+      this.createLocalFilePrediction(predictionFormOutput, prediction);
       return;
     }
+
     if (predictionFormOutput.predictionDataUrl) {
-      this.createPredictionFromFileUrl(prediction, predictionFormOutput);
+      this.createUrlPrediction(predictionFormOutput, prediction);
       return;
     }
     console.error('Both predictionDataFile and predictionDataUrl are null.');
   }
 
-  private createPredictionFromLocalFile(
-    prediction: Prediction,
-    predictionFormOutput: PredictionFormOutput
+  private createLocalFilePrediction(
+    predictionFormOutput: PredictionFormOutput,
+    prediction: Prediction
   ): void {
     prediction.dataFileName = predictionFormOutput.predictionDataFile!.name;
-    this.predictionService
-      .createLocalFilePrediction(
-        predictionFormOutput.predictionDataFile!,
-        prediction
-      )
-      .pipe(takeUntil(this.cancelUpload$))
-      .subscribe();
+    this.predictionService.createLocalFilePrediction(
+      predictionFormOutput.predictionDataFile!,
+      prediction,
+      this.cancelUpload$
+    )
+    .pipe(takeUntil(this.destroy$))
+    .subscribe();
   }
 
-  private createPredictionFromFileUrl(
-    prediction: Prediction,
-    predictionFormOutput: PredictionFormOutput
+  private createUrlPrediction(
+    predictionFormOutput: PredictionFormOutput,
+    prediction: Prediction
   ): void {
-    prediction.dataUrl = predictionFormOutput.predictionDataUrl;
-    this.predictionService
-      .createFileUrlPrediction(
-        predictionFormOutput.predictionDataUrl!,
-        prediction
-      )
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    this.predictionService.createURLPrediction(
+      predictionFormOutput.predictionDataUrl!,
+      prediction,
+      this.cancelUpload$
+    )
+    .pipe(takeUntil(this.destroy$))
+    .subscribe();
   }
 }

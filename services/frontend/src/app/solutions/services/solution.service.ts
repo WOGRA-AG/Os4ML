@@ -34,15 +34,17 @@ export class SolutionService {
     const webSocketConnection = this.webSocketConnectionService.connect(
       solutionWebsocketPath
     );
-    this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getSolutions(token)),
-      first(),
-      concatWith(webSocketConnection),
-      raceWith(webSocketConnection),
-      shareReplay(1)
-    ).subscribe(solutions => {
-      this._solutionsSubject$.next(solutions);
-    });
+    this.userService.currentToken$
+      .pipe(
+        switchMap(token => this.modelManager.getSolutions(token)),
+        first(),
+        concatWith(webSocketConnection),
+        raceWith(webSocketConnection),
+        shareReplay(1)
+      )
+      .subscribe(solutions => {
+        this._solutionsSubject$.next(solutions);
+      });
   }
   get solutions$(): Observable<Solution[]> {
     return this._solutionsSubject$.asObservable();
@@ -54,8 +56,7 @@ export class SolutionService {
     );
   }
 
-  getFilteredSolutions(databagId: string | null
-  ): Observable<Solution[]> {
+  getFilteredSolutions(databagId: string | null): Observable<Solution[]> {
     return this.solutions$.pipe(
       map(solutions =>
         solutions.filter(solution =>
@@ -113,9 +114,7 @@ export class SolutionService {
     );
   }
 
-  getSolutionById(
-    id: string
-  ): Solution | undefined {
+  getSolutionById(id: string): Solution | undefined {
     const solutions = this._solutionsSubject$.getValue();
     if (!solutions) {
       return undefined;

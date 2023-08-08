@@ -67,7 +67,7 @@ export class PredictionCreateFormComponent implements OnInit {
 
   public localFileMode = true;
   public createPredictionForm: FormGroup;
-  public  allowedFormats = [
+  public allowedFormats = [
     '.csv',
     '.xls',
     '.xlsx',

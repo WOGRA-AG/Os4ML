@@ -68,7 +68,9 @@
       }}">
       <mat-option
         *ngFor="
-          let predictListItem of databagId?.value | getDatabagById | getPredictListItemsFromDatabag
+          let predictListItem of databagId?.value
+            | getDatabagById
+            | getPredictListItemsFromDatabag
         "
         [value]="predictListItem.label">
         <span class="label-small">{{ predictListItem.label }}</span> -

@@ -42,13 +42,13 @@ export class CreateDatabagComponent {
       if (this.file.name) {
         this.databag.status = 'message.pipeline.running.uploading_file';
         this.databagChange.next(this.databag);
-        this.databag = await firstValueFrom(
-          this.databagService.createLocalFileDatabag(this.file, this.databag)
-        );
+        // this.databag = await firstValueFrom(
+        //   this.databagService.createLocalFileDatabag(this.file, this.databag)
+        // );
       } else {
-        this.databag = await firstValueFrom(
-          this.databagService.createFileUrlDatabag(this.fileUrl, this.databag)
-        );
+        // this.databag = await firstValueFrom(
+        //   this.databagService.createFileUrlDatabag(this.fileUrl, this.databag)
+        // );
       }
 
       this.databagChange.next(this.databag);

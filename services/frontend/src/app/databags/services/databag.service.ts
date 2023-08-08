@@ -9,12 +9,11 @@ import {
   concatWith,
   first,
   raceWith,
-  BehaviorSubject,
+  BehaviorSubject, Subject, takeUntil,
 } from 'rxjs';
 import {
   Databag,
-  DatabagType,
-  ModelmanagerService,
+  ModelmanagerService, Prediction,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
@@ -57,7 +56,7 @@ export class DatabagService {
     return this._databagsSubject$.asObservable();
   }
 
-  getUploadDatabagFileProgress(): Observable<number> {
+  getUploadDatabagFileProgress(): BehaviorSubject<number> {
     return this._uploadDatabagFileProgressSubject$;
   }
 
@@ -73,9 +72,7 @@ export class DatabagService {
       filterNotDefined()
     );
   }
-  getDatabagById(
-    id: string
-  ): Databag | undefined {
+  getDatabagById(id: string): Databag | undefined {
     const databags = this._databagsSubject$.getValue();
     if (!databags) {
       return undefined;
@@ -109,60 +106,77 @@ export class DatabagService {
     return databag1.id === databag2.id;
   }
 
-  createLocalFileDatabag(file: File, databag: Databag): Observable<Databag> {
+  createLocalFileDatabag(
+    file: File,
+    databag: Databag,
+    cancelUpload: Subject<void>
+  ): Observable<Databag> {
+    this._uploadDatabagFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
-      switchMap(token => this._createLocalFileDatabag(file, databag, token))
+      switchMap(token =>
+        this.modelManager.createDatabag(token, databag).pipe(
+          switchMap(updatedDatabag => this._createLocalFileDatabag(file, updatedDatabag, token).pipe(
+            takeUntil(cancelUpload.pipe(
+              tap(() => this.logCancellation(updatedDatabag))
+            )),
+          ))
+        )
+      ),
     );
   }
-
-  createFileUrlDatabag(url: string, databag: Databag): Observable<Databag> {
+  createUrlDatabag(
+    databag: Databag,
+    cancelUpload: Subject<void>
+  ): Observable<Databag> {
+    this._uploadDatabagFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
-      switchMap(token => this._createFileUrlDatabag(url, databag, token))
+      switchMap(token =>
+        this.modelManager.createDatabag(token, databag).pipe(
+          switchMap(updatedDatabag => this._createUrlDatabag(updatedDatabag, token).pipe(
+            takeUntil(cancelUpload.pipe(
+              tap(() => this.logCancellation(updatedDatabag))
+            )),
+          )))
+      ),
     );
   }
-
   private _createLocalFileDatabag(
     file: File,
     databag: Databag,
     token: string
   ): Observable<Databag> {
-    databag.datasetFileName = file.name;
-    databag.databagType = DatabagType.LocalFile;
-    this._uploadDatabagFileProgressSubject$.next(0);
-
-    return this.modelManager.createDatabag(token, databag).pipe(
-      tap(createdDatabag => (databag = createdDatabag)),
-      switchMap(() =>
-        this.modelManager.createDatasetPutUrl(databag.id!, token)
-      ),
+    return this.modelManager.createDatasetPutUrl(databag.id!, token).pipe(
       switchMap(url => putFileAsOctetStream(this.http, url, file)),
-      tap(upload => {
-        if (upload.type === HttpEventType.UploadProgress) {
-          this._uploadDatabagFileProgressSubject$.next(
-            Math.round((upload.loaded / upload.total) * 100)
-          );
-        }
-      }),
+      tap(upload => this.handleUploadProgress(upload)),
       switchMap(() =>
         this.modelManager.startDatabagPipeline(databag.id!, token)
       )
     );
   }
-
-  private _createFileUrlDatabag(
-    url: string,
+  private _createUrlDatabag(
     databag: Databag,
     token: string
   ): Observable<Databag> {
-    databag.datasetUrl = url;
-    databag.databagType = DatabagType.FileUrl;
-    this._uploadDatabagFileProgressSubject$.next(0);
-
-    return this.modelManager.createDatabag(token, databag).pipe(
-      tap(() => this._uploadDatabagFileProgressSubject$.next(100)),
-      switchMap(createdDatabag =>
-        this.modelManager.startDatabagPipeline(createdDatabag.id!, token)
-      )
-    );
+    return this.modelManager
+      .createDatabag(token, databag)
+      .pipe(
+        switchMap(createdPrediction =>
+          this.modelManager.startDatabagPipeline(
+            createdPrediction.id!,
+            token
+          )
+        )
+      );
+  }
+  private handleUploadProgress(upload: any): void {
+    if (upload.type === HttpEventType.UploadProgress) {
+      this._uploadDatabagFileProgressSubject$.next(
+        Math.round((upload.loaded / upload.total) * 100)
+      );
+    }
+  }
+  private logCancellation(prediction: Prediction): void {
+    this.deleteDatabagById(prediction.id).subscribe();
+    console.log('Upload canceled');
   }
 }

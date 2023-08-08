@@ -40,7 +40,7 @@
         *ngIf="databagDataFile?.errors?.['invalidFileFormat']"
         class="error-text text-align-center">
         {{ 'organisms.databag_create_form.upload_section.error' | translate }}
-        <br>
+        <br />
         <span *ngFor="let format of allowedFormats">{{ format }}&nbsp;</span>
       </mat-hint>
       <app-new-button

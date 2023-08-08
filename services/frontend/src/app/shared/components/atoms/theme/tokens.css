@@ -6,13 +6,13 @@
 @font-face {
   font-family: 'Avenir Book';
   src: local('Avenir Book'),
-    url('/assets/fonts/AvenirLTPro-Book.ttf') format('truetype');
+  url('/assets/fonts/AvenirLTPro-Book.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Avenir Black';
   src: local('Avenir Black'),
-    url('/assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
+  url('/assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
 }
 
 :root {
@@ -274,28 +274,28 @@
   --md-sys-typescale-body-large-font-family-style: normal;
   --md-sys-typescale-body-large-font-weight: 350;
   --md-sys-typescale-body-large-font-size: 1rem;
-  --md-sys-typescale-body-large-line-height: 1.25rem;
+  --md-sys-typescale-body-large-line-height: 1.375rem;
   --md-sys-typescale-body-large-letter-spacing: 0.03125rem;
   /* body - medium */
   --md-sys-typescale-body-medium-font-family-name: Avenir Book;
   --md-sys-typescale-body-medium-font-family-style: normal;
   --md-sys-typescale-body-medium-font-weight: 350;
   --md-sys-typescale-body-medium-font-size: 0.875rem;
-  --md-sys-typescale-body-medium-line-height: 1.125rem;
+  --md-sys-typescale-body-medium-line-height: 1.25rem;
   --md-sys-typescale-body-medium-letter-spacing: 0.01563rem;
   /* body - small */
   --md-sys-typescale-body-small-font-family-name: Avenir Book;
   --md-sys-typescale-body-small-font-family-style: normal;
   --md-sys-typescale-body-small-font-weight: 350;
   --md-sys-typescale-body-small-font-size: 0.75rem;
-  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-line-height: 1.125rem;
   --md-sys-typescale-body-small-letter-spacing: 0.01563rem;
   /* label - large */
   --md-sys-typescale-label-large-font-family-name: Avenir Black;
   --md-sys-typescale-label-large-font-family-style: normal;
   --md-sys-typescale-label-large-font-weight: 900;
   --md-sys-typescale-label-large-font-size: 1.25rem;
-  --md-sys-typescale-label-large-line-height: 1.75rem;
+  --md-sys-typescale-label-large-line-height: 1.5rem;
   --md-sys-typescale-label-large-letter-spacing: 0.12238rem;
   /* label - medium */
   --md-sys-typescale-label-medium-font-family-name: Avenir Black;
@@ -308,7 +308,7 @@
   --md-sys-typescale-label-small-font-family-name: Avenir Black;
   --md-sys-typescale-label-small-font-family-style: normal;
   --md-sys-typescale-label-small-font-weight: 900;
-  --md-sys-typescale-label-small-font-size: 1rem;
+  --md-sys-typescale-label-small-font-size: 0.875rem;
   --md-sys-typescale-label-small-line-height: 1.25rem;
   --md-sys-typescale-label-small-letter-spacing: 0.07813rem;
   /* title - large */
@@ -323,7 +323,7 @@
   --md-sys-typescale-title-medium-font-family-style: normal;
   --md-sys-typescale-title-medium-font-weight: 800;
   --md-sys-typescale-title-medium-font-size: 1rem;
-  --md-sys-typescale-title-medium-line-height: 1.25rem;
+  --md-sys-typescale-title-medium-line-height: 1.375rem;
   --md-sys-typescale-title-medium-letter-spacing: 0.00938rem;
   /* title - small */
   --md-sys-typescale-title-small-font-family-name: Avenir Black;

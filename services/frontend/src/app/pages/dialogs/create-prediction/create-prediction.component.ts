@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Prediction, Solution } from 'build/openapi/modelmanager';
-import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
@@ -68,19 +68,19 @@ export class CreatePredictionComponent implements OnDestroy {
     this.prediction.databagId = this.solution.databagId;
 
     if (this.file.name) {
-      this.prediction = await firstValueFrom(
-        this.predictionService.createLocalFilePrediction(
-          this.file,
-          this.prediction
-        )
-      );
+      // this.prediction = await firstValueFrom(
+      //   this.predictionService.createLocalFilePrediction(
+      //     this.file,
+      //     this.prediction
+      //   )
+      // );
     } else if (this.url) {
-      this.prediction = await firstValueFrom(
-        this.predictionService.createFileUrlPrediction(
-          this.url,
-          this.prediction
-        )
-      );
+      // this.prediction = await firstValueFrom(
+      //   this.predictionService.createFileUrlPrediction(
+      //     this.url,
+      //     this.prediction
+      //   )
+      // );
     } else {
       const res = this.translate.instant('message_no_dataset');
       const conf = this.translate.instant('action.confirm');

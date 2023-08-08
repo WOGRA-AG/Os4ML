@@ -14,7 +14,7 @@ import { DocumentationHintTextComponent } from '../../molecules/documentation-hi
 import { MatInputModule } from '@angular/material/input';
 import { FileDropzoneComponent } from '../../molecules/file-dropzone/file-dropzone.component';
 import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
-import {NgForOf, NgIf} from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 
 export interface DatabagFormOutput {
   databagName: string;
@@ -108,7 +108,6 @@ export class DatabagsCreateFormComponent {
     control: AbstractControl
   ): ValidationErrors | null {
     const allowedFormats: string[] = this.allowedFormats;
-    console.log(allowedFormats);
     const file = control.value;
     if (file) {
       const extension = file.name ? file.name.split('.').pop() : '';

@@ -1,12 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import {
-  first,
-  map,
-  Observable,
-  Subject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { first, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../databags/services/databag.service';
