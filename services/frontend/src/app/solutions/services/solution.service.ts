@@ -17,9 +17,11 @@ import {
 } from '../../../../build/openapi/modelmanager';
 import { UserService } from '../../core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
-import { SolutionStatus } from '../models/solution-status';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
 import { solutionWebsocketPath } from 'src/environments/environment';
+export enum SolutionStatus {
+  created = 'Created',
+}
 
 @Injectable({
   providedIn: 'root',

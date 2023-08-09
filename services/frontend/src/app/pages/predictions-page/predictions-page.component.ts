@@ -14,7 +14,6 @@ import {
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NoPredictionPlaceholderComponent } from '../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
@@ -23,8 +22,6 @@ import { PredictionsDataTableComponent } from '../../shared/components/organisms
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
-import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
-import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
 import { SolutionFilterComponent } from '../../shared/components/organisms/solution-filter/solution-filter.component';
 import { PredictionCreateButtonComponent } from '../../shared/components/organisms/prediction-create-button/prediction-create-button.component';
@@ -40,15 +37,12 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
   standalone: true,
   imports: [
     NgIf,
-    NoPredictionPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
     Os4mlDefaultTemplateComponent,
     HasElementsPipe,
     PredictionsDataTableComponent,
     SolutionCreateButtonComponent,
-    NoSolutionsPlaceholderComponent,
-    NoDatabagsPlaceholderComponent,
     DatabagFilterComponent,
     SolutionFilterComponent,
     PredictionCreateButtonComponent,

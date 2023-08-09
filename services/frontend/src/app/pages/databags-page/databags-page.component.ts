@@ -5,10 +5,8 @@ import { Databag } from '../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
-import { DatabagSettingComponent } from '../../databags/components/databag-setting/databag-setting.component';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
@@ -16,6 +14,8 @@ import { DatabagDataTableComponent } from '../../shared/components/organisms/dat
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import {DatabagDetailDialogComponent} from '../databag-detail-dialog/databag-detail-dialog.component';
+
 
 @Component({
   selector: 'app-databags-page',
@@ -24,7 +24,6 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
   standalone: true,
   imports: [
     NgIf,
-    NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
     HasElementsPipe,
@@ -47,7 +46,7 @@ export class DatabagsPageComponent {
   }
 
   openDatabagSettingDialog(databag: Databag): void {
-    this.dialog.open(DatabagSettingComponent, {
+    this.dialog.open(DatabagDetailDialogComponent, {
       data: { databag },
       panelClass: 'setting-dialog',
       height: '100%',

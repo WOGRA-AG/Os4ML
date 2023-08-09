@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
 import { StatusSpinnerComponent } from '../../../shared/components/molecules/status-spinner/status-spinner.component';
 import { NgIf } from '@angular/common';
-import { DatabagFieldsComponent } from '../../../databags/components/databag-fields/databag-fields.component';
+import { DatabagFieldsComponent } from '../../../shared/components/organisms/databag-fields/databag-fields.component';
 import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { CreateDatabagComponent as CreateDatabagComponent_1 } from '../../../databags/components/create-databag/create-databag.component';

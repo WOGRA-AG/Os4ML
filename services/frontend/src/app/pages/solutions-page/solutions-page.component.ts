@@ -6,12 +6,10 @@ import { DatabagService } from '../../databags/services/databag.service';
 import { SolutionService } from '../../solutions/services/solution.service';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
-import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
-import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
+import { SolutionDeteailDialogComponent } from '../solution-deteail-dialog/solution-deteail-dialog.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
@@ -29,8 +27,6 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
   standalone: true,
   imports: [
     NgIf,
-    NoSolutionsPlaceholderComponent,
-    NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
     Os4mlDefaultTemplateComponent,
@@ -88,7 +84,7 @@ export class SolutionsPageComponent implements OnDestroy {
       });
   }
   openSolutionSettingDialog(solution: Solution): void {
-    this.dialog.open(SolutionSettingComponent, {
+    this.dialog.open(SolutionDeteailDialogComponent, {
       data: { solution },
       panelClass: 'setting-dialog',
       height: '100%',

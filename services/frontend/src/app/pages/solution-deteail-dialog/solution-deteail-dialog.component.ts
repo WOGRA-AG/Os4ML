@@ -4,27 +4,27 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { Solution } from '../../../../../build/openapi/modelmanager';
-import { SolutionService } from '../../services/solution.service';
+import { Solution } from '../../../../build/openapi/modelmanager';
+import { SolutionService } from '../../solutions/services/solution.service';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
-import { IconButtonComponent } from '../../../design/components/atoms/icon-button/icon-button.component';
+import { ButtonComponent } from '../../design/components/atoms/button/button.component';
+import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
 import { NgFor, NgIf } from '@angular/common';
-import { DialogSectionComponent } from '../../../shared/components/molecules/dialog-section/dialog-section.component';
+import { DialogSectionComponent } from '../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
-import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from '../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/material/material.module';
-import { CreatePredictionComponent } from '../../../pages/dialogs/create-prediction/create-prediction.component';
+import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
 
 @Component({
   selector: 'app-solution-setting',
-  templateUrl: './solution-setting.component.html',
-  styleUrls: ['./solution-setting.component.scss'],
+  templateUrl: './solution-deteail-dialog.component.html',
+  styleUrls: ['./solution-deteail-dialog.component.scss'],
   standalone: true,
   imports: [
     DialogHeaderComponent,
@@ -40,14 +40,14 @@ import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
     IsSolutionDonePipe,
   ],
 })
-export class SolutionSettingComponent implements OnDestroy {
+export class SolutionDeteailDialogComponent implements OnDestroy {
   public solution: Solution;
   public deleting = false;
 
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private dialogRef: MatDialogRef<SolutionSettingComponent>,
+    private dialogRef: MatDialogRef<SolutionDeteailDialogComponent>,
     private dialog: MatDialog,
     private solutionService: SolutionService,
     @Inject(MAT_DIALOG_DATA)
