@@ -13,7 +13,11 @@ import { SideNavItemComponent } from './shared/components/molecules/side-nav-ite
 import { SupportComponent } from './core/components/support/support.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-stepper/getting-started-stepper.component';
-import { NewButtonComponent } from './shared/components/molecules/new-button/new-button.component';
+import {
+  ButtonTypes,
+  NewButtonComponent,
+} from './shared/components/molecules/new-button/new-button.component';
+import { ThemeToggleComponent } from './shared/components/molecules/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +35,7 @@ import { NewButtonComponent } from './shared/components/molecules/new-button/new
     SideNavItemComponent,
     SupportComponent,
     NewButtonComponent,
+    ThemeToggleComponent,
   ],
 })
 export class AppComponent {
