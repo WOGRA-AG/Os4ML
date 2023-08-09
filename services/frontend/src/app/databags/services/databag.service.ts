@@ -10,15 +10,20 @@ import {
   first,
   raceWith,
   BehaviorSubject,
-  takeUntil, last,
+  takeUntil,
+  last,
 } from 'rxjs';
 import {
   Databag,
-  ModelmanagerService
+  ModelmanagerService,
 } from '../../../../build/openapi/modelmanager';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/shared/lib/sort/sort-by-creation-time';
-import {HttpClient, HttpEventType, HttpProgressEvent} from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEventType,
+  HttpProgressEvent,
+} from '@angular/common/http';
 import { databagsWebsocketPath } from 'src/environments/environment';
 import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
@@ -27,7 +32,8 @@ import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
   providedIn: 'root',
 })
 export class DatabagService {
-  private readonly _uploadDatabagFileProgressSubject$ = new BehaviorSubject<number>(0);
+  private readonly _uploadDatabagFileProgressSubject$ =
+    new BehaviorSubject<number>(0);
   private readonly _databagsSubject$ = new BehaviorSubject<Databag[]>([]);
 
   constructor(
@@ -47,30 +53,55 @@ export class DatabagService {
     return this._uploadDatabagFileProgressSubject$;
   }
   getDatabagsSortByCreationTime(): Observable<Databag[]> {
-    return this.databags$.pipe(map(databags => databags.sort(sortByCreationTime)));
+    return this.databags$.pipe(
+      map(databags => databags.sort(sortByCreationTime))
+    );
   }
   getDatabagById(id: string): Databag | undefined {
     return this._databagsSubject$.getValue().find(databag => databag.id === id);
   }
   getDatabagById$(id: string): Observable<Databag> {
-    return this.databags$.pipe(map(databags => databags.find(databag => databag.id === id)), filterNotDefined());
+    return this.databags$.pipe(
+      map(databags => databags.find(databag => databag.id === id)),
+      filterNotDefined()
+    );
   }
   // Create, Update, Delete methods
   deleteDatabagById(id: string | undefined): Observable<void> {
-    return id ? this.userService.currentToken$
-      .pipe(switchMap(token => this.modelManager.deleteDatabagById(id, token))) : of(undefined);
+    return id
+      ? this.userService.currentToken$.pipe(
+          switchMap(token => this.modelManager.deleteDatabagById(id, token))
+        )
+      : of(undefined);
   }
-  updateDatabagById(id: string | undefined, databag: Databag): Observable<Databag> {
-    return id ? this.userService.currentToken$
-      .pipe(switchMap(token => this.modelManager.updateDatabagById(id, token, databag))) : of(databag);
+  updateDatabagById(
+    id: string | undefined,
+    databag: Databag
+  ): Observable<Databag> {
+    return id
+      ? this.userService.currentToken$.pipe(
+          switchMap(token =>
+            this.modelManager.updateDatabagById(id, token, databag)
+          )
+        )
+      : of(databag);
   }
-  createLocalFileDatabag(file: File, databag: Databag, cancelUpload: Observable<void>): Observable<Databag> {
+  createLocalFileDatabag(
+    file: File,
+    databag: Databag,
+    cancelUpload: Observable<void>
+  ): Observable<Databag> {
     return this.createDatabag(databag, (updatedDatabag, token) =>
-      this._createFileDatabag(file, updatedDatabag, token, cancelUpload));
+      this._createFileDatabag(file, updatedDatabag, token, cancelUpload)
+    );
   }
-  createUrlDatabag(databag: Databag, cancelUpload: Observable<void>): Observable<Databag> {
+  createUrlDatabag(
+    databag: Databag,
+    cancelUpload: Observable<void>
+  ): Observable<Databag> {
     return this.createDatabag(databag, (updatedDatabag, token) =>
-      this._createUrlDatabag(updatedDatabag, token, cancelUpload));
+      this._createUrlDatabag(updatedDatabag, token, cancelUpload)
+    );
   }
   // Utility methods
   isSameDatabag(databag1: Databag, databag2: Databag): boolean {
@@ -78,7 +109,9 @@ export class DatabagService {
   }
   // Private methods
   private initializeDatabags(): void {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(databagsWebsocketPath);
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
+      databagsWebsocketPath
+    );
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getDatabags(token)),
@@ -90,16 +123,19 @@ export class DatabagService {
   }
   private createDatabag(
     databag: Databag,
-    createOperation: (updatedDatabag: Databag, token: string) => Observable<Databag>
+    createOperation: (
+      updatedDatabag: Databag,
+      token: string
+    ) => Observable<Databag>
   ): Observable<Databag> {
     this._uploadDatabagFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createDatabag(token, databag).pipe(
-          switchMap(updatedDatabag =>
-            createOperation(updatedDatabag, token)
+        this.modelManager
+          .createDatabag(token, databag)
+          .pipe(
+            switchMap(updatedDatabag => createOperation(updatedDatabag, token))
           )
-        )
       )
     );
   }
@@ -107,14 +143,21 @@ export class DatabagService {
     file: File,
     updatedDatabag: Databag,
     token: string,
-    cancelUpload: Observable<void>): Observable<Databag> {
-    return this.modelManager.createDatasetPutUrl(updatedDatabag.id!, token).pipe(
-      switchMap(url => putFileAsOctetStream(this.http, url, file)),
-      tap(upload => this.handleUploadProgress(upload)),
-      last(),
-      switchMap(() => this.modelManager.startDatabagPipeline(updatedDatabag.id!, token)),
-      takeUntil(cancelUpload.pipe(tap(() => this.cancelUpload(updatedDatabag))))
-    );
+    cancelUpload: Observable<void>
+  ): Observable<Databag> {
+    return this.modelManager
+      .createDatasetPutUrl(updatedDatabag.id!, token)
+      .pipe(
+        switchMap(url => putFileAsOctetStream(this.http, url, file)),
+        tap(upload => this.handleUploadProgress(upload)),
+        last(),
+        switchMap(() =>
+          this.modelManager.startDatabagPipeline(updatedDatabag.id!, token)
+        ),
+        takeUntil(
+          cancelUpload.pipe(tap(() => this.cancelUpload(updatedDatabag)))
+        )
+      );
   }
   private _createUrlDatabag(
     databag: Databag,
@@ -122,12 +165,17 @@ export class DatabagService {
     cancelUpload: Observable<void>
   ): Observable<Databag> {
     return this.modelManager.createDatabag(token, databag).pipe(
-      switchMap(createdDatabag => this.modelManager.startDatabagPipeline(createdDatabag.id!, token)),
+      switchMap(createdDatabag =>
+        this.modelManager.startDatabagPipeline(createdDatabag.id!, token)
+      ),
       takeUntil(cancelUpload.pipe(tap(() => this.cancelUpload(databag))))
     );
   }
   private handleUploadProgress(upload: HttpProgressEvent): void {
-    if (upload.type === HttpEventType.UploadProgress && upload.total !== undefined) {
+    if (
+      upload.type === HttpEventType.UploadProgress &&
+      upload.total !== undefined
+    ) {
       const percentDone = Math.round((upload.loaded / upload.total) * 100);
       this._uploadDatabagFileProgressSubject$.next(percentDone);
     }

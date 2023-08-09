@@ -11,7 +11,8 @@ import {
   raceWith,
   tap,
   BehaviorSubject,
-  takeUntil, last,
+  takeUntil,
+  last,
 } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { WebSocketConnectionService } from 'src/app/core/services/web-socket-connection.service';
@@ -23,7 +24,8 @@ import { putFileAsOctetStream } from 'src/app/shared/lib/http/http';
   providedIn: 'root',
 })
 export class PredictionService {
-  private readonly _uploadPredictionFileProgressSubject$ = new BehaviorSubject<number>(0);
+  private readonly _uploadPredictionFileProgressSubject$ =
+    new BehaviorSubject<number>(0);
   private readonly _predictionsSubject$ = new BehaviorSubject<Prediction[]>([]);
 
   constructor(
@@ -77,22 +79,39 @@ export class PredictionService {
   createLocalFilePrediction(
     file: File,
     prediction: Prediction,
-    cancelUpload: Observable<void>): Observable<Prediction> {
+    cancelUpload: Observable<void>
+  ): Observable<Prediction> {
     return this.createPrediction(prediction, (updatedPrediction, token) =>
-      this._createLocalFilePrediction(file, updatedPrediction, token, cancelUpload));
+      this._createLocalFilePrediction(
+        file,
+        updatedPrediction,
+        token,
+        cancelUpload
+      )
+    );
   }
-  createUrlPrediction(url: string, prediction: Prediction, cancelUpload: Observable<void>): Observable<Prediction> {
+  createUrlPrediction(
+    url: string,
+    prediction: Prediction,
+    cancelUpload: Observable<void>
+  ): Observable<Prediction> {
     return this.createPrediction(prediction, (updatedPrediction, token) =>
-      this._createUrlPrediction(url, updatedPrediction, token, cancelUpload));
+      this._createUrlPrediction(url, updatedPrediction, token, cancelUpload)
+    );
   }
   deletePredictionById(id: string | undefined): Observable<void> {
-    return id ? this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.deletePredictionById(id, token))) : of(undefined);
+    return id
+      ? this.userService.currentToken$.pipe(
+          switchMap(token => this.modelManager.deletePredictionById(id, token))
+        )
+      : of(undefined);
   }
 
   // Private methods
   private initializePredictions(): void {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(predictionsWebsocketPath);
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
+      predictionsWebsocketPath
+    );
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getPredictions(token)),
@@ -104,16 +123,21 @@ export class PredictionService {
   }
   private createPrediction(
     prediction: Prediction,
-    createOperation: (updatedPrediction: Prediction, token: string) => Observable<Prediction>
+    createOperation: (
+      updatedPrediction: Prediction,
+      token: string
+    ) => Observable<Prediction>
   ): Observable<Prediction> {
     this._uploadPredictionFileProgressSubject$.next(0);
     return this.userService.currentToken$.pipe(
       switchMap(token =>
-        this.modelManager.createPrediction(token, prediction).pipe(
-          switchMap(updatedPrediction =>
-            createOperation(updatedPrediction, token)
+        this.modelManager
+          .createPrediction(token, prediction)
+          .pipe(
+            switchMap(updatedPrediction =>
+              createOperation(updatedPrediction, token)
+            )
           )
-        )
       )
     );
   }
@@ -123,13 +147,22 @@ export class PredictionService {
     token: string,
     cancelUpload: Observable<void>
   ): Observable<Prediction> {
-    return this.modelManager.createPredictionDataPutUrl(updatedPrediction.id!, token).pipe(
-      switchMap(url => putFileAsOctetStream(this.http, url, file)),
-      tap(upload => this.handleUploadProgress(upload)),
-      last(),
-      switchMap(() => this.modelManager.startPredictionPipeline(updatedPrediction.id!, token)),
-      takeUntil(cancelUpload.pipe(tap(() => this.cancelUpload(updatedPrediction))))
-    );
+    return this.modelManager
+      .createPredictionDataPutUrl(updatedPrediction.id!, token)
+      .pipe(
+        switchMap(url => putFileAsOctetStream(this.http, url, file)),
+        tap(upload => this.handleUploadProgress(upload)),
+        last(),
+        switchMap(() =>
+          this.modelManager.startPredictionPipeline(
+            updatedPrediction.id!,
+            token
+          )
+        ),
+        takeUntil(
+          cancelUpload.pipe(tap(() => this.cancelUpload(updatedPrediction)))
+        )
+      );
   }
   private _createUrlPrediction(
     url: string,
@@ -139,8 +172,12 @@ export class PredictionService {
   ): Observable<Prediction> {
     updatedPrediction.dataUrl = url;
     return this.modelManager.createPrediction(token, updatedPrediction).pipe(
-      switchMap(createdPrediction => this.modelManager.startPredictionPipeline(createdPrediction.id!, token)),
-      takeUntil(cancelUpload.pipe(tap(() => this.cancelUpload(updatedPrediction))))
+      switchMap(createdPrediction =>
+        this.modelManager.startPredictionPipeline(createdPrediction.id!, token)
+      ),
+      takeUntil(
+        cancelUpload.pipe(tap(() => this.cancelUpload(updatedPrediction)))
+      )
     );
   }
   private handleUploadProgress(upload: any): void {
