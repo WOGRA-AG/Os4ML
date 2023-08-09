@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { Column } from '../../../../../../build/openapi/modelmanager';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';

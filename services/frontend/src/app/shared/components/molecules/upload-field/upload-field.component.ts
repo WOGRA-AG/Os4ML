@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { NgIf } from '@angular/common';
 import { DragAndDropDirective } from '../../../directives/drag-and-drop.directive';
 

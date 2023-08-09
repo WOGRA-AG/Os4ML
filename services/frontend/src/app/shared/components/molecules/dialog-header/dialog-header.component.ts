@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
-import { MaterialModule } from 'src/app/material/material.module';
+import { IconButtonComponent } from '../icon-button/icon-button.component';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 
 @Component({
   selector: 'app-dialog-header',

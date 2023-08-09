@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '@angular/material' as mat;
+@use 'node_modules/@angular/material/index' as mat;
 
 $md-os4ml-colors-primary: (
   50: var(--md-sys-color-primary-container),

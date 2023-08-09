@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Databag } from '../../../../../../build/openapi/modelmanager';
 import { MlTypes } from '../../../../core/models/ml-types';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { NgFor, NgClass } from '@angular/common';
 
 @Component({

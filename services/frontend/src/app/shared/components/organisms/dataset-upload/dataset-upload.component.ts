@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { urlRegex } from 'src/app/shared/lib/regex/regex';
 import { TranslateModule } from '@ngx-translate/core';
 import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.component';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { FormsModule } from '@angular/forms';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 

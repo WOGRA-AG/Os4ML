@@ -14,12 +14,11 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
-import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
-import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
+import { ButtonComponent } from '../../molecules/button/button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
@@ -33,7 +32,6 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     ReactiveFormsModule,
     MatSelectModule,
     ElementDividerComponent,
-    SelectableListComponent,
     GetPredictListItemsFromDatabagPipe,
     TranslateModule,
     NgIf,
@@ -42,7 +40,6 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     ButtonComponent,
     SolutionCreateButtonComponent,
     NewButtonComponent,
-    JsonPipe,
   ],
 })
 export class SolutionCreateFormComponent implements OnInit {

@@ -11,13 +11,13 @@ import { PopupConfirmComponent } from 'src/app/shared/components/organisms/popup
 import { filter } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent } from '../../design/components/atoms/button/button.component';
-import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
+import { ButtonComponent } from '../../shared/components/molecules/button/button.component';
+import { IconButtonComponent } from '../../shared/components/molecules/icon-button/icon-button.component';
 import { NgFor, NgIf } from '@angular/common';
 import { DialogSectionComponent } from '../../shared/components/molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../shared/components/molecules/dialog-header/dialog-header.component';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
 

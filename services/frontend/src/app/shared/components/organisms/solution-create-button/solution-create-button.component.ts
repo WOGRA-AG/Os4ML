@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
+import { ButtonComponent } from '../../molecules/button/button.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
+import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';

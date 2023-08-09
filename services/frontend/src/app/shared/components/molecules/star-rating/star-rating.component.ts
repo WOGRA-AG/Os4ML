@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { StarComponent } from '../../atoms/star/star.component';
 import { NgFor } from '@angular/common';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 
 @Component({
   selector: 'app-star-rating',

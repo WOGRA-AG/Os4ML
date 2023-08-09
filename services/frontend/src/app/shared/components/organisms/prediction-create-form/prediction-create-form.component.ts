@@ -12,11 +12,10 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSelectModule } from '@angular/material/select';
-import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
-import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
+import { ButtonComponent } from '../../molecules/button/button.component';
 import { ElementDividerComponent } from '../../atoms/element-divider/element-divider.component';
 import { DatasetUploadComponent } from '../dataset-upload/dataset-upload.component';
 import { UploadFieldComponent } from '../../molecules/upload-field/upload-field.component';
@@ -42,7 +41,6 @@ export interface PredictionFormOutput {
     MatInputModule,
     TranslateModule,
     MatSelectModule,
-    SelectableListComponent,
     NgIf,
     GetDatabagByIdPipe,
     GetPredictListItemsFromDatabagPipe,

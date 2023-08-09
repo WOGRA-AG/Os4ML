@@ -1,8 +1,8 @@
-@use '@angular/material' as mat;
+@use 'node_modules/@angular/material/index' as mat;
 @use 'sass:map';
-@use './components' as components;
-@use './essentials/typography' as typography;
-@use './essentials/color.scss' as colors;
+@use 'src/app/shared/components/atoms/material/components/index' as components;
+@use 'src/app/shared/components/atoms/material/essentials/typography' as typography;
+@use 'src/app/shared/components/atoms/material/essentials/color' as colors;
 
 @include mat.core();
 

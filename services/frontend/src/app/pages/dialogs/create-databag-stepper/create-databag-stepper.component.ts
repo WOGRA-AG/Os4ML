@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { DatabagService } from 'src/app/databags/services/databag.service';
 import { CreateDatabagComponent } from 'src/app/databags/components/create-databag/create-databag.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ButtonComponent } from '../../../design/components/atoms/button/button.component';
+import { ButtonComponent } from '../../../shared/components/molecules/button/button.component';
 import { StatusSpinnerComponent } from '../../../shared/components/molecules/status-spinner/status-spinner.component';
 import { NgIf } from '@angular/common';
 import { DatabagFieldsComponent } from '../../../shared/components/organisms/databag-fields/databag-fields.component';
@@ -14,7 +14,7 @@ import { DialogSectionComponent } from '../../../shared/components/molecules/dia
 import { FormsModule } from '@angular/forms';
 import { CreateDatabagComponent as CreateDatabagComponent_1 } from '../../../databags/components/create-databag/create-databag.component';
 import { DialogHeaderComponent } from '../../../shared/components/molecules/dialog-header/dialog-header.component';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { Router } from '@angular/router';
 
 @Component({

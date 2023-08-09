@@ -14,8 +14,7 @@ import { DatabagDataTableComponent } from '../../shared/components/organisms/dat
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
-import {DatabagDetailDialogComponent} from '../databag-detail-dialog/databag-detail-dialog.component';
-
+import { DatabagDetailDialogComponent } from '../databag-detail-dialog/databag-detail-dialog.component';
 
 @Component({
   selector: 'app-databags-page',

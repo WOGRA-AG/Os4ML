@@ -11,7 +11,7 @@ import {
 } from '../../shared/components/organisms/databags-create-form/databags-create-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Os4mlDialogTemplateComponent } from '../../shared/components/templates/os4ml-dialog-template/os4ml-dialog-template.component';
-import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
+import { IconButtonComponent } from '../../shared/components/molecules/icon-button/icon-button.component';
 import { UploadingFilesComponent } from '../../shared/components/organisms/uploading-files/uploading-files.component';
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
+import { ButtonComponent } from '../../molecules/button/button.component';
 import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-spinner.component';
 import { NgIf } from '@angular/common';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';

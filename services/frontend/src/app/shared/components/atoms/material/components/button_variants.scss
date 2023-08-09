@@ -1,6 +1,6 @@
 @use 'sass:map';
 @use 'sass:meta';
-@use '@angular/material' as mat;
+@use 'node_modules/@angular/material/index' as mat;
 
 $_ripple-opacity: 0.1;
 

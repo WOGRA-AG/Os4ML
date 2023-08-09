@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { map, Observable } from 'rxjs';
-import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button/icon-button.component';
+import { IconButtonComponent } from 'src/app/shared/components/molecules/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-theme-toggle',

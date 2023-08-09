@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Databag } from '../../../../../../build/openapi/modelmanager';
 import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
 import { MatTableModule } from '@angular/material/table';
-import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
+import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';

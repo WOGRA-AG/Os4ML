@@ -11,7 +11,7 @@ import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/run
 import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
-import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
+import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';

@@ -1,17 +1,17 @@
-@use '../essentials/color.scss' as colors;
-@use 'sidenav.scss' as sidenav;
-@use 'toolbar.scss' as toolbar;
-@use 'navlist.scss' as navlist;
-@use 'button.scss' as button;
-@use 'button_variants.scss' as buttonVariants;
-@use 'expansion-module.scss' as expansionModule;
-@use 'dialog.scss' as dialog;
-@use 'list.scss' as list;
-@use 'table.scss' as table;
-@use 'chips.scss' as chips;
-@use 'stepper.scss' as stepper;
-@use 'form-field.scss' as form-field;
-@use 'progress-bar.scss' as progress-bar;
+@use 'src/app/shared/components/atoms/material/essentials/color' as colors;
+@use 'sidenav' as sidenav;
+@use 'toolbar' as toolbar;
+@use 'navlist' as navlist;
+@use 'button' as button;
+@use 'button_variants' as buttonVariants;
+@use 'expansion-module' as expansionModule;
+@use 'dialog' as dialog;
+@use 'list' as list;
+@use 'table' as table;
+@use 'chips' as chips;
+@use 'stepper' as stepper;
+@use 'form-field' as form-field;
+@use 'progress-bar' as progress-bar;
 
 @mixin theme($theme, $typography-config, $variants) {
   @include form-field.theme($theme);

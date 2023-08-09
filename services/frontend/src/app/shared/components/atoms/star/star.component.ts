@@ -1,5 +1,5 @@
 import { Component, HostBinding, Input } from '@angular/core';
-import { MaterialModule } from 'src/app/material/material.module';
+import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
 
 @Component({
   selector: 'app-star',
