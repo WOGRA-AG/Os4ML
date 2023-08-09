@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IconButtonComponent } from '../../design/components/atoms/icon-button/icon-button.component';
 import { SolutionCreateFormComponent } from '../../shared/components/organisms/solution-create-form/solution-create-form.component';
 import { MaterialModule } from '../../material/material.module';
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Os4mlDialogTemplateComponent } from '../../shared/components/templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import {
@@ -33,7 +33,6 @@ import { UploadingFilesComponent } from '../../shared/components/organisms/uploa
     Os4mlDialogTemplateComponent,
     NgIf,
     PredictionCreateFormComponent,
-    JsonPipe,
     UploadingFilesComponent,
   ],
   providers: [GetSolutionByIdPipe],
@@ -150,7 +149,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     prediction: Prediction
   ): void {
     this.predictionService
-      .createURLPrediction(
+      .createUrlPrediction(
         predictionFormOutput.predictionDataUrl!,
         prediction,
         this.cancelUpload$
