@@ -4,10 +4,7 @@ import { NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconButtonComponent } from '../../../../design/components/atoms/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  ButtonTypes,
-  NewButtonComponent,
-} from '../../molecules/new-button/new-button.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-databag-create-button',
@@ -28,11 +25,11 @@ export class DatabagCreateButtonComponent {
   @Input() public disabled?: boolean;
   @Output() public addDatabag = new EventEmitter<void>();
 
-  get variant(): ButtonTypes {
+  get variant(): 'primary' | 'text' {
     if (this.type === 'primary' || this.type === 'FAB') {
-      return ButtonTypes.primary;
+      return 'primary';
     }
-    return ButtonTypes.text;
+    return 'text';
   }
   get isFAB(): boolean {
     return this.type === 'FAB';

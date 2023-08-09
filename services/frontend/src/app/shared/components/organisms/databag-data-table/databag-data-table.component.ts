@@ -6,6 +6,9 @@ import { IconButtonComponent } from '../../../../design/components/atoms/icon-bu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
+import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
+import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
+import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
 
 @Component({
   selector: 'app-databag-data-table',
@@ -18,6 +21,9 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
     MatTooltipModule,
     TranslateModule,
     SolutionCreateButtonComponent,
+    ProcessingStatusIndicatorComponent,
+    ShortStatusPipe,
+    RuntimeIndicatorComponent,
   ],
   standalone: true,
 })
@@ -31,7 +37,9 @@ export class DatabagDataTableComponent {
     'databagType',
     'features',
     'samples',
+    'creationTime',
     'creation',
+    'status',
     'actions',
   ];
 }

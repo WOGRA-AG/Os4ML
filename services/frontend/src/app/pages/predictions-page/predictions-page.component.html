@@ -1,83 +1,53 @@
-<app-os4ml-default-template>
+<app-os4ml-default-template data-testid="predictions-page">
   <h1 header class="headline-1 primary-text">
-    {{ 'prediction.plural' | translate }}
+    {{ 'pages.predictions_page.title' | translate }}
   </h1>
-  <app-breadcrumbs main [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
-  <ng-container main *ngIf="predictions$ | async as predictions">
-    <ng-container *ngIf="predictions | hasElements; else placeholder">
-      <div class="data-insight-wrapper">
-        <app-data-insight-card
-          *ngFor="let prediction of predictions"
-          data-testid="prediction-item">
-          <ng-container content>
-            <app-data-insight-item
-              [title]="'prediction.detail.name' | translate">
-              <span class="mat-body-2 on-surface-text">{{
-                prediction.name
-              }}</span>
-            </app-data-insight-item>
-            <app-data-insight-item
-              [title]="'prediction.detail.runtime' | translate">
-              <app-runtime-indicator
-                class="on-surface-text"
-                [creationTime]="prediction.creationTime"
-                [completionTime]="prediction.completionTime">
-              </app-runtime-indicator>
-            </app-data-insight-item>
-            <app-data-insight-item
-              [title]="'prediction.detail.creation' | translate">
-              <span class="mat-body-2 on-surface-text">
-                {{ prediction.creationTime | localizedDate : 'dd.MM.yyyy' }}
-              </span>
-            </app-data-insight-item>
-            <app-data-insight-item
-              [title]="'prediction.detail.status' | translate">
-              <app-processing-status-indicator
-                [shortStatus]="prediction.status | shortStatus">
-              </app-processing-status-indicator>
-            </app-data-insight-item>
-          </ng-container>
-          <ng-container actions>
-            <app-data-insight-item
-              [title]="'prediction.detail.actions' | translate">
-              <app-icon-button
-                *ngIf="prediction | isPredictionDone"
-                data-testid="prediction-download-button"
-                color="primary"
-                icon="download"
-                attr.aria-label="{{
-                  'prediction.detail.tooltips.download' | translate
-                }}"
-                [matTooltip]="'prediction.detail.tooltips.download' | translate"
-                (click)="
-                  downloadPredictionResult(prediction, downloadResultLink)
-                ">
-              </app-icon-button>
-              <a
-                download
-                target="_blank"
-                hidden
-                aria-hidden="true"
-                #downloadResultLink>
-              </a>
-            </app-data-insight-item>
-          </ng-container>
-        </app-data-insight-card>
-      </div>
-      <div class="actions">
-        <app-button
-          variant="raised"
-          icon="download"
-          color="primary"
-          (click)="createPrediction()">
-          {{ 'prediction.create' | translate }}
-        </app-button>
-      </div>
-    </ng-container>
+  <div nav role="actions" class="actions">
+    <div class="button-section">
+      <app-databag-filter
+        [databags]="(databags$ | async) ?? []"
+        [defaultValue]="(databagId$ | async) ?? undefined"
+        (databagChange)="onDatabagChanged($event)"></app-databag-filter>
+      <app-solution-filter
+        [solutions]="(solutions$ | async) ?? []"
+        [defaultValue]="(solutionId$ | async) ?? undefined"
+        (solutionChange)="onSolutionChanged($event)"></app-solution-filter>
+    </div>
+    <div class="select-section">
+      <app-databag-create-button (addDatabag)="addDatabag()">
+      </app-databag-create-button>
+      <app-solution-create-button
+        [type]="'text'"
+        [disabled]="!(databags$ | async | hasElements)"
+        (addSolution)="addSolution()">
+      </app-solution-create-button>
+      <app-prediction-create-button
+        [type]="'primary'"
+        [disabled]="!(solutions$ | async | hasElements)"
+        (addPrediction)="addPrediction()">
+      </app-prediction-create-button>
+    </div>
+  </div>
+  <ng-container main>
+    <app-predictions-data-table
+      [databags]="(databags$ | async) ?? []"
+      [solutions]="(solutions$ | async) ?? []"
+      [predictions]="(predictions$ | async) ?? []"
+      (downloadPredictionButton)="
+        downloadPredictionResult($event, downloadResultLink)
+      "
+      (deletePredictionButton)="deletePrediction($event)">
+    </app-predictions-data-table>
+    <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
+    </a>
+    <app-ml-entity-status-placeholder
+      *ngIf="!(predictions$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
+      [hasSolutions]="solutions$ | async | hasElements"
+      [hasPredictions]="predictions$ | async | hasElements"
+      (addDatabag)="addDatabag()"
+      (addSolution)="addSolution()"
+      (addPrediction)="addPrediction()">
+    </app-ml-entity-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>
-
-<ng-template #placeholder>
-  <app-no-prediction-placeholder (addPredictionChange)="createPrediction()">
-  </app-no-prediction-placeholder>
-</ng-template>

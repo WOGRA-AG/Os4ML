@@ -13,10 +13,7 @@ import { SideNavItemComponent } from './shared/components/molecules/side-nav-ite
 import { SupportComponent } from './core/components/support/support.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GettingStartedStepperComponent } from './pages/dialogs/getting-started-stepper/getting-started-stepper.component';
-import {
-  ButtonTypes,
-  NewButtonComponent,
-} from './shared/components/molecules/new-button/new-button.component';
+import { NewButtonComponent } from './shared/components/molecules/new-button/new-button.component';
 import { ThemeToggleComponent } from './shared/components/molecules/theme-toggle/theme-toggle.component';
 
 @Component({
@@ -39,7 +36,6 @@ import { ThemeToggleComponent } from './shared/components/molecules/theme-toggle
   ],
 })
 export class AppComponent {
-  public buttonTypes = ButtonTypes;
   constructor(private translate: TranslateService, private dialog: MatDialog) {
     registerLocaleData(localeDe, 'de', localeDeExtra);
     registerLocaleData(localeEn, 'en', localeEnExtra);

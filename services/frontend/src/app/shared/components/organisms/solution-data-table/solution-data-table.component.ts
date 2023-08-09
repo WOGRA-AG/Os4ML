@@ -42,6 +42,7 @@ export class SolutionDataTableComponent {
   @Input() public solutions: Solution[] = [];
   @Input() public databags: Databag[] = [];
   @Output() public solutionSettingButton = new EventEmitter<Solution>();
+  @Output() public createPredictionButton = new EventEmitter<string>();
 
   public displayedColumns: string[] = [
     'solutionName',

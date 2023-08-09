@@ -1,32 +1,37 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Prediction, Solution } from 'build/openapi/modelmanager';
-import { Observable, Subject, switchMap, takeUntil, map, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Databag, Prediction, Solution } from 'build/openapi/modelmanager';
 import {
-  Breadcrumb,
-  BreadcrumbsComponent,
-} from 'src/app/design/components/molecules/breadcrumbs/breadcrumbs.component';
+  Observable,
+  Subject,
+  takeUntil,
+  map,
+  first,
+  combineLatest,
+  switchMap,
+} from 'rxjs';
 import { PredictionService } from 'src/app/predictions/services/prediction.service';
-import { filterNotDefined } from 'src/app/shared/lib/rxjs/filter-not-defined';
 import { SolutionService } from 'src/app/solutions/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoPredictionPlaceholderComponent } from '../../predictions/components/no-prediction-placeholder/no-prediction-placeholder.component';
-import { ButtonComponent } from '../../design/components/atoms/button/button.component';
-import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
+import { NgIf, AsyncPipe } from '@angular/common';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
-import { DataInsightCardComponent } from '../../shared/components/organisms/data-insight-card/data-insight-card.component';
-import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
-import { DataInsightItemComponent } from '../../shared/components/molecules/data-insight-item/data-insight-item.component';
-import { RuntimeIndicatorComponent } from '../../shared/components/molecules/runtime-indicator/runtime-indicator.component';
-import { ProcessingStatusIndicatorComponent } from '../../shared/components/molecules/processing-status-indicator/processing-status-indicator.component';
-import { MaterialModule } from '../../material/material.module';
-import { ShortStatusPipe } from '../../shared/pipes/short-status.pipe';
-import { PipelineStatus } from '../../core/models/pipeline-status';
-import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
-import { IsPredictionDonePipe } from 'src/app/shared/pipes/is-prediction-done.pipe';
-import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button/icon-button.component';
+import { DatabagService } from '../../databags/services/databag.service';
+import { PredictionsDataTableComponent } from '../../shared/components/organisms/predictions-data-table/predictions-data-table.component';
+import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
+import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
+import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
+import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
+import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
+import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
+import { SolutionFilterComponent } from '../../shared/components/organisms/solution-filter/solution-filter.component';
+import { PredictionCreateButtonComponent } from '../../shared/components/organisms/prediction-create-button/prediction-create-button.component';
+import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
+import { PopupConfirmComponent } from '../../shared/components/organisms/popup-confirm/popup-confirm.component';
+import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-predictions-page',
@@ -34,86 +39,122 @@ import { IconButtonComponent } from 'src/app/design/components/atoms/icon-button
   styleUrls: ['./predictions-page.component.scss'],
   standalone: true,
   imports: [
-    BreadcrumbsComponent,
     NgIf,
-    ButtonComponent,
     NoPredictionPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
-    DataInsightCardComponent,
-    NgForOf,
-    DataInsightItemComponent,
-    LocalizedDatePipe,
-    RuntimeIndicatorComponent,
-    ProcessingStatusIndicatorComponent,
-    MaterialModule,
-    ShortStatusPipe,
     Os4mlDefaultTemplateComponent,
     HasElementsPipe,
-    IsPredictionDonePipe,
-    IconButtonComponent,
+    PredictionsDataTableComponent,
+    SolutionCreateButtonComponent,
+    NoSolutionsPlaceholderComponent,
+    NoDatabagsPlaceholderComponent,
+    DatabagFilterComponent,
+    SolutionFilterComponent,
+    PredictionCreateButtonComponent,
+    DatabagCreateButtonComponent,
+    MlEntityStatusPlaceholderComponent,
   ],
 })
-export class PredictionsPageComponent implements OnInit, OnDestroy {
-  public predictions$: Observable<Prediction[]> = of([]);
-  public pipelineStatus = PipelineStatus;
-  public breadcrumbs: Breadcrumb[] = [];
-  private solution: Solution = {};
-  private readonly _destroy$: Subject<void> = new Subject<void>();
+export class PredictionsPageComponent implements OnDestroy {
+  public databags$: Observable<Databag[]>;
+  public solutions$: Observable<Solution[]>;
+  public predictions$: Observable<Prediction[]>;
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private predictionService: PredictionService,
+    private databagService: DatabagService,
     private solutionService: SolutionService,
-    private route: ActivatedRoute,
+    private predictionService: PredictionService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this._destroy$),
-        map(params => params.get('solutionId')),
-        filterNotDefined(),
-        switchMap(solutionId =>
-          this.solutionService.getSolutionById(solutionId)
-        )
+  ) {
+    this.databags$ = this.databagService.getDatabagsSortByCreationTime();
+    this.solutions$ = this.solutionService.getSolutionsByCreationTime();
+    this.predictions$ = combineLatest([this.databagId$, this.solutionId$]).pipe(
+      switchMap(([databagId, solutionId]) =>
+        this.predictionService.getFilteredPredictions(databagId, solutionId)
       )
-      .subscribe(solution => {
-        this.solution = solution;
-        this.predictions$ =
-          this.predictionService.getPredictionsBySolutionIdSortByCreationTime(
-            solution.id
-          );
-        this.breadcrumbs = [
-          { label: 'Solutions', link: '/solutions' },
-          { label: this.solution.name! },
-        ];
-      });
+    );
   }
 
-  ngOnDestroy(): void {
-    this._destroy$.next(undefined);
-    this._destroy$.complete();
+  public get databagId$(): Observable<string | null> {
+    return this.activatedRoute.queryParamMap.pipe(
+      map(params => params.get('selectedDatabag'))
+    );
+  }
+  public get solutionId$(): Observable<string | null> {
+    return this.activatedRoute.queryParamMap.pipe(
+      map(params => params.get('selectedSolution'))
+    );
   }
 
-  createPrediction(): void {
-    this.dialog.open(CreatePredictionComponent, {
-      data: {
-        solution: this.solution,
-      },
+  onDatabagChanged(databagId: string | null): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { selectedDatabag: databagId },
+      queryParamsHandling: 'merge',
     });
   }
 
+  onSolutionChanged(solutionId: string | null): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { selectedSolution: solutionId },
+      queryParamsHandling: 'merge',
+    });
+  }
+  addDatabag(): void {
+    this.dialog.open(DatabagsCreateDialogComponent);
+  }
+
+  addSolution(): void {
+    this.databagId$
+      .pipe(takeUntil(this.destroy$), first())
+      .subscribe(databagId => {
+        this.dialog.open(SolutionCreateDialogComponent, {
+          data: { databagId },
+        });
+      });
+  }
+
+  addPrediction(): void {
+    this.solutionId$
+      .pipe(takeUntil(this.destroy$), first())
+      .subscribe(solutionId => {
+        this.dialog.open(PredictionsCreateDialogComponent, {
+          data: { solutionId },
+        });
+      });
+  }
+
   downloadPredictionResult(
-    prediction: Prediction,
+    predictionId: string,
     downloadLink: HTMLAnchorElement
   ): void {
     this.predictionService
-      .getPredictionResultGetUrl(prediction)
-      .pipe(takeUntil(this._destroy$))
+      .getPredictionResultGetUrl(predictionId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();
       });
+  }
+
+  deletePrediction(predictionId: string): void {
+    const deletePrediction =
+      this.predictionService.deletePredictionById(predictionId);
+    this.dialog.open(PopupConfirmComponent, {
+      data: {
+        titleKey: 'solution.delete.title',
+        messageKey: 'solution.delete.confirmation',
+        onConfirm: deletePrediction,
+      },
+    });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

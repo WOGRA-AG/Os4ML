@@ -14,7 +14,7 @@
       }}
     </th>
     <td mat-cell *matCellDef="let element">
-      {{ (databags | getDatabagById : element.databagId)?.name }}
+      {{ (element.databagId | getDatabagById)?.name }}
     </td>
   </ng-container>
   <ng-container matColumnDef="metrics">
@@ -80,20 +80,14 @@
         color="primary"
         icon="edit">
       </app-icon-button>
-      <!--          <app-icon-button-->
-      <!--            data-testid="create-prediction-button"-->
-      <!--            (click)="openCreatePredictionDialog(element)"-->
-      <!--            [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"-->
-      <!--            attr.aria-label="{{-->
-      <!--              'solution.detail.tooltips.add_prediction' | translate-->
-      <!--            }}"-->
-      <!--            class="mr-1"-->
-      <!--            color="primary"-->
-      <!--            icon="add">-->
-      <!--          </app-icon-button>-->
       <app-icon-button
+        class="mr-1"
         *ngIf="element.id && (element | isSolutionDone)"
-        [routerLink]="[element.id, 'predictions']"
+        [routerLink]="['/predictions']"
+        [queryParams]="{
+          selectedDatabag: element.databagId,
+          selectedSolution: element.id
+        }"
         [matTooltip]="
           'organisms.solution_data_table.actions.show_predictions.tooltip'
             | translate
@@ -104,6 +98,16 @@
         }}"
         color="primary"
         icon="batch_prediction">
+      </app-icon-button>
+      <app-icon-button
+        data-testid="create-prediction-button"
+        (click)="createPredictionButton.emit(element.id)"
+        [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
+        attr.aria-label="{{
+          'solution.detail.tooltips.add_prediction' | translate
+        }}"
+        color="primary"
+        icon="add">
       </app-icon-button>
     </td>
   </ng-container>

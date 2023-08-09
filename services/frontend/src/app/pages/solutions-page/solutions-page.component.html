@@ -3,17 +3,10 @@
     {{ 'pages.solutions_page.title' | translate }}
   </h1>
   <div nav role="actions" class="actions">
-    <app-select
-      [label]="
-        'pages.solutions_page.actions.filter_by_databag.label' | translate
-      "
-      [options]="
-        (databags$ | async) ?? []
-          | toSelectOption : getDatabagId : getDatabagName
-      "
+    <app-databag-filter
+      [databags]="(databags$ | async) ?? []"
       [defaultValue]="(databagId$ | async) ?? undefined"
-      (selectionChange)="onDatabagChanged($event)">
-    </app-select>
+      (databagChange)="onDatabagChanged($event)"></app-databag-filter>
     <div class="button-section">
       <app-databag-create-button [type]="'text'" (addDatabag)="addDatabag()">
       </app-databag-create-button>
@@ -26,20 +19,17 @@
   </div>
   <ng-container main>
     <app-solution-data-table
-      [solutions]="
-        solutions$ | async | filterSolutionsByDatabagId : (databagId$ | async)
-      "
+      [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
-      (solutionSettingButton)="
-        openSolutionSettingDialog($event)
-      "></app-solution-data-table>
-
-    <app-ml-status-placeholder
+      (solutionSettingButton)="openSolutionSettingDialog($event)"
+      (createPredictionButton)="openCreatePredictionDialog($event)">
+    </app-solution-data-table>
+    <app-ml-entity-status-placeholder
       *ngIf="!(solutions$ | async | hasElements)"
       [hasSolutions]="solutions$ | async | hasElements"
       [hasDatabags]="databags$ | async | hasElements"
       (addDatabag)="addDatabag()"
       (addSolution)="addSolution()">
-    </app-ml-status-placeholder>
+    </app-ml-entity-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>

@@ -76,6 +76,24 @@ export class SolutionSettingComponent implements OnDestroy {
       });
   }
 
+  deleteSolution(solutionId: string): void {
+    const deleteSolution = this.solutionService.deleteSolutionById(solutionId);
+    const deleteSolutionRef = this.dialog.open(PopupConfirmComponent, {
+      data: {
+        titleKey: 'solution.delete.title',
+        messageKey: 'solution.delete.confirmation',
+        onConfirm: deleteSolution,
+      },
+    });
+    deleteSolutionRef
+      .afterClosed()
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(confirm => !!confirm)
+      )
+      .subscribe(() => this.dialogRef.close());
+  }
+
   delete(): void {
     const deleteSolution = (): Promise<void> =>
       firstValueFrom(this.solutionService.deleteSolutionById(this.solution.id));

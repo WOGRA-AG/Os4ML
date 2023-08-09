@@ -1,38 +1,26 @@
 import { Component, OnDestroy } from '@angular/core';
-import {
-  first,
-  map,
-  Observable,
-  of,
-  Subject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { first, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../databags/services/databag.service';
 import { SolutionService } from '../../solutions/services/solution.service';
-import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
 import { NoSolutionsPlaceholderComponent } from '../../solutions/components/no-solutions-placeholder/no-solutions-placeholder.component';
-import { ButtonComponent } from '../../design/components/atoms/button/button.component';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Os4mlDefaultTemplateComponent } from '../../shared/components/templates/os4ml-default-template/os4ml-default-template.component';
 import { SolutionSettingComponent } from '../../solutions/components/solution-setting/solution-setting.component';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../shared/components/organisms/solution-data-table/solution-data-table.component';
-import { MatSelectModule } from '@angular/material/select';
-import { SelectComponent } from '../../shared/components/molecules/select/select.component';
-import { ToSelectOptionPipe } from '../../shared/pipes/to-select-option.pipe';
-import { FilterSolutionsByDatabagIdPipe } from '../../shared/pipes/filter-solutions-by-databag-id.pipe';
 import { SolutionCreateButtonComponent } from '../../shared/components/organisms/solution-create-button/solution-create-button.component';
+import { DatabagFilterComponent } from '../../shared/components/organisms/databag-filter/databag-filter.component';
 import { NewButtonComponent } from '../../shared/components/molecules/new-button/new-button.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component';
+import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
+import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -45,17 +33,12 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
     NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
-    LocalizedDatePipe,
     Os4mlDefaultTemplateComponent,
     SolutionDataTableComponent,
     HasElementsPipe,
-    ButtonComponent,
-    MatSelectModule,
     NgForOf,
-    SelectComponent,
-    ToSelectOptionPipe,
-    FilterSolutionsByDatabagIdPipe,
     SolutionCreateButtonComponent,
+    DatabagFilterComponent,
     NewButtonComponent,
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
@@ -64,7 +47,6 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
 export class SolutionsPageComponent implements OnDestroy {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
-  public selectedDatabag$: Observable<Databag | null>;
   private destroy$ = new Subject<void>();
   constructor(
     private databagService: DatabagService,
@@ -73,18 +55,12 @@ export class SolutionsPageComponent implements OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.selectedDatabag$ = this.databagId$.pipe(
-      switchMap(id => {
-        if (id) {
-          return this.databagService.getDatabagById(id).pipe(first());
-        } else {
-          return of(null);
-        }
-      })
-    );
-
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
-    this.solutions$ = this.solutionService.getSolutionByCreationTime();
+    this.solutions$ = this.databagId$.pipe(
+      switchMap(databagId =>
+        this.solutionService.getFilteredSolutions(databagId)
+      )
+    );
   }
 
   public get databagId$(): Observable<string | null> {
@@ -92,14 +68,6 @@ export class SolutionsPageComponent implements OnDestroy {
       map(params => params.get('selectedDatabag'))
     );
   }
-
-  public getDatabagId(databag: Databag): string {
-    return databag.id ?? '';
-  }
-  public getDatabagName(databag: Databag): string {
-    return databag.name ?? '';
-  }
-
   onDatabagChanged(databagId: string | null): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -107,11 +75,9 @@ export class SolutionsPageComponent implements OnDestroy {
       queryParamsHandling: 'merge',
     });
   }
-
   addDatabag(): void {
-    this.dialog.open(CreateDatabagStepperComponent);
+    this.dialog.open(DatabagsCreateDialogComponent);
   }
-
   addSolution(): void {
     this.databagId$
       .pipe(takeUntil(this.destroy$), first())
@@ -121,7 +87,6 @@ export class SolutionsPageComponent implements OnDestroy {
         });
       });
   }
-
   openSolutionSettingDialog(solution: Solution): void {
     this.dialog.open(SolutionSettingComponent, {
       data: { solution },
@@ -132,7 +97,11 @@ export class SolutionsPageComponent implements OnDestroy {
       },
     });
   }
-
+  openCreatePredictionDialog(solutionId: string): void {
+    this.dialog.open(PredictionsCreateDialogComponent, {
+      data: { solutionId },
+    });
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

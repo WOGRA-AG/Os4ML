@@ -12,6 +12,7 @@ import { SolutionService } from '../../solutions/services/solution.service';
 import { MaterialModule } from '../../material/material.module';
 import { SolutionCreateFormComponent } from '../../shared/components/organisms/solution-create-form/solution-create-form.component';
 import { Router } from '@angular/router';
+import { LoaderSpinningPlanetComponent } from '../../shared/components/molecules/loader-spinning-planet/loader-spinning-planet.component';
 
 @Component({
   selector: 'app-create-solution-dialog',
@@ -27,6 +28,7 @@ import { Router } from '@angular/router';
     MaterialModule,
     SolutionCreateFormComponent,
     IconButtonComponent,
+    LoaderSpinningPlanetComponent,
   ],
   styleUrls: ['./solution-create-dialog.component.scss'],
 })

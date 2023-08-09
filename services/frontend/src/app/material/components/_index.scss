@@ -11,6 +11,7 @@
 @use 'chips.scss' as chips;
 @use 'stepper.scss' as stepper;
 @use 'form-field.scss' as form-field;
+@use 'progress-bar.scss' as progress-bar;
 
 @mixin theme($theme, $typography-config, $variants) {
   @include form-field.theme($theme);
@@ -25,4 +26,5 @@
   @include list.theme($theme, red);
   @include table.theme($theme, red);
   @include chips.theme($theme);
+  @include progress-bar.theme($theme);
 }

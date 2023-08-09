@@ -68,44 +68,6 @@ describe('Solutions Page', () => {
       .should('exist');
   });
 
-  it('create Pridiction', () => {
-    cy.get('[data-testid="solution-item"]')
-      .filter(`:contains("${updatedSolutionName}")`)
-      .find('[data-testid="solution-settings-button"]')
-      .click();
-
-    cy.get('#create-prediction-button').click();
-    cy.get('#dataset-name-input').clear({ force: true });
-    cy.get('#dataset-name-input').type(predictionName, { force: true });
-    cy.get('#file-input')
-      .invoke('show')
-      .selectFile('cypress/fixtures/titanic_predict.csv');
-    cy.get('#predict-dialog-button').click();
-
-    cy.get('[data-testid="prediction-item"]')
-      .filter(`:contains("${predictionName}")`)
-      .should('exist');
-    cy.wait(60000);
-    cy.get('[data-testid="prediction-item"]')
-      .filter(`:contains("${predictionName}")`)
-      .contains('Done', {
-        timeout: 600000,
-      });
-
-    cy.get('[data-testid="prediction-item"]')
-      .filter(`:contains("${predictionName}")`)
-      .find('[data-testid="prediction-download-button"]')
-      .click();
-
-    const downloadedFile = path.join(
-      Cypress.config('downloadsFolder'),
-      'prediction_result.csv'
-    );
-    cy.readFile(downloadedFile, 'binary', { timeout: 300000 }).should(buffer =>
-      expect(buffer.length).to.be.gt(100)
-    );
-  });
-
   it('delete Solution', () => {
     deleteSolution(updatedSolutionName);
     cy.get('[data-testid="solution-table"]').should(

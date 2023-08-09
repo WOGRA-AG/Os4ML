@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  BehaviorSubject,
   concatWith,
   first,
   map,
@@ -24,8 +25,7 @@ import { solutionWebsocketPath } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SolutionService {
-  private readonly _solutions$: Observable<Solution[]>;
-
+  private readonly _solutionsSubject$ = new BehaviorSubject<Solution[]>([]);
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
@@ -34,22 +34,36 @@ export class SolutionService {
     const webSocketConnection = this.webSocketConnectionService.connect(
       solutionWebsocketPath
     );
-    this._solutions$ = this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getSolutions(token)),
-      first(),
-      concatWith(webSocketConnection),
-      raceWith(webSocketConnection),
-      shareReplay(1)
+    this.userService.currentToken$
+      .pipe(
+        switchMap(token => this.modelManager.getSolutions(token)),
+        first(),
+        concatWith(webSocketConnection),
+        raceWith(webSocketConnection),
+        shareReplay(1)
+      )
+      .subscribe(solutions => {
+        this._solutionsSubject$.next(solutions);
+      });
+  }
+  get solutions$(): Observable<Solution[]> {
+    return this._solutionsSubject$.asObservable();
+  }
+
+  getSolutionsByCreationTime(): Observable<Solution[]> {
+    return this.solutions$.pipe(
+      map(solutions => solutions.sort(sortByCreationTime))
     );
   }
 
-  get solutions$(): Observable<Solution[]> {
-    return this._solutions$;
-  }
-
-  getSolutionByCreationTime(): Observable<Solution[]> {
+  getFilteredSolutions(databagId: string | null): Observable<Solution[]> {
     return this.solutions$.pipe(
-      map(solutions => solutions.sort(sortByCreationTime))
+      map(solutions =>
+        solutions.filter(solution =>
+          databagId ? solution.databagId === databagId : true
+        )
+      ),
+      map(predictions => predictions.sort(sortByCreationTime))
     );
   }
 
@@ -100,10 +114,12 @@ export class SolutionService {
     );
   }
 
-  getSolutionById(id: string): Observable<Solution> {
-    return this.userService.currentToken$.pipe(
-      switchMap(token => this.modelManager.getSolutionById(id, token))
-    );
+  getSolutionById(id: string): Solution | undefined {
+    const solutions = this._solutionsSubject$.getValue();
+    if (!solutions) {
+      return undefined;
+    }
+    return solutions.find(solution => solution.id === id);
   }
 
   deleteSolutionById(id: string | undefined): Observable<void> {

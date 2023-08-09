@@ -12,13 +12,6 @@ export const ROUTES: Routes = [
             mod => mod.SolutionsPageComponent
           ),
       },
-      {
-        path: ':solutionId/predictions',
-        loadComponent: () =>
-          import('./pages/predictions-page/predictions-page.component').then(
-            mod => mod.PredictionsPageComponent
-          ),
-      },
     ],
   },
   {
@@ -33,6 +26,21 @@ export const ROUTES: Routes = [
         mod => mod.DatabagsPageComponent
       ),
     runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'predictions',
+    loadComponent: () =>
+      import('./pages/predictions-page/predictions-page.component').then(
+        mod => mod.PredictionsPageComponent
+      ),
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'typo',
+    loadComponent: () =>
+      import(
+        './pages/typography-demo-page/typography-demo-page.component'
+      ).then(mod => mod.TypographyDemoPageComponent),
   },
   {
     path: '**',

@@ -1,0 +1,150 @@
+<form
+  [formGroup]="createPredictionForm"
+  (ngSubmit)="onSubmit()"
+  attr.aria-label="{{
+    'organisms.solution.prediction_create_form.aria_label' | translate
+  }}">
+  <div class="data-section">
+    <mat-form-field>
+      <mat-label>
+        {{
+          'organisms.prediction_create_form.form_fields.name.label' | translate
+        }}
+      </mat-label>
+      <input
+        matInput
+        formControlName="predictionName"
+        data-testid="input-name"
+        attr.aria-label="{{
+          'organisms.prediction_create_form.form_fields.name.aria_label'
+            | translate
+        }}" />
+      <mat-error *ngIf="predictionName?.invalid && predictionName?.touched">
+        {{
+          'organisms.prediction_create_form.form_fields.name.error' | translate
+        }}
+      </mat-error>
+      <mat-hint class="on-surface-text">
+        {{
+          'organisms.prediction_create_form.form_fields.name.hint' | translate
+        }}
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{
+          'organisms.prediction_create_form.form_fields.solution_id.label'
+            | translate
+        }}
+      </mat-label>
+      <mat-select
+        [(value)]="selectedSolutionId"
+        data-testid="input-solutionId"
+        formControlName="solutionId"
+        attr.aria-label="{{
+          'organisms.prediction_create_form.form_fields.solution_id.aria_label'
+            | translate
+        }}">
+        <mat-option *ngFor="let solution of solutions" [value]="solution.id">
+          {{ solution.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="solutionId?.invalid && solutionId?.touched">
+        {{
+          'organisms.prediction_create_form.form_fields.solution_id.error'
+            | translate
+        }}
+      </mat-error>
+      <mat-hint class="on-surface-text">
+        {{
+          'organisms.prediction_create_form.form_fields.solution_id.hint'
+            | translate
+        }}
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <app-element-divider></app-element-divider>
+  <div class="upload-section">
+    <div class="label-medium primary-text text-align-center">
+      {{ 'organisms.prediction_create_form.upload_section.title' | translate }}
+    </div>
+    <ng-container *ngIf="localFileMode">
+      <app-file-dropzone
+        [invalid]="predictionDataFile?.errors?.['invalidFileFormat']"
+        [selectedFileName]="predictionDataFile?.value.name"
+        (fileDropped)="predictionDataFileSelected($event)">
+      </app-file-dropzone>
+      <mat-hint
+        *ngIf="predictionDataFile?.errors?.['invalidFileFormat']"
+        class="error-text text-align-center">
+        {{
+          'organisms.prediction_create_form.upload_section.error' | translate
+        }}
+        <br />
+        <span *ngFor="let format of allowedFormats">{{ format }}&nbsp;</span>
+      </mat-hint>
+      <app-new-button
+        class="text-align-center"
+        variant="text"
+        size="small"
+        (click)="toggleFileMode()">
+        {{
+          'organisms.prediction_create_form.toggle_file_mode.data_source_url'
+            | translate
+        }}
+      </app-new-button>
+    </ng-container>
+    <ng-container *ngIf="!localFileMode">
+      <mat-form-field>
+        <mat-label>
+          {{
+            'organisms.prediction_create_form.prediction_data_url.label'
+              | translate
+          }}
+        </mat-label>
+        <input
+          matInput
+          formControlName="predictionDataUrl"
+          [ariaLabel]="
+            'organisms.prediction_create_form.form_fields.prediction_data_url.aria_label'
+              | translate
+          " />
+      </mat-form-field>
+      <app-new-button
+        class="text-align-center"
+        variant="text"
+        size="small"
+        (click)="toggleFileMode()">
+        {{
+          'organisms.prediction_create_form.toggle_file_mode.data_source_local_file'
+            | translate
+        }}
+      </app-new-button>
+    </ng-container>
+    <app-documentation-hint-text></app-documentation-hint-text>
+  </div>
+  <div class="button-row">
+    <app-new-button
+      [disabled]="!solutionId?.value"
+      (click)="onDownloadPredictionTemplate()"
+      variant="secondary"
+      size="medium"
+      [ariaLabel]="
+        'organisms.prediction_create_form.download_csv.aria_label' | translate
+      "
+      data-testid="download-prediction-template">
+      {{ 'organisms.prediction_create_form.download_csv.button' | translate }}
+    </app-new-button>
+    <app-new-button
+      type="submit"
+      variant="primary"
+      size="medium"
+      [disabled]="createPredictionForm.invalid"
+      [ariaLabel]="
+        'organisms.prediction_create_form.submit.aria_label' | translate
+      "
+      data-testid="submit-prediction">
+      {{ 'organisms.prediction_create_form.submit.button' | translate }}
+    </app-new-button>
+  </div>
+</form>

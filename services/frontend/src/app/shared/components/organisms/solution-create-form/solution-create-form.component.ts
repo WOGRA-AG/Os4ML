@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -18,15 +17,17 @@ import { ElementDividerComponent } from '../../atoms/element-divider/element-div
 import { SelectableListComponent } from '../../molecules/selectable-list/selectable-list.component';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { ButtonComponent } from '../../../../design/components/atoms/button/button.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-solution-create-form',
   templateUrl: './solution-create-form.component.html',
   styleUrls: ['./solution-create-form.component.scss'],
+  standalone: true,
   imports: [
     MatInputModule,
     ReactiveFormsModule,
@@ -40,8 +41,9 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
     GetDatabagByIdPipe,
     ButtonComponent,
     SolutionCreateButtonComponent,
+    NewButtonComponent,
+    JsonPipe,
   ],
-  standalone: true,
 })
 export class SolutionCreateFormComponent implements OnInit {
   @Input() public selectedDatabagId: string | undefined;
@@ -53,7 +55,7 @@ export class SolutionCreateFormComponent implements OnInit {
     this.createSolutionForm = this.fb.group({
       name: ['', Validators.required],
       databagId: ['', Validators.required],
-      selectedFields: this.fb.array([], Validators.required),
+      selectedFields: ['', Validators.required],
     });
   }
   get name(): AbstractControl | null {
@@ -69,25 +71,15 @@ export class SolutionCreateFormComponent implements OnInit {
   ngOnInit(): void {
     this.createSolutionForm.get('databagId')?.setValue(this.selectedDatabagId);
   }
-  selectedFieldsChange(columns: string[]): void {
-    this.selectedFields?.markAsTouched();
-    const selectedFields = this.selectedFields as FormArray;
-    while (selectedFields.length !== 0) {
-      selectedFields.removeAt(0);
-    }
-    columns.forEach(column => {
-      selectedFields.push(this.fb.control(column, Validators.required));
-    });
-  }
   public onSubmit(): void {
     if (this.createSolutionForm.valid) {
-      const sumbitSolution: Solution = {
+      const submitSolution: Solution = {
         name: this.name?.value,
         databagId: this.databagId?.value,
         outputFields: this.selectedFields?.value,
         inputFields: this.getUnselectedColumns(this.selectedFields?.value),
       };
-      this.submitSolution.emit(sumbitSolution);
+      this.submitSolution.emit(submitSolution);
     }
   }
   private getUnselectedColumns(selectedFields: string[]): string[] {

@@ -13,18 +13,17 @@
   {{ data.databagId }}
   <app-solution-create-form
     main
-    *ngIf="databags$ | async"
+    *ngIf="(databags$ | async) && !submitting"
     [selectedDatabagId]="data.databagId"
     [databags]="(databags$ | async) ?? []"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
-  <ng-container footer>
-    <mat-spinner
-      color="primary"
-      *ngIf="submitting"
-      [diameter]="40"
-      mode="indeterminate"
-      class="spinner">
-    </mat-spinner>
-  </ng-container>
+  <mat-spinner
+    main
+    color="primary"
+    *ngIf="submitting"
+    [diameter]="40"
+    mode="indeterminate"
+    class="spinner">
+  </mat-spinner>
 </app-os4ml-dialog-template>

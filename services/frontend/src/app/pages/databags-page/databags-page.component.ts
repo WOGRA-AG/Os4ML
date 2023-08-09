@@ -3,11 +3,9 @@ import { DatabagService } from '../../databags/services/databag.service';
 import { Observable } from 'rxjs';
 import { Databag } from '../../../../build/openapi/modelmanager';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateDatabagStepperComponent } from '../dialogs/create-databag-stepper/create-databag-stepper.component';
 import { HasElementsPipe } from '../../shared/pipes/has-elements.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoDatabagsPlaceholderComponent } from '../../databags/components/no-databags-placeholder/no-databags-placeholder.component';
-import { ButtonComponent } from '../../design/components/atoms/button/button.component';
 import { NgIf, AsyncPipe, NgForOf } from '@angular/common';
 import { LocalizedDatePipe } from '../../shared/pipes/localized-date.pipe';
 import { DatabagSettingComponent } from '../../databags/components/databag-setting/databag-setting.component';
@@ -16,7 +14,8 @@ import { NewButtonComponent } from '../../shared/components/molecules/new-button
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { DatabagDataTableComponent } from '../../shared/components/organisms/databag-data-table/databag-data-table.component';
 import { DatabagCreateButtonComponent } from '../../shared/components/organisms/databag-create-button/databag-create-button.component';
-import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-status-placeholder/ml-entity-status-placeholder.component';
+import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
+import { MlEntityStatusPlaceholderComponent } from '../../shared/components/organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -25,7 +24,6 @@ import { MlEntityStatusPlaceholderComponent } from '../../shared/components/orga
   standalone: true,
   imports: [
     NgIf,
-    ButtonComponent,
     NoDatabagsPlaceholderComponent,
     AsyncPipe,
     TranslateModule,
@@ -64,6 +62,6 @@ export class DatabagsPageComponent {
     });
   }
   addDatabag(): void {
-    this.dialog.open(CreateDatabagStepperComponent);
+    this.dialog.open(DatabagsCreateDialogComponent);
   }
 }

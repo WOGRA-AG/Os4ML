@@ -1,6 +1,6 @@
 <app-os4ml-default-template data-testid="databag-page">
   <h1 header class="headline-1 primary-text">
-    {{ 'databag.plural' | translate }}
+    {{ 'pages.databags_page.title' | translate }}
   </h1>
   <div main class="actions">
     <app-databag-create-button
@@ -15,10 +15,10 @@
       (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
-    <app-ml-status-placeholder
+    <app-ml-entity-status-placeholder
       *ngIf="!(databags$ | async | hasElements)"
       [hasDatabags]="databags$ | async | hasElements"
       (addDatabag)="addDatabag()">
-    </app-ml-status-placeholder>
+    </app-ml-entity-status-placeholder>
   </ng-container>
 </app-os4ml-default-template>
