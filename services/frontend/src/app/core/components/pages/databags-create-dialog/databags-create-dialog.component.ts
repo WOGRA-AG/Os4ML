@@ -1,6 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { Databag, DatabagType } from '../../../../../../build/openapi/modelmanager';
+import {
+  Databag,
+  DatabagType,
+} from '../../../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { DatabagService } from '../../../services/databag.service';
 import { MatDialogRef } from '@angular/material/dialog';

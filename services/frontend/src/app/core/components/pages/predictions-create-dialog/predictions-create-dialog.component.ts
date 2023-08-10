@@ -1,6 +1,9 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
-import { Prediction, Solution } from '../../../../../../build/openapi/modelmanager';
+import {
+  Prediction,
+  Solution,
+} from '../../../../../../build/openapi/modelmanager';
 import { Router } from '@angular/router';
 import { SolutionService } from '../../../services/solution.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

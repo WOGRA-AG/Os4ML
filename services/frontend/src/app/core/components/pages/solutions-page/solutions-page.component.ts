@@ -1,7 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { first, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { Databag, Solution } from '../../../../../../build/openapi/modelmanager';
+import {
+  Databag,
+  Solution,
+} from '../../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { SolutionService } from '../../../services/solution.service';
 import { HasElementsPipe } from '../../../pipes/has-elements.pipe';
