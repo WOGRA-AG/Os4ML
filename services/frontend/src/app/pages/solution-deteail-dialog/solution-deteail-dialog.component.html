@@ -96,8 +96,7 @@
     *ngIf="solution.id && (solution | isSolutionDone)"
     color="primary"
     variant="raised"
-    [routerLink]="['solutions', solution.id, 'predictions']"
-    (click)="close()">
+    (click)="createPrediction()">
     {{ 'prediction.plural' | translate }}
   </app-button>
   <app-button

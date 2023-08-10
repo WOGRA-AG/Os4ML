@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 
 @Component({
-  selector: 'app-dataset-upload',
+  selector: 'app-dataset-upload2',
   templateUrl: './dataset-upload.component.html',
   styleUrls: ['./dataset-upload.component.scss'],
   standalone: true,

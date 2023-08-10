@@ -18,8 +18,8 @@ import { DialogSectionComponent } from '../../shared/components/molecules/dialog
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../shared/components/molecules/dialog-header/dialog-header.component';
 import { MaterialModule } from 'src/app/shared/components/atoms/material/material.module';
-import { CreatePredictionComponent } from '../dialogs/create-prediction/create-prediction.component';
 import { IsSolutionDonePipe } from 'src/app/shared/pipes/is-solution-done.pipe';
+import {PredictionsCreateDialogComponent} from "../predictions-create-dialog/predictions-create-dialog.component";
 
 @Component({
   selector: 'app-solution-setting',
@@ -115,7 +115,7 @@ export class SolutionDeteailDialogComponent implements OnDestroy {
   }
 
   createPrediction(): void {
-    this.dialog.open(CreatePredictionComponent, {
+    this.dialog.open(PredictionsCreateDialogComponent, {
       data: {
         solution: this.solution,
       },

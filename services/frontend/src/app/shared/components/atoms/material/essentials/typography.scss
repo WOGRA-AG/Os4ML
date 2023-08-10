@@ -1,81 +1,110 @@
 @use 'node_modules/@angular/material/index' as mat;
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic&subset=latin,latin-ext,cyrillic,cyrillic-ext,greek-ext,greek,vietnamese);
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext,cyrillic-ext,cyrillic,greek-ext,greek,vietnamese);
-@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,latin-ext,greek-ext,greek,vietnamese,cyrillic,cyrillic-ext);
-
-@font-face {
-  font-family: 'Avenir Roman';
-  src: local('Avenir Roman'),
-    url('../../../../../../assets/fonts/AvenirLTPro-Roman.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Avenir Black';
-  src: local('Avenir Black'),
-    url('../../../../../../assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
-}
 
 //TODO: Get values from Design Tokens when done
 $custom-typography: mat.define-typography-config(
-  $font-family: 'Avenir Roman',
+  $font-family: var(--md-sys-typescale-body-large-font-family-name),
   $headline-1:
-    mat.define-typography-level(60px, 112px, 800, 'Avenir Black', 0px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-display-large-font-size),
+        var(--md-sys-typescale-display-large-line-height),
+        var(--md-sys-typescale-display-large-font-weight),
+        var(--md-sys-typescale-display-large-font-family-name),
+        var(--md-sys-typescale-display-large-letter-spacing)
+    ),
   $headline-2:
-    mat.define-typography-level(44px, 72px, 800, 'Avenir Black', 2.5px),
-  $headline-3: mat.define-typography-level(33px, 48px, 800, 'Avenir Black', 0),
-  $headline-4: mat.define-typography-level(30px, 43px, 800, 'Avenir Black', 0),
+    mat.define-typography-level(
+        var(--md-sys-typescale-display-medium-font-size),
+        var(--md-sys-typescale-display-medium-line-height),
+        var(--md-sys-typescale-display-medium-font-weight),
+        var(--md-sys-typescale-display-medium-font-family-name),
+        var(--md-sys-typescale-display-medium-letter-spacing)
+    ),
+  $headline-3:
+    mat.define-typography-level(
+        var(--md-sys-typescale-display-small-font-size),
+        var(--md-sys-typescale-display-small-line-height),
+        var(--md-sys-typescale-display-small-font-weight),
+        var(--md-sys-typescale-display-small-font-family-name),
+        var(--md-sys-typescale-display-small-letter-spacing)
+    ),
+  $headline-4:
+    mat.define-typography-level(
+        var(--md-sys-typescale-headline-large-font-size),
+        var(--md-sys-typescale-headline-large-line-height),
+        var(--md-sys-typescale-headline-large-font-weight),
+        var(--md-sys-typescale-headline-large-font-family-name),
+        var(--md-sys-typescale-headline-large-letter-spacing)
+    ),
   $headline-5:
-    mat.define-typography-level(24px, 33px, 800, 'Avenir Black', 0.18px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-headline-medium-font-size),
+        var(--md-sys-typescale-headline-medium-line-height),
+        var(--md-sys-typescale-headline-medium-font-weight),
+        var(--md-sys-typescale-headline-medium-font-family-name),
+        var(--md-sys-typescale-headline-medium-letter-spacing)
+    ),
   $headline-6:
-    mat.define-typography-level(20px, 24px, 800, 'Avenir Black', 0.15px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-headline-small-font-size),
+        var(--md-sys-typescale-headline-small-line-height),
+        var(--md-sys-typescale-headline-small-font-weight),
+        var(--md-sys-typescale-headline-small-font-family-name),
+        var(--md-sys-typescale-headline-small-letter-spacing)
+    ),
   $subtitle-1:
-    mat.define-typography-level(18px, 24px, 800, 'Avenir Black', 0.15px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-label-large-font-size),
+        var(--md-sys-typescale-label-large-line-height),
+        var(--md-sys-typescale-label-large-font-weight),
+        var(--md-sys-typescale-label-large-font-family-name),
+        var(--md-sys-typescale-label-large-letter-spacing)
+    ),
   $subtitle-2:
-    mat.define-typography-level(14px, 21px, 800, 'Avenir Black', 0.1px),
-  $body-1: mat.define-typography-level(16px, 24px, 350, null, 0.5px),
-  $body-2: mat.define-typography-level(14px, 20px, 350, null, 0.25px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-label-medium-font-size),
+        var(--md-sys-typescale-label-medium-line-height),
+        var(--md-sys-typescale-label-medium-font-weight),
+        var(--md-sys-typescale-label-medium-font-family-name),
+        var(--md-sys-typescale-label-medium-letter-spacing)
+    ),
+  $body-1:
+    mat.define-typography-level(
+        var(--md-sys-typescale-body-large-font-size),
+        var(--md-sys-typescale-body-large-line-height),
+        var(--md-sys-typescale-body-large-font-weight),
+        var(--md-sys-typescale-body-large-font-family-name),
+        var(--md-sys-typescale-body-large-letter-spacing)
+    ),
+  $body-2:
+    mat.define-typography-level(
+        var(--md-sys-typescale-body-medium-font-size),
+        var(--md-sys-typescale-body-medium-line-height),
+        var(--md-sys-typescale-body-medium-font-weight),
+        var(--md-sys-typescale-body-medium-font-family-name),
+        var(--md-sys-typescale-body-medium-letter-spacing)
+    ),
   $caption:
-    mat.define-typography-level(12px, 16px, 400, 'Roboto, monospace', 0.4px),
-  $button: mat.define-typography-level(14px, 20px, 800, 'Avenir Black', 1.25px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-body-small-font-size),
+        var(--md-sys-typescale-body-small-line-height),
+        var(--md-sys-typescale-body-small-font-weight),
+        var(--md-sys-typescale-body-small-font-family-name),
+        var(--md-sys-typescale-body-small-letter-spacing)
+    ),
+  $button:
+    mat.define-typography-level(
+        var(--md-sys-typescale-label-small-font-size),
+        var(--md-sys-typescale-label-small-line-height),
+        var(--md-sys-typescale-label-small-font-weight),
+        var(--md-sys-typescale-label-small-font-family-name),
+        var(--md-sys-typescale-label-small-letter-spacing)
+    ),
   $overline:
-    mat.define-typography-level(10px, 16px, 500, 'Roboto, monospace', 1.5px),
+    mat.define-typography-level(
+        var(--md-sys-typescale-title-large-font-size),
+        var(--md-sys-typescale-title-large-line-height),
+        var(--md-sys-typescale-title-large-font-weight),
+        var(--md-sys-typescale-title-large-font-family-name),
+        var(--md-sys-typescale-title-large-letter-spacing)
+    )
 );
-
-@mixin additional-typography-settings {
-  .mat-mdc-button {
-    &.medium {
-      line-height: 24px;
-      font-size: 18px;
-    }
-
-    &.large {
-      line-height: 24px;
-      font-size: 21px;
-      letter-spacing: 1.96px;
-    }
-  }
-
-  .mat-caption {
-    font-style: normal;
-    text-align: left;
-  }
-
-  b.mat-caption {
-    font-weight: 800;
-  }
-
-  .mat-overline {
-    text-align: left;
-    text-transform: uppercase;
-  }
-
-  .mat-mdc-list-item {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 19px;
-    letter-spacing: 0;
-    text-align: left;
-  }
-}

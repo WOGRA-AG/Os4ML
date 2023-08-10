@@ -11,7 +11,7 @@ import { MaterialModule } from './shared/components/atoms/material/material.modu
 import { SideNavItemComponent } from './shared/components/molecules/side-nav-item/side-nav-item.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NewButtonComponent } from './shared/components/molecules/new-button/new-button.component';
-import { ThemeToggleComponent } from './shared/components/molecules/theme-toggle/theme-toggle.component';
+import { ThemeToggleComponent } from './shared/components/organisms/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',

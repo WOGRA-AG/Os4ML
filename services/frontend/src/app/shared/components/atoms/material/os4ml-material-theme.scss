@@ -1,7 +1,8 @@
 @use 'node_modules/@angular/material/index' as mat;
 @use 'sass:map';
 @use 'src/app/shared/components/atoms/material/components/index' as components;
-@use 'src/app/shared/components/atoms/material/essentials/typography' as typography;
+@use 'src/app/shared/components/atoms/material/essentials/typography' as
+  typography;
 @use 'src/app/shared/components/atoms/material/essentials/color' as colors;
 
 @include mat.core();
@@ -48,7 +49,6 @@ $os4ml-light-variants: (
 
 .os4ml-light-theme {
   @include mat.all-component-themes($os4ml-light-theme);
-  @include typography.additional-typography-settings;
   @include components.theme(
     $os4ml-light-theme,
     typography.$custom-typography,
