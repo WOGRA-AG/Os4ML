@@ -2,7 +2,7 @@ import { enableProdMode, importProvidersFrom } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
-import { MaterialModule } from './app/shared/components/atoms/material/material.module';
+import { MaterialModule } from './app/core/components/atoms/material/material.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {
   ApiModule as ModelmanagerApi,

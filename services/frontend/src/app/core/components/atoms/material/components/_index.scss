@@ -1,0 +1,30 @@
+@use 'src/app/core/components/atoms/material/essentials/color' as colors;
+@use 'sidenav' as sidenav;
+@use 'toolbar' as toolbar;
+@use 'navlist' as navlist;
+@use 'button' as button;
+@use 'button_variants' as buttonVariants;
+@use 'expansion-module' as expansionModule;
+@use 'dialog' as dialog;
+@use 'list' as list;
+@use 'table' as table;
+@use 'chips' as chips;
+@use 'stepper' as stepper;
+@use 'form-field' as form-field;
+@use 'progress-bar' as progress-bar;
+
+@mixin theme($theme, $typography-config, $variants) {
+  @include form-field.theme($theme);
+  @include sidenav.theme($theme);
+  @include toolbar.theme($theme);
+  @include navlist.theme($theme, $typography-config, $variants);
+  @include button.theme($theme);
+  @include buttonVariants.theme($theme, $variants);
+  @include stepper.theme($theme);
+  @include expansionModule.theme($theme);
+  @include dialog.theme($theme);
+  @include list.theme($theme, red);
+  @include table.theme($theme, red);
+  @include chips.theme($theme);
+  @include progress-bar.theme($theme);
+}
