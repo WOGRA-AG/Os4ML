@@ -1,0 +1,58 @@
+@use 'sass:map';
+@use 'node_modules/@angular/material/index' as mat;
+
+@mixin color($theme, $background) {
+  $primary-palette: map.get($theme, 'primary');
+  $primary-color: mat.get-color-from-palette($primary-palette, 500);
+  $primary-color-100: mat.get-color-from-palette($primary-palette, 100);
+  $primary-color-50: mat.get-color-from-palette($primary-palette, 50);
+  $primary-bg-color: mat.get-color-from-palette($primary-palette, A100);
+  $background-color: mat.get-color-from-palette(
+    $primary-palette,
+    '900-contrast'
+  );
+
+  .mat-mdc-list {
+    .mat-mdc-list-item {
+      border-color: $background-color;
+      background-color: $background-color;
+
+      &.bg-primary {
+        border-color: $primary-bg-color;
+        background-color: $primary-bg-color;
+      }
+
+      &:hover {
+        border-color: $primary-color-50;
+        background-color: $primary-color-50;
+      }
+
+      &.active {
+        background-color: $primary-color-50;
+        border-color: $primary-color;
+      }
+    }
+  }
+}
+
+@mixin layout() {
+  .mat-mdc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    overflow: auto;
+    .mat-mdc-list-item {
+      width: auto;
+      border-radius: 14px;
+      border-width: 2px;
+      border-style: solid;
+      height: fit-content;
+    }
+  }
+}
+
+@mixin theme($theme, $background) {
+  @include color($theme, $background);
+  @include layout();
+}

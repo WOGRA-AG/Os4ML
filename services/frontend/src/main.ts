@@ -2,7 +2,7 @@ import { enableProdMode, importProvidersFrom } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
-import { MaterialModule } from './app/material/material.module';
+import { MaterialModule } from './app/components/atoms/material/material.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {
   ApiModule as ModelmanagerApi,
@@ -19,8 +19,8 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app/routes';
-import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
-import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './app/interceptors/error.interceptor';
+import { AuthInterceptor } from './app/interceptors/auth.interceptor';
 import { LottieModule } from 'ngx-lottie';
 
 if (environment.production) {
