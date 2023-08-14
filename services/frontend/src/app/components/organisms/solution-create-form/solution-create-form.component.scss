@@ -1,0 +1,20 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .selectable-list {
+    max-height: 250px;
+    overflow: auto;
+  }
+
+  .prediction-options {
+    margin-bottom: 1.5rem;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}

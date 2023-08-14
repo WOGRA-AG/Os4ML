@@ -1,0 +1,28 @@
+<app-placeholder
+  [src]="'./assets/illustrations/' + placeholderStatus + '.svg'"
+  [title]="
+    'organisms.ml_status_placeholder.' + placeholderStatus + '.title'
+      | translate
+  "
+  [description]="
+    'organisms.ml_status_placeholder.' + placeholderStatus + '.description'
+      | translate
+  ">
+  <app-databag-create-button
+    *ngIf="placeholderStatus === 'noDatabagPlaceholder'"
+    (addDatabag)="onAddDatabag()"
+    [type]="'primary'">
+  </app-databag-create-button>
+
+  <app-solution-create-button
+    *ngIf="placeholderStatus === 'noSolutionPlaceholder'"
+    (addSolution)="onAddSolution()"
+    [type]="'primary'">
+  </app-solution-create-button>
+
+  <app-prediction-create-button
+    *ngIf="placeholderStatus === 'noPredictionPlaceholder'"
+    (addPrediction)="onAddPrediction()"
+    [type]="'primary'">
+  </app-prediction-create-button>
+</app-placeholder>

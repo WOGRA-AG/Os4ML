@@ -1,0 +1,30 @@
+input {
+  display: none;
+}
+
+.file-dropzone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 116px;
+  width: 100%;
+  border: 2px dashed var(--md-sys-color-outline);
+  border-radius: 1.5rem;
+  text-align: center;
+
+  &.active {
+    border-color: var(--md-sys-color-primary);
+  }
+
+  &:focus-visible {
+    outline-color: var(--md-sys-color-primary);
+  }
+
+  &.invalid {
+    border-color: var(--md-sys-color-error);
+
+    .selected-file-name {
+      color: var(--md-sys-color-error);
+    }
+  }
+}

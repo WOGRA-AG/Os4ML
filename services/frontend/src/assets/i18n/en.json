@@ -2,7 +2,7 @@
   "root": {
     "navigation": {
       "databags": "Databags",
-      "solutions": "Solution",
+      "solutions": "Solutions",
       "predictions": "Predictions"
     },
     "footer-navigation": {
@@ -10,7 +10,24 @@
       "documentation": "Documentation"
     }
   },
+  "molecules": {
+    "select.option_none": "None",
+    "file_dropzone": {
+      "label": "Click to browse or drag and drop your file",
+      "aria_label": "Click to browse or drag and drop your file"
+    }
+  },
   "organisms": {
+    "uploading_files": {
+      "cancel_upload": {
+        "button": "Cancel Upload",
+        "aria_label": "Cancel Upload"
+      },
+      "finish_upload": {
+        "button": "Finish Upload",
+        "aria_label": "Finish Upload"
+      }
+    },
     "ml_status_placeholder": {
       "noDatabagPlaceholder": {
         "title": "Let's get started with OS4ML",
@@ -26,6 +43,57 @@
       }
     },
     "databag_create_button.label": "Create Databag",
+    "databag_filter": "Filter by Databag",
+    "databag_data_table": {
+      "column_header": {
+        "databag_name": "Databag Name",
+        "type": "Type",
+        "features": "Features",
+        "samples": "Samples",
+        "runtime": "Runtime",
+        "creation": "Creation",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "settings": {
+          "tooltip": "Databag settings"
+        }
+      }
+    },
+    "databag_create_form": {
+      "aria_label": "Databag create form",
+      "upload_section": {
+        "title": "Upload your data",
+        "error": "The selected file must have one of the following formats:"
+      },
+      "form_fields": {
+        "name": {
+          "label": "Databag Name",
+          "aria_label": "Databag Name",
+          "error": "Databag name is required",
+          "hint": "Choose a meaningful name for your databag to easily identify them"
+        },
+        "databag_data_url": {
+          "label": "Enter a URL",
+          "aria_label": "Enter a URL"
+        },
+        "selected_fields": {
+          "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
+          "help_message": "Please select a databag first to specify further training",
+          "error": ""
+        }
+      },
+      "toggle_file_mode": {
+        "data_source_url": "Use Data source from the web",
+        "data_source_local_file": "Use Data source from your computer"
+      },
+      "submit": {
+        "button": "Submit Databag",
+        "aria_label": "Submit Databag"
+      }
+    },
+    "solution_filter": "Filter by Solution",
     "solution_data_table": {
       "column_header": {
         "solution_name": "Solution Name",
@@ -48,9 +116,7 @@
         }
       }
     },
-    "solution_create_button": {
-      "label": "Create Solution"
-    },
+    "solution_create_button.label": "Create Solution",
     "solution_create_form": {
       "aria_label": "Solution creation form",
       "form_fields": {
@@ -61,42 +127,81 @@
           "hint": "Choose a meaningful name for your solution to easily identify them"
         },
         "databag_id": {
-          "label": "Databagselect",
+          "label": "Select databag",
           "aria_label": "Select databag",
+          "error": "Solution name is required",
           "hint": "Select the databag for which you want to create a solution"
         },
         "selected_fields": {
+          "label": "Select output",
+          "aria_label": "Select output",
           "hint": "Mark fields, from your data bag, that the AI should predict",
-          "help_message": "Please select a databag first to specify further training details",
-          "error": ""
+          "help_message": "Please select a databag first to specify further training",
+          "error": "Output is required"
         }
       },
-      "submit-button": "Create Solution"
+      "submit": {
+        "button": "Submit Solution",
+        "aria_label": "Submit Solution"
+      }
+    },
+    "prediction_create_button.label": "Create Prediction",
+    "prediction_data_table": {
+      "column_header": {
+        "prediction_name": "Prediction Name",
+        "solution_name": "Solution Name",
+        "databag_name": "Databag Name",
+        "runtime": "Runtime",
+        "creation": "Creation",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "prediction_create_form": {
+      "aria_label": "Prediction creation form",
+      "form_fields": {
+        "name": {
+          "label": "Prediction Name",
+          "aria_label": "Prediction creation form",
+          "error": "Prediction name is required",
+          "hint": "Choose a meaningful name for your prediction to easily identify them"
+        },
+        "solution_id": {
+          "label": "Select solution",
+          "aria_label": "Select solution",
+          "error": "Solution is required",
+          "hint": "Select the solution for which you want to create a prediction"
+        },
+        "prediction_data_url": {
+          "label": "Enter a URL",
+          "aria_label": "Enter a URL"
+        }
+      },
+      "upload_section": {
+        "title": "Upload your data",
+        "error": "The selected file must have one of the following formats:"
+      },
+      "toggle_file_mode": {
+        "data_source_url": "Use Data source from the web",
+        "data_source_local_file": "Use Data source from your computer"
+      },
+      "download_csv": {
+        "button": "Download Template CSV",
+        "aria_label": "Download Template CSV"
+      },
+      "submit": {
+        "button": "Submit Prediction",
+        "aria_label": "Submit Prediction"
+      }
     }
   },
   "pages": {
-    "predictions_page": {
-      "title": "Predictions"
-    },
-    "solution_create_dialog": {
-      "title": "Create Solution"
-    },
-    "solutions_page": {
-      "title": "Solutions",
-      "actions": {
-        "filter_by_databag": {
-          "label": "Filter by Databag",
-          "option_none": "None"
-        },
-        "new_databag": "New Databag",
-        "create_solution": "Create Solution"
-      },
-      "plural": "Solutions",
-      "description": "Solutions allow you to introspect your data with the help of Machine Learning, by applying predefined and custom Algorithms.",
-      "settings": "Solution Settings",
-      "placeholder": "Solution Name",
-      "create": "Create Solution"
-    },
+    "databags_page.title": "Databags",
+    "databag_create_dialog.title": "Create Databag",
+    "solutions_page.title": "Solutions",
+    "solution_create_dialog.title": "Create Solution",
+    "predictions_page.title": "Predictions",
+    "prediction_create_dialog.title": "Create Predictions",
     "detail": {
       "title": "Solution details",
       "solution_name": "Solution name",

@@ -1,0 +1,6 @@
+<app-select
+  [label]="'organisms.databag_filter' | translate"
+  [options]="databags | toSelectOption : getDatabagId : getDatabagName"
+  [defaultValue]="defaultValue"
+  (selectionChange)="onDatabagChange($event)">
+</app-select>

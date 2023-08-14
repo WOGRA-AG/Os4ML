@@ -1,0 +1,99 @@
+<form
+  [formGroup]="createDatabagForm"
+  (ngSubmit)="onSubmit()"
+  attr.aria-label="{{
+    'organisms.databag_create_form.aria_label' | translate
+  }}">
+  <div class="data-section">
+    <mat-form-field>
+      <mat-label>
+        {{ 'organisms.databag_create_form.form_fields.name.label' | translate }}
+      </mat-label>
+      <input
+        matInput
+        formControlName="databagName"
+        data-testid="input-name"
+        attr.aria-label="{{
+          'organisms.databag_create_form.form_fields.name.aria_label'
+            | translate
+        }}" />
+      <mat-error *ngIf="databagName?.invalid && databagName?.touched">
+        {{ 'organisms.databag_create_form.form_fields.name.error' | translate }}
+      </mat-error>
+      <mat-hint class="on-surface-text">
+        {{ 'organisms.databag_create_form.form_fields.name.hint' | translate }}
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <app-element-divider></app-element-divider>
+  <div class="upload-section">
+    <div class="label-medium primary-text text-align-center">
+      {{ 'organisms.databag_create_form.upload_section.title' | translate }}
+    </div>
+    <ng-container *ngIf="localFileMode">
+      <app-file-dropzone
+        [invalid]="databagDataFile?.errors?.['invalidFileFormat']"
+        [selectedFileName]="databagDataFile?.value.name"
+        (fileDropped)="databagDataFileSelected($event)">
+      </app-file-dropzone>
+      <mat-hint
+        *ngIf="databagDataFile?.errors?.['invalidFileFormat']"
+        class="error-text text-align-center">
+        {{ 'organisms.databag_create_form.upload_section.error' | translate }}
+        <br />
+        <span *ngFor="let format of allowedFormats">{{ format }}&nbsp;</span>
+      </mat-hint>
+      <app-new-button
+        class="text-align-center"
+        variant="text"
+        size="small"
+        (click)="toggleFileMode()">
+        {{
+          'organisms.databag_create_form.toggle_file_mode.data_source_url'
+            | translate
+        }}
+      </app-new-button>
+    </ng-container>
+    <ng-container *ngIf="!localFileMode">
+      <mat-form-field>
+        <mat-label>
+          {{
+            'organisms.databag_create_form.form_fields.databag_data_url.label'
+              | translate
+          }}
+        </mat-label>
+        <input
+          matInput
+          formControlName="databagDataUrl"
+          attr.aria-label="{{
+            'organisms.databag_create_form.form_fields.databag_data_url.aria_label'
+              | translate
+          }}" />
+      </mat-form-field>
+      <app-new-button
+        class="text-align-center"
+        variant="text"
+        size="small"
+        (click)="toggleFileMode()">
+        {{
+          'organisms.databag_create_form.toggle_file_mode.data_source_local_file'
+            | translate
+        }}
+      </app-new-button>
+    </ng-container>
+    <app-documentation-hint-text></app-documentation-hint-text>
+  </div>
+  <div class="button-row">
+    <app-new-button
+      type="submit"
+      variant="primary"
+      size="medium"
+      data-testid="submit-databag"
+      [disabled]="createDatabagForm.invalid"
+      [ariaLabel]="
+        'organisms.databag_create_form.submit.aria_label' | translate
+      ">
+      {{ 'organisms.databag_create_form.submit.button' | translate }}
+    </app-new-button>
+  </div>
+</form>

@@ -1,0 +1,24 @@
+<app-os4ml-default-template data-testid="databag-page">
+  <h1 header class="headline-1 primary-text">
+    {{ 'pages.databags_page.title' | translate }}
+  </h1>
+  <div main class="actions">
+    <app-databag-create-button
+      (addDatabag)="addDatabag()"
+      [type]="'primary'"
+      data-testid="add-databag">
+    </app-databag-create-button>
+  </div>
+  <ng-container main *ngIf="databags$ | async as databags">
+    <app-databag-data-table
+      [databags]="(databags$ | async) ?? []"
+      (settingButton)="openDatabagSettingDialog($event)"
+      (createSolutionButton)="openCreateSolutionStepperDialog($event)">
+    </app-databag-data-table>
+    <app-ml-entity-status-placeholder
+      *ngIf="!(databags$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
+      (addDatabag)="addDatabag()">
+    </app-ml-entity-status-placeholder>
+  </ng-container>
+</app-os4ml-default-template>

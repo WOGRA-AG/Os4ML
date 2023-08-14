@@ -22,28 +22,29 @@
           }}</b>
         </app-side-nav-item>
       </a>
+      <a data-testid="predictions-page-link" [routerLink]="['/predictions']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>batch_prediction</mat-icon>
+          <b class="nav-caption">{{
+            'root.navigation.predictions' | translate
+          }}</b>
+        </app-side-nav-item>
+      </a>
     </ng-container>
     <ng-container footer-nav>
-      <app-new-button
-        data-testid="open-getting-started-dialog"
-        [type]="buttonTypes.secondary"
-        [size]="'small'"
-        [ariaLabel]="'root.footer-navigation.guided_tour' | translate"
-        (click)="openGettingStartedDialog()">
-        {{ 'root.footer-navigation.guided_tour' | translate }}
-      </app-new-button>
       <a
         data-testid="documentation-link"
         href="https://wogra-ag.github.io/os4ml-docs/"
         target="_blank">
         <app-new-button
-          [type]="buttonTypes.text"
-          [size]="'small'"
-          [icon]="'description'"
+          variant="text"
+          size="small"
+          icon="description"
           [ariaLabel]="'root.footer-navigation.documentation' | translate">
           {{ 'root.footer-navigation.documentation' | translate }}
         </app-new-button>
       </a>
+      <app-theme-toggle></app-theme-toggle>
     </ng-container>
   </app-side-nav>
 </nav>

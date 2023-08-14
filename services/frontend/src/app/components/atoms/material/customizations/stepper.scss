@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use 'node_modules/@angular/material/index' as mat;
+
+@mixin layout() {
+  .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+  }
+  .mat-horizontal-content-container {
+    padding: 0 !important;
+  }
+}
+
+@mixin theme($theme) {
+  @include layout();
+}

@@ -1,0 +1,53 @@
+<app-os4ml-default-template data-testid="predictions-page">
+  <h1 header class="headline-1 primary-text">
+    {{ 'pages.predictions_page.title' | translate }}
+  </h1>
+  <div nav role="actions" class="actions">
+    <div class="button-section">
+      <app-databag-filter
+        [databags]="(databags$ | async) ?? []"
+        [defaultValue]="(databagId$ | async) ?? undefined"
+        (databagChange)="onDatabagChanged($event)"></app-databag-filter>
+      <app-solution-filter
+        [solutions]="(solutions$ | async) ?? []"
+        [defaultValue]="(solutionId$ | async) ?? undefined"
+        (solutionChange)="onSolutionChanged($event)"></app-solution-filter>
+    </div>
+    <div class="select-section">
+      <app-databag-create-button (addDatabag)="addDatabag()">
+      </app-databag-create-button>
+      <app-solution-create-button
+        [type]="'text'"
+        [disabled]="!(databags$ | async | hasElements)"
+        (addSolution)="addSolution()">
+      </app-solution-create-button>
+      <app-prediction-create-button
+        [type]="'primary'"
+        [disabled]="!(solutions$ | async | hasElements)"
+        (addPrediction)="addPrediction()">
+      </app-prediction-create-button>
+    </div>
+  </div>
+  <ng-container main>
+    <app-predictions-data-table
+      [databags]="(databags$ | async) ?? []"
+      [solutions]="(solutions$ | async) ?? []"
+      [predictions]="(predictions$ | async) ?? []"
+      (downloadPredictionButton)="
+        downloadPredictionResult($event, downloadResultLink)
+      "
+      (deletePredictionButton)="deletePrediction($event)">
+    </app-predictions-data-table>
+    <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
+    </a>
+    <app-ml-entity-status-placeholder
+      *ngIf="!(predictions$ | async | hasElements)"
+      [hasDatabags]="databags$ | async | hasElements"
+      [hasSolutions]="solutions$ | async | hasElements"
+      [hasPredictions]="predictions$ | async | hasElements"
+      (addDatabag)="addDatabag()"
+      (addSolution)="addSolution()"
+      (addPrediction)="addPrediction()">
+    </app-ml-entity-status-placeholder>
+  </ng-container>
+</app-os4ml-default-template>
