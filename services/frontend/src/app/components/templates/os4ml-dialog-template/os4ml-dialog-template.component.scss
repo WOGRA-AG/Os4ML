@@ -1,6 +1,7 @@
 :host {
   width: 100%;
   min-height: 100%;
+  max-height: calc(100vh - 2rem);
   padding: 1rem;
   display: flex;
   flex-direction: column;
