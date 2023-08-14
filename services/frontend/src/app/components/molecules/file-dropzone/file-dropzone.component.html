@@ -1,0 +1,20 @@
+<input
+  type="file"
+  class="file-input"
+  data-testid="file-input"
+  (change)="uploadFile($event)"
+  #fileUpload />
+<div
+  class="file-dropzone on-surface-variant-text"
+  [class.invalid]="invalid"
+  [class.active]="isDragging"
+  (click)="fileUpload.click()"
+  (keydown.enter)="fileUpload.click()"
+  (keydown.space)="fileUpload.click()"
+  [ariaLabel]="'molecules.file_dropzone.aria_label' | translate"
+  tabindex="0">
+  <p *ngIf="!selectedFileName">
+    {{ 'molecules.file_dropzone.label' | translate }}
+  </p>
+  <p class="selected-file-name">{{ selectedFileName }}</p>
+</div>

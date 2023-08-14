@@ -1,0 +1,57 @@
+<app-dialog-header (closeDialog)="close()">
+  <span class="on-surface-text">{{ 'databag.settings' | translate }}</span>
+</app-dialog-header>
+
+<mat-dialog-content>
+  <form
+    id="ngForm"
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm">
+    <app-dialog-section>
+      <div title class="on-surface-text">
+        {{ 'databag.placeholder' | translate }}
+      </div>
+      <div>
+        <mat-form-field>
+          <input
+            class="on-surface-text"
+            matInput
+            type="string"
+            placeholder="{{ 'databag.placeholder' | translate }}"
+            required
+            name="databag_name"
+            [(ngModel)]="databag.name"
+            #databag_name="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && databag_name.invalid }" />
+        </mat-form-field>
+      </div>
+    </app-dialog-section>
+
+    <app-dialog-section>
+      <div title>{{ 'databag.features' | translate }}</div>
+      <div>
+        <app-databag-fields [databag]="databag"> </app-databag-fields>
+      </div>
+    </app-dialog-section>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <app-button
+    data-testid="databag-delete-button"
+    variant="stroked"
+    color="warn"
+    type="button"
+    (click)="deleteDatabag(databag.id!)">
+    {{ 'action.delete' | translate }}
+  </app-button>
+  <app-button
+    id="update-databag-button"
+    variant="raised"
+    form="ngForm"
+    color="primary"
+    type="submit">
+    {{ 'action.update' | translate }}
+  </app-button>
+</mat-dialog-actions>

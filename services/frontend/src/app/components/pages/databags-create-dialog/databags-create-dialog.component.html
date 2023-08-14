@@ -1,0 +1,25 @@
+<app-os4ml-dialog-template>
+  <ng-container header>
+    <h1 header role="header" class="headline-medium primary-text">
+      {{ 'pages.databag_create_dialog.title' | translate }}
+    </h1>
+    <app-icon-button
+      data-testid="close-button"
+      (click)="close()"
+      icon="close"
+      color="accent">
+    </app-icon-button>
+  </ng-container>
+  <app-databags-create-form
+    *ngIf="!submitting"
+    (submitDatabag)="submitDatabag($event)"
+    main>
+  </app-databags-create-form>
+  <div main *ngIf="submitting">
+    <app-uploading-files
+      [fileName]="uploadingFileName"
+      [progress]="(databagUploadProgress$ | async) ?? 0"
+      (finishUpload)="finishUpload()"
+      (cancelUpload)="close()"></app-uploading-files>
+  </div>
+</app-os4ml-dialog-template>

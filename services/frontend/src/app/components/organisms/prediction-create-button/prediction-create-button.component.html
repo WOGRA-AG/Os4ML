@@ -1,0 +1,20 @@
+<app-new-button
+  data-testid="add-prediction"
+  *ngIf="!isFAB"
+  [variant]="variant"
+  [size]="'medium'"
+  [icon]="'add'"
+  [disabled]="!!disabled"
+  [ariaLabel]="'organisms.prediction_create_button.label' | translate"
+  (click)="addPrediction.emit()">
+  {{ 'organisms.prediction_create_button.label' | translate }}
+</app-new-button>
+
+<app-icon-button
+  *ngIf="isFAB"
+  (click)="addPrediction.emit()"
+  [matTooltip]="'organisms.prediction_create_button.label' | translate"
+  attr.aria-label="{{ 'organisms.prediction_create_button.label' | translate }}"
+  color="primary"
+  icon="add">
+</app-icon-button>
