@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap&family=Roboto:wght@400;500;700');
 
 :root {
-  --md-source: #FF4C82;
+  --md-source: #ff4c82;
 
   /* primary */
   --md-ref-palette-primary0: #000;
@@ -130,7 +130,7 @@
   --md-ref-palette-success100: #fff;
 
   /* light */
-  --md-sys-color-primary-light: #FF4C82;
+  --md-sys-color-primary-light: #ff4c82;
   --md-sys-color-on-primary-light: #fff;
   --md-sys-color-primary-container-light: #ffd9df;
   --md-sys-color-on-primary-container-light: #3f0016;
@@ -152,7 +152,7 @@
   --md-sys-color-on-error-container-light: #410002;
   --md-sys-color-background-light: #fff;
   --md-sys-color-on-background-light: #001f25;
-  --md-sys-color-surface-light: #F3F6F7;
+  --md-sys-color-surface-light: #f3f6f7;
   --md-sys-color-on-surface-light: #15425c;
   --md-sys-color-surface-variant-light: #f3dde0;
   --md-sys-color-on-surface-variant-light: #524345;
@@ -251,7 +251,7 @@
   --md-sys-typescale-body-large-font-weight: 400;
   --md-sys-typescale-body-large-font-size: 16px;
   --md-sys-typescale-body-large-line-height: 24px;
-  --md-sys-typescale-body-large-letter-spacing: 0.50px;
+  --md-sys-typescale-body-large-letter-spacing: 0.5px;
 
   /* body - medium */
   --md-sys-typescale-body-medium-font-family-name: roboto;
@@ -267,7 +267,7 @@
   --md-sys-typescale-body-small-font-weight: 400;
   --md-sys-typescale-body-small-font-size: 12px;
   --md-sys-typescale-body-small-line-height: 16px;
-  --md-sys-typescale-body-small-letter-spacing: 0.40px;
+  --md-sys-typescale-body-small-letter-spacing: 0.4px;
 
   /* label - large */
   --md-sys-typescale-label-large-font-family-name: roboto;
@@ -275,7 +275,7 @@
   --md-sys-typescale-label-large-font-weight: 500;
   --md-sys-typescale-label-large-font-size: 14px;
   --md-sys-typescale-label-large-line-height: 20px;
-  --md-sys-typescale-label-large-letter-spacing: 0.10px;
+  --md-sys-typescale-label-large-letter-spacing: 0.1px;
 
   /* label - medium */
   --md-sys-typescale-label-medium-font-family-name: roboto;
@@ -283,7 +283,7 @@
   --md-sys-typescale-label-medium-font-weight: 500;
   --md-sys-typescale-label-medium-font-size: 12px;
   --md-sys-typescale-label-medium-line-height: 16px;
-  --md-sys-typescale-label-medium-letter-spacing: 0.50px;
+  --md-sys-typescale-label-medium-letter-spacing: 0.5px;
 
   /* label - small */
   --md-sys-typescale-label-small-font-family-name: roboto;
@@ -291,7 +291,7 @@
   --md-sys-typescale-label-small-font-weight: 500;
   --md-sys-typescale-label-small-font-size: 11px;
   --md-sys-typescale-label-small-line-height: 16px;
-  --md-sys-typescale-label-small-letter-spacing: 0.50px;
+  --md-sys-typescale-label-small-letter-spacing: 0.5px;
 
   /* title - large */
   --md-sys-typescale-title-large-font-family-name: roboto;
@@ -315,5 +315,5 @@
   --md-sys-typescale-title-small-font-weight: 500;
   --md-sys-typescale-title-small-font-size: 14px;
   --md-sys-typescale-title-small-line-height: 20px;
-  --md-sys-typescale-title-small-letter-spacing: 0.10px;
+  --md-sys-typescale-title-small-letter-spacing: 0.1px;
 }

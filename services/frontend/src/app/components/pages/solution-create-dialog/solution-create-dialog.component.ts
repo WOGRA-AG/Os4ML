@@ -5,10 +5,7 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import {
-  Databag,
-  Solution,
-} from '../../../../../build/openapi/modelmanager';
+import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { ButtonComponent } from '../../molecules/button/button.component';
 import { SolutionService } from '../../../services/solution.service';

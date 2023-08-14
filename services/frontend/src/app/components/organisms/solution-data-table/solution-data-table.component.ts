@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  Databag,
-  Solution,
-} from '../../../../../build/openapi/modelmanager';
+import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';

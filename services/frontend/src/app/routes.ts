@@ -22,9 +22,9 @@ export const ROUTES: Routes = [
   {
     path: 'databags',
     loadComponent: () =>
-      import(
-        './components/pages/databags-page/databags-page.component'
-      ).then(mod => mod.DatabagsPageComponent),
+      import('./components/pages/databags-page/databags-page.component').then(
+        mod => mod.DatabagsPageComponent
+      ),
     runGuardsAndResolvers: 'always',
   },
   {
@@ -45,8 +45,8 @@ export const ROUTES: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import(
-        './components/pages/not-found-page/not-found-page.component'
-      ).then(mod => mod.NotFoundPageComponent),
+      import('./components/pages/not-found-page/not-found-page.component').then(
+        mod => mod.NotFoundPageComponent
+      ),
   },
 ];
