@@ -9,7 +9,7 @@ export const ROUTES: Routes = [
         path: '',
         loadComponent: () =>
           import(
-            './core/components/pages/solutions-page/solutions-page.component'
+            './components/pages/solutions-page/solutions-page.component'
           ).then(mod => mod.SolutionsPageComponent),
       },
     ],
@@ -23,7 +23,7 @@ export const ROUTES: Routes = [
     path: 'databags',
     loadComponent: () =>
       import(
-        './core/components/pages/databags-page/databags-page.component'
+        './components/pages/databags-page/databags-page.component'
       ).then(mod => mod.DatabagsPageComponent),
     runGuardsAndResolvers: 'always',
   },
@@ -31,7 +31,7 @@ export const ROUTES: Routes = [
     path: 'predictions',
     loadComponent: () =>
       import(
-        './core/components/pages/predictions-page/predictions-page.component'
+        './components/pages/predictions-page/predictions-page.component'
       ).then(mod => mod.PredictionsPageComponent),
     runGuardsAndResolvers: 'always',
   },
@@ -39,14 +39,14 @@ export const ROUTES: Routes = [
     path: 'typo',
     loadComponent: () =>
       import(
-        './core/components/pages/typography-demo-page/typography-demo-page.component'
+        './components/pages/typography-demo-page/typography-demo-page.component'
       ).then(mod => mod.TypographyDemoPageComponent),
   },
   {
     path: '**',
     loadComponent: () =>
       import(
-        './core/components/pages/not-found-page/not-found-page.component'
+        './components/pages/not-found-page/not-found-page.component'
       ).then(mod => mod.NotFoundPageComponent),
   },
 ];

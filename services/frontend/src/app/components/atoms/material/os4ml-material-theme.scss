@@ -1,0 +1,57 @@
+@use 'node_modules/@angular/material/index' as mat;
+@use 'sass:map';
+@use 'src/app/components/atoms/material/customizations/index' as components;
+@use 'src/app/components/atoms/material/essentials/typography' as
+  typography;
+@use 'src/app/components/atoms/material/essentials/color' as colors;
+
+@include mat.core();
+
+@function define-light-theme($config, $foreground, $background) {
+  $theme: mat.define-light-theme($config);
+  $color: mat.get-color-config($theme);
+  $color: map.merge(
+    $color,
+    (
+      foreground: $foreground,
+      background: $background,
+    )
+  );
+  @return map.merge(
+    $theme,
+    (
+      color: $color,
+    )
+  );
+}
+
+$os4ml-light-theme: define-light-theme(
+  (
+    color: (
+      primary: colors.$os4ml-light-primary,
+      accent: colors.$os4ml-light-secondary,
+      warn: colors.$os4ml-light-error,
+    ),
+    typography: typography.$custom-typography,
+    density: 0,
+  ),
+  colors.$os4ml-light-foreground,
+  colors.$os4ml-light-background
+);
+
+$os4ml-light-variants: (
+  success: colors.$os4ml-light-success,
+  tertiary: colors.$os4ml-light-tertiary,
+  info: colors.$os4ml-light-info,
+);
+
+@include mat.all-component-typographies(typography.$custom-typography);
+
+.os4ml-light-theme {
+  @include mat.all-component-themes($os4ml-light-theme);
+  @include components.theme(
+    $os4ml-light-theme,
+    typography.$custom-typography,
+    $os4ml-light-variants
+  );
+}
