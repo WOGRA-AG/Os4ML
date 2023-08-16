@@ -149,7 +149,7 @@ export class DatabagService {
       .createDatasetPutUrl(updatedDatabag.id!, token)
       .pipe(
         switchMap(url => putFileAsOctetStream(this.http, url, file)),
-        tap(upload => this.handleUploadProgress(upload)),
+        tap(upload => this.handleUploadProgress(upload as HttpProgressEvent)),
         last(),
         switchMap(() =>
           this.modelManager.startDatabagPipeline(updatedDatabag.id!, token)

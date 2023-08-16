@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable, retry } from 'rxjs';
 
 export const putFileAsOctetStream = (
   http: HttpClient,
   url: string,
   file: File
-): Observable<any> => {
+): Observable<HttpEvent<unknown>> => {
   const headers = new HttpHeaders({
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'Content-Type': 'application/octet-stream',
