@@ -2,7 +2,7 @@
   "root": true,
   "ignorePatterns": ["projects/**/*", "build/**", "dist/**", "cypress/**"],
   "extends": ["prettier"],
-  "plugins": ["rxjs-angular", "@angular-eslint"],
+  "plugins": ["rxjs-angular", "@angular-eslint", "@angular-eslint/template"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -18,22 +18,6 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ],
         "max-len": [
           "error",
           {
@@ -114,6 +98,7 @@
     },
     {
       "files": ["*.html"],
+      "parser": "@angular-eslint/template-parser",
       "excludedFiles": ["*inline-template-*.component.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
@@ -121,14 +106,6 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
-        //        "@angular-eslint/template/accessibility-alt-text": "error",
-        //        "@angular-eslint/template/accessibility-elements-content": "error",
-        //        "@angular-eslint/template/accessibility-label-for": "error",
-        //        "@angular-eslint/template/accessibility-tabindex-no-positive": "error",
-        //        "@angular-eslint/template/accessibility-table-scope": "error",
-        //        "@angular-eslint/template/accessibility-valid-aria": "error",
-        //        "@angular-eslint/template/click-events-have-key-events": "error",
-        //        "@angular-eslint/template/mouse-events-have-key-events": "error",
         "prettier/prettier": [
           "error",
           {
