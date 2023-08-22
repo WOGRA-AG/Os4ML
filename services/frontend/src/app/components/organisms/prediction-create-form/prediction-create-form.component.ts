@@ -11,8 +11,6 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatSelectModule } from '@angular/material/select';
-import { NgForOf, NgIf } from '@angular/common';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
 import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-list-items-from-databag.pipe';
 import { ButtonComponent } from '../../molecules/button/button.component';
@@ -22,6 +20,8 @@ import { MatListModule } from '@angular/material/list';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
+import { MatSelectModule } from '@angular/material/select';
+import {NgForOf, NgIf} from "@angular/common";
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -38,19 +38,19 @@ export interface PredictionFormOutput {
   imports: [
     MatInputModule,
     TranslateModule,
-    MatSelectModule,
-    NgIf,
     GetDatabagByIdPipe,
     GetPredictListItemsFromDatabagPipe,
     ButtonComponent,
     ElementDividerComponent,
     ReactiveFormsModule,
-    NgForOf,
     FileDropzoneComponent,
     MatListModule,
     GetSolutionByIdPipe,
     NewButtonComponent,
     DocumentationHintTextComponent,
+    MatSelectModule,
+    NgIf,
+    NgForOf,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
