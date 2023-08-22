@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 export class LocalizedDatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  transform(value: any, pattern: string = 'longDate'): any {
+  transform(value: Date | string, pattern = 'longDate'): string | null {
     const datePipe: DatePipe = new DatePipe(this.translateService.currentLang);
     return datePipe.transform(value, pattern);
   }

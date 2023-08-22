@@ -1,6 +1,6 @@
 <app-select
   [label]="'organisms.solution_filter' | translate"
-  [options]="solutions | toSelectOption : getSolutionId : getSolutionName"
+  [options]="solutions | toSelectOption: getSolutionId : getSolutionName"
   [defaultValue]="defaultValue"
   (selectionChange)="onSolutionChange($event)">
 </app-select>
