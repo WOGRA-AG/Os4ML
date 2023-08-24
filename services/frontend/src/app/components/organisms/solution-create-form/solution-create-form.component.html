@@ -30,6 +30,7 @@
       }}
     </mat-label>
     <mat-select
+      (selectionChange)="populateTransferLearningSettings()"
       [(value)]="selectedDatabagId"
       data-testid="input-databagId"
       formControlName="databagId"
@@ -96,6 +97,75 @@
       }}
     </mat-hint>
   </mat-form-field>
+  <div
+    *ngIf="transferLearningSettingsActive"
+    formArrayName="transferLearningSettings"
+    class="transfer-learning-settings">
+    <div class="label-medium primary-text text-align-center mb-1">
+      {{ 'organisms.prediction_create_form.upload_section.title' | translate }}
+    </div>
+    <ng-container
+      *ngFor="
+        let transferLearningSettingsListItem of transferLearningSettingsFormArray.controls;
+        let i = index
+      ">
+      <mat-form-field
+        *ngIf="
+          !selectedFields?.value.includes(
+            getControlValue(transferLearningSettingsListItem, 'name')
+          ) &&
+          modelOfTypeExists(
+            getControlValue(transferLearningSettingsListItem, 'type')
+          )
+        ">
+        <mat-label>
+          {{ getControlValue(transferLearningSettingsListItem, 'name') }} -
+          {{ getControlValue(transferLearningSettingsListItem, 'type') }}
+        </mat-label>
+        <mat-select
+          [formControl]="
+            getFormControl(
+              transferLearningSettingsListItem,
+              'selectedTransferLearningModel'
+            )
+          ">
+          <mat-option [value]="defaultTransferLearningModel">
+            <span>{{ defaultTransferLearningModel.label }}</span> -
+            <span class="label-small">{{
+              defaultTransferLearningModel.origin
+            }}</span>
+          </mat-option>
+          <mat-option
+            *ngFor="
+              let model of getModelsByType(
+                getControlValue(transferLearningSettingsListItem, 'type')
+              )
+            "
+            [value]="model">
+            <span>{{ model.label }}</span> -
+            <span class="label-small">{{ model.origin }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <mat-slide-toggle
+    [disabled]="!selectedDatabagId"
+    [checked]="transferLearningSettingsActive"
+    (change)="toggleTransferLearningSettings($event)"
+    [aria-label]="'Show for transfer learning settings (For advanced users)'">
+    <span
+      *ngIf="!transferLearningSettingsActive"
+      class="label-small primary-text on-surface-text"
+      [class.on-surface-text]="!selectedDatabagId">
+      Show transfer learning settings (For advanced users)
+    </span>
+    <span
+      *ngIf="transferLearningSettingsActive"
+      class="label-small primary-text">
+      Deactivate transfer learning settings
+    </span>
+  </mat-slide-toggle>
   <div class="button-row">
     <app-new-button
       type="submit"

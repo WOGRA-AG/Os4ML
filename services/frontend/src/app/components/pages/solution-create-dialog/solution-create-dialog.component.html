@@ -10,12 +10,12 @@
       color="accent">
     </app-icon-button>
   </ng-container>
-  {{ data.databagId }}
   <app-solution-create-form
     main
     *ngIf="(databags$ | async) && !submitting"
     [selectedDatabagId]="data.databagId"
     [databags]="(databags$ | async) ?? []"
+    [transferLearningModels]="(transferLearningModels$ | async) ?? []"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
   <mat-spinner
