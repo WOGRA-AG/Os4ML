@@ -5,7 +5,11 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import {Databag, Solution, TransferLearningModel} from '../../../../../build/openapi/modelmanager';
+import {
+  Databag,
+  Solution,
+  TransferLearningModel,
+} from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { ButtonComponent } from '../../molecules/button/button.component';
 import { SolutionService } from '../../../services/solution.service';
@@ -13,7 +17,7 @@ import { MaterialModule } from '../../atoms/material/material.module';
 import { SolutionCreateFormComponent } from '../../organisms/solution-create-form/solution-create-form.component';
 import { Router } from '@angular/router';
 import { LoaderSpinningPlanetComponent } from '../../molecules/loader-spinning-planet/loader-spinning-planet.component';
-import {TransferLearningService} from "../../../services/transfer-learning.service";
+import { TransferLearningService } from '../../../services/transfer-learning.service';
 
 @Component({
   selector: 'app-create-solution-dialog',

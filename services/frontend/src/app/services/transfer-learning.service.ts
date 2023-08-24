@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {
-  TransferLearningModel,
-} from '../../../build/openapi/modelmanager';
+import { TransferLearningModel } from '../../../build/openapi/modelmanager';
 
 @Injectable({
   providedIn: 'root',
