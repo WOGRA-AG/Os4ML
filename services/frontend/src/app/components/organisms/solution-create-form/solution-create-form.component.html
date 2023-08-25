@@ -34,10 +34,10 @@
       [(value)]="selectedDatabagId"
       data-testid="input-databagId"
       formControlName="databagId"
-      attr.aria-label="{{
+      [aria-label]="
         'organisms.solution_create_form.form_fields.databag_id.aria_label'
           | translate
-      }}">
+      ">
       <mat-option *ngFor="let databag of databags" [value]="databag.id">{{
         databag.name
       }}</mat-option>
@@ -62,9 +62,10 @@
       data-testid="input-selected-fields"
       formControlName="selectedFields"
       multiple
-      attr.aria-label="{{
-        'organisms.solution_create_form.selected_fields.aria_label' | translate
-      }}">
+      [aria-label]="
+        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
+          | translate
+      ">
       <mat-option
         *ngFor="
           let predictListItem of databagId.value
@@ -96,18 +97,27 @@
     [disabled]="!selectedDatabagId"
     [checked]="transferLearningSettingsActive"
     (change)="toggleTransferLearningSettings($event)"
-    [aria-label]="'Show for transfer learning settings (For advanced users)'">
+    [aria-label]="
+      'organisms.solution_create_form.form_fields.transfer_learning.toggle.aria_label'
+        | translate
+    ">
     <span
       *ngIf="!transferLearningSettingsActive"
       class="label-small primary-text on-surface-text pl-1"
-      [class.on-surface-text]="!selectedDatabagId"
-      >Show transfer learning settings (For advanced users)</span
-    >
+      [class.on-surface-text]="!selectedDatabagId">
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.toggle.activate'
+          | translate
+      }}
+    </span>
     <span
       *ngIf="transferLearningSettingsActive"
-      class="label-small primary-text pl-1"
-      >Deactivate transfer learning settings</span
-    >
+      class="label-small primary-text pl-1">
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.toggle.deactivate'
+          | translate
+      }}
+    </span>
   </mat-slide-toggle>
 
   <!-- Transfer learning settings -->
@@ -116,7 +126,10 @@
     formArrayName="transferLearningSettings"
     class="transfer-learning-settings">
     <div class="label-medium primary-text text-align-center mb-1">
-      {{ 'organisms.prediction_create_form.upload_section.title' | translate }}
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.title'
+          | translate
+      }}
     </div>
     <ng-container
       *ngFor="
@@ -126,20 +139,18 @@
       <mat-form-field
         *ngIf="
           !selectedFields.value.includes(
-            transferLearningSettingsListItem.get('name')?.value
-          ) &&
-          modelOfTypeExists(transferLearningSettingsListItem.get('type')?.value)
+            transferLearningSettingsListItem.value.name
+          ) && modelOfTypeExists(transferLearningSettingsListItem.value.type)
         ">
         <mat-label
-          >{{ transferLearningSettingsListItem.get('name')?.value }} -
-          {{ transferLearningSettingsListItem.get('type')?.value }}</mat-label
-        >
+          >{{ transferLearningSettingsListItem.value.name }} -
+          {{ transferLearningSettingsListItem.value.type }}
+        </mat-label>
         <mat-select
-          [formControl]="
-            getFormControl(
-              transferLearningSettingsListItem,
-              'selectedTransferLearningModel'
-            )
+          [formControl]="transferLearningSettingsListItem"
+          [aria-label]="
+            ('organisms.solution_create_form.form_fields.transfer_learning.select.aria_label'
+              | translate) + transferLearningSettingsListItem.value.name
           ">
           <mat-option [value]="defaultTransferLearningModel">
             <span>{{ defaultTransferLearningModel.label }}</span> -
@@ -150,7 +161,7 @@
           <mat-option
             *ngFor="
               let model of getModelsByType(
-                transferLearningSettingsListItem.get('type')?.value
+                transferLearningSettingsListItem.value.type
               )
             "
             [value]="model">

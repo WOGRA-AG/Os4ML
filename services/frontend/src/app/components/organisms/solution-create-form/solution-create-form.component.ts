@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
-  FormBuilder,
   FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -53,7 +52,12 @@ export class SolutionCreateFormComponent implements OnInit {
   @Input() public transferLearningModels: TransferLearningModel[] = [];
   @Output() public submitSolution = new EventEmitter<Solution>();
 
-  public createSolutionForm: FormGroup;
+  public createSolutionForm: FormGroup<{
+    name: FormControl<string>;
+    databagId: FormControl<string>;
+    selectedFields: FormControl<string[]>;
+    transferLearningSettings: FormArray<FormControl<TransferLearningSetting>>;
+  }>;
   public transferLearningSettingsActive = false;
   public defaultTransferLearningModel: TransferLearningModel = {
     label: 'Default Model',
@@ -62,46 +66,37 @@ export class SolutionCreateFormComponent implements OnInit {
   };
   constructor(
     private databagService: DatabagService,
-    private fb: FormBuilder
+    private fb: NonNullableFormBuilder
   ) {
     this.createSolutionForm = this.fb.group({
       name: ['', Validators.required],
       databagId: ['', Validators.required],
-      selectedFields: ['', Validators.required],
-      transferLearningSettings: this.fb.array([]),
+      selectedFields: [[] as string[], Validators.required],
+      transferLearningSettings: this.fb.array([] as TransferLearningSetting[]),
     });
   }
-  get name(): FormControl {
-    return this.createSolutionForm.get('name') as FormControl;
+  get name(): FormControl<string> {
+    return this.createSolutionForm.controls.name;
   }
-  get databagId(): FormControl {
-    return this.createSolutionForm.get('databagId') as FormControl;
+  get databagId(): FormControl<string> {
+    return this.createSolutionForm.controls.databagId;
   }
-  get selectedFields(): AbstractControl {
-    return this.createSolutionForm.get('selectedFields') as AbstractControl;
+  get selectedFields(): FormControl<string[]> {
+    return this.createSolutionForm.controls.selectedFields;
   }
-  get transferLearningSettingsFormArray(): FormArray {
-    return this.createSolutionForm.get('transferLearningSettings') as FormArray;
+  get transferLearningSettingsFormArray(): FormArray<
+    FormControl<TransferLearningSetting>
+  > {
+    return this.createSolutionForm.controls.transferLearningSettings;
   }
   ngOnInit(): void {
     this.setInitialDatabagId();
     this.updateTransferLearningSettings();
   }
-  public getFormControl(
-    group: AbstractControl,
-    controlName: string
-  ): FormControl {
-    const control = group.get(controlName);
-    if (control instanceof FormControl) {
-      return control;
-    } else {
-      throw new Error(`Control ${controlName} is not a FormControl`);
-    }
-  }
-  public modelOfTypeExists(type: string | null): boolean {
+  public modelOfTypeExists(type: string): boolean {
     return this.transferLearningModels.some(model => model.type === type);
   }
-  public getModelsByType(type: string | null): TransferLearningModel[] {
+  public getModelsByType(type: string): TransferLearningModel[] {
     return this.transferLearningModels.filter(model => model.type === type);
   }
   public toggleTransferLearningSettings(event: MatSlideToggleChange): void {
@@ -128,7 +123,11 @@ export class SolutionCreateFormComponent implements OnInit {
     this.submitSolution.emit(submitSolution);
   }
   private setInitialDatabagId(): void {
-    this.createSolutionForm.get('databagId')?.setValue(this.selectedDatabagId);
+    if (this.selectedDatabagId) {
+      this.createSolutionForm
+        .get('databagId')
+        ?.setValue(this.selectedDatabagId);
+    }
   }
   private createInitialTransferLearningSettingsFromDatabag(
     databagId: string
@@ -137,8 +136,8 @@ export class SolutionCreateFormComponent implements OnInit {
     if (!selectedDatabag?.columns) return [];
 
     return selectedDatabag.columns.map(column => ({
-      name: column.name,
-      type: column.type,
+      name: column.name ?? 'Error',
+      type: column.type ?? 'Error',
       selectedTransferLearningModel: this.defaultTransferLearningModel,
     }));
   }
@@ -148,15 +147,14 @@ export class SolutionCreateFormComponent implements OnInit {
     const settingsArray = this.transferLearningSettingsFormArray;
     settingsArray.clear();
     settings.forEach(setting => {
-      const control = this.fb.group(setting);
+      const control = this.fb.control(setting);
       settingsArray.push(control);
     });
   }
   private getTransferLearningSettings(): TransferLearningSetting[] {
     const filteredControls =
-      this.transferLearningSettingsFormArray.controls.filter(
-        control =>
-          !this.selectedFields?.value.includes(control.get('name')?.value)
+      this.transferLearningSettingsFormArray.controls.filter(control =>
+        this.selectedFields.value.includes(control.value.name)
       );
     return filteredControls.map(control => control.value);
   }

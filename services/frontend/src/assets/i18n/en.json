@@ -138,6 +138,17 @@
           "hint": "Mark fields, from your data bag, that the AI should predict",
           "help_message": "Please select a databag first to specify further training",
           "error": "Output is required"
+        },
+        "transfer_learning": {
+          "title": "Transfer learning settings",
+          "toggle": {
+            "aria_label": "Toggle for transfer learning settings",
+            "activate": "Show transfer learning settings (For advanced users)",
+            "deactivate": "Deactivate transfer learning settings"
+          },
+          "select": {
+            "aria_label": "Select transfer learning option for "
+          }
         }
       },
       "submit": {
