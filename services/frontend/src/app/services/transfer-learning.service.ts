@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  first,
-  Observable,
-  of,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, first, Observable, of, switchMap } from 'rxjs';
 import {
   ModelmanagerService,
   TransferLearningModel,
