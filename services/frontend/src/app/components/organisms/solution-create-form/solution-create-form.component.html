@@ -123,7 +123,6 @@
   <!-- Transfer learning settings -->
   <div
     *ngIf="transferLearningSettingsActive"
-    formArrayName="transferLearningSettings"
     class="transfer-learning-settings">
     <div class="label-medium primary-text text-align-center mb-1">
       {{
@@ -139,29 +138,36 @@
       <mat-form-field
         *ngIf="
           !selectedFields.value.includes(
-            transferLearningSettingsListItem.value.name
-          ) && modelOfTypeExists(transferLearningSettingsListItem.value.type)
+            transferLearningSettingsListItem.controls.name.value
+          ) &&
+          modelOfTypeExists(
+            transferLearningSettingsListItem.controls.type.value
+          )
         ">
         <mat-label
-          >{{ transferLearningSettingsListItem.value.name }} -
-          {{ transferLearningSettingsListItem.value.type }}
+          >{{ transferLearningSettingsListItem.controls.name.value }} -
+          {{ transferLearningSettingsListItem.controls.type.value }}
         </mat-label>
         <mat-select
-          [formControl]="transferLearningSettingsListItem"
+          [formControl]="
+            transferLearningSettingsListItem.controls
+              .selectedTransferLearningModel
+          "
           [aria-label]="
             ('organisms.solution_create_form.form_fields.transfer_learning.select.aria_label'
-              | translate) + transferLearningSettingsListItem.value.name
+              | translate) +
+            transferLearningSettingsListItem.controls.name.value
           ">
           <mat-option [value]="defaultTransferLearningModel">
             <span>{{ defaultTransferLearningModel.label }}</span> -
-            <span class="label-small">{{
-              defaultTransferLearningModel.origin
-            }}</span>
+            <span class="label-small">
+              {{ defaultTransferLearningModel.origin }}
+            </span>
           </mat-option>
           <mat-option
             *ngFor="
               let model of getModelsByType(
-                transferLearningSettingsListItem.value.type
+                transferLearningSettingsListItem.controls.type.value
               )
             "
             [value]="model">

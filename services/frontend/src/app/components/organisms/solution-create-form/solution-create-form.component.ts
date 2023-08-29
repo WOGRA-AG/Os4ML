@@ -27,6 +27,12 @@ import { NgForOf, NgIf } from '@angular/common';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DatabagService } from '../../../services/databag.service';
 
+interface TransferLearningSettingFormGroup {
+  name: FormControl<string>;
+  type: FormControl<string>;
+  selectedTransferLearningModel: FormControl<TransferLearningModel>;
+}
+
 @Component({
   selector: 'app-solution-create-form',
   templateUrl: './solution-create-form.component.html',
@@ -56,12 +62,15 @@ export class SolutionCreateFormComponent implements OnInit {
     name: FormControl<string>;
     databagId: FormControl<string>;
     selectedFields: FormControl<string[]>;
-    transferLearningSettings: FormArray<FormControl<TransferLearningSetting>>;
+    transferLearningSettings: FormArray<
+      FormGroup<TransferLearningSettingFormGroup>
+    >;
   }>;
   public transferLearningSettingsActive = false;
   public defaultTransferLearningModel: TransferLearningModel = {
     label: 'Default Model',
     id: 'default-model',
+    type: 'Default',
     origin: 'OS4ML',
   };
   constructor(
@@ -72,7 +81,7 @@ export class SolutionCreateFormComponent implements OnInit {
       name: ['', Validators.required],
       databagId: ['', Validators.required],
       selectedFields: [[] as string[], Validators.required],
-      transferLearningSettings: this.fb.array([] as TransferLearningSetting[]),
+      transferLearningSettings: this.fb.array([] as FormGroup[]),
     });
   }
   get name(): FormControl<string> {
@@ -85,7 +94,7 @@ export class SolutionCreateFormComponent implements OnInit {
     return this.createSolutionForm.controls.selectedFields;
   }
   get transferLearningSettingsFormArray(): FormArray<
-    FormControl<TransferLearningSetting>
+    FormGroup<TransferLearningSettingFormGroup>
   > {
     return this.createSolutionForm.controls.transferLearningSettings;
   }
@@ -103,10 +112,22 @@ export class SolutionCreateFormComponent implements OnInit {
     this.transferLearningSettingsActive = event.checked;
   }
   public updateTransferLearningSettings(): void {
-    const settings = this.createInitialTransferLearningSettingsFromDatabag(
+    this.transferLearningSettingsFormArray.clear();
+    const selectedDatabag = this.databagService.getDatabagById(
       this.databagId.value
     );
-    this.setInitialTransferLearningSettings(settings);
+    if (!selectedDatabag?.columns) return;
+    selectedDatabag.columns.forEach(column => {
+      const transferLearningSetting = this.fb.group({
+        name: [column.name ?? 'Not defined', Validators.required],
+        type: [column.type ?? 'Not defined', Validators.required],
+        selectedTransferLearningModel: [
+          this.defaultTransferLearningModel,
+          Validators.required,
+        ],
+      });
+      this.transferLearningSettingsFormArray.push(transferLearningSetting);
+    });
   }
   public onSubmit(): void {
     if (!this.createSolutionForm.valid) return;
@@ -129,34 +150,20 @@ export class SolutionCreateFormComponent implements OnInit {
         ?.setValue(this.selectedDatabagId);
     }
   }
-  private createInitialTransferLearningSettingsFromDatabag(
-    databagId: string
-  ): TransferLearningSetting[] {
-    const selectedDatabag = this.databagService.getDatabagById(databagId);
-    if (!selectedDatabag?.columns) return [];
-
-    return selectedDatabag.columns.map(column => ({
-      name: column.name ?? 'Error',
-      type: column.type ?? 'Error',
-      selectedTransferLearningModel: this.defaultTransferLearningModel,
-    }));
-  }
-  private setInitialTransferLearningSettings(
-    settings: TransferLearningSetting[]
-  ): void {
-    const settingsArray = this.transferLearningSettingsFormArray;
-    settingsArray.clear();
-    settings.forEach(setting => {
-      const control = this.fb.control(setting);
-      settingsArray.push(control);
-    });
-  }
   private getTransferLearningSettings(): TransferLearningSetting[] {
-    const filteredControls =
-      this.transferLearningSettingsFormArray.controls.filter(control =>
-        this.selectedFields.value.includes(control.value.name)
-      );
-    return filteredControls.map(control => control.value);
+    const filteredTransferLearningSettings =
+      this.transferLearningSettingsFormArray.controls
+        .filter(
+          transferLearningSetting =>
+            !this.selectedFields.value.includes(
+              transferLearningSetting.controls.name.value
+            )
+        )
+        .map(
+          transferLearningSetting =>
+            transferLearningSetting.value as TransferLearningSetting
+        );
+    return filteredTransferLearningSettings;
   }
   private getUnselectedColumns(selectedColumns: string[]): string[] {
     const allColumnNames =
