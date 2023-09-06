@@ -122,7 +122,7 @@ def load_files_to_df(df: pd.DataFrame, path: str) -> pd.DataFrame:
 def load_file(file: str, path: str) -> object:
     file_path = path / file
     suffix = file_path.suffix
-    if suffix.lower() in (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif"):
+    if suffix.lower() in (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff"):
         return load_image(file_path)
     else:
         raise FileTypeNotSupported()
