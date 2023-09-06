@@ -103,7 +103,7 @@
     ">
     <span
       *ngIf="!transferLearningSettingsActive"
-      class="label-small primary-text on-surface-text pl-1"
+      class="title-small primary-text on-surface-text pl-1"
       [class.on-surface-text]="!selectedDatabagId">
       {{
         'organisms.solution_create_form.form_fields.transfer_learning.toggle.activate'
@@ -112,7 +112,7 @@
     </span>
     <span
       *ngIf="transferLearningSettingsActive"
-      class="label-small primary-text pl-1">
+      class="title-small primary-text pl-1">
       {{
         'organisms.solution_create_form.form_fields.transfer_learning.toggle.deactivate'
           | translate
@@ -124,7 +124,7 @@
   <div
     *ngIf="transferLearningSettingsActive"
     class="transfer-learning-settings">
-    <div class="label-medium primary-text text-align-center mb-1">
+    <div class="title-medium primary-text text-align-center mb-1">
       {{
         'organisms.solution_create_form.form_fields.transfer_learning.title'
           | translate
