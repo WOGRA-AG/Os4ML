@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first, Observable, of, switchMap } from 'rxjs';
 import {
   ModelmanagerService,
+  NewTransferLearningModelDto,
   TransferLearningModel,
 } from '../../../build/openapi/modelmanager';
 import { UserService } from './user.service';
@@ -29,6 +30,18 @@ export class TransferLearningService {
   }
   get transferLearningModels$(): Observable<TransferLearningModel[]> {
     return this._transferLearningModelsSubject$.asObservable();
+  }
+  createSolutionNew(
+    newTransferLearningModelDto: NewTransferLearningModelDto
+  ): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.createNewTransferLearningModelFromSolution(
+          token,
+          newTransferLearningModelDto
+        )
+      )
+    );
   }
   mockTransferLearningModels(): Observable<TransferLearningModel[]> {
     return of([

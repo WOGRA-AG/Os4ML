@@ -13,8 +13,8 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
 import { NgForOf, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  NewTransferLearningModelDto,
   Solution,
-  TransferLearningModel,
 } from '../../../../../build/openapi/modelmanager';
 import { MatSelectModule } from '@angular/material/select';
 import { GetDatabagByIdPipe } from '../../../pipes/get-databag-by-id.pipe';
@@ -42,9 +42,8 @@ import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 })
 export class TransferLearningModelCreateFormComponent {
   @Input() public solutions: Solution[] = [];
-  @Input() public transferLearningModels: TransferLearningModel[] = [];
-  @Output() public submitTransferLearningModel =
-    new EventEmitter<TransferLearningModel>();
+  @Output() public submitNewTransferLearningModel =
+    new EventEmitter<NewTransferLearningModelDto>();
 
   public createTransferLearningModelForm: FormGroup<{
     name: FormControl<string>;
@@ -69,7 +68,14 @@ export class TransferLearningModelCreateFormComponent {
   get selectedSolutionInput(): FormControl<string> {
     return this.createTransferLearningModelForm.controls.selectedSolutionInput;
   }
+
   public onSubmit(): void {
     if (!this.createTransferLearningModelForm.valid) return;
+    const submitNewTransferlearningModel: NewTransferLearningModelDto = {
+      name: this.name.value,
+      solutionId: this.solutionId.value,
+      selectedSolutionInput: this.selectedSolutionInput.value,
+    };
+    this.submitNewTransferLearningModel.emit(submitNewTransferlearningModel);
   }
 }
