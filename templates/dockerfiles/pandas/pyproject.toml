@@ -10,7 +10,7 @@ packages = [{include = "os4ml_pandas"}]
 python = "^3.10"
 pandas = "^2.0.0"
 numpy = "^1.24.2"
-Pillow = "^9.5.0"
+Pillow = "^10.0.0"
 kfp = "^1.8.21"
 et-xmlfile = "^1.1.0"
 python-dateutil = "^2.8.2"
