@@ -13,10 +13,9 @@ from load.dataframe import (
     get_dataframe_file,
     get_root_dir,
     read_df,
-    read_zip,
 )
 from load.dataset import get_dataset_file_type
-from model_manager.databags import get_databag_by_id
+from model_manager.databags import download_dataset, get_databag_by_id
 from model_manager.solutions import (
     get_solution_by_id,
     update_solution_error_status,
@@ -88,11 +87,11 @@ def make_template_df(df: pd.DataFrame, solution: Solution) -> pd.DataFrame:
 
 
 def create_zip_prediction_template(
-    databag: Databag, file_type: str, solution: Solution, file_name: str
+    databag: Databag, file_type: FileType, solution: Solution, file_name: str
 ) -> None:
     with tempfile.NamedTemporaryFile() as tmp_file:
         with open(tmp_file.name, "wb") as file:
-            download_file(databag.dataset_url, file)
+            download_dataset(file, databag)
         with tempfile.NamedTemporaryFile(suffix=".zip") as output_file:
             make_zip(tmp_file.name, output_file.name, solution)
             with open(output_file.name, "rb") as file:
@@ -103,7 +102,7 @@ def make_zip(file_path: str, zip_file_name: str, solution: Solution) -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         with zipfile.ZipFile(file_path) as zip_file:
             zip_file.extractall(tmp_dir)
-        root_dir = get_root_dir(tmp_dir)
+        root_dir = get_root_dir(pathlib.Path(tmp_dir))
         dataframe_file = get_dataframe_file(root_dir)
         file_type = file_type_from_file_name(dataframe_file)
         df = read_df(file_type, dataframe_file)

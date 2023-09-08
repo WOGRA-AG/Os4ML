@@ -4,9 +4,10 @@ from file_type.file_type import (
     get_file_name_from_url,
 )
 from models.databag_type import DatabagType
+from models.file_type import FileType
 
 
-def get_dataset_file_type(databag: Databag) -> DatabagType:
+def get_dataset_file_type(databag: Databag) -> FileType:
     file_name = databag.dataset_file_name
     if databag.databag_type == DatabagType.FILE_URL:
         file_name = get_file_name_from_url(databag.dataset_url)
