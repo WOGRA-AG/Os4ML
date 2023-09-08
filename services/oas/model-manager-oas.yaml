@@ -405,6 +405,18 @@ paths:
         200:
           $ref: '#/components/responses/Url'
 
+  "/apis/v1beta1/model-manager/transfer-tearning-models":
+    get:
+      summary: "get transfer learning models"
+      operationId: getTransferLearningModel
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModelList'
+
 components:
   schemas:
     ErrorSchema:
@@ -531,6 +543,14 @@ components:
             type: array
             items:
               $ref: "./shared-oas.yaml#/components/schemas/Databag"
+    TransferLearningModelList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
     Solution:
       description: OK
       content:

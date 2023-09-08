@@ -3,7 +3,8 @@
     "navigation": {
       "databags": "Databags",
       "solutions": "Solutions",
-      "predictions": "Predictions"
+      "predictions": "Predictions",
+      "transfer-learning": "Transfer learning"
     },
     "footer-navigation": {
       "guided_tour": "Guided Tour",
@@ -18,6 +19,10 @@
     }
   },
   "organisms": {
+    "theme-toggle": {
+      "activate-light-mode": "Light mode",
+      "activate-dark-mode": "Dark mode"
+    },
     "uploading_files": {
       "cancel_upload": {
         "button": "Cancel Upload",
@@ -204,6 +209,42 @@
         "button": "Submit Prediction",
         "aria_label": "Submit Prediction"
       }
+    },
+    "transfer_learning_models_table": {
+      "column_header": {
+        "transfer_learning_label": "Name",
+        "transfer_learning_type": "Type",
+        "transfer_learning_origin": "Origin"
+      }
+    },
+    "transfer_learning-model_create_button.label": "Create Model",
+    "transfer_learning_model_create_form": {
+      "aria_label": "Transfer learning model creation form",
+      "form_fields": {
+        "name": {
+          "label": "Transfer learning model name",
+          "aria_label": "Transfer learning model name",
+          "error": "Transfer learning model name is required",
+          "hint": "Choose a meaningful name for your transfer learning model to easily identify them"
+        },
+        "solution_id": {
+          "label": "Select solution",
+          "aria_label": "Select solution",
+          "error": "Solution is required",
+          "hint": "Select the solution whit which you want to create a transfer learning model"
+        },
+        "selected_solution_input": {
+          "label": "Select solution input field",
+          "aria_label": "Select solution input field",
+          "error": "Solution input field is required",
+          "help_message": "Please select a solution first to specify your transfer learning model",
+          "hint": "Select the input field whit which you want to create a transfer learning model"
+        }
+      },
+      "submit": {
+        "button": "Submit transfer learning model",
+        "aria_label": "Submit transfer learning model"
+      }
     }
   },
   "pages": {
@@ -213,22 +254,11 @@
     "solution_create_dialog.title": "Create Solution",
     "predictions_page.title": "Predictions",
     "prediction_create_dialog.title": "Create Predictions",
-    "detail": {
-      "title": "Solution details",
-      "solution_name": "Solution name",
-      "input_fields": "Input Fields",
-      "output_fields": "Output Fields",
-      "quality": "Quality",
-      "runtime": "Runtime",
-      "creation": "Creation",
-      "status": "Status",
-      "actions": "Actions",
-      "tooltips": {
-        "settings": "Solution settings",
-        "add_prediction": "Add prediction",
-        "show_predictions": "Show predictions"
-      }
+    "transfer_learning_page": {
+      "title": "Transfer learning models",
+      "placeholder.title": "No transfer learning models have been loaded!"
     },
+    "transfer_learning_model_create_dialog.title": "Create transfer learning model",
     "empty": "Analyze your Data with Machine Learning",
     "delete": {
       "title": "Delete Solution",

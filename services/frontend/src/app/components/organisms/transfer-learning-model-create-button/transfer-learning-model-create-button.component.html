@@ -1,0 +1,11 @@
+<app-new-button
+  data-testid="add-transfer-learning-model"
+  [variant]="variant"
+  [size]="'medium'"
+  [icon]="'add'"
+  [ariaLabel]="
+    'organisms.transfer_learning-model_create_button.label' | translate
+  "
+  (click)="addTransferLearningModel.emit()">
+  {{ 'organisms.transfer_learning-model_create_button.label' | translate }}
+</app-new-button>

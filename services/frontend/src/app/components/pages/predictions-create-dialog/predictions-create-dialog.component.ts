@@ -54,7 +54,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     private solutionService: SolutionService,
     public predictionService: PredictionService,
     public dialogRef: MatDialogRef<PredictionsCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { solutionId: string }
+    @Inject(MAT_DIALOG_DATA) public data?: { solutionId?: string }
   ) {
     this.solutions$ = this.solutionService.getSolutionsByCreationTime();
     this.predictionUploadProgress$ =

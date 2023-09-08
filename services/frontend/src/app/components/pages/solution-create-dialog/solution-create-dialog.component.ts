@@ -51,7 +51,7 @@ export class SolutionCreateDialogComponent implements OnDestroy {
     private databagService: DatabagService,
     private transferLearningService: TransferLearningService,
     public dialogRef: MatDialogRef<SolutionCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { databagId: string }
+    @Inject(MAT_DIALOG_DATA) public data?: { databagId?: string }
   ) {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.transferLearningModels$ =

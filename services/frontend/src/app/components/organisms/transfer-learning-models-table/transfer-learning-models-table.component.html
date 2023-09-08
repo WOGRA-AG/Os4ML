@@ -1,0 +1,67 @@
+<table
+  mat-table
+  [dataSource]="transferLearningModels"
+  data-testid="transfer-learning-models-table">
+  <ng-container matColumnDef="label">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.transfer_learning_models_table.column_header.transfer_learning_label'
+          | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.label }}</td>
+  </ng-container>
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.transfer_learning_models_table.column_header.transfer_learning_type'
+          | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+  </ng-container>
+  <ng-container matColumnDef="origin">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{
+        'organisms.transfer_learning_models_table.column_header.transfer_learning_origin'
+          | translate
+      }}
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.origin }}</td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef class="surface primary-text">
+      {{ 'organisms.prediction_data_table.column_header.actions' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <!--      <app-icon-button-->
+      <!--        attr.aria-label="{{-->
+      <!--          'pages.solutions_page.actions.new_databag' | translate-->
+      <!--        }}"-->
+      <!--        (click)="downloadPredictionButton.emit(element.id)"-->
+      <!--        [disabled]="(element.status | shortStatus) !== 'Done'"-->
+      <!--        data-testid="prediction-download-button"-->
+      <!--        variant="basic"-->
+      <!--        class="fab-button mat-raised-button mr-1"-->
+      <!--        color="primary"-->
+      <!--        icon="download">-->
+      <!--      </app-icon-button>-->
+      <!--      <app-icon-button-->
+      <!--        (click)="deletePredictionButton.emit(element.id)"-->
+      <!--        attr.aria-label="{{-->
+      <!--          'pages.solutions_page.actions.delete_prediction' | translate-->
+      <!--        }}"-->
+      <!--        data-testid="prediction-delete-button"-->
+      <!--        variant="basic"-->
+      <!--        class="fab-button mat-raised-button"-->
+      <!--        color="primary"-->
+      <!--        icon="delete_forever">-->
+      <!--      </app-icon-button>-->
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    data-testid="prediction-item"
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
