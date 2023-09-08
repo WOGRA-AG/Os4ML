@@ -416,6 +416,18 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/TransferLearningModelList'
+    put:
+      summary: "create a transfer learning model from Solutin"
+      operationId: createNewTransferLearningModelFromSolution
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        $ref: '#/components/requestBodies/NewTransferLearningModelDto'
+      responses:
+        201:
+          $ref: '#/components/responses/TransferLearningModel'
 
 components:
   schemas:
@@ -472,6 +484,7 @@ components:
       required: true
       schema:
         type: string
+
   requestBodies:
     Databag:
       content:
@@ -498,6 +511,11 @@ components:
         application/json:
           schema:
             $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
+    NewTransferLearningModelDto:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/NewTransferLearningModelDto"
   responses:
     Created:
       description: New resource created
@@ -543,14 +561,6 @@ components:
             type: array
             items:
               $ref: "./shared-oas.yaml#/components/schemas/Databag"
-    TransferLearningModelList:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
     Solution:
       description: OK
       content:
@@ -593,3 +603,17 @@ components:
             type: array
             items:
               $ref: "./shared-oas.yaml#/components/schemas/Prediction"
+    TransferLearningModel:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
+    TransferLearningModelList:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
