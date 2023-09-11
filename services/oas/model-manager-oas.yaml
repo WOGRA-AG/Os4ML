@@ -416,7 +416,7 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/TransferLearningModelList'
-    put:
+    post:
       summary: "create a transfer learning model from Solutin"
       operationId: createNewTransferLearningModelFromSolution
       tags:

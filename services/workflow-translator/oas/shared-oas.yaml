@@ -22,6 +22,8 @@ components:
       type: string
     PredictionId:
       type: string
+    TransferLearningModelId:
+      type: string
     Url:
       type: string
       nullable: true
@@ -102,6 +104,11 @@ components:
         predictionTemplateFileName:
           type: string
           nullable: true
+        transferLearningSettings:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/TransferLearningSetting"
     Prediction:
       properties:
         id:
@@ -131,6 +138,17 @@ components:
         dataUrl:
           $ref: '#/components/schemas/Url'
           nullable: true
+    TransferLearningModel:
+      properties:
+        id:
+          $ref: '#/components/schemas/TransferLearningModelId'
+          nullable: true
+        name:
+          type: string
+        type:
+          type: string
+        origin:
+          type: string
     PipelineStep:
       type: string
       enum:
@@ -173,6 +191,30 @@ components:
           type: string
         numEntries:
           type: integer
+    TransferLearningSetting:
+      required:
+        - name
+        - type
+        - selectedTransferLearningModel
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        selectedTransferLearningModel:
+          $ref: '#/components/schemas/TransferLearningModel'
+    NewTransferLearningModelDto:
+      required:
+        - name
+        - solutionId
+        - selectedSolutionInput
+      properties:
+        name:
+          type: string
+        solutionId:
+          type: string
+        selectedSolutionInput:
+          type: string
     JsonResponse:
       properties:
         jsonContent:
