@@ -27,6 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 401 || err.status === 403) {
           window.location.reload();
         } else if (err.status === 404 && err.url.includes('/run/')) {
+          /* empty */
         } else if (err.status >= 400 && err.status <= 499) {
           this.translate.get('action.confirm').subscribe((res: string) => {
             this.errorService.reportError(errorMsg, res);

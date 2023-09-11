@@ -481,6 +481,11 @@ components:
         application/json:
           schema:
             $ref: "./shared-oas.yaml#/components/schemas/Prediction"
+    TransferLearningModel:
+      content:
+        application/json:
+          schema:
+            $ref: "./shared-oas.yaml#/components/schemas/TransferLearningModel"
   responses:
     Created:
       description: New resource created

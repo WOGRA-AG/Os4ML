@@ -45,7 +45,7 @@
       {{ 'organisms.prediction_data_table.column_header.creation' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
-      {{ element.creationTime | localizedDate : 'dd.MM.yyyy' }}
+      {{ element.creationTime | localizedDate: 'dd.MM.yyyy' }}
     </td>
   </ng-container>
   <ng-container matColumnDef="status">

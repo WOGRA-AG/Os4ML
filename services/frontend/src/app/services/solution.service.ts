@@ -76,6 +76,7 @@ export class SolutionService {
       databagId: solution.databagId,
       inputFields: solution.inputFields,
       outputFields: solution.outputFields,
+      transferLearningSettings: solution.transferLearningSettings,
       solver: 'ludwig-solver',
     };
     return this.userService.currentToken$.pipe(

@@ -10,7 +10,7 @@ packages = [{include = "os4ml_ludwig"}]
 python = "^3.10"
 kfp = "^1.8.21"
 pandas = "^2.0.0"
-ludwig = {git = "https://github.com/Dennis-Rall/ludwig.git", rev = "9112470467b4e4ffe336ec6f38a7343c2c17a5bb"}
+ludwig = {git = "https://github.com/Dennis-Rall/ludwig.git", rev = "3d2ff0b1537473b5b5aea1a672cf673639f89b10"}
 
 
 [build-system]

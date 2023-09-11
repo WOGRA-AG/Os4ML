@@ -47,8 +47,9 @@ def read_df(file_type: str, path: str) -> pd.DataFrame:
     elif file_type == FileType.EXCEL:
         return pd.read_excel(path, sheet_name=0)
     elif file_type == FileType.ZIP:
-        df, root_dir = read_zip(path)
-        return load_files_to_df(df, root_dir)
+        with tempfile.TemporaryDirectory() as tmp_dir_name:
+            df, root_dir = read_zip(path, pathlib.Path(tmp_dir_name))
+            return load_files_to_df(df, root_dir)
     else:
         raise FileTypeUnknownException()
 
@@ -58,37 +59,38 @@ def read_csv(file: IO[str]) -> pd.DataFrame:
     lines = "\n".join(file.readlines(3))
     file.seek(0)
     try:
-        csv.Sniffer().sniff(lines, delimiters=[",", ";", ":", "\t", " "])
+        csv.Sniffer().sniff(lines, delimiters=",;:\t ")
     except csv.Error:
         return pd.read_csv(file, sep=",", engine="python")
 
     return pd.read_csv(file, sep=None, engine="python")
 
 
-def read_zip(path: str) -> tuple[pd.DataFrame, pathlib.Path]:
-    with tempfile.TemporaryDirectory() as tmp_dir_name:
-        with zipfile.ZipFile(path) as zip_file:
-            zip_file.extractall(tmp_dir_name)
-        root_dir = get_root_dir(tmp_dir_name)
-        dataframe_file = get_dataframe_file(root_dir)
-        file_type = file_type_from_file_name(dataframe_file)
-        return read_df(file_type, dataframe_file), root_dir
+def read_zip(
+    path: str, tmp_dir: pathlib.Path
+) -> tuple[pd.DataFrame, pathlib.Path]:
+    with zipfile.ZipFile(path) as zip_file:
+        zip_file.extractall(str(tmp_dir))
+    root_dir = get_root_dir(tmp_dir)
+    dataframe_file = get_dataframe_file(root_dir)
+    file_type = file_type_from_file_name(dataframe_file)
+    return read_df(file_type, dataframe_file), root_dir
 
 
-def get_root_dir(dir_: str) -> pathlib.Path:
+def get_root_dir(dir_: pathlib.Path) -> pathlib.Path:
     """
     Check if dir only contains 1 dir, if so return the sub_dir else return dir.
     """
-    root_dir = pathlib.Path(dir_)
+    root_dir = dir_
     if sum(1 for _ in root_dir.iterdir()) == 1:
-        sub_dir = next(root_dir.iterdir())
+        sub_dir = root_dir / next(root_dir.iterdir())
         if sub_dir.is_dir():
             return sub_dir
     return root_dir
 
 
-def get_dataframe_file(dir_: str) -> str:
-    files = {file for file in pathlib.Path(dir_).iterdir() if file.is_file()}
+def get_dataframe_file(dir_: pathlib.Path) -> str:
+    files = {file for file in dir_.iterdir() if file.is_file()}
     data_files = {file for file in files if is_data_file(file)}
     if len(data_files) < 1:
         raise DataFileNotFoundException()
@@ -97,9 +99,9 @@ def get_dataframe_file(dir_: str) -> str:
     return str(data_files.pop())
 
 
-def is_data_file(file_name: str) -> bool:
+def is_data_file(file_name: pathlib.Path) -> bool:
     try:
-        return file_type_from_file_name(file_name) in (
+        return file_type_from_file_name(str(file_name)) in (
             FileType.CSV,
             FileType.EXCEL,
         )
@@ -107,10 +109,10 @@ def is_data_file(file_name: str) -> bool:
         return False
 
 
-def load_files_to_df(df: pd.DataFrame, path: str) -> pd.DataFrame:
+def load_files_to_df(df: pd.DataFrame, path: pathlib.Path) -> pd.DataFrame:
     for col in df:
-        type = sniff_series(df[col])
-        if type != ColumnDataType.TEXT:
+        type_ = sniff_series(df[col])
+        if type_ != ColumnDataType.TEXT:
             continue
         test_file = path / df[col][0]
         if not test_file.exists():
@@ -119,10 +121,18 @@ def load_files_to_df(df: pd.DataFrame, path: str) -> pd.DataFrame:
     return df
 
 
-def load_file(file: str, path: str) -> object:
+def load_file(file: str, path: pathlib.Path) -> object:
     file_path = path / file
     suffix = file_path.suffix
-    if suffix.lower() in (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif"):
+    if suffix.lower() in (
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".bmp",
+        ".tif",
+        ".tiff",
+    ):
         return load_image(file_path)
     else:
         raise FileTypeNotSupported()
@@ -133,4 +143,8 @@ def load_image(file: pathlib.Path) -> np.ndarray:
     img = np.asarray(img)
     if len(img.shape) == 2:
         img = np.expand_dims(img, axis=2)
+    print(img.dtype)
+    if img.dtype == np.uint16:
+        print("-----------------CONVERTING")
+        img = img.astype(np.int32)
     return img

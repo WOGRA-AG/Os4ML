@@ -43,10 +43,10 @@ def ludwig_solver(
         solution = update_solution_status(
             solution_id, StatusMessage.SOLVER_RUNNING
         )
-        model, model_definition = build_model(
+        model, _ = build_model(
             solution, databag_model.columns, batch_size, epochs, early_stop
         )
-        df_full = load_dataframe(dataframe.path)
+        df_full = load_dataframe(dataframe.path or "")
         df_train, df_validate, df_test = train_validate_test_split(
             df_full, test_split, validation_split
         )
@@ -70,7 +70,7 @@ def evaluate_model(
 
 
 def evaluate_output_field(name: str, model: LudwigModel, df_test) -> Metric:
-    stats, pred, _ = model.evaluate(df_test, collect_predictions=True)
+    stats, *_ = model.evaluate(df_test, collect_predictions=True)
     label_stats = stats[name]
     if "accuracy" in label_stats:
         accuracy = float(label_stats["accuracy"])
@@ -78,6 +78,7 @@ def evaluate_output_field(name: str, model: LudwigModel, df_test) -> Metric:
     if "r2" in label_stats:
         r2_score = float(max(0, label_stats["r2"]))
         return Metric(output_field=name, name="r2_score", value=r2_score)
+    raise ValueError(f"No Metric found in {stats}")
 
 
 def upload_model_to_solution(

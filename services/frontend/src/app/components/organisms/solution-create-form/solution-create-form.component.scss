@@ -12,6 +12,12 @@ form {
     margin-bottom: 1.5rem;
   }
 
+  .transfer-learning-settings {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 0rem;
+  }
+
   .button-row {
     display: flex;
     justify-content: center;

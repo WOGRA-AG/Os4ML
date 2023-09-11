@@ -9,7 +9,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SideNavComponent } from './components/templates/side-nav/side-nav.component';
 import { MaterialModule } from './components/atoms/material/material.module';
 import { SideNavItemComponent } from './components/molecules/side-nav-item/side-nav-item.component';
-import { MatDialog } from '@angular/material/dialog';
 import { NewButtonComponent } from './components/molecules/new-button/new-button.component';
 import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-toggle.component';
 
@@ -31,7 +30,7 @@ import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-
   ],
 })
 export class AppComponent {
-  constructor(private translate: TranslateService, private dialog: MatDialog) {
+  constructor(private translate: TranslateService) {
     registerLocaleData(localeDe, 'de', localeDeExtra);
     registerLocaleData(localeEn, 'en', localeEnExtra);
     translate.setDefaultLang('en');

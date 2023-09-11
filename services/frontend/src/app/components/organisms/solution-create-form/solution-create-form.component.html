@@ -4,10 +4,11 @@
   attr.aria-label="{{
     'organisms.solution.create_form.aria_label' | translate
   }}">
+  <!-- Name -->
   <mat-form-field>
-    <mat-label>
-      {{ 'organisms.solution_create_form.form_fields.name.label' | translate }}
-    </mat-label>
+    <mat-label>{{
+      'organisms.solution_create_form.form_fields.name.label' | translate
+    }}</mat-label>
     <input
       matInput
       formControlName="name"
@@ -15,45 +16,43 @@
       attr.aria-label="{{
         'organisms.solution_create_form.form_fields.name.aria_label' | translate
       }}" />
-    <mat-error *ngIf="name?.invalid && name?.touched">
-      {{ 'organisms.solution_create_form.form_fields.name.error' | translate }}
-    </mat-error>
-    <mat-hint class="on-surface-text">
-      {{ 'organisms.solution_create_form.form_fields.name.hint' | translate }}
-    </mat-hint>
+    <mat-error *ngIf="name.invalid && name.touched">{{
+      'organisms.solution_create_form.form_fields.name.error' | translate
+    }}</mat-error>
+    <mat-hint class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.name.hint' | translate
+    }}</mat-hint>
   </mat-form-field>
+
+  <!-- Databag select -->
   <mat-form-field>
-    <mat-label>
-      {{
-        'organisms.solution_create_form.form_fields.databag_id.label'
-          | translate
-      }}
-    </mat-label>
+    <mat-label>{{
+      'organisms.solution_create_form.form_fields.databag_id.label' | translate
+    }}</mat-label>
     <mat-select
+      (selectionChange)="updateTransferLearningSettings()"
       [(value)]="selectedDatabagId"
       data-testid="input-databagId"
       formControlName="databagId"
-      attr.aria-label="{{
+      [aria-label]="
         'organisms.solution_create_form.form_fields.databag_id.aria_label'
           | translate
-      }}">
-      <mat-option *ngFor="let databag of databags" [value]="databag.id">
-        {{ databag.name }}
-      </mat-option>
+      ">
+      <mat-option *ngFor="let databag of databags" [value]="databag.id">{{
+        databag.name
+      }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="databagId?.invalid && databagId?.touched">
-      {{
-        'organisms.solution_create_form.form_fields.databag_id.error'
-          | translate
-      }}
-    </mat-error>
-    <mat-hint class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.databag_id.hint' | translate
-      }}
-    </mat-hint>
+    <mat-error *ngIf="databagId.invalid && databagId.touched">{{
+      'organisms.solution_create_form.form_fields.databag_id.error' | translate
+    }}</mat-error>
+    <mat-hint class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.databag_id.hint' | translate
+    }}</mat-hint>
   </mat-form-field>
+
   <app-element-divider></app-element-divider>
+
+  <!-- Output select -->
   <mat-form-field class="prediction-options">
     <mat-label>{{
       'organisms.solution_create_form.form_fields.selected_fields.label'
@@ -63,12 +62,13 @@
       data-testid="input-selected-fields"
       formControlName="selectedFields"
       multiple
-      attr.aria-label="{{
-        'organisms.solution_create_form.selected_fields.aria_label' | translate
-      }}">
+      [aria-label]="
+        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
+          | translate
+      ">
       <mat-option
         *ngFor="
-          let predictListItem of databagId?.value
+          let predictListItem of databagId.value
             | getDatabagById
             | getPredictListItemsFromDatabag
         "
@@ -77,25 +77,109 @@
         <span>{{ predictListItem.description }}</span>
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="selectedFields?.invalid && selectedFields?.touched">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.error'
-          | translate
-      }}
-    </mat-error>
-    <mat-hint *ngIf="!databagId?.value" class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.help_message'
-          | translate
-      }}
-    </mat-hint>
-    <mat-hint *ngIf="databagId?.value" class="on-surface-text">
-      {{
-        'organisms.solution_create_form.form_fields.selected_fields.hint'
-          | translate
-      }}
-    </mat-hint>
+    <mat-error *ngIf="selectedFields.invalid && selectedFields.touched">{{
+      'organisms.solution_create_form.form_fields.selected_fields.error'
+        | translate
+    }}</mat-error>
+    <mat-hint *ngIf="!databagId.value" class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.selected_fields.help_message'
+        | translate
+    }}</mat-hint>
+    <mat-hint *ngIf="databagId.value" class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.selected_fields.hint'
+        | translate
+    }}</mat-hint>
   </mat-form-field>
+
+  <!-- Transfer Learning Toggle -->
+  <mat-slide-toggle
+    class="mb-1"
+    [disabled]="!selectedDatabagId"
+    [checked]="transferLearningSettingsActive"
+    (change)="toggleTransferLearningSettings($event)"
+    [aria-label]="
+      'organisms.solution_create_form.form_fields.transfer_learning.toggle.aria_label'
+        | translate
+    ">
+    <span
+      *ngIf="!transferLearningSettingsActive"
+      class="label-small primary-text on-surface-text pl-1"
+      [class.on-surface-text]="!selectedDatabagId">
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.toggle.activate'
+          | translate
+      }}
+    </span>
+    <span
+      *ngIf="transferLearningSettingsActive"
+      class="label-small primary-text pl-1">
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.toggle.deactivate'
+          | translate
+      }}
+    </span>
+  </mat-slide-toggle>
+
+  <!-- Transfer learning settings -->
+  <div
+    *ngIf="transferLearningSettingsActive"
+    class="transfer-learning-settings">
+    <div class="label-medium primary-text text-align-center mb-1">
+      {{
+        'organisms.solution_create_form.form_fields.transfer_learning.title'
+          | translate
+      }}
+    </div>
+    <ng-container
+      *ngFor="
+        let transferLearningSettingsListItem of transferLearningSettingsFormArray.controls;
+        let i = index
+      ">
+      <mat-form-field
+        *ngIf="
+          !selectedFields.value.includes(
+            transferLearningSettingsListItem.controls.name.value
+          ) &&
+          modelOfTypeExists(
+            transferLearningSettingsListItem.controls.type.value
+          )
+        ">
+        <mat-label
+          >{{ transferLearningSettingsListItem.controls.name.value }} -
+          {{ transferLearningSettingsListItem.controls.type.value }}
+        </mat-label>
+        <mat-select
+          [formControl]="
+            transferLearningSettingsListItem.controls
+              .selectedTransferLearningModel
+          "
+          [aria-label]="
+            ('organisms.solution_create_form.form_fields.transfer_learning.select.aria_label'
+              | translate) +
+            transferLearningSettingsListItem.controls.name.value
+          ">
+          <mat-option [value]="defaultTransferLearningModel">
+            <span>{{ defaultTransferLearningModel.label }}</span> -
+            <span class="label-small">
+              {{ defaultTransferLearningModel.origin }}
+            </span>
+          </mat-option>
+          <mat-option
+            *ngFor="
+              let model of getModelsByType(
+                transferLearningSettingsListItem.controls.type.value
+              )
+            "
+            [value]="model">
+            <span>{{ model.label }}</span> -
+            <span class="label-small">{{ model.origin }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </div>
+
+  <!-- Submit Button -->
   <div class="button-row">
     <app-new-button
       type="submit"
@@ -105,8 +189,10 @@
       [disabled]="createSolutionForm.invalid"
       [ariaLabel]="
         'organisms.solution_create_form.submit.aria_label' | translate
-      ">
-      {{ 'organisms.solution_create_form.submit.button' | translate }}
-    </app-new-button>
+      "
+      >{{
+        'organisms.solution_create_form.submit.button' | translate
+      }}</app-new-button
+    >
   </div>
 </form>

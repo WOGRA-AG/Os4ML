@@ -2,7 +2,7 @@
   "root": true,
   "ignorePatterns": ["projects/**/*", "build/**", "dist/**", "cypress/**"],
   "extends": ["prettier"],
-  "plugins": ["rxjs-angular"],
+  "plugins": ["rxjs-angular", "@angular-eslint", "@angular-eslint/template"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -11,10 +11,11 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
       ],
       "rules": {
         "max-len": [
@@ -29,7 +30,8 @@
         "no-useless-constructor": "off",
         "@typescript-eslint/no-useless-constructor": "error",
         "no-underscore-dangle": 0,
-        "no-unused-vars": "error",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/explicit-member-accessibility": [
           "error",
           {
@@ -96,8 +98,21 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
+      "parser": "@angular-eslint/template-parser",
+      "excludedFiles": ["*inline-template-*.component.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular"
+          }
+        ]
+      }
     }
   ]
 }
