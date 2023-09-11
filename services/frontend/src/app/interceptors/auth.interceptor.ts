@@ -14,9 +14,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private userService: UserService) {}
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap(httpEvent => {
         if (
