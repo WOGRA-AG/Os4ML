@@ -7,7 +7,7 @@ import { ListItem } from '../models/list-item';
   standalone: true,
 })
 export class GetPredictListItemsFromDatabagPipe implements PipeTransform {
-  private allowedColumnTypes = ['category', 'numerical'];
+  private allowedColumnTypes = ['category', 'numerical', 'binary'];
   transform(databag: Databag | undefined): ListItem[] {
     if (!databag?.columns) {
       return [];
