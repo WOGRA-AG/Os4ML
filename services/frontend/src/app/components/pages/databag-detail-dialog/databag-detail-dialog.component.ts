@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -6,7 +6,6 @@ import {
 } from '@angular/material/dialog';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
-import { Subject, takeUntil } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,6 +16,7 @@ import { MaterialModule } from 'src/app/components/atoms/material/material.modul
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 import { FormsModule } from '@angular/forms';
 import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-header.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-databag-detail-dialog',
@@ -34,11 +34,8 @@ import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-head
     TranslateModule,
   ],
 })
-export class DatabagDetailDialogComponent implements OnDestroy {
+export class DatabagDetailDialogComponent {
   public databag: Databag = {};
-
-  private destroy$: Subject<void> = new Subject<void>();
-
   constructor(
     private dialogRef: MatDialogRef<DatabagDetailDialogComponent, void>,
     private dialog: MatDialog,
@@ -51,18 +48,15 @@ export class DatabagDetailDialogComponent implements OnDestroy {
     this.dialogRef.disableClose = true;
     this.databag = this.data.databag;
   }
-
   onSubmit(): void {
     this.databagService
       .updateDatabagById(this.databag.id, this.databag)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => this.close());
   }
-
   close(): void {
     this.dialogRef.close();
   }
-
   deleteDatabag(databagId: string): void {
     const deleteDatabag = this.databagService.deleteDatabagById(databagId);
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
@@ -75,14 +69,9 @@ export class DatabagDetailDialogComponent implements OnDestroy {
     deleteDialogRef
       .afterClosed()
       .pipe(
-        takeUntil(this.destroy$),
-        filter(confirm => !!confirm)
+        filter(confirm => !!confirm),
+        takeUntilDestroyed()
       )
       .subscribe(() => this.dialogRef.close());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
   }
 }

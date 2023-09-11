@@ -1,10 +1,10 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   Databag,
   Solution,
@@ -18,6 +18,7 @@ import { SolutionCreateFormComponent } from '../../organisms/solution-create-for
 import { Router } from '@angular/router';
 import { LoaderSpinningPlanetComponent } from '../../molecules/loader-spinning-planet/loader-spinning-planet.component';
 import { TransferLearningService } from '../../../services/transfer-learning.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-solution-dialog',
@@ -37,14 +38,11 @@ import { TransferLearningService } from '../../../services/transfer-learning.ser
   ],
   styleUrls: ['./solution-create-dialog.component.scss'],
 })
-export class SolutionCreateDialogComponent implements OnDestroy {
+export class SolutionCreateDialogComponent {
   public databags$: Observable<Databag[]>;
   public transferLearningModels$: Observable<TransferLearningModel[]>;
 
   public submitting = false;
-
-  private destroy$: Subject<void> = new Subject<void>();
-
   constructor(
     private router: Router,
     private solutionService: SolutionService,
@@ -57,12 +55,11 @@ export class SolutionCreateDialogComponent implements OnDestroy {
     this.transferLearningModels$ =
       this.transferLearningService.transferLearningModels$;
   }
-
   submit(newSolution: Solution): void {
     this.submitting = true;
     this.solutionService
-      .createSolutionNew(newSolution)
-      .pipe(takeUntil(this.destroy$))
+      .createSolution(newSolution)
+      .pipe(takeUntilDestroyed())
       .subscribe(solution => {
         this.submitting = false;
         this.dialogRef.close(solution);
@@ -71,13 +68,7 @@ export class SolutionCreateDialogComponent implements OnDestroy {
         });
       });
   }
-
   close(): void {
     this.dialogRef.close();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
   }
 }

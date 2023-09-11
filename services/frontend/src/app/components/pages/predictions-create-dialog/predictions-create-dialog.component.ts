@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   Prediction,
   Solution,
@@ -20,6 +20,7 @@ import {
 import { PredictionService } from '../../../services/prediction.service';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { UploadingFilesComponent } from '../../organisms/uploading-files/uploading-files.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-predictions-create-dialog',
@@ -46,7 +47,6 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public submitting = false;
   public uploadingFileName = '';
   public selectedSolutionId?: string;
-  private destroy$: Subject<void> = new Subject<void>();
   private cancelUpload$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -62,8 +62,6 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
     this.cancelUpload$.next();
     this.cancelUpload$.complete();
   }
@@ -84,7 +82,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   ): void {
     this.predictionService
       .getPredictionTemplateGetUrl(solutionId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();
@@ -143,7 +141,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         prediction,
         this.cancelUpload$
       )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe();
   }
 
@@ -157,7 +155,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         prediction,
         this.cancelUpload$
       )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe();
   }
 }

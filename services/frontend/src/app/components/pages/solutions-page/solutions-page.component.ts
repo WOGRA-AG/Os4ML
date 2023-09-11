@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { first, map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { Component } from '@angular/core';
+import { first, map, Observable, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
@@ -19,6 +19,7 @@ import { DatabagCreateButtonComponent } from '../../organisms/databag-create-but
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-solutions-page',
@@ -40,10 +41,9 @@ import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-st
     MlEntityStatusPlaceholderComponent,
   ],
 })
-export class SolutionsPageComponent implements OnDestroy {
+export class SolutionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
-  private destroy$ = new Subject<void>();
   constructor(
     private databagService: DatabagService,
     private solutionService: SolutionService,
@@ -58,7 +58,6 @@ export class SolutionsPageComponent implements OnDestroy {
       )
     );
   }
-
   public get databagId$(): Observable<string | null> {
     return this.activatedRoute.queryParamMap.pipe(
       map(params => params.get('selectedDatabag'))
@@ -75,13 +74,11 @@ export class SolutionsPageComponent implements OnDestroy {
     this.dialog.open(DatabagsCreateDialogComponent);
   }
   addSolution(): void {
-    this.databagId$
-      .pipe(takeUntil(this.destroy$), first())
-      .subscribe(databagId => {
-        this.dialog.open(SolutionCreateDialogComponent, {
-          data: { databagId },
-        });
+    this.databagId$.pipe(first(), takeUntilDestroyed()).subscribe(databagId => {
+      this.dialog.open(SolutionCreateDialogComponent, {
+        data: { databagId },
       });
+    });
   }
   openSolutionSettingDialog(solution: Solution): void {
     this.dialog.open(SolutionDeteailDialogComponent, {
@@ -97,9 +94,5 @@ export class SolutionsPageComponent implements OnDestroy {
     this.dialog.open(PredictionsCreateDialogComponent, {
       data: { solutionId },
     });
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

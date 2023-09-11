@@ -1,11 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { TransferLearningModelCreateFormComponent } from '../../organisms/transfer-learning-model-create-form/transfer-learning-model-create-form.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionService } from '../../../services/solution.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   NewTransferLearningModelDto,
   Solution,
@@ -14,6 +14,7 @@ import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TransferLearningService } from '../../../services/transfer-learning.service';
 import { SolutionCreateFormComponent } from '../../organisms/solution-create-form/solution-create-form.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-transfer-learning-model-create-dialog',
@@ -29,7 +30,7 @@ import { SolutionCreateFormComponent } from '../../organisms/solution-create-for
   ],
   standalone: true,
 })
-export class TransferLearningModelCreateDialogComponent implements OnDestroy {
+export class TransferLearningModelCreateDialogComponent {
   public solutions$: Observable<Solution[]>;
   public submitting = false;
   private destroy$: Subject<void> = new Subject<void>();
@@ -44,19 +45,15 @@ export class TransferLearningModelCreateDialogComponent implements OnDestroy {
   submit(newTransferLearningModelDto: NewTransferLearningModelDto): void {
     this.submitting = true;
     this.transferLearningService
-      .createSolutionNew(newTransferLearningModelDto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(solution => {
+      .createTransferLearningModel(newTransferLearningModelDto)
+      .pipe(takeUntilDestroyed())
+      .subscribe(transferLearningModel => {
         this.submitting = false;
-        this.dialogRef.close(solution);
+        this.dialogRef.close(transferLearningModel);
         this.router.navigate(['transfer-learning']);
       });
   }
   close(): void {
     this.dialogRef.close();
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
   }
 }
