@@ -1,5 +1,6 @@
 import functools
 import tempfile
+from datetime import datetime
 from typing import List
 
 import pandas as pd
@@ -7,6 +8,7 @@ from kfp.v2.dsl import Dataset, Input
 
 from build.model_manager_client.model.column import Column
 from build.model_manager_client.model.databag import Databag
+from config import DATE_FORMAT_STR
 from load.dataframe import load_dataframe, save_dataframe
 from model_manager.databags import (
     get_databag_by_id,
@@ -43,6 +45,7 @@ def sniffle_dataset(
         databag.number_columns = len(columns)
         databag.columns = columns
         databag.status = StatusMessage.DATABAG_DONE.value
+        databag.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         update_databag(databag)
         upload_dataframe_to_databag(df, databag)
 

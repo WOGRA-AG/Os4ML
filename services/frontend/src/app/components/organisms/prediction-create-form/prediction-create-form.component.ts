@@ -69,6 +69,7 @@ export class PredictionCreateFormComponent implements OnInit {
     '.xlsb',
     '.odf',
     '.ods',
+    '.zip',
   ];
   constructor(private fb: FormBuilder) {
     this.createPredictionForm = this.fb.group(
