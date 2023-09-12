@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -36,6 +36,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class DatabagDetailDialogComponent {
   public databag: Databag = {};
+  private destroyRef = inject(DestroyRef);
   constructor(
     private dialogRef: MatDialogRef<DatabagDetailDialogComponent, void>,
     private dialog: MatDialog,
@@ -51,7 +52,7 @@ export class DatabagDetailDialogComponent {
   onSubmit(): void {
     this.databagService
       .updateDatabagById(this.databag.id, this.databag)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.close());
   }
   close(): void {
@@ -61,8 +62,8 @@ export class DatabagDetailDialogComponent {
     const deleteDatabag = this.databagService.deleteDatabagById(databagId);
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
       data: {
-        titleKey: 'solution.delete.title',
-        messageKey: 'solution.delete.confirmation',
+        titleKey: 'organisms.popup_confirm.delete_databag.title',
+        messageKey: 'organisms.popup_confirm.delete_databag.message',
         onConfirm: deleteDatabag,
       },
     });
@@ -70,7 +71,7 @@ export class DatabagDetailDialogComponent {
       .afterClosed()
       .pipe(
         filter(confirm => !!confirm),
-        takeUntilDestroyed()
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.dialogRef.close());
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { first, map, Observable, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Databag, Solution } from '../../../../../build/openapi/modelmanager';
@@ -44,6 +44,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class SolutionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
     private solutionService: SolutionService,
@@ -74,11 +75,13 @@ export class SolutionsPageComponent {
     this.dialog.open(DatabagsCreateDialogComponent);
   }
   addSolution(): void {
-    this.databagId$.pipe(first(), takeUntilDestroyed()).subscribe(databagId => {
-      this.dialog.open(SolutionCreateDialogComponent, {
-        data: { databagId },
+    this.databagId$
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(databagId => {
+        this.dialog.open(SolutionCreateDialogComponent, {
+          data: { databagId },
+        });
       });
-    });
   }
   openSolutionSettingDialog(solution: Solution): void {
     this.dialog.open(SolutionDeteailDialogComponent, {

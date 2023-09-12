@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -43,6 +43,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class SolutionDeteailDialogComponent {
   public solution: Solution;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private dialogRef: MatDialogRef<SolutionDeteailDialogComponent>,
     private dialog: MatDialog,
@@ -82,8 +83,8 @@ export class SolutionDeteailDialogComponent {
     deleteSolutionRef
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(),
-        filter(confirm => !!confirm)
+        filter(confirm => !!confirm),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.dialogRef.close());
   }
@@ -93,16 +94,16 @@ export class SolutionDeteailDialogComponent {
 
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
       data: {
-        titleKey: 'solution.delete.title',
-        messageKey: 'solution.delete.confirmation',
+        titleKey: 'organisms.popup_confirm.delete_solution.title',
+        messageKey: 'organisms.popup_confirm.delete_solution.message',
         onConfirm: deleteSolution,
       },
     });
     deleteDialogRef
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(),
-        filter(confirm => !!confirm)
+        filter(confirm => !!confirm),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.dialogRef.close());
   }
@@ -117,7 +118,7 @@ export class SolutionDeteailDialogComponent {
   downloadModel(downloadLink: HTMLAnchorElement): void {
     this.solutionService
       .getModelGetUlr(this.solution.id!)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();

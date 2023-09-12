@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
@@ -41,8 +41,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class SolutionCreateDialogComponent {
   public databags$: Observable<Databag[]>;
   public transferLearningModels$: Observable<TransferLearningModel[]>;
-
   public submitting = false;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private router: Router,
     private solutionService: SolutionService,
@@ -59,7 +59,7 @@ export class SolutionCreateDialogComponent {
     this.submitting = true;
     this.solutionService
       .createSolution(newSolution)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(solution => {
         this.submitting = false;
         this.dialogRef.close(solution);

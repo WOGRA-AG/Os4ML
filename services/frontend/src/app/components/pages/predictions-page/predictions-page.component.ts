@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Databag, Prediction, Solution } from 'build/openapi/modelmanager';
@@ -47,6 +47,7 @@ export class PredictionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
   public predictions$: Observable<Prediction[]>;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
     private solutionService: SolutionService,
@@ -91,15 +92,17 @@ export class PredictionsPageComponent {
     this.dialog.open(DatabagsCreateDialogComponent);
   }
   addSolution(): void {
-    this.databagId$.pipe(first(), takeUntilDestroyed()).subscribe(databagId => {
-      this.dialog.open(SolutionCreateDialogComponent, {
-        data: { databagId },
+    this.databagId$
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(databagId => {
+        this.dialog.open(SolutionCreateDialogComponent, {
+          data: { databagId },
+        });
       });
-    });
   }
   addPrediction(): void {
     this.solutionId$
-      .pipe(first(), takeUntilDestroyed())
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
       .subscribe(solutionId => {
         this.dialog.open(PredictionsCreateDialogComponent, {
           data: { solutionId },
@@ -112,7 +115,7 @@ export class PredictionsPageComponent {
   ): void {
     this.predictionService
       .getPredictionResultGetUrl(predictionId)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();
@@ -123,8 +126,8 @@ export class PredictionsPageComponent {
       this.predictionService.deletePredictionById(predictionId);
     this.dialog.open(PopupConfirmComponent, {
       data: {
-        titleKey: 'solution.delete.title',
-        messageKey: 'solution.delete.confirmation',
+        titleKey: 'organisms.popup_confirm.delete_prediction.title',
+        messageKey: 'organisms.popup_confirm.delete_prediction.message',
         onConfirm: deletePrediction,
       },
     });

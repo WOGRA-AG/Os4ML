@@ -38,6 +38,7 @@ import { TransferLearningModelCreateDialogComponent } from '../transfer-learning
 export class TransferLearningPageComponent {
   public databags$: Observable<Databag[]>;
   public transferLearningModels$: Observable<TransferLearningModel[]>;
+
   constructor(
     private databagService: DatabagService,
     private transferLearningService: TransferLearningService,

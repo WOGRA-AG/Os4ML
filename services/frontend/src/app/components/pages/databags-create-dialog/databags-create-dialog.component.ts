@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
   Databag,
@@ -38,6 +38,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   public uploadingFileName = '';
   public databagUploadProgress$: BehaviorSubject<number>;
   private cancelUpload$: Subject<void> = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private router: Router,
@@ -97,7 +98,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
         databag,
         this.cancelUpload$
       )
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
   private createUrlDatabag(
@@ -108,7 +109,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     databag.databagType = DatabagType.FileUrl;
     this.databagService
       .createUrlDatabag(databag, this.cancelUpload$)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 }

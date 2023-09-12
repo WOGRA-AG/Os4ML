@@ -1,4 +1,10 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  Inject,
+  OnDestroy,
+} from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   Prediction,
@@ -48,6 +54,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   public uploadingFileName = '';
   public selectedSolutionId?: string;
   private cancelUpload$: Subject<void> = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private router: Router,
@@ -82,7 +89,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   ): void {
     this.predictionService
       .getPredictionTemplateGetUrl(solutionId)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();
@@ -119,6 +126,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
     };
 
     if (predictionFormOutput.predictionDataFile) {
+      this.uploadingFileName = predictionFormOutput.predictionDataFile.name;
       this.createLocalFilePrediction(predictionFormOutput, prediction);
       return;
     }
@@ -141,7 +149,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         prediction,
         this.cancelUpload$
       )
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 
@@ -155,7 +163,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         prediction,
         this.cancelUpload$
       )
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 }

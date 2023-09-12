@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { TransferLearningModelCreateFormComponent } from '../../organisms/transfer-learning-model-create-form/transfer-learning-model-create-form.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionService } from '../../../services/solution.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   NewTransferLearningModelDto,
   Solution,
@@ -33,7 +33,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class TransferLearningModelCreateDialogComponent {
   public solutions$: Observable<Solution[]>;
   public submitting = false;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   constructor(
     private router: Router,
     private solutionService: SolutionService,
@@ -46,7 +46,7 @@ export class TransferLearningModelCreateDialogComponent {
     this.submitting = true;
     this.transferLearningService
       .createTransferLearningModel(newTransferLearningModelDto)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(transferLearningModel => {
         this.submitting = false;
         this.dialogRef.close(transferLearningModel);
