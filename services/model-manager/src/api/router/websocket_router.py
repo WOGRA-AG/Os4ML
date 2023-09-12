@@ -32,3 +32,14 @@ async def stream_predictions(
     _controller: WebsocketController = Depends(),
 ) -> None:
     await _controller.stream_predictions(websocket, usertoken=usertoken)
+
+
+@router.websocket("/apis/v1beta1/model-manager/transfer-learning-models")
+async def stream_transfer_learning_models(
+    websocket: WebSocket,
+    usertoken: str = Query(None, description=""),
+    _controller: WebsocketController = Depends(),
+) -> None:
+    await _controller.stream_transfer_learning_models(
+        websocket, usertoken=usertoken
+    )
