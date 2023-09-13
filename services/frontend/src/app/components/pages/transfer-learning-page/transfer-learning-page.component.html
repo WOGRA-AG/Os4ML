@@ -1,0 +1,29 @@
+<app-os4ml-default-template data-testid="databag-page">
+  <h1 header class="headline-1 primary-text">
+    {{ 'pages.transfer_learning_page.title' | translate }}
+  </h1>
+  <div main class="actions">
+    <div class="select-section"></div>
+    <div class="button-section">
+      <app-solution-create-button
+        [type]="'text'"
+        [disabled]="!(databags$ | async | hasElements)"
+        (addSolution)="openCreateSolutionDialog()">
+      </app-solution-create-button>
+      <app-transfer-learning-model-create-button
+        [type]="'primary'"
+        (addTransferLearningModel)="openCreateTransferLearningModelDialog()">
+      </app-transfer-learning-model-create-button>
+    </div>
+  </div>
+  <ng-container main>
+    <app-transfer-learning-models-table
+      [transferLearningModels]="(transferLearningModels$ | async) ?? []">
+    </app-transfer-learning-models-table>
+    <app-placeholder
+      [src]="'./assets/illustrations/noTransferLearningModelsPlaceholder.svg'"
+      [title]="'pages.transfer_learning_page.placeholder.title' | translate"
+      *ngIf="!(transferLearningModels$ | async | hasElements)">
+    </app-placeholder>
+  </ng-container>
+</app-os4ml-default-template>

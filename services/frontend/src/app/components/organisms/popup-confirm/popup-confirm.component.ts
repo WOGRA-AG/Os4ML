@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/components/atoms/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,7 +7,8 @@ import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-sp
 import { NgIf } from '@angular/common';
 import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
 import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-header.component';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-popup-confirm',
@@ -24,9 +25,9 @@ import { Observable, Subject, takeUntil } from 'rxjs';
     TranslateModule,
   ],
 })
-export class PopupConfirmComponent implements OnDestroy {
+export class PopupConfirmComponent {
   public submitting = false;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private dialog: MatDialogRef<PopupConfirmComponent, boolean>,
@@ -46,14 +47,11 @@ export class PopupConfirmComponent implements OnDestroy {
 
   submit(): void {
     this.submitting = true;
-    this.data.onConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.submitting = false;
-      this.dialog.close(true);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.data.onConfirm
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.submitting = false;
+        this.dialog.close(true);
+      });
   }
 }

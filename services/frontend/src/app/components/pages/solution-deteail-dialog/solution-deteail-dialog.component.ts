@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Inject } from '@angular/core';
+import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import { SolutionService } from '../../../services/solution.service';
-import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { PopupConfirmComponent } from 'src/app/components/organisms/popup-confirm/popup-confirm.component';
 import { filter } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,6 +20,7 @@ import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-head
 import { MaterialModule } from 'src/app/components/atoms/material/material.module';
 import { IsSolutionDonePipe } from 'src/app/pipes/is-solution-done.pipe';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-solution-setting',
@@ -40,12 +41,9 @@ import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/p
     IsSolutionDonePipe,
   ],
 })
-export class SolutionDeteailDialogComponent implements OnDestroy {
+export class SolutionDeteailDialogComponent {
   public solution: Solution;
-  public deleting = false;
-
-  private destroy$: Subject<void> = new Subject<void>();
-
+  private destroyRef = inject(DestroyRef);
   constructor(
     private dialogRef: MatDialogRef<SolutionDeteailDialogComponent>,
     private dialog: MatDialog,
@@ -58,11 +56,9 @@ export class SolutionDeteailDialogComponent implements OnDestroy {
     this.dialogRef.disableClose = true;
     this.solution = this.data.solution;
   }
-
   close(): void {
     this.dialogRef.close();
   }
-
   update(): void {
     if (!this.solution.id) {
       this.dialogRef.close('aborted');
@@ -70,12 +66,11 @@ export class SolutionDeteailDialogComponent implements OnDestroy {
     }
     this.solutionService
       .updateSolutionById(this.solution.id, this.solution)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.dialogRef.close('updated');
       });
   }
-
   deleteSolution(solutionId: string): void {
     const deleteSolution = this.solutionService.deleteSolutionById(solutionId);
     const deleteSolutionRef = this.dialog.open(PopupConfirmComponent, {
@@ -88,32 +83,30 @@ export class SolutionDeteailDialogComponent implements OnDestroy {
     deleteSolutionRef
       .afterClosed()
       .pipe(
-        takeUntil(this.destroy$),
-        filter(confirm => !!confirm)
+        filter(confirm => !!confirm),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.dialogRef.close());
   }
-
   delete(): void {
     const deleteSolution = (): Promise<void> =>
       firstValueFrom(this.solutionService.deleteSolutionById(this.solution.id));
 
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
       data: {
-        titleKey: 'solution.delete.title',
-        messageKey: 'solution.delete.confirmation',
+        titleKey: 'organisms.popup_confirm.delete_solution.title',
+        messageKey: 'organisms.popup_confirm.delete_solution.message',
         onConfirm: deleteSolution,
       },
     });
     deleteDialogRef
       .afterClosed()
       .pipe(
-        takeUntil(this.destroy$),
-        filter(confirm => !!confirm)
+        filter(confirm => !!confirm),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.dialogRef.close());
   }
-
   createPrediction(): void {
     this.dialog.open(PredictionsCreateDialogComponent, {
       data: {
@@ -122,16 +115,10 @@ export class SolutionDeteailDialogComponent implements OnDestroy {
     });
     this.dialogRef.close();
   }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
-  }
-
   downloadModel(downloadLink: HTMLAnchorElement): void {
     this.solutionService
       .getModelGetUlr(this.solution.id!)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();

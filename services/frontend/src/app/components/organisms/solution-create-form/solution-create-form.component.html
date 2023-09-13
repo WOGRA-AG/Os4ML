@@ -2,7 +2,7 @@
   [formGroup]="createSolutionForm"
   (ngSubmit)="onSubmit()"
   attr.aria-label="{{
-    'organisms.solution.create_form.aria_label' | translate
+    'organisms.solution_create_form.aria_label' | translate
   }}">
   <!-- Name -->
   <mat-form-field>
@@ -159,7 +159,7 @@
             transferLearningSettingsListItem.controls.name.value
           ">
           <mat-option [value]="defaultTransferLearningModel">
-            <span>{{ defaultTransferLearningModel.label }}</span> -
+            <span>{{ defaultTransferLearningModel.name }}</span> -
             <span class="label-small">
               {{ defaultTransferLearningModel.origin }}
             </span>
@@ -171,7 +171,7 @@
               )
             "
             [value]="model">
-            <span>{{ model.label }}</span> -
+            <span>{{ model.name }}</span> -
             <span class="label-small">{{ model.origin }}</span>
           </mat-option>
         </mat-select>

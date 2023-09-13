@@ -13,7 +13,7 @@
   <app-prediction-create-form
     *ngIf="(solutions$ | async) && !submitting"
     [solutions]="(solutions$ | async) ?? []"
-    [selectedSolutionId]="data.solutionId"
+    [selectedSolutionId]="data?.solutionId"
     (downloadPredictionTemplate)="
       downloadPredictionTemplate(downloadPredictionTemplateAnker, $event)
     "
