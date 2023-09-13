@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first, Observable, of, switchMap } from 'rxjs';
 import {
   ModelmanagerService,
+  NewTransferLearningModelDto,
   TransferLearningModel,
 } from '../../../build/openapi/modelmanager';
 import { UserService } from './user.service';
@@ -30,31 +31,55 @@ export class TransferLearningService {
   get transferLearningModels$(): Observable<TransferLearningModel[]> {
     return this._transferLearningModelsSubject$.asObservable();
   }
+  createTransferLearningModel(
+    newTransferLearningModelDto: NewTransferLearningModelDto
+  ): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.createNewTransferLearningModelFromSolution(
+          token,
+          newTransferLearningModelDto
+        )
+      )
+    );
+  }
   mockTransferLearningModels(): Observable<TransferLearningModel[]> {
     return of([
       {
         type: 'text',
-        label: 'super text',
+        name: 'super text',
         id: 'super-text',
         origin: 'Hugging Face',
       },
       {
+        type: 'text',
+        name: 'super text',
+        id: 'super-text',
+        origin: 'Own OS4ML model',
+      },
+      {
         type: 'category',
-        label: 'super category',
+        name: 'super category',
         id: 'super-category',
         origin: 'Hugging Face',
       },
       {
         type: 'category',
-        label: 'mega category',
+        name: 'mega category',
         id: 'mega-category',
         origin: 'Hugging Face',
       },
       {
         type: 'category',
-        label: 'super duper category',
+        name: 'super duper category',
         id: 'super-duper-category',
         origin: 'Hugging Face',
+      },
+      {
+        type: 'category',
+        name: 'super text',
+        id: 'super-text',
+        origin: 'Own OS4ML model',
       },
     ]);
   }

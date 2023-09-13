@@ -1,0 +1,110 @@
+<form
+  [formGroup]="createTransferLearningModelForm"
+  (ngSubmit)="onSubmit()"
+  attr.aria-label="{{
+    'organisms.transfer_learning_model_create_form.aria_label' | translate
+  }}">
+  <!-- Name -->
+  <mat-form-field>
+    <mat-label>{{
+      'organisms.transfer_learning_model_create_form.form_fields.name.label'
+        | translate
+    }}</mat-label>
+    <input
+      matInput
+      formControlName="name"
+      data-testid="input-name"
+      attr.aria-label="{{
+        'organisms.transfer_learning_model_create_form.form_fields.name.aria_label'
+          | translate
+      }}" />
+    <mat-error *ngIf="name.invalid && name.touched">{{
+      'organisms.transfer_learning_model_create_form.form_fields.name.error'
+        | translate
+    }}</mat-error>
+    <mat-hint class="on-surface-text">{{
+      'organisms.transfer_learning_model_create_form.form_fields.name.hint'
+        | translate
+    }}</mat-hint>
+  </mat-form-field>
+
+  <!-- Solution select -->
+  <mat-form-field>
+    <mat-label>{{
+      'organisms.transfer_learning_model_create_form.form_fields.solution_id.label'
+        | translate
+        | translate
+    }}</mat-label>
+    <mat-select
+      data-testid="input-databagId"
+      formControlName="solutionId"
+      [aria-label]="
+        'organisms.transfer_learning_model_create_form.form_fields.solution_id.aria_label'
+          | translate
+      ">
+      <mat-option *ngFor="let solution of solutions" [value]="solution.id">{{
+        solution.name
+      }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="solutionId.invalid && solutionId.touched">{{
+      'organisms.transfer_learning_model_create_form.form_fields.solution_id.error'
+        | translate
+    }}</mat-error>
+    <mat-hint class="on-surface-text">{{
+      'organisms.transfer_learning_model_create_form.form_fields.solution_id.hint'
+        | translate
+    }}</mat-hint>
+  </mat-form-field>
+
+  <!-- Output select -->
+  <mat-form-field>
+    <mat-label>{{
+      'organisms.transfer_learning_model_create_form.form_fields.selected_solution_input.label'
+        | translate
+    }}</mat-label>
+    <mat-select
+      data-testid="input-selected-fields"
+      formControlName="selectedSolutionInput"
+      [aria-label]="
+        'organisms.transfer_learning_model_create_form.form_fields.selected_solution_input.aria_label'
+          | translate
+      ">
+      <ng-container *ngIf="solutionId.value | getSolutionById as solution">
+        <mat-option
+          *ngFor="let solutionInputField of solution.inputFields"
+          [value]="solutionInputField">
+          <span class="label-small">{{ solutionInputField }}</span>
+        </mat-option>
+      </ng-container>
+    </mat-select>
+    <mat-error
+      *ngIf="selectedSolutionInput.invalid && selectedSolutionInput.touched"
+      >{{ '' | translate }}</mat-error
+    >
+    <mat-hint *ngIf="!solutionId.value" class="on-surface-text">{{
+      'organisms.transfer_learning_model_create_form.form_fields.selected_solution_input.help_message'
+        | translate
+    }}</mat-hint>
+    <mat-hint *ngIf="solutionId.value" class="on-surface-text">{{
+      'organisms.transfer_learning_model_create_form.form_fields.selected_solution_input.hint'
+        | translate
+    }}</mat-hint>
+  </mat-form-field>
+  <div class="button-row">
+    <app-new-button
+      type="submit"
+      variant="primary"
+      size="medium"
+      data-testid="submit-solution"
+      [disabled]="createTransferLearningModelForm.invalid"
+      [ariaLabel]="
+        'organisms.transfer_learning_model_create_form.submit.aria_label'
+          | translate
+      "
+      >{{
+        'organisms.transfer_learning_model_create_form.submit.button'
+          | translate
+      }}</app-new-button
+    >
+  </div>
+</form>

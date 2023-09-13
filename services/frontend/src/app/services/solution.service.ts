@@ -68,8 +68,7 @@ export class SolutionService {
       map(predictions => predictions.sort(sortByCreationTime))
     );
   }
-
-  createSolutionNew(solution: Solution): Observable<Solution> {
+  createSolution(solution: Solution): Observable<Solution> {
     const solutionDTO: Solution = {
       status: SolutionStatus.created,
       name: solution.name,
@@ -94,29 +93,6 @@ export class SolutionService {
       )
     );
   }
-
-  createSolution(solution: Solution, databag: Databag): Observable<Solution> {
-    solution.status = SolutionStatus.created;
-    solution.databagId = databag.id;
-    if (!solution.inputFields || solution.inputFields.length <= 0) {
-      solution.inputFields = this.getInputFields(solution, databag);
-    }
-    return this.userService.currentToken$.pipe(
-      switchMap(token =>
-        this.modelManager
-          .createSolution(token, solution)
-          .pipe(
-            switchMap(createdSolution =>
-              this.modelManager.startSolutionPipeline(
-                createdSolution.id!,
-                token
-              )
-            )
-          )
-      )
-    );
-  }
-
   getSolutionById(id: string): Solution | undefined {
     const solutions = this._solutionsSubject$.getValue();
     if (!solutions) {
