@@ -1,4 +1,21 @@
-<app-icon-button
-  (click)="themeService.toggleTheme()"
-  *ngIf="icon$ | async as icon"
-  [icon]="icon"></app-icon-button>
+<app-new-button
+  *ngIf="theme$ | async as theme"
+  data-testid="activate-darkmode"
+  type="button"
+  variant="secondary"
+  size="small"
+  [icon]="theme === 'dark' ? 'light_mode' : 'dark_mode'"
+  [ariaLabel]="
+    (theme === 'dark'
+      ? 'organisms.theme-toggle.activate-light-mode'
+      : 'organisms.theme-toggle.activate-dark-mode'
+    ) | translate
+  "
+  (click)="themeService.toggleTheme()">
+  <span *ngIf="theme === 'dark'">
+    {{ 'organisms.theme-toggle.activate-light-mode' | translate }}
+  </span>
+  <span *ngIf="theme === 'light'">
+    {{ 'organisms.theme-toggle.activate-dark-mode' | translate }}
+  </span>
+</app-new-button>

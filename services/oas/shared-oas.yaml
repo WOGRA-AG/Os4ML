@@ -143,7 +143,7 @@ components:
         id:
           $ref: '#/components/schemas/TransferLearningModelId'
           nullable: true
-        label:
+        name:
           type: string
         type:
           type: string
@@ -203,6 +203,18 @@ components:
           type: string
         selectedTransferLearningModel:
           $ref: '#/components/schemas/TransferLearningModel'
+    NewTransferLearningModelDto:
+      required:
+        - name
+        - solutionId
+        - selectedSolutionInput
+      properties:
+        name:
+          type: string
+        solutionId:
+          type: string
+        selectedSolutionInput:
+          type: string
     JsonResponse:
       properties:
         jsonContent:

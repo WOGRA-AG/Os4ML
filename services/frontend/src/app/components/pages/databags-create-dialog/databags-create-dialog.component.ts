@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Component, DestroyRef, inject, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import {
   Databag,
   DatabagType,
@@ -16,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { UploadingFilesComponent } from '../../organisms/uploading-files/uploading-files.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-databags-create-dialog',
@@ -36,8 +37,8 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   public submitting = false;
   public uploadingFileName = '';
   public databagUploadProgress$: BehaviorSubject<number>;
-  private destroy$: Subject<void> = new Subject<void>();
   private cancelUpload$: Subject<void> = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private router: Router,
@@ -61,8 +62,6 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(undefined);
-    this.destroy$.complete();
     this.cancelUpload$.next();
     this.cancelUpload$.complete();
   }
@@ -99,7 +98,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
         databag,
         this.cancelUpload$
       )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
   private createUrlDatabag(
@@ -110,7 +109,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     databag.databagType = DatabagType.FileUrl;
     this.databagService
       .createUrlDatabag(databag, this.cancelUpload$)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 }
