@@ -72,6 +72,7 @@ export class SolutionCreateFormComponent implements OnInit {
     id: 'default-model',
     type: 'Default',
     origin: 'OS4ML',
+    value: 'default-value',
   };
   constructor(
     private databagService: DatabagService,
