@@ -408,7 +408,7 @@ paths:
   "/apis/v1beta1/model-manager/transfer-tearning-models":
     get:
       summary: "get transfer learning models"
-      operationId: getTransferLearningModel
+      operationId: getTransferLearningModels
       tags:
         - modelmanager
       parameters:
@@ -428,6 +428,19 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/TransferLearningModel'
+
+  "/apis/v1beta1/model-manager/transfer-tearning-models/{transferLearningModelId}":
+    delete:
+      summary: "delete transfer learning model by id"
+      operationId: deleteTransferLearningModelById
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
 
 components:
   schemas:
@@ -470,6 +483,13 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/PredictionId'
+    TransferLearningModelId:
+      name: transferLearningModelId
+      in: path
+      description: Id of the TransferLearningModel
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/TransferLearningModelId'
     SolverName:
       name: solverName
       in: path

@@ -139,6 +139,9 @@ components:
           $ref: '#/components/schemas/Url'
           nullable: true
     TransferLearningModel:
+      required:
+        - name
+        - type
       properties:
         id:
           $ref: '#/components/schemas/TransferLearningModelId'
@@ -148,6 +151,8 @@ components:
         type:
           type: string
         origin:
+          type: string
+        value:
           type: string
     PipelineStep:
       type: string
