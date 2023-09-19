@@ -1,0 +1,32 @@
+:host {
+  width: 100%;
+}
+
+.actions {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .select-section,
+  .button-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.main-grid {
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr ;
+  gap: 3rem;
+
+  .left-row,
+  .right-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+}

@@ -1,0 +1,13 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .list-section {
+    display: flex;
+
+    .list {
+      flex: 1;
+    }
+  }
+}

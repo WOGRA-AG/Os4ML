@@ -5,6 +5,7 @@ button {
   justify-content: center;
   border-width: 0;
   box-shadow: none;
+  transition: filter 0.3s ease;
 
   mat-icon {
     height: auto;
@@ -17,6 +18,7 @@ button {
 
   &:hover {
     cursor: pointer;
+    filter: brightness(95%);
   }
 
   &:disabled {
@@ -60,9 +62,6 @@ button {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
 
-    &:hover {
-      background-color: #2399d3;
-    }
     &:disabled {
       background-color: var(--md-sys-color-on-surface);
       color: var(--md-sys-color-neutral);
@@ -78,9 +77,6 @@ button {
     border: solid var(--md-sys-color-primary);
     box-shadow: none;
 
-    &:hover {
-      background-color: #e6f5fb;
-    }
     &:disabled {
       color: var(--md-sys-color-neutral);
       border-color: var(--md-sys-color-on-surface);
@@ -93,12 +89,20 @@ button {
     background-color: transparent;
     border-radius: 0.3125rem;
 
-    &:hover {
-      background-color: #e6f5fb;
-    }
     &:disabled {
       color: var(--md-sys-color-neutral);
       border-color: var(--md-sys-color-on-surface);
+      opacity: 22%;
+    }
+  }
+
+  &.warn {
+    background-color: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-primary);
+
+    &:disabled {
+      background-color: var(--md-sys-color-error);
+      color: var(--md-sys-color-on-primary);
       opacity: 22%;
     }
   }

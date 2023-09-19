@@ -12,6 +12,13 @@ export const ROUTES: Routes = [
             './components/pages/solutions-page/solutions-page.component'
           ).then(mod => mod.SolutionsPageComponent),
       },
+      {
+        path: 'detail',
+        loadComponent: () =>
+          import(
+            './components/pages/solution-detail-page/solution-detail-page.component'
+          ).then(mod => mod.SolutionDetailPageComponent),
+      },
     ],
   },
   {
