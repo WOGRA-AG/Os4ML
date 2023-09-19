@@ -2,24 +2,16 @@ import { Component } from '@angular/core';
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { Os4mlDefaultTemplateComponent } from '../../templates/os4ml-default-template/os4ml-default-template.component';
 import { Solution } from '../../../../../build/openapi/modelmanager';
-import {AsyncPipe, JsonPipe, NgForOf, NgIf} from '@angular/common';
+import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { SolutionDetailInputComponent } from '../../organisms/solution-detail-input/solution-detail-input.component';
-import {SolutionDetailOutputComponent} from "../../organisms/solution-detail-output/solution-detail-output.component";
-import {HasElementsPipe} from "../../../pipes/has-elements.pipe";
-import {
-  PredictionCreateButtonComponent
-} from "../../organisms/prediction-create-button/prediction-create-button.component";
-import {SolutionCreateButtonComponent} from "../../organisms/solution-create-button/solution-create-button.component";
-import {
-  SolutionDetailDependenciesComponent
-} from "../../organisms/solution-detail-dependencies/solution-detail-dependencies.component";
-import {
-  SolutionDetailDowloadModelComponent
-} from "../../organisms/solution-detail-dowload-model/solution-detail-dowload-model.component";
-import {
-  SolutionDetailDeleteSolutionComponent
-} from "../../organisms/solution-detail-delete-solution/solution-detail-delete-solution.component";
-import {MatIconModule} from "@angular/material/icon";
+import { SolutionDetailOutputComponent } from '../../organisms/solution-detail-output/solution-detail-output.component';
+import { HasElementsPipe } from '../../../pipes/has-elements.pipe';
+import { PredictionCreateButtonComponent } from '../../organisms/prediction-create-button/prediction-create-button.component';
+import { SolutionCreateButtonComponent } from '../../organisms/solution-create-button/solution-create-button.component';
+import { SolutionDetailDependenciesComponent } from '../../organisms/solution-detail-dependencies/solution-detail-dependencies.component';
+import { SolutionDetailDowloadModelComponent } from '../../organisms/solution-detail-dowload-model/solution-detail-dowload-model.component';
+import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-detail-delete-solution/solution-detail-delete-solution.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-solution-detail-page',
@@ -45,7 +37,7 @@ import {MatIconModule} from "@angular/material/icon";
   ],
 })
 export class SolutionDetailPageComponent {
-  public mockPredictions  = [
+  public mockPredictions = [
     'mockPrediction',
     'mockPrediction',
     'mockPrediction',

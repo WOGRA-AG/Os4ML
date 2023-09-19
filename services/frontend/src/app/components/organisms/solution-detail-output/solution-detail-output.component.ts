@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Metric } from '../../../../../build/openapi/modelmanager';
 import { MatTableModule } from '@angular/material/table';
-import {StarRatingComponent} from "../../molecules/star-rating/star-rating.component";
+import { StarRatingComponent } from '../../molecules/star-rating/star-rating.component';
 
 @Component({
   selector: 'app-solution-detail-output',

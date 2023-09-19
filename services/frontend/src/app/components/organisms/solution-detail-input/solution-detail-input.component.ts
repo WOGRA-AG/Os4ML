@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { TransferLearningSetting } from '../../../../../build/openapi/modelmanager';
 import { MatTableModule } from '@angular/material/table';
-import { CdkTableModule  } from '@angular/cdk/table';
+import { CdkTableModule } from '@angular/cdk/table';
 import { TranslateModule } from '@ngx-translate/core';
-import {JsonPipe, NgForOf} from "@angular/common";
-import {RouterLink} from "@angular/router";
+import { JsonPipe, NgForOf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-solution-detail-input',
