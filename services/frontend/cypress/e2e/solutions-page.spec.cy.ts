@@ -56,13 +56,17 @@ describe('Solutions Page', () => {
   it('change Solution name', () => {
     cy.get('[data-testid="solution-item"]')
       .filter(`:contains("${solutionName}")`)
-      .find('[data-testid="solution-settings-button"]')
+      .find('[data-testid="solution-detail-button"]')
       .click();
-    cy.get('#mat-input-0').clear({ timeout: inputTimeout });
-    cy.get('#mat-input-0').type(updatedSolutionName, {
-      timeout: inputTimeout,
-    });
-    cy.get('[data-testid="solution-update-button"]').click();
+    cy.url().should('include', '/solutions/detail');
+    cy.get('[data-testid="solution-detail-page"]').should('be.visible');
+    cy.get('[data-testid="solution-rename-button"]').click();
+
+    cy.get('[data-testid="popup-input-field"]').focus().clear();
+    cy.get('[data-testid="popup-input-field"]', { timeout: 500 }).type(updatedSolutionName);
+    cy.get('[data-testid="popup-input-submit"]').click();
+    cy.go('back');
+
     cy.get('[data-testid="solution-item"]')
       .filter(`:contains("${updatedSolutionName}")`)
       .should('exist');

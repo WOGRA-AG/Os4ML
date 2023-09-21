@@ -40,9 +40,9 @@ export function createSolution(solutionName: string, databagName: string) {
 export function deleteSolution(solutionName: string) {
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
-    .find('[data-testid="solution-settings-button"]')
+    .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 }).click();
+  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 }).scrollIntoView().click();
   cy.get('[data-testid="confirm-popup-button"]', { timeout: 500 }).click();
 }
 export function createPrediction(

@@ -1,7 +1,7 @@
 <app-os4ml-dialog-template>
   <ng-container header>
     <h1 header role="header" class="headline-medium primary-text">
-      Update Solution Name
+      {{ data.titleKey | translate }}
     </h1>
     <app-icon-button
       data-testid="close-button"
@@ -14,7 +14,7 @@
     main
     [formGroup]="inputForm"
     (ngSubmit)="submit()"
-    attr.aria-label="{{ data.titleKey | translate }}">
+    attr.aria-label="{{ data.ariaLabelKey | translate }}">
     <mat-form-field>
       <mat-label>
         {{ data.inputFormField.label | translate }}
@@ -22,7 +22,7 @@
       <input
         matInput
         formControlName="inputValue"
-        data-testid="input-name"
+        data-testid="popup-input-field"
         attr.aria-label="{{ data.inputFormField.ariaLabel | translate }}" />
       <mat-error *ngIf="inputValue?.invalid && inputValue?.touched">
         {{ data.inputFormField.errorRequired | translate }}
@@ -36,7 +36,7 @@
         type="submit"
         variant="primary"
         size="medium"
-        data-testid="submit-databag"
+        data-testid="popup-input-submit"
         [disabled]="inputForm.invalid"
         [ariaLabel]="data.submit.aria_label | translate">
         {{ data.submit.button_text | translate }}

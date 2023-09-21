@@ -1,9 +1,11 @@
 <app-os4ml-default-template
+  data-testid="solution-detail-page"
   [mainSmall]="true"
   *ngIf="solution$ | async as solution">
   <h1 header class="headline-large primary-text">
     Solution: {{ solution.name }}
     <app-new-button
+      data-testid="solution-rename-button"
       (click)="renameSolution(solution.name ?? '')"
       variant="text"
       size="medium"
