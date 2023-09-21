@@ -218,7 +218,7 @@
     },
     "solution-detail-delete-solution": {
       "title": "Delete solution",
-      "description":  "If you delete the current solution, all associated predictions and transferlearning models will be emoved. This step is irrevocable.",
+      "description": "If you delete the current solution, all associated predictions and transferlearning models will be emoved. This step is irrevocable.",
       "button": "Delete Solution"
     },
     "prediction_create_button.label": "Create Prediction",
