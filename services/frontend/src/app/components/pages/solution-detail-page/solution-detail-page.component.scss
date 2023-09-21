@@ -18,15 +18,8 @@
 }
 
 .main-grid {
-  max-width: 1200px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
-
-  .left-row,
-  .right-row {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
+  padding-bottom: 5rem;
 }

@@ -13,7 +13,7 @@ export const ROUTES: Routes = [
           ).then(mod => mod.SolutionsPageComponent),
       },
       {
-        path: 'detail',
+        path: 'detail/:id',
         loadComponent: () =>
           import(
             './components/pages/solution-detail-page/solution-detail-page.component'

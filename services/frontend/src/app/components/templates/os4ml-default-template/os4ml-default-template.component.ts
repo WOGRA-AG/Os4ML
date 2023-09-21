@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-os4ml-default-template',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./os4ml-default-template.component.scss'],
   standalone: true,
 })
-export class Os4mlDefaultTemplateComponent {}
+export class Os4mlDefaultTemplateComponent {
+  @Input() public mainSmall = false;
+}

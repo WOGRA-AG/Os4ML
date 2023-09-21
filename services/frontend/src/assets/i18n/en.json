@@ -33,6 +33,22 @@
         "message": "Are you sure you want to delete this prediction? All data will be lost!"
       }
     },
+    "popup_input": {
+      "rename_solution": {
+        "title": "Update Solution Name",
+        "aria_label": "Update Solution Name",
+        "input_form_field": {
+          "label": "New name",
+          "aria-label": "New name",
+          "error_required": "Field cannot be empty",
+          "hint": "Choose a meaningful name when replacing an existing solution."
+        },
+        "submit": {
+          "aria_label": "Change solution name",
+          "button_text": "Change solution name"
+        }
+      }
+    },
     "theme-toggle": {
       "activate-light-mode": "Light mode",
       "activate-dark-mode": "Dark mode"

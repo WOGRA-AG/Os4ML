@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,4 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [NewButtonComponent, NgIf, TranslateModule],
 })
-export class SolutionDetailDowloadModelComponent {}
+export class SolutionDetailDowloadModelComponent {
+  @Output() public downloadModel = new EventEmitter<void>();
+  @Input() public disabled = true;
+}

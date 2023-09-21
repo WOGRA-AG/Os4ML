@@ -5,7 +5,7 @@
     learning models will be removed. This step is irrevocable.
   </div>
   <app-new-button
-    data-testid="add-databag"
+    (click)="deleteSolution.emit()"
     [variant]="'warn'"
     [size]="'medium'"
     [icon]="'delete'"

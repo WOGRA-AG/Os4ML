@@ -7,8 +7,9 @@
     from the insights and capabilities it offers.
   </div>
   <app-new-button
-    data-testid="add-databag"
-    [variant]="'primary'"
+    (click)="downloadModel.emit()"
+    [disabled]="disabled"
+    [variant]="'secondary'"
     [size]="'medium'"
     [icon]="'download'"
     [ariaLabel]="'organisms.databag_create_button.label' | translate">

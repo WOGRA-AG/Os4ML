@@ -1,0 +1,12 @@
+<h2 class="headline-medium primary-text">Pipeline status</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    The pipeline status indicates the progress of your solution's processing.
+    Once the pipeline is done, you can download your AI model, make predictions,
+    and create transfer learning models based on this solution.
+  </div>
+  <app-processing-status-indicator
+    data-testid="solution-status-indicator"
+    [shortStatus]="status | shortStatus">
+  </app-processing-status-indicator>
+</div>
