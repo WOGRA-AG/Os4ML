@@ -42,7 +42,9 @@ export function deleteSolution(solutionName: string) {
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 }).scrollIntoView().click();
+  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 })
+    .scrollIntoView()
+    .click();
   cy.get('[data-testid="confirm-popup-button"]', { timeout: 500 }).click();
 }
 export function createPrediction(

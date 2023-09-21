@@ -63,7 +63,9 @@ describe('Solutions Page', () => {
     cy.get('[data-testid="solution-rename-button"]').click();
 
     cy.get('[data-testid="popup-input-field"]').focus().clear();
-    cy.get('[data-testid="popup-input-field"]', { timeout: 500 }).type(updatedSolutionName);
+    cy.get('[data-testid="popup-input-field"]', { timeout: 500 }).type(
+      updatedSolutionName
+    );
     cy.get('[data-testid="popup-input-submit"]').click();
     cy.go('back');
 
