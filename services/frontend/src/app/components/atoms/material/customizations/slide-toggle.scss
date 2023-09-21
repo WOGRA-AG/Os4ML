@@ -1,0 +1,67 @@
+@use 'sass:map';
+@use 'node_modules/@angular/material/index' as mat;
+
+@mixin color($theme) {
+  $primary-palette: map.get($theme, 'primary');
+  $background: mat.get-color-from-palette($primary-palette, A100);
+
+  //Toggle color default
+  .mat-mdc-slide-toggle {
+    --mdc-switch-unselected-hover-handle-color: var(--md-sys-color-primary);
+    --mdc-switch-unselected-focus-handle-color: var(--md-sys-color-on-surface);
+    --mdc-switch-unselected-handle-color: var(--md-sys-color-on-surface);
+  }
+
+  //Display icons on slide toggle
+  .mdc-switch__icons {
+    display: none;
+  }
+
+  //Handle color
+  .mdc-switch__handle {
+    background: var(--md-sys-color-primary) !important;
+  }
+
+  //Track color deault
+  .mdc-switch__track {
+    background: var(--md-sys-color-on-surface) !important;
+    opacity: 0.4;
+  }
+
+  //Track color after disabled
+  .mdc-switch:enabled .mdc-switch__track::before {
+    background: var(--md-sys-color-on-surface) !important;
+    opacity: 0.2;
+  }
+
+  //Track color after activated
+  .mdc-switch:enabled .mdc-switch__track::after {
+    background: var(--md-sys-color-primary) !important;
+  }
+
+  //Color while active
+  .mat-mdc-slide-toggle.mat-accent {
+    --mdc-switch-selected-handle-color: var(--md-sys-color-primary);
+    --mdc-switch-selected-hover-state-layer-color: var(--md-sys-color-primary);
+    --mdc-switch-selected-pressed-state-layer-color: var(
+      --md-sys-color-primary
+    );
+    --mdc-switch-selected-focus-handle-color: var(--md-sys-color-primary);
+    --mdc-switch-selected-hover-handle-color: var(--md-sys-color-primary);
+    --mdc-switch-selected-pressed-handle-color: var(--md-sys-color-primary);
+    --mdc-switch-selected-focus-track-color: var(
+      --md-sys-color-primary-container
+    );
+    --mdc-switch-selected-hover-track-color: var(
+      --md-sys-color-primary-container
+    );
+    --mdc-switch-selected-pressed-track-color: var(
+      --md-sys-color-primary-container
+    );
+    --mdc-switch-selected-track-color: var(--md-sys-color-primary-container);
+  }
+}
+
+@mixin theme($theme) {
+  @include color($theme);
+}

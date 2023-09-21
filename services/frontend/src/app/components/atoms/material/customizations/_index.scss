@@ -9,6 +9,7 @@
 @use 'list' as list;
 @use 'table' as table;
 @use 'chips' as chips;
+@use 'slide-toggle' as slide-toggle;
 @use 'stepper' as stepper;
 @use 'form-field' as form-field;
 @use 'progress-bar' as progress-bar;
@@ -26,5 +27,6 @@
   @include list.theme($theme, red);
   @include table.theme($theme, red);
   @include chips.theme($theme);
+  @include slide-toggle.theme($theme);
   @include progress-bar.theme($theme);
 }

@@ -101,20 +101,9 @@
       'organisms.solution_create_form.form_fields.transfer_learning.toggle.aria_label'
         | translate
     ">
-    <span
-      *ngIf="!transferLearningSettingsActive"
-      class="title-small primary-text on-surface-text pl-1"
-      [class.on-surface-text]="!selectedDatabagId">
+    <span class="title-small primary-text pl-1">
       {{
-        'organisms.solution_create_form.form_fields.transfer_learning.toggle.activate'
-          | translate
-      }}
-    </span>
-    <span
-      *ngIf="transferLearningSettingsActive"
-      class="title-small primary-text pl-1">
-      {{
-        'organisms.solution_create_form.form_fields.transfer_learning.toggle.deactivate'
+        'organisms.solution_create_form.form_fields.transfer_learning.toggle.label'
           | translate
       }}
     </span>
