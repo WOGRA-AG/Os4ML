@@ -191,6 +191,36 @@
         "aria_label": "Submit Solution"
       }
     },
+    "solution-detail-pipeline-status": {
+      "title": "Pipeline status",
+      "description": "The pipeline status indicates the progress of your solution's processing. Once the pipeline is done, you can download your AI model, make predictions, and create transfer learning models based on this solution."
+    },
+    "solution-detail-input": {
+      "title": "Initial input settings",
+      "description": "The input settings were defined when the solution was created and cannot be changed afterwards. However, you can always create a new solution with different input settings."
+    },
+    "solution-detail-output": {
+      "title": "Results based on the defined outputs",
+      "description": "Accumulated rating provide an overall view, while individual ratings represent the quality of each individual selected output. The rating reflects the precision of forecasts and illustrates how close our predictions are to actual to the actual results.",
+      "accumulated_rating": "Accumulated rating",
+      "individual_rating": "Individual rating"
+    },
+    "solution-detail-download-model": {
+      "title": "Download KI-Model",
+      "description": "Based on the provided solution, an AI model has been developed and fine-tuned to cater to the specific requirements. This model is now available for download, enabling users to directly implement and benefit from the insights and capabilities it offers.",
+      "button": "Download KI-Model"
+    },
+    "solution-detail-dependencies": {
+      "title": "Solution dependencies",
+      "description": "Based on this solution, the following predictions and transfer learning models were developed.",
+      "predictions_title": "Predictions",
+      "transfer_learning_modelle_title": "Transfer learning modelle"
+    },
+    "solution-detail-delete-solution": {
+      "title": "Delete solution",
+      "description":  "If you delete the current solution, all associated predictions and transferlearning models will be emoved. This step is irrevocable.",
+      "button": "Delete Solution"
+    },
     "prediction_create_button.label": "Create Prediction",
     "prediction_data_table": {
       "column_header": {

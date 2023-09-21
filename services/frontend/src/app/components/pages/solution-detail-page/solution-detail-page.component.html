@@ -34,11 +34,11 @@
       [combined]="solution.metrics?.combined ?? 0"
       [details]="solution.metrics?.details ?? []">
     </app-solution-detail-output>
-    <app-solution-detail-dowload-model
+    <app-solution-detail-download-model
       [disabled]="(solution.status | shortStatus) !== 'Done'"
       (downloadModel)="
         downloadModel(downloadModelLink)
-      "></app-solution-detail-dowload-model>
+      "></app-solution-detail-download-model>
     <a download target="_blank" hidden aria-hidden="true" #downloadModelLink>
     </a>
     <app-solution-detail-dependencies></app-solution-detail-dependencies>

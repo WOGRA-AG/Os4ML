@@ -1,12 +1,17 @@
-<h2 class="headline-medium primary-text">Solution dependencies</h2>
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.solution-detail-dependencies.title' | translate }}
+</h2>
 <div class="content">
   <div class="body-medium on-background-text">
-    Based on this solution, the following predictions and transfer learning
-    models were developed.
+    {{ 'organisms.solution-detail-dependencies.description' | translate }}
   </div>
   <div class="list-section">
     <div class="list">
-      <div class="headline-small primary-text">Predictions</div>
+      <div class="headline-small primary-text">
+        {{
+          'organisms.solution-detail-dependencies.predictions_title' | translate
+        }}
+      </div>
       <ul>
         <li>
           <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
@@ -23,7 +28,12 @@
       </ul>
     </div>
     <div class="list">
-      <div class="headline-small primary-text">Transfer learning modelle</div>
+      <div class="headline-small primary-text">
+        {{
+          'organisms.solution-detail-dependencies.transfer_learning_modelle_title'
+            | translate
+        }}
+      </div>
       <ul>
         <li>
           <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
