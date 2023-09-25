@@ -31,6 +31,18 @@
         </app-side-nav-item>
       </a>
     </ng-container>
+    <ng-container secondary-nav>
+      <a
+        data-testid="transfer-learning-page-link"
+        [routerLink]="['/transfer-learning']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>mediation</mat-icon>
+          <b class="nav-caption">
+            {{ 'root.navigation.transfer-learning' | translate }}
+          </b>
+        </app-side-nav-item>
+      </a>
+    </ng-container>
     <ng-container footer-nav>
       <a
         data-testid="documentation-link"

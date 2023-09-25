@@ -13,7 +13,7 @@
   <app-solution-create-form
     main
     *ngIf="(databags$ | async) && !submitting"
-    [selectedDatabagId]="data.databagId"
+    [selectedDatabagId]="data?.databagId"
     [databags]="(databags$ | async) ?? []"
     [transferLearningModels]="(transferLearningModels$ | async) ?? []"
     (submitSolution)="submit($event)">

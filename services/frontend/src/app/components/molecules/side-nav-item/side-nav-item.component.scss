@@ -19,6 +19,7 @@
 
   &:hover {
     background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
   }
 
   &.is-active {
@@ -33,6 +34,6 @@
   width: 4px;
 
   &.is-active {
-    background: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-primary);
   }
 }

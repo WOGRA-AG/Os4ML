@@ -65,13 +65,13 @@
   </div>
   <app-element-divider></app-element-divider>
   <div class="upload-section">
-    <div class="label-medium primary-text text-align-center">
+    <div class="title-medium primary-text text-align-center">
       {{ 'organisms.prediction_create_form.upload_section.title' | translate }}
     </div>
     <ng-container *ngIf="localFileMode">
       <app-file-dropzone
-        [invalid]="predictionDataFile?.errors?.['invalidFileFormat']"
-        [selectedFileName]="predictionDataFile?.value.name"
+        [invalid]="predictionDataFile.errors?.['invalidFileFormat']"
+        [selectedFileName]="predictionDataFile.value?.name ?? ''"
         (fileDropped)="predictionDataFileSelected($event)">
       </app-file-dropzone>
       <mat-hint
@@ -125,7 +125,7 @@
   </div>
   <div class="button-row">
     <app-new-button
-      [disabled]="!solutionId?.value"
+      [disabled]="solutionId.value === ''"
       (click)="onDownloadPredictionTemplate()"
       variant="secondary"
       size="medium"

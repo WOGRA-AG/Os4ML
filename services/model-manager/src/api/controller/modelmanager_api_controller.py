@@ -1,13 +1,20 @@
 from fastapi import Depends
 
 from build.openapi_server.models.databag import Databag
+from build.openapi_server.models.new_transfer_learning_model_dto import (
+    NewTransferLearningModelDto,
+)
 from build.openapi_server.models.prediction import Prediction
 from build.openapi_server.models.solution import Solution
 from build.openapi_server.models.solver import Solver
+from build.openapi_server.models.transfer_learning_model import (
+    TransferLearningModel,
+)
 from services.databag_service import DatabagService
 from services.prediction_service import PredictionSerivce
 from services.solution_service import SolutionService
 from services.solver_service import SolverService
+from services.transfer_learning_service import TransferLearningService
 
 
 class ModelmanagerApiController:
@@ -17,11 +24,13 @@ class ModelmanagerApiController:
         databag_service: DatabagService = Depends(),
         solution_service: SolutionService = Depends(),
         prediction_service: PredictionSerivce = Depends(),
+        transfer_learning_service: TransferLearningService = Depends(),
     ):
         self.solver_service = solver_service
         self.databag_service = databag_service
         self.solution_service = solution_service
         self.prediction_service = prediction_service
+        self.transfer_learning_service = transfer_learning_service
 
     # ----- solvers -----
     def get_solvers(self, usertoken: str = "") -> list[Solver]:
@@ -211,4 +220,28 @@ class ModelmanagerApiController:
     ) -> str:
         return self.prediction_service.create_prediction_result_put_url(  # type: ignore
             prediction_id, usertoken
+        )
+
+    # ----- predictions -----
+    def get_transfer_learning_models(
+        self, usertoken: str = ""
+    ) -> list[TransferLearningModel]:
+        return self.transfer_learning_service.get_transfer_learning_models(  # type: ignore
+            usertoken
+        )
+
+    def create_new_transfer_learning_model_from_solution(
+        self,
+        new_transfer_learning_model_dto: NewTransferLearningModelDto,
+        usertoken: str = "",
+    ) -> TransferLearningModel:
+        return self.transfer_learning_service.create_new_transfer_learning_model_from_solution(
+            new_transfer_learning_model_dto, usertoken
+        )
+
+    def delete_transfer_learning_model_by_id(
+        self, transfer_learning_model_id: str, usertoken: str = ""
+    ) -> None:
+        return self.transfer_learning_service.delete_transfer_learning_model_by_id(  # type: ignore
+            transfer_learning_model_id, usertoken
         )

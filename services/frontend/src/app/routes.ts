@@ -36,6 +36,14 @@ export const ROUTES: Routes = [
     runGuardsAndResolvers: 'always',
   },
   {
+    path: 'transfer-learning',
+    loadComponent: () =>
+      import(
+        './components/pages/transfer-learning-page/transfer-learning-page.component'
+      ).then(mod => mod.TransferLearningPageComponent),
+    runGuardsAndResolvers: 'always',
+  },
+  {
     path: 'typo',
     loadComponent: () =>
       import(

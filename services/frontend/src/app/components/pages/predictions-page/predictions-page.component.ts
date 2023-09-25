@@ -1,16 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Databag, Prediction, Solution } from 'build/openapi/modelmanager';
-import {
-  Observable,
-  Subject,
-  takeUntil,
-  map,
-  first,
-  combineLatest,
-  switchMap,
-} from 'rxjs';
+import { Observable, map, first, combineLatest, switchMap } from 'rxjs';
 import { PredictionService } from 'src/app/services/prediction.service';
 import { SolutionService } from 'src/app/services/solution.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,6 +21,7 @@ import { DatabagCreateButtonComponent } from '../../organisms/databag-create-but
 import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-predictions-page',
@@ -50,12 +43,11 @@ import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-st
     MlEntityStatusPlaceholderComponent,
   ],
 })
-export class PredictionsPageComponent implements OnDestroy {
+export class PredictionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
   public predictions$: Observable<Prediction[]>;
-  private destroy$ = new Subject<void>();
-
+  private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
     private solutionService: SolutionService,
@@ -72,7 +64,6 @@ export class PredictionsPageComponent implements OnDestroy {
       )
     );
   }
-
   public get databagId$(): Observable<string | null> {
     return this.activatedRoute.queryParamMap.pipe(
       map(params => params.get('selectedDatabag'))
@@ -83,7 +74,6 @@ export class PredictionsPageComponent implements OnDestroy {
       map(params => params.get('selectedSolution'))
     );
   }
-
   onDatabagChanged(databagId: string | null): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -91,7 +81,6 @@ export class PredictionsPageComponent implements OnDestroy {
       queryParamsHandling: 'merge',
     });
   }
-
   onSolutionChanged(solutionId: string | null): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -102,53 +91,45 @@ export class PredictionsPageComponent implements OnDestroy {
   addDatabag(): void {
     this.dialog.open(DatabagsCreateDialogComponent);
   }
-
   addSolution(): void {
     this.databagId$
-      .pipe(takeUntil(this.destroy$), first())
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
       .subscribe(databagId => {
         this.dialog.open(SolutionCreateDialogComponent, {
           data: { databagId },
         });
       });
   }
-
   addPrediction(): void {
     this.solutionId$
-      .pipe(takeUntil(this.destroy$), first())
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
       .subscribe(solutionId => {
         this.dialog.open(PredictionsCreateDialogComponent, {
           data: { solutionId },
         });
       });
   }
-
   downloadPredictionResult(
     predictionId: string,
     downloadLink: HTMLAnchorElement
   ): void {
     this.predictionService
       .getPredictionResultGetUrl(predictionId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
         downloadLink.href = url;
         downloadLink.click();
       });
   }
-
   deletePrediction(predictionId: string): void {
     const deletePrediction =
       this.predictionService.deletePredictionById(predictionId);
     this.dialog.open(PopupConfirmComponent, {
       data: {
-        titleKey: 'solution.delete.title',
-        messageKey: 'solution.delete.confirmation',
+        titleKey: 'organisms.popup_confirm.delete_prediction.title',
+        messageKey: 'organisms.popup_confirm.delete_prediction.message',
         onConfirm: deletePrediction,
       },
     });
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

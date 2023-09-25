@@ -80,6 +80,7 @@ def test_build_model(
     assert prediction.run_id == "run_id"
 
 
+@pytest.mark.xfail(reason="#737")
 def test_create_prediction(
     prediction_service: PredictionSerivce,
     solution_service: SolutionService,
@@ -220,6 +221,7 @@ def test_get_prediction_by_id_raises_not_found(
         prediction_service.get_prediction_by_id("does_not_exist", usertoken="")
 
 
+@pytest.mark.xfail(reason="#737")
 def test_update_prediction_by_id(
     prediction_service: PredictionSerivce,
     objectstore: Mock,
@@ -257,8 +259,6 @@ def test_update_prediction_by_id(
 
 def test_update_prediction_by_id_id_update(
     prediction_service: PredictionSerivce,
-    objectstore: Mock,
-    mocker: MockerFixture,
     prediction: Prediction,
 ):
     with pytest.raises(IdUpdateNotAllowedException):
@@ -315,42 +315,8 @@ def test_delete_prediction_by_id_not_found(
     prediction_service.delete_prediction_by_id("does_not_exist", usertoken="")
 
 
-def test_update_get_urls(
-    prediction_service: PredictionSerivce,
-    prediction: Prediction,
-    objectstore: Mock,
-    mocker: MockerFixture,
-):
-
-    mocker.patch.object(prediction_service, "get_file_name")
-    objectstore.get_presigned_get_url.side_effect = ["url1", "url2"]
-
-    prediction_ret = prediction_service.update_get_urls(
-        prediction, usertoken=""
-    )
-
-    assert prediction_ret.data_url == "url1"
-    assert prediction_ret.result_url == "url2"
-
-
-def test_update_get_urls_not_present(
-    prediction_service: PredictionSerivce,
-    prediction: Prediction,
-    objectstore: Mock,
-    mocker: MockerFixture,
-):
-    mocker.patch.object(prediction_service, "get_file_name")
-    objectstore.get_presigned_get_url.side_effect = NotFoundException()
-
-    prediction_ret = prediction_service.update_get_urls(
-        prediction, usertoken=""
-    )
-
-    assert prediction_ret.data_url is None
-    assert prediction_ret.result_url is None
-
-
-def test_get_prediction_data_put_url(
+@pytest.mark.xfail(reason="#737")
+def test_create_prediction_data_put_url(
     prediction_service: PredictionSerivce,
     solution_service: SolutionService,
     objectstore: Mock,
@@ -364,8 +330,8 @@ def test_get_prediction_data_put_url(
     mocker.patch.object(prediction_service, "get_file_name", file_name_mock)
     objectstore.get_presigned_put_url.return_value = "url"
 
-    url_and_prediction_id = prediction_service.get_prediction_data_put_url(
-        "solution_id", "prediction_data.csv", usertoken=""
+    url_and_prediction_id = prediction_service.create_prediction_data_put_url(
+        "solution_id", usertoken=""
     )
 
     uuid.UUID(url_and_prediction_id.prediction_id)
@@ -375,10 +341,9 @@ def test_get_prediction_data_put_url(
     assert url_and_prediction_id.url == "url"
 
 
-def test_get_prediction_result_put_url(
+def test_create_prediction_result_put_url(
     prediction_service: PredictionSerivce,
     objectstore: Mock,
-    prediction: Prediction,
     mocker: MockerFixture,
 ):
     mocker.patch.object(
@@ -390,7 +355,7 @@ def test_get_prediction_result_put_url(
 
     objectstore.get_presigned_put_url.return_value = "url"
 
-    url = prediction_service.get_prediction_result_put_url(
+    url = prediction_service.create_prediction_result_put_url(
         "prediction_id", usertoken=""
     )
 

@@ -1,9 +1,6 @@
-import base64
-import json
 import logging
 import uuid
 from datetime import datetime
-from io import StringIO
 from typing import AsyncIterable
 
 from fastapi import Depends
@@ -23,6 +20,7 @@ from exceptions import (
     DatasetFileNameNotSpecifiedException,
     DatasetNotFoundException,
 )
+from lib.json_io import decode_json_response, prepare_model_for_api
 from services import (
     DATABAG_CONFIG_FILE_NAME,
     DATABAG_MESSAGE_CHANNEL,
@@ -86,9 +84,7 @@ class DatabagService:
         json_response: JsonResponse = self.objectstore.get_json_object_by_name(
             object_name, usertoken=usertoken
         )
-        json_content_bytes = json_response.json_content.encode()
-        json_str = base64.decodebytes(json_content_bytes)
-        json_dict = json.loads(json_str)
+        json_dict = decode_json_response(json_response)
         return Databag(**json_dict)
 
     def get_databag_by_id(self, databag_id: str, usertoken: str) -> Databag:
@@ -135,9 +131,7 @@ class DatabagService:
         object_name = self._get_databag_object_name(
             databag.id, self.databag_config_file_name
         )
-        json_str = json.dumps(databag.dict())
-        data = StringIO(json_str)
-        data.seek(0)
+        data = prepare_model_for_api(databag)
         self.objectstore.put_object_by_name(
             object_name, body=data, usertoken=usertoken
         )

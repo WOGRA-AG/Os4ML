@@ -1,10 +1,20 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, Observable, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  concatWith,
+  first,
+  Observable,
+  raceWith,
+  switchMap,
+} from 'rxjs';
 import {
   ModelmanagerService,
+  NewTransferLearningModelDto,
   TransferLearningModel,
 } from '../../../build/openapi/modelmanager';
 import { UserService } from './user.service';
+import { WebSocketConnectionService } from './web-socket-connection.service';
+import { transferLearningWebsocketPath } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +25,18 @@ export class TransferLearningService {
   >([]);
   constructor(
     private userService: UserService,
-    private modelManager: ModelmanagerService
+    private modelManager: ModelmanagerService,
+    private webSocketConnectionService: WebSocketConnectionService
   ) {
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
+      transferLearningWebsocketPath
+    );
     this.userService.currentToken$
       .pipe(
-        // switchMap(token => this.modelManager.getTransferLearningModels(token)),
-        switchMap(() => this.mockTransferLearningModels()),
-        first()
+        switchMap(token => this.modelManager.getTransferLearningModels(token)),
+        first(),
+        concatWith(webSocketConnection$),
+        raceWith(webSocketConnection$)
       )
       .subscribe(transferLearningModel =>
         this._transferLearningModelsSubject$.next(transferLearningModel)
@@ -30,32 +45,16 @@ export class TransferLearningService {
   get transferLearningModels$(): Observable<TransferLearningModel[]> {
     return this._transferLearningModelsSubject$.asObservable();
   }
-  mockTransferLearningModels(): Observable<TransferLearningModel[]> {
-    return of([
-      {
-        type: 'text',
-        label: 'super text',
-        id: 'super-text',
-        origin: 'Hugging Face',
-      },
-      {
-        type: 'category',
-        label: 'super category',
-        id: 'super-category',
-        origin: 'Hugging Face',
-      },
-      {
-        type: 'category',
-        label: 'mega category',
-        id: 'mega-category',
-        origin: 'Hugging Face',
-      },
-      {
-        type: 'category',
-        label: 'super duper category',
-        id: 'super-duper-category',
-        origin: 'Hugging Face',
-      },
-    ]);
+  createTransferLearningModel(
+    newTransferLearningModelDto: NewTransferLearningModelDto
+  ): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.createNewTransferLearningModelFromSolution(
+          token,
+          newTransferLearningModelDto
+        )
+      )
+    );
   }
 }

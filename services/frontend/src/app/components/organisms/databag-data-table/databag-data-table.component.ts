@@ -34,7 +34,6 @@ export class DatabagDataTableComponent {
 
   public displayedColumns: string[] = [
     'databagName',
-    'databagType',
     'features',
     'samples',
     'creationTime',

@@ -25,6 +25,9 @@ PREDICTION_RESULT_FILE_NAME = os.getenv(
 PREDICTION_TEMPLATE_FILE_NAME = os.getenv(
     "PREDICTION_TEMPLATE_FILE_NAME", default="prediction_template.csv"
 )
+TRANSFER_LEARNING_FILE_NAME = os.getenv(
+    "TTRANSFER_LEARNING_FILE_NAME", default="transfer_learning.json"
+)
 MODEL_FILE_NAME = "model.os4ml.zip"
 DATAFRAME_FILE_NAME = "dataframe"
 DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"
@@ -39,10 +42,14 @@ SOLUTION_MESSAGE_CHANNEL = os.getenv(
 PREDICTION_MESSAGE_CHANNEL = os.getenv(
     "PREDICTION_MESSAGE_CHANNEL", default="prediction-os4ml"
 )
+TRANSFER_LEARNING_MESSAGE_CHANNEL = os.getenv(
+    "TRANSFER_LEARNING_MESSAGE_CHANNEL", default="transfer-learning-os4ml"
+)
+
 MESSAGE_BROKER_PUBLISH_URL = os.getenv(
     "MESSAGE_BROKER_PUBLISH_URL", default="master.redis.svc.cluster.local"
 )
 MESSAGE_BROKER_SUBSCRIBE_URL = os.getenv(
     "MESSAGE_BROKER_SUBSCRIBE_URL", default="replica.redis.svc.cluster.local"
 )
-MESSAGE_BROKER_PORT = os.getenv("MESSAGE_BROKER_PORT", default=6379)
+MESSAGE_BROKER_PORT = int(os.getenv("MESSAGE_BROKER_PORT", default="6379"))

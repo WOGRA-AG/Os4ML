@@ -12,6 +12,20 @@
     url('/assets/fonts/AvenirLTPro-Black.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Atkinson Bold';
+  src:
+    local('Atkinson Bold'),
+    url('/assets/fonts/Atkinson-Hyperlegible-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Atkinson Regular';
+  src:
+    local('Atkinson Regular'),
+    url('/assets/fonts/Atkinson-Hyperlegible-Regular.ttf') format('truetype');
+}
+
 :root {
   --md-source: #2eaadc;
   /* primary */
@@ -143,7 +157,7 @@
   --md-sys-color-surface-light: #f2fbff; /* General surface color for UI elements such as cards, sheets, menus */
   --md-sys-color-on-surface-light: #666666; /* Color for text and icons on surface color */
 
-  --md-sys-color-surface-variant-light: #ffffff; /* Variant surface color for distinguishing UI elements */
+  --md-sys-color-surface-variant-light: #dadada; /* Variant surface color for distinguishing UI elements */
   --md-sys-color-on-surface-variant-light: #40484d; /* Color for text and icons on surface variant color */
 
   --md-sys-color-outline-light: rgba(
@@ -195,7 +209,7 @@
   --md-sys-color-surface-dark: #001f25; /* General surface color for UI elements such as cards, sheets, menus in dark theme */
   --md-sys-color-on-surface-dark: #a6eeff; /* Color for text and icons on surface color in dark theme */
 
-  --md-sys-color-surface-variant-dark: #40484d; /* Variant surface color for distinguishing UI elements in dark theme */
+  --md-sys-color-surface-variant-dark: #616e76; /* Variant surface color for distinguishing UI elements in dark theme */
   --md-sys-color-on-surface-variant-dark: #c0c7cd; /* Color for text and icons on surface variant color in dark theme */
 
   --md-sys-color-outline-dark: #8a9297; /* Color for outlines and dividers in dark theme */
@@ -291,62 +305,62 @@
     --md-sys-typescale-headline-small-line-height: 2rem;
   }
   /* body - large */
-  --md-sys-typescale-body-large-font-family-name: Avenir Book;
+  --md-sys-typescale-body-large-font-family-name: Atkinson Regular;
   --md-sys-typescale-body-large-font-family-style: normal;
-  --md-sys-typescale-body-large-font-weight: 350;
+  --md-sys-typescale-body-large-font-weight: 400;
   --md-sys-typescale-body-large-font-size: 1rem;
   --md-sys-typescale-body-large-line-height: 1.375rem;
-  --md-sys-typescale-body-large-letter-spacing: 0.03125rem;
+  --md-sys-typescale-body-large-letter-spacing: 0px;
   @media #{$medium-and-up} {
     --md-sys-typescale-body-large-font-size: 1.125rem;
     --md-sys-typescale-body-large-line-height: 1.5rem;
-    --md-sys-typescale-body-large-letter-spacing: 0.03125rem;
+    --md-sys-typescale-body-large-letter-spacing: 0px;
   }
   /* body - medium */
-  --md-sys-typescale-body-medium-font-family-name: Avenir Book;
+  --md-sys-typescale-body-medium-font-family-name: Atkinson Regular;
   --md-sys-typescale-body-medium-font-family-style: normal;
-  --md-sys-typescale-body-medium-font-weight: 350;
+  --md-sys-typescale-body-medium-font-weight: 400;
   --md-sys-typescale-body-medium-font-size: 0.875rem;
   --md-sys-typescale-body-medium-line-height: 1.25rem;
-  --md-sys-typescale-body-medium-letter-spacing: 0.01563rem;
+  --md-sys-typescale-body-medium-letter-spacing: 0px;
   @media #{$medium-and-up} {
     --md-sys-typescale-body-medium-font-size: 1rem;
-    --md-sys-typescale-body-medium-line-height: 1.25rem;
-    --md-sys-typescale-body-medium-letter-spacing: 0.01563rem;
+    --md-sys-typescale-body-medium-line-height: 1.375rem;
+    --md-sys-typescale-body-medium-letter-spacing: 0px;
   }
   /* body - small */
-  --md-sys-typescale-body-small-font-family-name: Avenir Book;
+  --md-sys-typescale-body-small-font-family-name: Atkinson Regular;
   --md-sys-typescale-body-small-font-family-style: normal;
-  --md-sys-typescale-body-small-font-weight: 350;
+  --md-sys-typescale-body-small-font-weight: 400;
   --md-sys-typescale-body-small-font-size: 0.75rem;
-  --md-sys-typescale-body-small-line-height: 1.125rem;
-  --md-sys-typescale-body-small-letter-spacing: 0.01563rem;
+  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-letter-spacing: 0px;
   @media #{$medium-and-up} {
     --md-sys-typescale-body-small-font-size: 0.875rem;
-    --md-sys-typescale-body-small-line-height: 1.125rem;
-    --md-sys-typescale-body-small-letter-spacing: 0.01563rem;
+    --md-sys-typescale-body-small-line-height: 1.25rem;
+    --md-sys-typescale-body-small-letter-spacing: 0px;
   }
   /* label - large */
-  --md-sys-typescale-label-large-font-family-name: Avenir Black;
+  --md-sys-typescale-label-large-font-family-name: Atkinson Bold;
   --md-sys-typescale-label-large-font-family-style: normal;
-  --md-sys-typescale-label-large-font-weight: 900;
+  --md-sys-typescale-label-large-font-weight: 700;
   --md-sys-typescale-label-large-font-size: 1.25rem;
-  --md-sys-typescale-label-large-line-height: 1.5rem;
-  --md-sys-typescale-label-large-letter-spacing: 0.12238rem;
+  --md-sys-typescale-label-large-line-height: 1.75rem;
+  --md-sys-typescale-label-large-letter-spacing: 0.09375rem;
   /* label - medium */
-  --md-sys-typescale-label-medium-font-family-name: Avenir Black;
+  --md-sys-typescale-label-medium-font-family-name: Atkinson Bold;
   --md-sys-typescale-label-medium-font-family-style: normal;
-  --md-sys-typescale-label-medium-font-weight: 900;
+  --md-sys-typescale-label-medium-font-weight: 700;
   --md-sys-typescale-label-medium-font-size: 1.125rem;
   --md-sys-typescale-label-medium-line-height: 1.5rem;
   --md-sys-typescale-label-medium-letter-spacing: 0.07813rem;
   /* label - small */
-  --md-sys-typescale-label-small-font-family-name: Avenir Black;
+  --md-sys-typescale-label-small-font-family-name: Atkinson Bold;
   --md-sys-typescale-label-small-font-family-style: normal;
-  --md-sys-typescale-label-small-font-weight: 900;
-  --md-sys-typescale-label-small-font-size: 0.875rem;
-  --md-sys-typescale-label-small-line-height: 1.25rem;
-  --md-sys-typescale-label-small-letter-spacing: 0.07813rem;
+  --md-sys-typescale-label-small-font-weight: 700;
+  --md-sys-typescale-label-small-font-size: 1rem;
+  --md-sys-typescale-label-small-line-height: 1.375rem;
+  --md-sys-typescale-label-small-letter-spacing: 0.0625rem;
   /* title - large */
   --md-sys-typescale-title-large-font-family-name: Avenir Black;
   --md-sys-typescale-title-large-font-family-style: normal;
