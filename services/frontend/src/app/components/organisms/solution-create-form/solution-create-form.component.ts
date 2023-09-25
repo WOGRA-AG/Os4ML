@@ -186,8 +186,14 @@ export class SolutionCreateFormComponent implements OnInit {
     const selectedNames = this.inputFields.value;
 
     // Entfernen Sie FormGroups, die nicht in selectedNames sind
-    for (let i = this.transferLearningSettingsFormArray.length - 1; i >= 0; i--) {
-      const formGroup = this.transferLearningSettingsFormArray.at(i) as FormGroup;
+    for (
+      let i = this.transferLearningSettingsFormArray.length - 1;
+      i >= 0;
+      i--
+    ) {
+      const formGroup = this.transferLearningSettingsFormArray.at(
+        i
+      ) as FormGroup;
       if (!selectedNames.includes(formGroup.get('name')?.value)) {
         this.transferLearningSettingsFormArray.removeAt(i);
       }
