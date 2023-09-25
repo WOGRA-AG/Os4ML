@@ -55,7 +55,7 @@
   <!-- Output select -->
   <mat-form-field class="prediction-options">
     <mat-label>{{
-      'organisms.solution_create_form.form_fields.selected_fields.label'
+      'organisms.solution_create_form.form_fields.output_select.label'
         | translate
     }}</mat-label>
     <mat-select
@@ -66,7 +66,7 @@
         updateTransferLearningSettings(); updateAvailableDatabagInputColumns()
       "
       [aria-label]="
-        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
+        'organisms.solution_create_form.form_fields.output_select.aria_label'
           | translate
       ">
       <mat-option
@@ -77,15 +77,15 @@
       </mat-option>
     </mat-select>
     <mat-error *ngIf="outputFields.invalid && outputFields.touched">{{
-      'organisms.solution_create_form.form_fields.selected_fields.error'
+      'organisms.solution_create_form.form_fields.output_select.error'
         | translate
     }}</mat-error>
     <mat-hint *ngIf="!databagId.value" class="on-surface-text">{{
-      'organisms.solution_create_form.form_fields.selected_fields.help_message'
+      'organisms.solution_create_form.form_fields.output_select.help_message'
         | translate
     }}</mat-hint>
     <mat-hint *ngIf="databagId.value" class="on-surface-text">{{
-      'organisms.solution_create_form.form_fields.selected_fields.hint'
+      'organisms.solution_create_form.form_fields.output_select.hint'
         | translate
     }}</mat-hint>
   </mat-form-field>
@@ -93,7 +93,7 @@
   <!-- Input select -->
   <mat-form-field class="prediction-options">
     <mat-label>{{
-      'organisms.solution_create_form.form_fields.selected_fields.label'
+      'organisms.solution_create_form.form_fields.input_select.label'
         | translate
     }}</mat-label>
     <mat-select
@@ -102,7 +102,7 @@
       formControlName="inputFields"
       multiple
       [aria-label]="
-        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
+        'organisms.solution_create_form.form_fields.input_select.aria_label'
           | translate
       ">
       <mat-option
@@ -113,16 +113,15 @@
       </mat-option>
     </mat-select>
     <mat-error *ngIf="outputFields.invalid && outputFields.touched">{{
-      'organisms.solution_create_form.form_fields.selected_fields.error'
+      'organisms.solution_create_form.form_fields.input_select.error'
         | translate
     }}</mat-error>
     <mat-hint *ngIf="!databagId.value" class="on-surface-text">{{
-      'organisms.solution_create_form.form_fields.selected_fields.help_message'
+      'organisms.solution_create_form.form_fields.input_select.help_message'
         | translate
     }}</mat-hint>
     <mat-hint *ngIf="databagId.value" class="on-surface-text">{{
-      'organisms.solution_create_form.form_fields.selected_fields.hint'
-        | translate
+      'organisms.solution_create_form.form_fields.input_select.hint' | translate
     }}</mat-hint>
   </mat-form-field>
 

@@ -151,10 +151,17 @@
           "error": "Solution name is required",
           "hint": "Select the databag for which you want to create a solution"
         },
-        "selected_fields": {
+        "output_select": {
           "label": "Select output",
           "aria_label": "Select output",
           "hint": "Mark fields, from your data bag, that the AI should predict",
+          "help_message": "Please select a databag first to specify further training",
+          "error": "Output is required"
+        },
+        "input_select": {
+          "label": "Select input",
+          "aria_label": "Select input",
+          "hint": "Select the desired inputs on which your solution should be based. By default, all inputs are selected",
           "help_message": "Please select a databag first to specify further training",
           "error": "Output is required"
         },

@@ -27,6 +27,7 @@ after('logout', () => {
 });
 beforeEach(() => {
   cy.visit('/#/databags');
+  cy.wait(2000);
 });
 
 describe('Databags Page', () => {
