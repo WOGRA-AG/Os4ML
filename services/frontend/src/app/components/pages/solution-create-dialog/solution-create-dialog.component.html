@@ -18,12 +18,7 @@
     [transferLearningModels]="(transferLearningModels$ | async) ?? []"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
-  <mat-spinner
-    main
-    color="primary"
-    *ngIf="submitting"
-    [diameter]="40"
-    mode="indeterminate"
-    class="spinner">
-  </mat-spinner>
+  <app-loader-spinning-planet 
+    main *ngIf="submitting"> 
+  </app-loader-spinning-planet>
 </app-os4ml-dialog-template>
