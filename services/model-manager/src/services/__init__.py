@@ -42,8 +42,8 @@ SOLUTION_MESSAGE_CHANNEL = os.getenv(
 PREDICTION_MESSAGE_CHANNEL = os.getenv(
     "PREDICTION_MESSAGE_CHANNEL", default="prediction-os4ml"
 )
-TRANSGER_LEARNING_MESSAGE_CHANNEL = os.getenv(
-    "TTRANSGER_LEARNING_MESSAGE_CHANNEL", default="transger-learning-os4ml"
+TRANSFER_LEARNING_MESSAGE_CHANNEL = os.getenv(
+    "TRANSFER_LEARNING_MESSAGE_CHANNEL", default="transfer-learning-os4ml"
 )
 
 MESSAGE_BROKER_PUBLISH_URL = os.getenv(

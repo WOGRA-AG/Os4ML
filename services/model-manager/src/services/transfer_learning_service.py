@@ -16,7 +16,7 @@ from build.openapi_server.models.transfer_learning_model import (
 from lib.json_io import decode_json_response, prepare_model_for_api
 from services import (
     TRANSFER_LEARNING_FILE_NAME,
-    TRANSGER_LEARNING_MESSAGE_CHANNEL,
+    TRANSFER_LEARNING_MESSAGE_CHANNEL,
 )
 from services.auth_service import get_parsed_token
 from services.databag_service import DatabagService
@@ -52,7 +52,7 @@ def format_value_str(solution_id: str, solution_input: str) -> str:
 
 
 class TransferLearningService:
-    messaging_service = MessagingService(TRANSGER_LEARNING_MESSAGE_CHANNEL)
+    messaging_service = MessagingService(TRANSFER_LEARNING_MESSAGE_CHANNEL)
 
     def __init__(
         self,
