@@ -1,0 +1,9 @@
+button {
+  .mat-icon.mat-primary {
+    --mat-icon-color: var(--md-sys-color-on-primary-container);
+  }
+
+  .mat-icon.mat-accent {
+    --mat-icon-color: var(--md-sys-color-on-primary-container);
+  }
+}

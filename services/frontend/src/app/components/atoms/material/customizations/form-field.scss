@@ -93,24 +93,24 @@
   .mdc-text-field--outlined.mdc-text-field--disabled
     .mdc-notched-outline
     .mdc-notched-outline__trailing {
-    border-color: var(--md-sys-color-outline-light);
+    border-color: var(--md-sys-color-outline);
   }
 
   // Text field content color for disabled fields
   .mdc-text-field.mdc-text-field--disabled .mdc-text-field__input {
-    color: var(--md-sys-color-outline-light);
+    color: var(--md-sys-color-outline);
   }
 
   // Placeholder color for disabled fields
   .mdc-text-field.mdc-text-field--disabled .mdc-floating-label {
-    color: var(--md-sys-color-outline-light);
+    color: var(--md-sys-color-outline);
   }
 
   // Color adjustment for disabled dialogs, select values, and arrows
   .mat-mdc-dialog-container.mdc-dialog--disabled .mdc-dialog__content,
   .mat-mdc-select-value.mdc-select--disabled,
   .mat-mdc-select-arrow.mdc-select--disabled {
-    color: var(--md-sys-color-outline-light);
+    color: var(--md-sys-color-outline);
   }
 }
 
