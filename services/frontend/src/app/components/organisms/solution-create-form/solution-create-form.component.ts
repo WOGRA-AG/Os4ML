@@ -138,17 +138,13 @@ export class SolutionCreateFormComponent implements OnInit {
     const outputFieldsValues = this.outputFields.value || [];
 
     if (this.allDatabagColumns?.length) {
-      // Filtern basierend auf allDatabagColumns und nicht auf availableDatabagInputColumns
       this.availableDatabagInputColumns = this.allDatabagColumns.filter(
         column => !column.name || !outputFieldsValues.includes(column.name)
       );
       const updatedSelectedInputFields = this.inputFields.value.filter(
         value => !value || !outputFieldsValues.includes(value)
       );
-
-      this.createSolutionForm
-        .get('inputFields')
-        ?.setValue(updatedSelectedInputFields);
+      this.inputFields.setValue(updatedSelectedInputFields);
     }
   }
   public modelOfTypeExists(type: string): boolean {
@@ -160,7 +156,6 @@ export class SolutionCreateFormComponent implements OnInit {
   public toggleTransferLearningSettings(event: MatSlideToggleChange): void {
     this.transferLearningSettingsActive = event.checked;
   }
-
   public initTransferLearningSettings(): void {
     this.allTransferLearningSettings = [];
     if (!this.availableDatabagInputColumns) return;
@@ -175,39 +170,45 @@ export class SolutionCreateFormComponent implements OnInit {
       });
       this.allTransferLearningSettings.push(transferLearningSetting);
     });
-    this.updateTransferLearningSettings(); // Um das FormArray beim ersten Initialisieren zu füllen
+    this.updateTransferLearningSettings();
   }
-
   public updateTransferLearningSettings(): void {
     const currentNamesInFormArray =
       this.transferLearningSettingsFormArray.controls.map(
         control => (control as FormGroup).get('name')?.value
       );
     const selectedNames = this.inputFields.value;
-
-    // Entfernen Sie FormGroups, die nicht in selectedNames sind
     for (
       let i = this.transferLearningSettingsFormArray.length - 1;
       i >= 0;
       i--
     ) {
-      const formGroup = this.transferLearningSettingsFormArray.at(
-        i
-      ) as FormGroup;
-      if (!selectedNames.includes(formGroup.get('name')?.value)) {
+      const transferLearningSettingFormGroup: FormGroup<TransferLearningSettingFormGroup> =
+        this.transferLearningSettingsFormArray.at(i);
+      if (
+        !selectedNames.includes(
+          transferLearningSettingFormGroup.controls.name.value
+        )
+      ) {
         this.transferLearningSettingsFormArray.removeAt(i);
       }
     }
-
-    // Fügen Sie FormGroups hinzu, die in selectedNames sind, aber noch nicht in transferLearningSettingsFormArray
-    this.allTransferLearningSettings.forEach(formGroup => {
-      if (
-        selectedNames.includes(formGroup.get('name')?.value || '') &&
-        !currentNamesInFormArray.includes(formGroup.get('name')?.value)
-      ) {
-        this.transferLearningSettingsFormArray.push(formGroup);
+    this.allTransferLearningSettings.forEach(
+      transferLearningSettingFormGroup => {
+        if (
+          selectedNames.includes(
+            transferLearningSettingFormGroup.controls.name.value
+          ) &&
+          !currentNamesInFormArray.includes(
+            transferLearningSettingFormGroup.controls.name.value
+          )
+        ) {
+          this.transferLearningSettingsFormArray.push(
+            transferLearningSettingFormGroup
+          );
+        }
       }
-    });
+    );
   }
   public onSubmit(): void {
     if (!this.createSolutionForm.valid) return;
@@ -225,9 +226,7 @@ export class SolutionCreateFormComponent implements OnInit {
   }
   private setInitialDatabagId(): void {
     if (this.selectedDatabagId) {
-      this.createSolutionForm
-        .get('databagId')
-        ?.setValue(this.selectedDatabagId);
+      this.databagId.setValue(this.selectedDatabagId);
       this.selectDatabagColumns(this.selectedDatabagId);
     }
   }
