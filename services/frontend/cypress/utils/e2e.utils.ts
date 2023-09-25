@@ -53,7 +53,7 @@ export function createPrediction(
   selectFile: string
 ) {
   cy.get('[data-testid="add-prediction"]', { timeout: 500 }).first().click();
-  cy.wait(500);
+  cy.wait(2000);
   cy.get('[data-testid="input-name"]', { timeout: 500 }).type(predictionName);
   cy.get('[data-testid="input-solutionId"]').click();
   cy.get('mat-option').contains(solutionName).click();
