@@ -157,7 +157,7 @@
   --md-sys-color-surface-light: #f2fbff; /* General surface color for UI elements such as cards, sheets, menus */
   --md-sys-color-on-surface-light: #666666; /* Color for text and icons on surface color */
 
-  --md-sys-color-surface-variant-light: #dadada; /* Variant surface color for distinguishing UI elements */
+  --md-sys-color-surface-variant-light: #ffffff; /* Variant surface color for distinguishing UI elements */
   --md-sys-color-on-surface-variant-light: #40484d; /* Color for text and icons on surface variant color */
 
   --md-sys-color-outline-light: rgba(
@@ -183,38 +183,38 @@
   ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
 
   /* dark */
-  --md-sys-color-primary-dark: #75d1ff; /* Primary dark color, typically for major actionable elements in dark theme */
-  --md-sys-color-on-primary-dark: #003548; /* Color for text and icons on primary color in dark theme */
-  --md-sys-color-primary-container-dark: #004d67; /* Dark primary color for container backgrounds in dark theme */
-  --md-sys-color-on-primary-container-dark: #c2e8ff; /* Color for text and icons on dark primary containers in dark theme */
+  --md-sys-color-primary-dark: #80aafb; /* Primary dark color, typically for major actionable elements in dark theme */
+  --md-sys-color-on-primary-dark: #1b1e2a; /* Color for text and icons on primary color in dark theme */
+  --md-sys-color-primary-container-dark: #6095fa; /* Dark primary color for container backgrounds in dark theme */
+  --md-sys-color-on-primary-container-dark: #1b1e2a; /* Color for text and icons on dark primary containers in dark theme */
 
-  --md-sys-color-secondary-dark: #ffb875; /* Secondary dark color, for secondary interface elements in dark theme */
-  --md-sys-color-on-secondary-dark: #4b2800; /* Color for text and icons on secondary color in dark theme */
-  --md-sys-color-secondary-container-dark: #6b3b00; /* Dark secondary color for container backgrounds in dark theme */
-  --md-sys-color-on-secondary-container-dark: #ffdcc0; /* Color for text and icons on dark secondary containers in dark theme */
+  --md-sys-color-secondary-dark: #80d2fb; /* Secondary dark color, for secondary interface elements in dark theme */
+  --md-sys-color-on-secondary-dark: #153e55; /* Color for text and icons on secondary color in dark theme */
+  --md-sys-color-secondary-container-dark: #0e608b; /* Dark secondary color for container backgrounds in dark theme */
+  --md-sys-color-on-secondary-container-dark: #dff4fe; /* Color for text and icons on dark secondary containers in dark theme */
 
-  --md-sys-color-tertiary-dark: #9ed82c; /* Tertiary dark color, for tertiary interface elements in dark theme */
-  --md-sys-color-on-tertiary-dark: #233600; /* Color for text and icons on tertiary color in dark theme */
-  --md-sys-color-tertiary-container-dark: #354e00; /* Dark tertiary color for container backgrounds in dark theme */
-  --md-sys-color-on-tertiary-container-dark: #b9f549; /* Color for text and icons on dark tertiary containers in dark theme */
+  --md-sys-color-tertiary-dark: #ffed9e; /* Tertiary dark color, for tertiary interface elements in dark theme */
+  --md-sys-color-on-tertiary-dark: #272522; /* Color for text and icons on tertiary color in dark theme */
+  --md-sys-color-tertiary-container-dark: #d2b438; /* Dark tertiary color for container backgrounds in dark theme */
+  --md-sys-color-on-tertiary-container-dark: #272522; /* Color for text and icons on dark tertiary containers in dark theme */
 
-  --md-sys-color-error-dark: #ffb4ab; /* Error color, typically used for warnings and errors in dark theme */
+  --md-sys-color-error-dark: #ef8d9f; /* Error color, typically used for warnings and errors in dark theme */
   --md-sys-color-error-container-dark: #93000a; /* Dark error color for container backgrounds in dark theme */
-  --md-sys-color-on-error-dark: #690005; /* Color for text and icons on error color in dark theme */
+  --md-sys-color-on-error-dark: #ffffff; /* Color for text and icons on error color in dark theme */
   --md-sys-color-on-error-container-dark: #ffdad6; /* Color for text and icons on dark error containers in dark theme */
 
-  --md-sys-color-background-dark: #003548; /* Background color of the app or site in dark theme */
-  --md-sys-color-on-background-dark: #a6eeff; /* Color for text and icons on background in dark theme */
+  --md-sys-color-background-dark: #212024; /* Background color of the app or site in dark theme */
+  --md-sys-color-on-background-dark: #d0d0d0; /* Color for text and icons on background in dark theme */
 
-  --md-sys-color-surface-dark: #001f25; /* General surface color for UI elements such as cards, sheets, menus in dark theme */
-  --md-sys-color-on-surface-dark: #a6eeff; /* Color for text and icons on surface color in dark theme */
+  --md-sys-color-surface-dark: #3e3c44; /* General surface color for UI elements such as cards, sheets, menus in dark theme */
+  --md-sys-color-on-surface-dark: #c1c1c1; /* Color for text and icons on surface color in dark theme */
 
-  --md-sys-color-surface-variant-dark: #616e76; /* Variant surface color for distinguishing UI elements in dark theme */
-  --md-sys-color-on-surface-variant-dark: #c0c7cd; /* Color for text and icons on surface variant color in dark theme */
+  --md-sys-color-surface-variant-dark: #262933; /* Variant surface color for distinguishing UI elements in dark theme */
+  --md-sys-color-on-surface-variant-dark: #d1d3db; /* Color for text and icons on surface variant color in dark theme */
 
-  --md-sys-color-outline-dark: #8a9297; /* Color for outlines and dividers in dark theme */
-  --md-sys-color-inverse-on-surface-dark: #001f25; /* Inverse color for text and icons on surface color in dark theme */
-  --md-sys-color-inverse-surface-dark: #001f25; /* Inverse surface color for UI elements in dark theme */
+  --md-sys-color-outline-dark: #747d93; /* Color for outlines and dividers in dark theme */
+  --md-sys-color-inverse-on-surface-dark: #d1d3db; /* Inverse color for text and icons on surface color in dark theme */
+  --md-sys-color-inverse-surface-dark: #262933; /* Inverse surface color for UI elements in dark theme */
 
   --md-sys-color-inverse-primary-dark: #006688; /* Inverse primary color, typically for major actionable elements in dark theme */
 
@@ -227,8 +227,8 @@
     0,
     0.5
   ); /* Scrim color in dark theme, typically used for overlay or backdrop el
-
-  /* Custom Colors */
+  
+    /* Custom Colors */
   --md-custom-color-processing-status-running: #e6f5fb;
   --md-custom-color-on-processing-status-running: #2eaadc;
   --md-custom-color-processing-status-error: #fbd9d7;

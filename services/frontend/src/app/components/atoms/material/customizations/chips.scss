@@ -6,9 +6,17 @@
   $background: mat.get-color-from-palette($primary-palette, A100);
 
   .mat-mdc-standard-chip {
-    // TODO(Max): Chip background Contrast is too low, so we have to force mdc to set it to the specified value
-    background-color: var(--md-sys-color-secondary-container) !important;
-    color: var(--md-sys-color-on-secondary-container) !important;
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
+  }
+
+  .mat-mdc-standard-chip.mdc-evolution-chip--disabled {
+    opacity: 0.8;
+  }
+
+  .mat-mdc-standard-chip.mdc-evolution-chip--disabled
+    .mdc-evolution-chip__text-label {
+    color: var(--md-sys-color-on-primary-container) !important;
   }
 }
 

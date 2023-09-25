@@ -178,8 +178,7 @@
           "title": "Transfer learning settings",
           "toggle": {
             "aria_label": "Toggle for transfer learning settings",
-            "activate": "Activate transfer learning (For advanced users)",
-            "deactivate": "Deactivate transfer learning"
+            "label": "Transfer learning"
           },
           "select": {
             "aria_label": "Select transfer learning option for "
