@@ -30,7 +30,9 @@
       'organisms.solution_create_form.form_fields.databag_id.label' | translate
     }}</mat-label>
     <mat-select
-      (selectionChange)="updateTransferLearningSettings()"
+      (selectionChange)="
+        selectDatabagColumns($event.value); initTransferLearningSettings()
+      "
       [(value)]="selectedDatabagId"
       data-testid="input-databagId"
       formControlName="databagId"
@@ -49,9 +51,7 @@
       'organisms.solution_create_form.form_fields.databag_id.hint' | translate
     }}</mat-hint>
   </mat-form-field>
-
   <app-element-divider></app-element-divider>
-
   <!-- Output select -->
   <mat-form-field class="prediction-options">
     <mat-label>{{
@@ -59,25 +59,60 @@
         | translate
     }}</mat-label>
     <mat-select
+      data-testid="output-selected-fields"
+      formControlName="outputFields"
+      multiple
+      (selectionChange)="
+        updateTransferLearningSettings(); updateAvailableDatabagInputColumns()
+      "
+      [aria-label]="
+        'organisms.solution_create_form.form_fields.selected_fields.aria_label'
+          | translate
+      ">
+      <mat-option
+        *ngFor="let column of availableDatabagOutputColumns"
+        [value]="column.name">
+        <span class="label-small">{{ column.name }}</span> -
+        <span>{{ column.type }}</span>
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="outputFields.invalid && outputFields.touched">{{
+      'organisms.solution_create_form.form_fields.selected_fields.error'
+        | translate
+    }}</mat-error>
+    <mat-hint *ngIf="!databagId.value" class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.selected_fields.help_message'
+        | translate
+    }}</mat-hint>
+    <mat-hint *ngIf="databagId.value" class="on-surface-text">{{
+      'organisms.solution_create_form.form_fields.selected_fields.hint'
+        | translate
+    }}</mat-hint>
+  </mat-form-field>
+
+  <!-- Input select -->
+  <mat-form-field class="prediction-options">
+    <mat-label>{{
+      'organisms.solution_create_form.form_fields.selected_fields.label'
+        | translate
+    }}</mat-label>
+    <mat-select
+      (selectionChange)="updateTransferLearningSettings()"
       data-testid="input-selected-fields"
-      formControlName="selectedFields"
+      formControlName="inputFields"
       multiple
       [aria-label]="
         'organisms.solution_create_form.form_fields.selected_fields.aria_label'
           | translate
       ">
       <mat-option
-        *ngFor="
-          let predictListItem of databagId.value
-            | getDatabagById
-            | getPredictListItemsFromDatabag
-        "
-        [value]="predictListItem.label">
-        <span class="label-small">{{ predictListItem.label }}</span> -
-        <span>{{ predictListItem.description }}</span>
+        *ngFor="let column of availableDatabagInputColumns"
+        [value]="column.name">
+        <span class="label-small">{{ column.name }}</span> -
+        <span>{{ column.type }}</span>
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="selectedFields.invalid && selectedFields.touched">{{
+    <mat-error *ngIf="outputFields.invalid && outputFields.touched">{{
       'organisms.solution_create_form.form_fields.selected_fields.error'
         | translate
     }}</mat-error>
@@ -126,7 +161,7 @@
       ">
       <mat-form-field
         *ngIf="
-          !selectedFields.value.includes(
+          !outputFields.value.includes(
             transferLearningSettingsListItem.controls.name.value
           ) &&
           modelOfTypeExists(
