@@ -64,6 +64,11 @@ spec:
                 configMapKeyRef:
                   name: model-manager-config
                   key: predictionMessageChannel
+            - name: TRANSFER_LEARNING_MESSAGE_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: model-manager-config
+                  key: transferLearningMessageChannel
           resources:
             limits:
               cpu: 500m

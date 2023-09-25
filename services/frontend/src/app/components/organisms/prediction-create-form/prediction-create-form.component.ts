@@ -3,8 +3,9 @@ import { Solution } from '../../../../../build/openapi/modelmanager';
 import {
   AbstractControl,
   AbstractControlOptions,
-  FormBuilder,
+  FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   ValidationErrors,
   Validators,
@@ -21,7 +22,7 @@ import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
 import { MatSelectModule } from '@angular/material/select';
-import { NgForOf, NgIf } from '@angular/common';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -51,6 +52,7 @@ export interface PredictionFormOutput {
     MatSelectModule,
     NgIf,
     NgForOf,
+    JsonPipe,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
@@ -60,7 +62,6 @@ export class PredictionCreateFormComponent implements OnInit {
   @Output() public downloadPredictionTemplate = new EventEmitter<string>();
 
   public localFileMode = true;
-  public createPredictionForm: FormGroup;
   public allowedFormats = [
     '.csv',
     '.xls',
@@ -71,34 +72,40 @@ export class PredictionCreateFormComponent implements OnInit {
     '.ods',
     '.zip',
   ];
-  constructor(private fb: FormBuilder) {
+  public createPredictionForm: FormGroup<{
+    predictionName: FormControl<string>;
+    solutionId: FormControl<string>;
+    predictionDataFile: FormControl;
+    predictionDataUrl: FormControl<string>;
+  }>;
+  constructor(private fb: NonNullableFormBuilder) {
     this.createPredictionForm = this.fb.group(
       {
         predictionName: ['', Validators.required],
         solutionId: ['', Validators.required],
-        predictionDataFile: ['', this.validateFileFormats.bind(this)],
+        predictionDataFile: [undefined, this.validateFileFormats.bind(this)],
         predictionDataUrl: [''],
       },
       { validator: this.eitherUrlOrFile } as AbstractControlOptions
     );
   }
-  get predictionName(): AbstractControl | null {
-    return this.createPredictionForm.get('predictionName');
+  get predictionName(): FormControl<string> {
+    return this.createPredictionForm.controls.predictionName;
   }
-  get solutionId(): AbstractControl | null {
-    return this.createPredictionForm.get('solutionId');
+  get solutionId(): FormControl<string> {
+    return this.createPredictionForm.controls.solutionId;
   }
-  get predictionDataFile(): AbstractControl | null {
-    return this.createPredictionForm.get('predictionDataFile');
+  get predictionDataFile(): FormControl<undefined | File> {
+    return this.createPredictionForm.controls.predictionDataFile;
   }
-  get predictionDataUrl(): AbstractControl | null {
-    return this.createPredictionForm.get('predictionDataUrl');
+  get predictionDataUrl(): FormControl<string> {
+    return this.createPredictionForm.controls.predictionDataUrl;
   }
 
   ngOnInit(): void {
-    this.createPredictionForm
-      .get('solutionId')
-      ?.setValue(this.selectedSolutionId);
+    if (this.selectedSolutionId) {
+      this.solutionId.setValue(this.selectedSolutionId);
+    }
   }
 
   public predictionDataFileSelected(predictionDataFile: File): void {
@@ -108,19 +115,19 @@ export class PredictionCreateFormComponent implements OnInit {
   }
   public toggleFileMode(): void {
     this.localFileMode = !this.localFileMode;
-    this.predictionDataFile?.setValue('');
-    this.predictionDataUrl?.setValue('');
+    this.predictionDataFile.setValue(undefined);
+    this.predictionDataUrl.setValue('');
   }
   public onDownloadPredictionTemplate(): void {
-    this.downloadPredictionTemplate.emit(this.solutionId?.value);
+    this.downloadPredictionTemplate.emit(this.solutionId.value);
   }
   public onSubmit(): void {
     if (this.createPredictionForm.valid) {
       this.submitPrediction.emit({
-        predictionName: this.predictionName?.value,
-        solutionId: this.solutionId?.value,
-        predictionDataFile: this.predictionDataFile?.value,
-        predictionDataUrl: this.predictionDataUrl?.value,
+        predictionName: this.predictionName.value,
+        solutionId: this.solutionId.value,
+        predictionDataFile: this.predictionDataFile.value,
+        predictionDataUrl: this.predictionDataUrl.value,
       });
     }
   }

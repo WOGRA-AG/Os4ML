@@ -1,4 +1,8 @@
-import { HttpClient, HttpProgressEvent } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEventType,
+  HttpProgressEvent,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ModelmanagerService, Prediction } from 'build/openapi/modelmanager';
 import {
@@ -181,12 +185,14 @@ export class PredictionService {
     );
   }
   private handleUploadProgress(upload: HttpProgressEvent): void {
-    const uploadProgress = upload.total
-      ? Math.round((upload.loaded / upload.total) * 100)
-      : 0;
-    this._uploadPredictionFileProgressSubject$.next(Math.round(uploadProgress));
+    if (
+      upload.type === HttpEventType.UploadProgress &&
+      upload.total !== undefined
+    ) {
+      const percentDone = Math.round((upload.loaded / upload.total) * 100);
+      this._uploadPredictionFileProgressSubject$.next(percentDone);
+    }
   }
-
   private cancelUpload(prediction: Prediction): void {
     this.deletePredictionById(prediction.id).subscribe();
   }

@@ -88,10 +88,9 @@
         "rxjs-angular/prefer-takeuntil": [
           "error",
           {
-            "alias": ["untilDestroyed", "take"],
+            "alias": ["untilDestroyed", "take", "takeUntilDestroyed"],
             "checkComplete": true,
-            "checkDecorators": ["Component"],
-            "checkDestroy": true
+            "checkDecorators": ["Component"]
           }
         ]
       }

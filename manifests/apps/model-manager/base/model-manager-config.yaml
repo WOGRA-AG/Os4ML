@@ -10,3 +10,4 @@ data:
   databagMessageChannel: 'databag-os4ml'
   solutionMessageChannel: 'solution-os4ml'
   predictionMessageChannel: 'prediction-os4ml'
+  transferLearningMessageChannel: 'transfer-learning-os4ml'

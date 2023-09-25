@@ -68,10 +68,11 @@ export class SolutionCreateFormComponent implements OnInit {
   }>;
   public transferLearningSettingsActive = false;
   public defaultTransferLearningModel: TransferLearningModel = {
-    label: 'Default Model',
+    name: 'Default Model',
     id: 'default-model',
     type: 'Default',
     origin: 'OS4ML',
+    value: 'default-value',
   };
   constructor(
     private databagService: DatabagService,
