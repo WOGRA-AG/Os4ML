@@ -18,7 +18,6 @@
     [transferLearningModels]="(transferLearningModels$ | async) ?? []"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
-  <app-loader-spinning-planet 
-    main *ngIf="submitting"> 
+  <app-loader-spinning-planet main *ngIf="submitting">
   </app-loader-spinning-planet>
 </app-os4ml-dialog-template>
