@@ -27,10 +27,8 @@ import { GetPredictListItemsFromDatabagPipe } from '../../../pipes/get-predict-l
 import { NgForOf, NgIf } from '@angular/common';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DatabagService } from '../../../services/databag.service';
-import {RouterLink} from "@angular/router";
-import {
-  TransferLearningModelCreateButtonComponent
-} from "../transfer-learning-model-create-button/transfer-learning-model-create-button.component";
+import { RouterLink } from '@angular/router';
+import { TransferLearningModelCreateButtonComponent } from '../transfer-learning-model-create-button/transfer-learning-model-create-button.component';
 
 interface TransferLearningSettingFormGroup {
   name: FormControl<string>;

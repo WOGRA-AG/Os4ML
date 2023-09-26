@@ -4,7 +4,7 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SolutionService } from '../../../services/solution.service';
-import { MatDialogRef} from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import {
   NewTransferLearningModelDto,
@@ -38,7 +38,7 @@ export class TransferLearningModelCreateDialogComponent {
     private router: Router,
     private solutionService: SolutionService,
     private transferLearningService: TransferLearningService,
-    public dialogRef: MatDialogRef<TransferLearningModelCreateDialogComponent>,
+    public dialogRef: MatDialogRef<TransferLearningModelCreateDialogComponent>
   ) {
     this.solutions$ = this.solutionService.getSolutionsByCreationTime();
   }
