@@ -114,37 +114,11 @@ export class SolutionCreateFormComponent implements OnInit {
     this.setInitialDatabagId();
     this.initTransferLearningSettings();
   }
-
   public selectDatabagColumns(databagId: string): void {
     const databag = this.databagService.getDatabagById(databagId);
     if (databag && databag.columns) {
       const databagColumns = databag.columns.filter(column => column.type);
       this.updateDatabagColumns(databagColumns);
-    }
-  }
-
-  public updateDatabagColumns(databagColumns: Column[]): void {
-    this.allDatabagColumns = [...databagColumns];
-    this.availableDatabagOutputColumns = databagColumns;
-    this.availableDatabagInputColumns = databagColumns;
-
-    const selectedInputColumns = databagColumns
-      .filter(column => column.name !== undefined)
-      .map(column => column.name as string);
-    this.inputFields.setValue(selectedInputColumns);
-  }
-
-  public updateAvailableDatabagInputColumns(): void {
-    const outputFieldsValues = this.outputFields.value || [];
-
-    if (this.allDatabagColumns?.length) {
-      this.availableDatabagInputColumns = this.allDatabagColumns.filter(
-        column => !column.name || !outputFieldsValues.includes(column.name)
-      );
-      const updatedSelectedInputFields = this.inputFields.value.filter(
-        value => !value || !outputFieldsValues.includes(value)
-      );
-      this.inputFields.setValue(updatedSelectedInputFields);
     }
   }
   public modelOfTypeExists(type: string): boolean {
@@ -173,49 +147,42 @@ export class SolutionCreateFormComponent implements OnInit {
     this.updateTransferLearningSettings();
   }
   public updateTransferLearningSettings(): void {
-    const currentNamesInFormArray =
-      this.transferLearningSettingsFormArray.controls.map(
-        control => (control as FormGroup).get('name')?.value
-      );
-    const selectedNames = this.inputFields.value;
-    for (
-      let i = this.transferLearningSettingsFormArray.length - 1;
-      i >= 0;
-      i--
-    ) {
-      const transferLearningSettingFormGroup: FormGroup<TransferLearningSettingFormGroup> =
-        this.transferLearningSettingsFormArray.at(i);
-      if (
-        !selectedNames.includes(
-          transferLearningSettingFormGroup.controls.name.value
-        )
-      ) {
-        this.transferLearningSettingsFormArray.removeAt(i);
-      }
-    }
-    this.allTransferLearningSettings.forEach(
-      transferLearningSettingFormGroup => {
-        if (
-          selectedNames.includes(
-            transferLearningSettingFormGroup.controls.name.value
-          ) &&
-          !currentNamesInFormArray.includes(
-            transferLearningSettingFormGroup.controls.name.value
-          )
-        ) {
-          this.transferLearningSettingsFormArray.push(
-            transferLearningSettingFormGroup
-          );
-        }
-      }
+    const currentNamesInFormArray = this.getNamesFromFormArray(
+      this.transferLearningSettingsFormArray
     );
+    const selectedNames = this.inputFields.value;
+    this.removeUnselectedTransferLearningSettings(selectedNames);
+    this.addNewSelectedTransferLearningSettings(
+      selectedNames,
+      currentNamesInFormArray
+    );
+  }
+  public updateDatabagColumns(databagColumns: Column[]): void {
+    const validOutputTypes = ['text', 'category', 'numerical'];
+    this.allDatabagColumns = [...databagColumns];
+    this.availableDatabagOutputColumns = databagColumns.filter(column =>
+      validOutputTypes.includes(column?.type || '')
+    );
+    this.availableDatabagInputColumns = databagColumns;
+    const selectedInputColumns = databagColumns
+      .filter(column => column.name !== undefined)
+      .map(column => column.name as string);
+    this.inputFields.setValue(selectedInputColumns);
+  }
+
+  public updateAvailableDatabagInputColumns(): void {
+    if (!this.allDatabagColumns?.length) return;
+    const outputFieldsValues = this.outputFields.value || [];
+    this.updateAvailableInputColumns(outputFieldsValues);
   }
   public onSubmit(): void {
     if (!this.createSolutionForm.valid) return;
     const submitSolution: Solution = {
       name: this.name.value,
       databagId: this.databagId.value,
-      inputFields: this.inputFields.value,
+      inputFields: this.inputFields.value.filter(
+        inputField => !this.outputFields.value.includes(inputField)
+      ),
       outputFields: this.outputFields.value,
     };
     if (this.transferLearningSettingsActive) {
@@ -224,11 +191,52 @@ export class SolutionCreateFormComponent implements OnInit {
     }
     this.submitSolution.emit(submitSolution);
   }
-  private setInitialDatabagId(): void {
-    if (this.selectedDatabagId) {
-      this.databagId.setValue(this.selectedDatabagId);
-      this.selectDatabagColumns(this.selectedDatabagId);
+  private updateAvailableInputColumns(outputFieldsValues: string[]): void {
+    this.availableDatabagInputColumns = (this.allDatabagColumns || []).filter(
+      column => !column.name || !outputFieldsValues.includes(column.name)
+    );
+  }
+  private getNamesFromFormArray(
+    transferLearningSettingsFormArray: FormArray<
+      FormGroup<TransferLearningSettingFormGroup>
+    >
+  ): string[] {
+    return transferLearningSettingsFormArray.controls.map(
+      transferLearningSettings => transferLearningSettings.controls.name.value
+    );
+  }
+  private removeUnselectedTransferLearningSettings(
+    selectedNames: string[]
+  ): void {
+    for (
+      let i = this.transferLearningSettingsFormArray.length - 1;
+      i >= 0;
+      i--
+    ) {
+      const nameValue =
+        this.transferLearningSettingsFormArray.at(i).controls.name.value;
+      if (!selectedNames.includes(nameValue)) {
+        this.transferLearningSettingsFormArray.removeAt(i);
+      }
     }
+  }
+  private addNewSelectedTransferLearningSettings(
+    selectedNames: string[],
+    currentNamesInFormArray: string[]
+  ): void {
+    this.allTransferLearningSettings.forEach(
+      transferLearningSettingFormGroup => {
+        const nameValue = transferLearningSettingFormGroup.controls.name.value;
+        if (
+          selectedNames.includes(nameValue) &&
+          !currentNamesInFormArray.includes(nameValue)
+        ) {
+          this.transferLearningSettingsFormArray.push(
+            transferLearningSettingFormGroup
+          );
+        }
+      }
+    );
   }
   private getTransferLearningSettings(): TransferLearningSetting[] {
     const filteredTransferLearningSettings =
@@ -244,5 +252,11 @@ export class SolutionCreateFormComponent implements OnInit {
             transferLearningSetting.value as TransferLearningSetting
         );
     return filteredTransferLearningSettings;
+  }
+  private setInitialDatabagId(): void {
+    if (this.selectedDatabagId) {
+      this.databagId.setValue(this.selectedDatabagId);
+      this.selectDatabagColumns(this.selectedDatabagId);
+    }
   }
 }
