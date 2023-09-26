@@ -95,7 +95,9 @@ export class SolutionCreateFormComponent implements OnInit {
       databagId: ['', Validators.required],
       inputFields: [[] as string[], Validators.required],
       outputFields: [[] as string[], Validators.required],
-      transferLearningSettings: this.fb.array([] as FormGroup[]),
+      transferLearningSettings: this.fb.array(
+        [] as FormGroup<TransferLearningSettingFormGroup>[]
+      ),
     });
   }
   get name(): FormControl<string> {
@@ -114,6 +116,11 @@ export class SolutionCreateFormComponent implements OnInit {
     FormGroup<TransferLearningSettingFormGroup>
   > {
     return this.createSolutionForm.controls.transferLearningSettings;
+  }
+  set transferLearningSettingsFormArray(
+    formArray: FormArray<FormGroup<TransferLearningSettingFormGroup>>
+  ) {
+    this.createSolutionForm.controls.transferLearningSettings = formArray;
   }
   ngOnInit(): void {
     this.setInitialDatabagId();
@@ -161,6 +168,7 @@ export class SolutionCreateFormComponent implements OnInit {
       selectedNames,
       currentNamesInFormArray
     );
+    this.sortTransferLearningSettingsByOrder(this.inputFields.value);
   }
   public updateDatabagColumns(databagColumns: Column[]): void {
     const validOutputTypes = ['text', 'category', 'numerical'];
@@ -213,17 +221,14 @@ export class SolutionCreateFormComponent implements OnInit {
   private removeUnselectedTransferLearningSettings(
     selectedNames: string[]
   ): void {
-    for (
-      let i = this.transferLearningSettingsFormArray.length - 1;
-      i >= 0;
-      i--
-    ) {
-      const nameValue =
-        this.transferLearningSettingsFormArray.at(i).controls.name.value;
-      if (!selectedNames.includes(nameValue)) {
-        this.transferLearningSettingsFormArray.removeAt(i);
-      }
-    }
+    const filteredFormControls =
+      this.transferLearningSettingsFormArray.controls.filter(
+        transferLearningSetting =>
+          selectedNames.includes(transferLearningSetting.controls.name.value)
+      );
+    this.transferLearningSettingsFormArray = new FormArray(
+      filteredFormControls
+    );
   }
   private addNewSelectedTransferLearningSettings(
     selectedNames: string[],
@@ -242,6 +247,28 @@ export class SolutionCreateFormComponent implements OnInit {
         }
       }
     );
+  }
+  private sortTransferLearningSettingsByOrder(order: string[]): void {
+    const controlsMap = new Map<
+      string,
+      FormGroup<TransferLearningSettingFormGroup>
+    >();
+    this.transferLearningSettingsFormArray.controls.forEach(
+      transferLearningSettings => {
+        const name = transferLearningSettings.controls.name.value;
+        controlsMap.set(name, transferLearningSettings);
+      }
+    );
+    const sortedControls = order
+      .map(name => controlsMap.get(name))
+      .filter(transferLearningSetting => transferLearningSetting);
+    this.transferLearningSettingsFormArray.clear();
+    sortedControls.forEach(transferLearningSetting => {
+      if (!transferLearningSetting) {
+        return;
+      }
+      this.transferLearningSettingsFormArray.push(transferLearningSetting);
+    });
   }
   private getTransferLearningSettings(): TransferLearningSetting[] {
     const filteredTransferLearningSettings =
