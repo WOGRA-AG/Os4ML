@@ -1,7 +1,10 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { Os4mlDefaultTemplateComponent } from '../../templates/os4ml-default-template/os4ml-default-template.component';
-import { Solution } from '../../../../../build/openapi/modelmanager';
+import {
+  Prediction,
+  Solution,
+} from '../../../../../build/openapi/modelmanager';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { SolutionDetailInputComponent } from '../../organisms/solution-detail-input/solution-detail-input.component';
 import { SolutionDetailOutputComponent } from '../../organisms/solution-detail-output/solution-detail-output.component';
@@ -33,6 +36,7 @@ import { SolutionDetailPipelineStatusComponent } from '../../organisms/solution-
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupInputComponent } from '../../organisms/popup-input/popup-input.component';
+import { PredictionService } from '../../../services/prediction.service';
 
 @Component({
   selector: 'app-solution-detail-page',
@@ -62,6 +66,7 @@ import { PopupInputComponent } from '../../organisms/popup-input/popup-input.com
 })
 export class SolutionDetailPageComponent {
   public solution$: Observable<Solution | null>;
+  public predictions$: Observable<Prediction[]>;
   public solutionId: string;
   private reloadSubject = new Subject<void>();
   private destroyRef = inject(DestroyRef);
@@ -69,6 +74,7 @@ export class SolutionDetailPageComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private solutionService: SolutionService,
+    private predictionService: PredictionService,
     private dialog: MatDialog
   ) {
     this.solutionId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
@@ -79,6 +85,10 @@ export class SolutionDetailPageComponent {
         this.router.navigate(['**']);
         return of(null);
       })
+    );
+    this.predictions$ = this.predictionService.getFilteredPredictions(
+      null,
+      this.solutionId
     );
   }
   addSolution(): void {

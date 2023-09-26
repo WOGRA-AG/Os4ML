@@ -9,42 +9,41 @@
     <div class="list">
       <div class="headline-small primary-text">
         {{
-          'organisms.solution-detail-dependencies.predictions_title' | translate
+          'organisms.solution-detail-dependencies.predictions.title' | translate
         }}
       </div>
-      <ul>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
+      <ul *ngIf="predictions && predictions.length >= 0">
+        <li *ngFor="let prediction of predictions">
+          <a
+            class="label-medium"
+            [routerLink]="['/predictions']"
+            [queryParams]="{ selectedSolution: prediction.solutionId }">
+            {{ prediction.name }}
+          </a>
         </li>
       </ul>
+      <div
+        *ngIf="!predictions || predictions.length <= 0"
+        class="body-medium on-background-text placeholder">
+        {{
+          'organisms.solution-detail-dependencies.predictions.placeholder'
+            | translate
+        }}
+      </div>
     </div>
     <div class="list">
       <div class="headline-small primary-text">
         {{
-          'organisms.solution-detail-dependencies.transfer_learning_modelle_title'
+          'organisms.solution-detail-dependencies.transfer_learning_modelle.title'
             | translate
         }}
       </div>
-      <ul>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-        <li>
-          <a class="label-medium" routerLink="/transfer-learning">Eintrag 1</a>
-        </li>
-      </ul>
+      <div class="body-medium on-background-text placeholder">
+        {{
+          'organisms.solution-detail-dependencies.transfer_learning_modelle.placeholder'
+            | translate
+        }}
+      </div>
     </div>
   </div>
 </div>

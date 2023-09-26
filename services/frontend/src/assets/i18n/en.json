@@ -212,8 +212,14 @@
     "solution-detail-dependencies": {
       "title": "Solution dependencies",
       "description": "Based on this solution, the following predictions and transfer learning models were developed.",
-      "predictions_title": "Predictions",
-      "transfer_learning_modelle_title": "Transfer learning modelle"
+      "predictions": {
+        "title": "Predictions",
+        "placeholder": "No prediction is based on this solution."
+      },
+      "transfer_learning_modelle": {
+        "title": "Transfer learning modelle",
+        "placeholder": "A reference to the transfer learning models will be provided later. This is a preliminary version and may be subject to changes."
+      }
     },
     "solution-detail-delete-solution": {
       "title": "Delete solution",
