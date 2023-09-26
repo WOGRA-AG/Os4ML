@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
@@ -19,6 +19,9 @@ import { Router } from '@angular/router';
 import { LoaderSpinningPlanetComponent } from '../../molecules/loader-spinning-planet/loader-spinning-planet.component';
 import { TransferLearningService } from '../../../services/transfer-learning.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  TransferLearningModelCreateDialogComponent
+} from "../transfer-learning-model-create-dialog/transfer-learning-model-create-dialog.component";
 
 @Component({
   selector: 'app-create-solution-dialog',
@@ -44,6 +47,7 @@ export class SolutionCreateDialogComponent {
   public submitting = false;
   private destroyRef = inject(DestroyRef);
   constructor(
+    private dialog: MatDialog,
     private router: Router,
     private solutionService: SolutionService,
     private databagService: DatabagService,
@@ -54,6 +58,10 @@ export class SolutionCreateDialogComponent {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.transferLearningModels$ =
       this.transferLearningService.transferLearningModels$;
+  }
+  public addTransferLearningModel(): void {
+    this.dialogRef.close();
+    this.dialog.open(TransferLearningModelCreateDialogComponent);
   }
   submit(newSolution: Solution): void {
     this.submitting = true;

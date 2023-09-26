@@ -200,6 +200,10 @@
         </mat-select>
       </mat-form-field>
     </ng-container>
+    <app-transfer-learning-model-create-button
+      [type]="'text'"
+      (addTransferLearningModel)="addTransferLearningModel.emit()">
+    </app-transfer-learning-model-create-button>
   </div>
 
   <!-- Submit Button -->
