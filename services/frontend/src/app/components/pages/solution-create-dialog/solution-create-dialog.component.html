@@ -16,6 +16,7 @@
     [selectedDatabagId]="data?.databagId"
     [databags]="(databags$ | async) ?? []"
     [transferLearningModels]="(transferLearningModels$ | async) ?? []"
+    (addTransferLearningModel)="addTransferLearningModel()"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
   <app-loader-spinning-planet main *ngIf="submitting">
