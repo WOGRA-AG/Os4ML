@@ -7,7 +7,7 @@ authors = ["WOGRA AG <info@wogra.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = {version = "^0.87.0", extras = ["all"]}
+fastapi = {version = "^0.88.0", extras = ["all"]}
 fastapi-utils = "^0.2.1"
 gunicorn = "^20.1.0"
 python-dateutil = "^2.8.1"

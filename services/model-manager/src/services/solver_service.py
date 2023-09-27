@@ -1,4 +1,5 @@
-from build.openapi_server.models.solver import Solver
+from src.build.openapi_server.models.solver import Solver
+from src.exceptions.resource_not_found import SolverNotFoundException
 
 
 class SolverService:
@@ -24,5 +25,5 @@ class SolverService:
             solver for solver in all_solvers if solver.name == solver_name
         ]
         if not solvers_with_name:
-            raise
+            raise SolverNotFoundException(solver_name)
         return solvers_with_name.pop()
