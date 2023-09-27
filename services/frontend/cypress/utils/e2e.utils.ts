@@ -26,7 +26,7 @@ export function deleteDatabag(databagName: string) {
 }
 export function createSolution(solutionName: string, databagName: string) {
   cy.get('[data-testid="add-solution"]', { timeout: 500 }).first().click();
-  cy.wait(500);
+  cy.wait(2000);
   cy.get('[data-testid="input-name"]', { timeout: 500 }).type(solutionName);
   cy.get('[data-testid="input-databagId"]').click();
   cy.get('mat-option').contains(databagName).click();
@@ -40,9 +40,11 @@ export function createSolution(solutionName: string, databagName: string) {
 export function deleteSolution(solutionName: string) {
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
-    .find('[data-testid="solution-settings-button"]')
+    .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 }).click();
+  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 })
+    .scrollIntoView()
+    .click();
   cy.get('[data-testid="confirm-popup-button"]', { timeout: 500 }).click();
 }
 export function createPrediction(
@@ -51,7 +53,7 @@ export function createPrediction(
   selectFile: string
 ) {
   cy.get('[data-testid="add-prediction"]', { timeout: 500 }).first().click();
-  cy.wait(500);
+  cy.wait(2000);
   cy.get('[data-testid="input-name"]', { timeout: 500 }).type(predictionName);
   cy.get('[data-testid="input-solutionId"]').click();
   cy.get('mat-option').contains(solutionName).click();

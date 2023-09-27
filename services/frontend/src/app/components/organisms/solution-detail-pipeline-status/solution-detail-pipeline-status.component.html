@@ -1,0 +1,12 @@
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.solution-detail-pipeline-status.title' | translate }}
+</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    {{ 'organisms.solution-detail-pipeline-status.description' | translate }}
+  </div>
+  <app-processing-status-indicator
+    data-testid="solution-status-indicator"
+    [shortStatus]="status | shortStatus">
+  </app-processing-status-indicator>
+</div>
