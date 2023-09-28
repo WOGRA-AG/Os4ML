@@ -71,7 +71,7 @@ class ModelService(Generic[T], ABC):
     def create_run_params(self, model: T) -> RunParams:
         raise NotImplementedError
 
-    def create_model(self, model: T, solver_name: str, usertoken: str) -> T:
+    def create_model(self, model: T, usertoken: str) -> T:
         model.id = str(uuid.uuid4())
         model.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._persist_model(model, usertoken=usertoken)
