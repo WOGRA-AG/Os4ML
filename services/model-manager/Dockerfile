@@ -6,7 +6,7 @@ COPY ./oas/ /usr/app/oas
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i oas/model-manager-oas.yaml \
 -t oas/templates \
---package-name build.openapi_server \
+--package-name src.build.openapi_server \
 -g python-fastapi \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
@@ -16,7 +16,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i ../oas/objectstore-manager-oas.yaml \
 -t ../oas/templates_client \
 -g python \
---package-name build.objectstore_client \
+--package-name src.build.objectstore_client \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
@@ -24,7 +24,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i ../oas/job-manager-oas.yaml \
 -t ../oas/templates_client \
 -g python \
---package-name build.job_manager_client \
+--package-name src.build.job_manager_client \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
@@ -89,7 +89,7 @@ RUN chmod +x /docker-entrypoint.sh
 WORKDIR $PYSETUP_PATH
 RUN poetry install --no-root
 
-COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
+COPY --from=openapi /usr/app/src/src/build $PROJECT_DIR/src/build
 WORKDIR $PROJECT_DIR
 COPY . .
 
@@ -120,7 +120,7 @@ FROM python-base AS production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
-COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
+COPY --from=openapi /usr/app/src/src/build $PROJECT_DIR/src/build
 COPY gunicorn_conf.py /gunicorn_conf.py
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh

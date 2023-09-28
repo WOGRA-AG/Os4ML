@@ -7,19 +7,19 @@ from unittest.mock import Mock
 import pytest
 from pytest_mock import MockerFixture
 
-from build.job_manager_client.models import RunParams
-from build.objectstore_client.exceptions import NotFoundException
-from build.objectstore_client.models import JsonResponse
-from build.openapi_server.models.prediction import Prediction
-from build.openapi_server.models.solution import Solution
-from exceptions import (
+from src.build.job_manager_client.models import RunParams
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.objectstore_client.models import JsonResponse
+from src.build.openapi_server.models.prediction import Prediction
+from src.build.openapi_server.models.solution import Solution
+from src.exceptions import (
     IdUpdateNotAllowedException,
     ModelNotFoundException,
     ResourceNotFoundException,
 )
-from services import DATE_FORMAT_STR
-from services.prediction_service import PredictionSerivce
-from services.solution_service import SolutionService
+from src.services import DATE_FORMAT_STR
+from src.services.prediction_service import PredictionSerivce
+from src.services.solution_service import SolutionService
 
 
 def test_messaging_service_mock(prediction_service: PredictionSerivce):

@@ -4,25 +4,25 @@ from typing import Any, AsyncIterable
 
 from fastapi import Depends
 
-from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from build.objectstore_client.exceptions import NotFoundException
-from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.new_transfer_learning_model_dto import (
+from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.new_transfer_learning_model_dto import (
     NewTransferLearningModelDto,
 )
-from build.openapi_server.models.transfer_learning_model import (
+from src.build.openapi_server.models.transfer_learning_model import (
     TransferLearningModel,
 )
-from lib.json_io import decode_json_response, prepare_model_for_api
-from services import (
+from src.lib.json_io import decode_json_response, prepare_model_for_api
+from src.services import (
     TRANSFER_LEARNING_FILE_NAME,
     TRANSFER_LEARNING_MESSAGE_CHANNEL,
 )
-from services.auth_service import get_parsed_token
-from services.databag_service import DatabagService
-from services.init_api_clients import init_objectstore_api
-from services.messaging_service import MessagingService
-from services.solution_service import SolutionService
+from src.services.auth_service import get_parsed_token
+from src.services.databag_service import DatabagService
+from src.services.init_api_clients import init_objectstore_api
+from src.services.messaging_service import MessagingService
+from src.services.solution_service import SolutionService
 
 
 class TransferLearningType(enum.Enum):
@@ -84,7 +84,7 @@ class TransferLearningService:
                     TRANSFER_LEARNING_FILE_NAME, usertoken=usertoken
                 )
             )
-            json_dicts: list[dict[str, Any]] = decode_json_response(
+            json_dicts: list[dict[str, Any]] = decode_json_response(  # type: ignore
                 json_response
             )
             return [
@@ -153,9 +153,9 @@ class TransferLearningService:
             solution_id, usertoken=usertoken
         )
         databag = self.databag_service.get_databag_by_id(
-            solution.databag_id, usertoken=usertoken
+            solution.databag_id, usertoken=usertoken  # type: ignore
         )
-        for col in databag.columns:
+        for col in databag.columns:  # type: ignore
             if solution_input == col.name:
                 return col.type  # type: ignore
         raise ValueError(f"Unknown input field: {solution_input}")

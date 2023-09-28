@@ -1,9 +1,9 @@
 import pytest
 
-from api.controller.modelmanager_api_controller import (
+from src.api.controller.modelmanager_api_controller import (
     ModelmanagerApiController,
 )
-from services.solver_service import SolverService
+from src.services.solver_service import SolverService
 
 
 @pytest.fixture

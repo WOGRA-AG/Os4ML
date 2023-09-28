@@ -1,16 +1,15 @@
-import uuid
 from unittest.mock import Mock
 
 import pytest
 from fastapi.testclient import TestClient
 from pytest_mock import MockerFixture
 
-import build.openapi_server.apis.modelmanager_api
-from build.openapi_server.models.prediction import Prediction
-from build.openapi_server.models.url_and_prediction_id import (
-    UrlAndPredictionId,
+import src.build.openapi_server.apis.modelmanager_api
+from src.build.openapi_server.models.prediction import Prediction
+from src.exceptions import (
+    ModelIdUpdateNotAllowedException,
+    ModelNotFoundException,
 )
-from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
 
 
 @pytest.fixture
@@ -23,7 +22,7 @@ def prediction_service(mocker: MockerFixture) -> Mock:
         setattr(self, "prediction_service", service)
 
     mocker.patch.object(
-        build.openapi_server.apis.modelmanager_api.ModelmanagerApiController,
+        src.build.openapi_server.apis.modelmanager_api.ModelmanagerApiController,
         "__init__",
         mock_init,
     )
@@ -42,7 +41,7 @@ async def test_get_predictions(
     prediction_service: Mock,
     prediction: Prediction,
 ):
-    prediction_service.get_predictions.return_value = return_value = [
+    prediction_service.get_predictions.return_value = [
         prediction,
         prediction,
     ]
@@ -167,10 +166,7 @@ async def test_get_prediction_data_put_url(
     client: TestClient, route_prefix: str, prediction_service: Mock
 ):
     prediction_service.get_prediction_data_put_url.return_value = (
-        UrlAndPredictionId(
-            url="http://minio.wogra.com/put/data/here.csv",
-            prediction_id="prediction_id",
-        )
+        "http://minio.wogra.com/put/data/here.csv",
     )
     resp = client.get(
         route_prefix + "solutions/solution_id/prediction-data/file.csv"

@@ -1,8 +1,8 @@
 import pytest
 
-from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.databag import Databag
-from lib.json_io import decode_json_response, prepare_model_for_api
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.databag import Databag
+from src.lib.json_io import decode_json_response, prepare_model_for_api
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,6 @@
 import pytest
 
-from services.messaging_service import MessagingService
+from src.services.messaging_service import MessagingService
 
 
 @pytest.fixture(autouse=True)

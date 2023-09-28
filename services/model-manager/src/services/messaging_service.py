@@ -10,8 +10,8 @@ from redis import Redis
 from redis.asyncio import Redis as AsyncRedis
 from redis.exceptions import ConnectionError as RedisConnectionError
 
-from lib.subscriber_event import SubscriberEvent
-from services import (
+from src.lib.subscriber_event import SubscriberEvent
+from src.services import (
     MESSAGE_BROKER_PORT,
     MESSAGE_BROKER_PUBLISH_URL,
     MESSAGE_BROKER_SUBSCRIBE_URL,
