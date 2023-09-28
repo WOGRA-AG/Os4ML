@@ -1,5 +1,4 @@
 import base64
-import uuid
 from datetime import datetime
 from typing import Any
 from unittest.mock import Mock
@@ -7,8 +6,6 @@ from unittest.mock import Mock
 import pytest
 from pytest_mock import MockerFixture
 
-from src.build.job_manager_client.models import RunParams
-from src.build.objectstore_client.exceptions import NotFoundException
 from src.build.objectstore_client.models import JsonResponse
 from src.build.openapi_server.models.prediction import Prediction
 from src.build.openapi_server.models.solution import Solution
@@ -20,20 +17,6 @@ from src.exceptions import (
 from src.services import DATE_FORMAT_STR
 from src.services.prediction_service import PredictionSerivce
 from src.services.solution_service import SolutionService
-
-
-def test_messaging_service_mock(prediction_service: PredictionSerivce):
-    assert isinstance(
-        prediction_service.messaging_service._listen_to_channel(), Mock
-    )
-    p = PredictionSerivce()
-    assert isinstance(p.messaging_service._listen_to_channel(), Mock)
-
-
-def test_uses_same_messaging_service():
-    p1 = PredictionSerivce()
-    p2 = PredictionSerivce()
-    assert p1.messaging_service == p2.messaging_service
 
 
 def test_get_file_name(
@@ -80,42 +63,26 @@ def test_build_model(
     assert prediction.run_id == "run_id"
 
 
-@pytest.mark.xfail(reason="#737")
 def test_create_prediction(
     prediction_service: PredictionSerivce,
-    solution_service: SolutionService,
-    solution: Solution,
-    jobmanager: Mock,
-    messaging_service: Mock,
     mocker: MockerFixture,
 ):
-    prediction = Prediction(
-        id="prediction_id", name="prediction", solution_id="solution_id"
-    )
-    mocker.patch.object(
-        solution_service, "get_solution_by_id", return_value=solution
-    )
+    prediction = Prediction(name="prediction", solution_id="solution_id")
 
-    create_run = mocker.Mock(return_value="run_id")
-    mocker.patch.object(jobmanager, "create_run_by_solver_name", create_run)
-
-    publish_mock = mocker.Mock(return_value=None)
-    mocker.patch.object(messaging_service, "publish", publish_mock)
+    mocker.patch.object(prediction_service, "_persist_model")
+    notify_mock = mocker.patch.object(
+        prediction_service, "_notify_model_update"
+    )
 
     prediction = prediction_service.create_prediction(prediction, usertoken="")
 
-    assert prediction.id == "prediction_id"
+    assert prediction.id is not None
     assert (
         datetime.strptime(prediction.creation_time, DATE_FORMAT_STR).date()
         == datetime.today().date()
     )
-    assert prediction.run_id == "run_id"
 
-    run_params = RunParams(prediction_id="prediction_id")
-    create_run.assert_called_once_with(
-        "prediction", run_params=run_params, usertoken=""
-    )
-    publish_mock.assert_called_once_with("default")
+    notify_mock.assert_called_once()
 
 
 def test_get_predictions(
@@ -145,8 +112,9 @@ def test_get_predictions(
         side_effect=[pred1, pred2]
     )
 
-    get_solution = mocker.Mock(return_value=solution)
-    mocker.patch.object(solution_service, "get_solution_by_id", get_solution)
+    mocker.patch.object(
+        solution_service, "get_solution_by_id", returl_value=solution
+    )
 
     pred1, pred2 = prediction_service.get_predictions(usertoken="")
 
@@ -181,8 +149,9 @@ def test_get_prediction_by_id(
     )
     objectstore.get_json_object_by_name.side_effect = [pred1, pred2]
 
-    get_solution = mocker.Mock(return_value=solution)
-    mocker.patch.object(solution_service, "get_solution_by_id", get_solution)
+    mocker.patch.object(
+        solution_service, "get_solution_by_id", return_value=solution
+    )
 
     pred = prediction_service.get_prediction_by_id(
         "prediction_id", usertoken=""
@@ -221,40 +190,24 @@ def test_get_prediction_by_id_raises_not_found(
         prediction_service.get_prediction_by_id("does_not_exist", usertoken="")
 
 
-@pytest.mark.xfail(reason="#737")
 def test_update_prediction_by_id(
     prediction_service: PredictionSerivce,
-    objectstore: Mock,
     mocker: MockerFixture,
     prediction: Prediction,
-    messaging_service: Mock,
-    solution: Solution,
-    solution_service: SolutionService,
 ):
-    prediction.name = "updated_name"
+    persist_mock = mocker.patch.object(prediction_service, "_persist_model")
+    notify_mock = mocker.patch.object(
+        prediction_service, "_notify_model_update"
+    )
 
-    get_solution = mocker.Mock(return_value=solution)
-    mocker.patch.object(solution_service, "get_solution_by_id", get_solution)
-
-    publish_mock = mocker.Mock(return_value=None)
-    messaging_service.publish = publish_mock
-
-    put_mock = mocker.Mock()
-    objectstore.put_object_by_name = put_mock
-
-    get_url_mock = mocker.Mock()
-    objectstore.get_presigned_get_url = get_url_mock
-
-    prediction = prediction_service.update_prediction_by_id(
+    prediction.name = "updated"
+    updated_prediction = prediction_service.update_prediction_by_id(
         "prediction_id", prediction, usertoken=""
     )
 
-    assert prediction.name == "updated_name"
-    get_solution.assert_called_with("solution_id", usertoken="")
-    assert get_solution.call_count == 3
-    publish_mock.assert_called_once_with("default")
-    put_mock.assert_called_once()
-    assert get_url_mock.call_count == 2
+    assert updated_prediction.name == "updated"
+    persist_mock.assert_called_once()
+    notify_mock.assert_called_once()
 
 
 def test_update_prediction_by_id_id_update(
@@ -272,33 +225,26 @@ def test_delete_prediction_by_id(
     objectstore: Mock,
     mocker: MockerFixture,
     prediction: Prediction,
-    messaging_service: Mock,
-    solution: Solution,
-    solution_service: SolutionService,
 ):
     mocker.patch.object(
         prediction_service, "get_model_by_id", return_value=prediction
     )
+
+    terminate_run = mocker.patch.object(
+        prediction_service, "terminate_run_for_model"
+    )
+
     mocker.patch.object(prediction_service, "get_file_name", return_value="")
 
-    terminate_run = mocker.Mock()
-    mocker.patch.object(
-        prediction_service, "terminate_run_for_model", terminate_run
+    notify_mock = mocker.patch.object(
+        prediction_service, "_notify_model_update"
     )
-
-    delete_objects = mocker.Mock()
-    mocker.patch.object(
-        objectstore, "delete_objects_with_prefix", delete_objects
-    )
-
-    publish_mock = mocker.Mock()
-    mocker.patch.object(messaging_service, "publish", publish_mock)
 
     prediction_service.delete_prediction_by_id("prediction_id", usertoken="")
 
     terminate_run.assert_called_once_with(prediction, usertoken="")
-    delete_objects.assert_called_once()
-    publish_mock.assert_called_once_with("default")
+    objectstore.delete_objects_with_prefix.assert_called_once()
+    notify_mock.assert_called_once()
 
 
 def test_delete_prediction_by_id_not_found(
@@ -315,30 +261,27 @@ def test_delete_prediction_by_id_not_found(
     prediction_service.delete_prediction_by_id("does_not_exist", usertoken="")
 
 
-@pytest.mark.xfail(reason="#737")
 def test_create_prediction_data_put_url(
     prediction_service: PredictionSerivce,
-    solution_service: SolutionService,
     objectstore: Mock,
     mocker: MockerFixture,
-    equal_mock: Mock,
 ):
+    prediction = Prediction(data_file_name="data.csv")
     mocker.patch.object(
-        solution_service, "get_solution_by_id", return_value=None
+        prediction_service, "get_prediction_by_id", return_value=prediction
     )
-    file_name_mock = mocker.Mock(return_value="file/name/test")
-    mocker.patch.object(prediction_service, "get_file_name", file_name_mock)
+    file_name_mock = mocker.patch.object(
+        prediction_service, "get_file_name", return_value="file/name/data.csv"
+    )
     objectstore.get_presigned_put_url.return_value = "url"
 
-    url_and_prediction_id = prediction_service.create_prediction_data_put_url(
+    url = prediction_service.create_prediction_data_put_url(
         "solution_id", usertoken=""
     )
 
-    uuid.UUID(url_and_prediction_id.prediction_id)
-    file_name_mock.assert_called_once_with(
-        equal_mock, "prediction_data.csv", usertoken="", solution=None
-    )
-    assert url_and_prediction_id.url == "url"
+    assert url == "url"
+    file_name_mock.assert_called_with(prediction, "data.csv", usertoken="")
+    objectstore.get_presigned_put_url.assert_called_once()
 
 
 def test_create_prediction_result_put_url(
@@ -350,8 +293,9 @@ def test_create_prediction_result_put_url(
         prediction_service, "get_model_by_id", return_value=None
     )
 
-    file_name_mock = mocker.Mock(return_value="file/name/test")
-    mocker.patch.object(prediction_service, "get_file_name", file_name_mock)
+    file_name_mock = mocker.patch.object(
+        prediction_service, "get_file_name", return_value="file/name/test"
+    )
 
     objectstore.get_presigned_put_url.return_value = "url"
 
@@ -359,7 +303,7 @@ def test_create_prediction_result_put_url(
         "prediction_id", usertoken=""
     )
 
+    assert url == "url"
     file_name_mock.assert_called_once_with(
         None, "prediction_result.csv", usertoken=""
     )
-    assert url == "url"

@@ -72,7 +72,6 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
     ) -> Prediction:
         return self.create_model(
             prediction,
-            self.prediction_pipeline,
             usertoken=usertoken,
         )
 
