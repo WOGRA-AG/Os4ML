@@ -1,0 +1,49 @@
+<app-os4ml-default-template
+  data-testid="solution-detail-page"
+  [mainSmall]="true"
+  *ngIf="solution$ | async as solution">
+  <h1 header class="headline-large primary-text">
+    Solution: {{ solution.name }}
+    <app-new-button
+      data-testid="solution-rename-button"
+      (click)="renameSolution(solution.name ?? '')"
+      variant="text"
+      size="medium"
+      icon="edit"
+      [ariaLabel]="'organisms.prediction_create_button.label' | translate">
+    </app-new-button>
+  </h1>
+  <div nav class="actions">
+    <div class="select-section"></div>
+    <div class="button-section">
+      <app-solution-create-button [type]="'text'" (addSolution)="addSolution()">
+      </app-solution-create-button>
+      <app-prediction-create-button
+        [type]="'primary'"
+        (addPrediction)="addPrediction()">
+      </app-prediction-create-button>
+    </div>
+  </div>
+  <div main class="main-grid">
+    <app-solution-detail-pipeline-status
+      [status]="solution.status"></app-solution-detail-pipeline-status>
+    <app-solution-detail-input
+      [transferLearningSettings]="solution.transferLearningSettings ?? []">
+    </app-solution-detail-input>
+    <app-solution-detail-output
+      [combined]="solution.metrics?.combined ?? 0"
+      [details]="solution.metrics?.details ?? []">
+    </app-solution-detail-output>
+    <app-solution-detail-download-model
+      [disabled]="(solution.status | shortStatus) !== 'Done'"
+      (downloadModel)="
+        downloadModel(downloadModelLink)
+      "></app-solution-detail-download-model>
+    <a download target="_blank" hidden aria-hidden="true" #downloadModelLink>
+    </a>
+    <app-solution-detail-dependencies
+      [predictions]="predictions$ | async"></app-solution-detail-dependencies>
+    <app-solution-detail-delete-solution
+      (deleteSolution)="deleteSolution()"></app-solution-detail-delete-solution>
+  </div>
+</app-os4ml-default-template>

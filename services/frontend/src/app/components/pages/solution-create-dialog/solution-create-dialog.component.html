@@ -1,6 +1,6 @@
 <app-os4ml-dialog-template>
   <ng-container header>
-    <h1 header role="header" class="headline-1 primary-text">
+    <h1 header role="header" class="headline-large primary-text">
       {{ 'pages.solution_create_dialog.title' | translate }}
     </h1>
     <app-icon-button
@@ -16,14 +16,9 @@
     [selectedDatabagId]="data?.databagId"
     [databags]="(databags$ | async) ?? []"
     [transferLearningModels]="(transferLearningModels$ | async) ?? []"
+    (addTransferLearningModel)="addTransferLearningModel()"
     (submitSolution)="submit($event)">
   </app-solution-create-form>
-  <mat-spinner
-    main
-    color="primary"
-    *ngIf="submitting"
-    [diameter]="40"
-    mode="indeterminate"
-    class="spinner">
-  </mat-spinner>
+  <app-loader-spinning-planet main *ngIf="submitting">
+  </app-loader-spinning-planet>
 </app-os4ml-dialog-template>

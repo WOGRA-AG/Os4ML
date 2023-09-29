@@ -4,7 +4,7 @@ from functools import singledispatch
 from io import StringIO
 from typing import Any, Protocol
 
-from build.objectstore_client.model.json_response import JsonResponse
+from src.build.objectstore_client.model.json_response import JsonResponse
 
 
 class Dictable(Protocol):

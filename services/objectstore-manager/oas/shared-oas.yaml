@@ -48,6 +48,9 @@ components:
         creationTime:
           type: string
           nullable: true
+        completionTime:
+          type: string
+          nullable: true
         databagType:
           type: string
           nullable: true

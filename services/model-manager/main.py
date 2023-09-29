@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
-import exceptions.handler  # Needed to initialize exception handlers
-from api.router.websocket_router import router as ws_router
-from build.openapi_server.main import app
-from services.messaging_service import MessagingService
+import src.exceptions.handler  # Needed to initialize exception handlers
+from src.api.router.websocket_router import router as ws_router
+from src.build.openapi_server.main import app
+from src.services.messaging_service import MessagingService
 
 app.include_router(ws_router)
 

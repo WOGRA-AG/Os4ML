@@ -1,20 +1,20 @@
 from fastapi import Depends
 
-from build.openapi_server.models.databag import Databag
-from build.openapi_server.models.new_transfer_learning_model_dto import (
+from src.build.openapi_server.models.databag import Databag
+from src.build.openapi_server.models.new_transfer_learning_model_dto import (
     NewTransferLearningModelDto,
 )
-from build.openapi_server.models.prediction import Prediction
-from build.openapi_server.models.solution import Solution
-from build.openapi_server.models.solver import Solver
-from build.openapi_server.models.transfer_learning_model import (
+from src.build.openapi_server.models.prediction import Prediction
+from src.build.openapi_server.models.solution import Solution
+from src.build.openapi_server.models.solver import Solver
+from src.build.openapi_server.models.transfer_learning_model import (
     TransferLearningModel,
 )
-from services.databag_service import DatabagService
-from services.prediction_service import PredictionSerivce
-from services.solution_service import SolutionService
-from services.solver_service import SolverService
-from services.transfer_learning_service import TransferLearningService
+from src.services.databag_service import DatabagService
+from src.services.prediction_service import PredictionSerivce
+from src.services.solution_service import SolutionService
+from src.services.solver_service import SolverService
+from src.services.transfer_learning_service import TransferLearningService
 
 
 class ModelmanagerApiController:

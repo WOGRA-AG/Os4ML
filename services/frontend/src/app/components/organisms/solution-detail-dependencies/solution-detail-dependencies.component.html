@@ -1,0 +1,49 @@
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.solution-detail-dependencies.title' | translate }}
+</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    {{ 'organisms.solution-detail-dependencies.description' | translate }}
+  </div>
+  <div class="list-section">
+    <div class="list">
+      <div class="headline-small primary-text">
+        {{
+          'organisms.solution-detail-dependencies.predictions.title' | translate
+        }}
+      </div>
+      <ul *ngIf="predictions && predictions.length >= 0">
+        <li *ngFor="let prediction of predictions">
+          <a
+            class="label-medium"
+            [routerLink]="['/predictions']"
+            [queryParams]="{ selectedSolution: prediction.solutionId }">
+            {{ prediction.name }}
+          </a>
+        </li>
+      </ul>
+      <div
+        *ngIf="!predictions || predictions.length <= 0"
+        class="body-medium on-background-text placeholder">
+        {{
+          'organisms.solution-detail-dependencies.predictions.placeholder'
+            | translate
+        }}
+      </div>
+    </div>
+    <div class="list">
+      <div class="headline-small primary-text">
+        {{
+          'organisms.solution-detail-dependencies.transfer_learning_modelle.title'
+            | translate
+        }}
+      </div>
+      <div class="body-medium on-background-text placeholder">
+        {{
+          'organisms.solution-detail-dependencies.transfer_learning_modelle.placeholder'
+            | translate
+        }}
+      </div>
+    </div>
+  </div>
+</div>

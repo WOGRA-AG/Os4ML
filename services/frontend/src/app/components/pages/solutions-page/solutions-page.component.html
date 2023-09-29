@@ -1,5 +1,5 @@
 <app-os4ml-default-template data-testid="solutions-page">
-  <h1 header role="header" class="headline-1 primary-text">
+  <h1 header role="header" class="headline-large primary-text">
     {{ 'pages.solutions_page.title' | translate }}
   </h1>
   <div nav role="actions" class="actions">
@@ -21,7 +21,6 @@
     <app-solution-data-table
       [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
-      (solutionSettingButton)="openSolutionSettingDialog($event)"
       (createPredictionButton)="openCreatePredictionDialog($event)">
     </app-solution-data-table>
     <app-ml-entity-status-placeholder

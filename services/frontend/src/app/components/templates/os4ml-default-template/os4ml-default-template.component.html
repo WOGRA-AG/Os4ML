@@ -4,6 +4,6 @@
 <nav>
   <ng-content select="[nav]"></ng-content>
 </nav>
-<main>
+<main [class.small]="mainSmall">
   <ng-content select="[main]"></ng-content>
 </main>

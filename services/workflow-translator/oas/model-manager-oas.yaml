@@ -405,7 +405,7 @@ paths:
         200:
           $ref: '#/components/responses/Url'
 
-  "/apis/v1beta1/model-manager/transfer-tearning-models":
+  "/apis/v1beta1/model-manager/transfer-learning-models":
     get:
       summary: "get transfer learning models"
       operationId: getTransferLearningModels
@@ -429,7 +429,7 @@ paths:
         201:
           $ref: '#/components/responses/TransferLearningModel'
 
-  "/apis/v1beta1/model-manager/transfer-tearning-models/{transferLearningModelId}":
+  "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}":
     delete:
       summary: "delete transfer learning model by id"
       operationId: deleteTransferLearningModelById

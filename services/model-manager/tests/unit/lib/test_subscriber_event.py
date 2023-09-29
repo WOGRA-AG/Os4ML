@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from lib.subscriber_event import SubscriberEvent
+from src.lib.subscriber_event import SubscriberEvent
 
 
 @pytest.fixture

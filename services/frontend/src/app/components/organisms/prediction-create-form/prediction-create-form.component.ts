@@ -22,7 +22,7 @@ import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
 import { MatSelectModule } from '@angular/material/select';
-import { JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -52,7 +52,6 @@ export interface PredictionFormOutput {
     MatSelectModule,
     NgIf,
     NgForOf,
-    JsonPipe,
   ],
 })
 export class PredictionCreateFormComponent implements OnInit {
