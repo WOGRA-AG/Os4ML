@@ -7,7 +7,7 @@ docker run --rm -u $(id -u):$(id -g) \
   -i /local/oas/model-manager-oas.yaml \
   -t /local/oas/templates \
   -g python-fastapi \
-  --package-name build.openapi_server \
+  --package-name src.build.openapi_server \
   -o /local \
   --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
@@ -16,7 +16,7 @@ docker run --rm -u $(id -u):$(id -g) \
   -i /local/oas/objectstore-manager-oas.yaml \
   -t /local/oas/templates_client \
   -g python \
-  --package-name build.objectstore_client \
+  --package-name src.build.objectstore_client \
   -o /local/src \
   --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
@@ -25,6 +25,12 @@ docker run --rm -u $(id -u):$(id -g) \
   -i /local/oas/job-manager-oas.yaml \
   -t /local/oas/templates_client \
   -g python \
-  --package-name build.job_manager_client \
+  --package-name src.build.job_manager_client \
   -o /local/src \
   --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
+
+mkdir src/build
+mv src/src/build/* src/build
+rm -r src/src
+
+

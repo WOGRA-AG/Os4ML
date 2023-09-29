@@ -3,8 +3,8 @@ from http import HTTPStatus
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from build.openapi_server.main import app
-from exceptions import FileNameNotSpecifiedException
+from src.build.openapi_server.main import app
+from src.exceptions import FileNameNotSpecifiedException
 
 
 @app.exception_handler(FileNameNotSpecifiedException)  # type: ignore

@@ -1,10 +1,10 @@
 import contextlib
-from typing import Callable
+from typing import Any, Callable
 
 from exceptions.interface import HasErrorStatus
 from models.status_message import StatusMessage
 
-ErrorStatusHandler = Callable[[StatusMessage], None]
+ErrorStatusHandler = Callable[[StatusMessage], Any]
 
 
 class ExceptionHandlerException(Exception):

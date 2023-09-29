@@ -5,31 +5,34 @@ from typing import AsyncIterable
 
 from fastapi import Depends
 
-from build.job_manager_client import ApiException, ApiTypeError
-from build.job_manager_client.api.jobmanager_api import JobmanagerApi
-from build.job_manager_client.model.run import Run
-from build.job_manager_client.model.run_params import RunParams
-from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from build.objectstore_client.exceptions import NotFoundException
-from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.databag import Databag
-from exceptions import (
+from src.build.job_manager_client import ApiException, ApiTypeError
+from src.build.job_manager_client.api.jobmanager_api import JobmanagerApi
+from src.build.job_manager_client.model.run import Run
+from src.build.job_manager_client.model.run_params import RunParams
+from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.databag import Databag
+from src.exceptions import (
     DatabagIdUpdateNotAllowedException,
     DatabagNotFoundException,
     DataframeNotFoundException,
     DatasetFileNameNotSpecifiedException,
     DatasetNotFoundException,
 )
-from lib.json_io import decode_json_response, prepare_model_for_api
-from services import (
+from src.lib.json_io import decode_json_response, prepare_model_for_api
+from src.services import (
     DATABAG_CONFIG_FILE_NAME,
     DATABAG_MESSAGE_CHANNEL,
     DATAFRAME_FILE_NAME,
     DATE_FORMAT_STR,
 )
-from services.auth_service import get_parsed_token
-from services.init_api_clients import init_jobmanager_api, init_objectstore_api
-from services.messaging_service import MessagingService
+from src.services.auth_service import get_parsed_token
+from src.services.init_api_clients import (
+    init_jobmanager_api,
+    init_objectstore_api,
+)
+from src.services.messaging_service import MessagingService
 
 
 class DatabagService:
@@ -85,7 +88,7 @@ class DatabagService:
             object_name, usertoken=usertoken
         )
         json_dict = decode_json_response(json_response)
-        return Databag(**json_dict)
+        return Databag(**json_dict)  # type: ignore
 
     def get_databag_by_id(self, databag_id: str, usertoken: str) -> Databag:
         object_name = self._get_databag_object_name(
@@ -129,7 +132,7 @@ class DatabagService:
 
     def _save_databag_file(self, databag: Databag, usertoken: str) -> None:
         object_name = self._get_databag_object_name(
-            databag.id, self.databag_config_file_name
+            databag.id, self.databag_config_file_name  # type: ignore
         )
         data = prepare_model_for_api(databag)
         self.objectstore.put_object_by_name(

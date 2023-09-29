@@ -1,8 +1,8 @@
 import pytest
 
-from build.objectstore_client.model.json_response import JsonResponse
-from build.openapi_server.models.databag import Databag
-from lib.json_io import decode_json_response, prepare_model_for_api
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.databag import Databag
+from src.lib.json_io import decode_json_response, prepare_model_for_api
 
 
 @pytest.mark.parametrize(
@@ -41,7 +41,7 @@ def test_decode_json_response(json_response: JsonResponse, json_dict: str):
     [
         (
             Databag(id="test-uuid", name="test"),
-            '{"id": "test-uuid", "name": "test", "status": null, "run_id": null, "creation_time": null, "databag_type": null, "number_rows": null, "number_columns": null, "columns": null, "dataset_file_name": null, "dataset_url": null}',
+            '{"id": "test-uuid", "name": "test", "status": null, "run_id": null, "creation_time": null, "completion_time": null, "databag_type": null, "number_rows": null, "number_columns": null, "columns": null, "dataset_file_name": null, "dataset_url": null}',
         )
     ],
 )

@@ -16,5 +16,10 @@
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+
+    &.small {
+      max-width: 1000px;
+      margin: auto;
+    }
   }
 }

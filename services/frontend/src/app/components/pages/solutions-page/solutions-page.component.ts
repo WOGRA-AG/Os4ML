@@ -9,8 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Os4mlDefaultTemplateComponent } from '../../templates/os4ml-default-template/os4ml-default-template.component';
-import { SolutionDeteailDialogComponent } from '../solution-deteail-dialog/solution-deteail-dialog.component';
-import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { SolutionDataTableComponent } from '../../organisms/solution-data-table/solution-data-table.component';
 import { SolutionCreateButtonComponent } from '../../organisms/solution-create-button/solution-create-button.component';
 import { DatabagFilterComponent } from '../../organisms/databag-filter/databag-filter.component';
@@ -20,6 +18,7 @@ import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/p
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -82,16 +81,6 @@ export class SolutionsPageComponent {
           data: { databagId },
         });
       });
-  }
-  openSolutionSettingDialog(solution: Solution): void {
-    this.dialog.open(SolutionDeteailDialogComponent, {
-      data: { solution },
-      panelClass: 'setting-dialog',
-      height: '100%',
-      position: {
-        right: '12px',
-      },
-    });
   }
   openCreatePredictionDialog(solutionId: string): void {
     this.dialog.open(PredictionsCreateDialogComponent, {

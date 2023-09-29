@@ -1,0 +1,19 @@
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.solution-detail-delete-solution.title' | translate }}
+</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    {{ 'organisms.solution-detail-delete-solution.description' | translate }}
+  </div>
+  <app-new-button
+    data-testid="solution-delete-button"
+    (click)="deleteSolution.emit()"
+    [variant]="'warn'"
+    [size]="'medium'"
+    [icon]="'delete'"
+    [ariaLabel]="
+      'organisms.solution-detail-delete-solution.button' | translate
+    ">
+    {{ 'organisms.solution-detail-delete-solution.button' | translate }}
+  </app-new-button>
+</div>

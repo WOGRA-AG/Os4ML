@@ -7,17 +7,20 @@ from datetime import datetime
 from io import BytesIO
 from typing import Any, AsyncIterator, Generic, Protocol, TypeVar
 
-from build.job_manager_client import ApiException, ApiTypeError
-from build.job_manager_client.api.jobmanager_api import JobmanagerApi
-from build.job_manager_client.model.run import Run
-from build.job_manager_client.model.run_params import RunParams
-from build.objectstore_client.api.objectstore_api import ObjectstoreApi
-from build.objectstore_client.exceptions import NotFoundException
-from build.objectstore_client.model.json_response import JsonResponse
-from exceptions import ModelIdUpdateNotAllowedException, ModelNotFoundException
-from services import DATE_FORMAT_STR
-from services.auth_service import get_parsed_token
-from services.messaging_service import MessagingService
+from src.build.job_manager_client import ApiException, ApiTypeError
+from src.build.job_manager_client.api.jobmanager_api import JobmanagerApi
+from src.build.job_manager_client.model.run import Run
+from src.build.job_manager_client.model.run_params import RunParams
+from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
+from src.build.objectstore_client.exceptions import NotFoundException
+from src.build.objectstore_client.model.json_response import JsonResponse
+from src.exceptions import (
+    ModelIdUpdateNotAllowedException,
+    ModelNotFoundException,
+)
+from src.services import DATE_FORMAT_STR
+from src.services.auth_service import get_parsed_token
+from src.services.messaging_service import MessagingService
 
 
 class Model(Protocol):
@@ -68,7 +71,7 @@ class ModelService(Generic[T], ABC):
     def create_run_params(self, model: T) -> RunParams:
         raise NotImplementedError
 
-    def create_model(self, model: T, solver_name: str, usertoken: str) -> T:
+    def create_model(self, model: T, usertoken: str) -> T:
         model.id = str(uuid.uuid4())
         model.creation_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
         self._persist_model(model, usertoken=usertoken)

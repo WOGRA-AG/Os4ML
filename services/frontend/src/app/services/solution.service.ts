@@ -101,6 +101,12 @@ export class SolutionService {
     return solutions.find(solution => solution.id === id);
   }
 
+  loadSolutionById(id: string): Observable<Solution> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getSolutionById(id, token))
+    );
+  }
+
   deleteSolutionById(id: string | undefined): Observable<void> {
     if (!id) {
       return of(undefined);

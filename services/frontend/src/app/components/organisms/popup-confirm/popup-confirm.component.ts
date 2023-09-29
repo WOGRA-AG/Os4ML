@@ -37,9 +37,7 @@ export class PopupConfirmComponent {
       messageKey: string;
       onConfirm: Observable<void>;
     }
-  ) {
-    this.dialog.disableClose = true;
-  }
+  ) {}
 
   close(): void {
     this.dialog.close();
