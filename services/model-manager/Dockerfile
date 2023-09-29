@@ -129,7 +129,8 @@ RUN chmod +x /docker-entrypoint.sh
 RUN groupadd -g 1500 poetry && \
     useradd -m -u 1500 -g poetry poetry
 
-COPY --chown=poetry:poetry ./src $PROJECT_DIR
+COPY --chown=poetry:poetry ./src $PROJECT_DIR/src
+COPY --chown=poetry:poetry main.py $PROJECT_DIR/main.py
 USER poetry
 WORKDIR /app
 

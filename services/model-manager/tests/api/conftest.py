@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pytest_mock import MockerFixture
 
-from src.main import app as application
+from main import app as application
 from src.services.databag_service import DatabagService
 from src.services.prediction_service import PredictionSerivce
 from src.services.solution_service import SolutionService
