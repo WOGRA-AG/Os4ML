@@ -31,7 +31,7 @@ export function createSolution(solutionName: string, databagName: string) {
   cy.get('[data-testid="input-databagId"]').click();
   cy.get('mat-option').contains(databagName).click();
   cy.wait(2000);
-  cy.get('[data-testid="input-selected-fields"]').click();
+  cy.get('[data-testid="output-select-field"]').click();
   cy.get('mat-option').first().click();
   cy.get('body').type('{esc}'); // Click anywhere outside the drop-down menu to close it
   cy.wait(2000);
@@ -42,7 +42,7 @@ export function deleteSolution(solutionName: string) {
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-delete-button"]', { timeout: 500 })
+  cy.get('[data-testid="solution-delete-button"]', { timeout: 2000 })
     .scrollIntoView()
     .click();
   cy.get('[data-testid="confirm-popup-button"]', { timeout: 500 }).click();
