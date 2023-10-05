@@ -25,8 +25,9 @@ export function deleteDatabag(databagName: string) {
   cy.get('[data-testid="confirm-popup-button"]', { timeout: 500 }).click();
 }
 export function createSolution(solutionName: string, databagName: string) {
+  cy.wait(20000);
   cy.get('[data-testid="add-solution"]', { timeout: 500 }).first().click();
-  cy.wait(2000);
+  cy.wait(20000);
   cy.get('[data-testid="input-name"]', { timeout: 500 }).type(solutionName);
   cy.get('[data-testid="input-databagId"]').click();
   cy.get('mat-option').contains(databagName).click();
