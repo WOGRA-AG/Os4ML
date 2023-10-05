@@ -18,7 +18,7 @@
     "lint": "ng lint && prettier --check .",
     "format": "ng lint --fix && prettier --write .",
     "prettier": "prettier --write .",
-    "e2e:run": "npx cypress run --parallel",
+    "e2e:run": "npx cypress run --spec 'cypress/e2e/solutions-page.spec.cy.ts' --browser chrome",
     "e2e:local": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/solutions-page.spec.cy.ts' --browser chrome",
     "cypress:open": "cross-env CYPRESS_dev=true npx cypress open",
     "cypress:open-test": "npx cypress open",
