@@ -5,8 +5,6 @@ import {
   deleteSolution,
 } from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
-// @ts-ignore
-const path = require('path');
 
 const inputTimeout = 1000;
 const databagName = `e2e databag ${new Date().toISOString()}`;
