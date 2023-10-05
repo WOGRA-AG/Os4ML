@@ -2,7 +2,7 @@ stages:
   - e2e
 
 .cypress_base:
-  image: cypress/browsers:node18.12.0-chrome103-ff107
+  image: cypress/browsers:latest
   tags:
     - aime
   stage: e2e
