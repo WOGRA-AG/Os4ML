@@ -19,10 +19,6 @@ from src.services import (
     PREDICTION_RESULT_FILE_NAME,
 )
 from src.services.databag_service import DatabagService
-from src.services.init_api_clients import (
-    init_jobmanager_api,
-    init_objectstore_api,
-)
 from src.services.messaging_service import MessagingService
 from src.services.model_service import ModelService
 from src.services.solution_service import SolutionService
@@ -39,8 +35,8 @@ class PredictionSerivce(ModelService[Prediction]):  # type: ignore
         self,
         databag_service: DatabagService = Depends(),
         solution_service: SolutionService = Depends(),
-        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
-        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
+        objectstore: ObjectstoreApi = Depends(),
+        jobmanager: JobmanagerApi = Depends(),
     ):
         super().__init__(objectstore, jobmanager)
         self.databag_service = databag_service

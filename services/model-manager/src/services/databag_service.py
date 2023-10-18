@@ -28,10 +28,6 @@ from src.services import (
     DATE_FORMAT_STR,
 )
 from src.services.auth_service import get_parsed_token
-from src.services.init_api_clients import (
-    init_jobmanager_api,
-    init_objectstore_api,
-)
 from src.services.messaging_service import MessagingService
 
 
@@ -40,8 +36,8 @@ class DatabagService:
 
     def __init__(
         self,
-        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
-        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
+        objectstore: ObjectstoreApi = Depends(),
+        jobmanager: JobmanagerApi = Depends(),
     ):
         self.objectstore = objectstore
         self.jobmanager = jobmanager
