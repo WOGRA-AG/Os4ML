@@ -4,7 +4,7 @@ info:
   description: Job Manager
   version: 1.0.0
 servers:
-  - url: 'http://jobmanager.os4ml.svc.cluster.local:8000'
+  - url: 'http://jobmanager:8000'
 paths:
   "/apis/v1beta1/jobmanager/runs/{solverName}":
     post:
