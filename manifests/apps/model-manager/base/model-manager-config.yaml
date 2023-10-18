@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: model-manager-config
 data:
-  os4mlNS: 'os4ml'
   messageBrokerPublishUrl: 'master.redis.svc.cluster.local'
   messageBrokerSubscribeUrl: 'replica.redis.svc.cluster.local'
   messageBrokerPort: '6379'

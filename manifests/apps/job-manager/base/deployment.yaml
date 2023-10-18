@@ -39,18 +39,8 @@ spec:
                 configMapKeyRef:
                   name: jobmanager-config
                   key: pipelineNS
-            - name: OS4ML_NAMESPACE
-              valueFrom:
-                configMapKeyRef:
-                  name: jobmanager-config
-                  key: os4mlNS
             - name: KF_PIPELINES_SA_TOKEN_PATH
               value: /var/run/secrets/kubeflow/pipelines/token
-            - name: OS4ML_BUCKET_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: jobmanager-config
-                  key: os4mlBucket
           volumeMounts:
             - mountPath: /var/run/secrets/kubeflow/pipelines
               name: volume-kf-pipeline-token
