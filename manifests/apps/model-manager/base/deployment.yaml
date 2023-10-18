@@ -29,11 +29,6 @@ spec:
               name: http
               protocol: TCP
           env:
-            - name: OS4ML_NAMESPACE
-              valueFrom:
-                configMapKeyRef:
-                  name: model-manager-config
-                  key: os4mlNS
             - name: MESSAGE_BROKER_PUBLISH_URL
               valueFrom:
                 configMapKeyRef:
