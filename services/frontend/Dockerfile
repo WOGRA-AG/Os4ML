@@ -1,4 +1,4 @@
-FROM gitlab-registry.wogra.com/developer/images/nginx:1.19.10-alpine as production
+FROM nginxinc/nginx-unprivileged:1.25-alpine as production
 
-COPY nginx/ /etc/nginx/conf.d/
-COPY dist/os4ml/ /usr/share/nginx/html/
+COPY --chown=101:1 nginx/ /etc/nginx/conf.d/
+COPY --chown=101:1 dist/os4ml/ /usr/share/nginx/html/
