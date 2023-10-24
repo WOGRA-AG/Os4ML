@@ -69,6 +69,16 @@ spec:
                 configMapKeyRef:
                   name: workflow-translator-config
                   key: applyNodeToleration
+            - name: SOLVE_RESOURCE_REQUEST_MEMORY
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: solveResourceRequestMemory
+            - name: SOLVE_RESOURCE_REQUEST_CPU
+              valueFrom:
+                configMapKeyRef:
+                  name: workflow-translator-config
+                  key: solveResourceRequestCpu
           resources:
             limits:
               cpu: 500m
