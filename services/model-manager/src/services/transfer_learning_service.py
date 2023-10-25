@@ -33,17 +33,53 @@ class TransferLearningType(enum.Enum):
 class TransferlearningOrigin(enum.Enum):
     HUGGING_FACE = "hugging_face"
     SOLUTION = "solution"
+    TORCH_VISION = "torch_vision"
 
 
 def get_inital_transfer_learing_models() -> list[TransferLearningModel]:
     return [
         TransferLearningModel(
             id=str(uuid.uuid4()),
-            name="bert",
+            name="BERT",
             type="text",
             origin=TransferlearningOrigin.HUGGING_FACE.value,
             value="bert",
-        )
+        ),
+        TransferLearningModel(
+            id=str(uuid.uuid4()),
+            name="DistilBERT",
+            type="text",
+            origin=TransferlearningOrigin.HUGGING_FACE.value,
+            value="distilbert",
+        ),
+        TransferLearningModel(
+            id=str(uuid.uuid4()),
+            name="ALBERT",
+            type="text",
+            origin=TransferlearningOrigin.HUGGING_FACE.value,
+            value="albert",
+        ),
+        TransferLearningModel(
+            id=str(uuid.uuid4()),
+            name="ResNet",
+            type="image",
+            origin=TransferlearningOrigin.TORCH_VISION.value,
+            value="resnet",
+        ),
+        TransferLearningModel(
+            id=str(uuid.uuid4()),
+            name="VisionTransformer",
+            type="image",
+            origin=TransferlearningOrigin.TORCH_VISION.value,
+            value="vit",
+        ),
+        TransferLearningModel(
+            id=str(uuid.uuid4()),
+            name="MobileNet V3",
+            type="image",
+            origin=TransferlearningOrigin.TORCH_VISION.value,
+            value="mobilenetv3",
+        ),
     ]
 
 
