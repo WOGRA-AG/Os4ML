@@ -1,6 +1,6 @@
 import enum
 import json
-from typing import Any
+from typing import Any, Generator, Optional
 
 import yaml
 
@@ -14,6 +14,8 @@ from services import (
     PREPARE_NODE_TOLERATION,
     SOLVE_NODE_SELECTOR,
     SOLVE_NODE_TOLERATION,
+    SOLVE_RESOURCE_REQUEST_CPU,
+    SOLVE_RESOURCE_REQUEST_MEMORY,
     USER_TOKEN_ANNOTATION,
     USER_TOKEN_ENV,
 )
@@ -47,7 +49,7 @@ def get_node_selector_by_pipeline_step(step: PipelineStep) -> dict | None:
     return json.loads(selector)
 
 
-def get_node_toleration_by_pipeline_step(step: PipelineStep) -> dict | None:
+def get_node_toleration_by_pipeline_step(step: PipelineStep) -> list | None:
     if step == PipelineStep.PREPARE:
         toleration = PREPARE_NODE_TOLERATION
     elif step == PipelineStep.SOLVE:
@@ -62,7 +64,7 @@ def get_node_toleration_by_pipeline_step(step: PipelineStep) -> dict | None:
     return obj
 
 
-def _iter_containers(pipeline: dict) -> dict:
+def _iter_containers(pipeline: dict) -> Generator[dict, None, None]:
     for container in pipeline["spec"]["templates"]:
         if "dag" not in container:
             yield container
@@ -82,7 +84,7 @@ class KubeflowParser:
         self.os4ml_namespace_env = os4ml_namespace_env
 
     def get_pipeline_template_by_name(
-        self, name: str, user_token: str = None
+        self, name: str, user_token: Optional[str] = None
     ) -> dict:
         template: str = self.repository.get_pipeline_template_by_name(
             name=name
@@ -93,6 +95,7 @@ class KubeflowParser:
             self._update_user_token_env(container, user_token)
             self._set_os4ml_namespace(container)
             self._set_node_selectors_and_tolerations(name, container)
+            self._add_resource_requests(name, container)
 
         return pipeline
 
@@ -102,10 +105,12 @@ class KubeflowParser:
         container["metadata"]["annotations"][self.annotation] = user_token
         container["container"]["env"].append(self.user_token_env)
 
-    def _set_os4ml_namespace(self, container: dict) -> dict:
+    def _set_os4ml_namespace(self, container: dict) -> None:
         container["container"]["env"].append(self.os4ml_namespace_env)
 
-    def _set_node_selectors_and_tolerations(self, name: str, container: dict):
+    def _set_node_selectors_and_tolerations(
+        self, name: str, container: dict
+    ) -> None:
         step = get_pipeline_step_by_name(name)
         selector = get_node_selector_by_pipeline_step(step)
         toleration = get_node_toleration_by_pipeline_step(step)
@@ -114,3 +119,17 @@ class KubeflowParser:
             container["nodeSelector"] = selector
         if toleration is not None:
             container["tolerations"] = toleration
+
+    def _add_resource_requests(self, name: str, container: dict) -> None:
+        step = get_pipeline_step_by_name(name)
+        if step == PipelineStep.SOLVE and (
+            SOLVE_RESOURCE_REQUEST_CPU or SOLVE_RESOURCE_REQUEST_MEMORY
+        ):
+            requests = {}
+            if SOLVE_RESOURCE_REQUEST_CPU:
+                requests["cpu"] = SOLVE_RESOURCE_REQUEST_CPU
+            if SOLVE_RESOURCE_REQUEST_MEMORY:
+                requests["memory"] = SOLVE_RESOURCE_REQUEST_MEMORY
+            container["container"]["resources"] = {
+                "requests": requests,
+            }

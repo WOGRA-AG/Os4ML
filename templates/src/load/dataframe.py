@@ -143,8 +143,6 @@ def load_image(file: pathlib.Path) -> np.ndarray:
     img = np.asarray(img)
     if len(img.shape) == 2:
         img = np.expand_dims(img, axis=2)
-    print(img.dtype)
     if img.dtype == np.uint16:
-        print("-----------------CONVERTING")
         img = img.astype(np.int32)
     return img

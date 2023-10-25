@@ -30,8 +30,12 @@ There is a lot of work to do. In the near future the following will happen:
 - [x] Solving multi output problems (Spring 2022)
 - [ ] Adding Transfer Learning Support (Summer 2023)
 - [ ] Intelligent Data Labeling (Fall 2023)
+
+## More Information
+If you are interested in contributing, have questions, comments, or thoughts to share, or if you just want to be in the
+know, please consider [joining the Os4ML Slack](https://join.slack.com/t/os4ml/shared_invite/zt-24j5pz3g4-tKaztoxu3JpYQ0gQYy03lw)
    
-## 	Acknowledgment
+## Acknowledgment
 Os4ML is a project of the [WOGRA AG][] research group in cooperation with the 
 German Aerospace Center and is funded by the Ministry of Economic Affairs, 
 Regional Development and Energy as part of the High Tech Agenda of the 
