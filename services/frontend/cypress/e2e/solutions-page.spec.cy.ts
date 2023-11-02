@@ -1,13 +1,16 @@
 import {
   changeSolutionName,
   createSolution,
-  deleteSolution, handleA11yViolations, setupSolutionTestDatabag, visitSolutionPage,
+  deleteSolution,
+  handleA11yViolations,
+  setupSolutionTestDatabag,
+  visitSolutionPage,
 } from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
 
 const solutionTestDatabagName = `e2e solution test databag`;
 const solutionName = `e2e solutionName ${new Date().toISOString()}`;
-const updatedSolutionName= `e2e solutionName xls update ${new Date().toISOString()}`;
+const updatedSolutionName = `e2e solutionName xls update ${new Date().toISOString()}`;
 
 beforeEach('login', () => {
   login();
@@ -36,7 +39,7 @@ describe('Solutions Page', () => {
   });
 
   it('change Solution name', () => {
-    changeSolutionName(solutionName, updatedSolutionName)
+    changeSolutionName(solutionName, updatedSolutionName);
   });
 
   it('delete Solution', () => {

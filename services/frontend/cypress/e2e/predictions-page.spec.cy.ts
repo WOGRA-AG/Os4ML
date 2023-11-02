@@ -11,7 +11,6 @@ const databagName = `e2e databag ${new Date().toISOString()}`;
 const solutionName = `e2e solutionName ${new Date().toISOString()}`;
 const predictionName = `e2e predictionName ${new Date().toISOString()}`;
 
-
 beforeEach('login', () => {
   login();
 });
@@ -25,9 +24,11 @@ beforeEach(() => {
   cy.wait(2000);
 });
 
-function createPrediction(predictionName: string, solutionName: string, csv: string) {
-
-}
+function createPrediction(
+  predictionName: string,
+  solutionName: string,
+  csv: string
+) {}
 
 describe('Predictions Page', () => {
   it('add a Databag xls', () => {
