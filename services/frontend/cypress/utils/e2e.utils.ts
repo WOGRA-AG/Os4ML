@@ -211,16 +211,27 @@ export function createPrediction(
   solutionName: string,
   selectFile: string
 ) {
-  cy.get('[data-testid="add-prediction"]', { timeout: TIMEOUT_SHORT }).first().click();
-  cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).scrollIntoView();
-  cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).type(predictionName);
+  cy.get('[data-testid="add-prediction"]', { timeout: TIMEOUT_SHORT })
+    .first()
+    .click();
+  cy.get('[data-testid="input-name"]', {
+    timeout: TIMEOUT_SHORT,
+  }).scrollIntoView();
+  cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).type(
+    predictionName
+  );
   cy.get('[data-testid="input-solutionId"]', { timeout: TIMEOUT_SHORT })
     .should('not.be.disabled')
     .click();
-  cy.get('mat-option').contains(solutionName, { timeout: TIMEOUT_SHORT }).click();
-  cy.get('[data-testid="file-input"]', { timeout: TIMEOUT_SHORT }).invoke('show')
+  cy.get('mat-option')
+    .contains(solutionName, { timeout: TIMEOUT_SHORT })
+    .click();
+  cy.get('[data-testid="file-input"]', { timeout: TIMEOUT_SHORT })
+    .invoke('show')
     .selectFile(selectFile);
-  cy.get('[data-testid="submit-prediction"]', { timeout: TIMEOUT_SHORT }).click();
+  cy.get('[data-testid="submit-prediction"]', {
+    timeout: TIMEOUT_SHORT,
+  }).click();
   cy.get('[data-testid="finish-upload"]', { timeout: TIMEOUT_LONG }).click();
   cy.get('[data-testid="prediction-item"]', { timeout: TIMEOUT_SHORT })
     .filter(`:contains("${predictionName}")`)
@@ -234,7 +245,9 @@ export function createPrediction(
 export function deletePrediction(predictionName: string) {
   cy.get('[data-testid="prediction-item"]')
     .filter(`:contains("${predictionName}")`)
-    .find('[data-testid="prediction-delete-button"]', {timeout: TIMEOUT_SHORT})
+    .find('[data-testid="prediction-delete-button"]', {
+      timeout: TIMEOUT_SHORT,
+    })
     .click();
 
   cy.get('[data-testid="confirm-popup-button"]', {
@@ -242,7 +255,10 @@ export function deletePrediction(predictionName: string) {
   })
     .should('not.be.disabled')
     .click();
-  cy.get('[data-testid="prediction-table"]').should('not.contain', predictionName);
+  cy.get('[data-testid="prediction-table"]').should(
+    'not.contain',
+    predictionName
+  );
 }
 
 export function handleA11yViolations(violations: Array<Result>) {

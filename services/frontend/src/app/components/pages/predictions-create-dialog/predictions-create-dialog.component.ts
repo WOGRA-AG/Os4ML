@@ -27,7 +27,7 @@ import { PredictionService } from '../../../services/prediction.service';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { UploadingFilesComponent } from '../../organisms/uploading-files/uploading-files.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {DatabagsCreateFormComponent} from "../../organisms/databags-create-form/databags-create-form.component";
+import { DatabagsCreateFormComponent } from '../../organisms/databags-create-form/databags-create-form.component';
 enum PredictionCreateStatus {
   Input = 'input',
   Uploading = 'uploading',

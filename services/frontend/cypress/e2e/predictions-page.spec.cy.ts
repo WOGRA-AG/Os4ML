@@ -4,7 +4,11 @@ import {
   deleteDatabag,
   deleteSolution,
   deletePrediction,
-  visitPredictionsPage, handleA11yViolations, setupSolutionTestDatabag, createPrediction, setupPredictionTestSolution,
+  visitPredictionsPage,
+  handleA11yViolations,
+  setupSolutionTestDatabag,
+  createPrediction,
+  setupPredictionTestSolution,
 } from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
 
@@ -36,7 +40,10 @@ describe('Predictions Page', () => {
   });
 
   it('setup a Solution', () => {
-    setupPredictionTestSolution(predictionTestSolutionName, predictionTestDatabagName);
+    setupPredictionTestSolution(
+      predictionTestSolutionName,
+      predictionTestDatabagName
+    );
   });
 
   it('create Pridiction', () => {
