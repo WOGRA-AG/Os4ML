@@ -1,5 +1,7 @@
 <app-dialog-header (closeDialog)="close()">
-  <span class="on-surface-text">{{ 'databag.settings' | translate }}</span>
+  <span id="dialog-title" class="on-surface-text">{{
+    'databag.settings' | translate
+  }}</span>
 </app-dialog-header>
 
 <mat-dialog-content>
@@ -35,6 +37,7 @@
       </div>
     </app-dialog-section>
   </form>
+  {{ databag.status }}
 </mat-dialog-content>
 
 <mat-dialog-actions>

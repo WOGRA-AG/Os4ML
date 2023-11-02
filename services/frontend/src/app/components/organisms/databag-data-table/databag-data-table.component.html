@@ -57,14 +57,14 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <app-icon-button
+        [ariaLabel]="
+          'organisms.databag_data_table.actions.settings.aria_label' | translate
+        "
         data-testid="databag-settings-button"
         (click)="settingButton.emit(element)"
         [matTooltip]="
           'organisms.databag_data_table.actions.settings.tooltip' | translate
         "
-        attr.aria-label="{{
-          'organisms.databag_data_table.actions.settings.tooltip' | translate
-        }}"
         class="mr-1"
         color="primary"
         icon="edit">

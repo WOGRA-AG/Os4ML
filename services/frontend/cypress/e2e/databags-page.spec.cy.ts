@@ -1,24 +1,17 @@
-//reference path="../../node_modules/cypress/types/net-stubbing.d.ts"/>
-
-import { createDatabag, deleteDatabag } from '../utils/e2e.utils';
+import {
+  changeDatabagName, checkDatabag,
+  createDatabag,
+  deleteDatabag, handleA11yViolations,
+  visitDatabagPage
+} from '../utils/e2e.utils';
 import { login, logout } from '../utils/e2e.login';
 
-const databagTimeout = 1000000;
-const solutionTimeout = 600000;
-const predictionTimeout = 300000;
-const deleteTimeout = 5000;
-const downloadTimeout = 15000;
-const inputTimeout = 1000;
-const standardTimeout = 1000;
-const startTimeout = 2000;
-const databagName = `e2e databag ${new Date().toISOString()}`;
-const solutionName = `e2e solutionName ${new Date().toISOString()}`;
-let updatedDatabagName: string;
-let updatedSolutionName: string;
+const databagNameXls = `e2e databag xls ${new Date().toISOString()}`;
+const updatedDatabagNameXls= `e2e databag xls update ${new Date().toISOString()}`;
+const databagNameDataframeScript = `e2e databag dataframe script ${new Date().toISOString()}`;
+const databagNameZip = `e2e databag zip ${new Date().toISOString()}`;
 
 beforeEach('login', () => {
-  updatedDatabagName = `updated ${databagName}`;
-  updatedSolutionName = `updated ${solutionName}`;
   login();
 });
 
@@ -26,104 +19,55 @@ after('logout', () => {
   logout();
 });
 beforeEach(() => {
-  cy.visit('/#/databags');
-  cy.wait(2000);
+  visitDatabagPage();
+  cy.injectAxe();
 });
 
 describe('Databags Page', () => {
-  it('verify documentation link', () => {
-    const documentationUrl = 'https://wogra-ag.github.io/os4ml-docs/';
-    cy.wait(200);
-    cy.get('[data-testid="add-databag"]', {
-      timeout: startTimeout + standardTimeout,
-    })
-      .first()
-      .click();
-    cy.get('[data-testid="documentation-link"]').should(
-      'have.attr',
-      'href',
-      documentationUrl
-    );
-    cy.get('[data-testid="documentation-link"]').should(
-      'have.attr',
-      'target',
-      '_blank'
-    );
-    cy.get('[data-testid="close-button"]').click();
-    cy.get('[data-testid="create-solution-stepper"]').should('not.exist');
+  it('Has no detectable accessibility violations on load', () => {
+    cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   });
 
   it('add a Databag xls', () => {
     createDatabag(
-      databagName,
-      'cypress/fixtures/titanic.xls',
-      startTimeout + standardTimeout
+      databagNameXls,
+      'cypress/fixtures/titanic.xls'
     );
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${databagName}")`)
-      .should('exist');
   });
 
   it('change Databag name', () => {
-    cy.get('[data-testid="databag-item"]', {
-      timeout: startTimeout + standardTimeout,
-    })
-      .filter(`:contains("${databagName}")`)
-      .find('[data-testid="databag-settings-button"]')
-      .click();
-    cy.get('#mat-input-0').clear({ timeout: inputTimeout });
-    cy.get('#mat-input-0').type(updatedDatabagName, {
-      timeout: inputTimeout,
-    });
-    cy.get('#update-databag-button').click();
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${updatedDatabagName}")`)
-      .should('exist');
-  });
-
-  it('delete a Databag', () => {
-    deleteDatabag(updatedDatabagName);
-    cy.get('[data-testid="databag-page"]').should('not.contain', databagName);
+    changeDatabagName(databagNameXls, updatedDatabagNameXls)
   });
 
   it('add a Databag dataframe script', () => {
-    updatedDatabagName = databagName + ' dataframe script';
-    createDatabag(updatedDatabagName, 'cypress/fixtures/dataframe_script.py');
-    cy.get('[data-testid="databag-item"]')
-      .filter(`:contains("${updatedDatabagName}")`)
-      .should('exist');
+    createDatabag(databagNameDataframeScript, 'cypress/fixtures/dataframe_script.py');
+  });
+
+  it('add a Databag zip', () => {
+    createDatabag(databagNameZip, 'cypress/fixtures/raw_data_small.zip');
+  });
+
+  it('check a Databag xls', () => {
+    checkDatabag(updatedDatabagNameXls);
+  });
+
+  it('check a Databag dataframe script', () => {
+    checkDatabag(databagNameDataframeScript);
+  });
+
+  it('check a Databag zip', () => {
+    checkDatabag(databagNameZip);
+  });
+
+  it('delete a Databag xls', () => {
+    deleteDatabag(updatedDatabagNameXls);
   });
 
   it('delete a Databag dataframe script', () => {
-    updatedDatabagName = databagName + ' dataframe script';
-    deleteDatabag(updatedDatabagName);
-    cy.get('[data-testid="databag-page"]').should(
-      'not.contain',
-      updatedDatabagName
-    );
+    deleteDatabag(databagNameDataframeScript);
+  });
+
+  it('delete a Databag zip', () => {
+    deleteDatabag(databagNameZip);
   });
 });
-// it('download model', () => {
-//
-// });
-//
-// it('add prediction', () => {
-//
-// });
-//
-// it('add a Databag tif', () => {
-//
-// });
-//
-// it('add a Databag url', () => {
-//
-// });
-//
-// it('add a Databag mnist', () => {
-//
-// });
-//
-// it('add a Databag mnist', () => {
-//
-// });
-//

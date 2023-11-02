@@ -17,7 +17,11 @@ import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-templ
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { UploadingFilesComponent } from '../../organisms/uploading-files/uploading-files.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+enum DatabagCreateStatus {
+  Input = 'input',
+  Uploading = 'uploading',
+  Done = 'done',
+}
 @Component({
   selector: 'app-databags-create-dialog',
   templateUrl: './databags-create-dialog.component.html',
@@ -34,7 +38,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
 })
 export class DatabagsCreateDialogComponent implements OnDestroy {
-  public submitting = false;
+  public DatabagCreateStatusEnum = DatabagCreateStatus;
+  public databagCreateStatus: DatabagCreateStatus = DatabagCreateStatus.Input;
   public uploadingFileName = '';
   public databagUploadProgress$: BehaviorSubject<number>;
   private cancelUpload$: Subject<void> = new Subject<void>();
@@ -45,22 +50,20 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     private databagService: DatabagService,
     public dialogRef: MatDialogRef<DatabagsCreateDialogComponent>
   ) {
+    dialogRef.id = 'dialog-title';
     this.databagUploadProgress$ =
       this.databagService.getUploadDatabagFileProgress();
   }
-
   close(): void {
-    if (this.submitting && !(this.databagUploadProgress$.getValue() === 100)) {
+    if (this.databagCreateStatus !== DatabagCreateStatus.Done) {
       this.cancelUpload();
     }
     this.dialogRef.close();
   }
-
   public cancelUpload(): void {
     this.cancelUpload$.next();
     this.dialogRef.close();
   }
-
   ngOnDestroy(): void {
     this.cancelUpload$.next();
     this.cancelUpload$.complete();
@@ -70,7 +73,7 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     this.router.navigate(['databags']);
   }
   public submitDatabag(databagFormOutput: DatabagFormOutput): void {
-    this.submitting = true;
+    this.databagCreateStatus = DatabagCreateStatus.Uploading;
     const databag: Databag = {
       name: databagFormOutput.databagName,
     };
@@ -99,7 +102,9 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
         this.cancelUpload$
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+      .subscribe(() => {
+        this.databagCreateStatus = DatabagCreateStatus.Done;
+      });
   }
   private createUrlDatabag(
     databagFormOutput: DatabagFormOutput,
@@ -110,6 +115,8 @@ export class DatabagsCreateDialogComponent implements OnDestroy {
     this.databagService
       .createUrlDatabag(databag, this.cancelUpload$)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+      .subscribe(() => {
+        this.databagCreateStatus = DatabagCreateStatus.Done;
+      });
   }
 }

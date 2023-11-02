@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [NgIf, MatButtonModule, MatRippleModule, NgClass, MatIconModule],
 })
 export class NewButtonComponent {
+  @Input() public dataTestid?: string;
   @Input() public type: 'submit' | 'button' | 'reset' = 'button';
   @Input() public variant: 'primary' | 'secondary' | 'text' | 'warn' =
     'primary';
