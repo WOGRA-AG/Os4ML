@@ -71,7 +71,7 @@ export function deleteDatabag(databagName: string) {
     timeout: TIMEOUT_SHORT,
   });
 }
-export function visitSolutionPage(): void {
+export function visitSolutionsPage(): void {
   cy.visit('/#/solutions');
   cy.get('[data-testid="solutions-page"]', { timeout: 600000 }).should(
     'be.visible'
@@ -173,7 +173,78 @@ export function deleteSolution(solutionName: string) {
   cy.get('[data-testid="solution-table"]').should('not.contain', solutionName);
 }
 
-export function deletePrediction(sfef: string): void {}
+export function visitPredictionsPage(): void {
+  cy.visit('/#/predictions');
+  cy.get('[data-testid="predictions-page"]', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
+}
+
+export function setupPredictionTestSolution(
+  predictionTestSolutionName: string,
+  predictionTestDatabagName: string
+): void {
+  visitSolutionsPage();
+  cy.get('[data-testid="solution-item"]')
+    .should('exist')
+    .then($items => {
+      const item = $items.filter((index, el) => {
+        return Cypress.$(el).text().includes(predictionTestSolutionName);
+      });
+      if (item.length === 0) {
+        createSolution(predictionTestSolutionName, predictionTestDatabagName);
+      }
+    });
+  cy.get('[data-testid="solution-item"]')
+    .filter(`:contains("${predictionTestSolutionName}")`)
+    .should('exist');
+  cy.get('[data-testid="solution-item"]')
+    .filter(`:contains("${predictionTestSolutionName}")`)
+    .contains('Done', {
+      timeout: TIMEOUT_LONG,
+    });
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+}
+
+export function createPrediction(
+  predictionName: string,
+  solutionName: string,
+  selectFile: string
+) {
+  cy.get('[data-testid="add-prediction"]', { timeout: TIMEOUT_SHORT }).first().click();
+  cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).scrollIntoView();
+  cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).type(predictionName);
+  cy.get('[data-testid="input-solutionId"]', { timeout: TIMEOUT_SHORT })
+    .should('not.be.disabled')
+    .click();
+  cy.get('mat-option').contains(solutionName, { timeout: TIMEOUT_SHORT }).click();
+  cy.get('[data-testid="file-input"]', { timeout: TIMEOUT_SHORT }).invoke('show')
+    .selectFile(selectFile);
+  cy.get('[data-testid="submit-prediction"]', { timeout: TIMEOUT_SHORT }).click();
+  cy.get('[data-testid="finish-upload"]', { timeout: TIMEOUT_LONG }).click();
+  cy.get('[data-testid="prediction-item"]', { timeout: TIMEOUT_SHORT })
+    .filter(`:contains("${predictionName}")`)
+    .should('exist');
+  cy.get('[data-testid="prediction-item"]', { timeout: TIMEOUT_SHORT })
+    .filter(`:contains("${predictionName}")`)
+    .contains('Done', {
+      timeout: TIMEOUT_LONG,
+    });
+}
+export function deletePrediction(predictionName: string) {
+  cy.get('[data-testid="prediction-item"]')
+    .filter(`:contains("${predictionName}")`)
+    .find('[data-testid="prediction-delete-button"]', {timeout: TIMEOUT_SHORT})
+    .click();
+
+  cy.get('[data-testid="confirm-popup-button"]', {
+    timeout: TIMEOUT_SHORT,
+  })
+    .should('not.be.disabled')
+    .click();
+  cy.get('[data-testid="prediction-table"]').should('not.contain', predictionName);
+}
+
 export function handleA11yViolations(violations: Array<Result>) {
   violations.forEach(violation => {
     // Für jeden Verstoß werden die betroffenen Elemente (Knoten) aufgelistet

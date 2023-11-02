@@ -1,6 +1,5 @@
 stages:
   - e2e
-
 .cypress_base:
   image: cypress/browsers:latest
   tags:

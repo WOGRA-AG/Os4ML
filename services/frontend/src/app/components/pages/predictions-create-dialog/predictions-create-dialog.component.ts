@@ -27,6 +27,12 @@ import { PredictionService } from '../../../services/prediction.service';
 import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { UploadingFilesComponent } from '../../organisms/uploading-files/uploading-files.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {DatabagsCreateFormComponent} from "../../organisms/databags-create-form/databags-create-form.component";
+enum PredictionCreateStatus {
+  Input = 'input',
+  Uploading = 'uploading',
+  Done = 'done',
+}
 
 @Component({
   selector: 'app-predictions-create-dialog',
@@ -44,10 +50,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     NgIf,
     PredictionCreateFormComponent,
     UploadingFilesComponent,
+    DatabagsCreateFormComponent,
   ],
   providers: [GetSolutionByIdPipe],
 })
 export class PredictionsCreateDialogComponent implements OnDestroy {
+  public PredictionCreateStatusEnum = PredictionCreateStatus;
+  public predictionCreateStatus: PredictionCreateStatus =
+    PredictionCreateStatus.Input;
   public solutions$: Observable<Solution[]>;
   public predictionUploadProgress$: BehaviorSubject<number>;
   public submitting = false;
@@ -74,10 +84,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   close(): void {
-    if (
-      this.submitting &&
-      !(this.predictionUploadProgress$.getValue() === 100)
-    ) {
+    if (this.predictionCreateStatus !== PredictionCreateStatus.Done) {
       this.cancelUpload();
     }
     this.dialogRef.close();
@@ -97,7 +104,7 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
   }
 
   public submitPrediction(predictionFormOutput: PredictionFormOutput): void {
-    this.submitting = true;
+    this.predictionCreateStatus = PredictionCreateStatus.Uploading;
     this.selectedSolutionId = predictionFormOutput.solutionId;
     this.createPrediction(predictionFormOutput);
   }
@@ -150,7 +157,9 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         this.cancelUpload$
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+      .subscribe(() => {
+        this.predictionCreateStatus = PredictionCreateStatus.Done;
+      });
   }
 
   private createUrlPrediction(
@@ -164,6 +173,8 @@ export class PredictionsCreateDialogComponent implements OnDestroy {
         this.cancelUpload$
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+      .subscribe(() => {
+        this.predictionCreateStatus = PredictionCreateStatus.Done;
+      });
   }
 }

@@ -22,7 +22,6 @@ import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confi
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',

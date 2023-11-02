@@ -11,7 +11,7 @@
     </app-icon-button>
   </ng-container>
   <app-prediction-create-form
-    *ngIf="(solutions$ | async) && !submitting"
+    *ngIf="predictionCreateStatus === PredictionCreateStatusEnum.Input"
     [solutions]="(solutions$ | async) ?? []"
     [selectedSolutionId]="data?.solutionId"
     (downloadPredictionTemplate)="
@@ -20,10 +20,16 @@
     (submitPrediction)="submitPrediction($event)"
     main>
   </app-prediction-create-form>
-  <div main *ngIf="submitting">
+  <div
+    main
+    *ngIf="
+      predictionCreateStatus === PredictionCreateStatusEnum.Uploading ||
+      predictionCreateStatus === PredictionCreateStatusEnum.Done
+    ">
     <app-uploading-files
       [fileName]="uploadingFileName"
       [progress]="(predictionUploadProgress$ | async) ?? 0"
+      [uploadDone]="predictionCreateStatus === PredictionCreateStatusEnum.Done"
       (finishUpload)="finishUpload()"
       (cancelUpload)="cancelUpload()">
     </app-uploading-files>

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Solution } from '../../../../../build/openapi/modelmanager';
 import {
   AbstractControl,
@@ -22,7 +29,7 @@ import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { DocumentationHintTextComponent } from '../../molecules/documentation-hint-text/documentation-hint-text.component';
 import { MatSelectModule } from '@angular/material/select';
-import { NgForOf, NgIf } from '@angular/common';
+import {JsonPipe, NgForOf, NgIf} from '@angular/common';
 
 export interface PredictionFormOutput {
   predictionName: string;
@@ -52,9 +59,10 @@ export interface PredictionFormOutput {
     MatSelectModule,
     NgIf,
     NgForOf,
+    JsonPipe,
   ],
 })
-export class PredictionCreateFormComponent implements OnInit {
+export class PredictionCreateFormComponent implements OnInit, OnChanges {
   @Input() public selectedSolutionId: string | undefined;
   @Input() public solutions: Solution[] = [];
   @Output() public submitPrediction = new EventEmitter<PredictionFormOutput>();
@@ -102,8 +110,21 @@ export class PredictionCreateFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.solutions.length === 0) {
+      this.solutionId.disable();
+    } else {
+      this.solutionId.enable();
+    }
     if (this.selectedSolutionId) {
       this.solutionId.setValue(this.selectedSolutionId);
+    }
+  }
+
+  ngOnChanges(): void {
+    if (this.solutions.length === 0) {
+      this.solutionId.disable();
+    } else {
+      this.solutionId.enable();
     }
   }
 
