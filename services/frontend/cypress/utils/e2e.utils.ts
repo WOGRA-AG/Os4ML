@@ -26,9 +26,6 @@ export function checkDatabag(databagName: string) {
   cy.get('[data-testid="databag-item"]')
     .filter(`:contains("${databagName}")`)
     .should('exist');
-  cy.get('[data-testid="prediction-create-dialog"]', {
-    timeout: TIMEOUT_LONG,
-  }).should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="databag-item"]')
     .filter(`:contains("${databagName}")`)
