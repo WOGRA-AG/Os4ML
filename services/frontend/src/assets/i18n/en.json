@@ -332,7 +332,10 @@
       "button.close": "Close"
     },
     "predictions_page.title": "Predictions",
-    "prediction_create_dialog.title": "Create Predictions",
+    "prediction_create_dialog": {
+      "title": "Create Predictions",
+      "button.close": "Close"
+    },
     "transfer_learning_page": {
       "title": "Transfer learning models",
       "placeholder.title": "No transfer learning models have been loaded!"

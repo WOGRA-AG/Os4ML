@@ -26,6 +26,9 @@ export function checkDatabag(databagName: string) {
   cy.get('[data-testid="databag-item"]')
     .filter(`:contains("${databagName}")`)
     .should('exist');
+  cy.get('[data-testid="prediction-create-dialog"]', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="databag-item"]')
     .filter(`:contains("${databagName}")`)
@@ -106,6 +109,9 @@ export function createSolution(solutionName: string, databagName: string) {
   cy.get('[data-testid="add-solution"]', { timeout: TIMEOUT_SHORT })
     .first()
     .click();
+  cy.get('[data-testid="solution-create-dialog"]', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="input-name"]', { timeout: TIMEOUT_SHORT }).type(
     solutionName
@@ -214,6 +220,10 @@ export function createPrediction(
   cy.get('[data-testid="add-prediction"]', { timeout: TIMEOUT_SHORT })
     .first()
     .click();
+  cy.get('[data-testid="prediction-create-dialog"]', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="input-name"]', {
     timeout: TIMEOUT_SHORT,
   }).scrollIntoView();
@@ -249,6 +259,7 @@ export function deletePrediction(predictionName: string) {
       timeout: TIMEOUT_SHORT,
     })
     .click();
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
   cy.get('[data-testid="confirm-popup-button"]', {
     timeout: TIMEOUT_SHORT,

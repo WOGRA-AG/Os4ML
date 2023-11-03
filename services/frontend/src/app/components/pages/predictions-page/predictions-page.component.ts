@@ -88,7 +88,9 @@ export class PredictionsPageComponent {
     });
   }
   addDatabag(): void {
-    this.dialog.open(DatabagsCreateDialogComponent);
+    this.dialog.open(DatabagsCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
+    });
   }
   addSolution(): void {
     this.databagId$
@@ -96,6 +98,7 @@ export class PredictionsPageComponent {
       .subscribe(databagId => {
         this.dialog.open(SolutionCreateDialogComponent, {
           data: { databagId },
+          ariaLabelledBy: 'dialog-title',
         });
       });
   }
@@ -105,6 +108,7 @@ export class PredictionsPageComponent {
       .subscribe(solutionId => {
         this.dialog.open(PredictionsCreateDialogComponent, {
           data: { solutionId },
+          ariaLabelledBy: 'dialog-title',
         });
       });
   }

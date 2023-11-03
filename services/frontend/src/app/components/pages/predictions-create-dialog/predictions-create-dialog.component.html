@@ -1,9 +1,10 @@
-<app-os4ml-dialog-template>
+<app-os4ml-dialog-template data-testid="prediction-create-dialog">
   <ng-container header>
-    <h1 header role="header" class="headline-medium primary-text">
+    <h1 header id="dialog-title" class="headline-medium primary-text">
       {{ 'pages.prediction_create_dialog.title' | translate }}
     </h1>
     <app-icon-button
+      [ariaLabel]="'pages.prediction_create_dialog.button.close' | translate"
       data-testid="close-button"
       (click)="close()"
       icon="close"
