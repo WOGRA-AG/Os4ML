@@ -1,20 +1,47 @@
+@import 'components/atoms/theme/media-queries.scss';
+
 :host {
-  display: flex;
-  height: 100%;
-}
 
-.app-wrapper {
-  padding-left: 205px;
-  display: flex;
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
-nav {
+nav#header-nav {
+  display: flex;
+  height: 4rem;
+  width: 100%;
+  padding: 1rem;
+  justify-content: space-between;
+
+  @media #{$medium-and-up} {
+    display: none;
+  }
+
+  a {
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    .logo {
+      max-width: 110px;
+      text-decoration: none;
+    }
+  }
+
+  .toggle-mobile-nav {
+    z-index: 10;
+  }
+
+}
+
+nav#side-nav {
   position: fixed;
+  flex: 1;
   width: 205px;
   height: 100%;
   bottom: 0px;
+  z-index: 1;
 
   a {
     display: inline-flex;
@@ -24,7 +51,32 @@ nav {
     text-decoration: none;
     .logo {
       width: 75%;
+      max-width: 110px;
       text-decoration: none;
     }
   }
+
+
+  display: none;
+  @media #{$medium-and-up} {
+    display: flex;
+  }
+
+  &.show-mobile-menu {
+    display: flex;
+    width: 100%;
+  }
 }
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media #{$medium-and-up} {
+    padding-left: 205px;
+  }
+}
+
+
+

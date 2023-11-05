@@ -1,4 +1,17 @@
-<nav class="surface">
+<nav id="header-nav" class="surface">
+  <a [routerLink]="'/'">
+    <img
+      class="logo"
+      src="assets/logos/os4ml-logo-landscape.svg"
+      alt="Os4ML Logo" />
+  </a>
+  <app-hamburger-button
+    [isActive]="showSidebar"
+    class="toggle-mobile-nav"
+    (click)="showSidebar = !showSidebar">
+  </app-hamburger-button>
+</nav>
+<nav id="side-nav" class="surface" [class.show-mobile-menu]="showSidebar">
   <app-side-nav>
     <ng-container identity>
       <a [routerLink]="'/'">
@@ -33,6 +46,7 @@
     </ng-container>
     <ng-container secondary-nav>
       <a
+        (click)="showSidebar = false"
         data-testid="transfer-learning-page-link"
         [routerLink]="['/transfer-learning']">
         <app-side-nav-item>
@@ -60,6 +74,10 @@
     </ng-container>
   </app-side-nav>
 </nav>
+
+<!--<div class="header-nav">-->
+<!--  <div class="sidebar-toggle" (click)="showSidebar = !showSidebar">plop</div>-->
+<!--</div>-->
 <div class="app-wrapper background">
   <router-outlet></router-outlet>
 </div>

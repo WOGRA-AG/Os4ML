@@ -1,3 +1,5 @@
+@import '../../atoms/theme/media-queries.scss';
+
 :host {
   width: 100%;
 }
@@ -15,4 +17,12 @@
 .actions {
   display: flex;
   justify-content: flex-end;
+
+  flex-direction: column;
+
+  @media #{$medium-and-up} {
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
 }
