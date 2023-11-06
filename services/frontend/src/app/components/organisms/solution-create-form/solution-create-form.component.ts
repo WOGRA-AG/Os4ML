@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -57,7 +64,7 @@ interface TransferLearningSettingFormGroup {
     TransferLearningModelCreateButtonComponent,
   ],
 })
-export class SolutionCreateFormComponent implements OnInit {
+export class SolutionCreateFormComponent implements OnInit, OnChanges {
   @Input() public selectedDatabagId: string | undefined;
   @Input() public databags: Databag[] = [];
   @Input() public transferLearningModels: TransferLearningModel[] = [];
@@ -125,12 +132,23 @@ export class SolutionCreateFormComponent implements OnInit {
   ngOnInit(): void {
     this.setInitialDatabagId();
     this.initTransferLearningSettings();
+    this.outputFields.disable();
+    this.inputFields.disable();
+  }
+  ngOnChanges(): void {
+    if (this.databags.length === 0) {
+      this.databagId.disable();
+    } else {
+      this.databagId.enable();
+    }
   }
   public selectDatabagColumns(databagId: string): void {
     const databag = this.databagService.getDatabagById(databagId);
     if (databag && databag.columns) {
       const databagColumns = databag.columns.filter(column => column.type);
       this.updateDatabagColumns(databagColumns);
+      this.outputFields.enable();
+      this.inputFields.enable();
     }
   }
   public modelOfTypeExists(type: string): boolean {
