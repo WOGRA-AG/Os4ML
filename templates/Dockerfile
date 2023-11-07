@@ -1,5 +1,5 @@
 ARG POETRY_VERSION=1.5.1
-FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
 
 COPY oas/ /oas
 
@@ -12,7 +12,7 @@ RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
 
 # From: https://github.com/michael0liver/python-poetry-docker-example/blob/master/docker/Dockerfile
-FROM gitlab-registry.wogra.com/developer/images/python:3.9.10-slim as python-base
+FROM python:3.9.10-slim as python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \

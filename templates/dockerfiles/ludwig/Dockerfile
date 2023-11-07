@@ -1,5 +1,5 @@
 ARG POETRY_VERSION=1.6.1
-FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
 
 COPY oas/ /oas
 
