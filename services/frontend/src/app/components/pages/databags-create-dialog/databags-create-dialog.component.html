@@ -1,9 +1,10 @@
-<app-os4ml-dialog-template>
+<app-os4ml-dialog-template data-testid="databag-create-dialog">
   <ng-container header>
-    <h1 header role="header" class="headline-medium primary-text">
+    <h1 header id="dialog-title" class="headline-medium primary-text">
       {{ 'pages.databag_create_dialog.title' | translate }}
     </h1>
     <app-icon-button
+      [ariaLabel]="'pages.databag_create_dialog.button.close' | translate"
       data-testid="close-button"
       (click)="close()"
       icon="close"
@@ -11,14 +12,20 @@
     </app-icon-button>
   </ng-container>
   <app-databags-create-form
-    *ngIf="!submitting"
+    *ngIf="databagCreateStatus === DatabagCreateStatusEnum.Input"
     (submitDatabag)="submitDatabag($event)"
     main>
   </app-databags-create-form>
-  <div main *ngIf="submitting">
+  <div
+    main
+    *ngIf="
+      databagCreateStatus === DatabagCreateStatusEnum.Uploading ||
+      databagCreateStatus === DatabagCreateStatusEnum.Done
+    ">
     <app-uploading-files
       [fileName]="uploadingFileName"
       [progress]="(databagUploadProgress$ | async) ?? 0"
+      [uploadDone]="databagCreateStatus === DatabagCreateStatusEnum.Done"
       (finishUpload)="finishUpload()"
       (cancelUpload)="close()"></app-uploading-files>
   </div>

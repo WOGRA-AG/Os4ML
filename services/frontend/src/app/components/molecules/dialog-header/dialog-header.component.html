@@ -3,6 +3,7 @@
     <ng-content></ng-content>
   </h6>
   <app-icon-button
+    [ariaLabel]="'close'"
     data-testid="close-button"
     (click)="closeDialog.emit(true)"
     icon="close"

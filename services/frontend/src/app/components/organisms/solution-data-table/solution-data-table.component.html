@@ -73,9 +73,9 @@
         [matTooltip]="
           'organisms.solution_data_table.actions.settings.tooltip' | translate
         "
-        attr.aria-label="{{
+        [ariaLabel]="
           'organisms.solution_data_table.actions.settings.tooltip' | translate
-        }}"
+        "
         class="mr-1"
         color="primary"
         icon="settings_applications">
@@ -92,10 +92,10 @@
           'organisms.solution_data_table.actions.show_predictions.tooltip'
             | translate
         "
-        attr.aria-label="{{
+        [ariaLabel]="
           'organisms.solution_data_table.actions.show_predictions.tooltip'
             | translate
-        }}"
+        "
         color="primary"
         icon="batch_prediction">
       </app-icon-button>
@@ -103,9 +103,7 @@
         data-testid="create-prediction-button"
         (click)="createPredictionButton.emit(element.id)"
         [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
-        attr.aria-label="{{
-          'solution.detail.tooltips.add_prediction' | translate
-        }}"
+        [ariaLabel]="'solution.detail.tooltips.add_prediction' | translate"
         color="primary"
         icon="add">
       </app-icon-button>

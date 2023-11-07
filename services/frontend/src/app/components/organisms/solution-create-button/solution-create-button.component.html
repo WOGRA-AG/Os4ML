@@ -11,6 +11,7 @@
 </app-new-button>
 
 <app-icon-button
+  [ariaLabel]="'organisms.solution_create_button.label' | translate"
   *ngIf="isFAB"
   (click)="addSolution.emit()"
   [matTooltip]="'organisms.solution_create_button.label' | translate"
