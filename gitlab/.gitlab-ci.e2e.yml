@@ -1,12 +1,12 @@
-e2e:
-  image: cypress/browsers:node18.12.0-chrome103-ff107
+stages:
+  - e2e
+.cypress_base:
+  image: cypress/browsers:latest
   tags:
     - aime
   stage: e2e
   needs:
     - reset
-  script:
-    - cd services/frontend && npm ci && npx cypress run --browser chrome
   artifacts:
     when: always
     paths:
@@ -21,3 +21,23 @@ e2e:
     - if: $CI_PIPELINE_SOURCE
       when: delayed
       start_in: 30 seconds
+
+root_page_test:
+  extends: .cypress_base
+  script:
+    - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/root-page.spec.cy.ts' --browser chrome
+
+databags_page_test:
+  extends: .cypress_base
+  script:
+    - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/databags-page.spec.cy.ts' --browser chrome
+
+solutions_page_test:
+  extends: .cypress_base
+  script:
+    - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/solutions-page.spec.cy.ts' --browser chrome
+
+predictions_page_test:
+  extends: .cypress_base
+  script:
+    - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/predictions-page.spec.cy.ts' --browser chrome

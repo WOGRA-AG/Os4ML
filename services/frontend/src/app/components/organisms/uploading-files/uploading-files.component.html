@@ -5,6 +5,7 @@
   {{ fileName }}
 </div>
 <mat-progress-bar
+  aria-label="'organisms.uploading_files.progress_bar.aria_label' | translate"
   mode="determinate"
   aria-valuemin="0"
   aria-valuemax="100"
@@ -25,10 +26,12 @@
 </div>
 <app-documentation-hint-text></app-documentation-hint-text>
 <app-new-button
+  [dataTestid]="'finish-upload'"
   (click)="finishUpload.emit()"
-  [disabled]="!(progress === 100)"
+  [disabled]="!uploadDone"
   [size]="'medium'"
-  [ariaLabel]="'organisms.uploading_files.finish_upload.aria_label' | translate"
-  data-testid="finish-upload">
+  [ariaLabel]="
+    'organisms.uploading_files.finish_upload.aria_label' | translate
+  ">
   {{ 'organisms.uploading_files.finish_upload.button' | translate }}
 </app-new-button>

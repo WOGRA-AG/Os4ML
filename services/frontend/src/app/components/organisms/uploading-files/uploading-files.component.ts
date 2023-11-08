@@ -23,6 +23,7 @@ import { NgIf } from '@angular/common';
 export class UploadingFilesComponent {
   @Input() public fileName = '';
   @Input() public progress = 0;
+  @Input() public uploadDone = false;
   @Output() public finishUpload = new EventEmitter<void>();
   @Output() public cancelUpload = new EventEmitter<void>();
 }

@@ -59,6 +59,9 @@
       "activate-dark-mode": "Dark mode"
     },
     "uploading_files": {
+      "progress_bar": {
+        "aria_label": "progress bar"
+      },
       "cancel_upload": {
         "button": "Cancel upload",
         "aria_label": "Cancel upload"
@@ -97,7 +100,8 @@
       },
       "actions": {
         "settings": {
-          "tooltip": "Databag settings"
+          "tooltip": "Databag settings",
+          "aria_label": "Databag settings"
         }
       }
     },
@@ -328,9 +332,16 @@
     "databags_page.title": "Databags",
     "databag_create_dialog.title": "Create databag",
     "solutions_page.title": "Solutions",
-    "solution_create_dialog.title": "Create solution",
     "predictions_page.title": "Predictions",
-    "prediction_create_dialog.title": "Create predictions",
+    "solution_create_dialog": {
+      "title": "Create solution",
+      "button.close": "Close"
+    },
+    "predictions_page.title": "Predictions",
+    "prediction_create_dialog": {
+      "title": "Create predictions",
+      "button.close": "Close"
+    },
     "transfer_learning_page": {
       "title": "Transfer learning models",
       "placeholder.title": "No transfer learning models have been loaded!"
@@ -395,9 +406,15 @@
       "number_of_samples": "Samples",
       "creation": "Creation",
       "actions": "Actions",
-      "tooltips": {
-        "settings": "Databag settings",
-        "add_solution": "Add solution"
+      "buttons": {
+        "settings": {
+          "tooltip": "Databag settings",
+          "aria_label": ""
+        },
+        "add_solution": {
+          "tooltip": "Add solution",
+          "aria_label": ""
+        }
       }
     },
     "empty": "Get started with Machine Learning",
