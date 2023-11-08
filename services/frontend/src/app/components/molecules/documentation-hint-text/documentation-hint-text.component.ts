@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import {NewButtonComponent} from "../new-button/new-button.component";
+import { NewButtonComponent } from '../new-button/new-button.component';
 
 @Component({
   selector: 'app-documentation-hint-text',
