@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <nav id="header-nav" class="surface">
   <a [routerLink]="'/'">
     <img
@@ -13,75 +12,71 @@
   </app-hamburger-button>
 </nav>
 <nav id="side-nav" class="surface" [class.show-mobile-menu]="showSidebar">
-  =======
-  <nav class="surface" aria-label="Hauptnavigation">
-    >>>>>>> bb295024b6355f0bcdb5f4ac7d195a1bab210b4e
-    <app-side-nav>
-      <ng-container identity>
-        <a [routerLink]="'/'">
-          <img
-            class="logo"
-            src="assets/logos/os4ml-logo.svg"
-            alt="Os4ML Logo" />
-        </a>
-      </ng-container>
-      <ng-container main-nav>
-        <a data-testid="databags-page-link" [routerLink]="['/databags']">
-          <app-side-nav-item>
-            <mat-icon matListItemIcon>folder_open</mat-icon>
-            <b class="nav-caption">{{
-              'root.navigation.databags' | translate
-            }}</b>
-          </app-side-nav-item>
-        </a>
-        <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
-          <app-side-nav-item>
-            <mat-icon matListItemIcon>lightbulb</mat-icon>
-            <b class="nav-caption">{{
-              'root.navigation.solutions' | translate
-            }}</b>
-          </app-side-nav-item>
-        </a>
-        <a data-testid="predictions-page-link" [routerLink]="['/predictions']">
-          <app-side-nav-item>
-            <mat-icon matListItemIcon>batch_prediction</mat-icon>
-            <b class="nav-caption">{{
-              'root.navigation.predictions' | translate
-            }}</b>
-          </app-side-nav-item>
-        </a>
-      </ng-container>
-      <ng-container secondary-nav>
-        <a
-          (click)="showSidebar = false"
-          data-testid="transfer-learning-page-link"
-          [routerLink]="['/transfer-learning']">
-          <app-side-nav-item>
-            <mat-icon matListItemIcon>mediation</mat-icon>
-            <b class="nav-caption">
-              {{ 'root.navigation.transfer-learning' | translate }}
-            </b>
-          </app-side-nav-item>
-        </a>
-      </ng-container>
-      <ng-container footer-nav>
-        <a
-          data-testid="documentation-link"
-          href="https://wogra-ag.github.io/os4ml-docs/"
-          target="_blank">
-          <app-new-button
-            variant="text"
-            size="small"
-            icon="description"
-            [ariaLabel]="'root.navigation.documentation' | translate">
-            {{ 'root.navigation.documentation' | translate }}
-          </app-new-button>
-        </a>
-        <app-theme-toggle></app-theme-toggle>
-      </ng-container>
-    </app-side-nav>
-  </nav>
-  <div class="app-wrapper background">
-    <router-outlet></router-outlet>
-  </div>
+  <app-side-nav>
+    <ng-container identity>
+      <a [routerLink]="'/'">
+        <img
+          class="logo"
+          src="assets/logos/os4ml-logo.svg"
+          alt="Os4ML Logo" />
+      </a>
+    </ng-container>
+    <ng-container main-nav>
+      <a data-testid="databags-page-link" [routerLink]="['/databags']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>folder_open</mat-icon>
+          <b class="nav-caption">{{
+            'root.navigation.databags' | translate
+          }}</b>
+        </app-side-nav-item>
+      </a>
+      <a data-testid="solutions-page-link" [routerLink]="['/solutions']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>lightbulb</mat-icon>
+          <b class="nav-caption">{{
+            'root.navigation.solutions' | translate
+          }}</b>
+        </app-side-nav-item>
+      </a>
+      <a data-testid="predictions-page-link" [routerLink]="['/predictions']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>batch_prediction</mat-icon>
+          <b class="nav-caption">{{
+            'root.navigation.predictions' | translate
+          }}</b>
+        </app-side-nav-item>
+      </a>
+    </ng-container>
+    <ng-container secondary-nav>
+      <a
+        (click)="showSidebar = false"
+        data-testid="transfer-learning-page-link"
+        [routerLink]="['/transfer-learning']">
+        <app-side-nav-item>
+          <mat-icon matListItemIcon>mediation</mat-icon>
+          <b class="nav-caption">
+            {{ 'root.navigation.transfer-learning' | translate }}
+          </b>
+        </app-side-nav-item>
+      </a>
+    </ng-container>
+    <ng-container footer-nav>
+      <a
+        data-testid="documentation-link"
+        href="https://wogra-ag.github.io/os4ml-docs/"
+        target="_blank">
+        <app-new-button
+          variant="text"
+          size="small"
+          icon="description"
+          [ariaLabel]="'root.navigation.documentation' | translate">
+          {{ 'root.navigation.documentation' | translate }}
+        </app-new-button>
+      </a>
+      <app-theme-toggle></app-theme-toggle>
+    </ng-container>
+  </app-side-nav>
 </nav>
+<div class="app-wrapper background">
+  <router-outlet></router-outlet>
+</div>
