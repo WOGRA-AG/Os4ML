@@ -1,4 +1,4 @@
-<nav id="header-nav" class="surface">
+<nav id="header-nav" class="surface" [ariaLabel]="'mobile-navigation'">
   <a [routerLink]="'/'">
     <img
       class="logo"
@@ -11,14 +11,15 @@
     (click)="showSidebar = !showSidebar">
   </app-hamburger-button>
 </nav>
-<nav id="side-nav" class="surface" [class.show-mobile-menu]="showSidebar">
+<nav
+  id="side-nav"
+  class="surface"
+  [class.show-mobile-menu]="showSidebar"
+  [ariaLabel]="'main-navigation'">
   <app-side-nav>
     <ng-container identity>
       <a [routerLink]="'/'">
-        <img
-          class="logo"
-          src="assets/logos/os4ml-logo.svg"
-          alt="Os4ML Logo" />
+        <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo" />
       </a>
     </ng-container>
     <ng-container main-nav>

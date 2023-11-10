@@ -133,7 +133,7 @@
         "data_source_local_file": "Use data source from your computer"
       },
       "submit": {
-        "button": "Submit databag",
+        "button": "Submit",
         "aria_label": "Submit databag"
       }
     },
@@ -202,7 +202,7 @@
         }
       },
       "submit": {
-        "button": "Submit Solution",
+        "button": "Submit",
         "aria_label": "Submit Solution"
       }
     },
@@ -287,7 +287,7 @@
         "aria_label": "Download template CSV"
       },
       "submit": {
-        "button": "Submit prediction",
+        "button": "Submit",
         "aria_label": "Submit prediction"
       }
     },
@@ -323,7 +323,7 @@
         }
       },
       "submit": {
-        "button": "Submit transfer learning model",
+        "button": "Submit",
         "aria_label": "Submit transfer learning model"
       }
     }
