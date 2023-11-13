@@ -1,28 +1,22 @@
+from __future__ import annotations
+
 import csv
-import functools
 import pathlib
 import tempfile
 import zipfile
 from typing import IO
 
-import numpy as np
 import pandas as pd
-from PIL import Image
 
 from build.model_manager_client.model.databag import Databag
 from exceptions.data_file import (
     DataFileNotFoundException,
     TooManyDataFilesException,
 )
-from exceptions.file_type_unknown import (
-    FileTypeNotSupported,
-    FileTypeUnknownException,
-)
+from exceptions.file_type_unknown import FileTypeUnknownException
 from file_type.file_type import file_type_from_file_name
 from model_manager.databags import download_dataset
-from models.column_data_type import ColumnDataType
 from models.file_type import FileType
-from sniffle.sniffle import sniff_series
 
 
 def load_dataframe(path: str) -> pd.DataFrame:
@@ -33,23 +27,26 @@ def save_dataframe(df: pd.DataFrame, path: str) -> None:
     df.to_pickle(path)
 
 
-def build_dataframe(databag: Databag, file_type: str) -> pd.DataFrame:
+def build_dataframe(
+    databag: Databag, file_type: str
+) -> tuple[pd.DataFrame, zipfile.ZipFile | None]:
     with tempfile.NamedTemporaryFile() as tmp_file:
         with open(tmp_file.name, "wb") as output_file:
             download_dataset(output_file, databag)
         return read_df(file_type, tmp_file.name)
 
 
-def read_df(file_type: str, path: str) -> pd.DataFrame:
+def read_df(
+    file_type: str, path: str
+) -> tuple[pd.DataFrame, zipfile.ZipFile | None]:
     if file_type == FileType.CSV:
         with open(path) as file:
-            return read_csv(file)
+            return read_csv(file), None
     elif file_type == FileType.EXCEL:
-        return pd.read_excel(path, sheet_name=0)
+        return pd.read_excel(path, sheet_name=0), None
     elif file_type == FileType.ZIP:
         with tempfile.TemporaryDirectory() as tmp_dir_name:
-            df, root_dir = read_zip(path, pathlib.Path(tmp_dir_name))
-            return load_files_to_df(df, root_dir)
+            return read_zip(path, pathlib.Path(tmp_dir_name))
     else:
         raise FileTypeUnknownException()
 
@@ -68,13 +65,13 @@ def read_csv(file: IO[str]) -> pd.DataFrame:
 
 def read_zip(
     path: str, tmp_dir: pathlib.Path
-) -> tuple[pd.DataFrame, pathlib.Path]:
-    with zipfile.ZipFile(path) as zip_file:
-        zip_file.extractall(str(tmp_dir))
+) -> tuple[pd.DataFrame, zipfile.ZipFile]:
+    zip_file = zipfile.ZipFile(path)
+    zip_file.extractall(str(tmp_dir))
     root_dir = get_root_dir(tmp_dir)
     dataframe_file = get_dataframe_file(root_dir)
     file_type = file_type_from_file_name(dataframe_file)
-    return read_df(file_type, dataframe_file), root_dir
+    return read_df(file_type, dataframe_file)[0], zip_file
 
 
 def get_root_dir(dir_: pathlib.Path) -> pathlib.Path:
@@ -107,42 +104,3 @@ def is_data_file(file_name: pathlib.Path) -> bool:
         )
     except FileTypeUnknownException:
         return False
-
-
-def load_files_to_df(df: pd.DataFrame, path: pathlib.Path) -> pd.DataFrame:
-    for col in df:
-        type_ = sniff_series(df[col])
-        if type_ != ColumnDataType.TEXT:
-            continue
-        test_file = path / df[col][0]
-        if not test_file.exists():
-            continue
-        df[col] = df[col].apply(functools.partial(load_file, path=path))
-    return df
-
-
-def load_file(file: str, path: pathlib.Path) -> object:
-    file_path = path / file
-    suffix = file_path.suffix
-    if suffix.lower() in (
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".gif",
-        ".bmp",
-        ".tif",
-        ".tiff",
-    ):
-        return load_image(file_path)
-    else:
-        raise FileTypeNotSupported()
-
-
-def load_image(file: pathlib.Path) -> np.ndarray:
-    img = Image.open(file)
-    img = np.asarray(img)
-    if len(img.shape) == 2:
-        img = np.expand_dims(img, axis=2)
-    if img.dtype == np.uint16:
-        img = img.astype(np.int32)
-    return img

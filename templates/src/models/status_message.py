@@ -44,3 +44,4 @@ class StatusMessage(str, enum.Enum):
     DATA_FILE_NOT_FOUND = "message.pipeline.error.data_file_not_found"
     TOO_MANY_DATA_FILES = "message.pipeline.error.too_many_data_files"
     FILE_TYPE_NOT_SUPPORTED = "message.pipeline.error.file_type_not_supported"
+    MISSING_FILE_IN_ZIP = "message.pipeline.error.missing_file_in_zip"
