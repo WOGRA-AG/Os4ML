@@ -81,20 +81,28 @@ export function setupSolutionTestDatabag(
   solutionTestDatabagName: string
 ): void {
   visitDatabagPage();
-  cy.wait( TIMEOUT_SHORT )
+  cy.wait(TIMEOUT_SHORT);
   cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
     .then(() => {
       cy.get('body').then($body => {
         if ($body.find('[data-testid="databag-item"]').length > 0) {
           cy.get('[data-testid="databag-item"]').then($items => {
-            const itemExists = $items.toArray().some(item => item.innerText.includes(solutionTestDatabagName));
+            const itemExists = $items
+              .toArray()
+              .some(item => item.innerText.includes(solutionTestDatabagName));
             if (!itemExists) {
-              createDatabag(solutionTestDatabagName, 'cypress/fixtures/titanic.xls');
+              createDatabag(
+                solutionTestDatabagName,
+                'cypress/fixtures/titanic.xls'
+              );
             }
           });
         } else {
-          createDatabag(solutionTestDatabagName, 'cypress/fixtures/titanic.xls');
+          createDatabag(
+            solutionTestDatabagName,
+            'cypress/fixtures/titanic.xls'
+          );
         }
       });
     });
@@ -123,7 +131,9 @@ export function createSolution(solutionName: string, databagName: string) {
   cy.get('[data-testid="input-databagId"]', { timeout: TIMEOUT_SHORT })
     .should('not.be.disabled')
     .click();
-  cy.get('mat-option', { timeout: TIMEOUT_SHORT }).contains(databagName).click();
+  cy.get('mat-option', { timeout: TIMEOUT_SHORT })
+    .contains(databagName)
+    .click();
   cy.get('[data-testid="output-select-field"]', { timeout: TIMEOUT_SHORT })
     .should('not.be.disabled')
     .click();
@@ -195,16 +205,23 @@ export function setupPredictionTestSolution(
   predictionTestDatabagName: string
 ): void {
   visitSolutionsPage();
-  cy.wait( TIMEOUT_SHORT )
+  cy.wait(TIMEOUT_SHORT);
   cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
     .then(() => {
       cy.get('body').then($body => {
         if ($body.find('[data-testid="solution-item"]').length > 0) {
           cy.get('[data-testid="solution-item"]').then($items => {
-            const itemExists = $items.toArray().some(item => item.innerText.includes(predictionTestSolutionName));
+            const itemExists = $items
+              .toArray()
+              .some(item =>
+                item.innerText.includes(predictionTestSolutionName)
+              );
             if (!itemExists) {
-              createSolution(predictionTestSolutionName, predictionTestDatabagName);
+              createSolution(
+                predictionTestSolutionName,
+                predictionTestDatabagName
+              );
             }
           });
         } else {
