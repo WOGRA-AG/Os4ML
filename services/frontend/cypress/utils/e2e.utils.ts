@@ -73,7 +73,7 @@ export function deleteDatabag(databagName: string) {
 }
 export function visitSolutionsPage(): void {
   cy.visit('/#/solutions');
-  cy.get('[data-testid="solutions-page"]', { timeout: 600000 }).should(
+  cy.get('[data-testid="solutions-page"]', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
 }
@@ -81,7 +81,7 @@ export function setupSolutionTestDatabag(
   solutionTestDatabagName: string
 ): void {
   visitDatabagPage();
-  cy.get('[data-testid="databag-item"]')
+  cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
     .then($items => {
       const item = $items.filter((index, el) => {
@@ -162,7 +162,7 @@ export function deleteSolution(solutionName: string) {
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-detail-page"]', { timeout: 600000 }).should(
+  cy.get('[data-testid="solution-detail-page"]', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
@@ -188,7 +188,7 @@ export function setupPredictionTestSolution(
   predictionTestDatabagName: string
 ): void {
   visitSolutionsPage();
-  cy.get('[data-testid="solution-item"]')
+  cy.get('[data-testid="prediction-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
     .then($items => {
       const item = $items.filter((index, el) => {
@@ -198,7 +198,7 @@ export function setupPredictionTestSolution(
         createSolution(predictionTestSolutionName, predictionTestDatabagName);
       }
     });
-  cy.get('[data-testid="solution-item"]')
+  cy.get('[data-testid="solution-item"]', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${predictionTestSolutionName}")`)
     .should('exist');
   cy.get('[data-testid="solution-item"]')
