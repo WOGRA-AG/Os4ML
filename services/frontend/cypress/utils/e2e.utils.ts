@@ -162,9 +162,9 @@ export function deleteSolution(solutionName: string) {
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-detail-page"]', { timeout: TIMEOUT_LONG }).should(
-    'be.visible'
-  );
+  cy.get('[data-testid="solution-detail-page"]', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="solution-delete-button"]', { timeout: TIMEOUT_SHORT })
     .scrollIntoView()
@@ -188,7 +188,7 @@ export function setupPredictionTestSolution(
   predictionTestDatabagName: string
 ): void {
   visitSolutionsPage();
-  cy.get('[data-testid="prediction-table"]', { timeout: TIMEOUT_SHORT })
+  cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
     .then($items => {
       const item = $items.filter((index, el) => {
