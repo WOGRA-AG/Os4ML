@@ -1,6 +1,6 @@
 <app-os4ml-dialog-template>
   <ng-container header>
-    <h1 header role="header" class="headline-medium primary-text">
+    <h1 header id="dialog-title" class="headline-medium primary-text">
       {{ data.titleKey | translate }}
     </h1>
     <app-icon-button
@@ -18,6 +18,7 @@
       <app-new-button
         variant="secondary"
         size="medium"
+        [ariaLabel]="'organisms.popup_confirm.cancel' | translate"
         [disabled]="submitting"
         [tabIndex]="-1"
         (click)="close()">
@@ -29,6 +30,7 @@
         variant="warn"
         size="medium"
         (click)="submit()"
+        [ariaLabel]="'organisms.popup_confirm.confirm'  | translate"
         [disabled]="submitting"
         [tabIndex]="-1">
         {{ 'organisms.popup_confirm.confirm' | translate }}
