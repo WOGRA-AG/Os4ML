@@ -118,7 +118,7 @@
           "aria_label": "Enter a URL"
         },
         "selected_fields": {
-          "hint": "Mark fields, from your data bag, which the AI may use as output for its training",
+          "hint": "Mark fields, from your data bag, which the ML algorithm may use as output for its training",
           "help_message": "Please select a databag first to specify further training",
           "error": ""
         }
@@ -174,7 +174,7 @@
         "output_select": {
           "label": "Select output",
           "aria_label": "Select output",
-          "hint": "Mark fields, from your data bag, that the AI should predict",
+          "hint": "Mark fields, from your data bag, that the ML algorithm should predict",
           "help_message": "Please select a databag first to specify further training",
           "error": "Output is required"
         },
@@ -203,7 +203,7 @@
     },
     "solution-detail-pipeline-status": {
       "title": "Pipeline status",
-      "description": "The pipeline status indicates the progress of your solution's processing. Once the pipeline is done, you can download your AI model, make predictions, and create transfer learning models based on this solution."
+      "description": "The pipeline status indicates the progress of your solution's processing. Once the pipeline is done, you can download your ML model, make predictions, and create transfer learning models based on this solution."
     },
     "solution-detail-input": {
       "title": "Initial input settings",
@@ -216,9 +216,9 @@
       "individual_rating": "Individual rating"
     },
     "solution-detail-download-model": {
-      "title": "Download KI-Model",
-      "description": "Based on the provided solution, an AI model has been developed and fine-tuned to cater to the specific requirements. This model is now available for download, enabling users to directly implement and benefit from the insights and capabilities it offers.",
-      "button": "Download KI-Model"
+      "title": "Download ML-Model",
+      "description": "Based on the provided solution, a ML model has been developed and fine-tuned to cater to the specific requirements. This model is now available for download, enabling users to directly implement and benefit from the insights and capabilities it offers.",
+      "button": "Download ML-Model"
     },
     "solution-detail-dependencies": {
       "title": "Solution dependencies",
