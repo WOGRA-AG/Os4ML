@@ -21,7 +21,7 @@
         [disabled]="submitting"
         [tabIndex]="-1"
         (click)="close()">
-        {{ 'action.cancel' | translate }}
+        {{ 'organisms.popup_confirm.cancel' | translate }}
       </app-new-button>
       <app-new-button
         data-testid="confirm-popup-button"
@@ -31,7 +31,7 @@
         (click)="submit()"
         [disabled]="submitting"
         [tabIndex]="-1">
-        {{ 'action.delete' | translate }}
+        {{ 'organisms.popup_confirm.confirm' | translate }}
       </app-new-button>
     </div>
   </ng-container>

@@ -25,6 +25,8 @@
   },
   "organisms": {
     "popup_confirm": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
       "delete_databag": {
         "title": "Delete databag",
         "message": "Are you sure you want to delete this databag? All data will be lost!"
@@ -331,6 +333,10 @@
   "pages": {
     "databags_page.title": "Databags",
     "databag_create_dialog.title": "Create databag",
+    "databag_detail_dialog": {
+      "delete": "Delete",
+      "update": "Update"
+    },
     "solutions_page.title": "Solutions",
     "predictions_page.title": "Predictions",
     "solution_create_dialog": {
