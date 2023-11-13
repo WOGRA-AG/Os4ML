@@ -7,15 +7,9 @@ import pandas as pd
 
 from build.model_manager_client.model.databag import Databag
 from build.model_manager_client.model.solution import Solution
-from file_type.file_type import file_type_from_file_name
-from load.dataframe import (
-    build_dataframe,
-    get_dataframe_file,
-    get_root_dir,
-    read_df,
-)
+from load.dataframe import build_dataframe
 from load.dataset import get_dataset_file_type
-from model_manager.databags import download_dataset, get_databag_by_id
+from model_manager.databags import get_databag_by_id
 from model_manager.solutions import (
     get_solution_by_id,
     update_solution_error_status,
@@ -59,7 +53,7 @@ def create_prediction_template(solution_id: str):
 def create_csv_prediciton_template(
     databag: Databag, file_type: FileType, solution: Solution, file_name: str
 ) -> None:
-    df = build_dataframe(databag, file_type.value)
+    df = build_dataframe(databag, file_type.value)[0]
     df = make_template_df(df, solution)
 
     with tempfile.NamedTemporaryFile(suffix=".csv") as tmp_file:
@@ -71,7 +65,7 @@ def create_csv_prediciton_template(
 def create_excel_prediciton_template(
     databag: Databag, file_type: FileType, solution: Solution, file_name: str
 ) -> None:
-    df = build_dataframe(databag, file_type.value)
+    df = build_dataframe(databag, file_type.value)[0]
     df = make_template_df(df, solution)
 
     with tempfile.NamedTemporaryFile(suffix=".xlsx") as tmp_file:
@@ -89,38 +83,36 @@ def make_template_df(df: pd.DataFrame, solution: Solution) -> pd.DataFrame:
 def create_zip_prediction_template(
     databag: Databag, file_type: FileType, solution: Solution, file_name: str
 ) -> None:
-    with tempfile.NamedTemporaryFile() as tmp_file:
-        with open(tmp_file.name, "wb") as file:
-            download_dataset(file, databag)
+    df, zip_file = build_dataframe(databag, file_type.value)
+    assert zip_file is not None
+    with tempfile.TemporaryDirectory() as extract_dir:
+        zip_file.extractall(extract_dir)
         with tempfile.NamedTemporaryFile(suffix=".zip") as output_file:
-            make_zip(tmp_file.name, output_file.name, solution)
+            make_zip(df, pathlib.Path(extract_dir), output_file.name, solution)
             with open(output_file.name, "rb") as file:
                 upload_prediction_template(file, solution.id, file_name)
 
 
-def make_zip(file_path: str, zip_file_name: str, solution: Solution) -> None:
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        with zipfile.ZipFile(file_path) as zip_file:
-            zip_file.extractall(tmp_dir)
-        root_dir = get_root_dir(pathlib.Path(tmp_dir))
-        dataframe_file = get_dataframe_file(root_dir)
-        file_type = file_type_from_file_name(dataframe_file)
-        df = read_df(file_type, dataframe_file)
-        df = make_template_df(df, solution)
-        with zipfile.ZipFile(zip_file_name, "w") as output_zip:
-            with tempfile.NamedTemporaryFile(suffix=".csv") as data_file:
-                df.to_csv(data_file.name, index=False)
-                arcname = pathlib.Path(dataframe_file).with_suffix(".csv").name
-                output_zip.write(data_file.name, arcname=arcname)
-            for col in df:
-                type = sniff_series(df[col], max_categories=1)
-                if type != ColumnDataType.TEXT:
-                    continue
-                test_file = root_dir / df[col][0]
-                if not test_file.exists():
-                    continue
-                for file in df[col]:
-                    output_zip.write(root_dir / file, arcname=str(file))
+def make_zip(
+    df: pd.DataFrame,
+    extracted_input_zip_dir: pathlib.Path,
+    output_zip_name: str,
+    solution: Solution,
+) -> None:
+    template_df = make_template_df(df, solution)
+    with zipfile.ZipFile(output_zip_name, "w") as output_zip:
+        with tempfile.NamedTemporaryFile(suffix=".csv") as data_file:
+            template_df.to_csv(data_file.name, index=False)
+            output_zip.write(data_file.name, arcname="data.csv")
+        for col in template_df:
+            type = sniff_series(template_df[col], max_categories=1)
+            if type != ColumnDataType.TEXT:
+                continue
+            test_file = extracted_input_zip_dir / template_df[col][0]
+            if test_file not in extracted_input_zip_dir.iterdir():
+                continue
+            for file in template_df[col]:
+                output_zip.write(extracted_input_zip_dir / file, arcname=file)
 
 
 def create_prediction_script(

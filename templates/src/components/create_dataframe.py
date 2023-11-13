@@ -28,6 +28,7 @@ def create_dataframe(
     with exception_handler(handler, StatusMessage.DATASET_COULD_NOT_BE_READ):
         databag = get_databag_by_id(databag_id)
         df, zip_file = build_dataframe(databag, file_type)
+        upload_dataframe_to_databag(df, databag)
         update_databag_status(databag_id, StatusMessage.INSPECTING_DATATYPES)
         columns = create_columns_of_databag(df, max_categories, zip_file)
         databag.number_rows = get_num_rows(columns)
@@ -35,7 +36,6 @@ def create_dataframe(
         databag.columns = columns
         databag.status = StatusMessage.DATABAG_DONE.value
         update_databag(databag, completed=True)
-        upload_dataframe_to_databag(df, databag)
 
 
 def upload_dataframe_to_databag(df: pd.DataFrame, databag: Databag) -> None:
