@@ -4,6 +4,7 @@
       {{ data.titleKey | translate }}
     </h1>
     <app-icon-button
+      [ariaLabel]="'close'"
       data-testid="close-button"
       (click)="close()"
       icon="close"
@@ -30,7 +31,7 @@
         variant="warn"
         size="medium"
         (click)="submit()"
-        [ariaLabel]="'organisms.popup_confirm.confirm'  | translate"
+        [ariaLabel]="'organisms.popup_confirm.confirm' | translate"
         [disabled]="submitting"
         [tabIndex]="-1">
         {{ 'organisms.popup_confirm.confirm' | translate }}
