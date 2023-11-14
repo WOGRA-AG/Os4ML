@@ -1,4 +1,6 @@
 import 'cypress-axe';
+import '@testing-library/cypress/add-commands';
+
 // ***********************************************
 // This example namespace declaration will help
 // with Intellisense and code completion in your
