@@ -68,22 +68,9 @@ def read_zip(
 ) -> tuple[pd.DataFrame, zipfile.ZipFile]:
     zip_file = zipfile.ZipFile(path)
     zip_file.extractall(str(tmp_dir))
-    root_dir = get_root_dir(tmp_dir)
-    dataframe_file = get_dataframe_file(root_dir)
+    dataframe_file = get_dataframe_file(tmp_dir)
     file_type = file_type_from_file_name(dataframe_file)
     return read_df(file_type, dataframe_file)[0], zip_file
-
-
-def get_root_dir(dir_: pathlib.Path) -> pathlib.Path:
-    """
-    Check if dir only contains 1 dir, if so return the sub_dir else return dir.
-    """
-    root_dir = dir_
-    if sum(1 for _ in root_dir.iterdir()) == 1:
-        sub_dir = root_dir / next(root_dir.iterdir())
-        if sub_dir.is_dir():
-            return sub_dir
-    return root_dir
 
 
 def get_dataframe_file(dir_: pathlib.Path) -> str:
