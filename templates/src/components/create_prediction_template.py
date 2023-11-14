@@ -9,7 +9,7 @@ from build.model_manager_client.model.databag import Databag
 from build.model_manager_client.model.solution import Solution
 from load.dataframe import build_dataframe
 from load.dataset import get_dataset_file_type
-from model_manager.databags import get_databag_by_id
+from model_manager.databags import download_dataset, get_databag_by_id
 from model_manager.solutions import (
     get_solution_by_id,
     update_solution_error_status,
@@ -19,7 +19,6 @@ from models.column_data_type import ColumnDataType
 from models.file_type import FileType
 from models.status_message import StatusMessage
 from sniffle.sniffle import sniff_series
-from util.download import download_file
 from util.exception_handler import exception_handler
 
 
@@ -120,6 +119,6 @@ def create_prediction_script(
 ) -> None:
     with tempfile.NamedTemporaryFile() as tmp_file:
         with open(tmp_file.name, "wb") as file:
-            download_file(databag.dataset_url, file)
+            download_dataset(file, databag)
         with open(tmp_file.name, "rb") as file:
             upload_prediction_template(file, solution.id, file_name)
