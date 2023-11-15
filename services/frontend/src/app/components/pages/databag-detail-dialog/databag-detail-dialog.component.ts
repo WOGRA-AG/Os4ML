@@ -61,6 +61,7 @@ export class DatabagDetailDialogComponent {
   deleteDatabag(databagId: string): void {
     const deleteDatabag = this.databagService.deleteDatabagById(databagId);
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         titleKey: 'organisms.popup_confirm.delete_databag.title',
         messageKey: 'organisms.popup_confirm.delete_databag.message',

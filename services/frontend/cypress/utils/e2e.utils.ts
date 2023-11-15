@@ -73,7 +73,7 @@ export function deleteDatabag(databagName: string) {
 }
 export function visitSolutionsPage(): void {
   cy.visit('/#/solutions');
-  cy.get('[data-testid="solutions-page"]', { timeout: 600000 }).should(
+  cy.get('[data-testid="solutions-page"]', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
 }
@@ -81,15 +81,30 @@ export function setupSolutionTestDatabag(
   solutionTestDatabagName: string
 ): void {
   visitDatabagPage();
-  cy.get('[data-testid="databag-item"]')
+  cy.wait(TIMEOUT_SHORT);
+  cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
-    .then($items => {
-      const item = $items.filter((index, el) => {
-        return Cypress.$(el).text().includes(solutionTestDatabagName);
+    .then(() => {
+      cy.get('body').then($body => {
+        if ($body.find('[data-testid="databag-item"]').length > 0) {
+          cy.get('[data-testid="databag-item"]').then($items => {
+            const itemExists = $items
+              .toArray()
+              .some(item => item.innerText.includes(solutionTestDatabagName));
+            if (!itemExists) {
+              createDatabag(
+                solutionTestDatabagName,
+                'cypress/fixtures/titanic.xls'
+              );
+            }
+          });
+        } else {
+          createDatabag(
+            solutionTestDatabagName,
+            'cypress/fixtures/titanic.xls'
+          );
+        }
       });
-      if (item.length === 0) {
-        createDatabag(solutionTestDatabagName, 'cypress/fixtures/titanic.xls');
-      }
     });
   cy.get('[data-testid="databag-item"]')
     .filter(`:contains("${solutionTestDatabagName}")`)
@@ -116,11 +131,13 @@ export function createSolution(solutionName: string, databagName: string) {
   cy.get('[data-testid="input-databagId"]', { timeout: TIMEOUT_SHORT })
     .should('not.be.disabled')
     .click();
-  cy.get('mat-option').contains(databagName).click();
+  cy.get('mat-option', { timeout: TIMEOUT_SHORT })
+    .contains(databagName)
+    .click();
   cy.get('[data-testid="output-select-field"]', { timeout: TIMEOUT_SHORT })
     .should('not.be.disabled')
     .click();
-  cy.get('mat-option').first().click();
+  cy.get('mat-option', { timeout: TIMEOUT_SHORT }).first().click();
   cy.get('body').type('{esc}');
   cy.get('[data-testid="submit-solution"]', { timeout: TIMEOUT_SHORT }).click();
   cy.get('[data-testid="solution-item"]')
@@ -162,9 +179,9 @@ export function deleteSolution(solutionName: string) {
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-detail-button"]')
     .click();
-  cy.get('[data-testid="solution-detail-page"]', { timeout: 600000 }).should(
-    'be.visible'
-  );
+  cy.get('[data-testid="solution-detail-page"]', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('[data-testid="solution-delete-button"]', { timeout: TIMEOUT_SHORT })
     .scrollIntoView()
@@ -188,17 +205,32 @@ export function setupPredictionTestSolution(
   predictionTestDatabagName: string
 ): void {
   visitSolutionsPage();
-  cy.get('[data-testid="solution-item"]')
+  cy.wait(TIMEOUT_SHORT);
+  cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_SHORT })
     .should('exist')
-    .then($items => {
-      const item = $items.filter((index, el) => {
-        return Cypress.$(el).text().includes(predictionTestSolutionName);
+    .then(() => {
+      cy.get('body').then($body => {
+        if ($body.find('[data-testid="solution-item"]').length > 0) {
+          cy.get('[data-testid="solution-item"]').then($items => {
+            const itemExists = $items
+              .toArray()
+              .some(item =>
+                item.innerText.includes(predictionTestSolutionName)
+              );
+            if (!itemExists) {
+              createSolution(
+                predictionTestSolutionName,
+                predictionTestDatabagName
+              );
+            }
+          });
+        } else {
+          createSolution(predictionTestSolutionName, predictionTestDatabagName);
+        }
       });
-      if (item.length === 0) {
-        createSolution(predictionTestSolutionName, predictionTestDatabagName);
-      }
     });
-  cy.get('[data-testid="solution-item"]')
+
+  cy.get('[data-testid="solution-item"]', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${predictionTestSolutionName}")`)
     .should('exist');
   cy.get('[data-testid="solution-item"]')

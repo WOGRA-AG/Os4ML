@@ -128,6 +128,7 @@ export class PredictionsPageComponent {
     const deletePrediction =
       this.predictionService.deletePredictionById(predictionId);
     this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         titleKey: 'organisms.popup_confirm.delete_prediction.title',
         messageKey: 'organisms.popup_confirm.delete_prediction.message',
