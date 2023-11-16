@@ -7,10 +7,10 @@ readme = "README.md"
 packages = [{include = "os4ml_ludwig"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "~3.10"
 kfp = "^1.8.21"
 pandas = "^2.0.0"
-ludwig = {git = "https://github.com/Dennis-Rall/ludwig.git", rev = "3d2ff0b1537473b5b5aea1a672cf673639f89b10"}
+ludwig = {git = "https://github.com/Dennis-Rall/ludwig.git", rev = "76188b680d0a9ef0b4195b81d6f4357aa1812646"}
 
 
 [build-system]
