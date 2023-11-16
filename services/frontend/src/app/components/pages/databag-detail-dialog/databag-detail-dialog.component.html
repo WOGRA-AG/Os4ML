@@ -1,5 +1,7 @@
 <app-dialog-header (closeDialog)="close()">
-  <span class="on-surface-text">{{ 'databag.settings' | translate }}</span>
+  <span id="dialog-title" class="on-surface-text">{{
+    'databag.settings' | translate
+  }}</span>
 </app-dialog-header>
 
 <mat-dialog-content>
@@ -44,7 +46,7 @@
     color="warn"
     type="button"
     (click)="deleteDatabag(databag.id!)">
-    {{ 'action.delete' | translate }}
+    {{ 'pages.databag_detail_dialog.delete' | translate }}
   </app-button>
   <app-button
     id="update-databag-button"
@@ -52,6 +54,6 @@
     form="ngForm"
     color="primary"
     type="submit">
-    {{ 'action.update' | translate }}
+    {{ 'pages.databag_detail_dialog.update' | translate }}
   </app-button>
 </mat-dialog-actions>

@@ -7,18 +7,22 @@ import zipfile
 from kfp.v2.dsl import Dataset, Input
 from ludwig.api import LudwigModel
 
+from build.model_manager_client.model.databag import Databag
 from build.model_manager_client.models import Metric, Metrics, Solution
 from config import MODEL_DIR_NAME
 from load.databag import load_databag
 from load.dataframe import load_dataframe
+from load.dataset import get_dataset_file_type
 from ludwig_model.dataset import train_validate_test_split
 from ludwig_model.model import build_model, train_model
+from model_manager.databags import download_dataset
 from model_manager.solutions import (
     update_solution,
     update_solution_error_status,
     update_solution_status,
     upload_model,
 )
+from models.file_type import FileType
 from models.status_message import StatusMessage
 from util.exception_handler import exception_handler
 
@@ -46,7 +50,10 @@ def ludwig_solver(
         model, _ = build_model(
             solution, databag_model.columns, batch_size, epochs, early_stop
         )
-        df_full = load_dataframe(dataframe.path or "")
+        df_full = load_dataframe(dataframe.path)  # type: ignore
+        file_type = get_dataset_file_type(databag_model)
+        if file_type == FileType.ZIP:
+            load_zip_file(databag_model)
         df_train, df_validate, df_test = train_validate_test_split(
             df_full, test_split, validation_split
         )
@@ -55,6 +62,14 @@ def ludwig_solver(
         upload_model_to_solution(model, solution_id)
         solution.status = StatusMessage.SOLVER_DONE.value
         update_solution(solution, completed=True)
+
+
+def load_zip_file(databag: Databag) -> None:
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        with open(tmp_file.name, "wb") as f:
+            download_dataset(f, databag)
+        with zipfile.ZipFile(tmp_file.name) as zip_file:
+            zip_file.extractall()
 
 
 def evaluate_model(
@@ -74,10 +89,10 @@ def evaluate_output_field(name: str, model: LudwigModel, df_test) -> Metric:
     label_stats = stats[name]
     if "accuracy" in label_stats:
         accuracy = float(label_stats["accuracy"])
-        return Metric(output_field=name, name="accuracy", value=accuracy)
+        return Metric(output_field=name, name="accuracy", value=accuracy)  # type: ignore
     if "r2" in label_stats:
         r2_score = float(max(0, label_stats["r2"]))
-        return Metric(output_field=name, name="r2_score", value=r2_score)
+        return Metric(output_field=name, name="r2_score", value=r2_score)  # type: ignore
     raise ValueError(f"No Metric found in {stats}")
 
 

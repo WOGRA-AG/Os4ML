@@ -22,7 +22,6 @@ import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confi
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
@@ -89,7 +88,9 @@ export class PredictionsPageComponent {
     });
   }
   addDatabag(): void {
-    this.dialog.open(DatabagsCreateDialogComponent);
+    this.dialog.open(DatabagsCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
+    });
   }
   addSolution(): void {
     this.databagId$
@@ -97,6 +98,7 @@ export class PredictionsPageComponent {
       .subscribe(databagId => {
         this.dialog.open(SolutionCreateDialogComponent, {
           data: { databagId },
+          ariaLabelledBy: 'dialog-title',
         });
       });
   }
@@ -106,6 +108,7 @@ export class PredictionsPageComponent {
       .subscribe(solutionId => {
         this.dialog.open(PredictionsCreateDialogComponent, {
           data: { solutionId },
+          ariaLabelledBy: 'dialog-title',
         });
       });
   }
@@ -125,6 +128,7 @@ export class PredictionsPageComponent {
     const deletePrediction =
       this.predictionService.deletePredictionById(predictionId);
     this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         titleKey: 'organisms.popup_confirm.delete_prediction.title',
         messageKey: 'organisms.popup_confirm.delete_prediction.message',

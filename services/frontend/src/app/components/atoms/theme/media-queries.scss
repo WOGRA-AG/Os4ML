@@ -1,4 +1,3 @@
-$medium-and-up: 'only screen and (min-width : 600px)' !default;
-$expanded-and-up: 'only screen and (min-width : 1280px)' !default;
-//$extra-large-and-up: "only screen and (min-width : #{$extra-large-screen-up})" !default;
-//$extra-extra-large-and-up: "only screen and (min-width : #{$extra-extra-large-screen-up})" !default;
+$compact-and-up: 'only screen and (min-width : 460px)' !default;
+$medium-and-up: 'only screen and (min-width : 960px)' !default;
+$expanded-and-up: 'only screen and (min-width : 1600px)' !default;

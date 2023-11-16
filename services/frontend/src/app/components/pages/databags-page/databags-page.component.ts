@@ -46,6 +46,7 @@ export class DatabagsPageComponent {
 
   openDatabagSettingDialog(databag: Databag): void {
     this.dialog.open(DatabagDetailDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: { databag },
       panelClass: 'setting-dialog',
       height: '100%',
@@ -60,6 +61,9 @@ export class DatabagsPageComponent {
     });
   }
   addDatabag(): void {
-    this.dialog.open(DatabagsCreateDialogComponent);
+    this.dialog.open(DatabagsCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
+      disableClose: true,
+    });
   }
 }
