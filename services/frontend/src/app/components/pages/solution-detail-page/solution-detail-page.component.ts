@@ -92,15 +92,19 @@ export class SolutionDetailPageComponent {
     );
   }
   addSolution(): void {
-    this.dialog.open(SolutionCreateDialogComponent);
+    this.dialog.open(SolutionCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
+    });
   }
   addPrediction(): void {
     this.dialog.open(PredictionsCreateDialogComponent, {
       data: { solutionId: this.solutionId },
+      ariaLabelledBy: 'dialog-title',
     });
   }
   renameSolution(oldName: string): void {
     const renameSolutionDialogRef = this.dialog.open(PopupInputComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         inputValue: oldName,
         titleKey: 'organisms.popup_input.rename_solution.title',
@@ -149,6 +153,7 @@ export class SolutionDetailPageComponent {
       this.solutionId
     );
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         titleKey: 'organisms.popup_confirm.delete_solution.title',
         messageKey: 'organisms.popup_confirm.delete_solution.message',

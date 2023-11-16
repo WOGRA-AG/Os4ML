@@ -71,7 +71,9 @@ export class SolutionsPageComponent {
     });
   }
   addDatabag(): void {
-    this.dialog.open(DatabagsCreateDialogComponent);
+    this.dialog.open(DatabagsCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
+    });
   }
   addSolution(): void {
     this.databagId$
@@ -79,11 +81,13 @@ export class SolutionsPageComponent {
       .subscribe(databagId => {
         this.dialog.open(SolutionCreateDialogComponent, {
           data: { databagId },
+          ariaLabelledBy: 'dialog-title',
         });
       });
   }
   openCreatePredictionDialog(solutionId: string): void {
     this.dialog.open(PredictionsCreateDialogComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: { solutionId },
     });
   }
