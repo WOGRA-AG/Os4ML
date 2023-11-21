@@ -2,13 +2,13 @@ import { Component, DestroyRef, inject, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/components/atoms/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ButtonComponent } from '../../molecules/button/button.component';
 import { StatusSpinnerComponent } from '../../molecules/status-spinner/status-spinner.component';
 import { NgIf } from '@angular/common';
-import { DialogSectionComponent } from '../../molecules/dialog-section/dialog-section.component';
-import { DialogHeaderComponent } from '../../molecules/dialog-header/dialog-header.component';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
+import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
+import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 
 @Component({
   selector: 'app-popup-confirm',
@@ -16,12 +16,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrls: ['./popup-confirm.component.scss'],
   standalone: true,
   imports: [
-    DialogHeaderComponent,
-    DialogSectionComponent,
+    Os4mlDialogTemplateComponent,
+    IconButtonComponent,
     MaterialModule,
     NgIf,
     StatusSpinnerComponent,
-    ButtonComponent,
+    NewButtonComponent,
     TranslateModule,
   ],
 })

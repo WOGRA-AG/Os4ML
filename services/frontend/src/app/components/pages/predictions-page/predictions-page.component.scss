@@ -1,3 +1,5 @@
+@import '../../atoms/theme/media-queries.scss';
+
 :host {
   width: 100%;
 }
@@ -5,14 +7,24 @@
 .actions {
   height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+
+  @media #{$medium-and-up} {
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
 
   .select-section,
   .button-section {
+    flex-direction: column;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     gap: 1rem;
+
+    @media #{$medium-and-up} {
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+    }
   }
 }

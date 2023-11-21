@@ -37,7 +37,6 @@
       </div>
     </app-dialog-section>
   </form>
-  {{ databag.status }}
 </mat-dialog-content>
 
 <mat-dialog-actions>
@@ -47,7 +46,7 @@
     color="warn"
     type="button"
     (click)="deleteDatabag(databag.id!)">
-    {{ 'action.delete' | translate }}
+    {{ 'pages.databag_detail_dialog.delete' | translate }}
   </app-button>
   <app-button
     id="update-databag-button"
@@ -55,6 +54,6 @@
     form="ngForm"
     color="primary"
     type="submit">
-    {{ 'action.update' | translate }}
+    {{ 'pages.databag_detail_dialog.update' | translate }}
   </app-button>
 </mat-dialog-actions>
