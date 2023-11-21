@@ -8,7 +8,7 @@ export default defineConfig({
     baseUrl: isDev
       ? 'http://localhost:4200/'
       : 'https://testing.os4ml.wogra.com',
-    defaultCommandTimeout: 30000,
+    defaultCommandTimeout: 4000,
     experimentalStudio: true,
   },
 });
