@@ -30,15 +30,12 @@ function getUpdatedName(name: string) {
 }
 
 describe('Databags Page', () => {
-  before('Prepare data for tests', () => {
-    login();
-  });
-
   after('Clean up', () => {
     logout();
   });
 
   beforeEach(() => {
+    login();
     visitDatabagPage();
     cy.injectAxe();
   });

@@ -46,6 +46,7 @@ describe('Solutions Page', () => {
   });
 
   beforeEach(() => {
+    login();
     visitSolutionsPage();
     cy.injectAxe();
   });

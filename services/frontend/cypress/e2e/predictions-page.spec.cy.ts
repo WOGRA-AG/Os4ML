@@ -59,6 +59,7 @@ describe('Predictions Page', () => {
   });
 
   beforeEach(() => {
+    login();
     visitPredictionsPage();
     cy.injectAxe();
   });

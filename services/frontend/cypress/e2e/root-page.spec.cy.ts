@@ -1,15 +1,12 @@
 import { login, logout } from '../utils/e2e.utils';
 
 describe('Root Page', () => {
-  before('Prepare data for tests', () => {
-    login();
-  });
-
   after('Clean up', () => {
     logout();
   });
 
   beforeEach(() => {
+    login();
     cy.visit('/');
     cy.wait(1000);
   });
