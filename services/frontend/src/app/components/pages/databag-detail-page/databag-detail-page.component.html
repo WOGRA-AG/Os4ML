@@ -1,0 +1,20 @@
+<app-os4ml-default-template
+  data-testid="solution-detail-page"
+  [mainSmall]="true">
+  <h1 header class="headline-large primary-text">
+    Databag:
+    <app-new-button
+      data-testid="solution-rename-button"
+      variant="text"
+      size="medium"
+      icon="edit"
+      [ariaLabel]="'organisms.prediction_create_button.label' | translate">
+    </app-new-button>
+  </h1>
+  <div main class="main-grid">
+    <app-databag-detail-pipline-status></app-databag-detail-pipline-status>
+    <app-databag-detail-field-settings></app-databag-detail-field-settings>
+    <app-databag-detail-download-databag></app-databag-detail-download-databag>
+    <app-databag-detail-delete-databag></app-databag-detail-delete-databag>
+  </div>
+</app-os4ml-default-template>

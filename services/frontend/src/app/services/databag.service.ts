@@ -44,8 +44,6 @@ export class DatabagService {
   ) {
     this.initializeDatabags();
   }
-
-  // Read methods
   get databags$(): Observable<Databag[]> {
     return this._databagsSubject$.asObservable();
   }
@@ -59,6 +57,11 @@ export class DatabagService {
   }
   getDatabagById(id: string): Databag | undefined {
     return this._databagsSubject$.getValue().find(databag => databag.id === id);
+  }
+  loadDatabagById(id: string): Observable<Databag> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getDatabagById(id, token))
+    );
   }
   getDatabagById$(id: string): Observable<Databag> {
     return this.databags$.pipe(

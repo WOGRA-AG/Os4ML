@@ -1,0 +1,19 @@
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.databag-detail-download-databag.title' | translate }}
+</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    {{ 'organisms.databag-detail-download-databag.description' | translate }}
+  </div>
+  <app-new-button
+    (click)="downloadModel.emit()"
+    [disabled]="disabled"
+    [variant]="'secondary'"
+    [size]="'medium'"
+    [icon]="'download'"
+    [ariaLabel]="
+      'organisms.databag-detail-download-databag.button' | translate
+    ">
+    {{ 'organisms.databag-detail-download-databag.button' | translate }}
+  </app-new-button>
+</div>

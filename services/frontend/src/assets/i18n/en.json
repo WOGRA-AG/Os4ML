@@ -139,6 +139,24 @@
         "aria_label": "Submit databag"
       }
     },
+    "databag-detail-pipeline-status": {
+      "title": "Pipeline status",
+      "description": "The pipeline status indicates the progress of your databag processing. Once the status is done, you can create a solution with the completed databag."
+    },
+    "databag-detail-field-settings": {
+      "title": "Field settings",
+      "description": "The field settings were automatically set but can be manually changed here. These changes will be considered in the generation of upcoming solutions."
+    },
+    "databag-detail-download-databag": {
+      "title": "Download databag",
+      "description": "You can download the data bag that you previously uploaded.",
+      "button": "Download databag"
+    },
+    "databag-detail-delete-databag": {
+      "title": "Delete databag",
+      "description": "If you delete the current databag, all associated solutions, predictions and transferlearning models will be emoved. This step is irrevocable.",
+      "button": "Delete databag"
+    },
     "solution_filter": "Filter by solution",
     "solution_data_table": {
       "column_header": {

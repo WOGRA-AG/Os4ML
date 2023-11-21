@@ -9,6 +9,7 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-databag-data-table',
@@ -24,6 +25,7 @@ import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/run
     ProcessingStatusIndicatorComponent,
     ShortStatusPipe,
     RuntimeIndicatorComponent,
+    RouterLink,
   ],
   standalone: true,
 })
