@@ -1,8 +1,9 @@
 const isDev = Cypress.env('dev') === true;
-export function login() {
+
+export function login(path?: string) {
   cy.viewport(1280, 720);
   if (isDev) {
-    cy.visit('http://localhost:4200');
+    cy.visit(`http://localhost:4200/${path ? path : ''}`);
     cy.log('Login Disabled');
   } else {
     cy.visit('/');
@@ -15,6 +16,10 @@ export function login() {
     // add password to run locally
     cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
     cy.get('#kc-login > span').click();
+
+    if (path) {
+      cy.visit(`/${path}`);
+    }
   }
 }
 
