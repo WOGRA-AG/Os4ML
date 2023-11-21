@@ -3,7 +3,6 @@
 - 🛠️ [Getting started](#🛠️-getting-started)
 - 🧪 [Testing](#🧪-testing)
 
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.3.
 
 ## 🛠️ Getting started
