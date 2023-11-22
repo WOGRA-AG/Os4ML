@@ -85,7 +85,7 @@ describe('Transfer learning page', () => {
     cy.findByRole('heading', { level: 1, name: /transfer learning models/i });
     cy.findByRole('button', { name: /create solution/i });
 
-    cy.findByTestId('add-solution').click();
+    cy.findAllByTestId('add-solution').first().click();
     cy.wait(1500);
 
     cy.findByTestId('input-name').clear().type(newItem.name);

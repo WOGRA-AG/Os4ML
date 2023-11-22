@@ -20,7 +20,7 @@ export function createSolution({
   outputField,
   applyTransferLearning,
 }: CreateSolutionForm) {
-  cy.findByTestId('add-solution').click();
+  cy.findAllByTestId('add-solution').first().click();
 
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
