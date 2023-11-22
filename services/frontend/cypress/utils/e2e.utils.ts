@@ -37,20 +37,26 @@ export function login(path?: string) {
     cy.visit(`http://localhost:4200/${path ? path : ''}`);
     cy.log('Login Disabled');
   } else {
-    cy.visit('/');
-    cy.get('#username').clear({ force: true });
-    cy.get('#username').type(Cypress.env('TEST_USER'));
+    cy.visit(`/${path ? path : ''}`);
 
-    cy.get('#password').clear({ force: true });
-    cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
+    cy.get('body').then($el => {
+      if ($el.find('#username').length > 0) {
+        // User not logged in
+        cy.get('#username').clear({ force: true });
+        cy.get('#username').type(Cypress.env('TEST_USER'));
 
-    cy.get('#rememberMe').check({ force: true });
+        cy.get('#password').clear({ force: true });
+        cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
 
-    cy.get('#kc-login').click();
+        cy.get('#rememberMe').check({ force: true });
 
-    if (path) {
-      cy.visit(`/${path}`);
-    }
+        cy.get('#kc-login').click();
+      } else {
+        // User already logged in
+      }
+
+      cy.visit(`/${path ? path : ''}`);
+    });
   }
 }
 
