@@ -46,6 +46,8 @@ export function login(path?: string) {
 
     cy.get('#rememberMe').check({ force: true });
 
+    cy.get('#kc-login').click();
+
     if (path) {
       cy.visit(`/${path}`);
     }
