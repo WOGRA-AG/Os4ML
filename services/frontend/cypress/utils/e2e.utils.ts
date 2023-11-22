@@ -38,15 +38,13 @@ export function login(path?: string) {
     cy.log('Login Disabled');
   } else {
     cy.visit('/');
-    cy.get(':nth-child(1) > .pure-material-textfield-outlined > span').click();
-    cy.get('#username').clear();
-    // add username to run locally
+    cy.get('#username').clear({ force: true });
     cy.get('#username').type(Cypress.env('TEST_USER'));
-    cy.get(':nth-child(2) > .pure-material-textfield-outlined > span').click();
-    cy.get('#password').clear();
-    // add password to run locally
+
+    cy.get('#password').clear({ force: true });
     cy.get('#password').type(Cypress.env('TEST_PASSWORD'));
-    cy.get('#kc-login > span').click();
+
+    cy.get('#rememberMe').check({ force: true });
 
     if (path) {
       cy.visit(`/${path}`);
