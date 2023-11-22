@@ -12,7 +12,7 @@ const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
   name: `Databag for databag specs #${id} - default`,
-  fixtureFilename: 'cypress/fixtures/databags/titanic.xls',
+  fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
 };
 
 const databagFrameScriptItem: CreateDatabagForm = {

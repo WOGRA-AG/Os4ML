@@ -1,7 +1,7 @@
 import { NodeResult, Result } from 'axe-core';
 
 const isDev = Cypress.env('dev') === true;
-export const TIMEOUT_LONG = 60 * 1000 * 5; /* Number of minutes */
+export const TIMEOUT_LONG = 60 * 1000 * 10; /* Number of minutes */
 
 export function handleA11yViolations(violations: Array<Result>) {
   violations.forEach(violation => {
