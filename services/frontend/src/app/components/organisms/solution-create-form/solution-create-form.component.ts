@@ -132,6 +132,8 @@ export class SolutionCreateFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.setInitialDatabagId();
     this.initTransferLearningSettings();
+    this.inputFields.disable();
+    this.outputFields.disable();
   }
   ngOnChanges(): void {
     if (this.databags.length === 0) {
@@ -305,9 +307,6 @@ export class SolutionCreateFormComponent implements OnInit, OnChanges {
     if (this.selectedDatabagId) {
       this.databagId.setValue(this.selectedDatabagId);
       this.selectDatabagColumns(this.selectedDatabagId);
-    } else {
-      this.inputFields.disable();
-      this.outputFields.disable();
     }
   }
 }
