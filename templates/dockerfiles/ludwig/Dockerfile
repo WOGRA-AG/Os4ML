@@ -1,5 +1,5 @@
 ARG POETRY_VERSION=1.6.1
-FROM gitlab-registry.wogra.com/developer/images/openapi-generator-cli:v5.4.0 as openapi
+FROM openapitools/openapi-generator-cli:v5.4.0 as openapi
 
 COPY oas/ /oas
 
@@ -17,7 +17,6 @@ COPY dockerfiles/ludwig/pyproject.toml /pyproject.toml
 COPY dockerfiles/ludwig/poetry.lock /poetry.lock
 
 RUN poetry config virtualenvs.create false && poetry install --no-root --only main
-RUN pip install torch==2.0.1 # fix for pytorch
 
 COPY --from=openapi /build/ /src/build/
 COPY ./src /src

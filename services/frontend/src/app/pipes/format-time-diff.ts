@@ -10,7 +10,7 @@ export class FormatTimeDiffPipe implements PipeTransform {
       return '';
     }
     // https://stackoverflow.com/a/29816921 with small fixes
-    let seconds = timeDiffInMs / 1000;
+    let seconds = Math.floor(timeDiffInMs / 1000);
     const hours = Math.floor(seconds / 3600);
     seconds = seconds % 3600;
     const minutes = Math.floor(seconds / 60);

@@ -29,5 +29,5 @@ def load_prediction_data(
             with open(tmp_file.name, "wb") as file:
                 download_prediction_data(file, prediction_id)
             file_type = file_type_from_file_name(prediction.data_file_name)
-            df = read_df(file_type, tmp_file.name)
+            df, _ = read_df(file_type, tmp_file.name)
             save_dataframe(df, prediction_data.path)

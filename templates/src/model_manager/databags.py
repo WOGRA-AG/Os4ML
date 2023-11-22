@@ -1,7 +1,8 @@
+from datetime import datetime
 from typing import IO
 
 from build.model_manager_client.model.databag import Databag
-from config import USER_TOKEN
+from config import DATE_FORMAT_STR, USER_TOKEN
 from model_manager.init_api_client import model_manager
 from models.status_message import StatusMessage
 from util.download import download_file
@@ -12,7 +13,9 @@ def get_databag_by_id(databag_id: str) -> Databag:
     return model_manager.get_databag_by_id(databag_id, usertoken=USER_TOKEN)
 
 
-def update_databag(databag: Databag) -> None:
+def update_databag(databag: Databag, completed=False) -> None:
+    if completed:
+        databag.completion_time = datetime.utcnow().strftime(DATE_FORMAT_STR)
     model_manager.update_databag_by_id(
         databag.id, databag=databag, usertoken=USER_TOKEN
     )

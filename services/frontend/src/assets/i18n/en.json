@@ -412,7 +412,8 @@
         "predicting_failed": "predicting failed",
         "data_file_not_found": "data file not found",
         "too_many_data_files": "too many data files",
-        "file_type_not_supported": "file type not supported"
+        "file_type_not_supported": "file type not supported",
+        "missing_file_in_zip": "missing file in zip"
       }
     }
   },
