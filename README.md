@@ -34,6 +34,43 @@ There is a lot of work to do. In the near future the following will happen:
 ## More Information
 If you are interested in contributing, have questions, comments, or thoughts to share, or if you just want to be in the
 know, please consider [joining the Os4ML Slack](https://join.slack.com/t/os4ml/shared_invite/zt-24j5pz3g4-tKaztoxu3JpYQ0gQYy03lw)
+
+## Citing Os4ML
+If you are using Os4ML for a scientific project, please cite the following paper:
+
+Rall, D., Bauer, B., & Fraunholz, T. (2023). Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach. Proceedings of the 2023 7th International Conference on Cloud and Big Data Computing, 34–39. [https://doi.org/10.1145/3616131.3616136]()
+
+```bibtex
+@inproceedings{10.1145/3616131.3616136,
+author={Rall, Dennis and Bauer, Bernhard and Fraunholz, Thomas},
+title={Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach},
+year={2023},
+isbn={9798400707339},
+publisher={Association for Computing Machinery},
+address={New York, NY, USA},
+url={https://doi.org/10.1145/3616131.3616136},
+doi={10.1145/3616131.3616136},
+booktitle={Proceedings of the 2023 7th International Conference on Cloud and Big Data Computing},
+pages={34–39},
+numpages={6},
+keywords={AI-as-a-Service, Cloud Computing, Platform, Artificial Intelligence},
+location={Manchester, United Kingdom},
+series={ICCBDC '23}
+}
+```
+
+Rall, D., Fraunholz, T., & Bauer, B. (2023). AI-Democratization: From Data-first to Human-first AI. Central European Conference on Information and Intelligent Systems, 261–267.
+
+```bibtex
+@inproceedings{rail2023ai,
+  title={AI-Democratization: From Data-first to Human-first AI},
+  author={Rall, Dennis and Fraunholz, Thomas and Bauer, Bernhard},
+  booktitle={Central European Conference on Information and Intelligent Systems},
+  pages={261-67},
+  year={2023},
+  organization={Faculty of Organization and Informatics Varazdin}
+}
+```
    
 ## Acknowledgment
 Os4ML is a project of the [WOGRA AG][] research group in cooperation with the 
