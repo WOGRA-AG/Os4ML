@@ -27,16 +27,16 @@ We have several projects inside the repository. You can know more about each one
 
 ```bash
 ├── [+] gitlab/                # CI/CD config
-├── [+] manifests/             # K8S config for different projects
+├── [+] manifests/             # K8s manifests for os4ml services
 ├── [+] services/              # Projects of the repository
 │    ├── frontend/                # OS4ML App, build with Angular
-│    ├── job-manager/             # TODO: TO BE DOCUMENTED
-│    ├── keycloak/                # Authentication & authorization service for API's
-│    ├── model-manager/           # Model manager API
-│    ├── oas/                     # TODO: TO BE DOCUMENTED
-│    ├── objectstore-manager/     # TODO: TO BE DOCUMENTED
-│    └── workflow-translator/     # TODO: TO BE DOCUMENTED
-├── [+] templates/             # K8S config for different projects
+│    ├── job-manager/             # FastAPI service for managing the execution of the ML pipelines
+│    ├── keycloak/                # Templates and themes for [keycloak](https://www.keycloak.org/)
+│    ├── model-manager/           # FastAPI service to manage the main models
+│    ├── oas/                     # Open api specs for the services and templates to generate clients
+│    ├── objectstore-manager/     # FastAPI service for user-isolated file management
+│    └── workflow-translator/     # FastAPI service that manages the ML pipelines
+├── [+] templates/             # code for the ML pipelines
 └── ...                        # Other files
 ```
 
@@ -73,15 +73,9 @@ This is a quick overview about kind of tests implemented on each one of the proj
 
 ## 🌟 Deployment
 
-The deployment process is being managed by Gitlab.
+The deployment process is being managed by Gitlab. Just execute the corresponding pipeline steps. They will build docker images with and tag them. The argocd image update will notice the new image and notify argocd to deploy the new version.
 
-`TODO: Maybe is interesting add something about the hosting infrastructure?`
-
-### Environments
-
-`TODO: Describe here the different environments, also add the URL's where they can be accessed`
-
-### Pipeline
+### CI/CD Pipeline
 
 The pipeline is formed by different stages, executed in this order:
 
@@ -100,7 +94,7 @@ Validates, in each one of the API projects, that the OAS file is well written
 #### Test
 
 **Automatic**
-`TODO: Add documentation`
+Lints the project files and runs the unit and integration tests.
 
 #### Build
 
@@ -110,36 +104,43 @@ Generates the application images (with Docker).
 #### Deploy
 
 **Manual**
-Allows to deploy the applications on different environments:
+Loads the built images and tags them to deploy them on the differen environments:
 
-- Dev
-- Feature
-- Testing
+- feature
+- dev
+- testing
+- release (only available on the `rc` branch)
+- staging (only available on the `main` branch)
+- prod (only available on the `main` branch and when a new tag is created)
 
 #### Reset
 
-`TODO: Add documentation`
+**Automatic** (only when deploy to `testing` environment is runned)
+Resets the testing stage so each run starts from scratch.
 
 #### E2E
 
 **Automatic** (only when deploy to `testing` environment is runned)
-Allows to deploy the applications on different environments:
-
-- Dev
-- Feature
-- Testing
+Runs the e2e and frontend integration tests.
 
 ## 💌 Releasing
 
-`TODO: Explain how the code can be promoted between different environments, until is released to PRODUCTION`
+We are sticking to the [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) workflow. However since this project is in its early stages, we are treating fixes like new features. Follow the following steps to create and deploy a new release:
+  1. At some point merge the `dev` branch into `rc`.
+  2. Deploy to the release stage and test the functionality. If some issues arise, fix them and merge them also in the `rc` branch.
+  3. If all is working, merge the `rc` branch into `main`.
+  4. Deploy to staging and test again (the staging envoronment uses the same infrastructure as the production envoronment).
+  5. Create a new tag for the new version of the `main` branch and update the CHANGELOG.
 
 ## 🚨 Monitoring
 
-`TODO: Explain which tools we're using for MONITORING the apps, how they work, or in case we not have, how we can monitor them from our laptops`
+[k9s](https://k9scli.io/) is a great tool to manage and monitor your kubernetes cluster if running locally. Otherwise use the monitoring capabilities of your cloud provider.
 
 ## 🗒 Logging
 
-`TODO: Explain which tools we're using for checking the logs of the apps between different environments, how they work, or in case we not have`
+You can check the logs of each pod directly by using `kubectl` or [k9s](https://k9scli.io/). However, you can automatically collect the logs of the pod by deploying [fluentbit](https://fluentbit.io/) to the cluster.
+
+Furthermore, you can access the logs of the services through the argocd UI and the logs of the ML pipelines through the kubeflow UI.
 
 ## ℹ️ About the Project
 
@@ -152,13 +153,13 @@ There is a lot of work to do. In the near future the following will happen:
 - [x] A [Terraform module to install Os4ML](https://github.com/WOGRA-AG/terraform-kustomization-os4ml) on a k3d cluster using ArgoCD
 - [x] Solving regression problems (Winter 2022)
 - [x] Solving multi output problems (Spring 2022)
-- [ ] Adding Transfer Learning Support (Summer 2023)
-- [ ] Intelligent Data Labeling (Fall 2023)
+- [x] Adding Transfer Learning Support (Summer 2023)
+- [ ] Support for Model Sharing (Fall 2023)
+- [ ] Intelligent Data Labeling (Winter 2023)
 
 ### More Information
 
-If you are interested in contributing, have questions, comments, or thoughts to share, or if you just want to be in the
-know, please consider [joining the Os4ML Slack](https://join.slack.com/t/os4ml/shared_invite/zt-24j5pz3g4-tKaztoxu3JpYQ0gQYy03lw)
+If you are interested in contributing, have questions, comments, or thoughts to share, or if you just want to be in the know, please consider [joining the Os4ML Slack](https://join.slack.com/t/os4ml/shared_invite/zt-24j5pz3g4-tKaztoxu3JpYQ0gQYy03lw)
 
 ### Citing Os4ML
 
@@ -204,8 +205,6 @@ Os4ML is a project of the [WOGRA AG](https://www.wogra.com/) research group in c
 
 ### License
 
-Os4ML is primarily distributed under the terms of both the MIT license
-and the Apache License (Version 2.0).
+Os4ML is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0).
 
-See [LICENSE-APACHE](LICENSE-APACHE), [LICENSE-MIT](LICENSE-MIT), and
-[COPYRIGHT](COPYRIGHT) for details.
+See [LICENSE-APACHE](LICENSE-APACHE), [LICENSE-MIT](LICENSE-MIT), and [COPYRIGHT](COPYRIGHT) for details.
