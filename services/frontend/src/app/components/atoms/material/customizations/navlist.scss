@@ -21,7 +21,7 @@
 
   .mat-mdc-nav-list {
     .mat-mdc-list-item.active {
-      background: $primary-color-100;
+      background-color: var(--md-sys-color-error);
       span,
       .mat-icon {
         color: $primary-color;

@@ -11,6 +11,7 @@ import { MaterialModule } from './components/atoms/material/material.module';
 import { SideNavItemComponent } from './components/molecules/side-nav-item/side-nav-item.component';
 import { NewButtonComponent } from './components/molecules/new-button/new-button.component';
 import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-toggle.component';
+import { AppSignetComponent } from './components/atoms/signet/app-signet.component';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-
     SideNavItemComponent,
     NewButtonComponent,
     ThemeToggleComponent,
+    AppSignetComponent,
   ],
 })
 export class AppComponent {

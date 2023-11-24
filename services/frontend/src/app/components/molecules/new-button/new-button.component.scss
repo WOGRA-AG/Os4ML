@@ -18,7 +18,6 @@ button {
 
   &:hover {
     cursor: pointer;
-    filter: brightness(95%);
   }
 
   &:disabled {
@@ -62,10 +61,18 @@ button {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
 
+    &:hover {
+      cursor: pointer;
+      background-color: var(--md-sys-color-primary-hover);
+      box-shadow: var(--box-shadow);
+    }
+
     &:disabled {
       background-color: var(--md-sys-color-on-surface);
-      color: var(--md-sys-color-background);
+      color: var(--md-sys-color-surface);
       opacity: 22%;
+      cursor: default;
+      box-shadow: none;
     }
   }
 
@@ -93,6 +100,12 @@ button {
       color: var(--md-sys-color-on-surface);
       border-color: var(--md-sys-color-on-surface);
       opacity: 22%;
+    }
+    &:hover {
+      color: var(--md-sys-color-primary-hover);
+      text-shadow:
+        0px 1.62287px 10.4px 1.62287px rgba(68, 91, 135, 0.15),
+        0px 3px 9.1px 0px rgba(57, 66, 73, 0.15);
     }
   }
 

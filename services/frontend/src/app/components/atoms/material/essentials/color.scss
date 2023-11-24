@@ -158,6 +158,7 @@ $md-os4ml-colors-error: (
   ),
 );
 
+//TODO
 $md-os4ml-colors-success: (
   50: #c8fff4,
   100: #70efde,
@@ -192,35 +193,41 @@ $md-os4ml-colors-success: (
 );
 
 $os4ml-light-foreground: (
-  base: var(--md-sys-color-on-background),
+  base: var(--md-sys-color-on-surface),
   // Base font color
   divider: var(--md-sys-color-outline),
   // Color for line dividers
   dividers: var(--md-sys-color-outline),
   // An alternative name for the color of line dividers
-  disabled: rgba(var(--md-sys-color-on-background), 0.5),
+  disabled: rgba(var(--md-sys-color-on-surface), 0.38),
   // Color for disabled elements
-  disabled-button: rgba(var(--md-sys-color-outline), 0.12),
+  disabled-button: rgba(var(--md-sys-color-outline), 0.38),
   // Color for disabled buttons
-  disabled-text: rgba(var(--md-sys-color-on-background), 0.5),
+  disabled-text: rgba(var(--md-sys-color-on-surface), 0.38),
   // Text color for disabled elements
   elevation: var(--md-sys-color-shadow),
   // Color for shadows (used for "elevation")
-  hint-text: rgba(var(--md-sys-color-on-background), 0.5),
+  //hint-text: rgba(var(--md-sys-color-on-surface), 0.5),
+  hint-text: var(--md-sys-color-on-surface),
   // Color for hint texts
-  secondary-text: rgba(var(--md-sys-color-on-background), 0.54),
+  //secondary-text: rgba(var(--md-sys-color-on-surface), 0.54),
+  secondary-text: var(--md-sys-color-secondary),
   // Color for secondary text
-  icon: rgba(var(--md-sys-color-on-background), 0.54),
+  //icon: rgba(var(--md-sys-color-on-surface), 0.54),
+  icon: var(--md-sys-color-on-surface),
   // Color for icons
-  icons: rgba(var(--md-sys-color-on-background), 0.54),
+  //icons: rgba(var(--md-sys-color-on-surface), 0.54),
+  icons: var(--md-sys-color-on-surface),
   // An alternative name for the color of icons
-  text: var(--md-sys-color-on-background),
+  text: var(--md-sys-color-on-surface),
   // Main text color
   slider-min: var(--md-sys-color-primary),
   // Color for the part of a slider to the left of the handle
-  slider-off: rgba(var(--md-sys-color-outline), 0.26),
+  //slider-off: rgba(var(--md-sys-color-outline), 0.26),
+  slider-off: rgba(var(--md-sys-color-outline), 0.38),
   // Color for the part of a slider to the right of the handle when the slider is not active
-  slider-off-active: rgba(var(--md-sys-color-primary), 0.38),
+  //slider-off-active: rgba(var(--md-sys-color-primary), 0.38),
+  slider-off-active: var(--md-sys-color-primary-container),
   // Color for the part of a slider to the right of the handle when the slider is active
 );
 
@@ -233,13 +240,13 @@ $os4ml-light-background: (
   // Background color of the application
   hover: rgba(var(--md-sys-color-outline), 0.04),
   // Background color for hover states
-  card: var(--md-sys-color-inverse-surface),
+  card: var(--md-sys-color-surface-container-low),
   // Background color for cards
-  dialog: var(--md-sys-color-inverse-surface),
+  dialog: var(--md-sys-color-surface-container-high),
   // Background color for dialogs
-  disabled-button: rgba(var(--md-sys-color-outline), 0.12),
+  disabled-button: rgba(var(--md-sys-color-outline), 0.38),
   // Background color for disabled buttons
-  raised-button: rgba(var(--md-sys-color-background), 3),
+  raised-button: rgba(var(--md-sys-color-surface), 3),
   // Background color for raised buttons
   focused-button: rgba(var(--md-sys-color-outline), 0.12),
   // Background color for focused buttons

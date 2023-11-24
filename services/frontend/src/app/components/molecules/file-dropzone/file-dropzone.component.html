@@ -13,7 +13,7 @@
   (keydown.space)="fileUpload.click()"
   [ariaLabel]="'molecules.file_dropzone.aria_label' | translate"
   tabindex="0">
-  <p *ngIf="!selectedFileName" class="on-surface-light-text body-medium">
+  <p *ngIf="!selectedFileName" class="body-medium">
     {{ 'molecules.file_dropzone.label' | translate }}
   </p>
   <p class="selected-file-name">{{ selectedFileName }}</p>
