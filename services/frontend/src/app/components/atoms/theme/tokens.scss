@@ -129,10 +129,8 @@
   --md-sys-color-primary-container-light: var(
     --md-ref-palette-primary90
   ); /* Standout fill color against surface, for key components like FAB */
-  --md-sys-color-on-primary-container-light: var(
-    --md-ref-palette-primary10
-  );
-  --md-sys-color-primary-hover-light: #6E87F6;
+  --md-sys-color-on-primary-container-light: var(--md-ref-palette-primary10);
+  --md-sys-color-primary-hover-light: #6e87f6;
 
   --md-sys-color-secondary-light: var(
     --md-ref-palette-secondary40
@@ -184,10 +182,10 @@
 
   /* Surface container */
   --md-sys-color-surface-container-lowest-light: #ffffff; /* Lowest-emphasis container color */
-  --md-sys-color-surface-container-low-light: #F4F7FD; /* Low-emphasis container color */
-  --md-sys-color-surface-container-light: #EDF2FC; /* Default container color */
-  --md-sys-color-surface-container-high-light: #E4EBF9; /* High-emphasis container color */
-  --md-sys-color-surface-container-highest-light: #D9E2F1; /* Highest-emphasis container color */
+  --md-sys-color-surface-container-low-light: #f4f7fd; /* Low-emphasis container color */
+  --md-sys-color-surface-container-light: #edf2fc; /* Default container color */
+  --md-sys-color-surface-container-high-light: #e4ebf9; /* High-emphasis container color */
+  --md-sys-color-surface-container-highest-light: #d9e2f1; /* Highest-emphasis container color */
 
   /* Inverse colors */
   --md-sys-color-inverse-surface-light: var(
@@ -236,10 +234,8 @@
   --md-sys-color-primary-container-dark: var(
     --md-ref-palette-primary10
   ); /* Standout fill color against surface, for key components like FAB */
-  --md-sys-color-on-primary-container-dark: var(
-    --md-ref-palette-primary90
-  ); 
-  --md-sys-color-primary-hover-dark: #A8C6FD;
+  --md-sys-color-on-primary-container-dark: var(--md-ref-palette-primary90);
+  --md-sys-color-primary-hover-dark: #a8c6fd;
 
   --md-sys-color-secondary-dark: var(
     --md-ref-palette-secondary99
@@ -339,16 +335,24 @@
   /* light */
   --md-custom-color-processing-status-done-light: #236600;
   --md-custom-color-on-processing-status-done-light: #ffffff;
-  --md-custom-color-processing-status-error-light: var(--md-sys-color-error-light);
-  --md-custom-color-on-processing-status-error-light: var(--md-sys-color-on-error-light);
+  --md-custom-color-processing-status-error-light: var(
+    --md-sys-color-error-light
+  );
+  --md-custom-color-on-processing-status-error-light: var(
+    --md-sys-color-on-error-light
+  );
   --md-custom-color-processing-status-warning-light: #fbbc04;
   --md-custom-color-on-processing-status-warning-light: #000000;
 
   /* dark */
   --md-custom-color-processing-status-done-dark: #b1fdaf;
   --md-custom-color-on-processing-status-done-dark: #00461f;
-  --md-custom-color-processing-status-error-dark: var(--md-sys-color-error-dark);
-  --md-custom-color-on-processing-status-error-dark: var(--md-sys-color-on-error-dark);
+  --md-custom-color-processing-status-error-dark: var(
+    --md-sys-color-error-dark
+  );
+  --md-custom-color-on-processing-status-error-dark: var(
+    --md-sys-color-on-error-dark
+  );
   --md-custom-color-processing-status-warning-dark: #ffcd3c;
   --md-custom-color-on-processing-status-warning-dark: #0b0600;
 
