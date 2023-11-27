@@ -108,6 +108,7 @@
         icon="add">
       </app-icon-button> -->
       <app-solution-context-menu
+        [solutionElement]="element"
         (createPredictionButton)="createPredictionButton.emit(element.id)"
         [showPredictionLink]="['/predictions']"
         [showPredictionParams]="{

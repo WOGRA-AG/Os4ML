@@ -6,6 +6,9 @@ import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.
 import { TranslateModule } from '@ngx-translate/core';
 import { Params, RouterLink } from '@angular/router';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
+import { NgIf } from '@angular/common';
+import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
+import { Solution } from '../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-solution-context-menu',
@@ -20,6 +23,8 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
     TranslateModule,
     RouterLink,
     IconButtonComponent,
+    NgIf,
+    IsSolutionDonePipe,
   ],
 })
 export class SolutionContextMenuComponent {
@@ -28,4 +33,5 @@ export class SolutionContextMenuComponent {
   @Input() public showPredictionLink: string[] | string = [];
   @Input() public showSolutionDetailParams: Params = {};
   @Input() public showSolutionDetailLink: string[] | string | any = [];
+  @Input() public solutionElement!: Solution;
 }

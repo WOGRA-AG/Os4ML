@@ -12,6 +12,7 @@
     menuIcon="add">
   </app-context-menu>
   <app-context-menu
+    *ngIf="solutionElement?.id && (solutionElement | isSolutionDone)"
     menuDescription="{{
       'organisms.solution_data_table.actions.show_predictions.tooltip'
         | translate

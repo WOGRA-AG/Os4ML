@@ -13,8 +13,8 @@ import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
-import {SolutionContextMenuComponent} from "../solution-context-menu/solution-context-menu.component";
-import {ContextMenuComponent} from "../../molecules/context-menu/context-menu.component";
+import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
+import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
 
 @Component({
   selector: 'app-solution-data-table',
