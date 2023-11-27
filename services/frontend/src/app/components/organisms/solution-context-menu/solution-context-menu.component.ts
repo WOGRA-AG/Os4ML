@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Params, RouterLink } from '@angular/router';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
@@ -19,7 +19,7 @@ import { Solution } from '../../../../../build/openapi/modelmanager';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    ContextMenuComponent,
+    ContextMenuItemComponent,
     TranslateModule,
     RouterLink,
     IconButtonComponent,

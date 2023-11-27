@@ -9,7 +9,7 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
-import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 import { DatabagContextMenuComponent } from '../databag-context-menu/databag-context-menu.component';
 
 @Component({
@@ -27,7 +27,7 @@ import { DatabagContextMenuComponent } from '../databag-context-menu/databag-con
     ProcessingStatusIndicatorComponent,
     ShortStatusPipe,
     RuntimeIndicatorComponent,
-    ContextMenuComponent,
+    ContextMenuItemComponent,
     DatabagContextMenuComponent,
   ],
 })

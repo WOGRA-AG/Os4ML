@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    ContextMenuComponent,
+    ContextMenuItemComponent,
     IconButtonComponent,
     TranslateModule,
   ],

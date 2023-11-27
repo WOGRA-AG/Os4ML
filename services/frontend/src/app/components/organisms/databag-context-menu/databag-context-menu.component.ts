@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 import { SolutionCreateButtonComponent } from '../solution-create-button/solution-create-button.component';
 import { Databag } from 'build/openapi/modelmanager';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./databag-context-menu.component.scss'],
   standalone: true,
   imports: [
-    ContextMenuComponent,
+    ContextMenuItemComponent,
     SolutionCreateButtonComponent,
     MatButtonModule,
     MatIconModule,

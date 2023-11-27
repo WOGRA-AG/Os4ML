@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
 import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
-import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 
 @Component({
   selector: 'app-solution-data-table',
@@ -35,7 +35,7 @@ import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.
     MatTooltipModule,
     NgIf,
     SolutionContextMenuComponent,
-    ContextMenuComponent,
+    ContextMenuItemComponent,
   ],
   standalone: true,
 })
