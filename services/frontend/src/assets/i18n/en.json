@@ -254,6 +254,10 @@
         "creation": "Creation",
         "status": "Status",
         "actions": "Actions"
+      },
+      "actions": {
+        "delete_prediction": "Delete Prediction",
+        "download_prediction": "Download Prediction"
       }
     },
     "prediction_create_form": {

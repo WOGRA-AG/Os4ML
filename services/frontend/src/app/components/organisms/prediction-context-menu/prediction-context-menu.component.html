@@ -1,0 +1,22 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <app-context-menu
+    data-testid="prediction-download-button"
+    (click)="downloadPredictionButton.emit()"
+    menuDescription="{{
+      'organisms.prediction_data_table.actions.download_prediction' | translate
+    }}"
+    menuIcon="download">
+  </app-context-menu>
+  <app-context-menu
+    data-testid="prediction-delete-button"
+    (click)="deletePredictionButton.emit()"
+    menuDescription="{{
+      'organisms.prediction_data_table.actions.delete_prediction' | translate
+    }}"
+    menuIcon="delete_forever">
+  </app-context-menu>
+</mat-menu>
