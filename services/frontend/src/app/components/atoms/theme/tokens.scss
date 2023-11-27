@@ -131,8 +131,8 @@
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-light: var(
     --md-ref-palette-primary10
-  ); /* Text and icons against primary container */
-  --md-sys-color-primary-hover-light: #6e87f6;
+  );
+  --md-sys-color-primary-hover-light: #6E87F6;
 
   --md-sys-color-secondary-light: var(
     --md-ref-palette-secondary40
@@ -184,10 +184,10 @@
 
   /* Surface container */
   --md-sys-color-surface-container-lowest-light: #ffffff; /* Lowest-emphasis container color */
-  --md-sys-color-surface-container-low-light: #f6f9ff; /* Low-emphasis container color */
-  --md-sys-color-surface-container-light: #f1f5fc; /* Default container color */
-  --md-sys-color-surface-container-high-light: #ecf0f8; /* High-emphasis container color */
-  --md-sys-color-surface-container-highest-light: #e5ebf6; /* Highest-emphasis container color */
+  --md-sys-color-surface-container-low-light: #F4F7FD; /* Low-emphasis container color */
+  --md-sys-color-surface-container-light: #EDF2FC; /* Default container color */
+  --md-sys-color-surface-container-high-light: #E4EBF9; /* High-emphasis container color */
+  --md-sys-color-surface-container-highest-light: #D9E2F1; /* Highest-emphasis container color */
 
   /* Inverse colors */
   --md-sys-color-inverse-surface-light: var(
@@ -228,30 +228,30 @@
   /* dark */
   /* sys colors */
   --md-sys-color-primary-dark: var(
-    --md-ref-palette-primary80
+    --md-ref-palette-primary70
   ); /* High-emphasis fills, texts, and icons against surface */
   --md-sys-color-on-primary-dark: var(
-    --md-ref-palette-primary10
+    --md-ref-palette-primary0
   ); /* Text and icons against primary */
   --md-sys-color-primary-container-dark: var(
-    --md-ref-palette-primary20
+    --md-ref-palette-primary10
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-dark: var(
     --md-ref-palette-primary90
-  ); /* Text and icons against primary container */
-  --md-sys-color-primary-hover-dark: #a9c5fa;
+  ); 
+  --md-sys-color-primary-hover-dark: #A8C6FD;
 
   --md-sys-color-secondary-dark: var(
     --md-ref-palette-secondary99
   ); /* Less prominent fills, text, and icons against surface */
   --md-sys-color-on-secondary-dark: var(
-    --md-ref-palette-secondar20
+    --md-ref-palette-secondary20
   ); /* Text and icons against secondary */
   --md-sys-color-secondary-container-dark: var(
     --md-ref-palette-secondary30
   ); /* Less prominent fill color against surface, for recessive components like tonal buttons */
   --md-sys-color-on-secondary-container-dark: var(
-    --md-ref-palette-secondary95
+    --md-ref-palette-secondary90
   ); /* Text and icons against secondary container */
 
   --md-sys-color-tertiary-dark: var(
@@ -261,23 +261,23 @@
     --md-ref-palette-tertiary0
   ); /* Color for text and icons on tertiary color */
   --md-sys-color-tertiary-container-dark: var(
-    --md-ref-palette-tertiary30
+    --md-ref-palette-tertiary20
   ); /* Light tertiary color for container backgrounds */
   --md-sys-color-on-tertiary-container-dark: var(
-    --md-ref-palette-tertiary90
+    --md-ref-palette-tertiary99
   ); /* Color for text and icons on light tertiary containers */
 
   --md-sys-color-error-dark: var(
     --md-ref-palette-error80
   ); /* Attention-grabbing color against surface for fills, icons, and text, indicating urgency */
   --md-sys-color-on-error-dark: var(
-    --md-ref-palette-error20
+    --md-ref-palette-error10
   ); /* Text and icons against error */
   --md-sys-color-error-container-dark: var(
-    --md-ref-palette-error20
+    --md-ref-palette-error30
   ); /* Attention-grabbing fill color against surface */
   --md-sys-color-on-error-container-dark: var(
-    --md-ref-palette-error95
+    --md-ref-palette-error90
   ); /* Text and icons against error container */
 
   /* Surface colors */
@@ -339,16 +339,16 @@
   /* light */
   --md-custom-color-processing-status-done-light: #236600;
   --md-custom-color-on-processing-status-done-light: #ffffff;
-  --md-custom-color-processing-status-error-light: #fbd9d7;
-  --md-custom-color-on-processing-status-error-light: #ea4335;
+  --md-custom-color-processing-status-error-light: var(--md-sys-color-error-light);
+  --md-custom-color-on-processing-status-error-light: var(--md-sys-color-on-error-light);
   --md-custom-color-processing-status-warning-light: #fbbc04;
   --md-custom-color-on-processing-status-warning-light: #000000;
 
   /* dark */
   --md-custom-color-processing-status-done-dark: #b1fdaf;
   --md-custom-color-on-processing-status-done-dark: #00461f;
-  --md-custom-color-processing-status-error-dark: #fbd9d7;
-  --md-custom-color-on-processing-status-error-dark: #ea4335;
+  --md-custom-color-processing-status-error-dark: var(--md-sys-color-error-dark);
+  --md-custom-color-on-processing-status-error-dark: var(--md-sys-color-on-error-dark);
   --md-custom-color-processing-status-warning-dark: #ffcd3c;
   --md-custom-color-on-processing-status-warning-dark: #0b0600;
 
