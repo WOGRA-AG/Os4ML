@@ -1,0 +1,19 @@
+<button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <app-context-menu
+    (click)="settingButton.emit()"
+    menuDescription="{{
+      'organisms.databag_data_table.actions.settings.tooltip' | translate
+    }}"
+    menuIcon="edit"></app-context-menu>
+  <app-context-menu
+    (click)="createSolutionButton.emit()"
+    menuDescription="{{ 'organisms.solution_create_button.label' | translate }}"
+    size="medium"
+    menuIcon="add"></app-context-menu>
+</mat-menu>

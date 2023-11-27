@@ -1,0 +1,9 @@
+<button
+  mat-menu-item
+  [ngClass]="[size, variant, 'label' + size]"
+  matRipple
+  [matRippleColor]="''"
+  [disabled]="disabled">
+  <mat-icon> {{ menuIcon }}</mat-icon>
+  <span> {{ menuDescription }} </span>
+</button>

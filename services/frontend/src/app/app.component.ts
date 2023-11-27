@@ -21,6 +21,7 @@ import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HamburgerButtonComponent } from './components/molecules/hamburger-button/hamburger-button.component';
 import { IconButtonComponent } from './components/molecules/icon-button/icon-button.component';
+import { ContextMenuComponent } from './components/molecules/context-menu/context-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,7 @@ import { IconButtonComponent } from './components/molecules/icon-button/icon-but
     ThemeToggleComponent,
     HamburgerButtonComponent,
     IconButtonComponent,
+    ContextMenuComponent,
   ],
 })
 export class AppComponent {

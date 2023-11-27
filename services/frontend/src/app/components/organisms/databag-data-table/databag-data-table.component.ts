@@ -9,11 +9,14 @@ import { SolutionCreateButtonComponent } from '../solution-create-button/solutio
 import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-status-indicator/processing-status-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
+import { ContextMenuComponent } from '../../molecules/context-menu/context-menu.component';
+import { DatabagContextMenuComponent } from '../databag-context-menu/databag-context-menu.component';
 
 @Component({
   selector: 'app-databag-data-table',
   templateUrl: './databag-data-table.component.html',
   styleUrls: ['./databag-data-table.component.scss'],
+  standalone: true,
   imports: [
     LocalizedDatePipe,
     MatTableModule,
@@ -24,8 +27,9 @@ import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/run
     ProcessingStatusIndicatorComponent,
     ShortStatusPipe,
     RuntimeIndicatorComponent,
+    ContextMenuComponent,
+    DatabagContextMenuComponent,
   ],
-  standalone: true,
 })
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];
