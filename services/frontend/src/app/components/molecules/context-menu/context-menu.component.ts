@@ -4,6 +4,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
 import { MatRippleModule } from '@angular/material/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-context-menu',
@@ -16,12 +17,15 @@ import { MatRippleModule } from '@angular/material/core';
     MatMenuModule,
     NgClass,
     MatRippleModule,
+    RouterLink,
   ],
 })
 export class ContextMenuComponent {
   @Input() public disabled = false;
   @Input() public menuDescription = '';
   @Input() public menuIcon = '';
+  @Input() public routerLink: string[] | string = [];
+  @Input() public params = {};
   @Input() public variant: 'primary' | 'secondary' | 'text' | 'warn' =
     'primary';
   @Input() public size: 'small' | 'medium' | 'large' = 'medium';

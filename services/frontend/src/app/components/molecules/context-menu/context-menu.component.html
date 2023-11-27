@@ -2,6 +2,8 @@
   mat-menu-item
   [ngClass]="[size, variant, 'label' + size]"
   matRipple
+  [routerLink]="routerLink"
+  [queryParams]="params"
   [matRippleColor]="''"
   [disabled]="disabled">
   <mat-icon> {{ menuIcon }}</mat-icon>

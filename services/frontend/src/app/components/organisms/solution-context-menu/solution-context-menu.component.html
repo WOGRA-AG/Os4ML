@@ -1,0 +1,30 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <app-context-menu
+    data-testid="create-prediction-button"
+    (click)="createPredictionButton.emit()"
+    menuDescription="{{
+      'organisms.prediction_create_button.label' | translate
+    }}"
+    menuIcon="add">
+  </app-context-menu>
+  <app-context-menu
+    menuDescription="{{
+      'organisms.solution_data_table.actions.show_predictions.tooltip'
+        | translate
+    }}"
+    menuIcon="batch_prediction"
+    [routerLink]="showPredictionLink"
+    [queryParams]="showPredictionParams">
+  </app-context-menu>
+  <app-context-menu
+    data-testid="solution-detail-button"
+    menuDescription="{{
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    }}"
+    menuIcon="settings_applications"
+    [routerLink]="showSolutionDetailLink"></app-context-menu>
+</mat-menu>
