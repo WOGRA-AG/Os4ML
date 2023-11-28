@@ -26,7 +26,7 @@ def bucket_name():
 def create_test_bucket(client: Client, bucket_name: str):
     bucket = Bucket(client, bucket_name)
     if bucket.exists(client):
-        bucket.delete()
+        bucket.delete(force=True)
     bucket = client.create_bucket(bucket_name)
     yield
     bucket.delete(force=True)
