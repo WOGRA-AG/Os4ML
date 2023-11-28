@@ -31,7 +31,6 @@ import { RouterLink } from '@angular/router';
 })
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];
-  @Output() public settingButton = new EventEmitter<Databag>();
   @Output() public createSolutionButton = new EventEmitter<string>();
 
   public displayedColumns: string[] = [

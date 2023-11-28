@@ -68,19 +68,6 @@
         color="primary"
         icon="settings_applications">
       </app-icon-button>
-      <app-icon-button
-        [ariaLabel]="
-          'organisms.databag_data_table.actions.settings.aria_label' | translate
-        "
-        data-testid="databag-settings-button"
-        (click)="settingButton.emit(element)"
-        [matTooltip]="
-          'organisms.databag_data_table.actions.settings.tooltip' | translate
-        "
-        class="mr-1"
-        color="primary"
-        icon="edit">
-      </app-icon-button>
       <app-solution-create-button
         [type]="'FAB'"
         (addSolution)="createSolutionButton.emit(element.id)">
