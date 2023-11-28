@@ -65,9 +65,11 @@
 
   /* status colors */
 
-  --md-custom-color-processing-status-running: var(--md-sys-color-primary-container);
+  --md-custom-color-processing-status-running: var(
+    --md-sys-color-primary-container
+  );
   --md-custom-color-on-processing-status-running: var(--md-sys-color-primary);
-  
+
   --md-custom-color-processing-status-done: var(
     --md-custom-color-processing-status-done-dark
   );
