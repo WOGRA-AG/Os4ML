@@ -6,7 +6,7 @@
 @use 'button_variants' as buttonVariants;
 @use 'expansion-module' as expansionModule;
 @use 'dialog' as dialog;
-//@use 'list' as list;
+@use 'list' as list;
 @use 'table' as table;
 @use 'chips' as chips;
 @use 'slide-toggle' as slide-toggle;
@@ -24,7 +24,7 @@
   @include stepper.theme($theme);
   @include expansionModule.theme($theme);
   @include dialog.theme($theme);
-  // @include list.theme($theme, red);
+  @include list.theme($theme, red);
   @include table.theme($theme, red);
   @include chips.theme($theme);
   @include slide-toggle.theme($theme);

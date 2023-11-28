@@ -9,10 +9,8 @@
     <mat-option>{{ 'molecules.select.option_none' | translate }}</mat-option>
     <mat-option
       *ngFor="let option of options"
-      [value]="option.value"
-      class="test">
+      [value]="option.value">
       {{ option.viewValue }}
     </mat-option>
-    tests
   </mat-select>
 </mat-form-field>
