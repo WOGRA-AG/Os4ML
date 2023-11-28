@@ -1,4 +1,8 @@
-<button mat-menu-item [routerLink]="routerLink" [queryParams]="params">
+<button
+  [attr.data-testid]="dataTestid"
+  mat-menu-item
+  [routerLink]="routerLink"
+  [queryParams]="params">
   <mat-icon> {{ menuIcon }}</mat-icon>
   <span> {{ menuDescription }} </span>
 </button>

@@ -17,4 +17,5 @@ export class ContextMenuItemComponent {
   @Input() public menuIcon = '';
   @Input() public routerLink: string[] | string = [];
   @Input() public params = {};
+  @Input() public dataTestid?: string;
 }

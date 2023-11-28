@@ -39,7 +39,9 @@ export function changeDatabagName(
 ) {
   cy.get('[data-testid="databag-item"]', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${databagName}")`)
-    .find('[data-testid="databag-settings-button"]')
+    .find('[data-testid="databag-menu"]')
+    .click();
+  cy.get('[data-testid="databag-settings-button"]')
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('#mat-input-0')
@@ -59,7 +61,9 @@ export function deleteDatabag(databagName: string) {
     timeout: TIMEOUT_LONG,
   })
     .filter(`:contains("${databagName}")`)
-    .find('[data-testid="databag-settings-button"]')
+    .find('[data-testid="databag-menu"]')
+    .click();
+    cy.get('[data-testid="databag-settings-button"]')
     .click();
   cy.get('[data-testid="databag-delete-button"]', {
     timeout: TIMEOUT_SHORT,
@@ -155,7 +159,9 @@ export function changeSolutionName(
 ): void {
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
-    .find('[data-testid="solution-detail-button"]')
+    .find('[data-testid="solution-menu"]')
+    .click()
+  cy.get('[data-testid="solution-detail-button"]')
     .click();
   cy.url().should('include', '/solutions/detail');
   cy.get('[data-testid="solution-detail-page"]').should('be.visible');
@@ -177,7 +183,9 @@ export function changeSolutionName(
 export function deleteSolution(solutionName: string) {
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
-    .find('[data-testid="solution-detail-button"]')
+    .find('[data-testid="solution-menu"]')
+    .click()
+  cy.get('[data-testid="solution-detail-button"]')
     .click();
   cy.get('[data-testid="solution-detail-page"]', {
     timeout: TIMEOUT_LONG,
