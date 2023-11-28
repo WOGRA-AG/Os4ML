@@ -1,11 +1,4 @@
-<button
-  mat-menu-item
-  [ngClass]="[size, variant, 'label' + size]"
-  matRipple
-  [routerLink]="routerLink"
-  [queryParams]="params"
-  [matRippleColor]="''"
-  [disabled]="disabled">
+<button mat-menu-item [routerLink]="routerLink" [queryParams]="params">
   <mat-icon> {{ menuIcon }}</mat-icon>
   <span> {{ menuDescription }} </span>
 </button>
