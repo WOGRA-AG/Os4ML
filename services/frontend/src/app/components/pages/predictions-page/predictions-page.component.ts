@@ -120,8 +120,10 @@ export class PredictionsPageComponent {
       .getPredictionResultGetUrl(predictionId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(url => {
-        downloadLink.href = url;
-        downloadLink.click();
+        if (url != null) {
+          downloadLink.href = url;
+          downloadLink.click();
+        }
       });
   }
   deletePrediction(predictionId: string): void {
