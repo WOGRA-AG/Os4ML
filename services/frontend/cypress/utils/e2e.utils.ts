@@ -41,8 +41,7 @@ export function changeDatabagName(
     .filter(`:contains("${databagName}")`)
     .find('[data-testid="databag-menu"]')
     .click();
-  cy.get('[data-testid="databag-settings-button"]')
-    .click();
+  cy.get('[data-testid="databag-settings-button"]').click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('#mat-input-0')
     .focus()
@@ -63,8 +62,7 @@ export function deleteDatabag(databagName: string) {
     .filter(`:contains("${databagName}")`)
     .find('[data-testid="databag-menu"]')
     .click();
-    cy.get('[data-testid="databag-settings-button"]')
-    .click();
+  cy.get('[data-testid="databag-settings-button"]').click();
   cy.get('[data-testid="databag-delete-button"]', {
     timeout: TIMEOUT_SHORT,
   }).click();
@@ -160,9 +158,8 @@ export function changeSolutionName(
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-menu"]')
-    .click()
-  cy.get('[data-testid="solution-detail-button"]')
     .click();
+  cy.get('[data-testid="solution-detail-button"]').click();
   cy.url().should('include', '/solutions/detail');
   cy.get('[data-testid="solution-detail-page"]').should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
@@ -184,9 +181,8 @@ export function deleteSolution(solutionName: string) {
   cy.get('[data-testid="solution-item"]')
     .filter(`:contains("${solutionName}")`)
     .find('[data-testid="solution-menu"]')
-    .click()
-  cy.get('[data-testid="solution-detail-button"]')
     .click();
+  cy.get('[data-testid="solution-detail-button"]').click();
   cy.get('[data-testid="solution-detail-page"]', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
@@ -293,12 +289,10 @@ export function deletePrediction(predictionName: string) {
   cy.get('[data-testid="prediction-item"]')
     .filter(`:contains("${predictionName}")`)
     .find('[data-testid="prediction-menu"]')
-    .click()
-  
-  cy.get('[data-testid="prediction-delete-button"]', {
-      timeout: TIMEOUT_SHORT,
-  })
     .click();
+  cy.get('[data-testid="prediction-delete-button"]', {
+    timeout: TIMEOUT_SHORT,
+  }).click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
   cy.get('[data-testid="confirm-popup-button"]', {
