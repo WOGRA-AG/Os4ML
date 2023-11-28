@@ -294,6 +294,7 @@ export function deletePrediction(predictionName: string) {
     .filter(`:contains("${predictionName}")`)
     .find('[data-testid="prediction-menu"]')
     .click()
+  
   cy.get('[data-testid="prediction-delete-button"]', {
       timeout: TIMEOUT_SHORT,
   })
