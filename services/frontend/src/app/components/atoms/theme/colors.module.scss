@@ -27,6 +27,11 @@
   color: var(--md-sys-color-on-secondary-container);
 }
 
+/* This class is used to apply the secondary color to text */
+.secondary-text {
+  color: var(--md-sys-color-secondary);
+}
+
 /* This class is used to apply the tertiary color as a background */
 .tertiary {
   background-color: var(--md-sys-color-tertiary);
