@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { Os4mlDefaultTemplateComponent } from '../../templates/os4ml-default-template/os4ml-default-template.component';
 import {
+  Databag,
   Prediction,
   Solution,
 } from '../../../../../build/openapi/modelmanager';
@@ -17,15 +18,7 @@ import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-
 import { MatIconModule } from '@angular/material/icon';
 import { SolutionService } from '../../../services/solution.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  Observable,
-  of,
-  startWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
@@ -65,10 +58,10 @@ import { PredictionService } from '../../../services/prediction.service';
   ],
 })
 export class SolutionDetailPageComponent {
-  public solution$: Observable<Solution | null>;
+  public solution$: Observable<Solution>;
   public predictions$: Observable<Prediction[]>;
   public solutionId: string;
-  private reloadSubject = new Subject<void>();
+  private solutionUpdateSubject = new Subject<Databag>();
   private destroyRef = inject(DestroyRef);
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -78,14 +71,7 @@ export class SolutionDetailPageComponent {
     private dialog: MatDialog
   ) {
     this.solutionId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
-    this.solution$ = this.reloadSubject.pipe(
-      startWith(null),
-      switchMap(() => this.solutionService.loadSolutionById(this.solutionId)),
-      catchError(() => {
-        this.router.navigate(['**']);
-        return of(null);
-      })
-    );
+    this.solution$ = this.solutionService.getSolutionById$(this.solutionId);
     this.predictions$ = this.predictionService.getFilteredPredictions(
       null,
       this.solutionId
@@ -145,7 +131,7 @@ export class SolutionDetailPageComponent {
     this.solutionService
       .updateSolutionById(this.solutionId, solution)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.reloadSubject.next());
+      .subscribe();
   }
 
   deleteSolution(): void {

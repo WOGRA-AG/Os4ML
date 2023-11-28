@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -10,6 +10,5 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [NewButtonComponent, TranslateModule],
 })
 export class DatabagDetailDownloadDatabagComponent {
-  @Output() public downloadModel = new EventEmitter<void>();
-  @Input() public disabled = true;
+  @Output() public downloadDatabag = new EventEmitter<void>();
 }

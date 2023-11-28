@@ -106,6 +106,11 @@ export class DatabagService {
       this._createUrlDatabag(updatedDatabag, token, cancelUpload)
     );
   }
+  getDatabagUlr(id: string): Observable<string> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getDatasetGetUrl(id, token))
+    );
+  }
   // Utility methods
   isSameDatabag(databag1: Databag, databag2: Databag): boolean {
     return databag1.id === databag2.id;

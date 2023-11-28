@@ -6,7 +6,7 @@
     {{ 'organisms.databag-detail-delete-databag.description' | translate }}
   </div>
   <app-new-button
-    (click)="downloadModel.emit()"
+    (click)="deleteDatabag.emit()"
     [variant]="'warn'"
     [size]="'medium'"
     [icon]="'delete'"

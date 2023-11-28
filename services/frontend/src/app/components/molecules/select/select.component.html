@@ -7,8 +7,12 @@
     (selectionChange)="selectionChange.emit($event.value)"
     [value]="defaultValue">
     <mat-option>{{ 'molecules.select.option_none' | translate }}</mat-option>
-    <mat-option *ngFor="let option of options" [value]="option.value">
+    <mat-option
+      *ngFor="let option of options"
+      [value]="option.value"
+      class="test">
       {{ option.viewValue }}
     </mat-option>
+    tests
   </mat-select>
 </mat-form-field>

@@ -5,17 +5,17 @@
   {{ 'organisms.databag-detail-field-settings.description' | translate }}
 </div>
 <div class="content">
-  <mat-form-field *ngFor="let column of dataBag.columns" class="form-field">
-    <mat-label>{{ column.name }}</mat-label>
-    <mat-select
-      [(ngModel)]="column.type"
-      name="{{ column.name }}"
-      required
-      #column_name="ngModel"
-      [ngClass]="{ 'is-invalid': column_name.invalid }">
-      <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{
-        type
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <ng-container *ngIf="columns">
+    <mat-form-field *ngFor="let column of columns" class="form-field">
+      <mat-label>{{ column.name }}</mat-label>
+      <mat-select
+        (selectionChange)="updateColumn(column.name, $event.value)"
+        [value]="column.type"
+        required>
+        <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{
+          type
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
 </div>

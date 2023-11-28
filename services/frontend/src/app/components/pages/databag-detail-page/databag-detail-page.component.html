@@ -1,10 +1,12 @@
 <app-os4ml-default-template
   data-testid="solution-detail-page"
-  [mainSmall]="true">
+  [mainSmall]="true"
+  *ngIf="databag$ | async as databag">
   <h1 header class="headline-large primary-text">
-    Databag:
+    Databag: {{ databag.name }}
     <app-new-button
       data-testid="solution-rename-button"
+      (click)="renameDatabag(databag.name ?? '')"
       variant="text"
       size="medium"
       icon="edit"
@@ -12,9 +14,18 @@
     </app-new-button>
   </h1>
   <div main class="main-grid">
-    <app-databag-detail-pipline-status></app-databag-detail-pipline-status>
-    <app-databag-detail-field-settings></app-databag-detail-field-settings>
-    <app-databag-detail-download-databag></app-databag-detail-download-databag>
-    <app-databag-detail-delete-databag></app-databag-detail-delete-databag>
+    <app-databag-detail-pipline-status [status]="databag.status">
+    </app-databag-detail-pipline-status>
+    <app-databag-detail-field-settings
+      [columns]="databag.columns"
+      (updateDatabagColumns)="updateDatabagColumns(databag, $event)">
+    </app-databag-detail-field-settings>
+    <app-databag-detail-download-databag
+      (downloadDatabag)="downloadDatabag(downloadDatabagLink)">
+    </app-databag-detail-download-databag>
+    <a download target="_blank" hidden aria-hidden="true" #downloadDatabagLink>
+    </a>
+    <app-databag-detail-delete-databag (deleteDatabag)="deleteDatabag()">
+    </app-databag-detail-delete-databag>
   </div>
 </app-os4ml-default-template>

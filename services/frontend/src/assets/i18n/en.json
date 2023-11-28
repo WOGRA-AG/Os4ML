@@ -41,6 +41,20 @@
       }
     },
     "popup_input": {
+      "rename_databag": {
+        "title": "Update databag name",
+        "aria_label": "Update Databag Name",
+        "input_form_field": {
+          "label": "New name",
+          "aria-label": "New name",
+          "error_required": "Field cannot be empty",
+          "hint": "Choose a meaningful name when replacing an existing databag."
+        },
+        "submit": {
+          "aria_label": "Change databag name",
+          "button_text": "Change databag name"
+        }
+      },
       "rename_solution": {
         "title": "Update solution name",
         "aria_label": "Update Solution Name",
