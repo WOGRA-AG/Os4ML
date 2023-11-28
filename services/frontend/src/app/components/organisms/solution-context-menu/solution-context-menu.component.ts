@@ -32,6 +32,6 @@ export class SolutionContextMenuComponent {
   @Input() public showPredictionParams: Params = {};
   @Input() public showPredictionLink: string[] | string = [];
   @Input() public showSolutionDetailParams: Params = {};
-  @Input() public showSolutionDetailLink: string[] | string | any = [];
+  @Input() public showSolutionDetailLink: string[] | string = [];
   @Input() public solutionElement!: Solution;
 }

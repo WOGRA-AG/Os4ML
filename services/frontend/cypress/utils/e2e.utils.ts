@@ -292,9 +292,11 @@ export function createPrediction(
 export function deletePrediction(predictionName: string) {
   cy.get('[data-testid="prediction-item"]')
     .filter(`:contains("${predictionName}")`)
-    .find('[data-testid="prediction-delete-button"]', {
+    .find('[data-testid="prediction-menu"]')
+    .click()
+  cy.get('[data-testid="prediction-delete-button"]', {
       timeout: TIMEOUT_SHORT,
-    })
+  })
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
