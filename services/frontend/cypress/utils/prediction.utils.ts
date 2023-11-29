@@ -35,7 +35,9 @@ export function createPrediction({
 export function deletePrediction(name: string) {
   cy.findAllByTestId('prediction-item')
     .filter(`:contains("${name}")`)
-    .findByTestId('prediction-delete-button')
+    .findByTestId('prediction-menu')
+    .click()
+  cy.findByTestId('prediction-delete-button')
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 

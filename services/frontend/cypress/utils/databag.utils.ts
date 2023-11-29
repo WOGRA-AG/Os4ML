@@ -42,14 +42,16 @@ export function checkDatabag(name: string) {
 export function changeDatabagName(name: string, newName: string) {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByTestId('databag-settings-button')
+    .findByTestId('databag-menu')
+    .click()
+  cy.findByTestId('databag-settings-button')
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-  cy.get('#mat-input-0')
+  cy.get('#mat-input-1')
     .focus()
     .clear({ timeout: TIMEOUT_LONG })
     .should('have.value', '');
-  cy.get('#mat-input-0').type(newName);
+  cy.get('#mat-input-1').type(newName);
   cy.get('#update-databag-button').click();
   cy.findAllByTestId('databag-item')
     .filter(`:contains("${newName}")`)
@@ -63,9 +65,10 @@ export function deleteDatabag(name: string) {
 
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByRole('button', { name: /databag settings/i })
+    .findByTestId('databag-menu')
     .click();
 
+  cy.findByTestId('databag-settings-button').click();
   cy.findByTestId('databag-delete-button').click();
   cy.findByTestId('confirm-popup-button').click();
 
