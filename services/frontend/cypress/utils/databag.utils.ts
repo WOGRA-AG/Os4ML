@@ -47,11 +47,11 @@ export function changeDatabagName(name: string, newName: string) {
   cy.findByTestId('databag-settings-button')
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-  cy.get('#mat-input-1')
+  cy.get('#mat-input-0')
     .focus()
     .clear({ timeout: TIMEOUT_LONG })
     .should('have.value', '');
-  cy.get('#mat-input-1').type(newName);
+  cy.get('#mat-input-0').type(newName);
   cy.get('#update-databag-button').click();
   cy.findAllByTestId('databag-item')
     .filter(`:contains("${newName}")`)
