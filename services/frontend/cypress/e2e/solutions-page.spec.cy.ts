@@ -1,48 +1,75 @@
+import { handleA11yViolations, login, logout } from '../utils/e2e.utils';
 import {
+  CreateDatabagForm,
+  checkDatabag,
+  createDatabag,
+  deleteDatabag,
+} from 'cypress/utils/databag.utils';
+import {
+  CreateSolutionForm,
   changeSolutionName,
   createSolution,
   deleteSolution,
-  handleA11yViolations,
-  setupSolutionTestDatabag,
   visitSolutionsPage,
-} from '../utils/e2e.utils';
-import { login, logout } from '../utils/e2e.login';
+} from 'cypress/utils/solution.utils';
 
-const solutionTestDatabagName = `e2e solution test databag`;
-const solutionName = `e2e solutionName ${new Date().toISOString()}`;
-const updatedSolutionName = `e2e solutionName update ${new Date().toISOString()}`;
+const id = Date.now();
 
-beforeEach('login', () => {
-  login();
-});
+const databagItem: CreateDatabagForm = {
+  name: `Databag for solution specs #${id}`,
+  fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
+};
 
-after('logout', () => {
-  logout();
-});
+const solutionItem: CreateSolutionForm = {
+  name: `Solution #${id}`,
+  databagName: databagItem.name,
+  applyTransferLearning: false,
+};
 
-beforeEach(() => {
-  visitSolutionsPage();
-  cy.injectAxe();
-});
+function getUpdatedName(name: string) {
+  return `${name} - updated`;
+}
 
 describe('Solutions Page', () => {
+  before('Prepare data for tests', () => {
+    login('#/databags');
+    cy.injectAxe();
+
+    createDatabag(databagItem);
+    checkDatabag(databagItem.name);
+  });
+
+  after('Clean up', () => {
+    cy.visit('/#/databags');
+    deleteDatabag(databagItem.name);
+    logout();
+  });
+
+  beforeEach(() => {
+    login();
+    visitSolutionsPage();
+    cy.injectAxe();
+  });
+
   it('Has no detectable accessibility violations on load', () => {
     cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   });
 
-  it('setup a Databag xls', () => {
-    setupSolutionTestDatabag(solutionTestDatabagName);
+  context('Creating solutions', () => {
+    it('add a Solution', () => {
+      createSolution(solutionItem);
+    });
   });
 
-  it('add Solution', () => {
-    createSolution(solutionName, solutionTestDatabagName);
+  context('Solutions updates', () => {
+    it('change name', () => {
+      changeSolutionName(solutionItem.name, getUpdatedName(solutionItem.name));
+    });
   });
 
-  it('change Solution name', () => {
-    changeSolutionName(solutionName, updatedSolutionName);
-  });
-
-  it('delete Solution', () => {
-    deleteSolution(updatedSolutionName);
+  context('Solutions deletion', () => {
+    it('delete a Solution', () => {
+      deleteSolution(getUpdatedName(solutionItem.name));
+    });
   });
 });

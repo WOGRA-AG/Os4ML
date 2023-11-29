@@ -1,75 +1,94 @@
+import { handleA11yViolations, login, logout } from '../utils/e2e.utils';
 import {
+  CreateDatabagForm,
   changeDatabagName,
   checkDatabag,
   createDatabag,
   deleteDatabag,
-  handleA11yViolations,
   visitDatabagPage,
-} from '../utils/e2e.utils';
-import { login, logout } from '../utils/e2e.login';
+} from 'cypress/utils/databag.utils';
 
-const databagNameXls = `e2e databag xls ${new Date().toISOString()}`;
-const updatedDatabagNameXls = `e2e databag xls update ${new Date().toISOString()}`;
-const databagNameDataframeScript = `e2e databag dataframe script ${new Date().toISOString()}`;
-const databagNameZip = `e2e databag zip ${new Date().toISOString()}`;
+const id = Date.now();
 
-beforeEach('login', () => {
-  login();
-});
+const databagItem: CreateDatabagForm = {
+  name: `Databag for databag specs #${id} - default`,
+  fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
+};
 
-after('logout', () => {
-  logout();
-});
-beforeEach(() => {
-  visitDatabagPage();
-  cy.injectAxe();
-});
+const databagFrameScriptItem: CreateDatabagForm = {
+  name: `Databag for databag specs #${id} - dataframe script`,
+  fixtureFilename: 'cypress/fixtures/databags/dataframe_script.py',
+};
+
+const databagZipItem: CreateDatabagForm = {
+  name: `Databag for databag specs #${id} - ZIP`,
+  fixtureFilename: 'cypress/fixtures/databags/raw_data_small.zip',
+};
+
+function getUpdatedName(name: string) {
+  return `${name} - updated`;
+}
 
 describe('Databags Page', () => {
+  after('Clean up', () => {
+    logout();
+  });
+
+  beforeEach(() => {
+    login();
+    visitDatabagPage();
+    cy.injectAxe();
+  });
+
   it('Has no detectable accessibility violations on load', () => {
     cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   });
 
-  it('add a Databag xls', () => {
-    createDatabag(databagNameXls, 'cypress/fixtures/titanic.xls');
+  context('Creating databags', () => {
+    it('add a Databag xls', () => {
+      createDatabag(databagItem);
+    });
+
+    it('add a Databag dataframe script', () => {
+      createDatabag(databagFrameScriptItem);
+    });
+
+    it('add a Databag zip', () => {
+      createDatabag(databagZipItem);
+    });
   });
 
-  it('change Databag name', () => {
-    changeDatabagName(databagNameXls, updatedDatabagNameXls);
+  context('Created databags shall be processed', () => {
+    it('check a Databag xls', () => {
+      checkDatabag(databagItem.name);
+    });
+
+    it('check a Databag dataframe script', () => {
+      checkDatabag(databagFrameScriptItem.name);
+    });
+
+    it('check a Databag zip', () => {
+      checkDatabag(databagZipItem.name);
+    });
   });
 
-  it('add a Databag dataframe script', () => {
-    createDatabag(
-      databagNameDataframeScript,
-      'cypress/fixtures/dataframe_script.py'
-    );
+  context('Databags updates', () => {
+    it('change name', () => {
+      changeDatabagName(databagItem.name, getUpdatedName(databagItem.name));
+    });
   });
 
-  it('add a Databag zip', () => {
-    createDatabag(databagNameZip, 'cypress/fixtures/raw_data_small.zip');
-  });
+  context('Databags deletion', () => {
+    it('delete a Databag xls', () => {
+      deleteDatabag(getUpdatedName(databagItem.name));
+    });
 
-  it('check a Databag xls', () => {
-    checkDatabag(updatedDatabagNameXls);
-  });
+    it('delete a Databag dataframe script', () => {
+      deleteDatabag(databagFrameScriptItem.name);
+    });
 
-  it('check a Databag dataframe script', () => {
-    checkDatabag(databagNameDataframeScript);
-  });
-
-  it('check a Databag zip', () => {
-    checkDatabag(databagNameZip);
-  });
-
-  it('delete a Databag xls', () => {
-    deleteDatabag(updatedDatabagNameXls);
-  });
-
-  it('delete a Databag dataframe script', () => {
-    deleteDatabag(databagNameDataframeScript);
-  });
-
-  it('delete a Databag zip', () => {
-    deleteDatabag(databagNameZip);
+    it('delete a Databag zip', () => {
+      deleteDatabag(databagZipItem.name);
+    });
   });
 });

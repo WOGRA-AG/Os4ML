@@ -41,3 +41,8 @@ predictions_page_test:
   extends: .cypress_base
   script:
     - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/predictions-page.spec.cy.ts' --browser chrome
+
+transfer_learning_page_test:
+  extends: .cypress_base
+  script:
+    - cd services/frontend && npm ci && npx cypress run --spec 'cypress/e2e/transfer-learning-page.spec.cy.ts' --browser chrome
