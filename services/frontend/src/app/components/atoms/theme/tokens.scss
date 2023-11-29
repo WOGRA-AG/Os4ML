@@ -48,13 +48,13 @@
   --md-ref-palette-secondary20: #1a1e32;
   --md-ref-palette-secondary30: #272c4b;
   --md-ref-palette-secondary40: #343b63;
-  --md-ref-palette-secondary50: #4d5376;
-  --md-ref-palette-secondary60: #666c8a;
-  --md-ref-palette-secondary70: #7f849d;
-  --md-ref-palette-secondary80: #999cb0;
-  --md-ref-palette-secondary90: #b2b4c4;
-  --md-ref-palette-secondary95: #cbcdd7;
-  --md-ref-palette-secondary99: #f6f6f6;
+  --md-ref-palette-secondary50: #555c82;
+  --md-ref-palette-secondary60: #7d80a2;
+  --md-ref-palette-secondary70: #a2a5c2;
+  --md-ref-palette-secondary80: #c3c5dd;
+  --md-ref-palette-secondary90: #e4e4f7;
+  --md-ref-palette-secondary95: #f0efff;
+  --md-ref-palette-secondary99: #fffbff;
   --md-ref-palette-secondary100: #fdfdfd;
   /* tertiary */
   --md-ref-palette-tertiary0: #23211f;
@@ -171,6 +171,11 @@
     --md-ref-palette-error10
   ); /* Text and icons against error container */
 
+  --md-custom-color-running-light: var(
+    --md-ref-palette-primary20
+  ); /* Running color against surface for fills, icons, and text */
+  --md-custom-color-on-running-light: var(--md-ref-palette-primary90); /* Text and icons against running */
+
   /* Surface colors */
   --md-sys-color-surface-light: var(
     --md-ref-palette-neutral100
@@ -275,6 +280,12 @@
   --md-sys-color-on-error-container-dark: var(
     --md-ref-palette-error90
   ); /* Text and icons against error container */
+  --md-custom-color-running-dark: var(
+    --md-ref-palette-primary90
+  ); /* Running color against surface for fills, icons, and text */
+  --md-custom-color-on-running-dark: var(
+    --md-ref-palette-primary20
+  ); /* Text and icons against running */
 
   /* Surface colors */
   --md-sys-color-surface-dark: #1c1c28; /* Default color for backgrounds */
