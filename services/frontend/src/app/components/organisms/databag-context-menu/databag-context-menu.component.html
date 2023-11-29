@@ -3,11 +3,12 @@
     'organisms.databag_data_table.actions.context_menu' | translate
   "
   mat-icon-button
+  role="button"
   [matMenuTriggerFor]="menu"
   data-testid="databag-menu">
   <mat-icon>more_vert</mat-icon>
 </button>
-<mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu" role="menu">
   <app-context-menu
     [ariaLabel]="
       'organisms.databag_data_table.actions.settings.aria_label' | translate

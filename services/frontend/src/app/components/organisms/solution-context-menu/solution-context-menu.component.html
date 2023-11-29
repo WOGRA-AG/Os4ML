@@ -3,12 +3,13 @@
     'organisms.solution_data_table.actions.context_menu' | translate
   "
   mat-icon-button
+  role="button"
   [matMenuTriggerFor]="menu"
   data-testid="solution-menu">
   <mat-icon>more_vert</mat-icon>
 </button>
 
-<mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu" role="menu">
   <app-context-menu
     [ariaLabel]="'organisms.prediction_create_button.label' | translate"
     data-testid="create-prediction-button"
