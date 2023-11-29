@@ -55,6 +55,7 @@
     "@angular/cli": "16.2.10",
     "@angular/compiler-cli": "16.2.4",
     "@openapitools/openapi-generator-cli": "2.7.0",
+    "@testing-library/cypress": "10.0.1",
     "@types/jasmine": "4.3.6",
     "@types/node": "18.17.19",
     "@types/uuid": "9.0.4",
