@@ -2,6 +2,8 @@
   [attr.data-testid]="dataTestid"
   mat-menu-item
   [routerLink]="routerLink"
+  [disabled]="disabled"
+  [attr.aria-label]="ariaLabel"
   [queryParams]="params">
   <mat-icon> {{ menuIcon }}</mat-icon>
   <span> {{ menuDescription }} </span>

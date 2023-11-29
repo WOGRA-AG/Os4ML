@@ -18,4 +18,6 @@ export class ContextMenuItemComponent {
   @Input() public routerLink: string[] | string = [];
   @Input() public params = {};
   @Input() public dataTestid?: string;
+  @Input() public disabled = false;
+  @Input() public ariaLabel? = '';
 }

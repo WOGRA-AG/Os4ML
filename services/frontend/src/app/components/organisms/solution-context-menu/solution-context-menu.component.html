@@ -1,9 +1,16 @@
-<button mat-icon-button [matMenuTriggerFor]="menu" data-testid="solution-menu">
+<button
+  [attr.aria-label]="
+    'organisms.solution_data_table.actions.context_menu' | translate
+  "
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  data-testid="solution-menu">
   <mat-icon>more_vert</mat-icon>
 </button>
 
 <mat-menu #menu="matMenu">
   <app-context-menu
+    [ariaLabel]="'organisms.prediction_create_button.label' | translate"
     data-testid="create-prediction-button"
     (click)="createPredictionButton.emit()"
     menuDescription="{{
@@ -12,6 +19,10 @@
     menuIcon="add">
   </app-context-menu>
   <app-context-menu
+    [ariaLabel]="
+      'organisms.solution_data_table.actions.show_predictions.tooltip'
+        | translate
+    "
     *ngIf="solutionElement?.id && (solutionElement | isSolutionDone)"
     menuDescription="{{
       'organisms.solution_data_table.actions.show_predictions.tooltip'
@@ -22,6 +33,9 @@
     [queryParams]="showPredictionParams">
   </app-context-menu>
   <app-context-menu
+    [ariaLabel]="
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    "
     data-testid="solution-detail-button"
     menuDescription="{{
       'organisms.solution_data_table.actions.settings.tooltip' | translate

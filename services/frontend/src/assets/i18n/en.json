@@ -101,6 +101,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Databag context menu",
         "settings": {
           "tooltip": "Databag settings",
           "aria_label": "Databag settings"
@@ -151,6 +152,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Solution context menu",
         "settings": {
           "tooltip": "Solution settings"
         },
@@ -256,6 +258,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Prediction context menu",
         "delete_prediction": "Delete Prediction",
         "download_prediction": "Download Prediction"
       }
@@ -420,11 +423,11 @@
       "buttons": {
         "settings": {
           "tooltip": "Databag settings",
-          "aria_label": ""
+          "aria_label": "Databag settings"
         },
         "add_solution": {
           "tooltip": "Add solution",
-          "aria_label": ""
+          "aria_label": "Add solution"
         }
       }
     },
