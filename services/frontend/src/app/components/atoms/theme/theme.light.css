@@ -68,7 +68,9 @@
   --md-custom-color-processing-status-running: var(
     --md-custom-color-running-light
   );
-  --md-custom-color-on-processing-status-running: var(--md-custom-color-on-running-light);
+  --md-custom-color-on-processing-status-running: var(
+    --md-custom-color-on-running-light
+  );
 
   --md-custom-color-processing-status-done: var(
     --md-custom-color-processing-status-done-light

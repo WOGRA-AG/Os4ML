@@ -174,7 +174,9 @@
   --md-custom-color-running-light: var(
     --md-ref-palette-primary20
   ); /* Running color against surface for fills, icons, and text */
-  --md-custom-color-on-running-light: var(--md-ref-palette-primary90); /* Text and icons against running */
+  --md-custom-color-on-running-light: var(
+    --md-ref-palette-primary90
+  ); /* Text and icons against running */
 
   /* Surface colors */
   --md-sys-color-surface-light: var(
