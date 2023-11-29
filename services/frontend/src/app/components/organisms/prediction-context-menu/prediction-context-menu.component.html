@@ -13,6 +13,7 @@
     [ariaLabel]="
       'organisms.prediction_data_table.actions.download_prediction' | translate
     "
+    [disabled]="(predictionElement.status | shortStatus) === 'Error'"
     data-testid="prediction-download-button"
     (click)="downloadPredictionButton.emit()"
     menuDescription="{{
