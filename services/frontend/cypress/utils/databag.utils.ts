@@ -38,37 +38,37 @@ export function checkDatabag(name: string) {
 
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
-
-export function changeDatabagName(name: string, newName: string) {
+export function changeDatabagName(name: string, newName: string): void {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByTestId('databag-settings-button')
+    .findByTestId('databag-detail-button')
     .click();
+  cy.url().should('include', '/databags/detail');
+  cy.findByTestId('databag-detail-page').should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-  cy.get('#mat-input-0')
-    .focus()
-    .clear({ timeout: TIMEOUT_LONG })
-    .should('have.value', '');
-  cy.get('#mat-input-0').type(newName);
-  cy.get('#update-databag-button').click();
+  cy.findByTestId('databag-rename-button').click();
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  cy.findByTestId('popup-input-field').focus().clear();
+  cy.findByTestId('popup-input-field').type(newName);
+  cy.findByTestId('popup-input-submit').click();
+  cy.go('back');
+
   cy.findAllByTestId('databag-item')
     .filter(`:contains("${newName}")`)
     .should('exist');
 }
 
 export function deleteDatabag(name: string) {
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG }).filter(
-    `:contains("${name}")`
-  );
+  cy.visit('/#/databags');
 
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByRole('button', { name: /databag settings/i })
+    .findByTestId('databag-detail-button')
     .click();
 
-  cy.findByTestId('databag-delete-button').click();
+  cy.findByTestId('databag-delete-button').children().click();
   cy.findByTestId('confirm-popup-button').click();
 
+  cy.visit('/#/databags');
   cy.findAllByText(name).should('have.length', 0);
-  cy.findByTestId('databags-page').should('not.contain', name);
 }

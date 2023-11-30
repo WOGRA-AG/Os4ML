@@ -1,16 +1,16 @@
 <app-os4ml-default-template
-  data-testid="solution-detail-page"
+  data-testid="databag-detail-page"
   [mainSmall]="true"
   *ngIf="databag$ | async as databag">
   <h1 header class="headline-large primary-text">
     Databag: {{ databag.name }}
     <app-new-button
-      data-testid="solution-rename-button"
+      data-testid="databag-rename-button"
       (click)="renameDatabag(databag.name ?? '')"
       variant="text"
       size="medium"
       icon="edit"
-      [ariaLabel]="'organisms.prediction_create_button.label' | translate">
+      [ariaLabel]="'organisms.databag_create_button.label' | translate">
     </app-new-button>
   </h1>
   <div main class="main-grid">

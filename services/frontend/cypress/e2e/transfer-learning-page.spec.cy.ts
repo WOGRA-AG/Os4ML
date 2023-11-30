@@ -52,9 +52,9 @@ describe('Transfer learning page', () => {
   });
 
   beforeEach(() => {
-    login('/#/transfer-learning');
+    login('#/transfer-learning');
     cy.injectAxe();
-    cy.findByTestId('transfer-learning-page').should('be.visible');
+    cy.findByTestId('transfer-learning-page', { timeout: TIMEOUT_LONG }).should('be.visible');
   });
 
   it('Should be accessible (a11y)', () => {

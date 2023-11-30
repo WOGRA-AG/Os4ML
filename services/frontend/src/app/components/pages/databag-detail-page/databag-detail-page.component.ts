@@ -11,7 +11,7 @@ import { DatabagDetailFieldSettingsComponent } from '../../organisms/databag-det
 import { DatabagDetailDownloadDatabagComponent } from '../../organisms/databag-detail-download-databag/databag-detail-download-databag.component';
 import { DatabagDetailDeleteDatabagComponent } from '../../organisms/databag-detail-delete-databag/databag-detail-delete-databag.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, switchMap } from 'rxjs';
 import { Column, Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
@@ -59,10 +59,13 @@ export class DatabagDetailPageComponent {
     this.databagId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
     this.databag$ = this.databagService.getDatabagById$(this.databagId);
     this.databagUpdateSubject
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(databag => {
-        this.handleDatabagChange(databag);
-      });
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(databag => {
+          return this.databagService.updateDatabagById(this.databagId, databag);
+        })
+      )
+      .subscribe();
   }
   addDatabag(): void {
     this.dialog.open(DatabagsCreateDialogComponent, {
@@ -97,35 +100,22 @@ export class DatabagDetailPageComponent {
     renameSolutionDialogRef
       .afterClosed()
       .pipe(
-        tap(result => {
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(result => {
           const databag = this.databagService.getDatabagById(this.databagId);
           if (result && databag) {
             databag.name = result;
-            this.updateDatabagName(databag);
+            return this.databagService.updateDatabagById(
+              this.databagId,
+              databag
+            );
+          } else {
+            return EMPTY;
           }
-        }),
-        takeUntilDestroyed(this.destroyRef)
+        })
       )
       .subscribe();
   }
-  updateDatabagName(databag: Databag): void {
-    this.databagService
-      .updateDatabagById(this.databagId, databag)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
-  }
-  updateDatabagColumns(databag: Databag, columns: Column[]): void {
-    databag.columns = columns;
-    this.databagUpdateSubject.next(databag);
-  }
-
-  handleDatabagChange(databag: Databag): void {
-    this.databagService
-      .updateDatabagById(this.databagId, databag)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
-  }
-
   deleteDatabag(): void {
     const deleteDatabag = this.databagService.deleteDatabagById(this.databagId);
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
@@ -138,16 +128,18 @@ export class DatabagDetailPageComponent {
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(
-        tap(confirm => {
-          if (confirm) {
-            this.router.navigate(['/databags']);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(confirm => {
+        if (confirm) {
+          this.router.navigate(['/databags']);
+        }
+      });
   }
+  updateDatabagColumns(databag: Databag, columns: Column[]): void {
+    databag.columns = columns;
+    this.databagUpdateSubject.next(databag);
+  }
+
   downloadDatabag(downloadLink: HTMLAnchorElement): void {
     this.databagService
       .getDatabagUlr(this.databagId)

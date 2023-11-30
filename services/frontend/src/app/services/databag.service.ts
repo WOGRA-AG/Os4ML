@@ -25,7 +25,6 @@ import {
   HttpProgressEvent,
 } from '@angular/common/http';
 import { databagsWebsocketPath } from 'src/environments/environment';
-import { filterNotDefined } from 'src/app/lib/rxjs/filter-not-defined';
 import { putFileAsOctetStream } from 'src/app/lib/http/http';
 
 @Injectable({
@@ -58,15 +57,9 @@ export class DatabagService {
   getDatabagById(id: string): Databag | undefined {
     return this._databagsSubject$.getValue().find(databag => databag.id === id);
   }
-  loadDatabagById(id: string): Observable<Databag> {
+  getDatabagById$(id: string): Observable<Databag> {
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getDatabagById(id, token))
-    );
-  }
-  getDatabagById$(id: string): Observable<Databag> {
-    return this.databags$.pipe(
-      map(databags => databags.find(databag => databag.id === id)),
-      filterNotDefined()
     );
   }
   // Create, Update, Delete methods
