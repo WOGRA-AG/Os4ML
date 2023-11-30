@@ -43,9 +43,8 @@ export function changeDatabagName(name: string, newName: string) {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
-    .click()
-  cy.findByTestId('databag-settings-button')
     .click();
+  cy.findByTestId('databag-settings-button').click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.get('#mat-input-0')
     .focus()
@@ -62,7 +61,7 @@ export function deleteDatabag(name: string) {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG }).filter(
     `:contains("${name}")`
   );
-  
+
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
