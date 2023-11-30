@@ -40,5 +40,6 @@ export function deletePrediction(name: string) {
   cy.findByTestId('prediction-delete-button')
     .click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+
   cy.findByTestId('confirm-popup-button').should('not.be.disabled').click();
 }

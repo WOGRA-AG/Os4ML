@@ -62,6 +62,7 @@ export function deleteDatabag(name: string) {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG }).filter(
     `:contains("${name}")`
   );
+  
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
