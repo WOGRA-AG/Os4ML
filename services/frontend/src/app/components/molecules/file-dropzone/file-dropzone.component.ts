@@ -20,6 +20,10 @@ export class FileDropzoneComponent {
   @Input() public invalid = false;
   @Output() private fileDropped = new EventEmitter<File>();
   public isDragging = false;
+  public isMobileView = false;
+  constructor() {
+    this.isMobileView = this.isMobileDevice();
+  }
 
   @HostListener('dragover', ['$event']) public onDragOver(
     evt: DragEvent
@@ -56,5 +60,9 @@ export class FileDropzoneComponent {
     if (fileList && fileList.length > 0) {
       this.fileDropped.emit(fileList[0]);
     }
+  }
+
+  private isMobileDevice(): boolean {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   }
 }
