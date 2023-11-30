@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import {Component, DestroyRef, HostListener, inject} from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
@@ -58,5 +58,11 @@ export class AppComponent {
       .subscribe(() => {
         this.showSidebar = false;
       });
+  }
+  @HostListener('window:resize')
+  onResize(): void {
+    if (window.innerWidth >= 1000) {
+      this.showSidebar = false;
+    }
   }
 }
