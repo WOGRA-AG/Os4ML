@@ -89,7 +89,6 @@ export function deleteSolution(name: string) {
     .click()
   cy.findByTestId('solution-delete-button').children().click();
   cy.findByTestId('confirm-popup-button').click();
-
   cy.visit('/#/solutions');
   cy.findAllByText(name).should('have.length', 0);
 }
