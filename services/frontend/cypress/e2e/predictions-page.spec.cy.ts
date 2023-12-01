@@ -2,17 +2,17 @@ import {
   TIMEOUT_LONG,
   handleA11yViolations,
   login,
-  logout,
+  logout, getSupportingMLEntitieId,
 } from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   checkDatabag,
   createDatabag,
-  deleteDatabag,
+  deleteDatabag, setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
-  createSolution,
+  createSolution, checkSolution, setupSolution, deleteSolution,
 } from 'cypress/utils/solution.utils';
 import {
   CreatePredictionForm,
@@ -20,16 +20,16 @@ import {
   deletePrediction,
   visitPredictionsPage,
 } from 'cypress/utils/prediction.utils';
-
+const essentialMLEntitiesOnly = Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
-  name: `Databag for prediction specs #${id}`,
+  name: `Databag for prediction specs #${getSupportingMLEntitieId()}`,
   fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
 };
 
 const solutionItem: CreateSolutionForm = {
-  name: `Solution for prediction specs #${id}`,
+  name: `Solution for prediction specs #${getSupportingMLEntitieId()}`,
   databagName: databagItem.name,
   applyTransferLearning: false,
 };
@@ -45,16 +45,19 @@ describe('Predictions Page', () => {
     login('#/databags');
     cy.injectAxe();
 
-    createDatabag(databagItem);
+    setupDatabag(databagItem);
     checkDatabag(databagItem.name);
 
     cy.visit('/#/solutions');
-    createSolution(solutionItem);
+    setupSolution(solutionItem);
+    checkSolution(solutionItem.name);
   });
 
   after('Clean up', () => {
-    cy.visit('/#/databags');
-    deleteDatabag(databagItem.name);
+    if (!essentialMLEntitiesOnly) {
+      deleteDatabag(databagItem.name);
+      deleteSolution(solutionItem.name);
+    }
     logout();
   });
 

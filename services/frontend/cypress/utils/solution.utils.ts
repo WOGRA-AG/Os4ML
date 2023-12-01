@@ -1,4 +1,5 @@
 import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
+import {createDatabag, CreateDatabagForm} from "./databag.utils";
 
 export type CreateSolutionForm = {
   name: string;
@@ -29,9 +30,9 @@ export function createSolution({
   cy.findByTestId('input-databagId').click();
   cy.get('mat-option').contains(databagName).click();
 
-  cy.findByTestId('output-select-field').click({ force: true });
+  cy.findByTestId('output-select-field').click({force: true});
   if (outputField) {
-    cy.get('mat-option').contains(outputField).click({ force: true });
+    cy.get('mat-option').contains(outputField).click({force: true});
   } else {
     cy.get('mat-option').first().click();
   }
@@ -39,14 +40,26 @@ export function createSolution({
   cy.get('body').type('{esc}');
 
   if (applyTransferLearning) {
-    cy.findByRole('switch', { name: /toggle for transfer learning/i }).click();
+    cy.findByRole('switch', {name: /toggle for transfer learning/i}).click();
   }
 
   cy.findByTestId('submit-solution')
     .should('not.be.disabled')
     .children()
-    .click({ force: true });
+    .click({force: true});
+}
 
+export function setupSolution(solutionItem: CreateSolutionForm): void {
+  cy.get('[data-testid="solution-item"]').then($items => {
+    const matchingItem =
+      $items.filter((index, item) => item.innerText.includes(solutionItem.name));
+    if (matchingItem.length === 0) {
+      createSolution(solutionItem);
+    }
+  });
+}
+
+export function checkSolution(name: string) {
   const rowTable = cy
     .findByText(name, {
       timeout: TIMEOUT_LONG,
@@ -57,7 +70,6 @@ export function createSolution({
     timeout: TIMEOUT_LONG,
   });
 }
-
 export function changeSolutionName(name: string, newName: string): void {
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
