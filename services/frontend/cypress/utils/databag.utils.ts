@@ -14,8 +14,9 @@ export function visitDatabagPage() {
 
 export function setupDatabag(databagItem: CreateDatabagForm): void {
   cy.get('[data-testid="databag-item"]').then($items => {
-    const matchingItem =
-      $items.filter((index, item) => item.innerText.includes(databagItem.name));
+    const matchingItem = $items.filter((index, item) =>
+      item.innerText.includes(databagItem.name)
+    );
     if (matchingItem.length === 0) {
       createDatabag(databagItem);
     }
@@ -54,7 +55,9 @@ export function changeDatabagName(name: string, newName: string): void {
     .findByTestId('databag-detail-button')
     .click();
   cy.url().should('include', '/databags/detail');
-  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should('be.visible');
+  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.findByTestId('databag-rename-button').click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
@@ -83,6 +86,4 @@ export function deleteDatabag(name: string) {
   cy.findAllByText(name).should('have.length', 0);
 }
 
-export function cleanUpDatabag(name: string) {
-
-}
+export function cleanUpDatabag(name: string) {}

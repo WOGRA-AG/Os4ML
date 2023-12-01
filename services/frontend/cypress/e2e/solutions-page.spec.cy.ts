@@ -1,20 +1,28 @@
-import {getSupportingMLEntitieId, handleA11yViolations, login, logout} from '../utils/e2e.utils';
+import {
+  getSupportingMLEntitieId,
+  handleA11yViolations,
+  login,
+  logout,
+} from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   checkDatabag,
   createDatabag,
-  deleteDatabag, setupDatabag,
+  deleteDatabag,
+  setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
   changeSolutionName,
   createSolution,
   deleteSolution,
-  visitSolutionsPage, checkSolution,
+  visitSolutionsPage,
+  checkSolution,
 } from 'cypress/utils/solution.utils';
-import {cleanup} from "axe-core";
+import { cleanup } from 'axe-core';
 
-const essentialMLEntitiesOnly = Cypress.env('createEssentialMLEntitiesOnly') === true;
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
@@ -80,5 +88,5 @@ describe('Solutions Page', () => {
     it('delete a Solution', () => {
       deleteSolution(getUpdatedName(solutionItem.name));
     });
-  })
-})
+  });
+});

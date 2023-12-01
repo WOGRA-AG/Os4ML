@@ -1,7 +1,8 @@
 import { NodeResult, Result } from 'axe-core';
 
 const isDev = Cypress.env('dev') === true;
-const essentialMLEntitiesOnly = Cypress.env('createEssentialMLEntitiesOnly') === true;
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 export const TIMEOUT_LONG = 60 * 1000 * 10; /* Number of minutes */
 
 export function handleA11yViolations(violations: Array<Result>) {
@@ -71,7 +72,7 @@ export function logout() {
 
 export function getSupportingMLEntitieId(): string {
   if (essentialMLEntitiesOnly) {
-    return "reusableID";
+    return 'reusableID';
   } else {
     return Date.now().toString();
   }

@@ -1,19 +1,28 @@
-import {TIMEOUT_LONG, handleA11yViolations, login, getSupportingMLEntitieId} from '../utils/e2e.utils';
+import {
+  TIMEOUT_LONG,
+  handleA11yViolations,
+  login,
+  getSupportingMLEntitieId,
+} from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   checkDatabag,
-  deleteDatabag, setupDatabag,
+  deleteDatabag,
+  setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
-  setupSolution, checkSolution, deleteSolution,
+  setupSolution,
+  checkSolution,
+  deleteSolution,
 } from 'cypress/utils/solution.utils';
 import {
   createTransferLearningByModel,
   TransferLearningForm,
 } from 'cypress/utils/transfer-learning.utils';
 
-const essentialMLEntitiesOnly = Cypress.env('createEssentialMLEntitiesOnly') === true;
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
@@ -39,7 +48,7 @@ const newTLsolutionItem: CreateSolutionForm = {
   databagName: databagItem.name,
   outputField: 'sex',
   applyTransferLearning: true,
-}
+};
 
 describe('Transfer learning page', () => {
   before('Prepare data for tests', () => {
@@ -135,8 +144,7 @@ describe('Transfer learning page', () => {
     cy.findByText(transferLearningItem.name).should('be.visible');
   });
 
-
-    it('delete TL Solution', () => {
-      deleteSolution(newTLsolutionItem.name);
-    });
+  it('delete TL Solution', () => {
+    deleteSolution(newTLsolutionItem.name);
+  });
 });

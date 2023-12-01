@@ -2,17 +2,22 @@ import {
   TIMEOUT_LONG,
   handleA11yViolations,
   login,
-  logout, getSupportingMLEntitieId,
+  logout,
+  getSupportingMLEntitieId,
 } from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   checkDatabag,
   createDatabag,
-  deleteDatabag, setupDatabag,
+  deleteDatabag,
+  setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
-  createSolution, checkSolution, setupSolution, deleteSolution,
+  createSolution,
+  checkSolution,
+  setupSolution,
+  deleteSolution,
 } from 'cypress/utils/solution.utils';
 import {
   CreatePredictionForm,
@@ -20,7 +25,8 @@ import {
   deletePrediction,
   visitPredictionsPage,
 } from 'cypress/utils/prediction.utils';
-const essentialMLEntitiesOnly = Cypress.env('createEssentialMLEntitiesOnly') === true;
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
