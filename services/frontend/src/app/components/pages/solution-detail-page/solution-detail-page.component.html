@@ -34,7 +34,6 @@
       [combined]="solution.metrics?.combined ?? 0"
       [details]="solution.metrics?.details ?? []">
     </app-solution-detail-output>
-    {{ solution | json }}
     <app-solution-detail-download-model
       [disabled]="(solution.status | shortStatus) !== 'Done'"
       (downloadModel)="

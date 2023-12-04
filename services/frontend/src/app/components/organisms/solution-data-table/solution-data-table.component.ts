@@ -12,7 +12,7 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
 import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { JsonPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-solution-data-table',
@@ -32,7 +32,6 @@ import { JsonPipe, NgIf } from '@angular/common';
     RouterLink,
     MatTooltipModule,
     NgIf,
-    JsonPipe,
   ],
   standalone: true,
 })

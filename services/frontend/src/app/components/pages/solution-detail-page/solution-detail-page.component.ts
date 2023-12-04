@@ -5,7 +5,7 @@ import {
   Prediction,
   Solution,
 } from '../../../../../build/openapi/modelmanager';
-import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { SolutionDetailInputComponent } from '../../organisms/solution-detail-input/solution-detail-input.component';
 import { SolutionDetailOutputComponent } from '../../organisms/solution-detail-output/solution-detail-output.component';
 import { HasElementsPipe } from '../../../pipes/has-elements.pipe';
@@ -17,7 +17,7 @@ import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-
 import { MatIconModule } from '@angular/material/icon';
 import { SolutionService } from '../../../services/solution.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
@@ -54,14 +54,12 @@ import { PredictionService } from '../../../services/prediction.service';
     SolutionDetailPipelineStatusComponent,
     NewButtonComponent,
     TranslateModule,
-    JsonPipe,
   ],
 })
 export class SolutionDetailPageComponent {
   public solution$: Observable<Solution>;
   public predictions$: Observable<Prediction[]>;
   public solutionId: string;
-  private solutionUpdateSubject = new Subject<Solution>();
   private destroyRef = inject(DestroyRef);
   constructor(
     private activatedRoute: ActivatedRoute,
