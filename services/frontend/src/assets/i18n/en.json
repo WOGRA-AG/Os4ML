@@ -36,7 +36,7 @@
         "message": "Are you sure you want to delete this solution? All data will be lost!"
       },
       "delete_prediction": {
-        "title": "Delete srediction",
+        "title": "Delete prediction",
         "message": "Are you sure you want to delete this prediction? All data will be lost!"
       }
     },
