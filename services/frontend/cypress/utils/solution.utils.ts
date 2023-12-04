@@ -20,7 +20,14 @@ export function createSolution({
   outputField,
   applyTransferLearning,
 }: CreateSolutionForm) {
-  cy.findAllByTestId('add-solution').first().click();
+  cy.findAllByTestId('add-solution', { timeout: TIMEOUT_LONG })
+    .parent()
+    .should('not.be.disabled')
+    .findByTestId('add-solution')
+    .click();
+  cy.findByTestId('solution-create-dialog', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
 
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 

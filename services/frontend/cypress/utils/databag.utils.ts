@@ -35,8 +35,14 @@ export function setupDatabag(databagItem: CreateDatabagForm): void {
 }
 
 export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
-  cy.findByTestId('add-databag').click();
-
+  cy.findAllByTestId('add-databag', { timeout: TIMEOUT_LONG })
+    .parent()
+    .should('not.be.disabled')
+    .findByTestId('add-databag')
+    .click();
+  cy.findByTestId('databag-create-dialog', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
   cy.findByTestId('input-name').clear().type(name);

@@ -18,10 +18,11 @@ export function createPrediction({
   solutionName,
   file,
 }: CreatePredictionForm) {
-  const foo = cy.findByTestId('predictions-page-actions').parent();
-
-  foo.findByTestId('add-prediction');
-
+  cy.findByTestId('predictions-page-actions', { timeout: TIMEOUT_LONG })
+    .parent()
+    .should('not.be.disabled')
+    .findByTestId('add-prediction')
+    .click();
   cy.findByTestId('prediction-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
