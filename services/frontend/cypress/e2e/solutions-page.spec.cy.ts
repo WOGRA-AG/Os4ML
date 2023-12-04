@@ -80,7 +80,7 @@ describe('Solutions Page', () => {
 
   context('Created solution shall be processed', () => {
     it('Check Solution', () => {
-      checkSolution(databagItem.name);
+      checkSolution(getUpdatedName(solutionItem.name));
     });
   });
 

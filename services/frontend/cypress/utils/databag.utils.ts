@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
+import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;
@@ -13,14 +13,25 @@ export function visitDatabagPage() {
 }
 
 export function setupDatabag(databagItem: CreateDatabagForm): void {
-  cy.get('[data-testid="databag-item"]').then($items => {
-    const matchingItem = $items.filter((index, item) =>
-      item.innerText.includes(databagItem.name)
-    );
-    if (matchingItem.length === 0) {
-      createDatabag(databagItem);
-    }
-  });
+  cy.wait(TIMEOUT_SHORT);
+  cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_LONG })
+    .should('exist')
+    .then(() => {
+      cy.get('body').then($body => {
+        if ($body.find('[data-testid="databag-item"]').length > 0) {
+          cy.get('[data-testid="databag-item"]').then($items => {
+            const itemExists = $items
+              .toArray()
+              .some(item => item.innerText.includes(databagItem.name));
+            if (!itemExists) {
+              createDatabag(databagItem);
+            }
+          });
+        } else {
+          createDatabag(databagItem);
+        }
+      });
+    });
 }
 
 export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {

@@ -6,7 +6,7 @@
     Solution: {{ solution.name }}
     <app-new-button
       data-testid="solution-rename-button"
-      (click)="renameSolution(solution.name ?? '')"
+      (click)="renameSolution(solution)"
       variant="text"
       size="medium"
       icon="edit"
@@ -34,6 +34,7 @@
       [combined]="solution.metrics?.combined ?? 0"
       [details]="solution.metrics?.details ?? []">
     </app-solution-detail-output>
+    {{ solution | json }}
     <app-solution-detail-download-model
       [disabled]="(solution.status | shortStatus) !== 'Done'"
       (downloadModel)="

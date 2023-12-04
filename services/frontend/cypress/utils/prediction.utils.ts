@@ -18,7 +18,10 @@ export function createPrediction({
   solutionName,
   file,
 }: CreatePredictionForm) {
-  cy.findByTestId('add-prediction').first().click();
+  const foo = cy.findByTestId('predictions-page-actions').parent();
+
+  foo.findByTestId('add-prediction');
+
   cy.findByTestId('prediction-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
@@ -33,7 +36,9 @@ export function createPrediction({
 }
 
 export function deletePrediction(name: string) {
-  cy.findAllByTestId('prediction-item')
+  cy.findAllByTestId('prediction-item', {
+    timeout: TIMEOUT_LONG,
+  })
     .filter(`:contains("${name}")`)
     .findByTestId('prediction-delete-button')
     .click();

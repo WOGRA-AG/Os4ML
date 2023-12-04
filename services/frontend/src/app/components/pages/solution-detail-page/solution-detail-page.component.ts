@@ -2,11 +2,10 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { Os4mlDefaultTemplateComponent } from '../../templates/os4ml-default-template/os4ml-default-template.component';
 import {
-  Databag,
   Prediction,
   Solution,
 } from '../../../../../build/openapi/modelmanager';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { SolutionDetailInputComponent } from '../../organisms/solution-detail-input/solution-detail-input.component';
 import { SolutionDetailOutputComponent } from '../../organisms/solution-detail-output/solution-detail-output.component';
 import { HasElementsPipe } from '../../../pipes/has-elements.pipe';
@@ -18,7 +17,7 @@ import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-
 import { MatIconModule } from '@angular/material/icon';
 import { SolutionService } from '../../../services/solution.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
@@ -55,13 +54,14 @@ import { PredictionService } from '../../../services/prediction.service';
     SolutionDetailPipelineStatusComponent,
     NewButtonComponent,
     TranslateModule,
+    JsonPipe,
   ],
 })
 export class SolutionDetailPageComponent {
   public solution$: Observable<Solution>;
   public predictions$: Observable<Prediction[]>;
   public solutionId: string;
-  private solutionUpdateSubject = new Subject<Databag>();
+  private solutionUpdateSubject = new Subject<Solution>();
   private destroyRef = inject(DestroyRef);
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -77,6 +77,7 @@ export class SolutionDetailPageComponent {
       this.solutionId
     );
   }
+
   addSolution(): void {
     this.dialog.open(SolutionCreateDialogComponent, {
       ariaLabelledBy: 'dialog-title',
@@ -88,11 +89,11 @@ export class SolutionDetailPageComponent {
       ariaLabelledBy: 'dialog-title',
     });
   }
-  renameSolution(oldName: string): void {
+  renameSolution(solution: Solution): void {
     const renameSolutionDialogRef = this.dialog.open(PopupInputComponent, {
       ariaLabelledBy: 'dialog-title',
       data: {
-        inputValue: oldName,
+        inputValue: solution.name,
         titleKey: 'organisms.popup_input.rename_solution.title',
         ariaLabelKey: 'organisms.popup_input.rename_solution.aria_label',
         inputFormField: {
@@ -114,26 +115,14 @@ export class SolutionDetailPageComponent {
     renameSolutionDialogRef
       .afterClosed()
       .pipe(
-        tap(result => {
-          const solution = this.solutionService.getSolutionById(
-            this.solutionId
-          );
-          if (result && solution) {
-            solution.name = result;
-            this.updateSolutionName(solution);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
+        tap(newName => (solution.name = newName)),
+        switchMap(() =>
+          this.solutionService.updateSolutionById(this.solutionId, solution)
+        )
       )
       .subscribe();
   }
-  updateSolutionName(solution: Solution): void {
-    this.solutionService
-      .updateSolutionById(this.solutionId, solution)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
-  }
-
   deleteSolution(): void {
     const deleteSolution = this.solutionService.deleteSolutionById(
       this.solutionId
@@ -148,15 +137,12 @@ export class SolutionDetailPageComponent {
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(
-        tap(confirm => {
-          if (confirm) {
-            this.router.navigate(['/solutions']);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(confirm => {
+        if (confirm) {
+          this.router.navigate(['/solutions']);
+        }
+      });
   }
   downloadModel(downloadLink: HTMLAnchorElement): void {
     this.solutionService

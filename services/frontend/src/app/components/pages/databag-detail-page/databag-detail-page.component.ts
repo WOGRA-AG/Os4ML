@@ -11,7 +11,7 @@ import { DatabagDetailFieldSettingsComponent } from '../../organisms/databag-det
 import { DatabagDetailDownloadDatabagComponent } from '../../organisms/databag-detail-download-databag/databag-detail-download-databag.component';
 import { DatabagDetailDeleteDatabagComponent } from '../../organisms/databag-detail-delete-databag/databag-detail-delete-databag.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, Subject, switchMap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { Column, Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
@@ -48,7 +48,6 @@ import { SolutionDetailDownloadModelComponent } from '../../organisms/solution-d
 export class DatabagDetailPageComponent {
   public databag$: Observable<Databag>;
   public databagId: string;
-  private databagUpdateSubject = new Subject<Databag>();
   private destroyRef = inject(DestroyRef);
   constructor(
     private dialog: MatDialog,
@@ -58,14 +57,6 @@ export class DatabagDetailPageComponent {
   ) {
     this.databagId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
     this.databag$ = this.databagService.getDatabagById$(this.databagId);
-    this.databagUpdateSubject
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        switchMap(databag => {
-          return this.databagService.updateDatabagById(this.databagId, databag);
-        })
-      )
-      .subscribe();
   }
   addDatabag(): void {
     this.dialog.open(DatabagsCreateDialogComponent, {
@@ -74,11 +65,11 @@ export class DatabagDetailPageComponent {
     });
   }
 
-  renameDatabag(oldName: string): void {
+  renameDatabag(databag: Databag): void {
     const renameSolutionDialogRef = this.dialog.open(PopupInputComponent, {
       ariaLabelledBy: 'dialog-title',
       data: {
-        inputValue: oldName,
+        inputValue: databag.name,
         titleKey: 'organisms.popup_input.rename_databag.title',
         ariaLabelKey: 'organisms.popup_input.rename_databag.aria_label',
         inputFormField: {
@@ -101,18 +92,10 @@ export class DatabagDetailPageComponent {
       .afterClosed()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        switchMap(result => {
-          const databag = this.databagService.getDatabagById(this.databagId);
-          if (result && databag) {
-            databag.name = result;
-            return this.databagService.updateDatabagById(
-              this.databagId,
-              databag
-            );
-          } else {
-            return EMPTY;
-          }
-        })
+        tap(newName => (databag.name = newName)),
+        switchMap(() =>
+          this.databagService.updateDatabagById(this.databagId, databag)
+        )
       )
       .subscribe();
   }
@@ -137,7 +120,10 @@ export class DatabagDetailPageComponent {
   }
   updateDatabagColumns(databag: Databag, columns: Column[]): void {
     databag.columns = columns;
-    this.databagUpdateSubject.next(databag);
+    this.databagService
+      .updateDatabagById(this.databagId, databag)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   downloadDatabag(downloadLink: HTMLAnchorElement): void {

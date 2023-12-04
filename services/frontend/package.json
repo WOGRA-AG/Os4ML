@@ -22,9 +22,9 @@
     "e2e:visually:local": "cross-env CYPRESS_dev=true npx cypress open",
     "e2e:visually:local:fast": "cross-env CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",
     "e2e:visually:testing": "npx cypress open",
-    "e2e:visually:testing:fast": "npx cypress CYPRESS_createEssentialMLEntitiesOnly=true open",
-    "e2e:cli:local": "npx cypress run CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome",
-    "e2e:cli:local:fast": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/**' --browser chrome",
+    "e2e:visually:testing:fast": "cross-env CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",
+    "e2e:cli:local": "npx cypress run  CYPRESS_dev=false CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome",
+    "e2e:cli:local:fast": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/predictions-page.spec.cy.ts' --browser chrome",
     "e2e:cli:testing": "npx cypress run --spec 'cypress/e2e/**' --browser chrome",
     "e2e:cli:testing:fast": "npx cypress run  CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome"
   },

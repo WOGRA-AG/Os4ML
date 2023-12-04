@@ -1,5 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
-import { createDatabag, CreateDatabagForm } from './databag.utils';
+import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
 
 export type CreateSolutionForm = {
   name: string;
@@ -29,35 +28,44 @@ export function createSolution({
 
   cy.findByTestId('input-databagId').click();
   cy.get('mat-option').contains(databagName).click();
+  cy.findByTestId('solution-create-dialog').click(0, 0, { force: true });
 
-  cy.findByTestId('output-select-field').click({ force: true });
+  cy.findByTestId('output-select-field').click();
   if (outputField) {
     cy.get('mat-option').contains(outputField).click({ force: true });
   } else {
     cy.get('mat-option').first().click();
   }
-
-  cy.get('body').type('{esc}');
+  cy.findByTestId('solution-create-dialog').click(0, 0, { force: true });
 
   if (applyTransferLearning) {
     cy.findByRole('switch', { name: /toggle for transfer learning/i }).click();
   }
-
   cy.findByTestId('submit-solution')
     .should('not.be.disabled')
     .children()
     .click({ force: true });
 }
-
 export function setupSolution(solutionItem: CreateSolutionForm): void {
-  cy.get('[data-testid="solution-item"]').then($items => {
-    const matchingItem = $items.filter((index, item) =>
-      item.innerText.includes(solutionItem.name)
-    );
-    if (matchingItem.length === 0) {
-      createSolution(solutionItem);
-    }
-  });
+  cy.wait(TIMEOUT_SHORT);
+  cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_LONG })
+    .should('exist')
+    .then(() => {
+      cy.get('body').then($body => {
+        if ($body.find('[data-testid="solution-item"]').length > 0) {
+          cy.get('[data-testid="solution-item"]').then($items => {
+            const itemExists = $items
+              .toArray()
+              .some(item => item.innerText.includes(solutionItem.name));
+            if (!itemExists) {
+              createSolution(solutionItem);
+            }
+          });
+        } else {
+          createSolution(solutionItem);
+        }
+      });
+    });
 }
 
 export function checkSolution(name: string) {

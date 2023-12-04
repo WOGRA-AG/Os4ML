@@ -1,4 +1,7 @@
 <table mat-table [dataSource]="solutions" data-testid="solution-table">
+  {{
+    solutions | json
+  }}
   <ng-container matColumnDef="solutionName">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{
