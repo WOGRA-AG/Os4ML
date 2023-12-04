@@ -12,6 +12,7 @@
     "select.option_none": "None",
     "file_dropzone": {
       "label": "Click to browse or drag and drop your file",
+      "label_mobile": "Click to browse your file",
       "aria_label": "Click to browse or drag and drop your file"
     },
     "documentation-hint-text": {
