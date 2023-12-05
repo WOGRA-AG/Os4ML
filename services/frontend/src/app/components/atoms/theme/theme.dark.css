@@ -11,6 +11,9 @@
   --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-dark);
   --md-sys-color-secondary-container: var(
     --md-sys-color-secondary-container-dark
+  );  
+  --md-sys-color-secondary-container: var(
+    --md-sys-color-secondary-container-dark
   );
   --md-sys-color-on-secondary-container: var(
     --md-sys-color-on-secondary-container-dark
@@ -31,9 +34,6 @@
   );
   --md-sys-color-surface: var(--md-sys-color-surface-dark);
   --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-  --md-sys-color-on-surface-container: var(
-    --md-sys-color-on-surface-container-dark
-  );
   --md-sys-color-on-surface-variant: var(
     --md-sys-color-on-surface-variant-dark
   );

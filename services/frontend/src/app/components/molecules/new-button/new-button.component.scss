@@ -99,7 +99,7 @@ button {
     &:hover:not([disabled]) {
       color: var(--md-sys-color-primary-hover);
       text-shadow:
-              0px 1.62287px 10.4px 1.62287px rgba(68, 91, 135, 0.15),
+        0px 1.62287px 10.4px 1.62287px rgba(68, 91, 135, 0.15),
         0px 3px 9.1px 0px rgba(57, 66, 73, 0.15);
     }
     &:disabled {
