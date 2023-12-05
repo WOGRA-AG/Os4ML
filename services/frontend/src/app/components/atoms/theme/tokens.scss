@@ -80,7 +80,6 @@
   --md-ref-palette-neutral60: #8e9192;
   --md-ref-palette-neutral70: #a9acac;
   --md-ref-palette-neutral80: #c4c7c7;
-  --md-ref-palette-neutral90: #e1e3e3;
   --md-ref-palette-neutral92: #e6e8e9;
   --md-ref-palette-neutral94: #eceeef;
   --md-ref-palette-neutral95: #eff1f1;
@@ -130,7 +129,7 @@
     --md-ref-palette-primary90
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-light: var(--md-ref-palette-primary10);
-  --md-sys-color-primary-hover-light: #6e87f6;
+  --md-sys-color-primary-hover-light: #6d88f8;
 
   --md-sys-color-secondary-light: var(
     --md-ref-palette-secondary40
@@ -242,7 +241,7 @@
     --md-ref-palette-primary10
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-dark: var(--md-ref-palette-primary90);
-  --md-sys-color-primary-hover-dark: #a8c6fd;
+  --md-sys-color-primary-hover-dark: #b4c5fd;
 
   --md-sys-color-secondary-dark: var(
     --md-ref-palette-secondary99

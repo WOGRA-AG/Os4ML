@@ -13,13 +13,9 @@
   (keydown.space)="fileUpload.click()"
   [attr.aria-label]="'molecules.file_dropzone.aria_label' | translate"
   tabindex="0">
-  <<<<<<< HEAD
-  <p *ngIf="!selectedFileName" class="body-medium">=======</p>
-
   <p
     *ngIf="!selectedFileName && !isMobileView"
     class="on-surface-light-text body-medium">
-    >>>>>>> 7d645d775cf71abc90214e0f6f51d5b0b6194955
     {{ 'molecules.file_dropzone.label' | translate }}
   </p>
   <p
