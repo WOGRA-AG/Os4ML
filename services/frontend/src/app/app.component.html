@@ -1,4 +1,24 @@
-<nav class="surface-container" aria-label="Hauptnavigation">
+<nav
+  id="header-nav"
+  class="surface-container"
+  [ariaLabel]="'mobile-navigation'">
+  <a [routerLink]="'/'" alt="Os4ML Logo">
+    <img
+      class="logo"
+      src="assets/logos/os4ml-logo-landscape.svg"
+      alt="Os4ML Logo" />
+  </a>
+  <app-hamburger-button
+    [isActive]="showSidebar"
+    class="toggle-mobile-nav"
+    (click)="showSidebar = !showSidebar">
+  </app-hamburger-button>
+</nav>
+<nav
+  id="side-nav"
+  class="surface-container"
+  [class.show-mobile-menu]="showSidebar"
+  [ariaLabel]="'main-navigation'">
   <app-side-nav>
     <ng-container identity>
       <a [routerLink]="'/'">
@@ -33,6 +53,7 @@
     </ng-container>
     <ng-container secondary-nav>
       <a
+        (click)="showSidebar = false"
         data-testid="transfer-learning-page-link"
         [routerLink]="['/transfer-learning']">
         <app-side-nav-item>
@@ -52,8 +73,8 @@
           variant="text"
           size="small"
           icon="description"
-          [ariaLabel]="'root.footer-navigation.documentation' | translate">
-          {{ 'root.footer-navigation.documentation' | translate }}
+          [ariaLabel]="'root.navigation.documentation' | translate">
+          {{ 'root.navigation.documentation' | translate }}
         </app-new-button>
       </a>
       <app-theme-toggle></app-theme-toggle>

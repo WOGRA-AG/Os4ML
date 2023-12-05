@@ -1,0 +1,24 @@
+.button-row {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  gap: 1rem;
+}
+
+@media (max-width: 875px) {
+  :host {
+    text-align: justify;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 0;
+
+    app-new-button {
+      display: inline-grid;
+    }
+  }
+}

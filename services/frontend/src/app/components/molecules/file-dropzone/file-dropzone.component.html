@@ -5,16 +5,27 @@
   (change)="uploadFile($event)"
   #fileUpload />
 <div
-  class="file-dropzone on-surface-text"
+  class="file-dropzone on-surface-text body-medium"
   [class.invalid]="invalid"
   [class.active]="isDragging"
   (click)="fileUpload.click()"
   (keydown.enter)="fileUpload.click()"
   (keydown.space)="fileUpload.click()"
-  [ariaLabel]="'molecules.file_dropzone.aria_label' | translate"
+  [attr.aria-label]="'molecules.file_dropzone.aria_label' | translate"
   tabindex="0">
+<<<<<<< HEAD
   <p *ngIf="!selectedFileName" class="body-medium">
+=======
+  <p
+    *ngIf="!selectedFileName && !isMobileView"
+    class="on-surface-light-text body-medium">
+>>>>>>> 7d645d775cf71abc90214e0f6f51d5b0b6194955
     {{ 'molecules.file_dropzone.label' | translate }}
+  </p>
+  <p
+    *ngIf="!selectedFileName && isMobileView"
+    class="on-surface-light-text body-medium">
+    {{ 'molecules.file_dropzone.label_mobile' | translate }}
   </p>
   <p class="selected-file-name">{{ selectedFileName }}</p>
 </div>

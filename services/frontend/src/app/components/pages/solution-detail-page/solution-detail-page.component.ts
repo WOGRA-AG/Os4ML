@@ -153,6 +153,7 @@ export class SolutionDetailPageComponent {
       this.solutionId
     );
     const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
       data: {
         titleKey: 'organisms.popup_confirm.delete_solution.title',
         messageKey: 'organisms.popup_confirm.delete_solution.message',

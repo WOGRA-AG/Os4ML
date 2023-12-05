@@ -29,11 +29,9 @@
   --md-sys-color-on-error-container: var(
     --md-sys-color-on-error-container-dark
   );
+
   --md-sys-color-surface: var(--md-sys-color-surface-dark);
   --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-  --md-sys-color-on-surface-container: var(
-    --md-sys-color-on-surface-container-dark
-  );
   --md-sys-color-on-surface-variant: var(
     --md-sys-color-on-surface-variant-dark
   );
@@ -67,7 +65,6 @@
   --md-custom-color-processing-status-running: var(
     --md-custom-color-running-dark
   );
-
   --md-custom-color-on-processing-status-running: var(
     --md-custom-color-on-running-dark
   );
@@ -92,12 +89,7 @@
   );
 
   /* shadow */
-  --box-shadow: box-shadow: 0px 1.28887px 3.86661px 1.28887px
-      rgba(0, 0, 0, 0.15),
-    0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
+  --box-shadow: 0px 1.28887px 3.86661px 1.28887px
+  rgba(0, 0, 0, 0.15),  0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
 
-  /*TODO: Delete
-  --md-sys-color-background: var(--md-sys-color-background-dark);
-  --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
-  --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark); */
 }
