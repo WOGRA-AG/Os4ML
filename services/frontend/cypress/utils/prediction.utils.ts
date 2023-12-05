@@ -47,6 +47,8 @@ export function deletePrediction(name: string) {
   cy.findByTestId('popup-confirm-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
-  cy.findByTestId('confirm-popup-button', { timeout: TIMEOUT_LONG }).should('not.be.disabled').click();
+  cy.findByTestId('confirm-popup-button', { timeout: TIMEOUT_LONG })
+    .should('not.be.disabled')
+    .click();
   cy.findAllByText(name).should('have.length', 0);
 }
