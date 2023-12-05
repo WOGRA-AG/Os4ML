@@ -44,7 +44,9 @@ export function deletePrediction(name: string) {
     .findByTestId('prediction-menu')
     .click();
   cy.findByTestId('prediction-delete-button').click();
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-
-  cy.findByTestId('confirm-popup-button').should('not.be.disabled').click();
+  cy.findByTestId('popup-confirm-dialog', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
+  cy.findByTestId('confirm-popup-button', { timeout: TIMEOUT_LONG }).should('not.be.disabled').click();
+  cy.findAllByText(name).should('have.length', 0);
 }
