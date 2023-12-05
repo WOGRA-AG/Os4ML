@@ -17,6 +17,8 @@ import { MaterialModule } from './components/atoms/material/material.module';
 import { SideNavItemComponent } from './components/molecules/side-nav-item/side-nav-item.component';
 import { NewButtonComponent } from './components/molecules/new-button/new-button.component';
 import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-toggle.component';
+
+import { AppSignetComponent } from './components/atoms/signet/app-signet.component';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HamburgerButtonComponent } from './components/molecules/hamburger-button/hamburger-button.component';
@@ -38,6 +40,7 @@ import { ContextMenuItemComponent } from './components/molecules/context-menu-it
     SideNavItemComponent,
     NewButtonComponent,
     ThemeToggleComponent,
+    AppSignetComponent,
     HamburgerButtonComponent,
     IconButtonComponent,
     ContextMenuItemComponent,
