@@ -43,7 +43,7 @@ import { ContextMenuItemComponent } from './components/molecules/context-menu-it
     AppSignetComponent,
     HamburgerButtonComponent,
     IconButtonComponent,
-    ContextMenuItemComponent
+    ContextMenuItemComponent,
   ],
 })
 export class AppComponent {

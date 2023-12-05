@@ -121,69 +121,69 @@
   /* light */
   /* sys colors */
   --md-sys-color-primary-light: var(
-      --md-ref-palette-primary40
+    --md-ref-palette-primary40
   ); /* High-emphasis fills, texts, and icons against surface */
   --md-sys-color-on-primary-light: var(
-      --md-ref-palette-primary100
+    --md-ref-palette-primary100
   ); /* Text and icons against primary */
   --md-sys-color-primary-container-light: var(
-      --md-ref-palette-primary90
+    --md-ref-palette-primary90
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-light: var(--md-ref-palette-primary10);
   --md-sys-color-primary-hover-light: #6e87f6;
 
   --md-sys-color-secondary-light: var(
-      --md-ref-palette-secondary40
+    --md-ref-palette-secondary40
   ); /* Less prominent fills, text, and icons against surface */
   --md-sys-color-on-secondary-light: var(
-      --md-ref-palette-secondar100
+    --md-ref-palette-secondar100
   ); /* Text and icons against secondary */
   --md-sys-color-secondary-container-light: var(
-      --md-ref-palette-secondary90
+    --md-ref-palette-secondary90
   ); /* Less prominent fill color against surface, for recessive components like tonal buttons */
   --md-sys-color-on-secondary-container-light: var(
-      --md-ref-palette-secondary10
+    --md-ref-palette-secondary10
   ); /* Text and icons against secondary container */
 
   --md-sys-color-tertiary-light: var(
-      --md-ref-palette-tertiary40
+    --md-ref-palette-tertiary40
   ); /* Complementary fills, text, and icons against surface */
   --md-sys-color-on-tertiary-light: var(
-      --md-ref-palette-tertiary100
+    --md-ref-palette-tertiary100
   ); /* Color for text and icons on tertiary color */
   --md-sys-color-tertiary-container-light: var(
-      --md-ref-palette-tertiary90
+    --md-ref-palette-tertiary90
   ); /* Light tertiary color for container backgrounds */
   --md-sys-color-on-tertiary-container-light: var(
-      --md-ref-palette-tertiary10
+    --md-ref-palette-tertiary10
   ); /* Color for text and icons on light tertiary containers */
 
   --md-sys-color-error-light: var(
-      --md-ref-palette-error40
+    --md-ref-palette-error40
   ); /* Attention-grabbing color against surface for fills, icons, and text, indicating urgency */
   --md-sys-color-on-error-light: var(
-      --md-ref-palette-error100
+    --md-ref-palette-error100
   ); /* Text and icons against error */
   --md-sys-color-error-container-light: var(
-      --md-ref-palette-error90
+    --md-ref-palette-error90
   ); /* Attention-grabbing fill color against surface */
   --md-sys-color-on-error-container-light: var(
-      --md-ref-palette-error10
+    --md-ref-palette-error10
   ); /* Text and icons against error container */
 
   --md-custom-color-running-light: var(
-      --md-ref-palette-primary20
+    --md-ref-palette-primary20
   ); /* Running color against surface for fills, icons, and text */
   --md-custom-color-on-running-light: var(
-      --md-ref-palette-primary90
+    --md-ref-palette-primary90
   ); /* Text and icons against running */
 
   /* Surface colors */
   --md-sys-color-surface-light: var(
-      --md-ref-palette-neutral100
+    --md-ref-palette-neutral100
   ); /* Default color for backgrounds */
   --md-sys-color-on-surface-light: var(
-      --md-ref-palette-neutral10
+    --md-ref-palette-neutral10
   ); /* Text and icons against any surface color */
   --md-sys-color-on-surface-variant-light: #40484d; /* Lower-emphasis color for text and icons against any surface color */
 
@@ -196,106 +196,106 @@
 
   /* Inverse colors */
   --md-sys-color-inverse-surface-light: var(
-      --md-ref-palette-neutral-variant20
+    --md-ref-palette-neutral-variant20
   ); /* Background fills for elements which contrast against surface */
   --md-sys-color-inverse-on-surface-light: var(
-      --md-ref-palette-neutral-variant100
+    --md-ref-palette-neutral-variant100
   ); /* Text and icons against inverse surface */
   --md-sys-color-inverse-primary-light: var(
-      --md-ref-palette-primary80
+    --md-ref-palette-primary80
   ); /* Inverse primary color, typically for major actionable elements */
 
   /* Outline */
   --md-sys-color-outline-light: var(
-      --md-ref-palette-neutral80
+    --md-ref-palette-neutral80
   ); /* Important boundaries, such as a text field outline */
   --md-sys-color-outline-variant-light: var(
-      --md-ref-palette-neutral-variant80
+    --md-ref-palette-neutral-variant80
   ); /* Decorative elements, such as dividers */
 
   /* Add-on color roles */
   --md-sys-color-surface-dim-light: var(
-      --md-ref-palette-neutral-variant800
+    --md-ref-palette-neutral-variant800
   ); /* Dimmest surface color in light and dark themes */
   --md-sys-color-surface-bright-light: var(
-      --md-ref-palette-neutral100
+    --md-ref-palette-neutral100
   ); /* Brightest surface color in light and dark themes */
   --md-sys-color-scrim-light: rgba(
-      0,
-      2,
-      11,
-      0.38
+    0,
+    2,
+    11,
+    0.38
   ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
   --md-sys-color-shadow-light: var(
-      --md-ref-palette-neutral0
+    --md-ref-palette-neutral0
   ); /* Color for shadows, typically used for depth effect on UI elements */
 
   /* dark */
   /* sys colors */
   --md-sys-color-primary-dark: var(
-      --md-ref-palette-primary70
+    --md-ref-palette-primary70
   ); /* High-emphasis fills, texts, and icons against surface */
   --md-sys-color-on-primary-dark: var(
-      --md-ref-palette-primary0
+    --md-ref-palette-primary0
   ); /* Text and icons against primary */
   --md-sys-color-primary-container-dark: var(
-      --md-ref-palette-primary10
+    --md-ref-palette-primary10
   ); /* Standout fill color against surface, for key components like FAB */
   --md-sys-color-on-primary-container-dark: var(--md-ref-palette-primary90);
   --md-sys-color-primary-hover-dark: #a8c6fd;
 
   --md-sys-color-secondary-dark: var(
-      --md-ref-palette-secondary99
+    --md-ref-palette-secondary99
   ); /* Less prominent fills, text, and icons against surface */
   --md-sys-color-on-secondary-dark: var(
-      --md-ref-palette-secondary20
+    --md-ref-palette-secondary20
   ); /* Text and icons against secondary */
   --md-sys-color-secondary-container-dark: var(
-      --md-ref-palette-secondary30
+    --md-ref-palette-secondary30
   ); /* Less prominent fill color against surface, for recessive components like tonal buttons */
   --md-sys-color-on-secondary-container-dark: var(
-      --md-ref-palette-secondary90
+    --md-ref-palette-secondary90
   ); /* Text and icons against secondary container */
 
   --md-sys-color-tertiary-dark: var(
-      --md-ref-palette-tertiary80
+    --md-ref-palette-tertiary80
   ); /* Complementary fills, text, and icons against surface */
   --md-sys-color-on-tertiary-dark: var(
-      --md-ref-palette-tertiary0
+    --md-ref-palette-tertiary0
   ); /* Color for text and icons on tertiary color */
   --md-sys-color-tertiary-container-dark: var(
-      --md-ref-palette-tertiary20
+    --md-ref-palette-tertiary20
   ); /* Light tertiary color for container backgrounds */
   --md-sys-color-on-tertiary-container-dark: var(
-      --md-ref-palette-tertiary99
+    --md-ref-palette-tertiary99
   ); /* Color for text and icons on light tertiary containers */
 
   --md-sys-color-error-dark: var(
-      --md-ref-palette-error80
+    --md-ref-palette-error80
   ); /* Attention-grabbing color against surface for fills, icons, and text, indicating urgency */
   --md-sys-color-on-error-dark: var(
-      --md-ref-palette-error10
+    --md-ref-palette-error10
   ); /* Text and icons against error */
   --md-sys-color-error-container-dark: var(
-      --md-ref-palette-error30
+    --md-ref-palette-error30
   ); /* Attention-grabbing fill color against surface */
   --md-sys-color-on-error-container-dark: var(
-      --md-ref-palette-error90
+    --md-ref-palette-error90
   ); /* Text and icons against error container */
   --md-custom-color-running-dark: var(
-      --md-ref-palette-primary90
+    --md-ref-palette-primary90
   ); /* Running color against surface for fills, icons, and text */
   --md-custom-color-on-running-dark: var(
-      --md-ref-palette-primary20
+    --md-ref-palette-primary20
   ); /* Text and icons against running */
 
   /* Surface colors */
   --md-sys-color-surface-dark: #1c1c28; /* Default color for backgrounds */
   --md-sys-color-on-surface-dark: var(
-      --md-ref-palette-neutral-variant99
+    --md-ref-palette-neutral-variant99
   ); /* Text and icons against any surface color */
   --md-sys-color-on-surface-variant-dark: var(
-      --md-ref-palette-neutral-variant30
+    --md-ref-palette-neutral-variant30
   ); /* Lower-emphasis color for text and icons against any surface color */
 
   /* Surface container */
@@ -307,38 +307,38 @@
 
   /* Inverse colors */
   --md-sys-color-inverse-surface-dark: var(
-      --md-ref-palette-neutral99
+    --md-ref-palette-neutral99
   ); /* Background fills for elements which contrast against surface */
   --md-sys-color-inverse-on-surface-dark: var(
-      --md-ref-palette-neutral10
+    --md-ref-palette-neutral10
   ); /* Text and icons against inverse surface */
   --md-sys-color-inverse-primary-dark: var(
-      --md-ref-palette-primary30
+    --md-ref-palette-primary30
   ); /* Inverse primary color, typically for major actionable elements */
 
   /* Outline */
   --md-sys-color-outline-dark: var(
-      --md-ref-palette-neutral-variant50
+    --md-ref-palette-neutral-variant50
   ); /* Important boundaries, such as a text field outline */
   --md-sys-color-outline-variant-dark: var(
-      --md-ref-palette-neutral-variant80
+    --md-ref-palette-neutral-variant80
   ); /* Decorative elements, such as dividers */
 
   /* Add-on color roles */
   --md-sys-color-surface-dim-dark: var(
-      --md-ref-palette-secondary10
+    --md-ref-palette-secondary10
   ); /* Dimmest surface color in light and dark themes */
   --md-sys-color-surface-bright-dark: var(
-      --md-ref-palette-neutral10
+    --md-ref-palette-neutral10
   ); /* Brightest surface color in light and dark themes */
   --md-sys-color-scrim-dark: rgba(
-      11,
-      5,
-      0,
-      0.38
+    11,
+    5,
+    0,
+    0.38
   ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
   --md-sys-color-shadow-dark: var(
-      --md-ref-palette-neutral0
+    --md-ref-palette-neutral0
   ); /*Color for shadows, typically used for depth effect on UI elements */
 
   /* Custom Colors */
@@ -347,10 +347,10 @@
   --md-custom-color-processing-status-done-light: #236600;
   --md-custom-color-on-processing-status-done-light: #ffffff;
   --md-custom-color-processing-status-error-light: var(
-      --md-sys-color-error-light
+    --md-sys-color-error-light
   );
   --md-custom-color-on-processing-status-error-light: var(
-      --md-sys-color-on-error-light
+    --md-sys-color-on-error-light
   );
   --md-custom-color-processing-status-warning-light: #fbbc04;
   --md-custom-color-on-processing-status-warning-light: #000000;
@@ -359,10 +359,10 @@
   --md-custom-color-processing-status-done-dark: #b1fdaf;
   --md-custom-color-on-processing-status-done-dark: #00461f;
   --md-custom-color-processing-status-error-dark: var(
-      --md-sys-color-error-dark
+    --md-sys-color-error-dark
   );
   --md-custom-color-on-processing-status-error-dark: var(
-      --md-sys-color-on-error-dark
+    --md-sys-color-on-error-dark
   );
   --md-custom-color-processing-status-warning-dark: #ffcd3c;
   --md-custom-color-on-processing-status-warning-dark: #0b0600;

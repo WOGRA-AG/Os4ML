@@ -89,7 +89,6 @@
   );
 
   /* shadow */
-  --box-shadow: 0px 1.28887px 3.86661px 1.28887px
-  rgba(0, 0, 0, 0.15),  0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
-
+  --box-shadow: 0px 1.28887px 3.86661px 1.28887px rgba(0, 0, 0, 0.15),
+    0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
 }
