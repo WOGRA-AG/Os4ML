@@ -13,6 +13,8 @@ import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
+import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 
 @Component({
   selector: 'app-solution-data-table',
@@ -32,6 +34,8 @@ import { NgIf } from '@angular/common';
     RouterLink,
     MatTooltipModule,
     NgIf,
+    SolutionContextMenuComponent,
+    ContextMenuItemComponent,
   ],
   standalone: true,
 })

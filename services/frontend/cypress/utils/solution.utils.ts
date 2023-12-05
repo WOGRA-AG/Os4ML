@@ -61,8 +61,9 @@ export function createSolution({
 export function changeSolutionName(name: string, newName: string): void {
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
-    .findAllByTestId('solution-detail-button')
+    .findByTestId('solution-menu')
     .click();
+  cy.findAllByTestId('solution-detail-button').click();
   cy.url().should('include', '/solutions/detail');
   cy.findByTestId('solution-detail-page').should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
@@ -81,13 +82,13 @@ export function changeSolutionName(name: string, newName: string): void {
 
 export function deleteSolution(name: string) {
   cy.visit('/#/solutions');
-  const rowTable = cy.findByText(name).parent();
-
-  rowTable.findByRole('button', { name: /solution settings/i }).click();
-
+  cy.findAllByTestId('solution-item')
+    .filter(`:contains("${name}")`)
+    .findByTestId('solution-menu')
+    .click();
   cy.findByTestId('solution-delete-button').children().click();
   cy.findByTestId('confirm-popup-button').click();
-
   cy.visit('/#/solutions');
+
   cy.findAllByText(name).should('have.length', 0);
 }

@@ -11,10 +11,17 @@
   (click)="fileUpload.click()"
   (keydown.enter)="fileUpload.click()"
   (keydown.space)="fileUpload.click()"
-  [ariaLabel]="'molecules.file_dropzone.aria_label' | translate"
+  [attr.aria-label]="'molecules.file_dropzone.aria_label' | translate"
   tabindex="0">
-  <p *ngIf="!selectedFileName" class="on-surface-light-text body-medium">
+  <p
+    *ngIf="!selectedFileName && !isMobileView"
+    class="on-surface-light-text body-medium">
     {{ 'molecules.file_dropzone.label' | translate }}
+  </p>
+  <p
+    *ngIf="!selectedFileName && isMobileView"
+    class="on-surface-light-text body-medium">
+    {{ 'molecules.file_dropzone.label_mobile' | translate }}
   </p>
   <p class="selected-file-name">{{ selectedFileName }}</p>
 </div>
