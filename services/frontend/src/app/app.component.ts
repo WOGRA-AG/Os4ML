@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
@@ -17,10 +17,13 @@ import { MaterialModule } from './components/atoms/material/material.module';
 import { SideNavItemComponent } from './components/molecules/side-nav-item/side-nav-item.component';
 import { NewButtonComponent } from './components/molecules/new-button/new-button.component';
 import { ThemeToggleComponent } from './components/organisms/theme-toggle/theme-toggle.component';
+
+import { AppSignetComponent } from './components/atoms/signet/app-signet.component';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HamburgerButtonComponent } from './components/molecules/hamburger-button/hamburger-button.component';
 import { IconButtonComponent } from './components/molecules/icon-button/icon-button.component';
+import { ContextMenuItemComponent } from './components/molecules/context-menu-item/context-menu-item.component';
 
 @Component({
   selector: 'app-root',
@@ -37,8 +40,10 @@ import { IconButtonComponent } from './components/molecules/icon-button/icon-but
     SideNavItemComponent,
     NewButtonComponent,
     ThemeToggleComponent,
+    AppSignetComponent,
     HamburgerButtonComponent,
     IconButtonComponent,
+    ContextMenuItemComponent,
   ],
 })
 export class AppComponent {
@@ -58,5 +63,11 @@ export class AppComponent {
       .subscribe(() => {
         this.showSidebar = false;
       });
+  }
+  @HostListener('window:resize')
+  onResize(): void {
+    if (window.innerWidth >= 1000) {
+      this.showSidebar = false;
+    }
   }
 }

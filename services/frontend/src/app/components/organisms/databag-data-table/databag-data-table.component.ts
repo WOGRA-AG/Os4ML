@@ -10,11 +10,15 @@ import { ProcessingStatusIndicatorComponent } from '../../molecules/processing-s
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
 import { RouterLink } from '@angular/router';
+import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
+import { DatabagContextMenuComponent } from '../databag-context-menu/databag-context-menu.component';
+import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
 
 @Component({
   selector: 'app-databag-data-table',
   templateUrl: './databag-data-table.component.html',
   styleUrls: ['./databag-data-table.component.scss'],
+  standalone: true,
   imports: [
     LocalizedDatePipe,
     MatTableModule,
@@ -26,8 +30,10 @@ import { RouterLink } from '@angular/router';
     ShortStatusPipe,
     RuntimeIndicatorComponent,
     RouterLink,
+    ContextMenuItemComponent,
+    DatabagContextMenuComponent,
+    SolutionContextMenuComponent,
   ],
-  standalone: true,
 })
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];

@@ -2,11 +2,11 @@
   {{ 'organisms.solution-detail-output.title' | translate }}
 </h2>
 <div class="content">
-  <div class="body-medium on-background-text">
+  <div class="body-medium">
     {{ 'organisms.solution-detail-output.description' | translate }}
   </div>
   <div>
-    <div class="headline-small primary-text">
+    <div class="headline-small secondary-text">
       {{ 'organisms.solution-detail-output.accumulated_rating' | translate }}
     </div>
     <br />
@@ -14,31 +14,25 @@
     </app-star-rating>
   </div>
   <div>
-    <div class="headline-small primary-text">
+    <div class="headline-small secondary-text">
       {{ 'organisms.solution-detail-output.individual_rating' | translate }}
     </div>
     <br />
     <table mat-table [dataSource]="details" data-testid="prediction-table">
       <ng-container matColumnDef="outputField">
-        <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-          outputField
-        </th>
+        <th mat-header-cell *matHeaderCellDef class="surface">outputField</th>
         <td mat-cell *matCellDef="let element">
           {{ element.outputField }}
         </td>
       </ng-container>
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-          name
-        </th>
+        <th mat-header-cell *matHeaderCellDef class="surface">name</th>
         <td mat-cell *matCellDef="let element">
           {{ element.name }}
         </td>
       </ng-container>
       <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-          value
-        </th>
+        <th mat-header-cell *matHeaderCellDef class="surface">value</th>
         <td mat-cell *matCellDef="let element">
           <app-star-rating [rating]="element.value || 0" [numberStars]="5">
           </app-star-rating>

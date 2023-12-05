@@ -12,6 +12,7 @@
     "select.option_none": "None",
     "file_dropzone": {
       "label": "Click to browse or drag and drop your file",
+      "label_mobile": "Click to browse your file",
       "aria_label": "Click to browse or drag and drop your file"
     },
     "documentation-hint-text": {
@@ -36,7 +37,7 @@
         "message": "Are you sure you want to delete this solution? All data will be lost!"
       },
       "delete_prediction": {
-        "title": "Delete srediction",
+        "title": "Delete prediction",
         "message": "Are you sure you want to delete this prediction? All data will be lost!"
       }
     },
@@ -115,6 +116,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Databag context menu",
         "settings": {
           "tooltip": "Databag settings",
           "aria_label": "Databag settings"
@@ -183,6 +185,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Solution context menu",
         "settings": {
           "tooltip": "Solution settings"
         },
@@ -286,6 +289,11 @@
         "creation": "Creation",
         "status": "Status",
         "actions": "Actions"
+      },
+      "actions": {
+        "context_menu": "Prediction context menu",
+        "delete_prediction": "Delete Prediction",
+        "download_prediction": "Download Prediction"
       }
     },
     "prediction_create_form": {
@@ -448,11 +456,11 @@
       "buttons": {
         "settings": {
           "tooltip": "Databag settings",
-          "aria_label": ""
+          "aria_label": "Databag settings"
         },
         "add_solution": {
           "tooltip": "Add solution",
-          "aria_label": ""
+          "aria_label": "Add solution"
         }
       }
     },

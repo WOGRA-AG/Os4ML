@@ -67,46 +67,18 @@
       {{ 'organisms.solution_data_table.column_header.actions' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
-      <app-icon-button
-        data-testid="solution-detail-button"
-        [routerLink]="['/solutions/detail', element.id]"
-        [matTooltip]="
-          'organisms.solution_data_table.actions.settings.tooltip' | translate
-        "
-        [ariaLabel]="
-          'organisms.solution_data_table.actions.settings.tooltip' | translate
-        "
-        class="mr-1"
-        color="primary"
-        icon="settings_applications">
-      </app-icon-button>
-      <app-icon-button
-        class="mr-1"
-        *ngIf="element.id && (element | isSolutionDone)"
-        [routerLink]="['/predictions']"
-        [queryParams]="{
+      <app-solution-context-menu
+        [solutionElement]="element"
+        (createPredictionButton)="createPredictionButton.emit(element.id)"
+        [showPredictionLink]="['/predictions']"
+        [showPredictionParams]="{
           selectedDatabag: element.databagId,
           selectedSolution: element.id
         }"
-        [matTooltip]="
-          'organisms.solution_data_table.actions.show_predictions.tooltip'
-            | translate
-        "
-        [ariaLabel]="
-          'organisms.solution_data_table.actions.show_predictions.tooltip'
-            | translate
-        "
-        color="primary"
-        icon="batch_prediction">
-      </app-icon-button>
-      <app-icon-button
-        data-testid="create-prediction-button"
-        (click)="createPredictionButton.emit(element.id)"
-        [matTooltip]="'solution.detail.tooltips.add_prediction' | translate"
-        [ariaLabel]="'solution.detail.tooltips.add_prediction' | translate"
-        color="primary"
-        icon="add">
-      </app-icon-button>
+        [showSolutionDetailLink]="[
+          '/solutions/detail',
+          element?.id
+        ]"></app-solution-context-menu>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

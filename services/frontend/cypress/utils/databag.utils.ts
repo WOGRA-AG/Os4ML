@@ -69,8 +69,9 @@ export function checkDatabag(name: string) {
 export function changeDatabagName(name: string, newName: string): void {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByTestId('databag-detail-button')
+    .findByTestId('databag-menu')
     .click();
+  cy.findByTestId('databag-detail-button').click();
   cy.url().should('include', '/databags/detail');
   cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
@@ -93,10 +94,14 @@ export function deleteDatabag(name: string) {
 
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByTestId('databag-detail-button')
+    .findByTestId('databag-menu')
     .click();
-
-  cy.findByTestId('databag-delete-button').children().click();
+  cy.findByTestId('databag-detail-button').click();
+  cy.url().should('include', '/databags/detail');
+  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
+  cy.findByTestId('databag-delete-button').click();
   cy.findByTestId('confirm-popup-button').click();
 
   cy.visit('/#/databags');

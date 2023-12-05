@@ -15,6 +15,7 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
 import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
 import { RuntimeIndicatorComponent } from '../../molecules/runtime-indicator/runtime-indicator.component';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
+import { PredictionContextMenuComponent } from '../prediction-context-menu/prediction-context-menu.component';
 
 @Component({
   selector: 'app-predictions-data-table',
@@ -33,6 +34,7 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
     LocalizedDatePipe,
     RuntimeIndicatorComponent,
     NewButtonComponent,
+    PredictionContextMenuComponent,
   ],
 })
 export class PredictionsDataTableComponent {
