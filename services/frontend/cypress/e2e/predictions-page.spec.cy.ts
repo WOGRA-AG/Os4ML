@@ -8,13 +8,11 @@ import {
 import {
   CreateDatabagForm,
   checkDatabag,
-  createDatabag,
   deleteDatabag,
   setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
-  createSolution,
   checkSolution,
   setupSolution,
   deleteSolution,

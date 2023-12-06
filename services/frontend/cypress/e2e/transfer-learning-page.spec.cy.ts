@@ -135,12 +135,13 @@ describe('Transfer learning page', () => {
       timeout: TIMEOUT_LONG,
     });
 
-    cy.findByText(newItem.name, {
-      timeout: TIMEOUT_LONG,
-    })
-      .parent()
-      .findByRole('button', { name: /solution settings/i })
+
+    cy.findAllByTestId('solution-item')
+      .filter(`:contains("${newItem.name}")`)
+      .findByTestId('solution-menu')
       .click();
+    cy.findAllByTestId('solution-detail-button').click();
+
     cy.findByText(transferLearningItem.name).should('be.visible');
   });
 
