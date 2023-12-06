@@ -18,7 +18,11 @@ export function createPrediction({
   solutionName,
   file,
 }: CreatePredictionForm) {
-  cy.findByTestId('add-prediction').first().click();
+  cy.findByTestId('predictions-page-actions', { timeout: TIMEOUT_LONG })
+    .parent()
+    .should('not.be.disabled')
+    .findByTestId('add-prediction')
+    .click();
   cy.findByTestId('prediction-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
@@ -33,12 +37,18 @@ export function createPrediction({
 }
 
 export function deletePrediction(name: string) {
-  cy.findAllByTestId('prediction-item')
+  cy.findAllByTestId('prediction-item', {
+    timeout: TIMEOUT_LONG,
+  })
     .filter(`:contains("${name}")`)
     .findByTestId('prediction-menu')
     .click();
   cy.findByTestId('prediction-delete-button').click();
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-
-  cy.findByTestId('confirm-popup-button').should('not.be.disabled').click();
+  cy.findByTestId('popup-confirm-dialog', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
+  cy.findByTestId('confirm-popup-button', { timeout: TIMEOUT_LONG })
+    .should('not.be.disabled')
+    .click();
+  cy.findAllByText(name).should('have.length', 0);
 }

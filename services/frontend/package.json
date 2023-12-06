@@ -18,11 +18,15 @@
     "lint": "ng lint && prettier --check .",
     "format": "ng lint --fix && prettier --write .",
     "prettier": "prettier --write .",
-    "e2e:run": "npx cypress run --spec 'cypress/e2e/predictions-page.spec.cy.ts' --browser chrome",
-    "e2e:local": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/predictions-page.spec.cy.ts' --browser chrome",
-    "cypress:open": "cross-env CYPRESS_dev=true npx cypress open",
-    "cypress:open-test": "npx cypress open",
-    "config-prettier": "eslint-config-prettier src/main.ts"
+    "config-prettier": "eslint-config-prettier src/main.ts",
+    "e2e:visually:local": "cross-env CYPRESS_dev=true npx cypress open",
+    "e2e:visually:local:fast": "cross-env CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",
+    "e2e:visually:testing": "npx cypress open",
+    "e2e:visually:testing:fast": "cross-env CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",
+    "e2e:cli:local": "npx cypress run  CYPRESS_dev=false CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome",
+    "e2e:cli:local:fast": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/**' --browser chrome",
+    "e2e:cli:testing": "npx cypress run --spec 'cypress/e2e/**' --browser chrome",
+    "e2e:cli:testing:fast": "npx cypress run  CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome"
   },
   "private": true,
   "dependencies": {

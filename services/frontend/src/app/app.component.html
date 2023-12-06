@@ -2,7 +2,7 @@
   id="header-nav"
   class="surface-container"
   [ariaLabel]="'mobile-navigation'">
-  <a [routerLink]="'/'" alt="Os4ML Logo">
+  <a [routerLink]="'/'" aria-label="Os4ML Logo">
     <img
       class="logo"
       src="assets/logos/os4ml-logo-landscape.svg"
@@ -21,7 +21,7 @@
   [ariaLabel]="'main-navigation'">
   <app-side-nav>
     <ng-container identity>
-      <a [routerLink]="'/'">
+      <a [routerLink]="'/'" aria-label="Os4ML Logo">
         <app-signet></app-signet>
       </a>
     </ng-container>

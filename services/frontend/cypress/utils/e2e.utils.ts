@@ -1,7 +1,10 @@
 import { NodeResult, Result } from 'axe-core';
 
 const isDev = Cypress.env('dev') === true;
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 export const TIMEOUT_LONG = 60 * 1000 * 10; /* Number of minutes */
+export const TIMEOUT_SHORT = 5 * 1000;
 
 export function handleA11yViolations(violations: Array<Result>) {
   violations.forEach(violation => {
@@ -65,5 +68,13 @@ export function logout() {
     cy.visit('/logout');
     cy.get('#kc-logout').click();
     cy.get('#kc-page-title').contains('You are logged out');
+  }
+}
+
+export function getSupportingMLEntitieId(): string {
+  if (essentialMLEntitiesOnly) {
+    return 'reusableID';
+  } else {
+    return Date.now().toString();
   }
 }

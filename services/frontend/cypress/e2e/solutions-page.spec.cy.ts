@@ -1,9 +1,15 @@
-import { handleA11yViolations, login, logout } from '../utils/e2e.utils';
+import {
+  getSupportingMLEntitieId,
+  handleA11yViolations,
+  login,
+  logout,
+} from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   checkDatabag,
   createDatabag,
   deleteDatabag,
+  setupDatabag,
 } from 'cypress/utils/databag.utils';
 import {
   CreateSolutionForm,
@@ -11,12 +17,16 @@ import {
   createSolution,
   deleteSolution,
   visitSolutionsPage,
+  checkSolution,
 } from 'cypress/utils/solution.utils';
+import { cleanup } from 'axe-core';
 
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();
 
 const databagItem: CreateDatabagForm = {
-  name: `Databag for solution specs #${id}`,
+  name: `Databag for solution specs #${getSupportingMLEntitieId()}`,
   fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
 };
 
@@ -34,14 +44,15 @@ describe('Solutions Page', () => {
   before('Prepare data for tests', () => {
     login('#/databags');
     cy.injectAxe();
-
-    createDatabag(databagItem);
+    setupDatabag(databagItem);
     checkDatabag(databagItem.name);
   });
 
   after('Clean up', () => {
     cy.visit('/#/databags');
-    deleteDatabag(databagItem.name);
+    if (!essentialMLEntitiesOnly) {
+      deleteDatabag(databagItem.name);
+    }
     logout();
   });
 
@@ -64,6 +75,12 @@ describe('Solutions Page', () => {
   context('Solutions updates', () => {
     it('change name', () => {
       changeSolutionName(solutionItem.name, getUpdatedName(solutionItem.name));
+    });
+  });
+
+  context('Created solution shall be processed', () => {
+    it('Check Solution', () => {
+      checkSolution(getUpdatedName(solutionItem.name));
     });
   });
 

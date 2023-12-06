@@ -42,6 +42,20 @@
       }
     },
     "popup_input": {
+      "rename_databag": {
+        "title": "Update databag name",
+        "aria_label": "Update Databag Name",
+        "input_form_field": {
+          "label": "New name",
+          "aria-label": "New name",
+          "error_required": "Field cannot be empty",
+          "hint": "Choose a meaningful name when replacing an existing databag."
+        },
+        "submit": {
+          "aria_label": "Change databag name",
+          "button_text": "Change databag name"
+        }
+      },
       "rename_solution": {
         "title": "Update solution name",
         "aria_label": "Update Solution Name",
@@ -140,6 +154,24 @@
         "button": "Submit",
         "aria_label": "Submit databag"
       }
+    },
+    "databag-detail-pipeline-status": {
+      "title": "Pipeline status",
+      "description": "The pipeline status indicates the progress of your databag processing. Once the status is done, you can create a solution with the completed databag."
+    },
+    "databag-detail-field-settings": {
+      "title": "Field settings",
+      "description": "The field settings were automatically set but can be manually changed here. These changes will be considered in the generation of upcoming solutions."
+    },
+    "databag-detail-download-databag": {
+      "title": "Download databag",
+      "description": "You can download the data bag that you previously uploaded.",
+      "button": "Download databag"
+    },
+    "databag-detail-delete-databag": {
+      "title": "Delete databag",
+      "description": "If you delete the current databag, all associated solutions, predictions and transferlearning models will be emoved. This step is irrevocable.",
+      "button": "Delete databag"
     },
     "solution_filter": "Filter by solution",
     "solution_data_table": {
