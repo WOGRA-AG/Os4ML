@@ -135,7 +135,6 @@ describe('Transfer learning page', () => {
       timeout: TIMEOUT_LONG,
     });
 
-
     cy.findAllByTestId('solution-item')
       .filter(`:contains("${newItem.name}")`)
       .findByTestId('solution-menu')
