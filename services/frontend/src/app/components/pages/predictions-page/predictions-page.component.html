@@ -2,7 +2,7 @@
   <h1 header id="dialog-title" class="headline-large primary-text">
     {{ 'pages.predictions_page.title' | translate }}
   </h1>
-  <div nav class="actions">
+  <div nav class="actions" data-testid="predictions-page-actions">
     <div class="button-section">
       <app-databag-filter
         [databags]="(databags$ | async) ?? []"

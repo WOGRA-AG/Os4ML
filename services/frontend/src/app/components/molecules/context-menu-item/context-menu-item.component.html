@@ -1,0 +1,11 @@
+<button
+  [attr.data-testid]="dataTestid"
+  mat-menu-item
+  [routerLink]="routerLink"
+  [disabled]="disabled"
+  [attr.aria-label]="ariaLabel"
+  [queryParams]="params"
+  role="menuitem">
+  <mat-icon> {{ menuIcon }}</mat-icon>
+  <span> {{ menuDescription }} </span>
+</button>

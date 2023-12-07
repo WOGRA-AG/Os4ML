@@ -27,216 +27,344 @@
 }
 
 :root {
-  --md-source: #2eaadc;
+  --md-source: #2146f4;
   /* primary */
   --md-ref-palette-primary0: #000000;
-  --md-ref-palette-primary10: #001e2b;
-  --md-ref-palette-primary20: #003548;
-  --md-ref-palette-primary25: #004057;
-  --md-ref-palette-primary30: #004d67;
-  --md-ref-palette-primary35: #005977;
-  --md-ref-palette-primary40: #006688;
-  --md-ref-palette-primary50: #0080aa;
-  --md-ref-palette-primary60: #0b9ccd;
-  --md-ref-palette-primary70: #41b7e9;
-  --md-ref-palette-primary80: #75d1ff;
-  --md-ref-palette-primary90: #c2e8ff;
-  --md-ref-palette-primary95: #e2f3ff;
-  --md-ref-palette-primary98: #f5faff;
-  --md-ref-palette-primary99: #fbfcff;
+  --md-ref-palette-primary10: #000f5d;
+  --md-ref-palette-primary20: #001e92;
+  --md-ref-palette-primary30: #002dcc;
+  --md-ref-palette-primary40: #2146f4;
+  --md-ref-palette-primary50: #4c69ff;
+  --md-ref-palette-primary60: #7392ff;
+  --md-ref-palette-primary70: #97aeff;
+  --md-ref-palette-primary80: #bbceff;
+  --md-ref-palette-primary90: #dee5ff;
+  --md-ref-palette-primary95: #eff4ff;
+  --md-ref-palette-primary99: #fbfdff;
   --md-ref-palette-primary100: #ffffff;
   /* secondary */
-  --md-ref-palette-secondary0: #000000;
-  --md-ref-palette-secondary10: #2d1600;
-  --md-ref-palette-secondary20: #4b2800;
-  --md-ref-palette-secondary25: #5b3100;
-  --md-ref-palette-secondary30: #6b3b00;
-  --md-ref-palette-secondary35: #7b4500;
-  --md-ref-palette-secondary40: #8d4f00;
-  --md-ref-palette-secondary50: #b06400;
-  --md-ref-palette-secondary60: #d57b00;
-  --md-ref-palette-secondary70: #fa9100;
-  --md-ref-palette-secondary80: #ffb875;
-  --md-ref-palette-secondary90: #ffdcc0;
-  --md-ref-palette-secondary95: #ffeee1;
-  --md-ref-palette-secondary98: #fff8f5;
+  --md-ref-palette-secondary0: #010101;
+  --md-ref-palette-secondary10: #0d0f1a;
+  --md-ref-palette-secondary20: #1a1e32;
+  --md-ref-palette-secondary30: #272c4b;
+  --md-ref-palette-secondary40: #343b63;
+  --md-ref-palette-secondary50: #555c82;
+  --md-ref-palette-secondary60: #7d80a2;
+  --md-ref-palette-secondary70: #a2a5c2;
+  --md-ref-palette-secondary80: #c3c5dd;
+  --md-ref-palette-secondary90: #e4e4f7;
+  --md-ref-palette-secondary95: #f0efff;
   --md-ref-palette-secondary99: #fffbff;
-  --md-ref-palette-secondary100: #ffffff;
+  --md-ref-palette-secondary100: #fdfdfd;
   /* tertiary */
-  --md-ref-palette-tertiary0: #000000;
-  --md-ref-palette-tertiary10: #131f00;
-  --md-ref-palette-tertiary20: #233600;
-  --md-ref-palette-tertiary25: #2c4200;
-  --md-ref-palette-tertiary30: #354e00;
-  --md-ref-palette-tertiary35: #3e5b00;
-  --md-ref-palette-tertiary40: #486800;
-  --md-ref-palette-tertiary50: #5b8300;
-  --md-ref-palette-tertiary60: #6f9f00;
-  --md-ref-palette-tertiary70: #84bc00;
-  --md-ref-palette-tertiary80: #9ed82c;
-  --md-ref-palette-tertiary90: #b9f549;
-  --md-ref-palette-tertiary95: #d5ff8c;
-  --md-ref-palette-tertiary98: #f1ffd2;
-  --md-ref-palette-tertiary99: #f9ffe6;
-  --md-ref-palette-tertiary100: #ffffff;
+  --md-ref-palette-tertiary0: #23211f;
+  --md-ref-palette-tertiary10: #272522;
+  --md-ref-palette-tertiary20: #7e6f25;
+  --md-ref-palette-tertiary30: #bba638;
+  --md-ref-palette-tertiary40: #ffda3e;
+  --md-ref-palette-tertiary50: #fae060;
+  --md-ref-palette-tertiary60: #fbe577;
+  --md-ref-palette-tertiary70: #fbe98d;
+  --md-ref-palette-tertiary80: #fceda4;
+  --md-ref-palette-tertiary90: #fdf2ba;
+  --md-ref-palette-tertiary95: #fef6d0;
+  --md-ref-palette-tertiary99: #fefae7;
+  --md-ref-palette-tertiary100: #fffffd;
   /* neutral */
   --md-ref-palette-neutral0: #000000;
-  --md-ref-palette-neutral10: #001f25;
-  --md-ref-palette-neutral20: #00363f;
-  --md-ref-palette-neutral25: #00424d;
-  --md-ref-palette-neutral30: #004e5b;
-  --md-ref-palette-neutral35: #005b69;
-  --md-ref-palette-neutral40: #006878;
-  --md-ref-palette-neutral50: #008396;
-  --md-ref-palette-neutral60: #009fb6;
-  --md-ref-palette-neutral70: #29bbd5;
-  --md-ref-palette-neutral80: #53d7f1;
-  --md-ref-palette-neutral90: #a6eeff;
-  --md-ref-palette-neutral95: #d6f6ff;
-  --md-ref-palette-neutral98: #effbff;
-  --md-ref-palette-neutral99: #f8fdff;
+  --md-ref-palette-neutral10: #191c1d;
+  --md-ref-palette-neutral20: #2e3132;
+  --md-ref-palette-neutral30: #444748;
+  --md-ref-palette-neutral40: #5c5f5f;
+  --md-ref-palette-neutral50: #747878;
+  --md-ref-palette-neutral60: #8e9192;
+  --md-ref-palette-neutral70: #a9acac;
+  --md-ref-palette-neutral80: #c4c7c7;
+  --md-ref-palette-neutral92: #e6e8e9;
+  --md-ref-palette-neutral94: #eceeef;
+  --md-ref-palette-neutral95: #eff1f1;
+  --md-ref-palette-neutral96: #f2f4f4;
+  --md-ref-palette-neutral90: #c9c9c9;
+  --md-ref-palette-neutral98: #f8fafa;
+  --md-ref-palette-neutral99: #fbfcff;
   --md-ref-palette-neutral100: #ffffff;
   /* neutral-variant */
-  --md-ref-palette-neutral-variant0: #000000;
-  --md-ref-palette-neutral-variant10: #151d21;
-  --md-ref-palette-neutral-variant20: #2a3136;
-  --md-ref-palette-neutral-variant25: #353c41;
-  --md-ref-palette-neutral-variant30: #40484d;
-  --md-ref-palette-neutral-variant35: #4c5358;
-  --md-ref-palette-neutral-variant40: #585f64;
-  --md-ref-palette-neutral-variant50: #71787d;
-  --md-ref-palette-neutral-variant60: #8a9297;
-  --md-ref-palette-neutral-variant70: #a5acb2;
-  --md-ref-palette-neutral-variant80: #c0c7cd;
-  --md-ref-palette-neutral-variant90: #dce3e9;
-  --md-ref-palette-neutral-variant95: #ebf2f8;
-  --md-ref-palette-neutral-variant98: #f5faff;
-  --md-ref-palette-neutral-variant99: #fbfcff;
-  --md-ref-palette-neutral-variant100: #ffffff;
+  --md-ref-palette-neutral-variant0: #1e1e23;
+  --md-ref-palette-neutral-variant10: #262933;
+  --md-ref-palette-neutral-variant20: #313647;
+  --md-ref-palette-neutral-variant30: #3c445b;
+  --md-ref-palette-neutral-variant40: #46516f;
+  --md-ref-palette-neutral-variant50: #5d6781;
+  --md-ref-palette-neutral-variant60: #747d93;
+  --md-ref-palette-neutral-variant70: #8b92a5;
+  --md-ref-palette-neutral-variant80: #a2a8b7;
+  --md-ref-palette-neutral-variant90: #babec9;
+  --md-ref-palette-neutral-variant95: #d1d3db;
+  --md-ref-palette-neutral-variant99: #e8e9ed;
+  --md-ref-palette-neutral-variant100: #f6f6f8;
   /* error */
-  --md-ref-palette-error0: #000000;
-  --md-ref-palette-error10: #410002;
-  --md-ref-palette-error20: #690005;
-  --md-ref-palette-error25: #7e0007;
-  --md-ref-palette-error30: #93000a;
-  --md-ref-palette-error35: #a80710;
+  --md-ref-palette-error0: #1f0404;
+  --md-ref-palette-error10: #420909;
+  --md-ref-palette-error20: #640e0e;
+  --md-ref-palette-error30: #ffb6b6;
   --md-ref-palette-error40: #ba1a1a;
-  --md-ref-palette-error50: #de3730;
-  --md-ref-palette-error60: #ff5449;
-  --md-ref-palette-error70: #ff897d;
-  --md-ref-palette-error80: #ffb4ab;
-  --md-ref-palette-error90: #ffdad6;
-  --md-ref-palette-error95: #ffedea;
-  --md-ref-palette-error98: #fff8f7;
-  --md-ref-palette-error99: #fffbff;
-  --md-ref-palette-error100: #ffffff;
+  --md-ref-palette-error50: #e22d2d;
+  --md-ref-palette-error60: #e96161;
+  --md-ref-palette-error70: #ee8383;
+  --md-ref-palette-error80: #f3a6a6;
+  --md-ref-palette-error90: #f9dedc;
+  --md-ref-palette-error95: #fceeee;
+  --md-ref-palette-error99: #fff6f6;
+  --md-ref-palette-error100: #fffcfc;
+
   /* light */
-  --md-sys-color-primary-light: red; /* Primary light color, typically for major actionable elements */
-  --md-sys-color-on-primary-light: #ffffff; /* Color for text and icons on primary color */
-  --md-sys-color-primary-container-light: #e6f5fb; /* Light primary color for container backgrounds */
-  --md-sys-color-on-primary-container-light: #2eaadc; /* Color for text and icons on light primary containers */
+  /* sys colors */
+  --md-sys-color-primary-light: var(
+    --md-ref-palette-primary40
+  ); /* High-emphasis fills, texts, and icons against surface */
+  --md-sys-color-on-primary-light: var(
+    --md-ref-palette-primary100
+  ); /* Text and icons against primary */
+  --md-sys-color-primary-container-light: var(
+    --md-ref-palette-primary90
+  ); /* Standout fill color against surface, for key components like FAB */
+  --md-sys-color-on-primary-container-light: var(--md-ref-palette-primary10);
+  --md-sys-color-primary-hover-light: #6d88f8;
 
-  --md-sys-color-secondary-light: #8d4f00; /* Secondary light color, for secondary interface elements */
-  --md-sys-color-on-secondary-light: #ffffff; /* Color for text and icons on secondary color */
-  --md-sys-color-secondary-container-light: #ffdcc0; /* Light secondary color for container backgrounds */
-  --md-sys-color-on-secondary-container-light: #2d1600; /* Color for text and icons on light secondary containers */
+  --md-sys-color-secondary-light: var(
+    --md-ref-palette-secondary40
+  ); /* Less prominent fills, text, and icons against surface */
+  --md-sys-color-on-secondary-light: var(
+    --md-ref-palette-secondar100
+  ); /* Text and icons against secondary */
+  --md-sys-color-secondary-container-light: var(
+    --md-ref-palette-secondary90
+  ); /* Less prominent fill color against surface, for recessive components like tonal buttons */
+  --md-sys-color-on-secondary-container-light: var(
+    --md-ref-palette-secondary10
+  ); /* Text and icons against secondary container */
 
-  --md-sys-color-tertiary-light: #486800; /* Tertiary light color, for tertiary interface elements */
-  --md-sys-color-on-tertiary-light: #ffffff; /* Color for text and icons on tertiary color */
-  --md-sys-color-tertiary-container-light: #b9f549; /* Light tertiary color for container backgrounds */
-  --md-sys-color-on-tertiary-container-light: #131f00; /* Color for text and icons on light tertiary containers */
+  --md-sys-color-tertiary-light: var(
+    --md-ref-palette-tertiary40
+  ); /* Complementary fills, text, and icons against surface */
+  --md-sys-color-on-tertiary-light: var(
+    --md-ref-palette-tertiary100
+  ); /* Color for text and icons on tertiary color */
+  --md-sys-color-tertiary-container-light: var(
+    --md-ref-palette-tertiary90
+  ); /* Light tertiary color for container backgrounds */
+  --md-sys-color-on-tertiary-container-light: var(
+    --md-ref-palette-tertiary10
+  ); /* Color for text and icons on light tertiary containers */
 
-  --md-sys-color-error-light: #ba1a1a; /* Error color, typically used for warnings and errors */
-  --md-sys-color-error-container-light: #ffdad6; /* Light error color for container backgrounds */
-  --md-sys-color-on-error-light: #ffffff; /* Color for text and icons on error color */
-  --md-sys-color-on-error-container-light: #410002; /* Color for text and icons on light error containers */
+  --md-sys-color-error-light: var(
+    --md-ref-palette-error40
+  ); /* Attention-grabbing color against surface for fills, icons, and text, indicating urgency */
+  --md-sys-color-on-error-light: var(
+    --md-ref-palette-error100
+  ); /* Text and icons against error */
+  --md-sys-color-error-container-light: var(
+    --md-ref-palette-error90
+  ); /* Attention-grabbing fill color against surface */
+  --md-sys-color-on-error-container-light: var(
+    --md-ref-palette-error10
+  ); /* Text and icons against error container */
 
-  --md-sys-color-background-light: #ffffff; /* Background color of the app or site */
-  --md-sys-color-on-background-light: #666666; /* Color for text and icons on background */
+  --md-custom-color-running-light: var(
+    --md-ref-palette-primary20
+  ); /* Running color against surface for fills, icons, and text */
+  --md-custom-color-on-running-light: var(
+    --md-ref-palette-primary90
+  ); /* Text and icons against running */
 
-  --md-sys-color-surface-light: #f2fbff; /* General surface color for UI elements such as cards, sheets, menus */
-  --md-sys-color-on-surface-light: #666666; /* Color for text and icons on surface color */
+  /* Surface colors */
+  --md-sys-color-surface-light: var(
+    --md-ref-palette-neutral100
+  ); /* Default color for backgrounds */
+  --md-sys-color-on-surface-light: var(
+    --md-ref-palette-neutral10
+  ); /* Text and icons against any surface color */
+  --md-sys-color-on-surface-variant-light: #40484d; /* Lower-emphasis color for text and icons against any surface color */
 
-  --md-sys-color-surface-variant-light: #dadada; /* Variant surface color for distinguishing UI elements */
-  --md-sys-color-on-surface-variant-light: #40484d; /* Color for text and icons on surface variant color */
+  /* Surface container */
+  --md-sys-color-surface-container-lowest-light: #ffffff; /* Lowest-emphasis container color */
+  --md-sys-color-surface-container-low-light: #f4f7fd; /* Low-emphasis container color */
+  --md-sys-color-surface-container-light: #edf2fc; /* Default container color */
+  --md-sys-color-surface-container-high-light: #e4ebf9; /* High-emphasis container color */
+  --md-sys-color-surface-container-highest-light: #d9e2f1; /* Highest-emphasis container color */
 
-  --md-sys-color-outline-light: rgba(
-    0,
-    0,
-    0,
-    0.12
-  ); /* Color for outlines and dividers */
+  /* Inverse colors */
+  --md-sys-color-inverse-surface-light: var(
+    --md-ref-palette-neutral-variant20
+  ); /* Background fills for elements which contrast against surface */
+  --md-sys-color-inverse-on-surface-light: var(
+    --md-ref-palette-neutral-variant100
+  ); /* Text and icons against inverse surface */
+  --md-sys-color-inverse-primary-light: var(
+    --md-ref-palette-primary80
+  ); /* Inverse primary color, typically for major actionable elements */
 
-  --md-sys-color-inverse-on-surface-light: #d6f6ff; /* Inverse color for text and icons on surface color */
-  --md-sys-color-inverse-surface-light: #ffffff; /* Inverse surface color for UI elements */
+  /* Outline */
+  --md-sys-color-outline-light: var(
+    --md-ref-palette-neutral80
+  ); /* Important boundaries, such as a text field outline */
+  --md-sys-color-outline-variant-light: var(
+    --md-ref-palette-neutral-variant80
+  ); /* Decorative elements, such as dividers */
 
-  --md-sys-color-inverse-primary-light: #75d1ff; /* Inverse primary color, typically for major actionable elements */
-
-  --md-sys-color-shadow-light: #000000; /* Color for shadows, typically used for depth effect on UI elements */
-  --md-sys-color-surface-tint-light: #006688; /* Tint color for surface elements, usually a lighter or darker shade of the surface color */
-  --md-sys-color-outline-variant-light: #c0c7cd; /* Variant color for outlines and dividers, usually to create a contrast or highlight */
+  /* Add-on color roles */
+  --md-sys-color-surface-dim-light: var(
+    --md-ref-palette-neutral-variant800
+  ); /* Dimmest surface color in light and dark themes */
+  --md-sys-color-surface-bright-light: var(
+    --md-ref-palette-neutral100
+  ); /* Brightest surface color in light and dark themes */
   --md-sys-color-scrim-light: rgba(
-    18,
-    127,
-    197,
-    0.16
+    0,
+    2,
+    11,
+    0.38
   ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
+  --md-sys-color-shadow-light: var(
+    --md-ref-palette-neutral0
+  ); /* Color for shadows, typically used for depth effect on UI elements */
 
   /* dark */
-  --md-sys-color-primary-dark: #75d1ff; /* Primary dark color, typically for major actionable elements in dark theme */
-  --md-sys-color-on-primary-dark: #003548; /* Color for text and icons on primary color in dark theme */
-  --md-sys-color-primary-container-dark: #004d67; /* Dark primary color for container backgrounds in dark theme */
-  --md-sys-color-on-primary-container-dark: #c2e8ff; /* Color for text and icons on dark primary containers in dark theme */
+  /* sys colors */
+  --md-sys-color-primary-dark: var(
+    --md-ref-palette-primary70
+  ); /* High-emphasis fills, texts, and icons against surface */
+  --md-sys-color-on-primary-dark: var(
+    --md-ref-palette-primary0
+  ); /* Text and icons against primary */
+  --md-sys-color-primary-container-dark: var(
+    --md-ref-palette-primary10
+  ); /* Standout fill color against surface, for key components like FAB */
+  --md-sys-color-on-primary-container-dark: var(--md-ref-palette-primary90);
+  --md-sys-color-primary-hover-dark: #b4c5fd;
 
-  --md-sys-color-secondary-dark: #ffb875; /* Secondary dark color, for secondary interface elements in dark theme */
-  --md-sys-color-on-secondary-dark: #4b2800; /* Color for text and icons on secondary color in dark theme */
-  --md-sys-color-secondary-container-dark: #6b3b00; /* Dark secondary color for container backgrounds in dark theme */
-  --md-sys-color-on-secondary-container-dark: #ffdcc0; /* Color for text and icons on dark secondary containers in dark theme */
+  --md-sys-color-secondary-dark: var(
+    --md-ref-palette-secondary99
+  ); /* Less prominent fills, text, and icons against surface */
+  --md-sys-color-on-secondary-dark: var(
+    --md-ref-palette-secondary20
+  ); /* Text and icons against secondary */
+  --md-sys-color-secondary-container-dark: var(
+    --md-ref-palette-secondary30
+  ); /* Less prominent fill color against surface, for recessive components like tonal buttons */
+  --md-sys-color-on-secondary-container-dark: var(
+    --md-ref-palette-secondary90
+  ); /* Text and icons against secondary container */
 
-  --md-sys-color-tertiary-dark: #9ed82c; /* Tertiary dark color, for tertiary interface elements in dark theme */
-  --md-sys-color-on-tertiary-dark: #233600; /* Color for text and icons on tertiary color in dark theme */
-  --md-sys-color-tertiary-container-dark: #354e00; /* Dark tertiary color for container backgrounds in dark theme */
-  --md-sys-color-on-tertiary-container-dark: #b9f549; /* Color for text and icons on dark tertiary containers in dark theme */
+  --md-sys-color-tertiary-dark: var(
+    --md-ref-palette-tertiary80
+  ); /* Complementary fills, text, and icons against surface */
+  --md-sys-color-on-tertiary-dark: var(
+    --md-ref-palette-tertiary0
+  ); /* Color for text and icons on tertiary color */
+  --md-sys-color-tertiary-container-dark: var(
+    --md-ref-palette-tertiary20
+  ); /* Light tertiary color for container backgrounds */
+  --md-sys-color-on-tertiary-container-dark: var(
+    --md-ref-palette-tertiary99
+  ); /* Color for text and icons on light tertiary containers */
 
-  --md-sys-color-error-dark: #ffb4ab; /* Error color, typically used for warnings and errors in dark theme */
-  --md-sys-color-error-container-dark: #93000a; /* Dark error color for container backgrounds in dark theme */
-  --md-sys-color-on-error-dark: #690005; /* Color for text and icons on error color in dark theme */
-  --md-sys-color-on-error-container-dark: #ffdad6; /* Color for text and icons on dark error containers in dark theme */
+  --md-sys-color-error-dark: var(
+    --md-ref-palette-error80
+  ); /* Attention-grabbing color against surface for fills, icons, and text, indicating urgency */
+  --md-sys-color-on-error-dark: var(
+    --md-ref-palette-error10
+  ); /* Text and icons against error */
+  --md-sys-color-error-container-dark: var(
+    --md-ref-palette-error30
+  ); /* Attention-grabbing fill color against surface */
+  --md-sys-color-on-error-container-dark: var(
+    --md-ref-palette-error90
+  ); /* Text and icons against error container */
+  --md-custom-color-running-dark: var(
+    --md-ref-palette-primary90
+  ); /* Running color against surface for fills, icons, and text */
+  --md-custom-color-on-running-dark: var(
+    --md-ref-palette-primary20
+  ); /* Text and icons against running */
 
-  --md-sys-color-background-dark: #003548; /* Background color of the app or site in dark theme */
-  --md-sys-color-on-background-dark: #a6eeff; /* Color for text and icons on background in dark theme */
+  /* Surface colors */
+  --md-sys-color-surface-dark: #1c1c28; /* Default color for backgrounds */
+  --md-sys-color-on-surface-dark: var(
+    --md-ref-palette-neutral-variant99
+  ); /* Text and icons against any surface color */
+  --md-sys-color-on-surface-variant-dark: var(
+    --md-ref-palette-neutral-variant30
+  ); /* Lower-emphasis color for text and icons against any surface color */
 
-  --md-sys-color-surface-dark: #001f25; /* General surface color for UI elements such as cards, sheets, menus in dark theme */
-  --md-sys-color-on-surface-dark: #a6eeff; /* Color for text and icons on surface color in dark theme */
+  /* Surface container */
+  --md-sys-color-surface-container-lowest-dark: #212331; /* Lowest-emphasis container color */
+  --md-sys-color-surface-container-low-dark: #282d3d; /* Low-emphasis container color */
+  --md-sys-color-surface-container-dark: #2b3042; /* Default container color */
+  --md-sys-color-surface-container-high-dark: #31384d; /* High-emphasis container color */
+  --md-sys-color-surface-container-highest-dark: #374157; /* Highest-emphasis container color */
 
-  --md-sys-color-surface-variant-dark: #616e76; /* Variant surface color for distinguishing UI elements in dark theme */
-  --md-sys-color-on-surface-variant-dark: #c0c7cd; /* Color for text and icons on surface variant color in dark theme */
+  /* Inverse colors */
+  --md-sys-color-inverse-surface-dark: var(
+    --md-ref-palette-neutral99
+  ); /* Background fills for elements which contrast against surface */
+  --md-sys-color-inverse-on-surface-dark: var(
+    --md-ref-palette-neutral10
+  ); /* Text and icons against inverse surface */
+  --md-sys-color-inverse-primary-dark: var(
+    --md-ref-palette-primary30
+  ); /* Inverse primary color, typically for major actionable elements */
 
-  --md-sys-color-outline-dark: #8a9297; /* Color for outlines and dividers in dark theme */
-  --md-sys-color-inverse-on-surface-dark: #001f25; /* Inverse color for text and icons on surface color in dark theme */
-  --md-sys-color-inverse-surface-dark: #001f25; /* Inverse surface color for UI elements in dark theme */
+  /* Outline */
+  --md-sys-color-outline-dark: var(
+    --md-ref-palette-neutral-variant50
+  ); /* Important boundaries, such as a text field outline */
+  --md-sys-color-outline-variant-dark: var(
+    --md-ref-palette-neutral-variant80
+  ); /* Decorative elements, such as dividers */
 
-  --md-sys-color-inverse-primary-dark: #006688; /* Inverse primary color, typically for major actionable elements in dark theme */
-
-  --md-sys-color-shadow-dark: #000000; /* Color for shadows, typically used for depth effect on UI elements in dark theme */
-  --md-sys-color-surface-tint-dark: #75d1ff; /* Tint color for surface elements in dark theme, usually a lighter shade of the surface color */
-  --md-sys-color-outline-variant-dark: #40484d; /* Variant color for outlines and dividers in dark theme, usually to create a contrast or highlight */
+  /* Add-on color roles */
+  --md-sys-color-surface-dim-dark: var(
+    --md-ref-palette-secondary10
+  ); /* Dimmest surface color in light and dark themes */
+  --md-sys-color-surface-bright-dark: var(
+    --md-ref-palette-neutral10
+  ); /* Brightest surface color in light and dark themes */
   --md-sys-color-scrim-dark: rgba(
+    11,
+    5,
     0,
-    0,
-    0,
-    0.5
-  ); /* Scrim color in dark theme, typically used for overlay or backdrop el
+    0.38
+  ); /* Scrim color, typically used for overlay or backdrop elements to indicate modality or focus */
+  --md-sys-color-shadow-dark: var(
+    --md-ref-palette-neutral0
+  ); /*Color for shadows, typically used for depth effect on UI elements */
 
   /* Custom Colors */
-  --md-custom-color-processing-status-running: #e6f5fb;
-  --md-custom-color-on-processing-status-running: #2eaadc;
-  --md-custom-color-processing-status-error: #fbd9d7;
-  --md-custom-color-on-processing-status-error: #ea4335;
-  --md-custom-color-processing-status-warning: #fef2cd;
-  --md-custom-color-on-processing-status-warning: #fbbc04;
-  --md-custom-color-processing-status-done: #d6eedd;
-  --md-custom-color-on-processing-status-done: #34a853;
+
+  /* light */
+  --md-custom-color-processing-status-done-light: #236600;
+  --md-custom-color-on-processing-status-done-light: #ffffff;
+  --md-custom-color-processing-status-error-light: var(
+    --md-sys-color-error-light
+  );
+  --md-custom-color-on-processing-status-error-light: var(
+    --md-sys-color-on-error-light
+  );
+  --md-custom-color-processing-status-warning-light: #fbbc04;
+  --md-custom-color-on-processing-status-warning-light: #000000;
+
+  /* dark */
+  --md-custom-color-processing-status-done-dark: #b1fdaf;
+  --md-custom-color-on-processing-status-done-dark: #00461f;
+  --md-custom-color-processing-status-error-dark: var(
+    --md-sys-color-error-dark
+  );
+  --md-custom-color-on-processing-status-error-dark: var(
+    --md-sys-color-on-error-dark
+  );
+  --md-custom-color-processing-status-warning-dark: #ffcd3c;
+  --md-custom-color-on-processing-status-warning-dark: #0b0600;
 
   /* display - large */
   --md-sys-typescale-display-large-font-family-name: Avenir Black;

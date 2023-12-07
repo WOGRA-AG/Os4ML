@@ -14,7 +14,6 @@ import { DatabagDataTableComponent } from '../../organisms/databag-data-table/da
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
-import { DatabagDetailDialogComponent } from '../databag-detail-dialog/databag-detail-dialog.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -44,17 +43,6 @@ export class DatabagsPageComponent {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
   }
 
-  openDatabagSettingDialog(databag: Databag): void {
-    this.dialog.open(DatabagDetailDialogComponent, {
-      ariaLabelledBy: 'dialog-title',
-      data: { databag },
-      panelClass: 'setting-dialog',
-      height: '100%',
-      position: {
-        right: '12px',
-      },
-    });
-  }
   openCreateSolutionStepperDialog(databagId: string): void {
     this.dialog.open(SolutionCreateDialogComponent, {
       data: { databagId },

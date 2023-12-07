@@ -1,0 +1,17 @@
+<h2 class="headline-medium primary-text">
+  {{ 'organisms.databag-detail-delete-databag.title' | translate }}
+</h2>
+<div class="content">
+  <div class="body-medium on-background-text">
+    {{ 'organisms.databag-detail-delete-databag.description' | translate }}
+  </div>
+  <app-new-button
+    data-testid="databag-delete-button"
+    (click)="deleteDatabag.emit()"
+    [variant]="'warn'"
+    [size]="'medium'"
+    [icon]="'delete'"
+    [ariaLabel]="'organisms.databag-detail-delete-databag.button' | translate">
+    {{ 'organisms.databag-detail-delete-databag.button' | translate }}
+  </app-new-button>
+</div>

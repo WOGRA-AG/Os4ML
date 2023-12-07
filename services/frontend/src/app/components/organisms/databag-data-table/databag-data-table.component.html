@@ -37,8 +37,7 @@
       {{ 'organisms.databag_data_table.column_header.creation' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
-      {{ element.creationTime | localizedDate }}
-      {{ element.creationTime | localizedDate: 'mediumTime' }}
+      {{ element.creationTime | localizedDate: 'dd.MM.yyyy' }}
     </td>
   </ng-container>
   <ng-container matColumnDef="status">
@@ -56,24 +55,11 @@
       {{ 'organisms.databag_data_table.column_header.actions' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
-      <app-icon-button
-        [ariaLabel]="
-          'organisms.databag_data_table.actions.settings.aria_label' | translate
-        "
-        data-testid="databag-settings-button"
-        (click)="settingButton.emit(element)"
-        [matTooltip]="
-          'organisms.databag_data_table.actions.settings.tooltip' | translate
-        "
-        class="mr-1"
-        color="primary"
-        icon="edit">
-      </app-icon-button>
-      <app-solution-create-button
-        [type]="'FAB'"
-        (addSolution)="createSolutionButton.emit(element.id)">
-        >
-      </app-solution-create-button>
+      <app-databag-context-menu
+        [showDatabagDetailLink]="['/databags/detail', element?.id]"
+        (createSolutionButton)="
+          createSolutionButton.emit(element.id)
+        "></app-databag-context-menu>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
