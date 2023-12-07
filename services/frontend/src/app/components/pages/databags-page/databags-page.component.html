@@ -12,7 +12,6 @@
   <ng-container main *ngIf="databags$ | async as databags">
     <app-databag-data-table
       [databags]="(databags$ | async) ?? []"
-      (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
     <app-ml-entity-status-placeholder

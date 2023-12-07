@@ -1,60 +1,103 @@
 import {
-  createDatabag,
-  createSolution,
+  TIMEOUT_LONG,
+  handleA11yViolations,
+  login,
+  logout,
+  getSupportingMLEntitieId,
+} from '../utils/e2e.utils';
+import {
+  CreateDatabagForm,
+  checkDatabag,
   deleteDatabag,
+  setupDatabag,
+} from 'cypress/utils/databag.utils';
+import {
+  CreateSolutionForm,
+  checkSolution,
+  setupSolution,
   deleteSolution,
+} from 'cypress/utils/solution.utils';
+import {
+  CreatePredictionForm,
+  createPrediction,
   deletePrediction,
   visitPredictionsPage,
-  handleA11yViolations,
-  setupSolutionTestDatabag,
-  createPrediction,
-  setupPredictionTestSolution,
-} from '../utils/e2e.utils';
-import { login, logout } from '../utils/e2e.login';
+} from 'cypress/utils/prediction.utils';
+const essentialMLEntitiesOnly =
+  Cypress.env('createEssentialMLEntitiesOnly') === true;
+const id = Date.now();
 
-const predictionTestDatabagName = `e2e prediction test databag`;
-const predictionTestSolutionName = `e2e prediction test solution`;
-const predictionName = `e2e predictionName ${new Date().toISOString()}`;
-const updatedPredictionName = `e2e predictionName update ${new Date().toISOString()}`;
+const databagItem: CreateDatabagForm = {
+  name: `Databag for prediction specs #${getSupportingMLEntitieId()}`,
+  fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
+};
 
-beforeEach('login', () => {
-  login();
-});
+const solutionItem: CreateSolutionForm = {
+  name: `Solution for prediction specs #${getSupportingMLEntitieId()}`,
+  databagName: databagItem.name,
+  applyTransferLearning: false,
+};
 
-after('logout', () => {
-  logout();
-});
-
-beforeEach(() => {
-  visitPredictionsPage();
-  cy.injectAxe();
-});
+const predictionItem: CreatePredictionForm = {
+  name: `Prediction #${id}`,
+  solutionName: solutionItem.name,
+  file: 'cypress/fixtures/predictions/titanic_predict.csv',
+};
 
 describe('Predictions Page', () => {
+  before('Prepare data for tests', () => {
+    login('#/databags');
+    cy.injectAxe();
+
+    setupDatabag(databagItem);
+    checkDatabag(databagItem.name);
+
+    cy.visit('/#/solutions');
+    setupSolution(solutionItem);
+    checkSolution(solutionItem.name);
+  });
+
+  after('Clean up', () => {
+    if (!essentialMLEntitiesOnly) {
+      deleteDatabag(databagItem.name);
+      deleteSolution(solutionItem.name);
+    }
+    logout();
+  });
+
+  beforeEach(() => {
+    login();
+    visitPredictionsPage();
+    cy.injectAxe();
+  });
+
   it('Has no detectable accessibility violations on load', () => {
     cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   });
 
-  it('setup a Databag xls', () => {
-    setupSolutionTestDatabag(predictionTestDatabagName);
+  context('Creating precictions', () => {
+    it('add a Prediction', () => {
+      createPrediction(predictionItem);
+
+      cy.findAllByTestId('prediction-item')
+        .filter(`:contains("${predictionItem.name}")`)
+        .should('exist');
+      cy.findAllByTestId('prediction-item')
+        .filter(`:contains("${predictionItem.name}")`)
+        .contains('Done', {
+          timeout: TIMEOUT_LONG,
+        });
+    });
   });
 
-  it('setup a Solution', () => {
-    setupPredictionTestSolution(
-      predictionTestSolutionName,
-      predictionTestDatabagName
-    );
-  });
+  context('Predictions deletion', () => {
+    it('delete a Prediction', () => {
+      deletePrediction(predictionItem.name);
 
-  it('create Pridiction', () => {
-    createPrediction(
-      predictionName,
-      predictionTestSolutionName,
-      'cypress/fixtures/titanic_predict.csv'
-    );
-  });
-
-  it('delete Prediction', () => {
-    deletePrediction(predictionName);
+      cy.findByTestId('prediction-table').should(
+        'not.contain',
+        predictionItem.name
+      );
+    });
   });
 });

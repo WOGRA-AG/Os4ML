@@ -1,5 +1,8 @@
-<nav id="header-nav" class="surface" [ariaLabel]="'mobile-navigation'">
-  <a [routerLink]="'/'">
+<nav
+  id="header-nav"
+  class="surface-container"
+  [ariaLabel]="'mobile-navigation'">
+  <a [routerLink]="'/'" aria-label="Os4ML Logo">
     <img
       class="logo"
       src="assets/logos/os4ml-logo-landscape.svg"
@@ -13,13 +16,13 @@
 </nav>
 <nav
   id="side-nav"
-  class="surface"
+  class="surface-container"
   [class.show-mobile-menu]="showSidebar"
   [ariaLabel]="'main-navigation'">
   <app-side-nav>
     <ng-container identity>
-      <a [routerLink]="'/'">
-        <img class="logo" src="assets/logos/os4ml-logo.svg" alt="Os4ML Logo" />
+      <a [routerLink]="'/'" aria-label="Os4ML Logo">
+        <app-signet></app-signet>
       </a>
     </ng-container>
     <ng-container main-nav>

@@ -63,27 +63,12 @@
       {{ 'organisms.prediction_data_table.column_header.actions' | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
-      <app-icon-button
-        [ariaLabel]="'pages.solutions_page.actions.new_databag' | translate"
-        (click)="downloadPredictionButton.emit(element.id)"
-        [disabled]="(element.status | shortStatus) !== 'Done'"
-        data-testid="prediction-download-button"
-        variant="basic"
-        class="fab-button mat-raised-button mr-1"
-        color="primary"
-        icon="download">
-      </app-icon-button>
-      <app-icon-button
-        (click)="deletePredictionButton.emit(element.id)"
-        [ariaLabel]="
-          'pages.solutions_page.actions.delete_prediction' | translate
-        "
-        data-testid="prediction-delete-button"
-        variant="basic"
-        class="fab-button mat-raised-button"
-        color="primary"
-        icon="delete_forever">
-      </app-icon-button>
+      <app-prediction-context-menu
+        [predictionElement]="element"
+        (deletePredictionButton)="deletePredictionButton.emit(element.id)"
+        (downloadPredictionButton)="
+          downloadPredictionButton.emit(element.id)
+        "></app-prediction-context-menu>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
