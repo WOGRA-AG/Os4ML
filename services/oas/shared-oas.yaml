@@ -14,6 +14,12 @@ components:
       schema:
         type: string
   schemas:
+    UserId:
+      type: string
+    UserIdObject:
+      properties:
+        userId:
+          $ref: '#/components/schemas/UserId'
     RunId:
       type: string
     DatabagId:
@@ -157,6 +163,11 @@ components:
           type: string
         value:
           type: string
+        sharedWith:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/UserId'
     PipelineStep:
       type: string
       enum:
@@ -236,7 +247,7 @@ components:
         - rawToken
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UserId'
         firstName:
           type: string
         lastName:
