@@ -35,6 +35,8 @@ export class DatabagService {
   private readonly _uploadDatabagFileProgressSubject$ =
     new BehaviorSubject<number>(0);
   private readonly _databagsSubject$ = new BehaviorSubject<Databag[]>([]);
+  private readonly _isLoading$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
 
   constructor(
     private userService: UserService,
@@ -48,6 +50,9 @@ export class DatabagService {
   // Read methods
   get databags$(): Observable<Databag[]> {
     return this._databagsSubject$.asObservable();
+  }
+  get isLoading$(): Observable<boolean> {
+    return this._isLoading$.asObservable();
   }
   getUploadDatabagFileProgress(): BehaviorSubject<number> {
     return this._uploadDatabagFileProgressSubject$;
@@ -117,7 +122,8 @@ export class DatabagService {
         switchMap(token => this.modelManager.getDatabags(token)),
         first(),
         concatWith(webSocketConnection$),
-        raceWith(webSocketConnection$)
+        raceWith(webSocketConnection$),
+        tap(() => this._isLoading$.next(false))
       )
       .subscribe(databags => this._databagsSubject$.next(databags));
   }

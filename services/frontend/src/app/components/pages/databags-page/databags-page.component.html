@@ -9,7 +9,7 @@
       data-testid="add-databag">
     </app-databag-create-button>
   </div>
-  <ng-container main *ngIf="databags$ | async as databags">
+  <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
     <app-databag-data-table
       [databags]="(databags$ | async) ?? []"
       (settingButton)="openDatabagSettingDialog($event)"
@@ -21,4 +21,7 @@
       (addDatabag)="addDatabag()">
     </app-ml-entity-status-placeholder>
   </ng-container>
+  <ng-template #progressBar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-template>
 </app-os4ml-default-template>

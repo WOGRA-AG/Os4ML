@@ -15,6 +15,7 @@ import { DatabagCreateButtonComponent } from '../../organisms/databag-create-but
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { DatabagDetailDialogComponent } from '../databag-detail-dialog/databag-detail-dialog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-databags-page',
@@ -33,15 +34,19 @@ import { DatabagDetailDialogComponent } from '../databag-detail-dialog/databag-d
     DatabagDataTableComponent,
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
+    MatProgressBarModule,
   ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
+  public isLoading$: Observable<boolean>;
+
   constructor(
     private databagService: DatabagService,
     private dialog: MatDialog
   ) {
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
+    this.isLoading$ = this.databagService.isLoading$;
   }
 
   openDatabagSettingDialog(databag: Databag): void {
