@@ -442,6 +442,34 @@ paths:
         204:
           $ref: '#/components/responses/Deleted'
 
+  "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}/share":
+    post:
+      summary: "share a transfer learning model with another user"
+      operationId: shareTransferLearningModel
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      requestBody:
+        $ref: '#/components/requestBodies/UserId'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
+    delete:
+      summary: "cancel sharing of a transfer learning model with another user"
+      operationId: cancelTransferLearningModelSharing
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      requestBody:
+        $ref: '#/components/requestBodies/UserId'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
+
 components:
   schemas:
     ErrorSchema:
@@ -506,6 +534,11 @@ components:
         type: string
 
   requestBodies:
+    UserId:
+      content:
+        application/json:
+          schema:
+            $ref: './shared-oas.yaml#/components/schemas/UserIdObject'
     Databag:
       content:
         application/json:
