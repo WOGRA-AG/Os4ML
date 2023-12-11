@@ -25,7 +25,6 @@ import {
   HttpProgressEvent,
 } from '@angular/common/http';
 import { databagsWebsocketPath } from 'src/environments/environment';
-import { filterNotDefined } from 'src/app/lib/rxjs/filter-not-defined';
 import { putFileAsOctetStream } from 'src/app/lib/http/http';
 
 @Injectable({
@@ -46,8 +45,6 @@ export class DatabagService {
   ) {
     this.initializeDatabags();
   }
-
-  // Read methods
   get databags$(): Observable<Databag[]> {
     return this._databagsSubject$.asObservable();
   }
@@ -66,9 +63,8 @@ export class DatabagService {
     return this._databagsSubject$.getValue().find(databag => databag.id === id);
   }
   getDatabagById$(id: string): Observable<Databag> {
-    return this.databags$.pipe(
-      map(databags => databags.find(databag => databag.id === id)),
-      filterNotDefined()
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getDatabagById(id, token))
     );
   }
   // Create, Update, Delete methods
@@ -106,6 +102,11 @@ export class DatabagService {
   ): Observable<Databag> {
     return this.createDatabag(databag, (updatedDatabag, token) =>
       this._createUrlDatabag(updatedDatabag, token, cancelUpload)
+    );
+  }
+  getDatabagUlr(id: string): Observable<string> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getDatasetGetUrl(id, token))
     );
   }
   // Utility methods

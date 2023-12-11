@@ -28,11 +28,23 @@ export const ROUTES: Routes = [
   },
   {
     path: 'databags',
-    loadComponent: () =>
-      import('./components/pages/databags-page/databags-page.component').then(
-        mod => mod.DatabagsPageComponent
-      ),
     runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './components/pages/databags-page/databags-page.component'
+          ).then(mod => mod.DatabagsPageComponent),
+      },
+      {
+        path: 'detail/:id',
+        loadComponent: () =>
+          import(
+            './components/pages/databag-detail-page/databag-detail-page.component'
+          ).then(mod => mod.DatabagDetailPageComponent),
+      },
+    ],
   },
   {
     path: 'predictions',

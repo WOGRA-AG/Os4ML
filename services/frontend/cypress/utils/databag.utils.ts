@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
+import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;
@@ -12,9 +12,37 @@ export function visitDatabagPage() {
   );
 }
 
-export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
-  cy.findByTestId('add-databag').click();
+export function setupDatabag(databagItem: CreateDatabagForm): void {
+  cy.wait(TIMEOUT_SHORT);
+  cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_LONG })
+    .should('exist')
+    .then(() => {
+      cy.get('body').then($body => {
+        if ($body.find('[data-testid="databag-item"]').length > 0) {
+          cy.get('[data-testid="databag-item"]').then($items => {
+            const itemExists = $items
+              .toArray()
+              .some(item => item.innerText.includes(databagItem.name));
+            if (!itemExists) {
+              createDatabag(databagItem);
+            }
+          });
+        } else {
+          createDatabag(databagItem);
+        }
+      });
+    });
+}
 
+export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
+  cy.findAllByTestId('add-databag', { timeout: TIMEOUT_LONG })
+    .parent()
+    .should('not.be.disabled')
+    .findByTestId('add-databag')
+    .click();
+  cy.findByTestId('databag-create-dialog', {
+    timeout: TIMEOUT_LONG,
+  }).should('be.visible');
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
   cy.findByTestId('input-name').clear().type(name);
@@ -26,7 +54,7 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
 }
 
 export function checkDatabag(name: string) {
-  cy.findAllByTestId('databag-item')
+  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .should('exist');
 
@@ -38,38 +66,46 @@ export function checkDatabag(name: string) {
 
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
-
-export function changeDatabagName(name: string, newName: string) {
+export function changeDatabagName(name: string, newName: string): void {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();
-  cy.findByTestId('databag-settings-button').click();
+  cy.findByTestId('databag-detail-button').click();
+  cy.url().should('include', '/databags/detail');
+  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-  cy.get('#mat-input-0')
-    .focus()
-    .clear({ timeout: TIMEOUT_LONG })
-    .should('have.value', '');
-  cy.get('#mat-input-0').type(newName);
-  cy.get('#update-databag-button').click();
+  cy.findByTestId('databag-rename-button').click();
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  cy.findByTestId('popup-input-field').focus().clear();
+  cy.findByTestId('popup-input-field').type(newName);
+  cy.findByTestId('popup-input-submit').click();
+  cy.go('back');
+
   cy.findAllByTestId('databag-item')
     .filter(`:contains("${newName}")`)
     .should('exist');
 }
 
 export function deleteDatabag(name: string) {
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG }).filter(
-    `:contains("${name}")`
-  );
+  cy.visit('/#/databags');
 
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();
-  cy.findByTestId('databag-settings-button').click();
+  cy.findByTestId('databag-detail-button').click();
+  cy.url().should('include', '/databags/detail');
+  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
+    'be.visible'
+  );
   cy.findByTestId('databag-delete-button').click();
   cy.findByTestId('confirm-popup-button').click();
 
+  cy.visit('/#/databags');
   cy.findAllByText(name).should('have.length', 0);
-  cy.findByTestId('databags-page').should('not.contain', name);
 }
+
+export function cleanUpDatabag(name: string) {}

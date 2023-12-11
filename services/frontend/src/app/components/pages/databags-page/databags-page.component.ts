@@ -14,7 +14,6 @@ import { DatabagDataTableComponent } from '../../organisms/databag-data-table/da
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
-import { DatabagDetailDialogComponent } from '../databag-detail-dialog/databag-detail-dialog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
@@ -60,6 +59,7 @@ export class DatabagsPageComponent {
       },
     });
   }
+  
   openCreateSolutionStepperDialog(databagId: string): void {
     this.dialog.open(SolutionCreateDialogComponent, {
       data: { databagId },

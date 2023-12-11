@@ -17,15 +17,7 @@ import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-
 import { MatIconModule } from '@angular/material/icon';
 import { SolutionService } from '../../../services/solution.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  Observable,
-  of,
-  startWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
@@ -65,10 +57,9 @@ import { PredictionService } from '../../../services/prediction.service';
   ],
 })
 export class SolutionDetailPageComponent {
-  public solution$: Observable<Solution | null>;
+  public solution$: Observable<Solution>;
   public predictions$: Observable<Prediction[]>;
   public solutionId: string;
-  private reloadSubject = new Subject<void>();
   private destroyRef = inject(DestroyRef);
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -78,19 +69,13 @@ export class SolutionDetailPageComponent {
     private dialog: MatDialog
   ) {
     this.solutionId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
-    this.solution$ = this.reloadSubject.pipe(
-      startWith(null),
-      switchMap(() => this.solutionService.loadSolutionById(this.solutionId)),
-      catchError(() => {
-        this.router.navigate(['**']);
-        return of(null);
-      })
-    );
+    this.solution$ = this.solutionService.getSolutionById$(this.solutionId);
     this.predictions$ = this.predictionService.getFilteredPredictions(
       null,
       this.solutionId
     );
   }
+
   addSolution(): void {
     this.dialog.open(SolutionCreateDialogComponent, {
       ariaLabelledBy: 'dialog-title',
@@ -102,11 +87,11 @@ export class SolutionDetailPageComponent {
       ariaLabelledBy: 'dialog-title',
     });
   }
-  renameSolution(oldName: string): void {
+  renameSolution(solution: Solution): void {
     const renameSolutionDialogRef = this.dialog.open(PopupInputComponent, {
       ariaLabelledBy: 'dialog-title',
       data: {
-        inputValue: oldName,
+        inputValue: solution.name,
         titleKey: 'organisms.popup_input.rename_solution.title',
         ariaLabelKey: 'organisms.popup_input.rename_solution.aria_label',
         inputFormField: {
@@ -128,26 +113,14 @@ export class SolutionDetailPageComponent {
     renameSolutionDialogRef
       .afterClosed()
       .pipe(
-        tap(result => {
-          const solution = this.solutionService.getSolutionById(
-            this.solutionId
-          );
-          if (result && solution) {
-            solution.name = result;
-            this.updateSolutionName(solution);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
+        tap(newName => (solution.name = newName)),
+        switchMap(() =>
+          this.solutionService.updateSolutionById(this.solutionId, solution)
+        )
       )
       .subscribe();
   }
-  updateSolutionName(solution: Solution): void {
-    this.solutionService
-      .updateSolutionById(this.solutionId, solution)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.reloadSubject.next());
-  }
-
   deleteSolution(): void {
     const deleteSolution = this.solutionService.deleteSolutionById(
       this.solutionId
@@ -162,15 +135,12 @@ export class SolutionDetailPageComponent {
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(
-        tap(confirm => {
-          if (confirm) {
-            this.router.navigate(['/solutions']);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(confirm => {
+        if (confirm) {
+          this.router.navigate(['/solutions']);
+        }
+      });
   }
   downloadModel(downloadLink: HTMLAnchorElement): void {
     this.solutionService

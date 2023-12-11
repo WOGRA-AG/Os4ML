@@ -12,7 +12,6 @@
   <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
     <app-databag-data-table
       [databags]="(databags$ | async) ?? []"
-      (settingButton)="openDatabagSettingDialog($event)"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
     <app-ml-entity-status-placeholder

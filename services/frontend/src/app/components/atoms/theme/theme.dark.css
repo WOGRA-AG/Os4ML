@@ -5,13 +5,15 @@
   --md-sys-color-on-primary-container: var(
     --md-sys-color-on-primary-container-dark
   );
+  --md-sys-color-primary-hover: var(--md-sys-color-primary-hover-dark);
+
   --md-sys-color-secondary: var(--md-sys-color-secondary-dark);
   --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-dark);
   --md-sys-color-secondary-container: var(
     --md-sys-color-secondary-container-dark
   );
-  --md-sys-color-on-secondary-container: var(
-    --md-sys-color-on-secondary-container-dark
+  --md-sys-color-secondary-container: var(
+    --md-sys-color-secondary-container-dark
   );
   --md-sys-color-tertiary: var(--md-sys-color-tertiary-dark);
   --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-dark);
@@ -27,14 +29,27 @@
   --md-sys-color-on-error-container: var(
     --md-sys-color-on-error-container-dark
   );
-  --md-sys-color-background: var(--md-sys-color-background-dark);
-  --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
+
   --md-sys-color-surface: var(--md-sys-color-surface-dark);
   --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-  --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark);
   --md-sys-color-on-surface-variant: var(
     --md-sys-color-on-surface-variant-dark
   );
+
+  --md-sys-color-surface-container-lowest: var(
+    --md-sys-color-surface-container-lowest-dark
+  );
+  --md-sys-color-surface-container-low: var(
+    --md-sys-color-surface-container-low-dark
+  );
+  --md-sys-color-surface-container: var(--md-sys-color-surface-container-dark);
+  --md-sys-color-surface-container-high: var(
+    --md-sys-color-surface-container-high-dark
+  );
+  --md-sys-color-surface-container-highest: var(
+    --md-sys-color-surface-container-highest-dark
+  );
+
   --md-sys-color-outline: var(--md-sys-color-outline-dark);
   --md-sys-color-inverse-on-surface: var(
     --md-sys-color-inverse-on-surface-dark
@@ -45,4 +60,35 @@
   --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-dark);
   --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-dark);
   --md-sys-color-scrim: var(--md-sys-color-scrim-dark);
+
+  /* status colors */
+  --md-custom-color-processing-status-running: var(
+    --md-custom-color-running-dark
+  );
+  --md-custom-color-on-processing-status-running: var(
+    --md-custom-color-on-running-dark
+  );
+
+  --md-custom-color-processing-status-done: var(
+    --md-custom-color-processing-status-done-dark
+  );
+  --md-custom-color-on-processing-status-done: var(
+    --md-custom-color-on-processing-status-done-dark
+  );
+  --md-custom-color-processing-status-error: var(
+    --md-custom-color-processing-status-error-dark
+  );
+  --md-custom-color-on-processing-status-error: var(
+    --md-custom-color-on-processing-status-error-dark
+  );
+  --md-custom-color-processing-status-warning: var(
+    --md-custom-color-processing-status-warning-dark
+  );
+  --md-custom-color-on-processing-status-warning: var(
+    --md-custom-color-on-processing-status-warning-dark
+  );
+
+  /* shadow */
+  --box-shadow: 0px 1.28887px 3.86661px 1.28887px rgba(0, 0, 0, 0.15),
+    0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
 }
