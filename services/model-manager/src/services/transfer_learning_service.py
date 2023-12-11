@@ -13,6 +13,9 @@ from src.build.openapi_server.models.new_transfer_learning_model_dto import (
 from src.build.openapi_server.models.transfer_learning_model import (
     TransferLearningModel,
 )
+from src.exceptions.resource_not_found import (
+    TransferLearningModelNotFoundException,
+)
 from src.lib.json_io import decode_json_response, prepare_model_for_api
 from src.services import (
     TRANSFER_LEARNING_FILE_NAME,
@@ -31,9 +34,10 @@ class TransferLearningType(enum.Enum):
 
 
 class TransferlearningOrigin(enum.Enum):
-    HUGGING_FACE = "hugging_face"
+    HUGGING_FACE = "hugging face"
     SOLUTION = "solution"
-    TORCH_VISION = "torch_vision"
+    SHARED_SOLUTION = "shared solution"
+    TORCH_VISION = "torch vision"
 
 
 def get_inital_transfer_learing_models() -> list[TransferLearningModel]:
@@ -109,7 +113,6 @@ class TransferLearningService:
         self.objectstore.put_object_by_name(
             TRANSFER_LEARNING_FILE_NAME, body=data, usertoken=usertoken
         )
-        self._notify_transfer_learning_update(usertoken)
 
     def _load_transfer_learning_models(
         self, usertoken: str
@@ -137,6 +140,30 @@ class TransferLearningService:
         self, usertoken: str
     ) -> list[TransferLearningModel]:
         return self._load_transfer_learning_models(usertoken)
+
+    def get_transfer_learning_model_by_id(
+        self, id: str, usertoken: str
+    ) -> TransferLearningModel:
+        models_with_id = [
+            model
+            for model in self.get_transfer_learning_models(usertoken)
+            if model.id == id
+        ]
+        if len(models_with_id) == 0:
+            raise TransferLearningModelNotFoundException(id)
+        return models_with_id[0]
+
+    def update_transfer_learning_model_by_id(
+        self, id: str, updated_model: TransferLearningModel, usertoken: str
+    ) -> TransferLearningModel:
+        models = self.get_transfer_learning_models(usertoken)
+        updated_models = [
+            tl_model if not tl_model.id == id else updated_model
+            for tl_model in models
+        ]
+        self._save_transfer_learning_models(updated_models, usertoken)
+        self._notify_transfer_learning_update(usertoken)
+        return updated_model
 
     async def stream_transfer_learning_models(
         self, usertoken: str, client_id: uuid.UUID
@@ -179,6 +206,7 @@ class TransferLearningService:
         tl_models = self._load_transfer_learning_models(usertoken=usertoken)
         tl_models.append(tl_model)
         self._save_transfer_learning_models(tl_models, usertoken=usertoken)
+        self._notify_transfer_learning_update(usertoken)
 
         return tl_model
 
@@ -200,5 +228,55 @@ class TransferLearningService:
         self, id: str, usertoken: str
     ) -> None:
         tl_models = self._load_transfer_learning_models(usertoken=usertoken)
+        models_with_id = [model for model in tl_models if model.id == id]
+        if len(models_with_id) > 0:
+            tl_model = models_with_id[0]
+            if tl_model.shared_with is not None:
+                for user_id in tl_model.shared_with:
+                    self.cancel_transfer_learning_model_sharing(
+                        id, user_id, usertoken
+                    )
         tl_models = [tl_model for tl_model in tl_models if tl_model.id != id]
         self._save_transfer_learning_models(tl_models, usertoken=usertoken)
+        self._notify_transfer_learning_update(usertoken)
+
+    def share_transfer_learning_model(
+        self, tlm_id: str, user_id: str, usertoken: str
+    ) -> TransferLearningModel:
+        tl_model = self.get_transfer_learning_model_by_id(tlm_id, usertoken)
+        if not tl_model.origin == TransferlearningOrigin.SOLUTION:
+            raise ValueError(
+                "Only transfer learning models from own solutions can be shared"
+            )
+        if tl_model.shared_with is None:
+            tl_model.shared_with = []
+        tl_model.shared_with.append(user_id)
+        self.update_transfer_learning_model_by_id(tlm_id, tl_model, usertoken)
+        self._create_shared_tlm_for_other_user(tl_model, user_id, usertoken)
+        self._notify_transfer_learning_update(usertoken)
+        return tl_model
+
+    def _create_shared_tlm_for_other_user(
+        self, tlm: TransferLearningModel, user_id: str, usertoken: str
+    ) -> None:
+        pass
+
+    def cancel_transfer_learning_model_sharing(
+        self, tlm_id: str, user_id, usertoken: str
+    ) -> TransferLearningModel:
+        tl_model = self.get_transfer_learning_model_by_id(tlm_id, usertoken)
+        if (
+            not tl_model.origin == TransferlearningOrigin.SOLUTION
+            or tl_model.shared_with is None
+        ):
+            return tl_model
+        self._delete_shared_tlm_for_other_user(tl_model, user_id, usertoken)
+        tl_model.shared_with.remove(user_id)
+        self.update_transfer_learning_model_by_id(tlm_id, tl_model, usertoken)
+        self._notify_transfer_learning_update(usertoken)
+        return tl_model
+
+    def _delete_shared_tlm_for_other_user(
+        self, tlm: TransferLearningModel, user_id: str, usertoken: str
+    ) -> None:
+        pass
