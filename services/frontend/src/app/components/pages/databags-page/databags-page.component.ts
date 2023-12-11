@@ -48,18 +48,6 @@ export class DatabagsPageComponent {
     this.isLoading$ = this.databagService.isLoading$;
   }
 
-  openDatabagSettingDialog(databag: Databag): void {
-    this.dialog.open(DatabagDetailDialogComponent, {
-      ariaLabelledBy: 'dialog-title',
-      data: { databag },
-      panelClass: 'setting-dialog',
-      height: '100%',
-      position: {
-        right: '12px',
-      },
-    });
-  }
-  
   openCreateSolutionStepperDialog(databagId: string): void {
     this.dialog.open(SolutionCreateDialogComponent, {
       data: { databagId },
