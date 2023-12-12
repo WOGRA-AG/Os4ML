@@ -19,6 +19,7 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-solutions-page',
@@ -38,11 +39,13 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
     NewButtonComponent,
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
+    MatProgressBarModule,
   ],
 })
 export class SolutionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
+  public isLoading$: Observable<boolean>;
   private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
@@ -57,6 +60,7 @@ export class SolutionsPageComponent {
         this.solutionService.getFilteredSolutions(databagId)
       )
     );
+    this.isLoading$ = this.solutionService.isLoading$;
   }
   public get databagId$(): Observable<string | null> {
     return this.activatedRoute.queryParamMap.pipe(

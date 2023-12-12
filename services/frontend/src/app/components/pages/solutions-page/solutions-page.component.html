@@ -17,7 +17,7 @@
       </app-solution-create-button>
     </div>
   </div>
-  <ng-container main>
+  <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
     <app-solution-data-table
       [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
@@ -31,4 +31,7 @@
       (addSolution)="addSolution()">
     </app-ml-entity-status-placeholder>
   </ng-container>
+  <ng-template #progressBar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-template>
 </app-os4ml-default-template>

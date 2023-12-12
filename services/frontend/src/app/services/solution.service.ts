@@ -9,6 +9,7 @@ import {
   raceWith,
   shareReplay,
   switchMap,
+  tap,
 } from 'rxjs';
 import {
   Databag,
@@ -29,6 +30,8 @@ export enum SolutionStatus {
 })
 export class SolutionService {
   private readonly _solutionsSubject$ = new BehaviorSubject<Solution[]>([]);
+  private readonly _isLoading$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
   constructor(
     private userService: UserService,
     private modelManager: ModelmanagerService,
@@ -43,7 +46,8 @@ export class SolutionService {
         first(),
         concatWith(webSocketConnection),
         raceWith(webSocketConnection),
-        shareReplay(1)
+        shareReplay(1),
+        tap(() => this._isLoading$.next(false))
       )
       .subscribe(solutions => {
         this._solutionsSubject$.next(solutions);
@@ -51,6 +55,10 @@ export class SolutionService {
   }
   get solutions$(): Observable<Solution[]> {
     return this._solutionsSubject$.asObservable();
+  }
+
+  get isLoading$(): Observable<boolean> {
+    return this._isLoading$.asObservable();
   }
 
   getSolutionsByCreationTime(): Observable<Solution[]> {
