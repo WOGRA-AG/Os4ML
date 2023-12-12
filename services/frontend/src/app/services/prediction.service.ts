@@ -31,6 +31,8 @@ export class PredictionService {
   private readonly _uploadPredictionFileProgressSubject$ =
     new BehaviorSubject<number>(0);
   private readonly _predictionsSubject$ = new BehaviorSubject<Prediction[]>([]);
+  private readonly _isLoading$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
 
   constructor(
     private userService: UserService,
@@ -44,6 +46,10 @@ export class PredictionService {
   // Read methods
   get predictions$(): Observable<Prediction[]> {
     return this._predictionsSubject$.asObservable();
+  }
+
+  get isLoading$(): Observable<boolean> {
+    return this._isLoading$.asObservable();
   }
 
   getPredictionUploadProgress(): BehaviorSubject<number> {
@@ -121,7 +127,8 @@ export class PredictionService {
         switchMap(token => this.modelManager.getPredictions(token)),
         first(),
         concatWith(webSocketConnection$),
-        raceWith(webSocketConnection$)
+        raceWith(webSocketConnection$),
+        tap(() => this._isLoading$.next(false))
       )
       .subscribe(predictions => this._predictionsSubject$.next(predictions));
   }

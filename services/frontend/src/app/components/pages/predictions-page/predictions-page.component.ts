@@ -22,6 +22,7 @@ import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confi
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
@@ -40,12 +41,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     PredictionCreateButtonComponent,
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
+    MatProgressBarModule,
   ],
 })
 export class PredictionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
   public predictions$: Observable<Prediction[]>;
+  public isLoading$: Observable<boolean>;
   private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
@@ -62,6 +65,7 @@ export class PredictionsPageComponent {
         this.predictionService.getFilteredPredictions(databagId, solutionId)
       )
     );
+    this.isLoading$ = this.predictionService.isLoading$;
   }
   public get databagId$(): Observable<string | null> {
     return this.activatedRoute.queryParamMap.pipe(

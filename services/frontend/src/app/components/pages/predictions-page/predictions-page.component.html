@@ -28,7 +28,7 @@
       </app-prediction-create-button>
     </div>
   </div>
-  <ng-container main>
+  <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
     <app-predictions-data-table
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
@@ -50,4 +50,7 @@
       (addPrediction)="addPrediction()">
     </app-ml-entity-status-placeholder>
   </ng-container>
+  <ng-template #progressBar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-template>
 </app-os4ml-default-template>
