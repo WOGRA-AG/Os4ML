@@ -9,18 +9,18 @@
       data-testid="add-databag">
     </app-databag-create-button>
   </div>
-  <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
+  <ng-container main>
     <app-databag-data-table
+      [isLoading]="isLoading$ | async"
       [databags]="(databags$ | async) ?? []"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>
     <app-ml-entity-status-placeholder
-      *ngIf="!(databags$ | async | hasElements)"
+      *ngIf="
+        (isLoading$ | async) === false && !(databags$ | async | hasElements)
+      "
       [hasDatabags]="databags$ | async | hasElements"
       (addDatabag)="addDatabag()">
     </app-ml-entity-status-placeholder>
   </ng-container>
-  <ng-template #progressBar>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </ng-template>
 </app-os4ml-default-template>

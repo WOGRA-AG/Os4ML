@@ -13,6 +13,8 @@ import { RouterLink } from '@angular/router';
 import { ContextMenuItemComponent } from '../../molecules/context-menu-item/context-menu-item.component';
 import { DatabagContextMenuComponent } from '../databag-context-menu/databag-context-menu.component';
 import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
+import { NgIf } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-databag-data-table',
@@ -33,10 +35,13 @@ import { SolutionContextMenuComponent } from '../solution-context-menu/solution-
     ContextMenuItemComponent,
     DatabagContextMenuComponent,
     SolutionContextMenuComponent,
+    NgIf,
+    MatProgressBarModule,
   ],
 })
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];
+  @Input() public isLoading: boolean | null = false;
   @Output() public createSolutionButton = new EventEmitter<string>();
 
   public displayedColumns: string[] = [
