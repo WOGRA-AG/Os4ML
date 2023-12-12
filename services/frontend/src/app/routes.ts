@@ -56,11 +56,23 @@ export const ROUTES: Routes = [
   },
   {
     path: 'transfer-learning',
-    loadComponent: () =>
-      import(
-        './components/pages/transfer-learning-page/transfer-learning-page.component'
-      ).then(mod => mod.TransferLearningPageComponent),
     runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './components/pages/transfer-learning-page/transfer-learning-page.component'
+          ).then(mod => mod.TransferLearningPageComponent),
+      },
+      {
+        path: 'detail/:id',
+        loadComponent: () =>
+          import(
+            './components/pages/transfer-learning-detail-page/transfer-learning-detail-page.component'
+          ).then(mod => mod.TransferLearningDetailPageComponent),
+      },
+    ],
   },
   {
     path: 'typo',

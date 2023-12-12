@@ -1,0 +1,51 @@
+<div class="headline">
+  <h2 class="headline-medium primary-text">
+    {{
+      'organisms.transfer-learning-model-detail-authorized-users.title'
+        | translate
+    }}
+  </h2>
+  <app-new-button
+    (click)="addAuthorizedUser.emit()"
+    variant="text"
+    icon="add"
+    [ariaLabel]="
+      'organisms.transfer-learning-model-detail-authorized-users.invite_user.aria_label'
+        | translate
+    ">
+    {{
+      'organisms.transfer-learning-model-detail-authorized-users.invite_user.button'
+        | translate
+    }}
+  </app-new-button>
+</div>
+
+<div class="content">
+  <table
+    matTableResponsive
+    mat-table
+    [dataSource]="sharedWith"
+    data-testid="prediction-table">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="surface primary-text">Id</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>action</th>
+      <td mat-cell *matCellDef="let element">
+        <app-icon-button
+          (click)="removeAuthorizedUser.emit(element)"
+          icon="remove"
+          ariaLabel="remove">
+        </app-icon-button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      data-testid="input-item"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

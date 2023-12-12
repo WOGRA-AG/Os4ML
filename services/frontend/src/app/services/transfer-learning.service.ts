@@ -4,6 +4,7 @@ import {
   concatWith,
   first,
   Observable,
+  of,
   raceWith,
   switchMap,
 } from 'rxjs';
@@ -53,6 +54,36 @@ export class TransferLearningService {
         this.modelManager.createNewTransferLearningModelFromSolution(
           token,
           newTransferLearningModelDto
+        )
+      )
+    );
+  }
+  getTransferLearningModelById$(id: string): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token => this.modelManager.getTransferLearningModels(token)),
+      switchMap(models => models.filter(model => model.id === id))
+    );
+  }
+  deleteTransferLearningModelById(id: string | undefined): Observable<void> {
+    return id
+      ? this.userService.currentToken$.pipe(
+          switchMap(token =>
+            this.modelManager.deleteTransferLearningModelById(id, token)
+          )
+        )
+      : of(undefined);
+  }
+
+  updateTransferLearningModelById(
+    id: string,
+    transferLearningModel: TransferLearningModel
+  ): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.updateTransferLearningModelById(
+          id,
+          token,
+          transferLearningModel
         )
       )
     );

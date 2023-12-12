@@ -1,0 +1,28 @@
+<h2 class="headline-medium primary-text">
+  {{
+    'organisms.transfer-learning-models-detail-delete-model.title' | translate
+  }}
+</h2>
+<div class="content">
+  <div class="body-medium">
+    {{
+      'organisms.transfer-learning-models-detail-delete-model.description'
+        | translate
+    }}
+  </div>
+  <app-new-button
+    data-testid="transfer-learning-model-delete-button"
+    (click)="deleteTransferLearningModel.emit()"
+    [variant]="'warn'"
+    [size]="'medium'"
+    [icon]="'delete'"
+    [ariaLabel]="
+      'organisms.transfer-learning-models-detail-delete-model.button'
+        | translate
+    ">
+    {{
+      'organisms.transfer-learning-models-detail-delete-model.button'
+        | translate
+    }}
+  </app-new-button>
+</div>

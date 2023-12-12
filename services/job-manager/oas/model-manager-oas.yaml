@@ -430,6 +430,19 @@ paths:
           $ref: '#/components/responses/TransferLearningModel'
 
   "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}":
+    put:
+      summary: "update transfer learning model"
+      operationId: updateTransferLearningModelById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        $ref: '#/components/requestBodies/TransferLearningModel'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
     delete:
       summary: "delete transfer learning model by id"
       operationId: deleteTransferLearningModelById

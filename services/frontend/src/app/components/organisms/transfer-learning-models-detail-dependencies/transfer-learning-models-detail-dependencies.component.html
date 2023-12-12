@@ -1,0 +1,27 @@
+<h2 class="headline-medium primary-text">
+  {{
+    'organisms.transfer-learning-models-detail-dependencies.title' | translate
+  }}
+</h2>
+<div class="content">
+  <div class="body-medium">
+    {{
+      'organisms.transfer-learning-models-detail-dependencies.description'
+        | translate
+    }}
+  </div>
+  <div class="list-section">
+    <div class="list">
+      <ul *ngIf="solutions && solutions.length >= 0">
+        <li *ngFor="let solution of solutions">
+          <a
+            class="label-medium"
+            [routerLink]="['/solutions']"
+            [queryParams]="{ selectedSolution: solution.id }">
+            {{ solution.name }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

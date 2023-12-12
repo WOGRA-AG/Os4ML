@@ -39,6 +39,10 @@
       "delete_prediction": {
         "title": "Delete prediction",
         "message": "Are you sure you want to delete this prediction? All data will be lost!"
+      },
+      "delete_transfer_learning_model": {
+        "title": "Delete transfer learning model",
+        "message": "Are you sure you want to delete this transfer learning model? All data will be lost!"
       }
     },
     "popup_input": {
@@ -68,6 +72,34 @@
         "submit": {
           "aria_label": "Change solution name",
           "button_text": "Change solution name"
+        }
+      },
+      "rename_transfer_learning_model": {
+        "title": "Update transfer learning model name",
+        "aria_label": "Update transfer learning model name",
+        "input_form_field": {
+          "label": "New name",
+          "aria-label": "New name",
+          "error_required": "Field cannot be empty",
+          "hint": "Choose a meaningful name when replacing an existing transfer learning model."
+        },
+        "submit": {
+          "aria_label": "Submit",
+          "button_text": "Submit"
+        }
+      },
+      "add_authorized_user_transfer_learning_model": {
+        "title": "Add user id",
+        "aria_label": "Add user id",
+        "input_form_field": {
+          "label": "Add user id",
+          "aria-label": "Add user id",
+          "error_required": "Field cannot be empty",
+          "hint": "You can find the user id in the profile page."
+        },
+        "submit": {
+          "aria_label": "Submit",
+          "button_text": "Submit"
         }
       }
     },
@@ -368,6 +400,26 @@
         "button": "Submit",
         "aria_label": "Submit transfer learning model"
       }
+    },
+    "transfer-learning-model-detail-settings": {
+      "type": "Type",
+      "origin": "Origin"
+    },
+    "transfer-learning-model-detail-authorized-users": {
+      "title": "Authorized users",
+      "invite_user": {
+        "button": "Invite users",
+        "aria_label": "Invite users"
+      }
+    },
+    "transfer-learning-models-detail-dependencies": {
+      "title": "Model dependencies",
+      "description": "description"
+    },
+    "transfer-learning-models-detail-delete-model": {
+      "title": "Model dependencies",
+      "description": "If you remove the existing transfer-learning-model, all related solutions, predictions and transfer learning models will also be deleted. This action cannot be undone.",
+      "button": "Delete model"
     }
   },
   "pages": {

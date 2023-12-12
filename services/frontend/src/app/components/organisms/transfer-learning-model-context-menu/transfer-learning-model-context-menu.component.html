@@ -1,0 +1,24 @@
+<button
+  [attr.aria-label]="
+    'organisms.solution_data_table.actions.context_menu' | translate
+  "
+  mat-icon-button
+  role="button"
+  [matMenuTriggerFor]="menu"
+  data-testid="transfer-learning-model-menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu" role="menu">
+  <app-context-menu
+    [ariaLabel]="
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    "
+    data-testid="solution-detail-button"
+    menuDescription="{{
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    }}"
+    menuIcon="settings_applications"
+    [routerLink]="showTransferLearningModelDetailLink">
+  </app-context-menu>
+</mat-menu>

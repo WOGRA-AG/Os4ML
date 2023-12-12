@@ -1,0 +1,33 @@
+<app-os4ml-default-template
+  data-testid="transfer-learning-detail-page"
+  [mainSmall]="true"
+  *ngIf="transferLearningModel$ | async as transferLearningModel">
+  <h1 header class="headline-large primary-text">
+    Transfer learning models: {{ transferLearningModel.name }}
+    <app-new-button
+      data-testid="databag-rename-button"
+      (click)="renameTransferLearningModel(transferLearningModel)"
+      variant="text"
+      size="medium"
+      icon="edit"
+      [ariaLabel]="'organisms.databag_create_button.label' | translate">
+    </app-new-button>
+  </h1>
+  <div main class="main-grid">
+    <app-transfer-learning-models-detail-settings
+      [type]="transferLearningModel.type"
+      [origin]="transferLearningModel.origin">
+    </app-transfer-learning-models-detail-settings>
+    <app-transfer-learning-models-detail-authorized-users
+      [sharedWith]="transferLearningModel.sharedWith ?? []"
+      (removeAuthorizedUser)="
+        removeAuthorizedUser(transferLearningModel, $event)
+      "
+      (addAuthorizedUser)="addAuthorizedUser(transferLearningModel)">
+    </app-transfer-learning-models-detail-authorized-users>
+    <app-transfer-learning-models-detail-dependencies></app-transfer-learning-models-detail-dependencies>
+    <app-transfer-learning-models-detail-delete-model
+      (deleteTransferLearningModel)="deleteTransferLearningModel()">
+    </app-transfer-learning-models-detail-delete-model>
+  </div>
+</app-os4ml-default-template>
