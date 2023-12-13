@@ -20,6 +20,15 @@
         'status',
         'actions'
       ]"
+      [headerNames]="[
+        'organisms.databag_data_table.column_header.databag_name',
+        'organisms.databag_data_table.column_header.features',
+        'organisms.databag_data_table.column_header.samples',
+        'organisms.solution_data_table.column_header.runtime',
+        'organisms.databag_data_table.column_header.creation',
+        'organisms.databag_data_table.column_header.status',
+        'organisms.databag_data_table.column_header.actions'
+      ]"
       [isDatabagTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
     <app-databag-data-table

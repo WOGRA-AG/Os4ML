@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatTableModule } from '@angular/material/table';
 import { NgForOf, NgIf } from '@angular/common';
@@ -29,53 +29,17 @@ import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
     ShortStatusPipe,
   ],
 })
-export class DatatableSkeletonComponent implements OnInit {
+export class DatatableSkeletonComponent {
   @Input() public isDatabagTable = false;
   @Input() public isSolutionsTable = false;
   @Input() public isPredictionsTable = false;
   @Input() public displayedColumns: string[] = [];
+  @Input() public headerNames: string[] = [];
   public datasource = Array(5)
     .fill({})
     .map(() => ({ value: '' }));
-  public headerNames: string[] = [];
   public theme = {
     background: 'var(--md-sys-color-surface-container)',
     height: '26px',
   };
-
-  ngOnInit(): void {
-    if (this.isDatabagTable) {
-      this.headerNames = [
-        'organisms.databag_data_table.column_header.databag_name',
-        'organisms.databag_data_table.column_header.features',
-        'organisms.databag_data_table.column_header.samples',
-        'organisms.solution_data_table.column_header.runtime',
-        'organisms.databag_data_table.column_header.creation',
-        'organisms.databag_data_table.column_header.status',
-        'organisms.databag_data_table.column_header.actions',
-      ];
-    }
-    if (this.isSolutionsTable) {
-      this.headerNames = [
-        'organisms.solution_data_table.column_header.solution_name',
-        'organisms.solution_data_table.column_header.databag_name',
-        'organisms.solution_data_table.column_header.quality',
-        'organisms.solution_data_table.column_header.runtime',
-        'organisms.solution_data_table.column_header.creation',
-        'organisms.solution_data_table.column_header.status',
-        'organisms.solution_data_table.column_header.actions',
-      ];
-    }
-    if (this.isPredictionsTable) {
-      this.headerNames = [
-        'organisms.prediction_data_table.column_header.prediction_name',
-        'organisms.prediction_data_table.column_header.solution_name',
-        'organisms.prediction_data_table.column_header.databag_name',
-        'organisms.prediction_data_table.column_header.runtime',
-        'organisms.prediction_data_table.column_header.creation',
-        'organisms.prediction_data_table.column_header.status',
-        'organisms.prediction_data_table.column_header.actions',
-      ];
-    }
-  }
 }
