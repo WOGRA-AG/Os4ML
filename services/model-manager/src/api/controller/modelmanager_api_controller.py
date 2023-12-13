@@ -241,6 +241,25 @@ class ModelmanagerApiController:
             new_transfer_learning_model_dto, usertoken
         )
 
+    def get_transfer_learning_model_by_id(
+        self, transfer_learning_model_id: str, usertoken: str = ""
+    ) -> TransferLearningModel:
+        return (
+            self.transfer_learning_service.get_transfer_learning_model_by_id(
+                transfer_learning_model_id, usertoken
+            )
+        )
+
+    def update_transfer_learning_model_by_id(
+        self,
+        transfer_learning_model_id: str,
+        transfer_learning_model: TransferLearningModel,
+        usertoken: str = "",
+    ) -> TransferLearningModel:
+        return self.transfer_learning_service.update_transfer_learning_model_by_id(
+            transfer_learning_model_id, transfer_learning_model, usertoken
+        )
+
     def delete_transfer_learning_model_by_id(
         self, transfer_learning_model_id: str, usertoken: str = ""
     ) -> None:
