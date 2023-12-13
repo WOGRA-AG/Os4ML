@@ -1,109 +1,83 @@
-<!--Databag-Skeleton-Table-->
-<table *ngIf="isDatabagTable" mat-table [dataSource]="datasource">
-  <ng-container class="skeleton-loader" matColumnDef="databagName">
+<table mat-table [dataSource]="datasource">
+  <ng-container
+    class="skeleton-loader"
+    matColumnDef="{{ getDisplayedColumns()[0] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-      {{
-        'organisms.databag_data_table.column_header.databag_name' | translate
-      }}
+      {{ headerNames[0] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="features">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[1] }}">
     <th mat-header-cell *matHeaderCellDef>
-      {{ 'organisms.databag_data_table.column_header.features' | translate }}
+      {{ headerNames[1] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="samples">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[2] }}">
     <th mat-header-cell *matHeaderCellDef>
-      {{ 'organisms.databag_data_table.column_header.samples' | translate }}
+      {{ headerNames[2] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="creationTime">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[3] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-      {{ 'organisms.solution_data_table.column_header.runtime' | translate }}
+      {{ headerNames[3] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="creation">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[4] }}">
     <th mat-header-cell *matHeaderCellDef>
-      {{ 'organisms.databag_data_table.column_header.creation' | translate }}
+      {{ headerNames[4] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="status">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[5] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
-      {{ 'organisms.databag_data_table.column_header.status' | translate }}
+      {{ headerNames[5] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="actions">
+  <ng-container matColumnDef="{{ getDisplayedColumns()[6] }}">
     <th mat-header-cell *matHeaderCellDef>
-      {{ 'organisms.databag_data_table.column_header.actions' | translate }}
+      {{ headerNames[6] | translate }}
     </th>
     <td mat-cell *matCellDef="let element">
       <ngx-skeleton-loader
         animation="pulse"
-        [theme]="{
-          extendsFromRoot: false,
-          background: 'var(--md-sys-color-surface-container)',
-          height: '26px'
-        }"
+        [theme]="theme"
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="this.getDisplayedColumns()"></tr>
-  <tr
-    mat-row
-    *matRowDef="let row; columns: this.getDisplayedColumns()"
-    data-testid="databag-item"></tr>
+  <tr mat-row *matRowDef="let row; columns: this.getDisplayedColumns()"></tr>
 </table>

@@ -28,8 +28,12 @@
       </app-prediction-create-button>
     </div>
   </div>
-  <ng-container main *ngIf="(isLoading$ | async) === false; else progressBar">
+  <ng-container main>
+    <app-datatable-skeleton
+      [isPredictionsTable]="true"
+      *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
     <app-predictions-data-table
+      *ngIf="(isLoading$ | async) === false"
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
       [predictions]="(predictions$ | async) ?? []"
@@ -41,7 +45,9 @@
     <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
     </a>
     <app-ml-entity-status-placeholder
-      *ngIf="!(predictions$ | async | hasElements)"
+      *ngIf="
+        (isLoading$ | async) === false && !(predictions$ | async | hasElements)
+      "
       [hasDatabags]="databags$ | async | hasElements"
       [hasSolutions]="solutions$ | async | hasElements"
       [hasPredictions]="predictions$ | async | hasElements"
@@ -50,7 +56,4 @@
       (addPrediction)="addPrediction()">
     </app-ml-entity-status-placeholder>
   </ng-container>
-  <ng-template #progressBar>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </ng-template>
 </app-os4ml-default-template>

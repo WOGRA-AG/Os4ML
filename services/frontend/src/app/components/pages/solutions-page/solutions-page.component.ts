@@ -20,6 +20,8 @@ import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-st
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
+import { DatabagDataTableComponent } from '../../organisms/databag-data-table/databag-data-table.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -40,6 +42,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
     MatProgressBarModule,
+    DatatableSkeletonComponent,
+    DatabagDataTableComponent,
   ],
 })
 export class SolutionsPageComponent {

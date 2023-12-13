@@ -2,3 +2,7 @@
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
 }
+$customSkeletonTheme: (
+  background: var(--md-sys-color-surface-container),
+  height: 26px,
+);

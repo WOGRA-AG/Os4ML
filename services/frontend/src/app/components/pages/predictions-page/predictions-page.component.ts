@@ -23,6 +23,7 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
@@ -42,6 +43,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
     MatProgressBarModule,
+    DatatableSkeletonComponent,
   ],
 })
 export class PredictionsPageComponent {
