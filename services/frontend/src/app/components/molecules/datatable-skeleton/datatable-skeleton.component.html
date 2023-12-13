@@ -1,7 +1,5 @@
 <table mat-table [dataSource]="datasource">
-  <ng-container
-    class="skeleton-loader"
-    matColumnDef="{{ getDisplayedColumns()[0] }}">
+  <ng-container matColumnDef="{{ displayedColumns[0] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{ headerNames[0] | translate }}
     </th>
@@ -12,7 +10,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[1] }}">
+  <ng-container matColumnDef="{{ displayedColumns[1] }}">
     <th mat-header-cell *matHeaderCellDef>
       {{ headerNames[1] | translate }}
     </th>
@@ -23,7 +21,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[2] }}">
+  <ng-container matColumnDef="{{ displayedColumns[2] }}">
     <th mat-header-cell *matHeaderCellDef>
       {{ headerNames[2] | translate }}
     </th>
@@ -34,7 +32,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[3] }}">
+  <ng-container matColumnDef="{{ displayedColumns[3] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{ headerNames[3] | translate }}
     </th>
@@ -45,7 +43,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[4] }}">
+  <ng-container matColumnDef="{{ displayedColumns[4] }}">
     <th mat-header-cell *matHeaderCellDef>
       {{ headerNames[4] | translate }}
     </th>
@@ -56,7 +54,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[5] }}">
+  <ng-container matColumnDef="{{ displayedColumns[5] }}">
     <th mat-header-cell *matHeaderCellDef class="surface primary-text">
       {{ headerNames[5] | translate }}
     </th>
@@ -67,7 +65,7 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <ng-container matColumnDef="{{ getDisplayedColumns()[6] }}">
+  <ng-container matColumnDef="{{ displayedColumns[6] }}">
     <th mat-header-cell *matHeaderCellDef>
       {{ headerNames[6] | translate }}
     </th>
@@ -78,6 +76,6 @@
         count="1"></ngx-skeleton-loader>
     </td>
   </ng-container>
-  <tr mat-header-row *matHeaderRowDef="this.getDisplayedColumns()"></tr>
-  <tr mat-row *matRowDef="let row; columns: this.getDisplayedColumns()"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>

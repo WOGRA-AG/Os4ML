@@ -30,6 +30,15 @@
   </div>
   <ng-container main>
     <app-datatable-skeleton
+      [displayedColumns]="[
+        'predictionName',
+        'solutionName',
+        'databagName',
+        'runtime',
+        'creation',
+        'status',
+        'actions'
+      ]"
       [isPredictionsTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
     <app-predictions-data-table

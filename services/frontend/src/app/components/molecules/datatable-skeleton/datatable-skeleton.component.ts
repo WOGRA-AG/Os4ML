@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatTableModule } from '@angular/material/table';
 import { NgForOf, NgIf } from '@angular/common';
@@ -29,10 +29,11 @@ import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
     ShortStatusPipe,
   ],
 })
-export class DatatableSkeletonComponent {
+export class DatatableSkeletonComponent implements OnInit {
   @Input() public isDatabagTable = false;
   @Input() public isSolutionsTable = false;
   @Input() public isPredictionsTable = false;
+  @Input() public displayedColumns: string[] = [];
   public datasource = Array(5)
     .fill({})
     .map(() => ({ value: '' }));
@@ -41,7 +42,8 @@ export class DatatableSkeletonComponent {
     background: 'var(--md-sys-color-surface-container)',
     height: '26px',
   };
-  getDisplayedColumns(): string[] {
+
+  ngOnInit(): void {
     if (this.isDatabagTable) {
       this.headerNames = [
         'organisms.databag_data_table.column_header.databag_name',
@@ -51,15 +53,6 @@ export class DatatableSkeletonComponent {
         'organisms.databag_data_table.column_header.creation',
         'organisms.databag_data_table.column_header.status',
         'organisms.databag_data_table.column_header.actions',
-      ];
-      return [
-        'databagName',
-        'features',
-        'samples',
-        'creationTime',
-        'creation',
-        'status',
-        'actions',
       ];
     }
     if (this.isSolutionsTable) {
@@ -72,15 +65,6 @@ export class DatatableSkeletonComponent {
         'organisms.solution_data_table.column_header.status',
         'organisms.solution_data_table.column_header.actions',
       ];
-      return [
-        'solutionName',
-        'databagName',
-        'metrics',
-        'creationTime',
-        'creation',
-        'status',
-        'actions',
-      ];
     }
     if (this.isPredictionsTable) {
       this.headerNames = [
@@ -92,16 +76,6 @@ export class DatatableSkeletonComponent {
         'organisms.prediction_data_table.column_header.status',
         'organisms.prediction_data_table.column_header.actions',
       ];
-      return [
-        'predictionName',
-        'solutionName',
-        'databagName',
-        'runtime',
-        'creation',
-        'status',
-        'actions',
-      ];
     }
-    return [];
   }
 }

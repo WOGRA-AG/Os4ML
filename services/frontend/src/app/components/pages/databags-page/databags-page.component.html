@@ -11,6 +11,15 @@
   </div>
   <ng-container main>
     <app-datatable-skeleton
+      [displayedColumns]="[
+        'databagName',
+        'features',
+        'samples',
+        'creationTime',
+        'creation',
+        'status',
+        'actions'
+      ]"
       [isDatabagTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
     <app-databag-data-table
