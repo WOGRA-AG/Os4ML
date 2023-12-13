@@ -45,6 +45,7 @@
     "cypress-log-to-output": "1.1.2",
     "lottie-web": "5.12.2",
     "ngx-lottie": "10.0.0",
+    "ngx-skeleton-loader": "^8.1.0",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
     "zone.js": "0.13.3"

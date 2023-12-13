@@ -15,6 +15,7 @@ import { DatabagCreateButtonComponent } from '../../organisms/databag-create-but
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -34,6 +35,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
     MatProgressBarModule,
+    DatatableSkeletonComponent,
   ],
 })
 export class DatabagsPageComponent {

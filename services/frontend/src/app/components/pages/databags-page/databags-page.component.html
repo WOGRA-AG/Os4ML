@@ -10,8 +10,11 @@
     </app-databag-create-button>
   </div>
   <ng-container main>
+    <app-datatable-skeleton
+      [isDatabagTable]="true"
+      *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
     <app-databag-data-table
-      [isLoading]="isLoading$ | async"
+      *ngIf="(isLoading$ | async) === false"
       [databags]="(databags$ | async) ?? []"
       (createSolutionButton)="openCreateSolutionStepperDialog($event)">
     </app-databag-data-table>

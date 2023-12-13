@@ -41,7 +41,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];
-  @Input() public isLoading: boolean | null = false;
   @Output() public createSolutionButton = new EventEmitter<string>();
 
   public displayedColumns: string[] = [
