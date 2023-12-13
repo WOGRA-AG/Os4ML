@@ -270,19 +270,19 @@ class ModelmanagerApiController:
     def share_transfer_learning_model(
         self,
         transfer_learning_model_id: str,
-        user_id: UserIdObject,
+        user_id_object: UserIdObject,
         usertoken: str = "",
     ) -> TransferLearningModel:
         return self.transfer_learning_service.share_transfer_learning_model(
-            transfer_learning_model_id, user_id.user_id, usertoken
+            transfer_learning_model_id, user_id_object.user_id, usertoken  # type: ignore
         )
 
     def cancel_transfer_learning_model_sharing(
         self,
         transfer_learning_model_id: str,
-        user_id: UserIdObject,
+        user_id_object: UserIdObject,
         usertoken: str = "",
     ) -> TransferLearningModel:
         return self.transfer_learning_service.cancel_transfer_learning_model_sharing(
-            transfer_learning_model_id, user_id.user_id, usertoken
+            transfer_learning_model_id, user_id_object.user_id, usertoken
         )
