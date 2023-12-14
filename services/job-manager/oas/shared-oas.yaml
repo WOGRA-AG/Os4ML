@@ -163,6 +163,9 @@ components:
           type: string
         value:
           type: string
+        shareOf:
+          $ref: '#/components/schemas/TransferLearningModelId'
+          nullable: true
         sharedWith:
           nullable: true
           type: array
