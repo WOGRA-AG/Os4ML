@@ -37,7 +37,7 @@ export function createPrediction({
 }
 
 export function deletePrediction(name: string) {
-  cy.findAllByTestId('prediction-item', {
+  cy.findAllByTestId('datatable-item', {
     timeout: TIMEOUT_LONG,
   })
     .filter(`:contains("${name}")`)

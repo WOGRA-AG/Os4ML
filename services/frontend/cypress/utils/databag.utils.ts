@@ -14,12 +14,12 @@ export function visitDatabagPage() {
 
 export function setupDatabag(databagItem: CreateDatabagForm): void {
   cy.wait(TIMEOUT_SHORT);
-  cy.get('[data-testid="databag-table"]', { timeout: TIMEOUT_LONG })
+  cy.get('[data-testid="datatable"]', { timeout: TIMEOUT_LONG })
     .should('exist')
     .then(() => {
       cy.get('body').then($body => {
         if ($body.find('[data-testid="databag-item"]').length > 0) {
-          cy.get('[data-testid="databag-item"]').then($items => {
+          cy.get('[data-testid="datatable-item"]').then($items => {
             const itemExists = $items
               .toArray()
               .some(item => item.innerText.includes(databagItem.name));
@@ -54,11 +54,11 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
 }
 
 export function checkDatabag(name: string) {
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
+  cy.findAllByTestId('datatable-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .should('exist');
 
-  cy.findAllByTestId('databag-item')
+  cy.findAllByTestId('datatable-item')
     .filter(`:contains("${name}")`)
     .contains('Done', {
       timeout: TIMEOUT_LONG,
@@ -67,7 +67,7 @@ export function checkDatabag(name: string) {
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 export function changeDatabagName(name: string, newName: string): void {
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
+  cy.findAllByTestId('datatable-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();
@@ -84,7 +84,7 @@ export function changeDatabagName(name: string, newName: string): void {
   cy.findByTestId('popup-input-submit').click();
   cy.go('back');
 
-  cy.findAllByTestId('databag-item')
+  cy.findAllByTestId('datatable-item')
     .filter(`:contains("${newName}")`)
     .should('exist');
 }
@@ -92,7 +92,7 @@ export function changeDatabagName(name: string, newName: string): void {
 export function deleteDatabag(name: string) {
   cy.visit('/#/databags');
 
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
+  cy.findAllByTestId('datatable-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();

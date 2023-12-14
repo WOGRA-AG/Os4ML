@@ -55,12 +55,12 @@ export function createSolution({
 }
 export function setupSolution(solutionItem: CreateSolutionForm): void {
   cy.wait(TIMEOUT_SHORT);
-  cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_LONG })
+  cy.get('[data-testid="datatable"]', { timeout: TIMEOUT_LONG })
     .should('exist')
     .then(() => {
       cy.get('body').then($body => {
-        if ($body.find('[data-testid="solution-item"]').length > 0) {
-          cy.get('[data-testid="solution-item"]').then($items => {
+        if ($body.find('[data-testid="datatable-item"]').length > 0) {
+          cy.get('[data-testid="datatable-item"]').then($items => {
             const itemExists = $items
               .toArray()
               .some(item => item.innerText.includes(solutionItem.name));
@@ -87,7 +87,7 @@ export function checkSolution(name: string) {
   });
 }
 export function changeSolutionName(name: string, newName: string): void {
-  cy.findAllByTestId('solution-item')
+  cy.findAllByTestId('datatable-item')
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
@@ -105,14 +105,14 @@ export function changeSolutionName(name: string, newName: string): void {
   cy.findByTestId('popup-input-submit').click();
   cy.go('back');
 
-  cy.findAllByTestId('solution-item')
+  cy.findAllByTestId('datatable-item')
     .filter(`:contains("${newName}")`)
     .should('exist');
 }
 
 export function deleteSolution(name: string) {
   cy.visit('/#/solutions');
-  cy.findAllByTestId('solution-item')
+  cy.findAllByTestId('datatable-item')
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
