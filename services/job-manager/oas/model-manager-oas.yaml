@@ -430,8 +430,6 @@ paths:
           $ref: '#/components/responses/TransferLearningModel'
 
   "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}":
-<<<<<<< HEAD
-=======
     get:
       summary: "get transfer learning model by id"
       operationId: getTransferLearningModelById
@@ -443,7 +441,6 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/TransferLearningModel'
->>>>>>> 17149cb69d03befa12c725b050eac1c3fa1a3508
     put:
       summary: "update transfer learning model"
       operationId: updateTransferLearningModelById
