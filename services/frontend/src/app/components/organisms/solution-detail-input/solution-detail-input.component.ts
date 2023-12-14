@@ -3,7 +3,7 @@ import { TransferLearningSetting } from '../../../../../build/openapi/modelmanag
 import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf } from '@angular/common';
+import { JsonPipe, NgForOf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
     TranslateModule,
     RouterLink,
     NgForOf,
+    JsonPipe,
   ],
 })
 export class SolutionDetailInputComponent {

@@ -12,6 +12,7 @@
     "select.option_none": "None",
     "file_dropzone": {
       "label": "Click to browse or drag and drop your file",
+      "label_mobile": "Click to browse your file",
       "aria_label": "Click to browse or drag and drop your file"
     },
     "documentation-hint-text": {
@@ -36,11 +37,25 @@
         "message": "Are you sure you want to delete this solution? All data will be lost!"
       },
       "delete_prediction": {
-        "title": "Delete srediction",
+        "title": "Delete prediction",
         "message": "Are you sure you want to delete this prediction? All data will be lost!"
       }
     },
     "popup_input": {
+      "rename_databag": {
+        "title": "Update databag name",
+        "aria_label": "Update Databag Name",
+        "input_form_field": {
+          "label": "New name",
+          "aria-label": "New name",
+          "error_required": "Field cannot be empty",
+          "hint": "Choose a meaningful name when replacing an existing databag."
+        },
+        "submit": {
+          "aria_label": "Change databag name",
+          "button_text": "Change databag name"
+        }
+      },
       "rename_solution": {
         "title": "Update solution name",
         "aria_label": "Update Solution Name",
@@ -101,6 +116,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Databag context menu",
         "settings": {
           "tooltip": "Databag settings",
           "aria_label": "Databag settings"
@@ -139,6 +155,24 @@
         "aria_label": "Submit databag"
       }
     },
+    "databag-detail-pipeline-status": {
+      "title": "Pipeline status",
+      "description": "The pipeline status indicates the progress of your databag processing. Once the status is done, you can create a solution with the completed databag."
+    },
+    "databag-detail-field-settings": {
+      "title": "Field settings",
+      "description": "The field settings were automatically set but can be manually changed here. These changes will be considered in the generation of upcoming solutions."
+    },
+    "databag-detail-download-databag": {
+      "title": "Download databag",
+      "description": "You can download the data bag that you previously uploaded.",
+      "button": "Download databag"
+    },
+    "databag-detail-delete-databag": {
+      "title": "Delete databag",
+      "description": "If you delete the current databag, all associated solutions, predictions and transferlearning models will be emoved. This step is irrevocable.",
+      "button": "Delete databag"
+    },
     "solution_filter": "Filter by solution",
     "solution_data_table": {
       "column_header": {
@@ -151,6 +185,7 @@
         "actions": "Actions"
       },
       "actions": {
+        "context_menu": "Solution context menu",
         "settings": {
           "tooltip": "Solution settings"
         },
@@ -254,6 +289,11 @@
         "creation": "Creation",
         "status": "Status",
         "actions": "Actions"
+      },
+      "actions": {
+        "context_menu": "Prediction context menu",
+        "delete_prediction": "Delete Prediction",
+        "download_prediction": "Download Prediction"
       }
     },
     "prediction_create_form": {
@@ -416,11 +456,11 @@
       "buttons": {
         "settings": {
           "tooltip": "Databag settings",
-          "aria_label": ""
+          "aria_label": "Databag settings"
         },
         "add_solution": {
           "tooltip": "Add solution",
-          "aria_label": ""
+          "aria_label": "Add solution"
         }
       }
     },

@@ -1,0 +1,24 @@
+@import '../../atoms/theme/media-queries.scss';
+
+:host {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+
+  @media #{$medium-and-up} {
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  padding-bottom: 5rem;
+}

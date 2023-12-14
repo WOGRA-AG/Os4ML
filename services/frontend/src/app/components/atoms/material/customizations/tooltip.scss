@@ -1,0 +1,6 @@
+@use 'node_modules/@angular/material/index' as mat;
+@use 'sass:map';
+
+.mat-mdc-tooltip .mdc-tooltip__surface {
+  color: var(--md-sys-color-inverse-on-secondary);
+}

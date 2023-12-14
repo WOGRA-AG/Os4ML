@@ -5,6 +5,8 @@
   --md-sys-color-on-primary-container: var(
     --md-sys-color-on-primary-container-light
   );
+  --md-sys-color-primary-hover: var(--md-sys-color-primary-hover-light);
+
   --md-sys-color-secondary: var(--md-sys-color-secondary-light);
   --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-light);
   --md-sys-color-secondary-container: var(
@@ -27,14 +29,27 @@
   --md-sys-color-on-error-container: var(
     --md-sys-color-on-error-container-light
   );
-  --md-sys-color-background: var(--md-sys-color-background-light);
-  --md-sys-color-on-background: var(--md-sys-color-on-background-light);
+
   --md-sys-color-surface: var(--md-sys-color-surface-light);
   --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
-  --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
   --md-sys-color-on-surface-variant: var(
     --md-sys-color-on-surface-variant-light
   );
+
+  --md-sys-color-surface-container-lowest: var(
+    --md-sys-color-surface-container-lowest-light
+  );
+  --md-sys-color-surface-container-low: var(
+    --md-sys-color-surface-container-low-light
+  );
+  --md-sys-color-surface-container: var(--md-sys-color-surface-container-light);
+  --md-sys-color-surface-container-high: var(
+    --md-sys-color-surface-container-high-light
+  );
+  --md-sys-color-surface-container-highest: var(
+    --md-sys-color-surface-container-highest-light
+  );
+
   --md-sys-color-outline: var(--md-sys-color-outline-light);
   --md-sys-color-inverse-on-surface: var(
     --md-sys-color-inverse-on-surface-light
@@ -45,4 +60,35 @@
   --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light);
   --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-light);
   --md-sys-color-scrim: var(--md-sys-color-scrim-light);
+
+  /* status colors */
+  --md-custom-color-processing-status-running: var(
+    --md-custom-color-running-light
+  );
+  --md-custom-color-on-processing-status-running: var(
+    --md-custom-color-on-running-light
+  );
+
+  --md-custom-color-processing-status-done: var(
+    --md-custom-color-processing-status-done-light
+  );
+  --md-custom-color-on-processing-status-done: var(
+    --md-custom-color-on-processing-status-done-light
+  );
+  --md-custom-color-processing-status-error: var(
+    --md-custom-color-processing-status-error-light
+  );
+  --md-custom-color-on-processing-status-error: var(
+    --md-custom-color-on-processing-status-error-light
+  );
+  --md-custom-color-processing-status-warning: var(
+    --md-custom-color-processing-status-warning-light
+  );
+  --md-custom-color-on-processing-status-warning: var(
+    --md-custom-color-on-processing-status-warning-light
+  );
+
+  /* shadow */
+  --box-shadow: 0px 1.28887px 3.86661px 1.28887px rgba(0, 0, 0, 0.15),
+    0px 1.28887px 2.57774px 0px rgba(0, 0, 0, 0.3);
 }

@@ -19,6 +19,7 @@ import { UserService } from './user.service';
 import { WebSocketConnectionService } from 'src/app/services/web-socket-connection.service';
 import { sortByCreationTime } from 'src/app/lib/sort/sort-by-creation-time';
 import { solutionWebsocketPath } from 'src/environments/environment';
+import { filterNotDefined } from '../lib/rxjs/filter-not-defined';
 export enum SolutionStatus {
   created = 'Created',
 }
@@ -99,6 +100,13 @@ export class SolutionService {
       return undefined;
     }
     return solutions.find(solution => solution.id === id);
+  }
+
+  getSolutionById$(id: string): Observable<Solution> {
+    return this.solutions$.pipe(
+      map(solutions => solutions.find(solution => solution.id === id)),
+      filterNotDefined()
+    );
   }
 
   loadSolutionById(id: string): Observable<Solution> {
