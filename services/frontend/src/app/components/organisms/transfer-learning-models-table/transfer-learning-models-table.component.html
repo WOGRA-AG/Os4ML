@@ -35,6 +35,9 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <app-transfer-learning-model-context-menu
+        (deleteTransferLearningModelButton)="
+          deleteTransferLearningModelButton.emit(element?.id)
+        "
         [showTransferLearningModelDetailLink]="[
           '/transfer-learning/detail',
           element?.id

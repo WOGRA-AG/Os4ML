@@ -23,4 +23,5 @@ import { TranslateModule } from '@ngx-translate/core';
 export class DatabagContextMenuComponent {
   @Input() public showDatabagDetailLink: string[] | string = [];
   @Output() public createSolutionButton = new EventEmitter<string>();
+  @Output() public deleteDatabagButton = new EventEmitter<string>();
 }

@@ -1,0 +1,37 @@
+<app-os4ml-default-template
+  data-testid="profile-page"
+  [mainSmall]="true"
+  *ngIf="currentUser$ | async as currentUser">
+  <h1 header class="headline-large primary-text">
+    {{ 'pages.profile_page.title' | translate }}
+  </h1>
+  <div main class="main-grid">
+    <app-avatar-icon [large]="true"></app-avatar-icon>
+    <div class="id-wrapper">
+      <span class="body-small primary-text">{{
+        'pages.profile_page.user_id' | translate
+      }}</span>
+      <div
+        class="body-large id-section"
+        [cdkCopyToClipboard]="currentUser.id"
+        (cdkCopyToClipboardCopied)="onCopySuccess()">
+        {{ currentUser.id }}
+        <mat-icon class="icon">content_copy</mat-icon>
+      </div>
+    </div>
+    <div class="profile-wrapper">
+      <div class="profile-row">
+        <span class="title-small">{{
+          'pages.profile_page.name' | translate
+        }}</span>
+        <span class="body-large">{{ currentUser.firstName }}</span>
+      </div>
+      <div class="profile-row">
+        <span class="title-small">{{
+          'pages.profile_page.email' | translate
+        }}</span>
+        <span class="body-large">{{ currentUser.lastName }}</span>
+      </div>
+    </div>
+  </div>
+</app-os4ml-default-template>

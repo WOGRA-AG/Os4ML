@@ -19,6 +19,8 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
+import { SolutionContextMenuComponent } from '../../organisms/solution-context-menu/solution-context-menu.component';
+import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -38,6 +40,7 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
     NewButtonComponent,
     DatabagCreateButtonComponent,
     MlEntityStatusPlaceholderComponent,
+    SolutionContextMenuComponent,
   ],
 })
 export class SolutionsPageComponent {
@@ -90,5 +93,21 @@ export class SolutionsPageComponent {
       ariaLabelledBy: 'dialog-title',
       data: { solutionId },
     });
+  }
+
+  deleteSolution(solutionId: string): void {
+    const deleteSolution = this.solutionService.deleteSolutionById(solutionId);
+    const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
+      data: {
+        titleKey: 'organisms.popup_confirm.delete_solution.title',
+        messageKey: 'organisms.popup_confirm.delete_solution.message',
+        onConfirm: deleteSolution,
+      },
+    });
+    deleteDialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }

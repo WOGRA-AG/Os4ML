@@ -56,6 +56,10 @@
   color: var(--md-sys-color-on-error-container);
 }
 
+.error-text {
+  color: var(--md-sys-color-error);
+}
+
 /* This class is used to apply the surface color as a background */
 .surface {
   background-color: var(--md-sys-color-surface);

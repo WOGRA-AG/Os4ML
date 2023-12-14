@@ -1,6 +1,6 @@
 <button
   [attr.aria-label]="
-    'organisms.prediction_data_table.actions.context_menu' | translate
+    'organisms.prediction_context_menu.open_context_menu' | translate
   "
   mat-icon-button
   role="button"
@@ -11,25 +11,24 @@
 
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
-    [ariaLabel]="
-      'organisms.prediction_data_table.actions.download_prediction' | translate
+    [ariaLabel]="'organisms.prediction_context_menu.download' | translate"
+    [disabled]="
+      (predictionElement.status | shortStatus) !== PipelineStatus.done
     "
-    [disabled]="(predictionElement.status | shortStatus) === 'Error'"
     data-testid="prediction-download-button"
     (click)="downloadPredictionButton.emit()"
     menuDescription="{{
-      'organisms.prediction_data_table.actions.download_prediction' | translate
+      'organisms.prediction_context_menu.download' | translate
     }}"
     menuIcon="download">
   </app-context-menu>
   <app-context-menu
-    [ariaLabel]="
-      'organisms.prediction_data_table.actions.delete_prediction' | translate
-    "
+    [warningState]="true"
+    [ariaLabel]="'organisms.prediction_context_menu.delete' | translate"
     data-testid="prediction-delete-button"
     (click)="deletePredictionButton.emit()"
     menuDescription="{{
-      'organisms.prediction_data_table.actions.delete_prediction' | translate
+      'organisms.prediction_context_menu.delete' | translate
     }}"
     menuIcon="delete_forever">
   </app-context-menu>

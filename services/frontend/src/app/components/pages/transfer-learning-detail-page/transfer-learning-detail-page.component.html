@@ -15,18 +15,26 @@
   </h1>
   <div main class="main-grid">
     <app-transfer-learning-models-detail-settings
-      [type]="transferLearningModel.type"
-      [origin]="transferLearningModel.origin">
+      [type]="transferLearningModel.type | stringToMLType"
+      [origin]="transferLearningModel.origin | stringToTLMOrigin">
     </app-transfer-learning-models-detail-settings>
     <app-transfer-learning-models-detail-authorized-users
+      *ngIf="
+        (transferLearningModel.origin | stringToTLMOrigin) ===
+        TransferLearningModelOrigins.solution
+      "
       [sharedWith]="transferLearningModel.sharedWith ?? []"
       (removeAuthorizedUser)="
         removeAuthorizedUser(transferLearningModel, $event)
       "
       (addAuthorizedUser)="addAuthorizedUser(transferLearningModel)">
     </app-transfer-learning-models-detail-authorized-users>
-    <app-transfer-learning-models-detail-dependencies></app-transfer-learning-models-detail-dependencies>
+    <!--    <app-transfer-learning-models-detail-dependencies></app-transfer-learning-models-detail-dependencies>-->
     <app-transfer-learning-models-detail-delete-model
+      *ngIf="
+        (transferLearningModel.origin | stringToTLMOrigin) ===
+        TransferLearningModelOrigins.solution
+      "
       (deleteTransferLearningModel)="deleteTransferLearningModel()">
     </app-transfer-learning-models-detail-delete-model>
   </div>

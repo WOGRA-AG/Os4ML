@@ -18,6 +18,7 @@
   </div>
   <ng-container main>
     <app-transfer-learning-models-table
+      (deleteTransferLearningModelButton)="delete($event)"
       [transferLearningModels]="(transferLearningModels$ | async) ?? []">
     </app-transfer-learning-models-table>
     <app-placeholder

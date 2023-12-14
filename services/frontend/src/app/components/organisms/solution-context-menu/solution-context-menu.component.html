@@ -1,6 +1,6 @@
 <button
   [attr.aria-label]="
-    'organisms.solution_data_table.actions.context_menu' | translate
+    'organisms.solution_context_menu.open_context_menu' | translate
   "
   mat-icon-button
   role="button"
@@ -11,36 +11,26 @@
 
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
-    [ariaLabel]="'organisms.prediction_create_button.label' | translate"
+    [ariaLabel]="'organisms.solution_context_menu.detail' | translate"
+    menuDescription="{{ 'organisms.solution_context_menu.detail' | translate }}"
+    menuIcon="settings_applications"
+    [routerLink]="showSolutionDetailLink">
+  </app-context-menu>
+  <app-context-menu
+    [ariaLabel]="'organisms.solution_context_menu.add_prediction' | translate"
     data-testid="create-prediction-button"
     (click)="createPredictionButton.emit()"
     menuDescription="{{
-      'organisms.prediction_create_button.label' | translate
+      'organisms.solution_context_menu.add_prediction' | translate
     }}"
     menuIcon="add">
   </app-context-menu>
   <app-context-menu
-    [ariaLabel]="
-      'organisms.solution_data_table.actions.show_predictions.tooltip'
-        | translate
-    "
-    *ngIf="solutionElement?.id && (solutionElement | isSolutionDone)"
-    menuDescription="{{
-      'organisms.solution_data_table.actions.show_predictions.tooltip'
-        | translate
-    }}"
-    menuIcon="batch_prediction"
-    [routerLink]="showPredictionLink"
-    [queryParams]="showPredictionParams">
-  </app-context-menu>
-  <app-context-menu
-    [ariaLabel]="
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
-    "
+    [warningState]="true"
+    [ariaLabel]="'organisms.solution_context_menu.settings.delete' | translate"
     data-testid="solution-detail-button"
-    menuDescription="{{
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
-    }}"
-    menuIcon="settings_applications"
-    [routerLink]="showSolutionDetailLink"></app-context-menu>
+    menuDescription="{{ 'organisms.solution_context_menu.delete' | translate }}"
+    menuIcon="delete_forever"
+    (click)="deleteSolutionButton.emit()">
+  </app-context-menu>
 </mat-menu>

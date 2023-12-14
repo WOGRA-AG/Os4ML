@@ -15,6 +15,10 @@ import { TransferLearningModelsDetailDeleteModelComponent } from '../../organism
 import { PopupInputComponent } from '../../organisms/popup-input/popup-input.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
+import { MlTypes } from '../../../models/ml-types';
+import { StringToMLTypePipe } from '../../../pipes/string-to-mltype.pipe';
+import { StringToTLMOriginPipe } from '../../../pipes/string-to-tlmorigin.pipe';
+import { TransferLearningModelOrigins } from '../../../models/transfer-learning-model-origins';
 
 @Component({
   selector: 'app-transfer-learning-detail-page',
@@ -32,11 +36,16 @@ import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confi
     TransferLearningModelsDetailAuthorizedUsersComponent,
     TransferLearningModelsDetailDependenciesComponent,
     TransferLearningModelsDetailDeleteModelComponent,
+    StringToMLTypePipe,
+    StringToTLMOriginPipe,
   ],
 })
 export class TransferLearningDetailPageComponent {
   public transferLearningModel$: Observable<TransferLearningModel>;
   public transferLearningModeId: string;
+  protected readonly TransferLearningModelOrigins =
+    TransferLearningModelOrigins;
+  protected readonly MlTypes = MlTypes;
   private destroyRef = inject(DestroyRef);
   constructor(
     private activatedRoute: ActivatedRoute,

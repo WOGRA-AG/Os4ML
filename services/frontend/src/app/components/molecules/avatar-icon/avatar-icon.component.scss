@@ -1,0 +1,23 @@
+.acronym-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50px;
+  background-color: var(--md-sys-color-surface-container-high);
+
+  .acronym {
+    font-weight: 900;
+  }
+
+  &.large {
+    height: 6rem;
+    width: 6rem;
+
+    .acronym {
+      font-size: 3rem;
+    }
+  }
+}
+

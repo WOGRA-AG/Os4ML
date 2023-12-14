@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Params } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
@@ -24,4 +24,6 @@ import { MatButtonModule } from '@angular/material/button';
 export class TransferLearningModelContextMenuComponent {
   @Input() public showTransferLearningModelDetailParams: Params = {};
   @Input() public showTransferLearningModelDetailLink: string[] | string = [];
+  @Output() public deleteTransferLearningModelButton =
+    new EventEmitter<string>();
 }

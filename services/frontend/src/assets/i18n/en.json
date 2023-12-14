@@ -155,6 +155,12 @@
         }
       }
     },
+    "databag_context_menu": {
+      "open_context_menu": "Databag context menu",
+      "detail": "Databag details",
+      "add_solution": "Add solution",
+      "delete": "Delete solution"
+    },
     "databag_create_form": {
       "aria_label": "Databag create form",
       "upload_section": {
@@ -215,19 +221,13 @@
         "creation": "Creation",
         "status": "Status",
         "actions": "Actions"
-      },
-      "actions": {
-        "context_menu": "Solution context menu",
-        "settings": {
-          "tooltip": "Solution settings"
-        },
-        "add_predictions": {
-          "tooltip": "Add prediction"
-        },
-        "show_predictions": {
-          "tooltip": "Show predictions"
-        }
       }
+    },
+    "solution_context_menu": {
+      "open_context_menu": "Solution context menu",
+      "detail": "Solution details",
+      "add_prediction": "Add prediction",
+      "delete": "Solution delete"
     },
     "solution_create_button.label": "Create solution",
     "solution_create_form": {
@@ -328,6 +328,11 @@
         "download_prediction": "Download Prediction"
       }
     },
+    "prediction_context_menu": {
+      "open_context_menu": "Prediction context menu",
+      "download": "Download prediction",
+      "delete": "Delete prediction"
+    },
     "prediction_create_form": {
       "aria_label": "Prediction creation form",
       "form_fields": {
@@ -371,6 +376,11 @@
         "transfer_learning_type": "Type",
         "transfer_learning_origin": "Origin"
       }
+    },
+    "transfer_learning_models_context_menu": {
+      "open_context_menu": "Transfer learning model context menu",
+      "detail": "Model details",
+      "delete": "Model delete"
     },
     "transfer_learning-model_create_button.label": "Create Model",
     "transfer_learning_model_create_form": {
@@ -417,8 +427,8 @@
       "description": "description"
     },
     "transfer-learning-models-detail-delete-model": {
-      "title": "Model dependencies",
-      "description": "If you remove the existing transfer-learning-model, all related solutions, predictions and transfer learning models will also be deleted. This action cannot be undone.",
+      "title": "Delete transfer learning model",
+      "description": "If you remove the existing transfer learning model, all related solutions, predictions and transfer learning models will also be deleted. This action cannot be undone.",
       "button": "Delete model"
     }
   },
@@ -435,17 +445,20 @@
       "title": "Create solution",
       "button.close": "Close"
     },
-    "predictions_page.title": "Predictions",
-    "prediction_create_dialog": {
-      "title": "Create predictions",
-      "button.close": "Close"
-    },
     "transfer_learning_page": {
       "title": "Transfer learning models",
       "placeholder.title": "No transfer learning models have been loaded!"
     },
     "transfer_learning_model_create_dialog.title": "Create transfer learning model",
-    "empty": "Analyze your data with machine learning"
+    "empty": "Analyze your data with machine learning",
+    "profile_page": {
+      "title": "Profile settings",
+      "user_id": "User ID",
+      "name": "Name",
+      "email": "E-Mail",
+      "snackbar.copy_user_id": "User ID copied to clipboard!",
+      "button.logout": "Logout"
+    }
   },
   "message": {
     "no_dataset": "No Dataset specified",

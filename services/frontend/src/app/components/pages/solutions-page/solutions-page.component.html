@@ -21,6 +21,7 @@
     <app-solution-data-table
       [solutions]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
+      (deleteSolutionButton)="deleteSolution($event)"
       (createPredictionButton)="openCreatePredictionDialog($event)">
     </app-solution-data-table>
     <app-ml-entity-status-placeholder

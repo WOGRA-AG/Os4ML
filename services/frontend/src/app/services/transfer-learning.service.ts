@@ -62,6 +62,7 @@ export class TransferLearningService {
     return this.userService.currentToken$.pipe(
       switchMap(token => this.modelManager.getTransferLearningModels(token)),
       switchMap(models => models.filter(model => model.id === id))
+      // switchMap(token => this.modelManager.getTransferLearningModelById(token, id))
     );
   }
   deleteTransferLearningModelById(id: string | undefined): Observable<void> {

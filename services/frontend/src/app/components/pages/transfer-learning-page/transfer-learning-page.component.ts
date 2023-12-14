@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { TransferLearningModelsTableComponent } from '../../organisms/transfer-learning-models-table/transfer-learning-models-table.component';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { HasElementsPipe } from '../../../pipes/has-elements.pipe';
@@ -17,6 +17,9 @@ import { DatabagService } from '../../../services/databag.service';
 import { TransferLearningModelCreateButtonComponent } from '../../organisms/transfer-learning-model-create-button/transfer-learning-model-create-button.component';
 import { PlaceholderComponent } from '../../molecules/placeholder/placeholder.component';
 import { TransferLearningModelCreateDialogComponent } from '../transfer-learning-model-create-dialog/transfer-learning-model-create-dialog.component';
+import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TransferLearningModelCreateFormComponent } from '../../organisms/transfer-learning-model-create-form/transfer-learning-model-create-form.component';
 
 @Component({
   selector: 'app-transfer-learning-page',
@@ -33,11 +36,13 @@ import { TransferLearningModelCreateDialogComponent } from '../transfer-learning
     SolutionCreateButtonComponent,
     TransferLearningModelCreateButtonComponent,
     PlaceholderComponent,
+    TransferLearningModelCreateFormComponent,
   ],
 })
 export class TransferLearningPageComponent {
   public databags$: Observable<Databag[]>;
   public transferLearningModels$: Observable<TransferLearningModel[]>;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private databagService: DatabagService,
@@ -54,5 +59,26 @@ export class TransferLearningPageComponent {
 
   openCreateTransferLearningModelDialog(): void {
     this.dialog.open(TransferLearningModelCreateDialogComponent);
+  }
+
+  delete(transferLearningModeId: string): void {
+    const deleteDatabag =
+      this.transferLearningService.deleteTransferLearningModelById(
+        transferLearningModeId
+      );
+    const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
+      data: {
+        titleKey:
+          'organisms.popup_confirm.delete_transfer_learning_model.title',
+        messageKey:
+          'organisms.popup_confirm.delete_transfer_learning_model.message',
+        onConfirm: deleteDatabag,
+      },
+    });
+    deleteDialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }

@@ -24,6 +24,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HamburgerButtonComponent } from './components/molecules/hamburger-button/hamburger-button.component';
 import { IconButtonComponent } from './components/molecules/icon-button/icon-button.component';
 import { ContextMenuItemComponent } from './components/molecules/context-menu-item/context-menu-item.component';
+import { SignetMobileComponent } from './components/atoms/signet-mobile/signet-mobile.component';
+import { AvatarIconComponent } from './components/molecules/avatar-icon/avatar-icon.component';
 
 @Component({
   selector: 'app-root',
@@ -44,6 +46,8 @@ import { ContextMenuItemComponent } from './components/molecules/context-menu-it
     HamburgerButtonComponent,
     IconButtonComponent,
     ContextMenuItemComponent,
+    SignetMobileComponent,
+    AvatarIconComponent,
   ],
 })
 export class AppComponent {

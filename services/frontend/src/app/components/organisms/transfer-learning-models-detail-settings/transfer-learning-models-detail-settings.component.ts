@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { TransferLearningModelOrigins } from '../../../models/transfer-learning-model-origins';
+import { MlTypes } from '../../../models/ml-types';
 
 @Component({
   selector: 'app-transfer-learning-models-detail-settings',
@@ -9,6 +11,6 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [TranslateModule],
 })
 export class TransferLearningModelsDetailSettingsComponent {
-  @Input() public type?: string;
-  @Input() public origin?: string;
+  @Input() public type?: MlTypes;
+  @Input() public origin?: TransferLearningModelOrigins;
 }

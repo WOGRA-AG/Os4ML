@@ -54,7 +54,13 @@ export class UserService {
           rawToken: token,
         };
       }),
-      startWith({ email: '', id: '', rawToken: '' })
+      startWith({
+        email: 'john@doe.com',
+        id: 'id-1234',
+        rawToken: '',
+        firstName: 'John',
+        lastName: 'Doe',
+      })
     );
   }
 

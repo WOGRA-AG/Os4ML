@@ -7,6 +7,7 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
 import { TranslateModule } from '@ngx-translate/core';
 import { Prediction } from '../../../../../build/openapi/modelmanager';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
+import { PipelineStatus } from '../../../models/pipeline-status';
 
 @Component({
   selector: 'app-prediction-context-menu',
@@ -27,4 +28,5 @@ export class PredictionContextMenuComponent {
   @Output() public deletePredictionButton = new EventEmitter<string>();
   @Output() public downloadPredictionButton = new EventEmitter<string>();
   @Input() public predictionElement!: Prediction;
+  protected readonly PipelineStatus = PipelineStatus;
 }

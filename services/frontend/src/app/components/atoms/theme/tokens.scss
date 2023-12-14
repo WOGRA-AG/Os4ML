@@ -178,9 +178,7 @@
   ); /* Text and icons against running */
 
   /* Surface colors */
-  --md-sys-color-surface-light: var(
-    --md-ref-palette-neutral100
-  ); /* Default color for backgrounds */
+  --md-sys-color-surface-light: #fafbff; /* Default color for backgrounds */
   --md-sys-color-on-surface-light: var(
     --md-ref-palette-neutral10
   ); /* Text and icons against any surface color */

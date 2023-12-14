@@ -2,26 +2,6 @@ import { Routes } from '@angular/router';
 
 export const ROUTES: Routes = [
   {
-    path: 'solutions',
-    runGuardsAndResolvers: 'always',
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import(
-            './components/pages/solutions-page/solutions-page.component'
-          ).then(mod => mod.SolutionsPageComponent),
-      },
-      {
-        path: 'detail/:id',
-        loadComponent: () =>
-          import(
-            './components/pages/solution-detail-page/solution-detail-page.component'
-          ).then(mod => mod.SolutionDetailPageComponent),
-      },
-    ],
-  },
-  {
     path: '',
     redirectTo: '/solutions',
     pathMatch: 'full',
@@ -43,6 +23,26 @@ export const ROUTES: Routes = [
           import(
             './components/pages/databag-detail-page/databag-detail-page.component'
           ).then(mod => mod.DatabagDetailPageComponent),
+      },
+    ],
+  },
+  {
+    path: 'solutions',
+    runGuardsAndResolvers: 'always',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './components/pages/solutions-page/solutions-page.component'
+          ).then(mod => mod.SolutionsPageComponent),
+      },
+      {
+        path: 'detail/:id',
+        loadComponent: () =>
+          import(
+            './components/pages/solution-detail-page/solution-detail-page.component'
+          ).then(mod => mod.SolutionDetailPageComponent),
       },
     ],
   },
@@ -73,6 +73,13 @@ export const ROUTES: Routes = [
           ).then(mod => mod.TransferLearningDetailPageComponent),
       },
     ],
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./components/pages/profile-page/profile-page.component').then(
+        mod => mod.ProfilePageComponent
+      ),
   },
   {
     path: 'typo',

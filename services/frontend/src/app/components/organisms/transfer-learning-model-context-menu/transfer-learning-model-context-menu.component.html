@@ -1,6 +1,7 @@
 <button
   [attr.aria-label]="
-    'organisms.solution_data_table.actions.context_menu' | translate
+    'organisms.transfer_learning_models_context_menu.open_context_menu'
+      | translate
   "
   mat-icon-button
   role="button"
@@ -12,13 +13,25 @@
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
     [ariaLabel]="
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
+      'organisms.transfer_learning_models_context_menu.detail' | translate
     "
-    data-testid="solution-detail-button"
+    data-testid="transfer-learning-model-detail-button"
     menuDescription="{{
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
+      'organisms.transfer_learning_models_context_menu.detail' | translate
     }}"
     menuIcon="settings_applications"
     [routerLink]="showTransferLearningModelDetailLink">
+  </app-context-menu>
+  <app-context-menu
+    [warningState]="true"
+    [ariaLabel]="
+      'organisms.transfer_learning_models_context_menu.delete' | translate
+    "
+    data-testid="transfer-learning-model-delete-button"
+    menuDescription="{{
+      'organisms.transfer_learning_models_context_menu.delete' | translate
+    }}"
+    menuIcon="delete_forever"
+    (click)="deleteTransferLearningModelButton.emit()">
   </app-context-menu>
 </mat-menu>

@@ -3,16 +3,16 @@
   class="surface-container"
   [ariaLabel]="'mobile-navigation'">
   <a [routerLink]="'/'" aria-label="Os4ML Logo">
-    <img
-      class="logo"
-      src="assets/logos/os4ml-logo-landscape.svg"
-      alt="Os4ML Logo" />
+    <app-signet-mobile></app-signet-mobile>
   </a>
   <app-hamburger-button
     [isActive]="showSidebar"
     class="toggle-mobile-nav"
     (click)="showSidebar = !showSidebar">
   </app-hamburger-button>
+  <a [routerLink]="'/profile'" class="profile-link" aria-label="User profile">
+    <app-avatar-icon></app-avatar-icon>
+  </a>
 </nav>
 <nav
   id="side-nav"
@@ -65,6 +65,12 @@
       </a>
     </ng-container>
     <ng-container footer-nav>
+      <a
+        [routerLink]="'/profile'"
+        class="profile-link"
+        aria-label="User profile">
+        <app-avatar-icon></app-avatar-icon>
+      </a>
       <a
         data-testid="documentation-link"
         href="https://wogra-ag.github.io/os4ml-docs/"

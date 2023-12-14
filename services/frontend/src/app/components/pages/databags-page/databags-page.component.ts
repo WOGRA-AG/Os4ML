@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { DatabagService } from '../../../services/databag.service';
 import { Observable } from 'rxjs';
 import { Databag } from '../../../../../build/openapi/modelmanager';
@@ -14,6 +14,8 @@ import { DatabagDataTableComponent } from '../../organisms/databag-data-table/da
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-databags-page',
@@ -36,6 +38,7 @@ import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-st
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
     private dialog: MatDialog
@@ -53,5 +56,21 @@ export class DatabagsPageComponent {
       ariaLabelledBy: 'dialog-title',
       disableClose: true,
     });
+  }
+
+  deleteDatabag(databagId: string): void {
+    const deleteDatabag = this.databagService.deleteDatabagById(databagId);
+    const deleteDialogRef = this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
+      data: {
+        titleKey: 'organisms.popup_confirm.delete_databag.title',
+        messageKey: 'organisms.popup_confirm.delete_databag.message',
+        onConfirm: deleteDatabag,
+      },
+    });
+    deleteDialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }
