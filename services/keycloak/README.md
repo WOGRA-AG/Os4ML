@@ -1,6 +1,6 @@
-# OS4ML - Auth API
+# OS4ML - Keycloak
 
-This API is build with [keycloak](https://www.keycloak.org/)
+Theming for [keycloak](https://www.keycloak.org/)
 
 ## How to develop
 

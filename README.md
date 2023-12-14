@@ -3,9 +3,9 @@
 
 # Open space for Machine Learning
 
-Open space for Machine Learning is an open source platform for automated machine learning. The goal is to enable non-experts to solve every day problems with AI. It automates all steps on the way to the finished AI model with the help of an intuitive UI/UX.The alpha release supports the following features:
+Open space for Machine Learning is an open source platform for automated machine learning. The goal is to enable non-experts to solve every day problems with AI. It automates all steps on the way to the finished model with the help of an intuitive UI/UX.The alpha release supports the following features:
 
-- Create a data bags using Excel sheets
+- Create a databag using Excel sheets, csv files and zip files with images
 - Create a solution using [Ludwig](https://github.com/ludwig-ai/ludwig) for categorization and regression problems
 - Integration of external storage, e.g. [Shepard](https://gitlab.com/dlr-shepard) using python scripts
 - Multi-User Isolation
@@ -31,6 +31,7 @@ We have several projects inside the repository. You can know more about each one
 ├── [+] services/              # Projects of the repository
 │    ├── frontend/                # OS4ML App, build with Angular
 │    ├── job-manager/             # FastAPI service for managing the execution of the ML pipelines
+│    ├── oas/                     # Collection of all openapi specs of the services and templates for the code generation
 │    ├── keycloak/                # Templates and themes for [keycloak](https://www.keycloak.org/)
 │    ├── model-manager/           # FastAPI service to manage the main models
 │    ├── oas/                     # Open api specs for the services and templates to generate clients
@@ -53,7 +54,6 @@ This is the list of available repos:
 - [job-manager](./services/job-manager/README.md)
 - [keycloak](./services/keycloak/README.md)
 - [model-manager](./services/model-manager/README.md)
-- [oas](./services/oas/README.md)
 - [objectstore-manager](./services/objectstore-manager/README.md)
 - [workflow-translator](./services/workflow-translator/README.md)
 
@@ -67,7 +67,6 @@ This is a quick overview about kind of tests implemented on each one of the proj
 | `/job-manager`        |⁉️|⁉️|⁉️|⁉️|
 | `/keycloak`           |⁉️|⁉️|⁉️|⁉️|
 | `/model-manager`      |⁉️|⁉️|⁉️|⁉️|
-| `/oas`                |⁉️|⁉️|⁉️|⁉️|
 | `/objectstore-manager`|⁉️|⁉️|⁉️|⁉️|
 | `/workflow-translator`|⁉️|⁉️|⁉️|⁉️|
 
@@ -115,12 +114,12 @@ Loads the built images and tags them to deploy them on the differen environments
 
 #### Reset
 
-**Automatic** (only when deploy to `testing` environment is runned)
+**Automatic** (only when deploy to `testing` environment is run)
 Resets the testing stage so each run starts from scratch.
 
 #### E2E
 
-**Automatic** (only when deploy to `testing` environment is runned)
+**Automatic** (only when deploy to `testing` environment is run)
 Runs the e2e and frontend integration tests.
 
 ## 💌 Releasing
@@ -130,7 +129,7 @@ We are sticking to the [Gitflow](https://www.atlassian.com/git/tutorials/compari
   2. Deploy to the release stage and test the functionality. If some issues arise, fix them and merge them also in the `rc` branch.
   3. If all is working, merge the `rc` branch into `main`.
   4. Deploy to staging and test again (the staging envoronment uses the same infrastructure as the production envoronment).
-  5. Create a new tag for the new version of the `main` branch and update the CHANGELOG.
+  5. Create a new tag for the new version of the `main` branch and make sure the CHANGELOG is updated.
 
 ## 🚨 Monitoring
 
@@ -154,8 +153,10 @@ There is a lot of work to do. In the near future the following will happen:
 - [x] Solving regression problems (Winter 2022)
 - [x] Solving multi output problems (Spring 2022)
 - [x] Adding Transfer Learning Support (Summer 2023)
-- [ ] Support for Model Sharing (Fall 2023)
-- [ ] Intelligent Data Labeling (Winter 2023)
+- [x] Support for Model Sharing (Fall 2023)
+- [ ] Suggestions for Transfer learning (Winter 2023)
+- [ ] Data visualizations (Spring 2024)
+- [ ] Intelligent Data Labeling (Summer 2024)
 
 ### More Information
 
