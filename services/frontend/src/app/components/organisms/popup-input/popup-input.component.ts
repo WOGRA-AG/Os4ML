@@ -41,6 +41,7 @@ import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-templ
 })
 export class PopupInputComponent {
   public submitting = false;
+  public initialValue = '';
   public inputForm: FormGroup<{
     inputValue: FormControl<string>;
   }>;
@@ -66,6 +67,7 @@ export class PopupInputComponent {
       };
     }
   ) {
+    this.initialValue = this.data.inputValue;
     this.inputForm = this.fb.group({
       inputValue: [this.data.inputValue, Validators.required],
     });
@@ -75,7 +77,7 @@ export class PopupInputComponent {
   }
 
   close(): void {
-    this.dialog.close();
+    this.dialog.close(this.initialValue);
   }
   submit(): void {
     this.submitting = true;
