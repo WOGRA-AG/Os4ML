@@ -18,6 +18,7 @@ import { GetSolutionByIdPipe } from '../../../pipes/get-solution-by-id.pipe';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { SolutionContextMenuComponent } from '../../organisms/solution-context-menu/solution-context-menu.component';
 import { PredictionContextMenuComponent } from '../../organisms/prediction-context-menu/prediction-context-menu.component';
+import { CdkTableDataSourceInput } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-datatable',
@@ -47,7 +48,9 @@ export class DatatableComponent {
   @Input() public isPredictionsTable = false;
   @Input() public displayedColumns: string[] = [];
   @Input() public headerNames: string[] = [];
-  @Input() public datasource: Databag[] | Solution[] | Prediction[] = [];
+  @Input() public datasource: CdkTableDataSourceInput<
+    Solution | Databag | Prediction
+  > = [];
   @Input() public solutions: Solution[] = [];
   @Input() public databags: Databag[] = [];
   @Input() public predictions: Prediction[] = [];

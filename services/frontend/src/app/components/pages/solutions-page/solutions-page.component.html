@@ -23,13 +23,15 @@
       [headerNames]="headerNames"
       [isSolutionsTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
-    <app-solution-data-table
+    <app-datatable
       *ngIf="(isLoading$ | async) === false"
-      [solutions]="(solutions$ | async) ?? []"
+      [isSolutionsTable]="true"
+      [datasource]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
-      (createPredictionButton)="
-        openCreatePredictionDialog($event)
-      "></app-solution-data-table>
+      (createPredictionButton)="openCreatePredictionDialog($event)"
+      [headerNames]="headerNames"
+      [displayedColumns]="displayedColumns">
+    </app-datatable>
     <app-ml-entity-status-placeholder
       *ngIf="
         (isLoading$ | async) === false && !(solutions$ | async | hasElements)
