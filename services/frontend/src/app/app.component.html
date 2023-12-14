@@ -10,8 +10,14 @@
     class="toggle-mobile-nav"
     (click)="showSidebar = !showSidebar">
   </app-hamburger-button>
-  <a [routerLink]="'/profile'" class="profile-link" aria-label="User profile">
-    <app-avatar-icon></app-avatar-icon>
+  <a
+    *ngIf="currentUser$ | async as currentUser"
+    [routerLink]="'/profile'"
+    class="profile-link"
+    aria-label="User profile">
+    <app-avatar-icon
+      [firstName]="currentUser.firstName"
+      [lastName]="currentUser.lastName"></app-avatar-icon>
   </a>
 </nav>
 <nav
@@ -66,10 +72,13 @@
     </ng-container>
     <ng-container footer-nav>
       <a
+        *ngIf="currentUser$ | async as currentUser"
         [routerLink]="'/profile'"
         class="profile-link"
         aria-label="User profile">
-        <app-avatar-icon></app-avatar-icon>
+        <app-avatar-icon
+          [firstName]="currentUser.firstName"
+          [lastName]="currentUser.lastName"></app-avatar-icon>
       </a>
       <a
         data-testid="documentation-link"

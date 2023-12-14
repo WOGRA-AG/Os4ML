@@ -6,7 +6,10 @@
     {{ 'pages.profile_page.title' | translate }}
   </h1>
   <div main class="main-grid">
-    <app-avatar-icon [large]="true"></app-avatar-icon>
+    <app-avatar-icon
+      [large]="true"
+      [firstName]="currentUser.firstName"
+      [lastName]="currentUser.lastName"></app-avatar-icon>
     <div class="id-wrapper">
       <span class="body-small primary-text">{{
         'pages.profile_page.user_id' | translate
