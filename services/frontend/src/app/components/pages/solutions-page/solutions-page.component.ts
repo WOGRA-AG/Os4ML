@@ -22,6 +22,8 @@ import { SolutionCreateDialogComponent } from '../solution-create-dialog/solutio
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
 import { DatabagDataTableComponent } from '../../organisms/databag-data-table/databag-data-table.component';
+import { DatatableComponent } from '../../molecules/datatable/datatable.component';
+import { PredictionsDataTableComponent } from '../../organisms/predictions-data-table/predictions-data-table.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -44,12 +46,32 @@ import { DatabagDataTableComponent } from '../../organisms/databag-data-table/da
     MatProgressBarModule,
     DatatableSkeletonComponent,
     DatabagDataTableComponent,
+    DatatableComponent,
+    PredictionsDataTableComponent,
   ],
 })
 export class SolutionsPageComponent {
   public databags$: Observable<Databag[]>;
   public solutions$: Observable<Solution[]>;
   public isLoading$: Observable<boolean>;
+  public headerNames = [
+    'organisms.solution_data_table.column_header.solution_name',
+    'organisms.solution_data_table.column_header.databag_name',
+    'organisms.solution_data_table.column_header.quality',
+    'organisms.solution_data_table.column_header.runtime',
+    'organisms.solution_data_table.column_header.creation',
+    'organisms.solution_data_table.column_header.status',
+    'organisms.solution_data_table.column_header.actions',
+  ];
+  public displayedColumns = [
+    'solutionName',
+    'databagName',
+    'metrics',
+    'creationTime',
+    'creation',
+    'status',
+    'actions',
+  ];
   private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,

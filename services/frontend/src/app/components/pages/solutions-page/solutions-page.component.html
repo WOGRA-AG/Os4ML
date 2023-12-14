@@ -19,32 +19,19 @@
   </div>
   <ng-container main>
     <app-datatable-skeleton
-      [displayedColumns]="[
-        'solutionName',
-        'databagName',
-        'metrics',
-        'creationTime',
-        'creation',
-        'status',
-        'actions'
-      ]"
-      [headerNames]="[
-        'organisms.solution_data_table.column_header.solution_name',
-        'organisms.solution_data_table.column_header.databag_name',
-        'organisms.solution_data_table.column_header.quality',
-        'organisms.solution_data_table.column_header.runtime',
-        'organisms.solution_data_table.column_header.creation',
-        'organisms.solution_data_table.column_header.status',
-        'organisms.solution_data_table.column_header.actions'
-      ]"
+      [displayedColumns]="displayedColumns"
+      [headerNames]="headerNames"
       [isSolutionsTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
-    <app-solution-data-table
+    <app-datatable
       *ngIf="(isLoading$ | async) === false"
-      [solutions]="(solutions$ | async) ?? []"
+      [isSolutionsTable]="true"
+      [datasource]="(solutions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
-      (createPredictionButton)="openCreatePredictionDialog($event)">
-    </app-solution-data-table>
+      (createPredictionButton)="openCreatePredictionDialog($event)"
+      [headerNames]="headerNames"
+      [displayedColumns]="displayedColumns">
+    </app-datatable>
     <app-ml-entity-status-placeholder
       *ngIf="
         (isLoading$ | async) === false && !(solutions$ | async | hasElements)

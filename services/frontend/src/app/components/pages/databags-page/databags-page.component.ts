@@ -16,6 +16,8 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
+import { DatatableComponent } from '../../molecules/datatable/datatable.component';
+import { PredictionsDataTableComponent } from '../../organisms/predictions-data-table/predictions-data-table.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -36,11 +38,31 @@ import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/d
     MlEntityStatusPlaceholderComponent,
     MatProgressBarModule,
     DatatableSkeletonComponent,
+    DatatableComponent,
+    PredictionsDataTableComponent,
   ],
 })
 export class DatabagsPageComponent {
   public readonly databags$: Observable<Databag[]>;
   public isLoading$: Observable<boolean>;
+  public headerNames = [
+    'organisms.databag_data_table.column_header.databag_name',
+    'organisms.databag_data_table.column_header.features',
+    'organisms.databag_data_table.column_header.samples',
+    'organisms.solution_data_table.column_header.runtime',
+    'organisms.databag_data_table.column_header.creation',
+    'organisms.databag_data_table.column_header.status',
+    'organisms.databag_data_table.column_header.actions',
+  ];
+  public displayedColumns = [
+    'databagName',
+    'features',
+    'samples',
+    'creationTime',
+    'creation',
+    'status',
+    'actions',
+  ];
 
   constructor(
     private databagService: DatabagService,

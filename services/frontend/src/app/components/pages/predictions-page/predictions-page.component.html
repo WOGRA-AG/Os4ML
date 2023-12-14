@@ -30,36 +30,22 @@
   </div>
   <ng-container main>
     <app-datatable-skeleton
-      [displayedColumns]="[
-        'predictionName',
-        'solutionName',
-        'databagName',
-        'runtime',
-        'creation',
-        'status',
-        'actions'
-      ]"
-      [headerNames]="[
-        'organisms.prediction_data_table.column_header.prediction_name',
-        'organisms.prediction_data_table.column_header.solution_name',
-        'organisms.prediction_data_table.column_header.databag_name',
-        'organisms.prediction_data_table.column_header.runtime',
-        'organisms.prediction_data_table.column_header.creation',
-        'organisms.prediction_data_table.column_header.status',
-        'organisms.prediction_data_table.column_header.actions'
-      ]"
+      [displayedColumns]="displayedColumns"
+      [headerNames]="headerNames"
       [isPredictionsTable]="true"
       *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
-    <app-predictions-data-table
+    <app-datatable
       *ngIf="(isLoading$ | async) === false"
+      [isPredictionsTable]="true"
+      [datasource]="(predictions$ | async) ?? []"
       [databags]="(databags$ | async) ?? []"
       [solutions]="(solutions$ | async) ?? []"
-      [predictions]="(predictions$ | async) ?? []"
       (downloadPredictionButton)="
         downloadPredictionResult($event, downloadResultLink)
       "
-      (deletePredictionButton)="deletePrediction($event)">
-    </app-predictions-data-table>
+      (deletePredictionButton)="deletePrediction($event)"
+      [headerNames]="headerNames"
+      [displayedColumns]="displayedColumns"></app-datatable>
     <a download target="_blank" hidden aria-hidden="true" #downloadResultLink>
     </a>
     <app-ml-entity-status-placeholder

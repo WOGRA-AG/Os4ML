@@ -24,6 +24,7 @@ import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-st
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/datatable-skeleton.component';
+import { DatatableComponent } from '../../molecules/datatable/datatable.component';
 @Component({
   selector: 'app-predictions-page',
   templateUrl: './predictions-page.component.html',
@@ -44,6 +45,7 @@ import { DatatableSkeletonComponent } from '../../molecules/datatable-skeleton/d
     MlEntityStatusPlaceholderComponent,
     MatProgressBarModule,
     DatatableSkeletonComponent,
+    DatatableComponent,
   ],
 })
 export class PredictionsPageComponent {
@@ -51,6 +53,24 @@ export class PredictionsPageComponent {
   public solutions$: Observable<Solution[]>;
   public predictions$: Observable<Prediction[]>;
   public isLoading$: Observable<boolean>;
+  public headerNames = [
+    'organisms.prediction_data_table.column_header.prediction_name',
+    'organisms.prediction_data_table.column_header.solution_name',
+    'organisms.prediction_data_table.column_header.databag_name',
+    'organisms.prediction_data_table.column_header.runtime',
+    'organisms.prediction_data_table.column_header.creation',
+    'organisms.prediction_data_table.column_header.status',
+    'organisms.prediction_data_table.column_header.actions',
+  ];
+  public displayedColumns = [
+    'predictionName',
+    'solutionName',
+    'databagName',
+    'runtime',
+    'creation',
+    'status',
+    'actions',
+  ];
   private destroyRef = inject(DestroyRef);
   constructor(
     private databagService: DatabagService,
