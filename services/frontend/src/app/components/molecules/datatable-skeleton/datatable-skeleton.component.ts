@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, DestroyRef, inject, Input } from '@angular/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatTableModule } from '@angular/material/table';
 import { NgForOf, NgIf } from '@angular/common';
@@ -9,6 +9,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ProcessingStatusIndicatorComponent } from '../processing-status-indicator/processing-status-indicator.component';
 import { RuntimeIndicatorComponent } from '../runtime-indicator/runtime-indicator.component';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
+import { ThemeService } from '../../../services/theme.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-datatable-skeleton',
@@ -42,4 +44,18 @@ export class DatatableSkeletonComponent {
     background: 'var(--md-sys-color-surface-container)',
     height: '26px',
   };
+  private destroyRef = inject(DestroyRef);
+
+  constructor(themeService: ThemeService) {
+    themeService.theme$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(theme => {
+        if (theme != 'dark') {
+          this.theme = {
+            background: 'var(--md-sys-color-surface-container-high)',
+            height: '26px',
+          };
+        }
+      });
+  }
 }
