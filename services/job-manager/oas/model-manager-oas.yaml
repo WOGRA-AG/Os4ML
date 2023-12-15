@@ -480,19 +480,6 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/TransferLearningModel'
-    delete:
-      summary: "cancel sharing of a transfer learning model with another user"
-      operationId: cancelTransferLearningModelSharing
-      parameters:
-        - $ref: '#/components/parameters/TransferLearningModelId'
-        - $ref: './shared-oas.yaml#/components/parameters/User'
-      tags:
-        - modelmanager
-      requestBody:
-        $ref: '#/components/requestBodies/UserId'
-      responses:
-        200:
-          $ref: '#/components/responses/TransferLearningModel'
 
 components:
   schemas:
