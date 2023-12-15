@@ -138,36 +138,51 @@ export class TransferLearningDetailPageComponent {
       .afterClosed()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        tap(x => {
-          transferLearningModel.sharedWith = [
-            ...(transferLearningModel.sharedWith ?? []),
-            x,
+        tap(sharedUserId => {
+          transferLearningModel.modelShares = [
+            ...(transferLearningModel.modelShares ?? []),
+            sharedUserId,
           ];
         }),
-        switchMap(() =>
-          this.transferLearningService.updateTransferLearningModelById(
+        switchMap(sharedUserId =>
+          this.transferLearningService.shareTransferLearningModel(
             this.transferLearningModeId,
-            transferLearningModel
+            sharedUserId
           )
         )
       )
-      .subscribe();
+      .subscribe(console.log);
   }
-  removeAuthorizedUser(
-    transferLearningModel: TransferLearningModel,
-    userIdToRemove: string
-  ): void {
-    transferLearningModel.sharedWith = transferLearningModel.sharedWith!.filter(
-      id => id !== userIdToRemove
-    );
-    this.transferLearningService
-      .updateTransferLearningModelById(
-        this.transferLearningModeId,
-        transferLearningModel
-      )
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
-  }
+
+  // removeAuthorizedUser(
+  //   transferLearningModel: TransferLearningModel,
+  //   userIdToRemove: string
+  // ): void {
+  //   transferLearningModel.sharedWith = transferLearningModel.sharedWith!.filter(
+  //     id => id !== userIdToRemove
+  //   );
+  //   this.transferLearningService
+  //     .updateTransferLearningModelById(
+  //       this.transferLearningModeId,
+  //       transferLearningModel
+  //     )
+  //     .pipe(takeUntilDestroyed(this.destroyRef))
+  //     .subscribe();
+  // }  // removeAuthorizedUser(
+  //   transferLearningModel: TransferLearningModel,
+  //   userIdToRemove: string
+  // ): void {
+  //   transferLearningModel.sharedWith = transferLearningModel.sharedWith!.filter(
+  //     id => id !== userIdToRemove
+  //   );
+  //   this.transferLearningService
+  //     .updateTransferLearningModelById(
+  //       this.transferLearningModeId,
+  //       transferLearningModel
+  //     )
+  //     .pipe(takeUntilDestroyed(this.destroyRef))
+  //     .subscribe();
+  // }
   deleteTransferLearningModel(): void {
     const deleteDatabag =
       this.transferLearningService.deleteTransferLearningModelById(

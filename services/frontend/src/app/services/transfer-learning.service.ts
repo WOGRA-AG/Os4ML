@@ -11,6 +11,7 @@ import {
   ModelmanagerService,
   NewTransferLearningModelDto,
   TransferLearningModel,
+  UserIdObject,
 } from '../../../build/openapi/modelmanager';
 import { UserService } from './user.service';
 import { WebSocketConnectionService } from './web-socket-connection.service';
@@ -64,6 +65,20 @@ export class TransferLearningService {
       )
     );
   }
+  shareTransferLearningModel(
+    transferLearningModelId: string,
+    UserIdObject: UserIdObject
+  ): Observable<TransferLearningModel> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.shareTransferLearningModel(
+          transferLearningModelId,
+          token,
+          UserIdObject
+        )
+      )
+    );
+  }
   deleteTransferLearningModelById(id: string): Observable<void> {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
@@ -71,7 +86,6 @@ export class TransferLearningService {
       )
     );
   }
-
   updateTransferLearningModelById(
     id: string,
     transferLearningModel: TransferLearningModel
