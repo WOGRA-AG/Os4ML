@@ -64,4 +64,7 @@ export class ProfilePageComponent {
       }
     );
   }
+  logout(): void {
+    this.userService.logout();
+  }
 }

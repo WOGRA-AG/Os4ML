@@ -36,5 +36,12 @@
         <span class="body-large">{{ currentUser.lastName }}</span>
       </div>
     </div>
+    <app-new-button
+      [variant]="'primary'"
+      [icon]="'logout'"
+      [ariaLabel]="'pages.profile_page.button.logout' | translate"
+      (click)="logout()">
+      {{ 'pages.profile_page.button.logout' | translate }}
+    </app-new-button>
   </div>
 </app-os4ml-default-template>

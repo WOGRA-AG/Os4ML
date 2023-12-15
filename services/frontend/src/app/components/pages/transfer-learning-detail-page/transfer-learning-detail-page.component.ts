@@ -111,6 +111,7 @@ export class TransferLearningDetailPageComponent {
     const addAuthorizedUserDialogRef = this.dialog.open(PopupInputComponent, {
       ariaLabelledBy: 'dialog-title',
       data: {
+        inputValue: '',
         titleKey:
           'organisms.popup_input.add_authorized_user_transfer_learning_model.title',
         ariaLabelKey:
@@ -137,11 +138,11 @@ export class TransferLearningDetailPageComponent {
       .afterClosed()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        tap(newAuthorizedUserId => {
-          if (!transferLearningModel.sharedWith) {
-            transferLearningModel.sharedWith = [];
-          }
-          transferLearningModel.sharedWith.push(newAuthorizedUserId);
+        tap(x => {
+          transferLearningModel.sharedWith = [
+            ...(transferLearningModel.sharedWith ?? []),
+            x,
+          ];
         }),
         switchMap(() =>
           this.transferLearningService.updateTransferLearningModelById(
@@ -159,10 +160,13 @@ export class TransferLearningDetailPageComponent {
     transferLearningModel.sharedWith = transferLearningModel.sharedWith!.filter(
       id => id !== userIdToRemove
     );
-    this.transferLearningService.updateTransferLearningModelById(
-      this.transferLearningModeId,
-      transferLearningModel
-    );
+    this.transferLearningService
+      .updateTransferLearningModelById(
+        this.transferLearningModeId,
+        transferLearningModel
+      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
   deleteTransferLearningModel(): void {
     const deleteDatabag =

@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-transfer-learning-models-detail-authorized-users',
@@ -21,6 +22,7 @@ import { IconButtonComponent } from '../../molecules/icon-button/icon-button.com
     SolutionContextMenuComponent,
     NewButtonComponent,
     IconButtonComponent,
+    JsonPipe,
   ],
 })
 export class TransferLearningModelsDetailAuthorizedUsersComponent {
