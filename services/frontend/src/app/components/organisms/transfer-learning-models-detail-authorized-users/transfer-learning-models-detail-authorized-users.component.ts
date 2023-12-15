@@ -6,9 +6,7 @@ import { SolutionContextMenuComponent } from '../solution-context-menu/solution-
 import { NewButtonComponent } from '../../molecules/new-button/new-button.component';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { JsonPipe } from '@angular/common';
-import {
-  ModelShare,
-} from '../../../../../build/openapi/modelmanager';
+import { ModelShare } from '../../../../../build/openapi/modelmanager';
 
 @Component({
   selector: 'app-transfer-learning-models-detail-authorized-users',
