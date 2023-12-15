@@ -23,7 +23,7 @@
         (transferLearningModel.origin | stringToTLMOrigin) ===
         TransferLearningModelOrigins.solution
       "
-      [sharedWith]="transferLearningModel.modelShares ?? []"
+      [modelShare]="transferLearningModel.modelShares ?? []"
       (addAuthorizedUser)="addAuthorizedUser(transferLearningModel)">
       <!--(removeAuthorizedUser)="removeAuthorizedUser(transferLearningModel, $event)"-->
     </app-transfer-learning-models-detail-authorized-users>
