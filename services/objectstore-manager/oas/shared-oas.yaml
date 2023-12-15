@@ -147,6 +147,15 @@ components:
         dataUrl:
           $ref: '#/components/schemas/Url'
           nullable: true
+    ModelShare:
+      required:
+        - userId
+        - transferLearningModelId
+      properties:
+        userId:
+          $ref: '#/components/schemas/UserId'
+        transferLearningModelId:
+          $ref: '#/components/schemas/TransferLearningModelId'
     TransferLearningModel:
       required:
         - name
@@ -164,13 +173,12 @@ components:
         value:
           type: string
         shareOf:
-          $ref: '#/components/schemas/TransferLearningModelId'
           nullable: true
-        sharedWith:
-          nullable: true
+          $ref: '#/components/schemas/ModelShare'
+        modelShares:
           type: array
           items:
-            $ref: '#/components/schemas/UserId'
+            $ref: '#/components/schemas/ModelShare'
     PipelineStep:
       type: string
       enum:
