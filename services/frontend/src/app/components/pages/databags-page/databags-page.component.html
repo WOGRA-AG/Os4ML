@@ -10,20 +10,26 @@
     </app-databag-create-button>
   </div>
   <ng-container main>
-    <app-datatable-skeleton
-      [displayedColumns]="displayedColumns"
-      [headerNames]="headerNames"
-      [isDatabagTable]="true"
-      *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>
-    <app-datatable
-      *ngIf="(isLoading$ | async) === false"
-      [isDatabagTable]="true"
-      [datasource]="(databags$ | async) ?? []"
-      [headerNames]="headerNames"
-      [displayedColumns]="displayedColumns"
-      (createSolutionButton)="
-        openCreateSolutionStepperDialog($event)
-      "></app-datatable>
+    <app-databag-data-table
+      [isLoading]="(isLoading$ | async) === true"
+      [databags]="(databags$ | async) ?? []"
+      (createSolutionButton)="openCreateSolutionStepperDialog($event)">
+    </app-databag-data-table>
+
+    <!--    <app-datatable-skeleton-->
+    <!--      [displayedColumns]="displayedColumns"-->
+    <!--      [headerNames]="headerNames"-->
+    <!--      [isDatabagTable]="true"-->
+    <!--      *ngIf="(isLoading$ | async) === true"></app-datatable-skeleton>-->
+    <!--    <app-datatable-->
+    <!--      *ngIf="(isLoading$ | async) === false"-->
+    <!--      [isDatabagTable]="true"-->
+    <!--      [datasource]="(databags$ | async) ?? []"-->
+    <!--      [headerNames]="headerNames"-->
+    <!--      [displayedColumns]="displayedColumns"-->
+    <!--      (createSolutionButton)="-->
+    <!--        openCreateSolutionStepperDialog($event)-->
+    <!--      "></app-datatable>-->
     <app-ml-entity-status-placeholder
       *ngIf="
         (isLoading$ | async) === false && !(databags$ | async | hasElements)

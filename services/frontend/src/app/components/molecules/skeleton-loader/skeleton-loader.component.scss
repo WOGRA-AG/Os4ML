@@ -1,0 +1,10 @@
+:host {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .skeleton-loader-wrapper {
+    height: 26px;
+    width: 100%;
+  }
+}

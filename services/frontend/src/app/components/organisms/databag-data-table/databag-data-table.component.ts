@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { LocalizedDatePipe } from '../../../pipes/localized-date.pipe';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +22,9 @@ import { DatabagContextMenuComponent } from '../databag-context-menu/databag-con
 import { SolutionContextMenuComponent } from '../solution-context-menu/solution-context-menu.component';
 import { NgIf } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SkeletonLoaderComponent } from '../../molecules/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-databag-data-table',
@@ -24,6 +34,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   imports: [
     LocalizedDatePipe,
     MatTableModule,
+    MatSortModule,
     IconButtonComponent,
     MatTooltipModule,
     TranslateModule,
@@ -37,19 +48,43 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     SolutionContextMenuComponent,
     NgIf,
     MatProgressBarModule,
+    NgxSkeletonLoaderModule,
+    SkeletonLoaderComponent,
   ],
 })
-export class DatabagDataTableComponent {
-  @Input() public databags: Databag[] = [];
+export class DatabagDataTableComponent implements AfterViewInit {
+  @Input() public isLoading = true;
   @Output() public createSolutionButton = new EventEmitter<string>();
+  @ViewChild(MatSort) public sort!: MatSort;
+  public dataSource: MatTableDataSource<Databag>;
 
   public displayedColumns: string[] = [
-    'databagName',
+    'name',
     'features',
     'samples',
+    'creationTime2',
     'creationTime',
-    'creation',
     'status',
     'actions',
   ];
+  private _databags: Databag[] = [];
+  constructor() {
+    this.dataSource = new MatTableDataSource<Databag>(new Array(3).fill({}));
+  }
+  get databags(): Databag[] {
+    return this._databags;
+  }
+  @Input()
+  set databags(databags: Databag[]) {
+    this._databags = databags;
+    this.updateDataSource();
+  }
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+  private updateDataSource(): void {
+    if (!this.isLoading) {
+      this.dataSource.data = this._databags;
+    }
+  }
 }
