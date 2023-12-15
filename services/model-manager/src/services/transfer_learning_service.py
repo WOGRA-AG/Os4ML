@@ -7,6 +7,7 @@ from fastapi import Depends
 from src.build.objectstore_client.api.objectstore_api import ObjectstoreApi
 from src.build.objectstore_client.exceptions import NotFoundException
 from src.build.objectstore_client.model.json_response import JsonResponse
+from src.build.openapi_server.models.model_share import ModelShare
 from src.build.openapi_server.models.new_transfer_learning_model_dto import (
     NewTransferLearningModelDto,
 )
@@ -239,9 +240,28 @@ class TransferLearningService:
         models_with_id = [model for model in tl_models if model.id == id]
         if len(models_with_id) > 0:
             tl_model = models_with_id[0]
-            if tl_model.shared_with is not None:
-                for user_id in tl_model.shared_with:
-                    self._delete_shared_tlm_for_other_user(id, user_id)
+            if tl_model.model_shares is not None:
+                for model_share in tl_model.model_shares:
+                    mock_token = mock_token_with_user_id(model_share.user_id)
+                    self.delete_transfer_learning_model_by_id(
+                        model_share.transfer_learning_model_id, mock_token
+                    )
+            if tl_model.share_of is not None:
+                mock_token = mock_token_with_user_id(tl_model.share_of.user_id)
+                shared_model = self.get_transfer_learning_model_by_id(
+                    tl_model.share_of.transfer_learning_model_id, mock_token
+                )
+                if shared_model.model_shares is not None:
+                    shared_model.model_shares = [
+                        share
+                        for share in shared_model.model_shares
+                        if share.transfer_learning_model_id != id
+                    ]
+                self.update_transfer_learning_model_by_id(
+                    tl_model.share_of.transfer_learning_model_id,
+                    shared_model,
+                    mock_token,
+                )
         tl_models = [tl_model for tl_model in tl_models if tl_model.id != id]
         self._save_transfer_learning_models(tl_models, usertoken=usertoken)
         self._notify_transfer_learning_update(usertoken)
@@ -254,48 +274,37 @@ class TransferLearningService:
             raise ValueError(
                 "Only transfer learning models from own solutions can be shared"
             )
-        if tl_model.shared_with is None:
-            tl_model.shared_with = []
-        tl_model.shared_with.append(user_id)
+        own_user_id = get_parsed_token(usertoken).id
+        share_of = ModelShare(
+            user_id=own_user_id, transfer_learning_model_id=tlm_id
+        )
+        shared_tlm = self._create_shared_tlm_for_other_user(
+            tl_model, share_of, user_id
+        )
+        if shared_tlm.id is None:
+            raise ValueError("Shared model id cannot be None")
+        if tl_model.model_shares is None:
+            tl_model.model_shares = []
+        tl_model.model_shares.append(
+            ModelShare(
+                user_id=user_id, transfer_learning_model_id=shared_tlm.id
+            )
+        )
         self.update_transfer_learning_model_by_id(tlm_id, tl_model, usertoken)
-        self._create_shared_tlm_for_other_user(tl_model, user_id)
         self._notify_transfer_learning_update(usertoken)
         return tl_model
 
     def _create_shared_tlm_for_other_user(
-        self, tlm: TransferLearningModel, user_id: str
-    ) -> None:
+        self, tlm: TransferLearningModel, share_of: ModelShare, user_id: str
+    ) -> TransferLearningModel:
         shared_tlm = TransferLearningModel(
             id=str(uuid.uuid4()),
             name=f"share of {tlm.name}",
             type=tlm.type,
             origin=TransferlearningOrigin.SHARED_SOLUTION.value,
             value=format_shared_value_str(user_id, tlm.value),  # type: ignore
-            share_of=tlm.id,
+            share_of=share_of,
         )
         mocked_token = mock_token_with_user_id(user_id)
         self._create_new_transfer_learning_model(shared_tlm, mocked_token)
-
-    def cancel_transfer_learning_model_sharing(
-        self, tlm_id: str, user_id, usertoken: str
-    ) -> TransferLearningModel:
-        tl_model = self.get_transfer_learning_model_by_id(tlm_id, usertoken)
-        if (
-            not tl_model.origin == TransferlearningOrigin.SOLUTION.value
-            or tl_model.shared_with is None
-        ):
-            return tl_model
-        self._delete_shared_tlm_for_other_user(tlm_id, user_id)
-        tl_model.shared_with.remove(user_id)
-        self.update_transfer_learning_model_by_id(tlm_id, tl_model, usertoken)
-        self._notify_transfer_learning_update(usertoken)
-        return tl_model
-
-    def _delete_shared_tlm_for_other_user(
-        self, tlm_id: str, user_id: str
-    ) -> None:
-        mocked_token = mock_token_with_user_id(user_id)
-        tlms = self.get_transfer_learning_models(mocked_token)
-        for tlm in tlms:
-            if tlm.share_of == tlm_id and tlm.id is not None:
-                self.delete_transfer_learning_model_by_id(tlm.id, mocked_token)
+        return shared_tlm
