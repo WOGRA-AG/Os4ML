@@ -176,9 +176,7 @@ export class TransferLearningDetailPageComponent {
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(confirm => {
         if (confirm) {
           this.router.navigate(['/transfer-learning']);
