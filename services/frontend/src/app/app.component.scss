@@ -70,6 +70,11 @@ nav#side-nav {
   flex-direction: column;
   width: 100%;
 
+  &.sidebar_open {
+    overflow: hidden;
+    height: calc(100% - 4rem);
+  }
+
   @media #{$medium-and-up} {
     padding-left: 205px;
   }

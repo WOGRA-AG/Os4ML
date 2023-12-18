@@ -81,6 +81,6 @@
     </ng-container>
   </app-side-nav>
 </nav>
-<div class="app-wrapper background">
+<div class="app-wrapper background" [class.sidebar_open]="showSidebar">
   <router-outlet></router-outlet>
 </div>
