@@ -35,7 +35,7 @@
       <th mat-header-cell *matHeaderCellDef>action</th>
       <td mat-cell *matCellDef="let element">
         <app-icon-button
-          (click)="removeAuthorizedUser.emit(element)"
+          (click)="removeAuthorizedUser.emit(element.transferLearningModelId)"
           icon="remove"
           ariaLabel="remove">
         </app-icon-button>

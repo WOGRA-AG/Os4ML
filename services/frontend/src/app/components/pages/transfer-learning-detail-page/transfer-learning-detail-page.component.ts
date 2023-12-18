@@ -151,6 +151,14 @@ export class TransferLearningDetailPageComponent {
             transferLearningModelUpdated.modelShares)
       );
   }
+
+  removeAuthorizedUser(transferLearningModelById: string): void {
+    console.log(transferLearningModelById);
+    this.transferLearningService
+      .deleteTransferLearningModelById(transferLearningModelById)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(console.log);
+  }
   deleteTransferLearningModel(): void {
     const deleteDatabag =
       this.transferLearningService.deleteTransferLearningModelById(
@@ -168,7 +176,9 @@ export class TransferLearningDetailPageComponent {
     });
     deleteDialogRef
       .afterClosed()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(confirm => {
         if (confirm) {
           this.router.navigate(['/transfer-learning']);

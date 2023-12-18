@@ -79,7 +79,7 @@ export class AppComponent {
   }
   @HostListener('window:resize')
   onResize(): void {
-    if (window.innerWidth >= 1000) {
+    if (window.innerWidth >= 960) {
       this.showSidebar = false;
     }
   }
