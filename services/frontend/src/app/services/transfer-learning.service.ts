@@ -29,19 +29,7 @@ export class TransferLearningService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(
-      transferLearningWebsocketPath
-    );
-    this.userService.currentToken$
-      .pipe(
-        switchMap(token => this.modelManager.getTransferLearningModels(token)),
-        first(),
-        concatWith(webSocketConnection$),
-        raceWith(webSocketConnection$)
-      )
-      .subscribe(transferLearningModel =>
-        this._transferLearningModelsSubject$.next(transferLearningModel)
-      );
+    this.initializeTransferLearningModels();
   }
   get transferLearningModels$(): Observable<TransferLearningModel[]> {
     return this._transferLearningModelsSubject$.asObservable();
@@ -79,6 +67,7 @@ export class TransferLearningService {
       )
     );
   }
+
   deleteTransferLearningModelById(id: string): Observable<void> {
     return this.userService.currentToken$.pipe(
       switchMap(token =>
@@ -99,5 +88,21 @@ export class TransferLearningService {
         )
       )
     );
+  }
+
+  private initializeTransferLearningModels(): void {
+    const webSocketConnection$ = this.webSocketConnectionService.connect(
+      transferLearningWebsocketPath
+    );
+    this.userService.currentToken$
+      .pipe(
+        switchMap(token => this.modelManager.getTransferLearningModels(token)),
+        first(),
+        concatWith(webSocketConnection$),
+        raceWith(webSocketConnection$)
+      )
+      .subscribe(transferLearningModels =>
+        this._transferLearningModelsSubject$.next(transferLearningModels)
+      );
   }
 }
