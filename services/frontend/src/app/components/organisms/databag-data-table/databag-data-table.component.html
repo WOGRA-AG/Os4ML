@@ -56,6 +56,7 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <app-databag-context-menu
+        [databagElement]="element"
         [showDatabagDetailLink]="['/databags/detail', element?.id]"
         (createSolutionButton)="
           createSolutionButton.emit(element.id)

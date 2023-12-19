@@ -11,6 +11,7 @@
 
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
+    [disabled]="!(solutionElement | isSolutionDone)"
     [ariaLabel]="'organisms.prediction_create_button.label' | translate"
     data-testid="create-prediction-button"
     (click)="createPredictionButton.emit()"

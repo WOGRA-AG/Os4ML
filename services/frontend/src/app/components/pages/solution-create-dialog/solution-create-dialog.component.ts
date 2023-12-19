@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { IconButtonComponent } from '../../molecules/icon-button/icon-button.component';
 import { Os4mlDialogTemplateComponent } from '../../templates/os4ml-dialog-template/os4ml-dialog-template.component';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   Databag,
   Solution,
@@ -24,6 +24,8 @@ import { LoaderSpinningPlanetComponent } from '../../molecules/loader-spinning-p
 import { TransferLearningService } from '../../../services/transfer-learning.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TransferLearningModelCreateDialogComponent } from '../transfer-learning-model-create-dialog/transfer-learning-model-create-dialog.component';
+import { getShortStatus } from '../../../lib/status/status';
+import { PipelineStatus } from '../../../models/pipeline-status';
 
 @Component({
   selector: 'app-create-solution-dialog',
@@ -57,7 +59,15 @@ export class SolutionCreateDialogComponent {
     public dialogRef: MatDialogRef<SolutionCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: { databagId?: string }
   ) {
-    this.databags$ = this.databagService.getDatabagsSortByCreationTime();
+    this.databags$ = this.databagService
+      .getDatabagsSortByCreationTime()
+      .pipe(
+        map(databags =>
+          databags.filter(
+            databag => getShortStatus(databag.status) == PipelineStatus.done
+          )
+        )
+      );
     this.transferLearningModels$ =
       this.transferLearningService.transferLearningModels$;
   }

@@ -5,6 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule } from '@ngx-translate/core';
+import { Databag } from '../../../../../build/openapi/modelmanager';
+import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
+import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
 
 @Component({
   selector: 'app-databag-context-menu',
@@ -18,9 +21,12 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIconModule,
     MatMenuModule,
     TranslateModule,
+    ShortStatusPipe,
+    IsSolutionDonePipe,
   ],
 })
 export class DatabagContextMenuComponent {
   @Input() public showDatabagDetailLink: string[] | string = [];
+  @Input() public databagElement!: Databag;
   @Output() public createSolutionButton = new EventEmitter<string>();
 }
