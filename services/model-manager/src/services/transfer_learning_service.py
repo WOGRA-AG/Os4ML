@@ -238,30 +238,31 @@ class TransferLearningService:
     ) -> None:
         tl_models = self._load_transfer_learning_models(usertoken=usertoken)
         models_with_id = [model for model in tl_models if model.id == id]
-        if len(models_with_id) > 0:
-            tl_model = models_with_id[0]
-            if tl_model.model_shares is not None:
-                for model_share in tl_model.model_shares:
-                    mock_token = mock_token_with_user_id(model_share.user_id)
-                    self.delete_transfer_learning_model_by_id(
-                        model_share.transfer_learning_model_id, mock_token
-                    )
-            if tl_model.share_of is not None:
-                mock_token = mock_token_with_user_id(tl_model.share_of.user_id)
-                shared_model = self.get_transfer_learning_model_by_id(
-                    tl_model.share_of.transfer_learning_model_id, mock_token
+        if len(models_with_id) == 0:
+            return
+        tl_model = models_with_id[0]
+        if tl_model.model_shares is not None:
+            for model_share in tl_model.model_shares:
+                mock_token = mock_token_with_user_id(model_share.user_id)
+                self.delete_transfer_learning_model_by_id(
+                    model_share.transfer_learning_model_id, mock_token
                 )
-                if shared_model.model_shares is not None:
-                    shared_model.model_shares = [
-                        share
-                        for share in shared_model.model_shares
-                        if share.transfer_learning_model_id != id
-                    ]
-                self.update_transfer_learning_model_by_id(
-                    tl_model.share_of.transfer_learning_model_id,
-                    shared_model,
-                    mock_token,
-                )
+        if tl_model.share_of is not None:
+            mock_token = mock_token_with_user_id(tl_model.share_of.user_id)
+            shared_model = self.get_transfer_learning_model_by_id(
+                tl_model.share_of.transfer_learning_model_id, mock_token
+            )
+            if shared_model.model_shares is not None:
+                shared_model.model_shares = [
+                    share
+                    for share in shared_model.model_shares
+                    if share.transfer_learning_model_id != id
+                ]
+            self.update_transfer_learning_model_by_id(
+                tl_model.share_of.transfer_learning_model_id,
+                shared_model,
+                mock_token,
+            )
         tl_models = [tl_model for tl_model in tl_models if tl_model.id != id]
         self._save_transfer_learning_models(tl_models, usertoken=usertoken)
         self._notify_transfer_learning_update(usertoken)
@@ -308,3 +309,20 @@ class TransferLearningService:
         mocked_token = mock_token_with_user_id(user_id)
         self._create_new_transfer_learning_model(shared_tlm, mocked_token)
         return shared_tlm
+
+    def cancel_transfer_learning_model_sharing(
+        self, tlm_id: str, shared_tlm_id: str, usertoken: str
+    ) -> None:
+        tlm = self.get_transfer_learning_model_by_id(tlm_id, usertoken)
+        if tlm.model_shares is None:
+            return
+        model_shares = [
+            share
+            for share in tlm.model_shares
+            if share.transfer_learning_model_id == shared_tlm_id
+        ]
+        for share in model_shares:
+            mock_token = mock_token_with_user_id(share.user_id)
+            self.delete_transfer_learning_model_by_id(
+                share.transfer_learning_model_id, mock_token
+            )

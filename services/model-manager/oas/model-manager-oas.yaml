@@ -481,6 +481,20 @@ paths:
         200:
           $ref: '#/components/responses/TransferLearningModel'
 
+  "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}/share/{sharedTransferLearningModelId}":
+    delete:
+      summary: " cancel sharing of a transfer learning model with a user"
+      operationId: cancelTransferLearningModelSharing
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: '#/components/parameters/SharedTransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
 components:
   schemas:
     ErrorSchema:
@@ -526,6 +540,13 @@ components:
       name: transferLearningModelId
       in: path
       description: Id of the TransferLearningModel
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/TransferLearningModelId'
+    SharedTransferLearningModelId:
+      name: sharedTransferLearningModelId
+      in: path
+      description: Id of the shared TransferLearningModel
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/TransferLearningModelId'
