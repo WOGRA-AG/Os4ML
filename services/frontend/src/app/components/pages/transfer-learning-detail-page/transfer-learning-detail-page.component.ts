@@ -61,6 +61,13 @@ export class TransferLearningDetailPageComponent {
       );
   }
 
+  updateModel(): void {
+    this.transferLearningModel$ =
+      this.transferLearningService.getTransferLearningModelById$(
+        this.transferLearningModeId
+      );
+  }
+
   renameTransferLearningModel(
     transferLearningModel: TransferLearningModel
   ): void {
@@ -152,12 +159,22 @@ export class TransferLearningDetailPageComponent {
       );
   }
 
-  removeAuthorizedUser(transferLearningModelById: string): void {
-    console.log(transferLearningModelById);
+  removeAuthorizedUser(
+    transferLearningModel: TransferLearningModel,
+    removeTransferLearningModelId: string
+  ): void {
     this.transferLearningService
-      .deleteTransferLearningModelById(transferLearningModelById)
+      .cancelTransferLearningModelSharing(
+        this.transferLearningModeId,
+        removeTransferLearningModelId
+      )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(console.log);
+      .subscribe(() => {
+        transferLearningModel.modelShares =
+          transferLearningModel.modelShares!.filter(
+            ms => ms.transferLearningModelId !== removeTransferLearningModelId
+          );
+      });
   }
   deleteTransferLearningModel(): void {
     const deleteDatabag =

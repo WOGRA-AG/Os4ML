@@ -24,11 +24,11 @@
         TransferLearningModelOrigins.solution
       "
       [modelShare]="transferLearningModel.modelShares ?? []"
-      (removeAuthorizedUser)="removeAuthorizedUser($event)"
+      (removeAuthorizedUser)="
+        removeAuthorizedUser(transferLearningModel, $event)
+      "
       (addAuthorizedUser)="addAuthorizedUser(transferLearningModel)">
     </app-transfer-learning-models-detail-authorized-users>
-    <!--    <app-transfer-learning-models-detail-dependencies></app-transfer-learning-models-detail-dependencies>-->
-
     <app-transfer-learning-models-detail-delete-model
       *ngIf="
         (transferLearningModel.origin | stringToTLMOrigin) ===

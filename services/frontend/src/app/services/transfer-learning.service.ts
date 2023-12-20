@@ -75,6 +75,20 @@ export class TransferLearningService {
       )
     );
   }
+  cancelTransferLearningModelSharing(
+    modelId: string,
+    sharedModelId: string
+  ): Observable<void> {
+    return this.userService.currentToken$.pipe(
+      switchMap(token =>
+        this.modelManager.cancelTransferLearningModelSharing(
+          modelId,
+          sharedModelId,
+          token
+        )
+      )
+    );
+  }
   updateTransferLearningModelById(
     id: string,
     transferLearningModel: TransferLearningModel
