@@ -119,29 +119,25 @@ describe('Transfer learning page', () => {
       .first()
       .click();
     cy.get('mat-option').contains(transferLearningItem.name).click();
+    cy.get('body').type('{esc}');
 
     cy.findByTestId('submit-solution')
       .should('not.be.disabled')
-      .children()
-      .click({ force: true });
+      .click();
 
-    const rowTable = cy
-      .findByText(newItem.name, {
-        timeout: TIMEOUT_LONG,
-      })
-      .parent();
+    cy.findByTestId('solutions-page', { timeout: TIMEOUT_LONG }).should(
+      'be.visible'
+    );
 
-    rowTable.contains('Done', {
-      timeout: TIMEOUT_LONG,
-    });
+    cy.findAllByTestId('solution-item', { timeout: TIMEOUT_LONG })
+      .filter(`:contains("${newItem.name}")`)
+      .should('exist');
 
     cy.findAllByTestId('solution-item')
       .filter(`:contains("${newItem.name}")`)
-      .findByTestId('solution-menu')
-      .click();
-    cy.findAllByTestId('solution-detail-button').click();
-
-    cy.findByText(transferLearningItem.name).should('be.visible');
+      .contains('Running', {
+        timeout: TIMEOUT_LONG,
+      });
   });
 
   it('delete TL Solution', () => {

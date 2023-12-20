@@ -7,7 +7,6 @@ import {
 import {
   CreateDatabagForm,
   checkDatabag,
-  createDatabag,
   deleteDatabag,
   setupDatabag,
 } from 'cypress/utils/databag.utils';
@@ -19,7 +18,7 @@ import {
   visitSolutionsPage,
   checkSolution,
 } from 'cypress/utils/solution.utils';
-import { cleanup } from 'axe-core';
+
 
 const essentialMLEntitiesOnly =
   Cypress.env('createEssentialMLEntitiesOnly') === true;

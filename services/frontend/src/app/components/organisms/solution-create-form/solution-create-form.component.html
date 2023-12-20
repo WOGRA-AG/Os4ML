@@ -212,7 +212,7 @@
       type="submit"
       variant="primary"
       size="medium"
-      data-testid="submit-solution"
+      [dataTestid]="'submit-solution'"
       [disabled]="createSolutionForm.invalid"
       [ariaLabel]="
         'organisms.solution_create_form.submit.aria_label' | translate

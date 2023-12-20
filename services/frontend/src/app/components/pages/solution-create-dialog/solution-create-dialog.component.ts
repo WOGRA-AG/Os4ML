@@ -57,6 +57,7 @@ export class SolutionCreateDialogComponent {
     public dialogRef: MatDialogRef<SolutionCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: { databagId?: string }
   ) {
+    this.dialogRef.disableClose = true;
     this.databags$ = this.databagService.getDatabagsSortByCreationTime();
     this.transferLearningModels$ =
       this.transferLearningService.transferLearningModels$;

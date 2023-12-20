@@ -374,7 +374,8 @@
       "column_header": {
         "transfer_learning_label": "Name",
         "transfer_learning_type": "Type",
-        "transfer_learning_origin": "Origin"
+        "transfer_learning_origin": "Origin",
+        "actions": "Actions"
       }
     },
     "transfer_learning_models_context_menu": {
@@ -440,9 +441,13 @@
       "update": "Update"
     },
     "solutions_page.title": "Solutions",
-    "predictions_page.title": "Predictions",
     "solution_create_dialog": {
       "title": "Create solution",
+      "button.close": "Close"
+    },
+    "predictions_page.title": "Predictions",
+    "prediction_create_dialog": {
+      "title": "Create prediction",
       "button.close": "Close"
     },
     "transfer_learning_page": {

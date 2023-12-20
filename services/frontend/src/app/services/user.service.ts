@@ -12,7 +12,6 @@ import {
   timeout,
 } from 'rxjs';
 import { User } from '../../../build/openapi/modelmanager';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +22,7 @@ export class UserService {
   private readonly rawJwtToken$: Subject<string> = new Subject<string>();
   private readonly _currentToken$: Observable<string>;
 
-  constructor(private router: Router) {
+  constructor() {
     const defaultToken$ = of('').pipe(concatWith(this.rawJwtToken$));
     this._currentToken$ = this.rawJwtToken$.pipe(
       timeout({ first: 500, with: () => defaultToken$ }),
@@ -71,6 +70,6 @@ export class UserService {
   logout(): void {
     localStorage.removeItem(this.jwtTokenStorage);
     this.rawJwtToken$.next('');
-    this.router.navigateByUrl('/logout');
+    window.location.href = '/logout';
   }
 }

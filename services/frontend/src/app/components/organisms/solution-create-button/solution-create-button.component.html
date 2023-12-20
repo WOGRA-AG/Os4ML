@@ -5,7 +5,7 @@
   [icon]="'add'"
   [disabled]="!!disabled"
   [ariaLabel]="'organisms.solution_create_button.label' | translate"
-  data-testid="add-solution"
+  [dataTestid]="'add-solution'"
   (click)="addSolution.emit()">
   {{ 'organisms.solution_create_button.label' | translate }}
 </app-new-button>

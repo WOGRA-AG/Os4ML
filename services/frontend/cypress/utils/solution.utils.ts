@@ -1,4 +1,5 @@
 import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
+import {timeout} from "rxjs";
 
 export type CreateSolutionForm = {
   name: string;
@@ -15,11 +16,11 @@ export function visitSolutionsPage(): void {
 }
 
 export function createSolution({
-  name,
-  databagName,
-  outputField,
-  applyTransferLearning,
-}: CreateSolutionForm) {
+                                 name,
+                                 databagName,
+                                 outputField,
+                                 applyTransferLearning,
+                               }: CreateSolutionForm) {
   cy.findAllByTestId('add-solution', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -29,30 +30,44 @@ export function createSolution({
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
 
+
+
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
   cy.findByTestId('input-name').clear().type(name);
 
   cy.findByTestId('input-databagId').click();
   cy.get('mat-option').contains(databagName).click();
-  cy.findByTestId('solution-create-dialog').click(0, 0, { force: true });
 
   cy.findByTestId('output-select-field').click();
+
   if (outputField) {
     cy.get('mat-option').contains(outputField).click({ force: true });
   } else {
     cy.get('mat-option').first().click();
   }
-  cy.findByTestId('solution-create-dialog').click(0, 0, { force: true });
+
+  cy.get('body').type('{esc}');
 
   if (applyTransferLearning) {
     cy.findByRole('switch', { name: /toggle for transfer learning/i }).click();
   }
+
   cy.findByTestId('submit-solution')
     .should('not.be.disabled')
-    .children()
-    .click({ force: true });
+    .click();
+
+  cy.findAllByTestId('solution-item', { timeout: TIMEOUT_LONG })
+    .filter(`:contains("${name}")`)
+    .should('exist');
+
+  cy.findAllByTestId('solution-item')
+    .filter(`:contains("${name}")`)
+    .contains('Running', {
+      timeout: TIMEOUT_LONG,
+    });
 }
+
 export function setupSolution(solutionItem: CreateSolutionForm): void {
   cy.wait(TIMEOUT_SHORT);
   cy.get('[data-testid="solution-table"]', { timeout: TIMEOUT_LONG })
@@ -76,22 +91,26 @@ export function setupSolution(solutionItem: CreateSolutionForm): void {
 }
 
 export function checkSolution(name: string) {
-  const rowTable = cy
-    .findByText(name, {
-      timeout: TIMEOUT_LONG,
-    })
-    .parent();
+  cy.findAllByTestId('solution-item', { timeout: TIMEOUT_LONG })
+    .filter(`:contains("${name}")`)
+    .should('exist');
 
-  rowTable.contains('Done', {
-    timeout: TIMEOUT_LONG,
-  });
+  cy.findAllByTestId('solution-item')
+    .filter(`:contains("${name}")`)
+    .contains('Done', {
+      timeout: TIMEOUT_LONG,
+    });
+
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
+
+
 export function changeSolutionName(name: string, newName: string): void {
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
-  cy.findAllByTestId('solution-detail-button').click();
+  cy.findAllByTestId('solution-detail-menu-item', { timeout: TIMEOUT_LONG }).click();
   cy.url().should('include', '/solutions/detail');
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
@@ -116,11 +135,11 @@ export function deleteSolution(name: string) {
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
-  cy.findAllByTestId('solution-detail-button').click();
-  cy.url().should('include', '/solutions/detail');
+  cy.findAllByTestId('solution-detail-menu-item', { timeout: TIMEOUT_LONG }).click();
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
+  cy.url().should('include', '/solutions/detail');
   cy.findByTestId('solution-delete-button').children().click();
   cy.findByTestId('confirm-popup-button').click();
   cy.visit('/#/solutions');

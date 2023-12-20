@@ -4,6 +4,7 @@
       {{ 'pages.solution_create_dialog.title' | translate }}
     </h1>
     <app-icon-button
+      *ngIf="!submitting"
       [ariaLabel]="'pages.solution_create_dialog.button.close' | translate"
       data-testid="close-button"
       (click)="close()"

@@ -13,12 +13,13 @@
   <app-context-menu
     [ariaLabel]="'organisms.solution_context_menu.detail' | translate"
     menuDescription="{{ 'organisms.solution_context_menu.detail' | translate }}"
+    data-testid="solution-detail-menu-item"
     menuIcon="settings_applications"
     [routerLink]="showSolutionDetailLink">
   </app-context-menu>
   <app-context-menu
     [ariaLabel]="'organisms.solution_context_menu.add_prediction' | translate"
-    data-testid="create-prediction-button"
+    data-testid="solution-add-prediction-menu-item"
     (click)="createPredictionButton.emit()"
     menuDescription="{{
       'organisms.solution_context_menu.add_prediction' | translate
@@ -28,7 +29,7 @@
   <app-context-menu
     [warningState]="true"
     [ariaLabel]="'organisms.solution_context_menu.settings.delete' | translate"
-    data-testid="solution-detail-button"
+    data-testid="solution-delete-menu-item"
     menuDescription="{{ 'organisms.solution_context_menu.delete' | translate }}"
     menuIcon="delete_forever"
     (click)="deleteSolutionButton.emit()">
