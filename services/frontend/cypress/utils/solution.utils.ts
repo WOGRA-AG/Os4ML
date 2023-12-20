@@ -1,5 +1,5 @@
 import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
-import {timeout} from "rxjs";
+import { timeout } from 'rxjs';
 
 export type CreateSolutionForm = {
   name: string;
@@ -16,11 +16,11 @@ export function visitSolutionsPage(): void {
 }
 
 export function createSolution({
-                                 name,
-                                 databagName,
-                                 outputField,
-                                 applyTransferLearning,
-                               }: CreateSolutionForm) {
+  name,
+  databagName,
+  outputField,
+  applyTransferLearning,
+}: CreateSolutionForm) {
   cy.findAllByTestId('add-solution', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -29,8 +29,6 @@ export function createSolution({
   cy.findByTestId('solution-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
-
-
 
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 
@@ -53,9 +51,7 @@ export function createSolution({
     cy.findByRole('switch', { name: /toggle for transfer learning/i }).click();
   }
 
-  cy.findByTestId('submit-solution')
-    .should('not.be.disabled')
-    .click();
+  cy.findByTestId('submit-solution').should('not.be.disabled').click();
 
   cy.findAllByTestId('solution-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
@@ -104,13 +100,14 @@ export function checkSolution(name: string) {
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 
-
 export function changeSolutionName(name: string, newName: string): void {
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
-  cy.findAllByTestId('solution-detail-menu-item', { timeout: TIMEOUT_LONG }).click();
+  cy.findAllByTestId('solution-detail-menu-item', {
+    timeout: TIMEOUT_LONG,
+  }).click();
   cy.url().should('include', '/solutions/detail');
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
@@ -135,7 +132,9 @@ export function deleteSolution(name: string) {
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
     .click();
-  cy.findAllByTestId('solution-detail-menu-item', { timeout: TIMEOUT_LONG }).click();
+  cy.findAllByTestId('solution-detail-menu-item', {
+    timeout: TIMEOUT_LONG,
+  }).click();
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );

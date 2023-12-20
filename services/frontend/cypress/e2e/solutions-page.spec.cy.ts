@@ -19,7 +19,6 @@ import {
   checkSolution,
 } from 'cypress/utils/solution.utils';
 
-
 const essentialMLEntitiesOnly =
   Cypress.env('createEssentialMLEntitiesOnly') === true;
 const id = Date.now();

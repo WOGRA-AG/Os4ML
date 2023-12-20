@@ -121,9 +121,7 @@ describe('Transfer learning page', () => {
     cy.get('mat-option').contains(transferLearningItem.name).click();
     cy.get('body').type('{esc}');
 
-    cy.findByTestId('submit-solution')
-      .should('not.be.disabled')
-      .click();
+    cy.findByTestId('submit-solution').should('not.be.disabled').click();
 
     cy.findByTestId('solutions-page', { timeout: TIMEOUT_LONG }).should(
       'be.visible'
