@@ -28,10 +28,13 @@
       (addAuthorizedUser)="addAuthorizedUser(transferLearningModel)">
     </app-transfer-learning-models-detail-authorized-users>
     <!--    <app-transfer-learning-models-detail-dependencies></app-transfer-learning-models-detail-dependencies>-->
+
     <app-transfer-learning-models-detail-delete-model
       *ngIf="
         (transferLearningModel.origin | stringToTLMOrigin) ===
-        TransferLearningModelOrigins.solution
+          TransferLearningModelOrigins.solution ||
+        (transferLearningModel.origin | stringToTLMOrigin) ===
+          TransferLearningModelOrigins.shared_solution
       "
       (deleteTransferLearningModel)="deleteTransferLearningModel()">
     </app-transfer-learning-models-detail-delete-model>

@@ -35,6 +35,14 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <app-transfer-learning-model-context-menu
+        [deleteTransferLearningModelDisabled]="
+          !(
+            (element.origin | stringToTLMOrigin) ===
+              TransferLearningModelOrigins.solution ||
+            (element.origin | stringToTLMOrigin) ===
+              TransferLearningModelOrigins.shared_solution
+          )
+        "
         (deleteTransferLearningModelButton)="
           deleteTransferLearningModelButton.emit(element?.id)
         "
