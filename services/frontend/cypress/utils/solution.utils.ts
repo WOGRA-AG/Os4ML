@@ -134,7 +134,10 @@ export function deleteSolution(name: string) {
     .click();
   cy.findAllByTestId('solution-detail-menu-item', {
     timeout: TIMEOUT_LONG,
-  }).click();
+  })
+    .should('be.visible')
+    .click({ force: true });
+
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );

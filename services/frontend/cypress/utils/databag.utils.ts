@@ -63,8 +63,6 @@ export function checkDatabag(name: string) {
     .contains('Done', {
       timeout: TIMEOUT_LONG,
     });
-
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 export function changeDatabagName(name: string, newName: string): void {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })

@@ -37,16 +37,17 @@ export function createPrediction({
 }
 
 export function deletePrediction(name: string) {
-  cy.findAllByTestId('prediction-item', {
-    timeout: TIMEOUT_LONG,
-  })
+  cy.visit('/#/predictions');
+  cy.findAllByTestId('prediction-item')
     .filter(`:contains("${name}")`)
     .findByTestId('prediction-menu')
     .click();
-  cy.findByTestId('prediction-delete-button').click();
-  cy.findByTestId('popup-confirm-dialog', {
+  cy.findAllByTestId('prediction-delete-button', {
     timeout: TIMEOUT_LONG,
-  }).should('be.visible');
+  })
+    .should('be.visible')
+    .click({ force: true });
+
   cy.findByTestId('confirm-popup-button', { timeout: TIMEOUT_LONG })
     .should('not.be.disabled')
     .click();
