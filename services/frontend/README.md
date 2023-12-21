@@ -3,7 +3,25 @@
 - 🛠️ [Getting started](#🛠️-getting-started)
 - 🧪 [Testing](#🧪-testing)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.3.
+The official OS4ML frontend app.
+
+- 📂 [Directory overview](#📂-directory-overview)
+- 🛠️ [Getting started](#🛠️-getting-started)
+- 🧪 [Testing](#🧪-testing)
+- 🌍 [i18n](#🌍-i18n)
+
+## 📂 Directory overview
+
+```bash
+├── [+] cypress/                # E2E and Integration tests with Cypress
+├── [+] nginx/                  # Nginx config for environments
+├── [+] src/                    # Source code of the app
+│    ├── app/                     # Angular source code
+│    ├── assets/                  # Project-related files, no code
+│    └── environments/            # Configurations for the environments
+├── README.md                   # Inception
+└── ...
+```
 
 ## 🛠️ Getting started
 
@@ -19,8 +37,8 @@ Create a `cypress.env.json` file just in case you need to run the E2E tests, wit
 ```json
 {
   "dev": "false",
-  "TEST_USER": "e2e",
-  "TEST_PASSWORD": "sZUG2jGC"
+  "TEST_USER": "XXX",
+  "TEST_PASSWORD": "XXX"
 }
 ```
 
@@ -33,7 +51,7 @@ Here there's a list of the most relevant scripts:
 - `start`: Starts the app
 - `start-frontend`: Starts the app with proxy configuration
 - `build`: Generate the bundle of the app
-- `test`: Execute the unit tests via
+- `test`: Execute the unit tests
 - `lint`: Runs the linter
 - `format`: Runs the linter and the formatter
 - `prettier`: Runs the formatter
@@ -46,17 +64,26 @@ Here there's a list of the most relevant scripts:
 
 #### Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component component-name` or the short version (`ng g c component-name`) to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 #### Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page or the [new homepage](https://angular.dev/).
 
 ## 🧪 Testing
 
-On this project is implemented, at the moment, these kind of tests:
+These types of tests are currently implemented in this project
 
 - ❌ Unit tests
 - ❌ Integration tests
 - ✅ E2E tests
 - ❌ Visual tests
+
+### Recomendations
+
+If you need to implement any kind of tests, we recommend you to take a look to the following [guide from Testing library](https://testing-library.com/docs/queries/about), specially to the [#priority](https://testing-library.com/docs/queries/about/#priority) section, which explains and justifies which kind of checks you should do on the app, taking into account and prioritizing how users interact with your code.
+
+## 🌍 i18n
+
+Currently we are still using the [ngx-translate](https://github.com/ngx-translate/core) package, but since this is not longer maintained, we will switch to the official [angular-localize](https://angular.io/api/localize) package.
+You find the tranlation files in `src/assets/i18n`.
