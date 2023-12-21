@@ -1,5 +1,12 @@
 # Changelog
 
+**0.7.1**
+- feat: new databag detail page
+- feat: color updates
+- feat: use context menues for actions in tables
+- fix: prediction with images
+- fix: mobile scrolling
+
 **0.7.0**
 - feat: optimize os4ml for mobile
 - feat: enhance support for large files
