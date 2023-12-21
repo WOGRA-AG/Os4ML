@@ -40,18 +40,24 @@
     }
   }
 
-  &.open span {
-    &:nth-child(1),
-    &:nth-child(4) {
-      top: 18px;
-      width: 0%;
-      left: 50%;
-    }
-    &:nth-child(2) {
-      transform: rotate(45deg);
-    }
-    &:nth-child(3) {
-      transform: rotate(-45deg);
+  &.open {
+    position: fixed;
+    right: 1rem;
+    span {
+      &:nth-child(1),
+      &:nth-child(4) {
+        top: 18px;
+        width: 0%;
+        left: 50%;
+      }
+
+      &:nth-child(2) {
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg);
+      }
     }
   }
 }
