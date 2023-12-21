@@ -40,7 +40,7 @@ Here there's a list of the most relevant scripts:
 
 On this project is implemented, at the moment, these kind of tests:
 
-- ⁉️ Unit tests
-- ⁉️ Integration tests
+- ✅ Unit tests
+- ✅ Integration tests
 - ⁉️ E2E tests
 - ⁉️ Visual tests

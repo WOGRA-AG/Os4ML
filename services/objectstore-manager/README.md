@@ -8,8 +8,6 @@ Handles storing and retrieving large files with multi-user isolation in differen
 
 ## 📂 Directory overview
 
-`TODO: Update directory overview`
-
 ```bash
 ├── [+] oas/                # Mirror of the services/oas directory (needed for docker build)
 ├── [+] src/                # Source code of the app
@@ -39,7 +37,7 @@ Here there's a list of the most relevant scripts:
 
 On this project is implemented, at the moment, these kind of tests:
 
-- ⁉️ Unit tests
-- ⁉️ Integration tests
+- ✅ Unit tests
+- ✅ Integration tests
 - ⁉️ E2E tests
 - ⁉️ Visual tests

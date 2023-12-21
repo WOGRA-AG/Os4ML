@@ -64,11 +64,10 @@ This is a quick overview about kind of tests implemented on each one of the proj
 | Project               | Unit | Integration | E2E | Screenshot |
 |-----------------------|------|-------------|-----|------------|
 | `/frontend`           |❌|❌|✅|❌|
-| `/job-manager`        |⁉️|⁉️|⁉️|⁉️|
-| `/keycloak`           |⁉️|⁉️|⁉️|⁉️|
-| `/model-manager`      |⁉️|⁉️|⁉️|⁉️|
-| `/objectstore-manager`|⁉️|⁉️|⁉️|⁉️|
-| `/workflow-translator`|⁉️|⁉️|⁉️|⁉️|
+| `/job-manager`        |✅|✅|❌|❌|
+| `/model-manager`      |✅|✅|❌|❌|
+| `/objectstore-manager`|✅|✅|❌|❌|
+| `/workflow-translator`|✅|✅|❌|❌|
 
 ## 🌟 Deployment
 

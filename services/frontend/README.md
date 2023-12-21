@@ -12,8 +12,6 @@ The official OS4ML frontend app.
 
 ## 📂 Directory overview
 
-> NOTE: \* symbol at the start of the text means that is OPTIONAL
-
 ```bash
 ├── [+] cypress/                # E2E and Integration tests with Cypress
 ├── [+] nginx/                  # Nginx config for environments
@@ -74,7 +72,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## 🧪 Testing
 
-On this project is implemented, at the moment, these kind of tests:
+These types of tests are currently implemented in this project
 
 - ❌ Unit tests
 - ❌ Integration tests
