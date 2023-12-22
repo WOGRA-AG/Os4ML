@@ -40,9 +40,15 @@
         'organisms.solution_create_form.form_fields.databag_id.aria_label'
           | translate
       ">
-      <mat-option *ngFor="let databag of databags" [value]="databag.id">{{
-        databag.name
-      }}</mat-option>
+      <mat-option
+        *ngFor="let databag of databags"
+        [value]="databag.id"
+        [disabled]="!(databag | isDatabagDone)">
+        <span *ngIf="databag | isDatabagDone">{{ databag.name }}</span>
+        <span class="disabled-option" *ngIf="!(databag | isDatabagDone)"
+          >{{ databag.name }} ({{ pipelineStatus.running }})</span
+        >
+      </mat-option>
     </mat-select>
     <mat-error *ngIf="databagId.invalid && databagId.touched">{{
       'organisms.solution_create_form.form_fields.databag_id.error' | translate

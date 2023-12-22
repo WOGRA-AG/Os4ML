@@ -36,6 +36,8 @@ import { NewButtonComponent } from '../../molecules/new-button/new-button.compon
 import { DatabagService } from '../../../services/databag.service';
 import { RouterLink } from '@angular/router';
 import { TransferLearningModelCreateButtonComponent } from '../transfer-learning-model-create-button/transfer-learning-model-create-button.component';
+import { IsDatabagDonePipe } from '../../../pipes/is-databag-done.pipe';
+import { PipelineStatus } from '../../../models/pipeline-status';
 
 interface TransferLearningSettingFormGroup {
   name: FormControl<string>;
@@ -62,6 +64,7 @@ interface TransferLearningSettingFormGroup {
     NewButtonComponent,
     RouterLink,
     TransferLearningModelCreateButtonComponent,
+    IsDatabagDonePipe,
   ],
 })
 export class SolutionCreateFormComponent implements OnInit, OnChanges {
@@ -70,6 +73,7 @@ export class SolutionCreateFormComponent implements OnInit, OnChanges {
   @Input() public transferLearningModels: TransferLearningModel[] = [];
   @Output() public addTransferLearningModel = new EventEmitter<void>();
   @Output() public submitSolution = new EventEmitter<Solution>();
+  public pipelineStatus = PipelineStatus;
 
   public createSolutionForm: FormGroup<{
     name: FormControl<string>;

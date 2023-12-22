@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule } from '@ngx-translate/core';
 import { Databag } from '../../../../../build/openapi/modelmanager';
 import { ShortStatusPipe } from '../../../pipes/short-status.pipe';
-import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
+import { IsDatabagDonePipe } from '../../../pipes/is-databag-done.pipe';
 
 @Component({
   selector: 'app-databag-context-menu',
@@ -22,7 +22,7 @@ import { IsSolutionDonePipe } from '../../../pipes/is-solution-done.pipe';
     MatMenuModule,
     TranslateModule,
     ShortStatusPipe,
-    IsSolutionDonePipe,
+    IsDatabagDonePipe,
   ],
 })
 export class DatabagContextMenuComponent {

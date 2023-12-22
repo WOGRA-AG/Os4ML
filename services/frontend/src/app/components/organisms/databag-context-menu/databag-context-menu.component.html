@@ -21,7 +21,7 @@
     menuIcon="edit">
   </app-context-menu>
   <app-context-menu
-    [disabled]="(databagElement.status | shortStatus) !== 'Done'"
+    [disabled]="!(databagElement | isDatabagDone)"
     [ariaLabel]="'organisms.solution_create_button.label' | translate"
     data-testid="add-solution-menu-item"
     (click)="createSolutionButton.emit()"
