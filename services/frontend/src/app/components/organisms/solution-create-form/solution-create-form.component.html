@@ -45,7 +45,7 @@
         [value]="databag.id"
         [disabled]="!(databag | isDatabagDone)">
         <span *ngIf="databag | isDatabagDone">{{ databag.name }}</span>
-        <span class="disabled-option" *ngIf="!(databag | isDatabagDone)"
+        <span *ngIf="!(databag | isDatabagDone)"
           >{{ databag.name }} ({{ pipelineStatus.running }})</span
         >
       </mat-option>

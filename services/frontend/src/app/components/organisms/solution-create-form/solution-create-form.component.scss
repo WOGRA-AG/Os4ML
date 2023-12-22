@@ -24,3 +24,8 @@ form {
     gap: 1rem;
   }
 }
+
+.mat-mdc-option.mdc-list-item--disabled {
+  cursor: not-allowed;
+  pointer-events: auto;
+}
