@@ -19,7 +19,7 @@ coverage = { version = "^5.3", extras = ["toml"] }
 pytest-mock = "^3.7.0"
 pytest = "^7.0.1"
 isort = { version = "^5.6.4", extras = ["pyproject"] }
-black = "^22.3.0"
+black = "^23.0.0"
 
 [tool.black]
 # https://github.com/psf/black
