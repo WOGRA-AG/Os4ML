@@ -17,7 +17,7 @@ import { SolutionDetailDeleteSolutionComponent } from '../../organisms/solution-
 import { MatIconModule } from '@angular/material/icon';
 import { SolutionService } from '../../../services/solution.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { filter, Observable, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
 import { PredictionsCreateDialogComponent } from '../predictions-create-dialog/predictions-create-dialog.component';
@@ -114,6 +114,7 @@ export class SolutionDetailPageComponent {
       .afterClosed()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+        filter(newName => newName !== undefined && newName !== solution.name),
         tap(newName => (solution.name = newName)),
         switchMap(() =>
           this.solutionService.updateSolutionById(this.solutionId, solution)

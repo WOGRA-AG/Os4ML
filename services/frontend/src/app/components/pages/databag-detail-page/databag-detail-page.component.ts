@@ -11,7 +11,7 @@ import { DatabagDetailFieldSettingsComponent } from '../../organisms/databag-det
 import { DatabagDetailDownloadDatabagComponent } from '../../organisms/databag-detail-download-databag/databag-detail-download-databag.component';
 import { DatabagDetailDeleteDatabagComponent } from '../../organisms/databag-detail-delete-databag/databag-detail-delete-databag.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { filter, Observable, switchMap, tap } from 'rxjs';
 import { Column, Databag } from '../../../../../build/openapi/modelmanager';
 import { DatabagService } from '../../../services/databag.service';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
@@ -92,6 +92,7 @@ export class DatabagDetailPageComponent {
       .afterClosed()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+        filter(newName => newName !== undefined && newName !== databag.name),
         tap(newName => (databag.name = newName)),
         switchMap(() =>
           this.databagService.updateDatabagById(this.databagId, databag)
