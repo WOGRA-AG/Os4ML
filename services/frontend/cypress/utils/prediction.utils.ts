@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
+import { TIMEOUT_LONG, getCheckA11y } from './e2e.utils';
 
 export type CreatePredictionForm = {
   name: string;
@@ -26,7 +26,7 @@ export function createPrediction({
   cy.findByTestId('prediction-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
   cy.findByTestId('input-name').scrollIntoView();
   cy.findByTestId('input-name').type(name);
   cy.findByTestId('input-solutionId').should('not.be.disabled').click();

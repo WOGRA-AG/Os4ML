@@ -1,9 +1,9 @@
 import {
   TIMEOUT_LONG,
-  handleA11yViolations,
   login,
   logout,
   getSupportingMLEntitieId,
+  getCheckA11y,
 } from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
@@ -72,7 +72,7 @@ describe('Predictions Page', () => {
   });
 
   it('Has no detectable accessibility violations on load', () => {
-    cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+    getCheckA11y();
   });
 
   context('Creating precictions', () => {

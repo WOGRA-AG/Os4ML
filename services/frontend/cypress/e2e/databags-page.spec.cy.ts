@@ -1,4 +1,8 @@
-import { handleA11yViolations, login, logout } from '../utils/e2e.utils';
+import {
+  getCheckA11y,
+  login,
+  logout,
+} from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   changeDatabagName,
@@ -41,7 +45,7 @@ describe('Databags Page', () => {
   });
 
   it('Has no detectable accessibility violations on load', () => {
-    cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+    getCheckA11y();
   });
 
   context('Creating databags', () => {

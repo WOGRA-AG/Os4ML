@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
+import { TIMEOUT_LONG, TIMEOUT_SHORT, getCheckA11y } from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;
@@ -43,7 +43,7 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
   cy.findByTestId('databag-create-dialog', {
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
 
   cy.findByTestId('input-name').clear().type(name);
   cy.findByTestId('file-input').invoke('show').selectFile(fixtureFilename);
@@ -64,21 +64,22 @@ export function checkDatabag(name: string) {
       timeout: TIMEOUT_LONG,
     });
 
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
 }
 export function changeDatabagName(name: string, newName: string): void {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();
-  cy.findByTestId('databag-detail-button').click();
+  cy.findByTestId('databag-detail-button').should('be.visible').click();
+  cy.wait(1500);
   cy.url().should('include', '/databags/detail');
   cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
   cy.findByTestId('databag-rename-button').click();
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
   cy.findByTestId('popup-input-field').focus().clear();
   cy.findByTestId('popup-input-field').type(newName);
   cy.findByTestId('popup-input-submit').click();

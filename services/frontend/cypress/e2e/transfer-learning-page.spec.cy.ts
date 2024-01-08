@@ -1,8 +1,8 @@
 import {
   TIMEOUT_LONG,
-  handleA11yViolations,
   login,
   getSupportingMLEntitieId,
+  getCheckA11y,
 } from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
@@ -79,7 +79,7 @@ describe('Transfer learning page', () => {
   });
 
   it('Should be accessible (a11y)', () => {
-    cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+    getCheckA11y();
   });
 
   it('Should create a new Transfer Learning via Model', function () {

@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
+import { TIMEOUT_LONG, TIMEOUT_SHORT, getCheckA11y } from './e2e.utils';
 
 export type CreateSolutionForm = {
   name: string;
@@ -29,8 +29,7 @@ export function createSolution({
     timeout: TIMEOUT_LONG,
   }).should('be.visible');
 
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
-
+  getCheckA11y();
   cy.findByTestId('input-name').clear().type(name);
 
   cy.findByTestId('input-databagId').click();
@@ -96,9 +95,10 @@ export function changeSolutionName(name: string, newName: string): void {
   cy.findByTestId('solution-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  cy.wait(1500);
+  getCheckA11y();
   cy.findByTestId('solution-rename-button').click();
-  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  getCheckA11y();
 
   cy.findByTestId('popup-input-field').focus().clear();
   cy.findByTestId('popup-input-field').type(newName);

@@ -78,3 +78,11 @@ export function getSupportingMLEntitieId(): string {
     return Date.now().toString();
   }
 }
+
+export function getCheckA11y() {
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+  cy.findAllByTestId('activate-darkmode', { timeout: TIMEOUT_SHORT })
+    .find('button')
+    .click({ force: true });
+  cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+}

@@ -1,6 +1,6 @@
 import {
+  getCheckA11y,
   getSupportingMLEntitieId,
-  handleA11yViolations,
   login,
   logout,
 } from '../utils/e2e.utils';
@@ -63,7 +63,7 @@ describe('Solutions Page', () => {
   });
 
   it('Has no detectable accessibility violations on load', () => {
-    cy.checkA11y(undefined, undefined, handleA11yViolations, true);
+    getCheckA11y();
   });
 
   context('Creating solutions', () => {
