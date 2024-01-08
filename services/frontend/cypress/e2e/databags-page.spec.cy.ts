@@ -1,8 +1,4 @@
-import {
-  getCheckA11y,
-  login,
-  logout,
-} from '../utils/e2e.utils';
+import { getCheckA11y, login, logout } from '../utils/e2e.utils';
 import {
   CreateDatabagForm,
   changeDatabagName,
