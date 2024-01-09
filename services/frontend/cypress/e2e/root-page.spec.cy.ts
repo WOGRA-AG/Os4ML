@@ -1,4 +1,4 @@
-import { changeToMobileView, login, logout } from '../utils/e2e.utils';
+import { login, logout } from '../utils/e2e.utils';
 
 describe('Root Page', () => {
   after('Clean up', () => {
@@ -74,7 +74,7 @@ describe('Root Page', () => {
 
   const testPageLinkInMobileView = (testId: string, url: string) => {
     it(`Test link ${url} page mobile`, () => {
-      changeToMobileView();
+      cy.viewport(430, 930);
       cy.findByTestId('hamburger-button').find('button').click();
       cy.findByTestId(testId).click();
       cy.url().should('include', `/${url}`);

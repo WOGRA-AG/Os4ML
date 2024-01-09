@@ -7,7 +7,6 @@ import {
 import {
   CreateDatabagForm,
   checkDatabag,
-  createDatabag,
   deleteDatabag,
   setupDatabag,
 } from 'cypress/utils/databag.utils';
@@ -32,6 +31,12 @@ const databagItem: CreateDatabagForm = {
 
 const solutionItem: CreateSolutionForm = {
   name: `Solution #${id}`,
+  databagName: databagItem.name,
+  applyTransferLearning: false,
+};
+
+const solutionItemMobile: CreateSolutionForm = {
+  name: `Solution mobile #${id} `,
   databagName: databagItem.name,
   applyTransferLearning: false,
 };
@@ -70,11 +75,22 @@ describe('Solutions Page', () => {
     it('add a Solution', () => {
       createSolution(solutionItem);
     });
+
+    it('add a Solution mobile', () => {
+      createSolution(solutionItemMobile);
+    });
   });
 
   context('Solutions updates', () => {
     it('change name', () => {
       changeSolutionName(solutionItem.name, getUpdatedName(solutionItem.name));
+    });
+
+    it('change name mobile', () => {
+      changeSolutionName(
+        solutionItemMobile.name,
+        getUpdatedName(solutionItemMobile.name)
+      );
     });
   });
 
@@ -82,11 +98,19 @@ describe('Solutions Page', () => {
     it('Check Solution', () => {
       checkSolution(getUpdatedName(solutionItem.name));
     });
+
+    it('Check Solution mobile', () => {
+      checkSolution(getUpdatedName(solutionItemMobile.name));
+    });
   });
 
   context('Solutions deletion', () => {
     it('delete a Solution', () => {
       deleteSolution(getUpdatedName(solutionItem.name));
+    });
+
+    it('delete a Solution mobile', () => {
+      deleteSolution(getUpdatedName(solutionItemMobile.name));
     });
   });
 });

@@ -2,7 +2,7 @@ import {
   TIMEOUT_LONG,
   handleA11yViolations,
   TIMEOUT_SHORT,
-  changeToMobileView,
+  isMobile,
 } from './e2e.utils';
 
 export type CreateDatabagForm = {
@@ -40,7 +40,7 @@ export function setupDatabag(databagItem: CreateDatabagForm): void {
 }
 
 export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
-  isMobile(name);
+  if (isMobile(name)) cy.viewport(430, 930);
   cy.findAllByTestId('add-databag', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -60,7 +60,7 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
 }
 
 export function checkDatabag(name: string) {
-  if (isMobile(name)) changeToMobileView();
+  if (isMobile(name)) cy.viewport(430, 930);
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .should('exist');
@@ -74,7 +74,7 @@ export function checkDatabag(name: string) {
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 export function changeDatabagName(name: string, newName: string): void {
-  if (isMobile(name)) changeToMobileView();
+  if (isMobile(name)) cy.viewport(430, 930);
   goToDetailPage(name);
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.findByTestId('databag-rename-button').click();
@@ -91,7 +91,7 @@ export function changeDatabagName(name: string, newName: string): void {
 
 export function deleteDatabag(name: string) {
   cy.visit('/#/databags');
-  if (isMobile(name)) changeToMobileView();
+  if (isMobile(name)) cy.viewport(430, 930);
   goToDetailPage(name);
   cy.findByTestId('databag-delete-button').click();
   cy.findByTestId('confirm-popup-button').click();
@@ -100,20 +100,16 @@ export function deleteDatabag(name: string) {
   cy.findAllByText(name).should('have.length', 0);
 }
 export function goToDetailPage(name: string) {
-  cy.wait(1000);
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
     .click();
+  cy.wait(1000);
   cy.findByTestId('databag-detail-button').click();
   cy.url().should('include', '/databags/detail');
   cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
-}
-
-export function isMobile(name: string) {
-  return name.includes('mobile');
 }
 
 //export function cleanUpDatabag(name: string) {}

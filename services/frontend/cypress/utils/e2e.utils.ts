@@ -79,6 +79,6 @@ export function getSupportingMLEntitieId(): string {
   }
 }
 
-export function changeToMobileView() {
-  cy.viewport(430, 930);
+export function isMobile(name: string) {
+  return name.includes('mobile');
 }
