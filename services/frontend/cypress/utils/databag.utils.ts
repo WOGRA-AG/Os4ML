@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
+import {TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT, changeToMobileView} from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;
@@ -35,6 +35,7 @@ export function setupDatabag(databagItem: CreateDatabagForm): void {
 }
 
 export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
+  isMobile(name);
   cy.findAllByTestId('add-databag', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -54,6 +55,7 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
 }
 
 export function checkDatabag(name: string) {
+  if(isMobile(name)) changeToMobileView();
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .should('exist');
@@ -67,15 +69,8 @@ export function checkDatabag(name: string) {
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 export function changeDatabagName(name: string, newName: string): void {
-  cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
-    .filter(`:contains("${name}")`)
-    .findByTestId('databag-menu')
-    .click();
-  cy.findByTestId('databag-detail-button').click();
-  cy.url().should('include', '/databags/detail');
-  cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
-    'be.visible'
-  );
+  if(isMobile(name)) changeToMobileView();
+  goToDetailPage(name);
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.findByTestId('databag-rename-button').click();
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
@@ -91,7 +86,16 @@ export function changeDatabagName(name: string, newName: string): void {
 
 export function deleteDatabag(name: string) {
   cy.visit('/#/databags');
+  if(isMobile(name)) changeToMobileView();
+  goToDetailPage(name)
+  cy.findByTestId('databag-delete-button').click();
+  cy.findByTestId('confirm-popup-button').click();
 
+  cy.visit('/#/databags');
+  cy.findAllByText(name).should('have.length', 0);
+}
+export function goToDetailPage(name: string) {
+  cy.wait(1000);
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .findByTestId('databag-menu')
@@ -101,11 +105,11 @@ export function deleteDatabag(name: string) {
   cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'
   );
-  cy.findByTestId('databag-delete-button').click();
-  cy.findByTestId('confirm-popup-button').click();
-
-  cy.visit('/#/databags');
-  cy.findAllByText(name).should('have.length', 0);
 }
 
-export function cleanUpDatabag(name: string) {}
+export function isMobile(name: string) {
+  return name.includes('mobile');
+}
+
+//export function cleanUpDatabag(name: string) {}
+

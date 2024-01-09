@@ -81,5 +81,4 @@ export function getSupportingMLEntitieId(): string {
 
 export function changeToMobileView() {
   cy.viewport(430, 930);
-  cy.findByTestId('hamburger-button').find('button').click();
 }

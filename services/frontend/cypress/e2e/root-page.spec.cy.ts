@@ -75,6 +75,7 @@ describe('Root Page', () => {
   const testPageLinkInMobileView = (testId: string, url: string) => {
     it(`Test link ${url} page mobile`, () => {
       changeToMobileView();
+      cy.findByTestId('hamburger-button').find('button').click();
       cy.findByTestId(testId).click();
       cy.url().should('include', `/${url}`);
       cy.findByTestId(`${url}-page`).should('be.visible');

@@ -25,6 +25,11 @@ const databagZipItem: CreateDatabagForm = {
   fixtureFilename: 'cypress/fixtures/databags/raw_data_small.zip',
 };
 
+const databagMobileItem: CreateDatabagForm = {
+  name: `Databag for databag specs #${id} - mobile`,
+  fixtureFilename: 'cypress/fixtures/databags/titanic-small.xlsx',
+}
+
 function getUpdatedName(name: string) {
   return `${name} - updated`;
 }
@@ -56,6 +61,10 @@ describe('Databags Page', () => {
     it('add a Databag zip', () => {
       createDatabag(databagZipItem);
     });
+
+    it('add a Databag mobile', () => {
+      createDatabag(databagMobileItem);
+    })
   });
 
   context('Created databags shall be processed', () => {
@@ -70,12 +79,20 @@ describe('Databags Page', () => {
     it('check a Databag zip', () => {
       checkDatabag(databagZipItem.name);
     });
+
+    it('check a Databag mobile', () => {
+      checkDatabag(databagMobileItem.name);
+    })
   });
 
   context('Databags updates', () => {
     it('change name', () => {
       changeDatabagName(databagItem.name, getUpdatedName(databagItem.name));
     });
+
+    it('change name mobile', () => {
+      changeDatabagName(databagMobileItem.name, getUpdatedName(databagMobileItem.name));
+    })
   });
 
   context('Databags deletion', () => {
@@ -90,5 +107,9 @@ describe('Databags Page', () => {
     it('delete a Databag zip', () => {
       deleteDatabag(databagZipItem.name);
     });
+
+    it('delete a Databag mobile', () => {
+      deleteDatabag(databagMobileItem.name);
+    })
   });
 });
