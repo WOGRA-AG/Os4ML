@@ -1,4 +1,9 @@
-import {TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT, changeToMobileView} from './e2e.utils';
+import {
+  TIMEOUT_LONG,
+  handleA11yViolations,
+  TIMEOUT_SHORT,
+  changeToMobileView,
+} from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;
@@ -55,7 +60,7 @@ export function createDatabag({ name, fixtureFilename }: CreateDatabagForm) {
 }
 
 export function checkDatabag(name: string) {
-  if(isMobile(name)) changeToMobileView();
+  if (isMobile(name)) changeToMobileView();
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
     .should('exist');
@@ -69,7 +74,7 @@ export function checkDatabag(name: string) {
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
 }
 export function changeDatabagName(name: string, newName: string): void {
-  if(isMobile(name)) changeToMobileView();
+  if (isMobile(name)) changeToMobileView();
   goToDetailPage(name);
   cy.checkA11y(undefined, undefined, handleA11yViolations, true);
   cy.findByTestId('databag-rename-button').click();
@@ -86,8 +91,8 @@ export function changeDatabagName(name: string, newName: string): void {
 
 export function deleteDatabag(name: string) {
   cy.visit('/#/databags');
-  if(isMobile(name)) changeToMobileView();
-  goToDetailPage(name)
+  if (isMobile(name)) changeToMobileView();
+  goToDetailPage(name);
   cy.findByTestId('databag-delete-button').click();
   cy.findByTestId('confirm-popup-button').click();
 
@@ -112,4 +117,3 @@ export function isMobile(name: string) {
 }
 
 //export function cleanUpDatabag(name: string) {}
-
