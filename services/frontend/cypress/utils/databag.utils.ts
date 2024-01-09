@@ -102,10 +102,10 @@ export function deleteDatabag(name: string) {
 export function goToDetailPage(name: string) {
   cy.findAllByTestId('databag-item', { timeout: TIMEOUT_LONG })
     .filter(`:contains("${name}")`)
-    .findByTestId('databag-menu')
+    .findByTestId('databag-menu', { timeout: TIMEOUT_LONG })
     .click();
+  cy.findByTestId('databag-detail-button', { timeout: TIMEOUT_LONG }).click();
   cy.wait(1000);
-  cy.findByTestId('databag-detail-button').click();
   cy.url().should('include', '/databags/detail');
   cy.findByTestId('databag-detail-page', { timeout: TIMEOUT_LONG }).should(
     'be.visible'

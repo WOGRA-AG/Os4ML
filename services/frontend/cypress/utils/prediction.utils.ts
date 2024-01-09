@@ -1,4 +1,4 @@
-import { TIMEOUT_LONG, handleA11yViolations } from './e2e.utils';
+import { TIMEOUT_LONG, handleA11yViolations, isMobile } from './e2e.utils';
 
 export type CreatePredictionForm = {
   name: string;
@@ -18,6 +18,7 @@ export function createPrediction({
   solutionName,
   file,
 }: CreatePredictionForm) {
+  if (isMobile(name)) cy.viewport(430, 930);
   cy.findByTestId('predictions-page-actions', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -37,6 +38,7 @@ export function createPrediction({
 }
 
 export function deletePrediction(name: string) {
+  if (isMobile(name)) cy.viewport(430, 930);
   cy.findAllByTestId('prediction-item', {
     timeout: TIMEOUT_LONG,
   })
