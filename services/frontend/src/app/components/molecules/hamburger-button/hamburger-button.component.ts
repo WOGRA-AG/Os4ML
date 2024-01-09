@@ -11,4 +11,5 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class HamburgerButtonComponent {
   @Input() public isActive = false;
+  @Input() public testId = '';
 }

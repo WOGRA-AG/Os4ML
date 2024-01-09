@@ -78,3 +78,8 @@ export function getSupportingMLEntitieId(): string {
     return Date.now().toString();
   }
 }
+
+export function changeToMobileView() {
+  cy.viewport(430, 930);
+  cy.findByTestId('hamburger-button').find('button').click();
+}
