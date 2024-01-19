@@ -168,7 +168,7 @@ If you are using Os4ML for a scientific project, please cite the following paper
 Rall, D., Bauer, B., & Fraunholz, T. (2023). Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach. Proceedings of the 2023 7th International Conference on Cloud and Big Data Computing, 34–39. [https://doi.org/10.1145/3616131.3616136](https://doi.org/10.1145/3616131.3616136)
 
 ```bibtex
-@inproceedings{10.1145/3616131.3616136,
+@inproceedings{rall2023towards,
 author={Rall, Dennis and Bauer, Bernhard and Fraunholz, Thomas},
 title={Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach},
 year={2023},
@@ -189,7 +189,7 @@ series={ICCBDC '23}
 Rall, D., Fraunholz, T., & Bauer, B. (2023). AI-Democratization: From Data-first to Human-first AI. Central European Conference on Information and Intelligent Systems, 261–267.
 
 ```bibtex
-@inproceedings{rail2023ai,
+@inproceedings{rall2023ai,
   title={AI-Democratization: From Data-first to Human-first AI},
   author={Rall, Dennis and Fraunholz, Thomas and Bauer, Bernhard},
   booktitle={Central European Conference on Information and Intelligent Systems},
