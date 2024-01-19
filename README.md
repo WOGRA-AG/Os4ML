@@ -169,20 +169,20 @@ Rall, D., Bauer, B., & Fraunholz, T. (2023). Towards Democratizing AI: A Compara
 
 ```bibtex
 @inproceedings{rall2023towards,
-author={Rall, Dennis and Bauer, Bernhard and Fraunholz, Thomas},
-title={Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach},
-year={2023},
-isbn={9798400707339},
-publisher={Association for Computing Machinery},
-address={New York, NY, USA},
-url={https://doi.org/10.1145/3616131.3616136},
-doi={10.1145/3616131.3616136},
-booktitle={Proceedings of the 2023 7th International Conference on Cloud and Big Data Computing},
-pages={34–39},
-numpages={6},
-keywords={AI-as-a-Service, Cloud Computing, Platform, Artificial Intelligence},
-location={Manchester, United Kingdom},
-series={ICCBDC '23}
+  author={Rall, Dennis and Bauer, Bernhard and Fraunholz, Thomas},
+  title={Towards Democratizing AI: A Comparative Analysis of AI as a Service Platforms and the Open Space for Machine Learning Approach},
+  year={2023},
+  isbn={9798400707339},
+  publisher={Association for Computing Machinery},
+  address={New York, NY, USA},
+  url={https://doi.org/10.1145/3616131.3616136},
+  doi={10.1145/3616131.3616136},
+  booktitle={Proceedings of the 2023 7th International Conference on Cloud and Big Data Computing},
+  pages={34–39},
+  numpages={6},
+  keywords={AI-as-a-Service, Cloud Computing, Platform, Artificial Intelligence},
+  location={Manchester, United Kingdom},
+  series={ICCBDC '23}
 }
 ```
 
