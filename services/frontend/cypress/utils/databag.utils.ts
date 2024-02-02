@@ -1,8 +1,4 @@
-import {
-  TIMEOUT_LONG,
-  handleA11yViolations,
-  TIMEOUT_SHORT,
-} from './e2e.utils';
+import { TIMEOUT_LONG, handleA11yViolations, TIMEOUT_SHORT } from './e2e.utils';
 
 export type CreateDatabagForm = {
   name: string;

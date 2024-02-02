@@ -36,7 +36,7 @@ export function handleA11yViolations(violations: Array<Result>) {
 }
 
 export function login(path?: string) {
-  if(isMobile) {
+  if (isMobile) {
     cy.viewport(430, 930);
   } else {
     cy.viewport(1280, 720);

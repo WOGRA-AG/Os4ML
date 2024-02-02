@@ -1,4 +1,4 @@
-import {isMobileMode, login, logout} from '../utils/e2e.utils';
+import { isMobileMode, login, logout } from '../utils/e2e.utils';
 
 describe('Root Page', () => {
   after('Clean up', () => {
@@ -13,7 +13,7 @@ describe('Root Page', () => {
 
   const testPageLink = (testId: string, url: string) => {
     it(`Test link ${url} page`, () => {
-      if(isMobileMode()) {
+      if (isMobileMode()) {
         cy.findByTestId('hamburger-button').find('button').click();
       }
       cy.findByTestId(testId).click();
@@ -26,5 +26,4 @@ describe('Root Page', () => {
   testPageLink('solutions-page-link', 'solutions');
   testPageLink('predictions-page-link', 'predictions');
   testPageLink('transfer-learning-page-link', 'transfer-learning');
-
 });
