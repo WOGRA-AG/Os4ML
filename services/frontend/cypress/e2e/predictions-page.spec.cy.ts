@@ -44,12 +44,6 @@ const predictionItem: CreatePredictionForm = {
   file: 'cypress/fixtures/predictions/titanic_predict.csv',
 };
 
-const predictionItemMobile: CreatePredictionForm = {
-  name: `Prediction mobile #${id}`,
-  solutionName: solutionItem.name,
-  file: 'cypress/fixtures/predictions/titanic_predict.csv',
-};
-
 describe('Predictions Page', () => {
   before('Prepare data for tests', () => {
     login('#/databags');
@@ -94,19 +88,6 @@ describe('Predictions Page', () => {
           timeout: TIMEOUT_LONG,
         });
     });
-
-    it('add a Prediction mobile', () => {
-      createPrediction(predictionItemMobile);
-
-      cy.findAllByTestId('prediction-item')
-        .filter(`:contains("${predictionItemMobile.name}")`)
-        .should('exist');
-      cy.findAllByTestId('prediction-item')
-        .filter(`:contains("${predictionItemMobile.name}")`)
-        .contains('Done', {
-          timeout: TIMEOUT_LONG,
-        });
-    });
   });
 
   context('Predictions deletion', () => {
@@ -116,15 +97,6 @@ describe('Predictions Page', () => {
       cy.findByTestId('prediction-table').should(
         'not.contain',
         predictionItem.name
-      );
-    });
-
-    it('delete a Prediction mobile', () => {
-      deletePrediction(predictionItemMobile.name);
-
-      cy.findByTestId('prediction-table').should(
-        'not.contain',
-        predictionItemMobile.name
       );
     });
   });

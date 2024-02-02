@@ -20,6 +20,7 @@
     "prettier": "prettier --write .",
     "config-prettier": "eslint-config-prettier src/main.ts",
     "e2e:visually:local": "cross-env CYPRESS_dev=true npx cypress open",
+    "e2e:visually:local:mobile": "cross-env CYPRESS_dev=true CYPRESS_mobile=true npx cypress open",
     "e2e:visually:local:fast": "cross-env CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",
     "e2e:visually:testing": "npx cypress open",
     "e2e:visually:testing:fast": "cross-env CYPRESS_createEssentialMLEntitiesOnly=true npx cypress open",

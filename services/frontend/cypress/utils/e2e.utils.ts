@@ -3,6 +3,7 @@ import { NodeResult, Result } from 'axe-core';
 const isDev = Cypress.env('dev') === true;
 const essentialMLEntitiesOnly =
   Cypress.env('createEssentialMLEntitiesOnly') === true;
+const isMobile = Cypress.env('mobile') === true;
 export const TIMEOUT_LONG = 60 * 1000 * 10; /* Number of minutes */
 export const TIMEOUT_SHORT = 5 * 1000;
 
@@ -35,7 +36,11 @@ export function handleA11yViolations(violations: Array<Result>) {
 }
 
 export function login(path?: string) {
-  cy.viewport(1280, 720);
+  if(isMobile) {
+    cy.viewport(430, 930);
+  } else {
+    cy.viewport(1280, 720);
+  }
   if (isDev) {
     cy.visit(`http://localhost:4200/${path ? path : ''}`);
     cy.log('Login Disabled');
@@ -79,6 +84,6 @@ export function getSupportingMLEntitieId(): string {
   }
 }
 
-export function isMobile(name: string) {
-  return name.includes('mobile');
+export function isMobileMode() {
+  return isMobile;
 }

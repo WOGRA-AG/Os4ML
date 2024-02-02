@@ -2,7 +2,6 @@ import {
   TIMEOUT_LONG,
   handleA11yViolations,
   TIMEOUT_SHORT,
-  isMobile,
 } from './e2e.utils';
 
 export type CreateSolutionForm = {
@@ -25,7 +24,6 @@ export function createSolution({
   outputField,
   applyTransferLearning,
 }: CreateSolutionForm) {
-  if (isMobile(name)) cy.viewport(430, 930);
   cy.findAllByTestId('add-solution', { timeout: TIMEOUT_LONG })
     .parent()
     .should('not.be.disabled')
@@ -82,7 +80,6 @@ export function setupSolution(solutionItem: CreateSolutionForm): void {
 }
 
 export function checkSolution(name: string) {
-  if (isMobile(name)) cy.viewport(430, 930);
   const rowTable = cy
     .findByText(name, {
       timeout: TIMEOUT_LONG,
@@ -94,7 +91,6 @@ export function checkSolution(name: string) {
   });
 }
 export function changeSolutionName(name: string, newName: string): void {
-  if (isMobile(name)) cy.viewport(430, 930);
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
     .findByTestId('solution-menu')
@@ -120,7 +116,6 @@ export function changeSolutionName(name: string, newName: string): void {
 }
 
 export function deleteSolution(name: string) {
-  if (isMobile(name)) cy.viewport(430, 930);
   cy.visit('/#/solutions');
   cy.findAllByTestId('solution-item')
     .filter(`:contains("${name}")`)
