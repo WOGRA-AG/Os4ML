@@ -24,7 +24,6 @@ from src.services import (
 )
 from src.services.auth_service import get_parsed_token, mock_token_with_user_id
 from src.services.databag_service import DatabagService
-from src.services.init_api_clients import init_objectstore_api
 from src.services.messaging_service import MessagingService
 from src.services.solution_service import SolutionService
 
@@ -101,7 +100,7 @@ class TransferLearningService:
 
     def __init__(
         self,
-        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
+        objectstore: ObjectstoreApi = Depends(),
         solution_service: SolutionService = Depends(),
         databag_service: DatabagService = Depends(),
     ):

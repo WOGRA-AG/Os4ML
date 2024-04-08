@@ -33,10 +33,6 @@ from src.services import (
 )
 from src.services.auth_service import get_parsed_token
 from src.services.databag_service import DatabagService
-from src.services.init_api_clients import (
-    init_jobmanager_api,
-    init_objectstore_api,
-)
 from src.services.messaging_service import MessagingService
 
 
@@ -45,8 +41,8 @@ class SolutionService:
 
     def __init__(
         self,
-        objectstore: ObjectstoreApi = Depends(init_objectstore_api),
-        jobmanager: JobmanagerApi = Depends(init_jobmanager_api),
+        objectstore: ObjectstoreApi = Depends(),
+        jobmanager: JobmanagerApi = Depends(),
         databag_service: DatabagService = Depends(),
     ):
         self.objectstore = objectstore
