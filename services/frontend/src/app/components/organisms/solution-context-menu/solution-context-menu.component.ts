@@ -28,7 +28,8 @@ import { Solution } from '../../../../../build/openapi/modelmanager';
   ],
 })
 export class SolutionContextMenuComponent {
-  @Output() public createPredictionButton = new EventEmitter<string>();
+  @Output() public createPredictionButton = new EventEmitter<void>();
+  @Output() public deleteSolutionButton = new EventEmitter<void>();
   @Input() public showPredictionParams: Params = {};
   @Input() public showPredictionLink: string[] | string = [];
   @Input() public showSolutionDetailParams: Params = {};

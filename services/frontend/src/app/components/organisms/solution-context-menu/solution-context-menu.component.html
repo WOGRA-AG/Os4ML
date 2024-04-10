@@ -11,6 +11,16 @@
 
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
+    [ariaLabel]="
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    "
+    data-testid="solution-detail-button"
+    menuDescription="{{
+      'organisms.solution_data_table.actions.settings.tooltip' | translate
+    }}"
+    menuIcon="settings"
+    [routerLink]="showSolutionDetailLink"></app-context-menu>
+  <app-context-menu
     [ariaLabel]="'organisms.prediction_create_button.label' | translate"
     data-testid="create-prediction-button"
     (click)="createPredictionButton.emit()"
@@ -34,13 +44,11 @@
     [queryParams]="showPredictionParams">
   </app-context-menu>
   <app-context-menu
-    [ariaLabel]="
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
-    "
-    data-testid="solution-detail-button"
+    [ariaLabel]="'organisms.solution-detail-delete-solution.button' | translate"
+    (click)="deleteSolutionButton.emit()"
     menuDescription="{{
-      'organisms.solution_data_table.actions.settings.tooltip' | translate
+      'organisms.solution-detail-delete-solution.button' | translate
     }}"
-    menuIcon="settings_applications"
-    [routerLink]="showSolutionDetailLink"></app-context-menu>
+    menuIcon="delete">
+  </app-context-menu>
 </mat-menu>
