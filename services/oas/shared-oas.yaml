@@ -148,6 +148,8 @@ components:
           $ref: '#/components/schemas/Url'
           nullable: true
     ModelShare:
+      type: object
+      nullable: true
       required:
         - userId
         - transferLearningModelId
@@ -176,6 +178,7 @@ components:
           nullable: true
           $ref: '#/components/schemas/ModelShare'
         modelShares:
+          nullable: true
           type: array
           items:
             $ref: '#/components/schemas/ModelShare'
