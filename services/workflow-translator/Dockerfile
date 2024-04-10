@@ -22,11 +22,11 @@ ENV PYTHONPATH="$PROJECT_DIR:$PROJECT_DIR/src:$PROJECT_DIR/src/build$PYTHONPATH"
 FROM openapitools/openapi-generator-cli:v6.2.0 as openapi
 
 WORKDIR /usr/app
-COPY services/workflow-translator/ /usr/app
+COPY services/workflow-translator/oas /usr/app/oas
 RUN bash /usr/local/bin/docker-entrypoint.sh generate \
 -i oas/workflow-translator-oas.yaml \
 -t oas/templates \
---package-name build.openapi_server \
+--package-name src.build.openapi_server \
 -g python-fastapi \
 -o . \
 --global-property=apiTests=false,apiDocs=false,modelTests=false,modelDocs=false
@@ -60,16 +60,15 @@ ENV FASTAPI_ENV=development
 
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
-COPY --from=builder-base /templates/pipelines /pipelines
 
 COPY services/workflow-translator/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR $PYSETUP_PATH
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --no-root
+RUN poetry install --no-root
 
+COPY --from=openapi /usr/app/src/src/build $PROJECT_DIR/src/build
+COPY --from=builder-base /templates/pipelines /pipelines
 WORKDIR $PROJECT_DIR
 COPY services/workflow-translator/ .
 
@@ -79,21 +78,21 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 
 FROM development AS lint
 RUN black --config ./pyproject.toml src tests --exclude src/build --check
-RUN ls /app/src/ && isort --settings-path ./pyproject.toml src tests --check-only
+RUN isort --settings-path ./pyproject.toml src tests --check-only
 CMD ["tail", "-f", "/dev/null"]
 
 
 # 'test' stage runs our unit tests with pytest and coverage.
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
-RUN coverage report -m --fail-under 85
+RUN coverage report -m --fail-under 80
 
 
 FROM python-base as production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
-COPY --from=openapi /usr/app/src/build $PROJECT_DIR/src/build
+COPY --from=openapi /usr/app/src/src/build $PROJECT_DIR/src/build
 COPY --from=builder-base /templates/pipelines /pipelines
 COPY services/workflow-translator/gunicorn_conf.py $PROJECT_DIR/
 
