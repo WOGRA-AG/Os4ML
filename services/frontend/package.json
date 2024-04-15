@@ -26,7 +26,8 @@
     "e2e:cli:local": "npx cypress run  CYPRESS_dev=false CYPRESS_dev=true CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome",
     "e2e:cli:local:fast": "cross-env CYPRESS_dev=true npx cypress run --spec 'cypress/e2e/**' --browser chrome",
     "e2e:cli:testing": "npx cypress run --spec 'cypress/e2e/**' --browser chrome",
-    "e2e:cli:testing:fast": "npx cypress run  CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome"
+    "e2e:cli:testing:fast": "npx cypress run  CYPRESS_createEssentialMLEntitiesOnly=true --spec 'cypress/e2e/**' --browser chrome",
+    "i18n": "ng extract-i18n"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +59,7 @@
     "@angular-eslint/template-parser": "17.3.0",
     "@angular/cli": "17.3.4",
     "@angular/compiler-cli": "17.3.4",
+    "@angular/localize": "^17.3.4",
     "@openapitools/openapi-generator-cli": "^2.13.1",
     "@testing-library/cypress": "10.0.1",
     "@types/jasmine": "4.3.6",
