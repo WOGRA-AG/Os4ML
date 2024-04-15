@@ -14,6 +14,7 @@ import { DatabagDataTableComponent } from '../../organisms/databag-data-table/da
 import { DatabagCreateButtonComponent } from '../../organisms/databag-create-button/databag-create-button.component';
 import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databags-create-dialog.component';
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
+import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
 
 @Component({
   selector: 'app-databags-page',
@@ -47,6 +48,25 @@ export class DatabagsPageComponent {
     this.dialog.open(SolutionCreateDialogComponent, {
       data: { databagId },
     });
+  }
+  openDeleteDatabagDialog(databagId: string): void {
+    const deleteDatabag = this.databagService.deleteDatabagById(databagId);
+    this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
+      data: {
+        titleKey: 'organisms.popup_confirm.delete_databag.title',
+        messageKey: 'organisms.popup_confirm.delete_databag.message',
+        onConfirm: deleteDatabag,
+      },
+    });
+    // deleteDialogRef
+    //   .afterClosed()
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe(confirm => {
+    //     if (confirm) {
+    //       this.router.navigate(['/databags']);
+    //     }
+    //   });
   }
   addDatabag(): void {
     this.dialog.open(DatabagsCreateDialogComponent, {

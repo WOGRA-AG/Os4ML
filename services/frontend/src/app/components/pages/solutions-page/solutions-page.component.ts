@@ -19,6 +19,7 @@ import { DatabagsCreateDialogComponent } from '../databags-create-dialog/databag
 import { MlEntityStatusPlaceholderComponent } from '../../organisms/ml-entity-status-placeholder/ml-entity-status-placeholder.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SolutionCreateDialogComponent } from '../solution-create-dialog/solution-create-dialog.component';
+import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confirm.component';
 
 @Component({
   selector: 'app-solutions-page',
@@ -89,6 +90,17 @@ export class SolutionsPageComponent {
     this.dialog.open(PredictionsCreateDialogComponent, {
       ariaLabelledBy: 'dialog-title',
       data: { solutionId },
+    });
+  }
+  openDeleteSolutionDialog(solutionId: string): void {
+    const deleteSolution = this.solutionService.deleteSolutionById(solutionId);
+    this.dialog.open(PopupConfirmComponent, {
+      ariaLabelledBy: 'dialog-title',
+      data: {
+        titleKey: 'organisms.popup_confirm.delete_solution.title',
+        messageKey: 'organisms.popup_confirm.delete_solution.message',
+        onConfirm: deleteSolution,
+      },
     });
   }
 }

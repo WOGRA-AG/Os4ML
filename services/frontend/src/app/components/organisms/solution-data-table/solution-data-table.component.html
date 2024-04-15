@@ -70,6 +70,7 @@
       <app-solution-context-menu
         [solutionElement]="element"
         (createPredictionButton)="createPredictionButton.emit(element.id)"
+        (deleteSolutionButton)="deleteSolutionButton.emit(element.id)"
         [showPredictionLink]="['/predictions']"
         [showPredictionParams]="{
           selectedDatabag: element.databagId,

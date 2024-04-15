@@ -38,6 +38,7 @@ import { SolutionContextMenuComponent } from '../solution-context-menu/solution-
 export class DatabagDataTableComponent {
   @Input() public databags: Databag[] = [];
   @Output() public createSolutionButton = new EventEmitter<string>();
+  @Output() public deleteDatabagButton = new EventEmitter<string>();
 
   public displayedColumns: string[] = [
     'databagName',
