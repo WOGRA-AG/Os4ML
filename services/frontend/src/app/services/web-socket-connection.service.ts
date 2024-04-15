@@ -11,13 +11,13 @@ export class WebSocketConnectionService {
 
   constructor(private userService: UserService) {}
 
-  connect(path: string): Observable<any> {
+  connect<T>(path: string): Observable<T> {
     return this.userService.currentToken$.pipe(
       map(
         token =>
           `${this.webSocketProtocol}://${location.host}${path}?usertoken=${token}`
       ),
-      switchMap(url => webSocket(url)),
+      switchMap(url => webSocket<T>(url)),
       retry(),
       shareReplay(1)
     );

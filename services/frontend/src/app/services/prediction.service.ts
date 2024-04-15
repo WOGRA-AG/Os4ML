@@ -113,9 +113,9 @@ export class PredictionService {
 
   // Private methods
   private initializePredictions(): void {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(
-      predictionsWebsocketPath
-    );
+    const webSocketConnection$ = this.webSocketConnectionService.connect<
+      Prediction[]
+    >(predictionsWebsocketPath);
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getPredictions(token)),

@@ -28,9 +28,9 @@ export class TransferLearningService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(
-      transferLearningWebsocketPath
-    );
+    const webSocketConnection$ = this.webSocketConnectionService.connect<
+      TransferLearningModel[]
+    >(transferLearningWebsocketPath);
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getTransferLearningModels(token)),
