@@ -4,9 +4,9 @@ from typing import Any, Generator, Optional
 
 import yaml
 
-from repositories import FS
-from repositories.interfaces.template_repository import TemplateRepository
-from services import (
+from src.repositories import FS
+from src.repositories.interfaces.template_repository import TemplateRepository
+from src.services import (
     APPLY_NODE_SELECTOR,
     APPLY_NODE_TOLERATION,
     OS4ML_NAMESPACE_ENV,
