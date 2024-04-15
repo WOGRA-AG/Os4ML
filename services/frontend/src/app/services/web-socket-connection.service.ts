@@ -11,7 +11,7 @@ export class WebSocketConnectionService {
 
   constructor(private userService: UserService) {}
 
-  connect(path: string): Observable<any> {
+  connect(path: string): Observable<unknown> {
     return this.userService.currentToken$.pipe(
       map(
         token =>

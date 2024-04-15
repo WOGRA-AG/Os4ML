@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { ErrorInterceptor } from './app/interceptors/error.interceptor';
 import { AuthInterceptor } from './app/interceptors/auth.interceptor';
-import { LottieModule } from 'ngx-lottie';
+import { provideLottieOptions } from 'ngx-lottie';
 
 if (environment.production) {
   enableProdMode();
@@ -29,7 +29,6 @@ if (environment.production) {
 
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');
-const playerFactory = (): any => import('lottie-web');
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -37,7 +36,6 @@ bootstrapApplication(AppComponent, {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     importProvidersFrom(
       BrowserModule,
-      LottieModule.forRoot({ player: playerFactory }),
       ModelmanagerApi.forRoot(
         () =>
           new ModelmanagerApiConfig({
@@ -59,5 +57,6 @@ bootstrapApplication(AppComponent, {
     ),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    provideLottieOptions({ player: () => import('lottie-web') }),
   ],
 }).catch(err => console.error(err));
