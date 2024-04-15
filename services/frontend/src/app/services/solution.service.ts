@@ -34,9 +34,9 @@ export class SolutionService {
     private modelManager: ModelmanagerService,
     private webSocketConnectionService: WebSocketConnectionService
   ) {
-    const webSocketConnection = this.webSocketConnectionService.connect(
-      solutionWebsocketPath
-    );
+    const webSocketConnection = this.webSocketConnectionService.connect<
+      Solution[]
+    >(solutionWebsocketPath);
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getSolutions(token)),
