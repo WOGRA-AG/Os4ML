@@ -85,5 +85,4 @@ If you need to implement any kind of tests, we recommend you to take a look to t
 
 ## 🌍 i18n
 
-Currently we are still using the [ngx-translate](https://github.com/ngx-translate/core) package, but since this is not longer maintained, we will switch to the official [angular-localize](https://angular.io/api/localize) package.
-You find the tranlation files in `src/assets/i18n`.
+As we are in the early development stage, translations are prepared, but not used yet. There is a translation file in `src/assets/i18n` for `de` with translation values still in english. But make sure all keys are contained by running `npm run i18n` and comparing the `messages.json` file to the `messages.de.json` file.

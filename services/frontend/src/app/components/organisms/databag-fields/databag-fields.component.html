@@ -6,8 +6,13 @@
     required
     #column_name="ngModel"
     [ngClass]="{ 'is-invalid': column_name.invalid }">
-    <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{
-      type
-    }}</mat-option>
+    <mat-option
+      *ngFor="let type of mlTypesArray"
+      [value]="type"
+      i18n="@@databag.field.types"
+      >{type, select, numerical {numerical} binary {binary} category {category}
+      text {text} set {set} bag {bag} sequence {sequence} timeseries
+      {timeseries} image {image} date {date}}</mat-option
+    >
   </mat-select>
 </mat-form-field>

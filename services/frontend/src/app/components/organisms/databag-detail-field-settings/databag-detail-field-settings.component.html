@@ -1,8 +1,13 @@
-<h2 class="headline-medium primary-text">
-  {{ 'organisms.databag-detail-field-settings.title' | translate }}
+<h2
+  class="headline-medium primary-text"
+  i18n="@@databag.detail.fieldSettings.title">
+  Field settings
 </h2>
-<div class="body-medium on-background-text description">
-  {{ 'organisms.databag-detail-field-settings.description' | translate }}
+<div
+  class="body-medium on-background-text description"
+  i18n="@@databag.detail.fieldSettings.text">
+  The field settings were automatically set but can be manually changed here.
+  These changes will be considered in the generation of upcoming solutions.
 </div>
 <div class="content">
   <ng-container *ngIf="columns">
@@ -12,9 +17,14 @@
         (selectionChange)="updateColumn(column.name, $event.value)"
         [value]="column.type"
         required>
-        <mat-option *ngFor="let type of mlTypesArray" [value]="type">{{
-          type
-        }}</mat-option>
+        <mat-option
+          *ngFor="let type of mlTypesArray"
+          [value]="type"
+          i18n="@@databag.field.types"
+          >{type, select, numerical {numerical} binary {binary} category
+          {category} text {text} set {set} bag {bag} sequence {sequence}
+          timeseries {timeseries} image {image} date {date}}</mat-option
+        >
       </mat-select>
     </mat-form-field>
   </ng-container>

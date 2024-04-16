@@ -1,7 +1,6 @@
 <button
-  [attr.aria-label]="
-    'organisms.databag_data_table.actions.context_menu' | translate
-  "
+  aria-label="Open databag context menu"
+  i18n-aria-label="@@databagContextMenu.open"
   mat-icon-button
   role="button"
   [matMenuTriggerFor]="menu"
@@ -10,29 +9,29 @@
 </button>
 <mat-menu #menu="matMenu" role="menu">
   <app-context-menu
-    [ariaLabel]="
-      'organisms.databag_data_table.actions.settings.aria_label' | translate
-    "
+    aria-label="Go to databag setting"
+    i18n-aria-label="@@databagContextMenu.settings.ariaLabel"
     data-testid="databag-detail-button"
     [routerLink]="showDatabagDetailLink"
-    menuDescription="{{
-      'organisms.databag_data_table.actions.settings.tooltip' | translate
-    }}"
+    menuDescription="Databag settings"
+    i18n-menuDescription="@@databagContextMenu.settings"
     menuIcon="settings">
   </app-context-menu>
   <app-context-menu
-    [ariaLabel]="'organisms.solution_create_button.label' | translate"
+    aria-label="Open dialog to create a solution"
+    i18n-aria-label="@@solution.ariaLabels.openCreateDialog"
     data-testid="add-solution-menu-item"
     (click)="createSolutionButton.emit()"
-    menuDescription="{{ 'organisms.solution_create_button.label' | translate }}"
+    menuDescription="Create solution"
+    i18n-menuDescription="@@solution.actions.create"
     menuIcon="add">
   </app-context-menu>
   <app-context-menu
-    [ariaLabel]="'organisms.databag-detail-delete-databag.button' | translate"
+    aria-label="Open dialog to delete the databag"
+    i18n-aria-label="@@databag.ariaLabels.openDeleteDialog"
     (click)="deleteDatabagButton.emit()"
-    menuDescription="{{
-      'organisms.databag-detail-delete-databag.button' | translate
-    }}"
+    menuDescription="Delete databag"
+    i18n-menuDescription="@@databag.actions.delete"
     menuIcon="delete">
   </app-context-menu>
 </mat-menu>

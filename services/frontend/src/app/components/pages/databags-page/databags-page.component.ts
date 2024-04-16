@@ -36,6 +36,7 @@ import { PopupConfirmComponent } from '../../organisms/popup-confirm/popup-confi
   ],
 })
 export class DatabagsPageComponent {
+  public status = 'loading';
   public readonly databags$: Observable<Databag[]>;
   constructor(
     private databagService: DatabagService,

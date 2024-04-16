@@ -8,22 +8,6 @@
       "documentation": "Documentation"
     }
   },
-  "molecules": {
-    "select.option_none": "None",
-    "file_dropzone": {
-      "label": "Click to browse or drag and drop your file",
-      "label_mobile": "Click to browse your file",
-      "aria_label": "Click to browse or drag and drop your file"
-    },
-    "documentation-hint-text": {
-      "title": "Encountering issues with uploading?",
-      "upload-docs": {
-        "text1": "Our",
-        "link-text": "documentation",
-        "text2": "can assist you - take a look for guidance."
-      }
-    }
-  },
   "organisms": {
     "popup_confirm": {
       "confirm": "Confirm",
@@ -103,76 +87,6 @@
       }
     },
     "databag_create_button.label": "Create databag",
-    "databag_filter": "Filter by databag",
-    "databag_data_table": {
-      "column_header": {
-        "databag_name": "Databag name",
-        "type": "Type",
-        "features": "Features",
-        "samples": "Samples",
-        "runtime": "Runtime",
-        "creation": "Creation",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "actions": {
-        "context_menu": "Databag context menu",
-        "settings": {
-          "tooltip": "Databag settings",
-          "aria_label": "Databag settings"
-        }
-      }
-    },
-    "databag_create_form": {
-      "aria_label": "Databag create form",
-      "upload_section": {
-        "title": "Upload your data",
-        "error": "The selected file must have one of the following formats:"
-      },
-      "form_fields": {
-        "name": {
-          "label": "Databag Name",
-          "aria_label": "Databag Name",
-          "error": "Databag name is required",
-          "hint": "Choose a meaningful name for your databag to easily identify them"
-        },
-        "databag_data_url": {
-          "label": "Enter a URL",
-          "aria_label": "Enter a URL"
-        },
-        "selected_fields": {
-          "hint": "Mark fields, from your data bag, which the ML algorithm may use as output for its training",
-          "help_message": "Please select a databag first to specify further training",
-          "error": ""
-        }
-      },
-      "toggle_file_mode": {
-        "data_source_url": "Use data source from the web",
-        "data_source_local_file": "Use data source from your computer"
-      },
-      "submit": {
-        "button": "Submit",
-        "aria_label": "Submit databag"
-      }
-    },
-    "databag-detail-pipeline-status": {
-      "title": "Pipeline status",
-      "description": "The pipeline status indicates the progress of your databag processing. Once the status is done, you can create a solution with the completed databag."
-    },
-    "databag-detail-field-settings": {
-      "title": "Field settings",
-      "description": "The field settings were automatically set but can be manually changed here. These changes will be considered in the generation of upcoming solutions."
-    },
-    "databag-detail-download-databag": {
-      "title": "Download databag",
-      "description": "You can download the data bag that you previously uploaded.",
-      "button": "Download databag"
-    },
-    "databag-detail-delete-databag": {
-      "title": "Delete databag",
-      "description": "If you delete the current databag, all associated solutions, predictions and transferlearning models will be emoved. This step is irrevocable.",
-      "button": "Delete databag"
-    },
     "solution_filter": "Filter by solution",
     "solution_data_table": {
       "column_header": {

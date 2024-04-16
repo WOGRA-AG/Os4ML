@@ -1,21 +1,20 @@
 <div class="docs-text">
-  <div class="text-align-center on-surface-text body-medium">
-    {{ 'molecules.documentation-hint-text.title' | translate }}
+  <div
+    class="text-align-center on-surface-text body-medium"
+    i18n="@@documentationLink.title">
+    Encountering issues with uploading?
   </div>
-  <div class="text-align-center on-surface-text body-medium">
-    {{ 'molecules.documentation-hint-text.upload-docs.text1' | translate }}
-    <a
-      [ariaLabel]="
-        'molecules.documentation-hint-text.upload-docs.link-text' | translate
-      "
+  <div
+    class="text-align-center on-surface-text body-medium"
+    i18n="@@documentationLink.text">
+    Our<a
+      i18n-aria-label="@@documentationLink.ariaLabel"
+      aria-label="link to documentation"
       class="primary-text label-small"
       href="https://wogra-ag.github.io/os4ml-docs/"
       data-testid="documentation-link"
       target="_blank">
-      {{
-        'molecules.documentation-hint-text.upload-docs.link-text' | translate
-      }}
-    </a>
-    {{ 'molecules.documentation-hint-text.upload-docs.text2' | translate }}
+      documentation </a
+    >can assist you - take a look for guidance.
   </div>
 </div>

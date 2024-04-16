@@ -6,7 +6,7 @@
     [aria-label]="label"
     (selectionChange)="selectionChange.emit($event.value)"
     [value]="defaultValue">
-    <mat-option>{{ 'molecules.select.option_none' | translate }}</mat-option>
+    <mat-option i18n="@@select.optionNone">None</mat-option>
     <mat-option *ngFor="let option of options" [value]="option.value">
       {{ option.viewValue }}
     </mat-option>

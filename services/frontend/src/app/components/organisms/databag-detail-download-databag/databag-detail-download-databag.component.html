@@ -1,18 +1,20 @@
-<h2 class="headline-medium primary-text">
-  {{ 'organisms.databag-detail-download-databag.title' | translate }}
+<h2 class="headline-medium primary-text" i18n="@@databag.actions.download">
+  Download databag
 </h2>
 <div class="content">
-  <div class="body-medium on-background-text">
-    {{ 'organisms.databag-detail-download-databag.description' | translate }}
+  <div
+    class="body-medium on-background-text"
+    i18n="@@databag.detail.downloadText">
+    You can download the data bag that you previously uploaded.
   </div>
   <app-new-button
     (click)="downloadDatabag.emit()"
     [variant]="'secondary'"
     [size]="'medium'"
     [icon]="'download'"
-    [ariaLabel]="
-      'organisms.databag-detail-download-databag.button' | translate
-    ">
-    {{ 'organisms.databag-detail-download-databag.button' | translate }}
-  </app-new-button>
+    aria-label="Trigger the download of the databag"
+    i18n-aria-label="@@databag.ariaLabels.triggerDownload"
+    i18n="@@databag.actions.download"
+    >Download databag</app-new-button
+  >
 </div>

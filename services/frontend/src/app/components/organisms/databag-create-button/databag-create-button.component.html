@@ -4,16 +4,19 @@
   [size]="'medium'"
   [icon]="'add'"
   [disabled]="!!disabled"
-  [ariaLabel]="'organisms.databag_create_button.label' | translate"
-  (click)="addDatabag.emit()">
-  {{ 'organisms.databag_create_button.label' | translate }}
+  aria-label="Open dialog to create a databag"
+  i18n-aria-label="@@databag.ariaLabels.openCreateDialog"
+  (click)="addDatabag.emit()"
+  >Create Databag
 </app-new-button>
 
 <app-icon-button
   *ngIf="isFAB"
   (click)="addDatabag.emit()"
-  [matTooltip]="'organisms.databag_create_button.label' | translate"
-  attr.aria-label="{{ 'organisms.databag_create_button.label' | translate }}"
+  matTooltip="Create databag"
+  i18n-matTooltip="@@databag.actions.create"
+  aria-label="Open dialog to create a databag"
+  i18n-aria-label="@@databag.ariaLabels.openCreateDialog"
   color="primary"
   icon="add">
 </app-icon-button>

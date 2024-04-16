@@ -11,17 +11,20 @@
   (click)="fileUpload.click()"
   (keydown.enter)="fileUpload.click()"
   (keydown.space)="fileUpload.click()"
-  [attr.aria-label]="'molecules.file_dropzone.aria_label' | translate"
+  aria-label="Click to browse you file"
+  i18n-aria-label="@@fileDropzone.ariaLabel"
   tabindex="0">
   <p
     *ngIf="!selectedFileName && !isMobileView"
-    class="on-surface-light-text body-medium">
-    {{ 'molecules.file_dropzone.label' | translate }}
+    class="on-surface-light-text body-medium"
+    i18n="@@fileDropzone.label">
+    Click to browse or drag and drop your file
   </p>
   <p
     *ngIf="!selectedFileName && isMobileView"
-    class="on-surface-light-text body-medium">
-    {{ 'molecules.file_dropzone.label_mobile' | translate }}
+    class="on-surface-light-text body-medium"
+    i18n="@@fileDropzone.labelMobile">
+    Click to browse your file
   </p>
   <p class="selected-file-name">{{ selectedFileName }}</p>
 </div>

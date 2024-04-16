@@ -1,6 +1,9 @@
 <app-os4ml-default-template data-testid="databags-page">
-  <h1 header class="headline-large primary-text">
-    {{ 'pages.databags_page.title' | translate }}
+  <span i18n="@@databag.status"
+    >{status, select, loading {LOADING}, error {ERROR}}</span
+  >
+  <h1 header class="headline-large primary-text" i18n="@@databag.plural">
+    Databags
   </h1>
   <div nav class="actions">
     <app-databag-create-button

@@ -1,9 +1,14 @@
-<h2 class="headline-medium primary-text">
-  {{ 'organisms.databag-detail-pipeline-status.title' | translate }}
+<h2
+  class="headline-medium primary-text"
+  i18n="@@databag.detail.pipelineStatus.title">
+  Pipeline status
 </h2>
 <div class="content">
-  <div class="body-medium on-background-text">
-    {{ 'organisms.databag-detail-pipeline-status.description' | translate }}
+  <div
+    class="body-medium on-background-text"
+    i18n="@@databag.detail.pipelineStatus.text">
+    The pipeline status indicates the progress of your databag processing. Once
+    the status is done, you can create a solution with the completed databag.
   </div>
   <app-processing-status-indicator
     data-testid="solution-status-indicator"

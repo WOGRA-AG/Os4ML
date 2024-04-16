@@ -1,9 +1,12 @@
-<h2 class="headline-medium primary-text">
-  {{ 'organisms.databag-detail-delete-databag.title' | translate }}
+<h2 class="headline-medium primary-text" i18n="@@databag.actions.delete">
+  Delete databag
 </h2>
 <div class="content">
-  <div class="body-medium on-background-text">
-    {{ 'organisms.databag-detail-delete-databag.description' | translate }}
+  <div
+    class="body-medium on-background-text"
+    i18n="@@databag.detail.deleteWarning">
+    If you delete the current databag, all associated solutions, predictions and
+    transferlearning models will be emoved. This step is irrevocable.
   </div>
   <app-new-button
     data-testid="databag-delete-button"
@@ -11,7 +14,9 @@
     [variant]="'warn'"
     [size]="'medium'"
     [icon]="'delete'"
-    [ariaLabel]="'organisms.databag-detail-delete-databag.button' | translate">
-    {{ 'organisms.databag-detail-delete-databag.button' | translate }}
-  </app-new-button>
+    aria-label="Open dialog to delete the databag"
+    i18n-aria-label="@@databag.ariaLabels.openDeleteDialog"
+    i18n="@@databag.actions.delete"
+    >Delete databag</app-new-button
+  >
 </div>
