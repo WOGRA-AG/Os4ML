@@ -1,7 +1,6 @@
-from parser import KubeflowParser
-from parser.interfaces.parser import Parser
-
-from services import WORKFLOW_ENGINE
+from src.parser import KubeflowParser
+from src.parser.interfaces.parser import Parser
+from src.services import WORKFLOW_ENGINE
 
 
 def init_parser(engine: str = WORKFLOW_ENGINE) -> Parser:

@@ -1,5 +1,6 @@
 from fastapi import Depends
 
+from src.build.openapi_server.models import user
 from src.build.openapi_server.models.databag import Databag
 from src.build.openapi_server.models.new_transfer_learning_model_dto import (
     NewTransferLearningModelDto,
@@ -10,6 +11,7 @@ from src.build.openapi_server.models.solver import Solver
 from src.build.openapi_server.models.transfer_learning_model import (
     TransferLearningModel,
 )
+from src.build.openapi_server.models.user_id_object import UserIdObject
 from src.services.databag_service import DatabagService
 from src.services.prediction_service import PredictionSerivce
 from src.services.solution_service import SolutionService
@@ -222,7 +224,7 @@ class ModelmanagerApiController:
             prediction_id, usertoken
         )
 
-    # ----- predictions -----
+    # ----- transfer learning models -----
     def get_transfer_learning_models(
         self, usertoken: str = ""
     ) -> list[TransferLearningModel]:
@@ -239,9 +241,50 @@ class ModelmanagerApiController:
             new_transfer_learning_model_dto, usertoken
         )
 
+    def get_transfer_learning_model_by_id(
+        self, transfer_learning_model_id: str, usertoken: str = ""
+    ) -> TransferLearningModel:
+        return (
+            self.transfer_learning_service.get_transfer_learning_model_by_id(
+                transfer_learning_model_id, usertoken
+            )
+        )
+
+    def update_transfer_learning_model_by_id(
+        self,
+        transfer_learning_model_id: str,
+        transfer_learning_model: TransferLearningModel,
+        usertoken: str = "",
+    ) -> TransferLearningModel:
+        return self.transfer_learning_service.update_transfer_learning_model_by_id(
+            transfer_learning_model_id, transfer_learning_model, usertoken
+        )
+
     def delete_transfer_learning_model_by_id(
         self, transfer_learning_model_id: str, usertoken: str = ""
     ) -> None:
-        return self.transfer_learning_service.delete_transfer_learning_model_by_id(  # type: ignore
+        return self.transfer_learning_service.delete_transfer_learning_model_by_id(
             transfer_learning_model_id, usertoken
+        )
+
+    def share_transfer_learning_model(
+        self,
+        transfer_learning_model_id: str,
+        user_id_object: UserIdObject,
+        usertoken: str = "",
+    ) -> TransferLearningModel:
+        return self.transfer_learning_service.share_transfer_learning_model(
+            transfer_learning_model_id, user_id_object.user_id, usertoken  # type: ignore
+        )
+
+    def cancel_transfer_learning_model_sharing(
+        self,
+        transfer_learning_model_id: str,
+        shared_transfer_learning_model_id: str,
+        usertoken: str = "",
+    ) -> None:
+        return self.transfer_learning_service.cancel_transfer_learning_model_sharing(
+            transfer_learning_model_id,
+            shared_transfer_learning_model_id,
+            usertoken,
         )

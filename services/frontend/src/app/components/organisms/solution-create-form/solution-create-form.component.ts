@@ -213,11 +213,8 @@ export class SolutionCreateFormComponent implements OnInit, OnChanges {
         inputField => !this.outputFields.value.includes(inputField)
       ),
       outputFields: this.outputFields.value,
+      transferLearningSettings: this.getTransferLearningSettings(),
     };
-    if (this.transferLearningSettingsActive) {
-      submitSolution.transferLearningSettings =
-        this.getTransferLearningSettings();
-    }
     this.submitSolution.emit(submitSolution);
   }
   private updateAvailableInputColumns(outputFieldsValues: string[]): void {
@@ -287,19 +284,17 @@ export class SolutionCreateFormComponent implements OnInit, OnChanges {
     });
   }
   private getTransferLearningSettings(): TransferLearningSetting[] {
-    const filteredTransferLearningSettings =
-      this.transferLearningSettingsFormArray.controls
-        .filter(
-          transferLearningSetting =>
-            !this.outputFields.value.includes(
-              transferLearningSetting.controls.name.value
-            )
-        )
-        .map(
-          transferLearningSetting =>
-            transferLearningSetting.value as TransferLearningSetting
-        );
-    return filteredTransferLearningSettings;
+    return this.transferLearningSettingsFormArray.controls
+      .filter(
+        transferLearningSetting =>
+          !this.outputFields.value.includes(
+            transferLearningSetting.controls.name.value
+          )
+      )
+      .map(
+        transferLearningSetting =>
+          transferLearningSetting.value as TransferLearningSetting
+      );
   }
   private setInitialDatabagId(): void {
     if (this.selectedDatabagId) {

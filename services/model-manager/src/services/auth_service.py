@@ -47,3 +47,21 @@ def get_parsed_token(usertoken: str = Header()) -> User:
         raise HTTPException(
             HTTPStatus.UNAUTHORIZED, "Invalid Authorization Header"
         )
+
+
+def mock_token_with_user_id(user_id: str) -> str:
+    # temporary only, until #877 is done
+    mock_user = OIDCUser(  # type: ignore
+        sub=user_id,
+        iat=1,
+        exp=200000000,
+        scope="mock",
+        email_verified=True,
+        email="mock@mock.mail",
+    )
+
+    encoded_payload = base64.b64encode(
+        json.dumps(mock_user.dict()).encode()
+    ).decode()
+
+    return f"mocked_header.{encoded_payload}.mocked_signature"

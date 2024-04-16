@@ -2,7 +2,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from build.openapi_server.main import app as application
+from src.build.openapi_server.main import app as application
 
 
 @pytest.fixture

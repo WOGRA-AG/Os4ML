@@ -1,8 +1,8 @@
 from fastapi import Depends
 
-from build.openapi_server.models.user import User
-from services.auth_service import get_parsed_token
-from services.pipeline_template_service import PipelineTemplateService
+from src.build.openapi_server.models.user import User
+from src.services.auth_service import get_parsed_token
+from src.services.pipeline_template_service import PipelineTemplateService
 
 
 class WorkflowtranslatorApiController:

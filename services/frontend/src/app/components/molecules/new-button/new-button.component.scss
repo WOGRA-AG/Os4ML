@@ -70,7 +70,7 @@ button {
       background-color: var(--md-sys-color-on-surface);
       color: var(--md-sys-color-surface);
       opacity: 22%;
-      cursor: default;
+      cursor: not-allowed;
       box-shadow: none;
     }
   }
@@ -87,6 +87,7 @@ button {
       color: var(--md-sys-color-neutral);
       border-color: var(--md-sys-color-on-surface);
       opacity: 22%;
+      cursor: not-allowed;
     }
   }
 
@@ -115,6 +116,7 @@ button {
       background-color: var(--md-sys-color-error);
       color: var(--md-sys-color-on-primary);
       opacity: 22%;
+      cursor: not-allowed;
     }
   }
 }

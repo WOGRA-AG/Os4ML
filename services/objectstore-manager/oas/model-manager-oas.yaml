@@ -417,7 +417,7 @@ paths:
         200:
           $ref: '#/components/responses/TransferLearningModelList'
     post:
-      summary: "create a transfer learning model from Solutin"
+      summary: "create a transfer learning model from Solution"
       operationId: createNewTransferLearningModelFromSolution
       tags:
         - modelmanager
@@ -430,11 +430,64 @@ paths:
           $ref: '#/components/responses/TransferLearningModel'
 
   "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}":
+    get:
+      summary: "get transfer learning model by id"
+      operationId: getTransferLearningModelById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
+    put:
+      summary: "update transfer learning model"
+      operationId: updateTransferLearningModelById
+      tags:
+        - modelmanager
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      requestBody:
+        $ref: '#/components/requestBodies/TransferLearningModel'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
     delete:
       summary: "delete transfer learning model by id"
       operationId: deleteTransferLearningModelById
       parameters:
         - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      responses:
+        204:
+          $ref: '#/components/responses/Deleted'
+
+  "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}/share":
+    post:
+      summary: "share a transfer learning model with another user"
+      operationId: shareTransferLearningModel
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: './shared-oas.yaml#/components/parameters/User'
+      tags:
+        - modelmanager
+      requestBody:
+        $ref: '#/components/requestBodies/UserId'
+      responses:
+        200:
+          $ref: '#/components/responses/TransferLearningModel'
+
+  "/apis/v1beta1/model-manager/transfer-learning-models/{transferLearningModelId}/share/{sharedTransferLearningModelId}":
+    delete:
+      summary: " cancel sharing of a transfer learning model with a user"
+      operationId: cancelTransferLearningModelSharing
+      parameters:
+        - $ref: '#/components/parameters/TransferLearningModelId'
+        - $ref: '#/components/parameters/SharedTransferLearningModelId'
         - $ref: './shared-oas.yaml#/components/parameters/User'
       tags:
         - modelmanager
@@ -490,6 +543,13 @@ components:
       required: true
       schema:
         $ref: './shared-oas.yaml#/components/schemas/TransferLearningModelId'
+    SharedTransferLearningModelId:
+      name: sharedTransferLearningModelId
+      in: path
+      description: Id of the shared TransferLearningModel
+      required: true
+      schema:
+        $ref: './shared-oas.yaml#/components/schemas/TransferLearningModelId'
     SolverName:
       name: solverName
       in: path
@@ -506,6 +566,11 @@ components:
         type: string
 
   requestBodies:
+    UserId:
+      content:
+        application/json:
+          schema:
+            $ref: './shared-oas.yaml#/components/schemas/UserIdObject'
     Databag:
       content:
         application/json:
