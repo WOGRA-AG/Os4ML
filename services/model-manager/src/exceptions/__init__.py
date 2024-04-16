@@ -27,6 +27,7 @@ from .resource_not_found import (
     ResourceNotFoundException,
     SolutionNotFoundException,
     SolverNotFoundException,
+    TransferLearningModelNotFoundException,
 )
 
 __all__ = [
@@ -52,4 +53,5 @@ __all__ = [
     "ResourceNotFoundException",
     "SolutionNotFoundException",
     "SolverNotFoundException",
+    "TransferLearningModelNotFoundException",
 ]

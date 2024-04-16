@@ -58,7 +58,8 @@ poetry run python src/main.py
 ```
 - Intercept the workflow translator
 ```bash
-telepresence intercept --namespace os4ml workflow-translator --port 8002:8000
+telepresence connect --namespace os4ml
+telepresence intercept workflow-translator --port 8002:8000
 ```
 
 

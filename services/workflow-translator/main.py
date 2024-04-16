@@ -2,8 +2,8 @@
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
-import exceptions.handler  # Needed to initialize exception handlers
-from build.openapi_server.main import app
+import src.exceptions.handler  # Needed to initialize exception handlers
+from src.build.openapi_server.main import app
 
 app.add_middleware(
     CORSMiddleware,

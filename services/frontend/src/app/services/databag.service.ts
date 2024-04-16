@@ -110,9 +110,9 @@ export class DatabagService {
   }
   // Private methods
   private initializeDatabags(): void {
-    const webSocketConnection$ = this.webSocketConnectionService.connect(
-      databagsWebsocketPath
-    );
+    const webSocketConnection$ = this.webSocketConnectionService.connect<
+      Databag[]
+    >(databagsWebsocketPath);
     this.userService.currentToken$
       .pipe(
         switchMap(token => this.modelManager.getDatabags(token)),
