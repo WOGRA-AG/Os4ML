@@ -22,7 +22,7 @@ pytest-mock = "^3.10.0"
 black = "^22.10.0"
 isort = {extras = ["pyproject"], version = "^5.10.1"}
 coverage = {extras = ["toml"], version = "^6.5.0"}
-pytest-asyncio = "^0.19.0"
+pytest-asyncio = "^0.25.0"
 mypy = "^1.5.1"
 
 [build-system]
