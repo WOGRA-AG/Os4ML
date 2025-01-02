@@ -203,6 +203,11 @@ Rall, D., Fraunholz, T., & Bauer, B. (2023). AI-Democratization: From Data-first
 
 Os4ML is a project of the [WOGRA AG](https://www.wogra.com/) research group in cooperation with the German Aerospace Center and is funded by the Ministry of Economic Affairs, Regional Development and Energy as part of the High Tech Agenda of the Free State of Bavaria.
 
+### Publications
+
+Several papers related to the OS4ML project have already been published, contributing to the fields of AI. 
+Links to these publications will be added as soon as they are available.
+
 ### License
 
 Os4ML is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0).
