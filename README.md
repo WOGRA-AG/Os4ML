@@ -204,9 +204,13 @@ Rall, D., Fraunholz, T., & Bauer, B. (2023). AI-Democratization: From Data-first
 Os4ML is a project of the [WOGRA AG](https://www.wogra.com/) research group in cooperation with the German Aerospace Center and is funded by the Ministry of Economic Affairs, Regional Development and Energy as part of the High Tech Agenda of the Free State of Bavaria.
 
 ### Publications
+The OS4ML team has contributed to advancing knowledge in the field of democratizing AI through the following publications:
 
-Several papers related to the OS4ML project have already been published, contributing to the fields of AI. 
-Links to these publications will be added as soon as they are available.
+1. **"OS4ML: Open Space for Machine Learning"**  
+   Authors: Dennis Rall, Thomas Fraunholz, Tim Köhler, Florian Kratzer, Monika Mayer, Demas Schmorell, Lars Larsen, Dominik Görick, Armin Huber & Alfons Schuster  
+   Journal: *FAIM2024*  
+   DOI: [10.1007/978-3-031-74482-2_6](https://doi.org/10.1007/978-3-031-74482-2_6)
+
 
 ### License
 
